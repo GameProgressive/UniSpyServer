@@ -11,11 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
     public sealed class AboveTheTableMsgHandler : MsgHandlerBase
     {
         new AboveTheTableMsgRequest _request => (AboveTheTableMsgRequest)base._request;
-        new AboveTheTableMsgResult _result
-        {
-            get => (AboveTheTableMsgResult)base._result;
-            set => base._result = value;
-        }
+        new AboveTheTableMsgResult _result{ get => (AboveTheTableMsgResult)base._result; set => base._result = value; }
         public AboveTheTableMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new AboveTheTableMsgResult();

@@ -11,11 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
     public sealed class NoticeHandler : MsgHandlerBase
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
-        private new NoticeResult _result
-        {
-            get => (NoticeResult)base._result;
-            set => base._result = value;
-        }
+        private new NoticeResult _result{ get => (NoticeResult)base._result; set => base._result = value; }
         public NoticeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new NoticeResult();

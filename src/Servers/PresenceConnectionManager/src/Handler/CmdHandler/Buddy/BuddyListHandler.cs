@@ -11,11 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     public sealed class BuddyListHandler : CmdHandlerBase
     {
-        private new BuddyListResult _result
-        {
-            get => (BuddyListResult)base._result;
-            set => base._result = value;
-        }
+        private new BuddyListResult _result{ get => (BuddyListResult)base._result; set => base._result = value; }
         public BuddyListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new BuddyListResult();

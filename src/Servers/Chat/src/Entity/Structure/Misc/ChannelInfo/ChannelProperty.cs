@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public Dictionary<string, string> ChannelKeyValue { get; private set; }
         public string ChannelTopic { get; set; }
         public bool IsPeerServer { get; set; }
-
+        public ChannelUser ChannelCreator { get; private set; }
         public ChannelProperty()
         {
             ChannelCreatedTime = DateTime.Now;
@@ -38,10 +38,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             ChannelUsers = new ConcurrentDictionary<string, ChannelUser>();
         }
 
-        public void SetDefaultProperties(ChannelUser creator, JoinRequest request)
+        public void SetDefaultProperties(ChannelUser creator, string channelName)
         {
             MaxNumberUser = 200;
-            ChannelName = request.ChannelName;
+            ChannelName = channelName;
+            ChannelCreator = creator;
             ChannelMode.SetDefaultModes();
         }
 

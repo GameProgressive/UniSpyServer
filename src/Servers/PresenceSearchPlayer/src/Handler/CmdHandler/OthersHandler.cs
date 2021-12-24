@@ -20,11 +20,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     {
         private new OthersRequest _request => (OthersRequest)base._request;
 
-        private new OthersResult _result
-        {
-            get => (OthersResult)base._result;
-            set => base._result = value;
-        }
+        private new OthersResult _result{ get => (OthersResult)base._result; set => base._result = value; }
         public OthersHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new OthersResult();

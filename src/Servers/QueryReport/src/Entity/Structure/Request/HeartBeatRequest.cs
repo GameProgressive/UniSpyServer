@@ -15,9 +15,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
         public string ServerData { get; private set; }
         public string PlayerData { get; private set; }
         public string TeamData { get; private set; }
-        public string GameName
-        {
-            get
+        public string GameName{ get
             {
                 List<string> tempKeyVal = DataPartition.Split('\0').ToList();
                 int indexOfGameName = tempKeyVal.IndexOf("gamename");

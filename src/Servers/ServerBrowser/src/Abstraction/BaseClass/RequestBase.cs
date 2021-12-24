@@ -8,11 +8,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;
-        public new RequestType CommandName
-        {
-            get => (RequestType)base.CommandName;
-            protected set => base.CommandName = value;
-        }
+        public new RequestType CommandName{ get => (RequestType)base.CommandName;
+            protected set => base.CommandName = value; }
         public RequestBase(object rawRequest) : base(rawRequest)
         {
         }

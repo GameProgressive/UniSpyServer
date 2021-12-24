@@ -18,11 +18,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     [HandlerContract("nicks")]
     public sealed class NicksHandler : CmdHandlerBase
     {
-        private new NicksResult _result
-        {
-            get => (NicksResult)base._result;
-            set => base._result = value;
-        }
+        private new NicksResult _result{ get => (NicksResult)base._result; set => base._result = value; }
         private new NicksRequest _request => (NicksRequest)base._request;
         public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

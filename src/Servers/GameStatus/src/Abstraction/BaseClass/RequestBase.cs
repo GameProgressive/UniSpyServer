@@ -9,16 +9,8 @@ namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
     public abstract class RequestBase : UniSpyRequestBase
     {
         public uint OperationID { get; protected set; }
-        public new string CommandName
-        {
-            get => (string)base.CommandName;
-            set => base.CommandName = value;
-        }
-        public new string RawRequest
-        {
-            get => (string)base.RawRequest;
-            set => base.RawRequest = value;
-        }
+        public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }
+        public new string RawRequest { get => (string)base.RawRequest; set => base.RawRequest = value; }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
         public RequestBase(string rawRequest) : base(rawRequest)

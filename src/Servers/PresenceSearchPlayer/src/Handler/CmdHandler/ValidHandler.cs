@@ -14,11 +14,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     public sealed class ValidHandler : CmdHandlerBase
     {
         private new ValidRequest _request => (ValidRequest)base._request;
-        private new ValidResult _result
-        {
-            get => (ValidResult)base._result;
-            set => base._result = value;
-        }
+        private new ValidResult _result{ get => (ValidResult)base._result; set => base._result = value; }
 
         public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -12,11 +12,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("TOPIC")]
     public sealed class TopicRequest : ChannelRequestBase
     {
-        public new string ChannelName
-        {
-            get => base.ChannelName;
-            set => base.ChannelName = value;
-        }
+        public new string ChannelName{ get => base.ChannelName; set => base.ChannelName = value; }
         public TopicRequest() { }
         public TopicRequest(string rawRequest) : base(rawRequest)
         {

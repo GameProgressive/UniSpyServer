@@ -24,16 +24,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class JoinHandler : LogedInHandlerBase
     {
         private new JoinRequest _request => (JoinRequest)base._request;
-        private new JoinResult _result
-        {
-            get => (JoinResult)base._result;
-            set => base._result = value;
-        }
-        private new JoinResponse _response
-        {
-            get => (JoinResponse)base._response;
-            set => base._response = value;
-        }
+        private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
+        private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
         Entity.Structure.Misc.ChannelInfo.Channel _channel;
         ChannelUser _user;
         public JoinHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -111,7 +103,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     _channel.Property.IsPeerServer = true;
                 }
                 _user.SetDefaultProperties(true);
-                _channel.Property.SetDefaultProperties(_user, _request);
+                _channel.Property.SetDefaultProperties(_user, _request.ChannelName);
                 _channel.AddBindOnUserAndChannel(_user);
                 ChannelManager.AddChannel(_request.ChannelName, _channel);
             }
@@ -151,7 +143,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 return;
             }
-  
+
             //first we send join information to all user in this channel
             _channel.MultiCast(_response);
 

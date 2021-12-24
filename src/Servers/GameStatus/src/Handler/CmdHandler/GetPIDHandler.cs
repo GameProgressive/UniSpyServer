@@ -18,11 +18,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         //response \getpidr
         private uint _protileid;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
-        private new GetPIDResult _result
-        {
-            get => (GetPIDResult)base._result;
-            set => base._result = value;
-        }
+        private new GetPIDResult _result{ get => (GetPIDResult)base._result; set => base._result = value; }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new GetPIDResult();

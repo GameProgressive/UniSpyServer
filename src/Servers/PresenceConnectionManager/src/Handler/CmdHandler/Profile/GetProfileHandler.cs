@@ -18,11 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private new GetProfileRequest _request => (GetProfileRequest)base._request;
 
-        private new GetProfileResult _result
-        {
-            get => (GetProfileResult)base._result;
-            set => base._result = value;
-        }
+        private new GetProfileResult _result{ get => (GetProfileResult)base._result; set => base._result = value; }
 
         public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -9,15 +9,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
     public abstract class RequestBase : UniSpyRequestBase
     {
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
-        public new string RawRequest
-        {
-            get => (string)base.RawRequest;
+        public new string RawRequest{ get => (string)base.RawRequest;
         }
-        public new string CommandName
-        {
-            get => (string)base.CommandName;
-            protected set => base.CommandName = value;
-        }
+        public new string CommandName{ get => (string)base.CommandName;
+            protected set => base.CommandName = value; }
         public ushort OperationID { get; protected set; }
         public RequestBase(string rawRequest) : base(rawRequest)
         {

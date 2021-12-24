@@ -6,11 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("PART")]
     public sealed class PartRequest : ChannelRequestBase
     {
-        public new string ChannelName
-        {
-            get => base.ChannelName;
-            set => base.ChannelName = value;
-        }
+        public new string ChannelName{ get => base.ChannelName; set => base.ChannelName = value; }
         public string Reason { get; set; }
         public PartRequest() { }
         public PartRequest(string rawRequest) : base(rawRequest)

@@ -24,11 +24,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     {
         private new SearchRequest _request => (SearchRequest)base._request;
 
-        private new SearchResult _result
-        {
-            get => (SearchResult)base._result;
-            set => base._result = value;
-        }
+        private new SearchResult _result{ get => (SearchResult)base._result; set => base._result = value; }
         public SearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new SearchResult();

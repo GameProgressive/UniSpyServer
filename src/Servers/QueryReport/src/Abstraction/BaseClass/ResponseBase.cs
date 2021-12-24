@@ -8,11 +8,8 @@ namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
     {
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result => (ResultBase)base._result;
-        public new byte[] SendingBuffer
-        {
-            get => (byte[])base.SendingBuffer;
-            protected set => base.SendingBuffer = value;
-        }
+        public new byte[] SendingBuffer{ get => (byte[])base.SendingBuffer;
+            protected set => base.SendingBuffer = value; }
         protected ResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

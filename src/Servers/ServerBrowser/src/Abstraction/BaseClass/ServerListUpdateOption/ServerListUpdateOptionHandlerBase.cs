@@ -5,16 +5,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
     public abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
     {
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
-        protected new ServerListUpdateOptionResultBase _result
-        {
-            get => (ServerListUpdateOptionResultBase)base._result;
-            set => base._result = value;
-        }
-        protected new ServerListUpdateOptionResponseBase _response
-        {
-            get => (ServerListUpdateOptionResponseBase)base._response;
-            set => base._response = value;
-        }
+        protected new ServerListUpdateOptionResultBase _result { get => (ServerListUpdateOptionResultBase)base._result; set => base._result = value; }
+        protected new ServerListUpdateOptionResponseBase _response { get => (ServerListUpdateOptionResponseBase)base._response; set => base._response = value; }
         public ServerListUpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

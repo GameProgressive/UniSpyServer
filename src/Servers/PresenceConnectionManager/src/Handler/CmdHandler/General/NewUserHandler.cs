@@ -18,11 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;
 
-        private new NewUserResult _result
-        {
-            get => (NewUserResult)base._result;
-            set => base._result = value;
-        }
+        private new NewUserResult _result{ get => (NewUserResult)base._result; set => base._result = value; }
 
         public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -13,11 +13,8 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         /// False means there are errors
         /// </summary>
         public new string RawRequest => (string)base.RawRequest;
-        public new string CommandName
-        {
-            get => (string)base.CommandName;
-            protected set => base.CommandName = value;
-        }
+        public new string CommandName{ get => (string)base.CommandName;
+            protected set => base.CommandName = value; }
         protected string _prefix;
         protected List<string> _cmdParams;
         protected string _longParam;

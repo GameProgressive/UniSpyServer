@@ -16,11 +16,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     public sealed class ServerInfoHandler : CmdHandlerBase
     {
         private new AdHocRequest _request => (AdHocRequest)base._request;
-        private new ServerInfoResult _result
-        {
-            get => (ServerInfoResult)base._result;
-            set => base._result = value;
-        }
+        private new ServerInfoResult _result{ get => (ServerInfoResult)base._result; set => base._result = value; }
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -15,11 +15,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
-        private new GetKeyResult _result
-        {
-            get => (GetKeyResult)base._result;
-            set => base._result = value;
-        }
+        private new GetKeyResult _result{ get => (GetKeyResult)base._result; set => base._result = value; }
         public GetKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new GetKeyResult();

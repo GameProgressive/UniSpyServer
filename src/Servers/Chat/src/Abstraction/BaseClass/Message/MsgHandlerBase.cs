@@ -9,11 +9,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     public abstract class MsgHandlerBase : ChannelHandlerBase
     {
         protected new MsgRequestBase _request => (MsgRequestBase)base._request;
-        protected new MsgResultBase _result
-        {
-            get => (MsgResultBase)base._result;
-            set => base._result = value;
-        }
+        protected new MsgResultBase _result{ get => (MsgResultBase)base._result; set => base._result = value; }
         protected ChannelUser _reciever;
         public MsgHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

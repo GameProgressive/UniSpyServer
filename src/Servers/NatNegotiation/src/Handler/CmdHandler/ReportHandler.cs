@@ -19,11 +19,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     public sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
-        private new ReportResult _result
-        {
-            get => (ReportResult)base._result;
-            set => base._result = value;
-        }
+        private new ReportResult _result{ get => (ReportResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

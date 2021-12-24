@@ -18,11 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class LoginHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
-        private new LoginResult _result
-        {
-            get => (LoginResult)base._result;
-            set => base._result = value;
-        }
+        private new LoginResult _result{ get => (LoginResult)base._result; set => base._result = value; }
         public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new LoginResult();

@@ -12,11 +12,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        private new NewGameResult _result
-        {
-            get => (NewGameResult)base._result;
-            set => base._result = value;
-        }
+        private new NewGameResult _result{ get => (NewGameResult)base._result; set => base._result = value; }
         public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new NewGameResult();

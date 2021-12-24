@@ -14,11 +14,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class ModeHandler : ChannelHandlerBase
     {
         private new ModeRequest _request => (ModeRequest)base._request;
-        private new ModeResult _result
-        {
-            get => (ModeResult)base._result;
-            set => base._result = value;
-        }
+        private new ModeResult _result{ get => (ModeResult)base._result; set => base._result = value; }
         public ModeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

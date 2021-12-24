@@ -22,11 +22,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class WhoHandler : LogedInHandlerBase
     {
         private new WhoRequest _request => (WhoRequest)base._request;
-        private new WhoResult _result
-        {
-            get => (WhoResult)base._result;
-            set => base._result = value;
-        }
+        private new WhoResult _result { get => (WhoResult)base._result; set => base._result = value; }
         public WhoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -81,7 +77,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             }
             foreach (var channel in session.UserInfo.JoinedChannels.Values)
             {
-                ChannelUser user = channel.GetChannelUserBySession(session);
+                var user = channel.GetChannelUserBySession(session);
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Property.ChannelName,

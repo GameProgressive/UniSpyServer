@@ -14,16 +14,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class KickHandler : ChannelHandlerBase
     {
         private new KickRequest _request => (KickRequest)base._request;
-        private new KickResponse _response
-        {
-            get => (KickResponse)base._response;
-            set => base._response = value;
-        }
-        private new KickResult _result
-        {
-            get => (KickResult)base._result;
-            set => base._result = value;
-        }
+        private new KickResponse _response { get => (KickResponse)base._response; set => base._response = value; }
+        private new KickResult _result { get => (KickResult)base._result; set => base._result = value; }
         private ChannelUser _kickee;
         public KickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -12,11 +12,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class TopicHandler : ChannelHandlerBase
     {
         private new TopicRequest _request => (TopicRequest)base._request;
-        private new TopicResult _result
-        {
-            get => (TopicResult)base._result;
-            set => base._result = value;
-        }
+        private new TopicResult _result{ get => (TopicResult)base._result; set => base._result = value; }
         public TopicHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new TopicResult();

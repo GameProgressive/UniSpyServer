@@ -15,11 +15,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     public sealed class UniqueSearchHandler : CmdHandlerBase
     {
         private new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
-        private new UniqueSearchResult _result
-        {
-            get => (UniqueSearchResult)base._result;
-            set => base._result = value;
-        }
+        private new UniqueSearchResult _result{ get => (UniqueSearchResult)base._result; set => base._result = value; }
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new UniqueSearchResult();

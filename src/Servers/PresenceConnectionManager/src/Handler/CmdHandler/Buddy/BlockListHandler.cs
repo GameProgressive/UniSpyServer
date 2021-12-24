@@ -9,11 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     public sealed class BlockListHandler : CmdHandlerBase
     {
-        private new BlockListResult _result
-        {
-            get => (BlockListResult)base._result;
-            set => base._result = value;
-        }
+        private new BlockListResult _result{ get => (BlockListResult)base._result; set => base._result = value; }
 
         public BlockListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
