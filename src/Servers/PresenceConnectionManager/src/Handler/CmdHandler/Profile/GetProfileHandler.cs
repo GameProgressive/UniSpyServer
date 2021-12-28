@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 //we have to make sure the search target has the same namespaceID
                 var result = from p in db.Profiles

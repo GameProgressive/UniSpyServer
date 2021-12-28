@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 IQueryable<SearchDataBaseModel> result;
                 switch (_request.RequestType)

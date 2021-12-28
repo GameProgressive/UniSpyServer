@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 Profiles profile = db.Profiles.Where(
                     p => p.Userid == _session.UserInfo.BasicInfo.UserID

@@ -9,6 +9,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using System;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using System.Linq;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -19,7 +20,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     public sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
-        private new ReportResult _result{ get => (ReportResult)base._result; set => base._result = value; }
+        private new ReportResult _result { get => (ReportResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -28,20 +29,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            //_userInfo.IsGotReportPacket = true;
-            var fullKey = new UserInfoRedisKey()
-            {
-                ServerID = ServerFactory.Server.ServerID,
-                RemoteIPEndPoint = _session.RemoteIPEndPoint,
-                PortType = _request.PortType,
-                Cookie = _request.Cookie
-            };
+            _userInfo = _redisClient.Values.Where(
+            k => k.ServerID == ServerFactory.Server.ServerID
+            & k.RemoteIPEndPoint == _session.RemoteIPEndPoint
+            & k.PortType == _request.PortType
+            & k.Cookie == _request.Cookie).FirstOrDefault();
 
-            try
-            {
-                _userInfo = UserInfoRedisOperator.GetSpecificValue(fullKey);
-            }
-            catch
+            if (_userInfo == null)
             {
                 throw new NNException("No user found in redis.");
             }
@@ -60,12 +54,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
-                UserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
+                _redisClient.SetValue(_userInfo);
             }
             else
             {
                 // natnegotiation successed we delete the negotiator
-                UserInfoRedisOperator.DeleteKeyValue(fullKey);
+                _redisClient.DeleteKeyValue(_userInfo);
             }
         }
 

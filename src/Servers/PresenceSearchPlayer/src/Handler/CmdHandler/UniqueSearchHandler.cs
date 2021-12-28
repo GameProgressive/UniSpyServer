@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UnispyContext())
+                using (var db = new UniSpyContext())
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid

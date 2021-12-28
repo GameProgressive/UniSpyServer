@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
 
                 var result = from p in db.Pstorage

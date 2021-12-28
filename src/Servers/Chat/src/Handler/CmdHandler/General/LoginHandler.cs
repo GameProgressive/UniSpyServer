@@ -44,7 +44,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         }
         public void NickAndEmailLogin()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
@@ -69,7 +69,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         }
         public void UniqueNickLogin()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 var result = from n in db.Subprofiles
                              join p in db.Profiles on n.Profileid equals p.Profileid

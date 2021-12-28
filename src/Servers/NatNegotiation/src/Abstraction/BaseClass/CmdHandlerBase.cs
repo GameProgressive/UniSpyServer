@@ -1,11 +1,6 @@
-﻿using UniSpyServer.Servers.NatNegotiation.Application;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Network;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.LinqToRedis;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
@@ -18,10 +13,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        protected RedisClient<NewUserInfo> _redisClient;
+        protected RedisClient _redisClient;
         public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _redisClient = new RedisClient<NewUserInfo>(ServerFactory.Redis, (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatNeg);
+            _redisClient = new RedisClient();
         }
     }
 }

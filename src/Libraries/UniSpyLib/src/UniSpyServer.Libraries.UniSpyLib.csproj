@@ -19,9 +19,12 @@
         <PackageReference Include="Serilog" Version="2.10.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
         <PackageReference Include="ConsoleTables" Version="2.4.2" />
-        <PackageReference Include="UniSpy.LinqToRedis" Version="1.0.1" />
+        <!-- <PackageReference Include="UniSpyServer.LinqToRedis" Version="1.0.4" /> -->
     </ItemGroup>
     <ItemGroup>
         <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\LinqToRedis\src\UniSpyServer.LinqToRedis.csproj" />
     </ItemGroup>
 </Project>

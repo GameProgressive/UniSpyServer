@@ -3,14 +3,14 @@ using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
 {
-    public partial class UnispyContext : DbContext
+    public partial class UniSpyContext : DbContext
     {
         public static readonly string UniSpyMySqlConnStr = ConfigManager.Config.Database.ConnectionString;
-        public UnispyContext()
+        public UniSpyContext()
         {
         }
 
-        public UnispyContext(DbContextOptions<UnispyContext> options)
+        public UniSpyContext(DbContextOptions<UniSpyContext> options)
             : base(options)
         {
         }

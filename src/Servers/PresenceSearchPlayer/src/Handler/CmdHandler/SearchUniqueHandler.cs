@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UnispyContext())
+                using (var db = new UniSpyContext())
                 {
                     foreach (var id in _request.Namespaces)
                     {

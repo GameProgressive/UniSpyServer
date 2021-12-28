@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
 
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 try
                 {
@@ -43,7 +43,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
 
         private void UpdateOtherInfo()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
 
                 if (_request.HasPartnerIDFlag)
@@ -77,7 +77,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
 
         private void DatabaseOperationByType()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 switch (NewUserStatus.CheckAccount)
                 {

@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 if (db.Blocked.Where(b => b.Targetid == _request.ProfileID
                 && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID

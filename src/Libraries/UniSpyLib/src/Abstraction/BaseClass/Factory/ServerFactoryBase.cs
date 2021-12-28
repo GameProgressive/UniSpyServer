@@ -86,7 +86,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var dbConfig = ConfigManager.Config.Database;
             try
             {
-                new UnispyContext().Database.CanConnect();
+                new UniSpyContext().Database.CanConnect();
             }
             catch (Exception e)
             {

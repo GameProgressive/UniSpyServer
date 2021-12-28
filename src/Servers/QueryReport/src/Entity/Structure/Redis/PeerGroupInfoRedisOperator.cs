@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
         /// <returns></returns>
         public static PeerGroupInfo LoadGameRooms(string gameName)
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 var result = from g in db.Games
                              join gl in db.Grouplist on g.Gameid equals gl.Gameid
@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 
         public static void LoadAllGameGroupsToRedis()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 var gameNames = from gl in db.Grouplist
                                 join g in db.Games on gl.Gameid equals g.Gameid

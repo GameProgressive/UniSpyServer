@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new UnispyContext())
+            using (var db = new UniSpyContext())
             {
                 if (_request.IsReplaceNickName)
                 {

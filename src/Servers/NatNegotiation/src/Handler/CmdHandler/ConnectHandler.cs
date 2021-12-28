@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
@@ -19,29 +18,24 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
-        private Dictionary<UserInfoRedisKey, UserInfo> _negotiatorPairs;
-        private List<UserInfoRedisKey> _matchedKeys;
+        private List<UserInfo> _matchedUsers;
         private ConnectResponse _responseToNegotiator;
         private ConnectResponse _responseToNegotiatee;
-        private KeyValuePair<UserInfoRedisKey, UserInfo> _negotiator;
-        private KeyValuePair<UserInfoRedisKey, UserInfo> _negotiatee;
+        private UserInfo _negotiator;
+        private UserInfo _negotiatee;
         public ConnectHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ConnectResult();
-            _negotiatorPairs = new Dictionary<UserInfoRedisKey, UserInfo>();
         }
 
         protected override void RequestCheck()
         {
-            var searchKey = new UserInfoRedisKey()
-            {
-                PortType = _request.PortType,
-                Cookie = _request.Cookie
-            };
+            _matchedUsers = _redisClient.Values.Where(
+             k => k.PortType == _request.PortType
+             & k.Cookie == _request.Cookie).ToList();
 
-            _matchedKeys = UserInfoRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys
-            if (_matchedKeys.Count != 2)
+            if (_matchedUsers.Count != 2)
             {
                 throw new NNException("No users match found we continue waitting.");
             }
@@ -50,13 +44,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            foreach (var key in _matchedKeys)
+            foreach (var key in _matchedUsers)
             {
-                _negotiatorPairs.Add(key, UserInfoRedisOperator.GetSpecificValue(key));
-
-                ////find negitiators and negotiatees by a same cookie
-                var negotiators = _negotiatorPairs.Where(s => s.Value.RequestInfo.ClientIndex == 0);
-                var negotiatees = _negotiatorPairs.Where(s => s.Value.RequestInfo.ClientIndex == 1);
+                //find negitiators and negotiatees by a same cookie
+                var negotiators = _matchedUsers.Where(s => s.RequestInfo.ClientIndex == 0);
+                var negotiatees = _matchedUsers.Where(s => s.RequestInfo.ClientIndex == 1);
 
                 if (negotiators.Count() != 1 || negotiatees.Count() != 1)
                 {
@@ -68,17 +60,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _negotiator = negotiators.First();
                 _negotiatee = negotiatees.First();
 
-                LogWriter.Info($"Find negotiatee {_negotiatee.Value.RemoteEndPoint}");
-                LogWriter.Info($"Find negotiator {_negotiator.Value.RemoteEndPoint}");
+                LogWriter.Info($"Find negotiatee {_negotiatee.RemoteIPEndPoint}");
+                LogWriter.Info($"Find negotiator {_negotiator.RemoteIPEndPoint}");
 
                 var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
                 _responseToNegotiator = new ConnectResponse(
                     request,
-                    new ConnectResult { RemoteEndPoint = _negotiatee.Value.RemoteEndPoint });
+                    new ConnectResult { RemoteEndPoint = _negotiatee.RemoteIPEndPoint });
 
                 _responseToNegotiatee = new ConnectResponse(
                     _request,
-                    new ConnectResult { RemoteEndPoint = _negotiator.Value.RemoteEndPoint });
+                    new ConnectResult { RemoteEndPoint = _negotiator.RemoteIPEndPoint });
             }
         }
         protected override void Response()
@@ -89,8 +81,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
             _responseToNegotiatee.Build();
             _responseToNegotiator.Build();
-            ServerFactory.Server.SendAsync(_negotiator.Value.RemoteEndPoint, _responseToNegotiator.SendingBuffer);
-            ServerFactory.Server.SendAsync(_negotiatee.Value.RemoteEndPoint, _responseToNegotiatee.SendingBuffer);
+            // we send the information to each user
+            _session.Server.SendAsync(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
+            _session.Server.SendAsync(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
         }
 
     }
