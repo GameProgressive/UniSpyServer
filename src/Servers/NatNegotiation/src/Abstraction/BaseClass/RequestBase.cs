@@ -15,6 +15,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         public new byte[] RawRequest => (byte[])base.RawRequest;
         public byte Version { get; set; }
         public uint Cookie { get; set; }
+        public new RequestType CommandName { get => (RequestType)base.CommandName; set => base.CommandName = value; }
         public RequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
@@ -27,6 +28,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
             }
 
             Version = RawRequest[6];
+            CommandName = (RequestType)RawRequest[7];
             Cookie = BitConverter.ToUInt32(RawRequest.Skip(8).Take(4).ToArray());
         }
     }

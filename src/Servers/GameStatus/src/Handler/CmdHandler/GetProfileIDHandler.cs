@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new GetPIDResponse(_request, _result);
+            _response = new GetProfileIDResponse(_request, _result);
         }
     }
 }

@@ -5,11 +5,11 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
-    public sealed class GetPIDResponse : ResponseBase
+    public sealed class GetProfileIDResponse : ResponseBase
     {
         private new GetProfileIDResult _result => (GetProfileIDResult)base._result;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
-        public GetPIDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetProfileIDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
