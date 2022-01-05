@@ -24,5 +24,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\UniSpyServer.Servers.QueryReport.csproj" />
+  </ItemGroup>
 
 </Project>

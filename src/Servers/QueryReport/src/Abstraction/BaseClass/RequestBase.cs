@@ -11,16 +11,8 @@ namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public uint InstantKey { get; protected set; }
-        public new PacketType CommandName
-        {
-            get => (PacketType)base.CommandName;
-            protected set => base.CommandName = value;
-        }
-        public new byte[] RawRequest
-        {
-            get => (byte[])base.RawRequest;
-            protected set => base.RawRequest = value;
-        }
+        public new PacketType CommandName { get => (PacketType)base.CommandName; protected set => base.CommandName = value; }
+        public new byte[] RawRequest { get => (byte[])base.RawRequest; protected set => base.RawRequest = value; }
 
         public RequestBase(object rawRequest) : base(rawRequest)
         {
