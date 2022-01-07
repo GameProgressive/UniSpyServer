@@ -26,13 +26,24 @@ namespace UniSpyServer.LinqToRedis.Linq
         {
             KeyObject = (TKey)Activator.CreateInstance(typeof(TKey));
             Visit(_expression);
-
             for (int i = 0; i < _builderStack.Count; i += 2)
             {
                 var keyProperty = KeyObject.GetType().GetProperty((string)_builderStack[i]);
-                keyProperty.SetValue(KeyObject, _builderStack[i + 1]);
+                // get target type
+                var targetType = IsNullableType(keyProperty.PropertyType) ? Nullable.GetUnderlyingType(keyProperty.PropertyType) : keyProperty.PropertyType;
+                // convert value to target type
+                var value = _builderStack[i + 1];
+                // _builderStack[i + 1] = Convert.ChangeType(_builderStack[i + 1], targetType);
+                if (targetType.IsEnum)
+                {
+                    value = Enum.ToObject(targetType, value);
+                }
+
+                keyProperty.SetValue(KeyObject, value);
             }
         }
+        private static bool IsNullableType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+
         private static Expression StripQuotes(Expression node)
         {
             while (node.NodeType == ExpressionType.Quote)
