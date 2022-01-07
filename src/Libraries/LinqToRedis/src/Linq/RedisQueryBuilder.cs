@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace UniSpyServer.LinqToRedis.Linq
@@ -60,9 +61,12 @@ namespace UniSpyServer.LinqToRedis.Linq
 
             return node;
         }
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            return base.VisitParameter(node);
+        }
         protected override Expression VisitMember(MemberExpression node)
         {
-
             // we check if property do not have RedisKeyAttribute
             // every property that queries must have RedisKeyAttribute
 
@@ -72,9 +76,15 @@ namespace UniSpyServer.LinqToRedis.Linq
                 throw new NotSupportedException($"The property: {node.Member.Name} is not key, please use the property with RedisKeyAttribute or add RedisKeyAttribute to this property.");
             }
             _builderStack.Add(node.Member.Name);
+
             return node;
         }
-
+        // protected override Expression VisitUnary(UnaryExpression node)
+        // {
+        //     // return base.VisitUnary(node);
+        //     _builderStack.Add(Expression.Lambda(node).Compile().DynamicInvoke());
+        //     return node;
+        // }
         protected override Expression VisitBinary(BinaryExpression node)
         {
             Visit(node.Left);

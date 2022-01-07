@@ -33,7 +33,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _matchedUsers = _redisClient.Values.Where(
              k => k.PortType == _request.PortType
              & k.Cookie == _request.Cookie).ToList();
-
             // because cookie is unique for each client we will only get 2 of keys
             if (_matchedUsers.Count != 2)
             {

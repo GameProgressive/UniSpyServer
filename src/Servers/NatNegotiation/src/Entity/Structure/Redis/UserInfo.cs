@@ -13,20 +13,21 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
     public record UserInfo : RedisKeyValueObject
     {
         [RedisKey]
-        public Guid ServerID { get; set; }
+        public Guid? ServerID { get; set; }
         [RedisKey]
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [RedisKey]
-        public NatPortType PortType { get; set; }
+        public NatPortType? PortType { get; set; }
         [RedisKey]
-        public uint Cookie { get; set; }
+        public uint? Cookie { get; set; }
         public InitRequest RequestInfo { get; set; }
-        public DateTime LastPacketRecieveTime;
-        public int RetryNATNegotiationTime;
+        public DateTime? LastPacketRecieveTime;
+        public int? RetryNATNegotiationTime;
 
         public UserInfo() : base(TimeSpan.FromMinutes(3))
         {
+            // _supportedTypes.Add(typeof(NatPortType?));
         }
     }
     public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<UserInfo>

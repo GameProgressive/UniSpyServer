@@ -29,7 +29,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                   & k.RemoteIPEndPoint == _session.RemoteIPEndPoint
                   & k.PortType == _request.PortType
                   & k.Cookie == _request.Cookie).FirstOrDefault();
-
             //TODO we get user infomation from redis
             if (_userInfo == null)
             {

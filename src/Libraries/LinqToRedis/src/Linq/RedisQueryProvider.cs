@@ -16,6 +16,7 @@ namespace UniSpyServer.LinqToRedis.Linq
         public override object Execute(Expression expression)
         {
             var matchedKeys = new List<string>();
+            expression = QueryEvaluator.PartialEval(expression);
             var builder = new RedisQueryBuilder<TValue>(expression);
             builder.Build();
             var values = _client.GetValues(builder.KeyObject);
