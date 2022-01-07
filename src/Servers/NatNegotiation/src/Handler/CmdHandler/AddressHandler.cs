@@ -11,12 +11,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     [HandlerContract(RequestType.AddressCheck)]
     public sealed class AddressCheckHandler : CmdHandlerBase
     {
-        private new AddressRequest _request => (AddressRequest)base._request;
-        private new AddressResult _result { get => (AddressResult)base._result; set => base._result = value; }
+        private new AddressCheckRequest _request => (AddressCheckRequest)base._request;
+        private new AddressCheckResult _result { get => (AddressCheckResult)base._result; set => base._result = value; }
 
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new AddressResult();
+            _result = new AddressCheckResult();
         }
         protected override void DataOperation()
         {

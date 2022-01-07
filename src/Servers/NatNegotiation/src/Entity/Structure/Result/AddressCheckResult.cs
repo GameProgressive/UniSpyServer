@@ -3,9 +3,9 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {
-    public sealed class AddressResult : InitResultBase
+    public sealed class AddressCheckResult : InitResultBase
     {
-        public AddressResult()
+        public AddressCheckResult()
         {
             PacketType = NatPacketType.AddressReply;
         }

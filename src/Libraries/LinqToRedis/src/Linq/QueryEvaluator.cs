@@ -26,11 +26,12 @@ namespace UniSpyServer.LinqToRedis.Linq
         private static bool CanBeEvaluatedLocally(Expression noderession) => noderession.NodeType != ExpressionType.Parameter;
 
         /// <summary>
-        /// Evaluates & replaces sub-trees when first candidate is reached (top-down)
+        /// Evaluates and replaces sub-trees when first candidate is reached (top-down)
         /// </summary>
         class SubtreeEvaluator : ExpressionVisitor
         {
-            HashSet<Expression> candidates; internal SubtreeEvaluator(HashSet<Expression> candidates)
+            HashSet<Expression> candidates;
+            internal SubtreeEvaluator(HashSet<Expression> candidates)
             {
                 this.candidates = candidates;
             }

@@ -18,7 +18,6 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         {
             base.Parse();
 
-
             if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("keyhash"))
             {
                 throw new GSException("nick or keyhash is missing.");
@@ -28,13 +27,10 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             {
                 Nick = RequestKeyValues["nick"];
             }
-            else if (RequestKeyValues.ContainsKey("keyhash"))
+            
+            if (RequestKeyValues.ContainsKey("keyhash"))
             {
                 KeyHash = RequestKeyValues["keyhash"];
-            }
-            else
-            {
-                throw new GSException("Unknown GetPID request type.");
             }
         }
     }
