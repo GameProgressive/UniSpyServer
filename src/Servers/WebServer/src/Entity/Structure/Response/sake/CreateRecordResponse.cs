@@ -17,6 +17,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Response.Sake
         public override void Build()
         {
             base.Build();
+            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "CreateRecord"));
             _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "tableid", _result.TableID));
             _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "recordid", _result.RecordID));
 

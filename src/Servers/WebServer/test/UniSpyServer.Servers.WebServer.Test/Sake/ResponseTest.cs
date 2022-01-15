@@ -10,8 +10,8 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void CreateRecordTest()
         {
-             var request = new CreateRecordRequest(RawRequests.CreateRecord);
-            // handler.Handle();
+            var request = new CreateRecordRequest(RawRequests.CreateRecord);
+            request.Parse();
             var result = new CreateRecordResult()
             {
                 RecordID = "0",

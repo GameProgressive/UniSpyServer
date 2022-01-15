@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
     public class HandlerTest
     {
         private ServerFactory _serverManager;
-        public Test()
+        public HandlerTest()
         {
             _serverManager = new ServerFactory();
             _serverManager.Start();
