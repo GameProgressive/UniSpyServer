@@ -11,14 +11,14 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
     public class HandlerTest
     {
         private ServerFactory _serverManager;
-        public HandlerTest()
+        public Test()
         {
             _serverManager = new ServerFactory();
             _serverManager.Start();
         }
 
         [Fact]
-        public void InitHandlerTest()
+        public void InitTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             handler.Handle();
         }
         [Fact]
-        public void AddressHandlerTest()
+        public void AddressTest()
         {
             var rawRequest = new byte[] { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03, 0x0a, 0x00, 0x00, 0x03, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new AddressCheckRequest(rawRequest);
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             handler.Handle();
         }
         [Fact]
-        public void ErtHandlerTest()
+        public void ErtTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             handler.Handle();
         }
         [Fact]
-        public void NatifyHandlerTest()
+        public void NatifyTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,

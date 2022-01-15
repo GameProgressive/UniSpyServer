@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
     public class ChannelHandlerTest
     {
         private ServerFactory _serverFactory;
-        public ChannelHandlerTest()
+        public ChannelTest()
         {
             _serverFactory = new ServerFactory();
             _serverFactory.Start();

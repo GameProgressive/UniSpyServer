@@ -12,7 +12,8 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"),
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/"),
                                 new XAttribute(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance"),
-                                new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"));
+                                new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"),
+                                new XAttribute(XNamespace.Xmlns + "ns1", "http://gamespy.net/sake"));
         public static XNamespace SakeNamespace = "http://gamespy.net/sake";
         public SoapXElement(XElement other) : base(other) { }
 
