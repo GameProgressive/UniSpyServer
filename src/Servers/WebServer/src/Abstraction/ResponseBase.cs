@@ -6,16 +6,17 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {
-        protected SoapXElement _xElement { get; private set; }
+        protected SoapXElement _soapElement { get; private set; }
+        public new string SendingBuffer => _soapElement.ToString();
         public ResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
+            _soapElement = new SoapXElement(SoapXElement.SoapElement);
         }
         public override void Build()
         {
             // Because the response is kind of soap object, so we did not use SoapXElement as a soap object
             // SoapXElement only acts like XElement
-            _xElement.Add(SoapXElement.SoapElement);
-            _xElement.Add(new XElement(SoapXElement.SoapNamespace + "Body"));
+            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "Body"));
         }
     }
 }

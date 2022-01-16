@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
     public class RequestTest
     {
         [Fact]
-        public void InitRequestTest()
+        public void InitTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
-        public void AddressRequestTest()
+        public void AddressTest()
         {
             var rawRequest = new byte[] { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03, 0x0a, 0x00, 0x00, 0x03, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new AddressCheckRequest(rawRequest);
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
-        public void ErtAckRequestTest()
+        public void ErtAckTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
@@ -57,7 +57,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
-        public void NatifyRequestTest()
+        public void NatifyTest()
         {
             var rawRequest = new byte[] {
             0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
@@ -75,7 +75,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact(Skip = "Not implemented")]
-        public void ReportRequestTest()
+        public void ReportTest()
         {
 
         }

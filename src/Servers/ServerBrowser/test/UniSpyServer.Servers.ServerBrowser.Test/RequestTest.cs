@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
     public class RequestTest
     {
         [Fact]
-        public void ServerListRequestTest()
+        public void ServerListTest()
         {
             var raw = new byte[]{0x00, 0x55,
             0x00, //command name

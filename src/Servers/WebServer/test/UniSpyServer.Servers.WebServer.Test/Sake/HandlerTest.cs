@@ -1,4 +1,3 @@
-using System.Net;
 using Xunit;
 using UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake;
 using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Sake;

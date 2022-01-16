@@ -10,13 +10,24 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
     {
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string Challenge { get; private set; }
-        public uint ConnectionID { get; private set; }
+        public uint? ConnectionID { get; private set; }
+        public uint? SessionKey { get; private set; }
         public NewGameRequest(string rawRequest) : base(rawRequest)
         {
         }
         public override void Parse()
         {
             base.Parse();
+            if (!RequestKeyValues.ContainsKey("sesskey"))
+            {
+                throw new GSException("sesskey is missing.");
+            }
+            uint sessKey;
+            if (!uint.TryParse(RequestKeyValues["sesskey"], out sessKey))
+            {
+                throw new GSException("sesskey is not a valid uint.");
+            }
+            SessionKey = sessKey;
 
             if (RequestKeyValues.ContainsKey("connid") && RequestKeyValues.ContainsKey("challenge")
             || !RequestKeyValues.ContainsKey("connid") && !RequestKeyValues.ContainsKey("challenge"))
