@@ -54,12 +54,6 @@ namespace UniSpyServer.UniSpyLib.Extensions
         }
 
 
-        public static ushort ToUInt16(string value, bool isReversingBytes = false)
-        {
-            ushort data = ushort.Parse(value);
-            byte[] buffer = BitConverter.GetBytes(data);
-            return ToUInt16(buffer, isReversingBytes);
-        }
 
         public static ushort ToUInt16(byte[] value, bool isReversingBytes = false)
         {

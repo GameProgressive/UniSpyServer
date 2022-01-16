@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
+using System.Text;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -29,41 +30,46 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
             RequestVersion = RawRequest[2];
             ProtocolVersion = RawRequest[3];
             EncodingVersion = RawRequest[4];
-            GameVersion = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 5, 4));
+            GameVersion = BitConverter.ToInt32(RawRequest.Skip(5).Take(4).ToArray());
 
             //because there are empty string we can not use StringSplitOptions.RemoveEmptyEntries
-            string remainData = UniSpyEncoding.GetString(RawRequest.Skip(9).ToArray());
-            remainData.IndexOf('\0');
-            DevGameName = remainData.Substring(0, remainData.IndexOf('\0'));
-            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            GameName = remainData.Substring(0, remainData.IndexOf('\0'));
-            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            ClientChallenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0, 8);
-
-            if (remainData.Substring(0, remainData.IndexOf('\0')).Length > 8)
+            var remainData = RawRequest.Skip(9).ToList();
+            var devGameNameIndex = remainData.FindIndex(x => x == 0);
+            DevGameName = UniSpyEncoding.GetString(remainData.Take(devGameNameIndex).ToArray());
+            remainData = remainData.Skip(devGameNameIndex + 1).ToList();
+            var gameNameIndex = remainData.FindIndex(x => x == 0);
+            GameName = UniSpyEncoding.GetString(remainData.Take(gameNameIndex).ToArray());
+            remainData = remainData.Skip(gameNameIndex + 1).ToList();
+            var clientChallengeIndex = remainData.FindIndex(x => x == 0);
+            ClientChallenge = UniSpyEncoding.GetString(remainData.Take(clientChallengeIndex).ToArray());
+            var filterIndex = remainData.FindIndex(x => x == 0);
+            if (remainData.Take(filterIndex).ToList().Count > 8)
             {
-                Filter = remainData.Substring(8, remainData.IndexOf('\0') - 8);
+                Filter = UniSpyEncoding.GetString(remainData.Skip(8).Take(filterIndex).ToArray());
             }
+            remainData = remainData.Skip(filterIndex + 1).ToList();
 
-            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            Keys = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\", StringSplitOptions.RemoveEmptyEntries);
-            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-
-            byte[] byteUpdateOptions = UniSpyEncoding.GetBytes(remainData.Substring(0, 4));
+            var keysIndex = remainData.FindIndex(x => x == 0);
+            Keys = UniSpyEncoding.GetString(remainData.Take(keysIndex).ToArray()).Split("\\", StringSplitOptions.RemoveEmptyEntries);
+            remainData = remainData.Skip(keysIndex + 1).ToList();
             //gamespy send this in big endian, we need to convert to little endian
-            Array.Reverse(byteUpdateOptions);
-
+            byte[] byteUpdateOptions = remainData.Take(4).Reverse().ToArray();
             UpdateOption = (ServerListUpdateOption)BitConverter.ToInt32(byteUpdateOptions);
-
+            remainData = remainData.Skip(4).ToList();
             if ((UpdateOption & ServerListUpdateOption.AlternateSourceIP) != 0)
             {
-                SourceIP = UniSpyEncoding.GetBytes(remainData.Substring(0, 4));
-                remainData = remainData.Substring(7);
+                SourceIP = new System.Net.IPAddress(remainData.Take(4).ToArray());
+                remainData = remainData.Skip(7).ToList();
             }
 
             if ((UpdateOption & ServerListUpdateOption.LimitResultCount) != 0)
             {
-                MaxServers = ByteTools.ToInt32(remainData.Substring(0, 4), true);
+                int maxServers;
+                if (!int.TryParse(remainData.Take(4).Reverse().ToString(), out maxServers))
+                {
+                    throw new SBException("max servers is not correct.");
+                }
+                MaxServers = maxServers;
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Extensions;
 
@@ -8,15 +10,15 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;
-        public new RequestType CommandName{ get => (RequestType)base.CommandName;
-            protected set => base.CommandName = value; }
+        public new RequestType CommandName { get => (RequestType)base.CommandName; protected set => base.CommandName = value; }
         public RequestBase(object rawRequest) : base(rawRequest)
         {
         }
 
         public override void Parse()
         {
-            RequestLength = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
+            RequestLength = BitConverter.ToUInt16(RawRequest.Take(2).Reverse().ToArray());
+            CommandName = (RequestType)RawRequest[2];
         }
     }
 }
