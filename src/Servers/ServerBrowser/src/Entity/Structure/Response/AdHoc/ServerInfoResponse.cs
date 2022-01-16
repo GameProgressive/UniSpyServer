@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
@@ -23,7 +25,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
             _serverListData.Add((byte)ResponseType.PushServerMessage);
             BuildServersInfo();
             // add message length here
-            _serverListData.InsertRange(0, ByteTools.GetBytes((short)(_serverListData.Count + 2), true));
+            _serverListData.InsertRange(0, BitConverter.GetBytes((ushort)(_serverListData.Count + 2)).Reverse().ToArray());
         }
 
         protected override void BuildServersInfo()

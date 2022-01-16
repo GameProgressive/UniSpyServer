@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             //add key flag
             header.Add((byte)flag);
             //we add server public ip here
-            header.AddRange(ByteTools.GetIPBytes(serverInfo.RemoteQueryReportIP));
+            header.AddRange(serverInfo.RemoteQueryReportIPEndPoint.Address.GetAddressBytes());
             //we check host port is standard port or not
             CheckNonStandardPort(header, serverInfo);
             // now we check if there are private ip

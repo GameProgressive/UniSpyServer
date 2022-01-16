@@ -51,7 +51,10 @@ namespace UniSpyServer.UniSpyLib.Extensions
                 {
                     Encoding = Encoding.UTF8;
                 }
-                return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
+                var inputBytes = Encoding.GetBytes(input);
+                var hash = Md5.ComputeHash(Encoding.GetBytes(input));
+
+                return Convert.ToHexString(inputBytes);
             }
         }
         #region Undisplayable char convert

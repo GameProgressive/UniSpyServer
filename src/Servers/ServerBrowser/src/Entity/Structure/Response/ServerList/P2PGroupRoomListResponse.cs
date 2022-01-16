@@ -1,4 +1,6 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
@@ -30,8 +32,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
                 _serverListData.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
 
-                byte[] groupid = ByteTools.GetBytes(room.GroupID, true);
-
+                byte[] groupid = BitConverter.GetBytes(room.GroupID).Reverse().ToArray();
                 _serverListData.AddRange(groupid);
 
                 foreach (var key in _request.Keys)

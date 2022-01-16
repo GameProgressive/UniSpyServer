@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
@@ -16,8 +18,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
         /// </summary>
         public const string ServerChallenge = "0000000000";
         public const ushort QueryReportDefaultPort = 6500;
-        public static byte[] HtonQueryReportDefaultPort
-        => ByteTools.GetBytes(Constants.QueryReportDefaultPort, true);
-
+        public static byte[] HtonQueryReportDefaultPort => BitConverter.GetBytes(QueryReportDefaultPort).Reverse().ToArray();
     }
 }

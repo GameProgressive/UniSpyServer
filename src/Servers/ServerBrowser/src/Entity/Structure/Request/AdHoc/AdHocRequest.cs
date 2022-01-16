@@ -3,6 +3,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Extensions;
+using System.Linq;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -28,12 +29,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
             //}
             CommandName = (RequestType)RawRequest[2];
 
-            byte[] ip = ByteTools.SubBytes(RawRequest, 3, 4);
-            byte[] port = ByteTools.SubBytes(RawRequest, 7, 2);
-            Array.Reverse(port);
-
+            byte[] ip = RawRequest.Skip(3).Take(4).ToArray();
+            byte[] port = RawRequest.Skip(7).Take(2).Reverse().ToArray();
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
-            TargetIPEndPoint = ByteTools.GetIPEndPoint(ip, port);
+            TargetIPEndPoint = new IPEndPoint(new IPAddress(ip), BitConverter.ToInt16(port));
         }
     }
 }

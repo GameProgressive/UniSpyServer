@@ -2,6 +2,7 @@
 using System;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
+using System.Linq;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -21,18 +22,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            SearchOption = Convert.ToInt16(ByteTools.SubBytes(RawRequest, 3, 3 + 4));
-            MaxResults = Convert.ToUInt16(ByteTools.SubBytes(RawRequest, 7, 7 + 4));
+            SearchOption = Convert.ToInt16(RawRequest.Skip(3).Take(4).ToArray());
+            MaxResults = Convert.ToUInt16(RawRequest.Skip(7).Take(4).ToArray());
 
-            int nameLength = BitConverter.ToInt32(
-                ByteTools.SubBytes(RawRequest, 11, 11 + 4));
-            SearchName = UniSpyEncoding.GetString(
-                ByteTools.SubBytes(RawRequest, 15, nameLength));
+            int nameLength = BitConverter.ToInt32(RawRequest.Skip(11).Take(4).ToArray());
+            SearchName = UniSpyEncoding.GetString(RawRequest.Skip(15).Take(nameLength).ToArray());
 
-            int messageLength = BitConverter.ToInt32(
-                ByteTools.SubBytes(RawRequest, 15 + nameLength, 4));
-            Message = UniSpyEncoding.GetString(
-                ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
+            int messageLength = BitConverter.ToInt32(RawRequest.Skip(15).Take(4).ToArray());
+            Message = UniSpyEncoding.GetString(RawRequest.Skip(15 + nameLength + 4).Take(messageLength).ToArray());
         }
     }
 }

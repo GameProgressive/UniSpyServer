@@ -1,6 +1,7 @@
 using System;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Extensions;
 using Xunit;
 
 namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
@@ -26,6 +27,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
             var request = new ServerListRequest(raw);
             request.Parse();
             Assert.Equal(RequestType.ServerListRequest, request.CommandName);
+            var data = ByteTools.ToHex(raw);
         }
     }
 }

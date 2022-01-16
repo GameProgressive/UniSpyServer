@@ -2,6 +2,7 @@
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Extensions;
+using System;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -16,7 +17,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 
         public override void Parse()
         {
-            Cookie = ByteTools.ToUInt16(RawRequest.Skip(6).ToArray());
+            Cookie = BitConverter.ToUInt16(RawRequest.Skip(6).ToArray());
         }
     }
 }
