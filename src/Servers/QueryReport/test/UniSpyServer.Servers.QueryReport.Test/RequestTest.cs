@@ -56,6 +56,11 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new HeartBeatRequest(rawRequest);
             request.Parse();
             Assert.Equal("gmtest", request.GameName);
+            Assert.Equal((uint)1685528494, request.InstantKey);
+            Assert.Equal(6, request.PlayerData.Count);
+            Assert.Equal(19, request.ServerData.Count);
+            Assert.Equal(2, request.TeamData.Count);
+            Assert.Equal(HeartBeatReportType.ServerTeamPlayerData, request.ReportType);
         }
         [Fact]
         public void KeepAliveTest()

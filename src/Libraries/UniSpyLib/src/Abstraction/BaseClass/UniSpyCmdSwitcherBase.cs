@@ -18,8 +18,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
-        protected static Dictionary<object, Type> _requestMapping { get; private set; }
-        protected static Dictionary<object, Type> _handlerMapping { get; private set; }
+        protected static Dictionary<object, Type> _requestMapping { get; set; }
+        protected static Dictionary<object, Type> _handlerMapping { get; set; }
         static UniSpyCmdSwitcherBase()
         {
             _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));

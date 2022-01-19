@@ -2,11 +2,12 @@
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using System;
 using System.Net;
-using UniSpyServer.UniSpyLib.Extensions;
 using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
+    [RequestContract(RequestType.ServerInfoRequest)]
     public sealed class AdHocRequest : RequestBase
     {
         /// <summary>

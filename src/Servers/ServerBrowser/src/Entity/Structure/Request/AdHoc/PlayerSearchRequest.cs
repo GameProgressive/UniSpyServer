@@ -3,9 +3,12 @@ using System;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
+    [RequestContract(RequestType.PlayerSearchRequest)]
     public sealed class PlayerSearchRequest : RequestBase
     {
         public int SearchOption { get; private set; }

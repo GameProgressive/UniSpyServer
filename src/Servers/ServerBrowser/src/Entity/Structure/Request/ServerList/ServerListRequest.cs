@@ -6,12 +6,14 @@ using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 using System.Text;
+using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
     /// <summary>
     /// ServerList also called ServerRule in GameSpy SDK
     /// </summary>
+    [RequestContract(RequestType.ServerListRequest)]
     public sealed class ServerListRequest : ServerListUpdateOptionRequestBase
     {
         public ServerListRequest(object rawRequest) : base(rawRequest)
@@ -40,12 +42,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
             var gameNameIndex = remainData.FindIndex(x => x == 0);
             GameName = UniSpyEncoding.GetString(remainData.Take(gameNameIndex).ToArray());
             remainData = remainData.Skip(gameNameIndex + 1).ToList();
-            var clientChallengeIndex = remainData.FindIndex(x => x == 0);
-            ClientChallenge = UniSpyEncoding.GetString(remainData.Take(clientChallengeIndex).ToArray());
+            // client challenge length is 8
+            ClientChallenge = UniSpyEncoding.GetString(remainData.Take(8).ToArray());
+            remainData = remainData.Skip(8).ToList();
+
             var filterIndex = remainData.FindIndex(x => x == 0);
-            if (remainData.Take(filterIndex).ToList().Count > 8)
+            if (filterIndex > 0)
             {
-                Filter = UniSpyEncoding.GetString(remainData.Skip(8).Take(filterIndex).ToArray());
+                Filter = UniSpyEncoding.GetString(remainData.Take(filterIndex).ToArray());
             }
             remainData = remainData.Skip(filterIndex + 1).ToList();
 
