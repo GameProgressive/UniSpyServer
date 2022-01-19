@@ -1,4 +1,5 @@
 ﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
@@ -45,7 +46,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
                 foreach (var key in _request.Keys)
                 {
                     _serverListData.Add(StringFlag.NTSStringFlag);
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData.KeyValue[key]));
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData[key]));
                     _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
@@ -53,12 +54,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
             _serverListData.AddRange(StringFlag.AllServerEndFlag);
         }
 
-        private bool IsSkipThisServer(GameServerInfo serverInfo)
+        private bool IsSkipThisServer(GameServerInfo2 serverInfo)
         {
             foreach (var key in _request.Keys)
             {
                 //do not skip empty value
-                if (!serverInfo.ServerData.KeyValue.ContainsKey(key))
+                if (!serverInfo.ServerData.ContainsKey(key))
                 {
                     return true;
                 }

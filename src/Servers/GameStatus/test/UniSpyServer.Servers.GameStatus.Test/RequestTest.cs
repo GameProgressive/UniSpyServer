@@ -88,7 +88,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             Assert.Equal((uint)0, request.SessionKey);
             Assert.Equal(true, request.IsDone);
             Assert.Equal("hello", request.GameData);
-            Assert.Equal(null, request.ConnectionID);
+            Assert.Null(request.ConnectionID);
 
 
             raw = @"\updgame\\sesskey\0\connid\1\done\1\gamedata\hello\lid\1";

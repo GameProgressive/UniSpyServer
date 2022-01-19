@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 

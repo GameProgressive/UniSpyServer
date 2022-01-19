@@ -34,14 +34,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
                 GameServerFlags.HasFullRulesFlag,
                 _result.GameServerInfo);
 
-            foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
+            foreach (var kv in _result.GameServerInfo.ServerData)
             {
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
                 _serverListData.Add(StringFlag.StringSpliter);
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
                 _serverListData.Add(StringFlag.StringSpliter);
             }
-            foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
+            foreach (var player in _result.GameServerInfo.PlayerData)
             {
                 foreach (var kv in player)
                 {
@@ -51,7 +51,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
                     _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
-            foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
+            foreach (var team in _result.GameServerInfo.TeamData)
             {
                 foreach (var kv in team)
                 {

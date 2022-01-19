@@ -2,7 +2,7 @@
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Extensions;
+using System;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
 {
@@ -21,9 +21,9 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
             data.AddRange(Challenge);
-            data.AddRange(HtonsExtensions.IPStringToBytes(_result.RemoteIP));
+            data.AddRange(_result.RemoteIPEndPoint.Address.GetAddressBytes());
             data.AddRange(Spliter);
-            data.AddRange(HtonsExtensions.PortToIntBytes(_result.RemotePort));
+            data.AddRange(BitConverter.GetBytes((int)_result.RemoteIPEndPoint.Port));
             SendingBuffer = data.ToArray();
         }
     }

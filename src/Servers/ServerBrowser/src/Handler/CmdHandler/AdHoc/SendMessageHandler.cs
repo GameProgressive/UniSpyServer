@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _session.ServerMessageList.Add(_request);
+            _session.ServerMessageStack.Add(_request);
         }
     }
 }

@@ -1,8 +1,23 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using UniSpyServer.LinqToRedis;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
 {
+    public record PeerGroupInfo2 : RedisKeyValueObject
+    {
+        [RedisKey]
+        public string GameName { get; set; }
+        public uint GameID { get; protected set; }
+        public List<PeerRoomInfo> PeerRooms { get; protected set; }
+
+        public PeerGroupInfo2() : base(expireTime: null)
+        {
+        }
+    }
     public class PeerRoomInfo
     {
         public uint GroupID { get; set; }
@@ -64,6 +79,12 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 
             }
 
+        }
+    }
+    public class RedisClient : LinqToRedis.RedisClient<PeerGroupInfo2>
+    {
+        public RedisClient() : base(ConfigManager.Config.Redis.ConnectionString, (int)DbNumber.PeerGroup)
+        {
         }
     }
 }

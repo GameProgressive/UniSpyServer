@@ -42,28 +42,19 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private void P2PGroupRoomList()
         {
             _result = new P2PGroupRoomListResult();
-            var searchKey = new PeerGroupInfoRedisKey()
-            {
-                GameName = _request.GameName
-            };
-            var matchedKey = PeerGroupInfoRedisOperator.GetMatchedKeys(searchKey);
-
+            var peerGroupInfo = _peerGroupRedisClient.Values.Where(x => x.GameName == _request.GameName).FirstOrDefault();
             // Game name is unique in redis database
-            if (matchedKey.Count != 1)
+            if (peerGroupInfo == null)
             {
-                throw new SBException("There are no group room found in database.");
+                throw new SBException("can not find peer group info in redis database");
             }
-            ((P2PGroupRoomListResult)_result).PeerGroupInfo = PeerGroupInfoRedisOperator.GetSpecificValue(matchedKey[0]);
+            ((P2PGroupRoomListResult)_result).PeerGroupInfo = peerGroupInfo;
         }
         private void P2PServerMainList()
         {
             _result = new ServerMainListResult();
-            var searchKey = new GameServerInfoRedisKey()
-            {
-                GameName = _request.GameName
-            };
-
-            ((ServerMainListResult)_result).GameServerInfos = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
+            var gameServerInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
+            ((ServerMainListResult)_result).GameServerInfos = gameServerInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasFullRulesFlag;
             //TODO do filter
             //**************Currently we do not handle filter**********************
@@ -71,16 +62,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private void ServerMainList()
         {
             _result = new ServerMainListResult();
-
-            var searchKey = new GameServerInfoRedisKey()
-            {
-                GameName = _request.GameName
-            };
-
-            ((ServerMainListResult)_result).GameServerInfos = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
+            var gameServerInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
+            ((ServerMainListResult)_result).GameServerInfos = gameServerInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
         }
-        private void ServerNetworkInfoList() { _result = new ServerMainListResult(); }
+        private void ServerNetworkInfoList()
+        {
+            _result = new ServerMainListResult();
+        }
 
 
         protected override void ResponseConstruct()

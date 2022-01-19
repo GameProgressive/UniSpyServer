@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
 {
     public sealed class HeartBeatResult : ResultBase
     {
-        public EndPoint RemoteEndPoint { private get; set; }
-        public string RemoteIP => HtonsExtensions.EndPointToIP(RemoteEndPoint);
-        public string RemotePort => HtonsExtensions.EndPointToPort(RemoteEndPoint);
+        public IPEndPoint RemoteIPEndPoint { get; set; }
         public HeartBeatResult()
         {
             PacketType = Enumerate.PacketType.HeartBeat;

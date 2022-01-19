@@ -6,6 +6,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
@@ -17,7 +18,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private AdHocRequest _adHocRequest;
         private NatNegCookie _natNegCookie;
-        private GameServerInfo _gameServer;
+        private GameServerInfo2 _gameServer;
         public NatNegMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -25,27 +26,30 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_session.ServerMessageList.Count == 0)
+            if (_session.ServerMessageStack.Count == 0)
             {
                 throw new SBException("There are no server messages in _session.ServerMessageList.");
             }
-            _adHocRequest = _session.ServerMessageList.First();
-            _session.ServerMessageList.Remove(_adHocRequest);
+            _adHocRequest = _session.ServerMessageStack.First();
+            _session.ServerMessageStack.Remove(_adHocRequest);
 
-            var searchKey = new GameServerInfoRedisKey()
+            var gameServer = _gameServerRedisClient.Values.Where(x => x.RemoteIPEndPoint == _adHocRequest.TargetIPEndPoint).FirstOrDefault();
+            if (gameServer == null)
             {
-                RemoteIPEndPoint = _adHocRequest.TargetIPEndPoint
-            };
-
-            var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey)
-                .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
-                .Where(s => s.ServerData.KeyValue["hostport"] == _adHocRequest.TargetServerHostPort);
-
-            if (matchedKeys.Count() != 1)
-            {
-                throw new SBException("No server found in database.");
+                throw new SBException("There is no matching game server regesterd.");
             }
-            _gameServer = matchedKeys.First();
+            if (!gameServer.ServerData.Keys.Contains("hostport"))
+            {
+                throw new SBException("There is no hostport information in game server.");
+            }
+            if (gameServer.ServerData["hostport"] == _adHocRequest.TargetServerHostPort)
+            {
+                _gameServer = gameServer;
+            }
+            else
+            {
+                throw new SBException("The game server host port do not match to request host port.");
+            }
         }
 
         protected override void DataOperation()
@@ -55,7 +59,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             {
                 GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint,
                 GameServerRemoteIP = _adHocRequest.TargetServerIP,
-                GameServerRemotePort = _gameServer.RemoteQueryReportPort,
+                GameServerRemotePort = _gameServer.RemoteQueryReportIPEndPoint.Port.ToString(),
                 NatNegMessage = _request.NatNegMessage
             };
         }

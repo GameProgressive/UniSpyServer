@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
@@ -21,5 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
             GameName = gameName;
             GameID = grouplist.Gameid;
         }
+
+
     }
 }

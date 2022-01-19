@@ -10,12 +10,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
-        public List<AdHocRequest> ServerMessageList { get; set; }
+        public List<AdHocRequest> ServerMessageStack { get; set; }
         public EncryptionParameters EncParams { get; set; }
 
         public Session(UniSpyTcpServer server) : base(server)
         {
-            ServerMessageList = new List<AdHocRequest>();
+            ServerMessageStack = new List<AdHocRequest>();
         }
 
         protected override void OnReceived(byte[] message) => new CmdSwitcher(this, message).Switch();

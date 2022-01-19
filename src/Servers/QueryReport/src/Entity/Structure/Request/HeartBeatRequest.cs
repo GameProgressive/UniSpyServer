@@ -6,16 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
 {
     [RequestContract(RequestType.HeartBeat)]
     public sealed class HeartBeatRequest : RequestBase
     {
-        public string ServerData { get; private set; }
-        public string PlayerData { get; private set; }
-        public string TeamData { get; private set; }
-        public string GameName{ get
+        public Dictionary<string, string> ServerData { get; private set; }
+        public List<Dictionary<string, string>> PlayerData { get; private set; }
+        public List<Dictionary<string, string>> TeamData { get; private set; }
+        public string GameName
+        {
+            get
             {
                 List<string> tempKeyVal = DataPartition.Split('\0').ToList();
                 int indexOfGameName = tempKeyVal.IndexOf("gamename");
@@ -45,26 +48,117 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
                 playerLenth = teamPos - playerPos;
                 teamLength = DataPartition.Length - teamPos;
 
-                ServerData = DataPartition.Substring(0, playerPos - 4);
-                PlayerData = DataPartition.Substring(playerPos - 1, playerLenth - 2);
-                TeamData = DataPartition.Substring(teamPos - 1, teamLength);
+                var serverDataStr = DataPartition.Substring(0, playerPos - 4);
+                ParseServerData(serverDataStr);
+                var playerDataStr = DataPartition.Substring(playerPos - 1, playerLenth - 2);
+                ParsePlayerData(playerDataStr);
+                var teamDataStr = DataPartition.Substring(teamPos - 1, teamLength);
+                ParseTeamData(teamDataStr);
             }
             else if (playerPos != -1)
             {
                 //normal heart beat
                 ReportType = HeartBeatReportType.ServerPlayerData;
                 playerLenth = DataPartition.Length - playerPos;
-                ServerData = DataPartition.Substring(0, playerPos - 4);
-                PlayerData = DataPartition.Substring(playerPos - 1, playerLenth);
+                var serverDataStr = DataPartition.Substring(0, playerPos - 4);
+                ParseServerData(serverDataStr);
+                var playerDataStr = DataPartition.Substring(playerPos - 1, playerLenth);
+                ParsePlayerData(playerDataStr);
             }
             else if (playerPos == -1 && teamPos == -1)
             {
                 ReportType = HeartBeatReportType.ServerData;
-                ServerData = DataPartition;
+                var serverDataStr = DataPartition;
+                ParseServerData(serverDataStr);
             }
             else
             {
                 throw new QRException("HeartBeat request is invalid.");
+            }
+        }
+        private void ParseServerData(string serverDataStr)
+        {
+            ServerData = new Dictionary<string, string>();
+            string[] keyValueArray = serverDataStr.Split("\0");
+
+            for (int i = 0; i < keyValueArray.Length; i += 2)
+            {
+                if (i + 2 > keyValueArray.Length)
+                {
+                    break;
+                }
+
+                string tempKey = keyValueArray[i];
+                string tempValue = keyValueArray[i + 1];
+
+                if (tempKey == "")
+                {
+                    LogWriter.Verbose("Skiping empty key value");
+                    continue;
+                }
+                // no matter happens we just update the key value
+                ServerData.Add(tempKey, tempValue);
+            }
+        }
+        private void ParsePlayerData(string playerDataStr)
+        {
+            PlayerData = new List<Dictionary<string, string>>();
+            // LogWriter.Debug(StringExtensions.ReplaceUnreadableCharToHex(playerDataStr));
+            //TODO check if each update contains all player information
+            int playerCount = Convert.ToInt32(playerDataStr[0]);
+            playerDataStr = playerDataStr.Substring(1);
+
+            //we first read the key index
+            int IndexOfKey = playerDataStr.IndexOf("\0\0", StringComparison.Ordinal);
+            //then get all the keys
+            string keyStr = playerDataStr.Substring(0, IndexOfKey);
+            List<string> keys = keyStr.Split('\0', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            string valuesStr = playerDataStr.Substring(IndexOfKey + 2);
+            List<string> values = valuesStr.Split('\0').ToList();
+
+            //according to player total number and key total number to add the data into list
+            for (int playerIndex = 0; playerIndex < playerCount; playerIndex++)
+            {
+                Dictionary<string, string> keyValue = new Dictionary<string, string>();
+
+                for (int keyIndex = 0; keyIndex < keys.Count; keyIndex++)
+                {
+                    string tempKey = keys[keyIndex] + playerIndex.ToString();
+                    string tempValue = values[playerIndex * keys.Count + keyIndex];
+                    keyValue.Add(tempKey, tempValue);
+                }
+                PlayerData.Add(keyValue);
+            }
+        }
+        private void ParseTeamData(string teamDataStr)
+        {
+            TeamData = new List<Dictionary<string, string>>();
+            // LogWriter.Debug(// StringExtensions.ReplaceUnreadableCharToHex(teamDataStr));
+            //TODO check if each update contains all team information
+
+            int teamCount = System.Convert.ToInt32(teamDataStr[0]);
+            teamDataStr = teamDataStr.Substring(1);
+
+            int endKeyIndex = teamDataStr.IndexOf("\0\0", System.StringComparison.Ordinal);
+            string keyStr = teamDataStr.Substring(0, endKeyIndex);
+            List<string> keys = keyStr.Split('\0', System.StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            string valueStr = teamDataStr.Substring(endKeyIndex + 2);
+            List<string> values = valueStr.Split('\0').ToList();
+
+            for (int teamIndex = 0; teamIndex < teamCount; teamIndex++)
+            {
+                Dictionary<string, string> keyValue = new Dictionary<string, string>();
+                // iterate the index get the keys and values
+                for (int keyIndex = 0; keyIndex < keys.Count(); keyIndex++)
+                {
+                    string tempKey = keys[keyIndex] + teamIndex.ToString();
+                    string tempValue = values[teamIndex * keys.Count + keyIndex];
+                    keyValue.Add(tempKey, tempValue);
+                    //LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new team key value {tempKey}:{tempValue}");
+                }
+                TeamData.Add(keyValue);
             }
         }
     }
