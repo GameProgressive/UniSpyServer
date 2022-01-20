@@ -122,6 +122,28 @@
             ]
         },
         {
+            "name": "QR and SB",
+            "configurations": [
+                "QueryReport",
+                "ServerBrowser"
+            ]
+        },
+        {
+            "name": "GameStatus servers",
+            "configurations": [
+                "PCM",
+                "PSP",
+                "GameStatus"
+            ]
+        },
+        {
+            "name": "Sake servers",
+            "configurations": [
+                "WebServer",
+                "PCM"
+            ]
+        },
+        {
             "name": "Legacy servers",
             "configurations": [
                 "PCM",
@@ -131,14 +153,6 @@
                 "Chat",
                 "QueryReport",
                 "ServerBrowser",
-                "GameStatus"
-            ]
-        },
-        {
-            "name": "GameStatus servers",
-            "configurations": [
-                "PCM",
-                "PSP",
                 "GameStatus"
             ]
         },
@@ -156,17 +170,17 @@
             ]
         },
         {
-            "name": "QR and SB",
+            "name": "All servers",
             "configurations": [
+                "PCM",
+                "PSP",
+                "NatNeg",
+                "CDKey",
+                "Chat",
                 "QueryReport",
-                "ServerBrowser"
-            ]
-        },
-        {
-            "name": "Sake servers",
-            "configurations": [
-                "WebServer",
-                "PCM"
+                "ServerBrowser",
+                "GameStatus",
+                "WebServer"
             ]
         }
     ]
