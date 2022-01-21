@@ -18,6 +18,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
 
         public override void Parse()
         {
+            base.Parse();
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
             GameId = int.Parse(gameid);
             var partnercode = _contentElement.Descendants().Where(p => p.Name.LocalName == "partnercode").First().Value;

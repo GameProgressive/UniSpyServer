@@ -1,10 +1,10 @@
 using System;
 using NetCoreServer;
+using UniSpyServer.Servers.WebServer.Entity.Constant;
+using UniSpyServer.Servers.WebServer.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.Servers.WebServer.Entity.Constant;
-using UniSpyServer.Servers.WebServer.Handler;
 
 namespace UniSpyServer.Servers.WebServer.Network
 {
@@ -27,12 +27,11 @@ namespace UniSpyServer.Servers.WebServer.Network
             }
 
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint,
-                              $"\tUrl: {request.Url}\n" +
-                              $"\tHeaders: {request.Headers}\n" +
-                              $"\tCookies: {request.Cookies}\n" +
-                              $"\tProtocol: {request.Protocol}\n" +
-                              $"\tBody length: {request.BodyLength}"
-            );
+                              $"Url: {request.Url} " +
+                              $"Headers: {request.Headers} " +
+                              $"Cookies: {request.Cookies} " +
+                              $"Protocol: {request.Protocol} " +
+                              $"Content: {request.Body} ");
 
             new CmdSwitcher(this, request.Body).Switch();
         }

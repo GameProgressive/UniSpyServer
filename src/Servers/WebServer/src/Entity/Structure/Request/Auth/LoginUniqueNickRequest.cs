@@ -21,6 +21,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
 
         public override void Parse()
         {
+            base.Parse();
             var version = _contentElement.Descendants().Where(p => p.Name.LocalName == "version").First().Value;
             Version = int.Parse(version);
             var partnercode = _contentElement.Descendants().Where(p => p.Name.LocalName == "partnercode").First().Value;

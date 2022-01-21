@@ -10,12 +10,15 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
         protected XElement _contentElement { get; private set; }
         public RequestBase(string rawRequest) : base(rawRequest)
         {
-            dynamic xelements = XElement.Parse(RawRequest);
-            _contentElement = xelements.FirstNode.FirstNode;
         }
 
         protected RequestBase()
         {
+        }
+        public override void Parse()
+        {
+            dynamic xelements = XElement.Parse(RawRequest);
+            _contentElement = xelements.FirstNode.FirstNode;
         }
     }
 }

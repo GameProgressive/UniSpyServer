@@ -15,6 +15,7 @@ namespace UniSpyServer.Servers.WebServer.Abstraction.Sake
 
         public override void Parse()
         {
+            base.Parse();
             var gameId = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
             GameId = int.Parse(gameId);
             var secretKey = _contentElement.Descendants().Where(p => p.Name.LocalName == "secretKey").First().Value;
