@@ -6,10 +6,10 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("sdk")]
-    public sealed class SDKRevisionHandler : CmdHandlerBase
+    public sealed class SdkRevisionHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
-        public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public SdkRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         protected override void RequestCheck() { }
@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             if (_session.UserInfo.SDKRevision.IsSupportGPINewListRetrevalOnLogin)
             {
-                //    //send buddy list and block list
+                //send buddy list and block list
                 new BuddyListHandler(_session, null).Handle();
                 new BlockListHandler(_session, null).Handle();
             }

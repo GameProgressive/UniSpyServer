@@ -6,12 +6,12 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Auth
 {
-    [HandlerContract("LoginProfile")]
-    public class LoginProfileHandler : CmdHandlerBase
+    [HandlerContract("LoginPs3Cert")]
+    public class LoginPs3CertHandler : CmdHandlerBase
     {
-        protected new LoginProfileRequest _request => (LoginProfileRequest)base._request;
-        protected new LoginResult _result => (LoginResult)base._result;
-        public LoginProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        protected new LoginPs3CertRequest _request => (LoginPs3CertRequest)base._request;
+        protected new LoginPs3CertResult _result => (LoginPs3CertResult)base._result;
+        public LoginPs3CertHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
     }

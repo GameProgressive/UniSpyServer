@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginRemoteAuth()
         {
-            var request = new LoginRemoteAuth(RawRequests.LoginRemoteAuth);
+            var request = new LoginRemoteAuthRequest(RawRequests.LoginRemoteAuth);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.GameId.ToString());

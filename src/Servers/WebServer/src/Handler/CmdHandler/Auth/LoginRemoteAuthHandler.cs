@@ -6,12 +6,12 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Auth
 {
-    [HandlerContract("LoginProfile")]
-    public class LoginProfileHandler : CmdHandlerBase
+    [HandlerContract("LoginRemoteAuth")]
+    public class LoginRemoteAuthHandler : CmdHandlerBase
     {
-        protected new LoginProfileRequest _request => (LoginProfileRequest)base._request;
+        protected new LoginRemoteAuthRequest _request => (LoginRemoteAuthRequest)base._request;
         protected new LoginResult _result => (LoginResult)base._result;
-        public LoginProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public LoginRemoteAuthHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
     }

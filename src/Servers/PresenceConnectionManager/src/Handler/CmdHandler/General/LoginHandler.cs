@@ -116,7 +116,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             _session.UserInfo.BasicInfo.LoginStatus = LoginStatus.Completed;
             _session.UserInfo.SDKRevision.SDKRevisionType = _request.SDKRevisionType;
 
-            new SDKRevisionHandler(_session, _request).Handle();
+            new SdkRevisionHandler(_session, _request).Handle();
         }
 
         private void NickEmailLogin()

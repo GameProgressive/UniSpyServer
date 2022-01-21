@@ -7,7 +7,7 @@ using UniSpyServer.Servers.WebServer.Entity.Contract;
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
 {
     [RequestContract("LoginRemoteAuth")]
-    public class LoginRemoteAuth : RequestBase
+    public class LoginRemoteAuthRequest : RequestBase
     {
         public int Version { get; set; }
         public int GameId { get; set; }
@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
         public int NamespaceId { get; set; }
         public string AuthToken { get; set; }
         public string Challenge { get; set; }
-        public LoginRemoteAuth(string rawRequest) : base(rawRequest)
+        public LoginRemoteAuthRequest(string rawRequest) : base(rawRequest)
         {
         }
 
