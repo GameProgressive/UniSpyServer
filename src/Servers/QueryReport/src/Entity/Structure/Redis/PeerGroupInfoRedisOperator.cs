@@ -2,7 +2,7 @@
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
             using (var db = new UniSpyContext())
             {
                 var result = from g in db.Games
-                             join gl in db.Grouplist on g.Gameid equals gl.Gameid
+                             join gl in db.Grouplists on g.Gameid equals gl.Gameid
                              where g.Gamename == gameName
                              select gl;
                 PeerGroupInfo group = new PeerGroupInfo(result.First(), gameName);
@@ -37,7 +37,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
         {
             using (var db = new UniSpyContext())
             {
-                var gameNames = from gl in db.Grouplist
+                var gameNames = from gl in db.Grouplists
                                 join g in db.Games on gl.Gameid equals g.Gameid
                                 select g.Gamename;
                 gameNames = gameNames.Distinct();

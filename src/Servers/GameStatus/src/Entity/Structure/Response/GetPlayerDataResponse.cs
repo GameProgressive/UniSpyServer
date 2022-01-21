@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 
         public override void Build()
         {
-            SendingBuffer = $@"\getpdr\1\pid\{_request.ProfileID}\lid\{_request.OperationID}\mod\1234\length\5\data\mydata\final\";
+            SendingBuffer = $@"\getpdr\1\pid\{_request.ProfileId}\lid\{_request.OperationID}\mod\1234\length\5\data\mydata\final\";
         }
     }
 }

@@ -5,7 +5,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
 {
     public sealed class OthersListDatabaseModel
     {
-        public uint ProfileID;
+        public int ProfileId;
         public string Uniquenick;
     }
     public sealed class OthersListResult : ResultBase

@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyRequestBase
     {
-        public uint OperationID { get; protected set; }
+        public int OperationID { get; protected set; }
         public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }
         public new string RawRequest { get => (string)base.RawRequest; set => base.RawRequest = value; }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
@@ -29,8 +29,8 @@ namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
 
             if (RequestKeyValues.ContainsKey("lid"))
             {
-                uint operationID;
-                if (!uint.TryParse(RequestKeyValues["lid"], out operationID))
+                int operationID;
+                if (!int.TryParse(RequestKeyValues["lid"], out operationID))
                 {
                     throw new GSException("namespaceid format is incorrect.");
                 }
@@ -39,8 +39,8 @@ namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
             //worms 3d use id not lid so we added an condition here
             else if (RequestKeyValues.ContainsKey("id"))
             {
-                uint operationID;
-                if (!uint.TryParse(RequestKeyValues["id"], out operationID))
+                int operationID;
+                if (!int.TryParse(RequestKeyValues["id"], out operationID))
                 {
                     throw new GSException("namespaceid format is incorrect.");
                 }

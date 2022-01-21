@@ -1,8 +1,7 @@
 {
   "DataBase": {
-    "Type": "MySql",
     "RemoteAddress": "127.0.0.1",
-    "RemotePort": "3306",
+    "RemotePort": "5432",
     "UserName": "root",
     "Password": "0000",
     "DatabaseName": "unispy",

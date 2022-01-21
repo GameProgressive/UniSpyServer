@@ -5,25 +5,25 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
     public sealed class GetProfileDataModel
     {
         public string Nick;
-        public uint ProfileID;
+        public int ProfileId;
         public string UniqueNick;
         public string Email;
         public string Firstname;
         public string Lastname;
-        public uint? Icquin;
+        public int? Icquin;
         public string Homepage;
         public string Zipcode;
         public string Countrycode;
-        public float Longitude;
-        public float Latitude;
+        public double? Longitude;
+        public double? Latitude;
         public string Location;
         public int? Birthday;
         public int? Birthmonth;
         public int? Birthyear;
         public byte? Sex;
-        public int Publicmask;
+        public int? Publicmask;
         public string Aim;
-        public int Picture;
+        public int? Picture;
         public int? Occupationid;
         public int? Industryid;
         public int? Incomeid;

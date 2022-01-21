@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public PublicMasks PublicMask { get; private set; }
 
         public string SessionKey { get; private set; }
-        public uint PartnerID { get; private set; }
+        public int PartnerID { get; private set; }
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
 
@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public string LastName { get; private set; }
 
         public bool HasICQFlag { get; private set; }
-        public uint ICQUIN { get; private set; }
+        public int ICQUIN { get; private set; }
 
         public bool HasHomePageFlag { get; private set; }
         public string HomePage { get; private set; }
@@ -82,8 +82,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
             if (RequestKeyValues.ContainsKey("icquin"))
             {
-                uint icq;
-                if (!uint.TryParse(RequestKeyValues["icquin"], out icq))
+                int icq;
+                if (!int.TryParse(RequestKeyValues["icquin"], out icq))
                 {
                     throw new GPParseException("icquin format is incorrect");
                 }
@@ -142,8 +142,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
-                uint partnerid;
-                if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerid))
+                int partnerid;
+                if (!int.TryParse(RequestKeyValues["partnerid"], out partnerid))
                 {
                     throw new GPParseException("partnerid is incorrect");
                 }

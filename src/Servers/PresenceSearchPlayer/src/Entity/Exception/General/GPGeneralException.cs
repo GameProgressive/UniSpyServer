@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
     public class GPException : UniSpyException
     {
         public GPErrorCode ErrorCode { get; private set; }
-        public virtual string ErrorResponse => $@"\error\\err\{(uint)ErrorCode}\fatal\\errmsg\{this.Message}\final\";
+        public virtual string ErrorResponse => $@"\error\\err\{(int)ErrorCode}\fatal\\errmsg\{this.Message}\final\";
         public GPException() : this("General Error!", GPErrorCode.General)
         {
         }

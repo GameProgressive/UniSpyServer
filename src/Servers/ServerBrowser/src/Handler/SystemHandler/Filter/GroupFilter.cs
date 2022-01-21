@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.SystemHandler.Filter
 {

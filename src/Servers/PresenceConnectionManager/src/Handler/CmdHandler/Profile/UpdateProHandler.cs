@@ -4,7 +4,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Pr
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -20,16 +20,16 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new UniSpyContext())
             {
-                Profiles profile = db.Profiles.Where(
+                Profile profile = db.Profiles.Where(
                     p => p.Userid == _session.UserInfo.BasicInfo.UserID
-                    && p.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                    && p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                     && p.Nick == p.Nick).First();
 
-                Users user = db.Users.Where(
+                User user = db.Users.Where(
                     u => u.Userid == _session.UserInfo.BasicInfo.UserID).First();
 
-                Subprofiles subprofile = db.Subprofiles.Where(
-                    s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                Subprofile subprofile = db.Subprofiles.Where(
+                    s => s.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                     && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                     && s.Uniquenick == _session.UserInfo.BasicInfo.UniqueNick).First();
 

@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {

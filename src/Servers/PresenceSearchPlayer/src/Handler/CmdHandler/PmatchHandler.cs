@@ -28,7 +28,7 @@
 
 //        protected override void DataBaseOperation(GPSPSession session)
 //        {
-//            _result = PmatchQuery.PlayerMatch(Convert.ToUInt16(KeyValues["productid"]));
+//            _result = PmatchQuery.PlayerMatch(Convert.Toint16(KeyValues["productid"]));
 //        }
 
 //        protected override void ConstructResponse(GPSPSession session)

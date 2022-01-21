@@ -9,7 +9,7 @@
 //         public string SecretKey;
 //         public ushort QueryPort;
 //         public ushort BackendFlags;
-//         public uint ServicesDisabled;
+//         public int ServicesDisabled;
 //         public KeyData KeyData = new KeyData();
 //         public byte NumPushKeys;
 
@@ -43,14 +43,14 @@
 //     {
 //         public string CountryCode;
 //         public string CountryName;
-//         public uint Region;
+//         public int Region;
 //     }
 
 //     public class ServerList
 //     {
 //         public List<CustomKey> ServerKeys = new List<CustomKey>();
 //         public CountryRegion Country = new CountryRegion();
-//         public uint IPaddress;
+//         public int IPaddress;
 //         public ushort Port;
 //     }
 
@@ -64,7 +64,7 @@
 //     public class QRServerRules
 //     {
 //         public GameServerInfo Game = new GameServerInfo();
-//         public uint IPaddress;
+//         public int IPaddress;
 //         public ushort Port;
 //         public CountryRegion Country = new CountryRegion();
 //         public List<CustomKey> ServerRules = new List<CustomKey>();
@@ -73,8 +73,8 @@
 //     {
 //         public string Data;
 //         public int Len;
-//         public uint SourceIP;
-//         public uint ToIP;
+//         public int SourceIP;
+//         public int ToIP;
 //         public ushort ToPort;
 //     }
 //     public class QRServerMsg

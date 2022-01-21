@@ -17,10 +17,10 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         public SetPlayerDataRequest(string request) : base(request)
         {
         }
-        public uint ProfileID { get; private set; }
+        public int ProfileId { get; private set; }
         public PersistStorageType StorageType { get; private set; }
-        public uint DataIndex { get; private set; }
-        public uint Length { get; private set; }
+        public int DataIndex { get; private set; }
+        public int Length { get; private set; }
         public string KeyValueString { get; private set; }
 
         public override void Parse()
@@ -41,15 +41,15 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
                 throw new GSException("length is missing.");
 
 
-            uint profileID;
-            if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
+            int profileID;
+            if (!int.TryParse(RequestKeyValues["pid"], out profileID))
             {
                 throw new GSException("pid format is incorrect.");
             }
-            ProfileID = profileID;
+            ProfileId = profileID;
 
-            uint storageType;
-            if (!uint.TryParse(RequestKeyValues["ptype"], out storageType))
+            int storageType;
+            if (!int.TryParse(RequestKeyValues["ptype"], out storageType))
             {
                 throw new GSException("ptype is missing.");
             }
@@ -61,15 +61,15 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 
             StorageType = (PersistStorageType)storageType;
 
-            uint dindex;
-            if (!uint.TryParse(RequestKeyValues["dindex"], out dindex))
+            int dindex;
+            if (!int.TryParse(RequestKeyValues["dindex"], out dindex))
             {
                 throw new GSException("dindex format is incorrect.");
             }
             DataIndex = dindex;
 
-            uint length;
-            if (!uint.TryParse(RequestKeyValues["length"], out length))
+            int length;
+            if (!int.TryParse(RequestKeyValues["length"], out length))
             {
                 throw new GSException("length format is incorrect.");
             }

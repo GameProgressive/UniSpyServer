@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
     public sealed class UniqueSearchRequest : RequestBase
     {
         public string PreferredNick { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public UniqueSearchRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -39,8 +39,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
                 throw new GPParseException("namespaceid is missing.");
             }
 
-            uint namespaceID;
-            if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+            int namespaceID;
+            if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
             {
                 throw new GPParseException("namespaceid is incorrect.");
             }

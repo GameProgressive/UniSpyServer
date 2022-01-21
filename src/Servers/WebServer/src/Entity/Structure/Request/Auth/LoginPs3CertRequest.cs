@@ -9,9 +9,9 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
     [RequestContract("LoginPs3Cert")]
     public class LoginPs3CertRequest : RequestBase
     {
-        public uint GameId { get; set; }
-        public uint PartnerCode { get; set; }
-        public uint PS3cert { get; set; }
+        public int GameId { get; set; }
+        public int PartnerCode { get; set; }
+        public int PS3cert { get; set; }
         public LoginPs3CertRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -19,11 +19,11 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth
         public override void Parse()
         {
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
-            GameId = uint.Parse(gameid);
+            GameId = int.Parse(gameid);
             var partnercode = _contentElement.Descendants().Where(p => p.Name.LocalName == "partnercode").First().Value;
-            PartnerCode = uint.Parse(partnercode);
+            PartnerCode = int.Parse(partnercode);
             var ps3cert = _contentElement.Descendants().Where(p => p.Name.LocalName == "ps3cert").First().Value;
-            PS3cert = uint.Parse(ps3cert);
+            PS3cert = int.Parse(ps3cert);
         }
     }
 }

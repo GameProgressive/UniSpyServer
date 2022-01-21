@@ -1,28 +1,28 @@
-﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using System.Linq;
-using System.Threading.Tasks;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     public sealed class BuddyListHandler : CmdHandlerBase
     {
-        private new BuddyListResult _result{ get => (BuddyListResult)base._result; set => base._result = value; }
+        private new BuddyListResult _result { get => (BuddyListResult)base._result; set => base._result = value; }
         public BuddyListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new BuddyListResult();
         }
-
+        protected override void RequestCheck() { }
         protected override void DataOperation()
         {
             using (var db = new UniSpyContext())
             {
                 var result = db.Friends
-                    .Where(f => f.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                    .Where(f => f.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                     && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
                     .Select(f => f.Targetid).ToList();
             }
@@ -43,7 +43,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 var request = new StatusInfoRequest
                 {
-                    ProfileID = profileID,
+                    ProfileId = profileID,
                     NamespaceID = _session.UserInfo.BasicInfo.NamespaceID,
                     IsGetStatusInfo = true
                 };

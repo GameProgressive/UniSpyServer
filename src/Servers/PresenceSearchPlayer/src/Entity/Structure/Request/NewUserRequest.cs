@@ -8,8 +8,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
     [RequestContract("newuser")]
     public sealed class NewUserRequest : RequestBase
     {
-        public uint ProductID { get; private set; }
-        public uint GamePort { get; private set; }
+        public int ProductID { get; private set; }
+        public int GamePort { get; private set; }
         public string CDKey { get; private set; }
         public bool HasGameNameFlag { get; private set; }
         public bool HasProductIDFlag { get; private set; }
@@ -20,9 +20,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string Uniquenick { get; private set; }
-        public uint PartnerID { get; private set; }
+        public int PartnerID { get; private set; }
         public string GameName { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public NewUserRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -56,8 +56,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
             {
                 if (RequestKeyValues.ContainsKey("namespaceid"))
                 {
-                    uint namespaceID;
-                    if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                    int namespaceID;
+                    if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
                         throw new GPParseException("namespaceid is incorrect.");
                     }
@@ -73,8 +73,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
             //parse other info
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
-                uint partnerid;
-                if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerid))
+                int partnerid;
+                if (!int.TryParse(RequestKeyValues["partnerid"], out partnerid))
                 {
                     throw new GPParseException("partnerid is incorrect.");
                 }
@@ -83,8 +83,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
             }
             if (RequestKeyValues.ContainsKey("productid"))
             {
-                uint productid;
-                if (!uint.TryParse(RequestKeyValues["productid"], out productid))
+                int productid;
+                if (!int.TryParse(RequestKeyValues["productid"], out productid))
                 {
                     throw new GPParseException("productid is incorrect.");
                 }
@@ -98,8 +98,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
             }
             if (RequestKeyValues.ContainsKey("port"))
             {
-                uint port;
-                if (!uint.TryParse(RequestKeyValues["port"], out port))
+                int port;
+                if (!int.TryParse(RequestKeyValues["port"], out port))
                 {
                     throw new GPParseException("port is incorrect.");
                 }

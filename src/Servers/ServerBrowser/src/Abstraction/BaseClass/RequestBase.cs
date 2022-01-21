@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 
         public override void Parse()
         {
-            RequestLength = BitConverter.ToUInt16(RawRequest.Take(2).Reverse().ToArray());
+            RequestLength = BitConverter.ToInt16(RawRequest.Take(2).Reverse().ToArray());
             CommandName = (RequestType)RawRequest[2];
         }
     }

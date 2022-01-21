@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [RedisKey]
-        public uint? InstantKey { get; set; }
+        public int? InstantKey { get; set; }
         [RedisKey]
         public string GameName { get; set; }
         public DateTime LastPacketReceivedTime { get; set; }

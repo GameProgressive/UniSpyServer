@@ -9,9 +9,9 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
     [RequestContract("GetTopTenRankings")]
     public class GetTopTenRankingsRequest : RequestBase
     {
-        public uint GameId { get; set; }
-        public uint RegionId { get; set; }
-        public uint CourseId { get; set; }
+        public int GameId { get; set; }
+        public int RegionId { get; set; }
+        public int CourseId { get; set; }
         public GetTopTenRankingsRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -19,11 +19,11 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
         public override void Parse()
         {
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
-            GameId = uint.Parse(gameid);
+            GameId = int.Parse(gameid);
             var regionid = _contentElement.Descendants().Where(p => p.Name.LocalName == "regionid").First().Value;
-            RegionId = uint.Parse(regionid);
+            RegionId = int.Parse(regionid);
             var courseid = _contentElement.Descendants().Where(p => p.Name.LocalName == "courseid").First().Value;
-            CourseId = uint.Parse(courseid);
+            CourseId = int.Parse(courseid);
         }
     }
 }

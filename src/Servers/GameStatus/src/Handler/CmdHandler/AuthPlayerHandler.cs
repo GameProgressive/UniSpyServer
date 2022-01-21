@@ -8,7 +8,7 @@ using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
@@ -64,12 +64,12 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             {
                 var result = from s in db.Subprofiles
                              where s.Authtoken == _request.AuthToken
-                             select s.Profileid;
+                             select s.ProfileId;
                 if (result.Count() != 1)
                 {
                     throw new GSException("No records found in database by authtoken.");
                 }
-                _result.ProfileID = result.First();
+                _result.ProfileId = result.First();
             }
         }
         private void FindProfileByProfileid()
@@ -77,13 +77,13 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             where p.Profileid == _request.ProfileID
-                             select p.Profileid;
+                             where p.ProfileId == _request.ProfileId
+                             select p.ProfileId;
                 if (result.Count() != 1)
                 {
                     throw new GSException("No records found in database by profileid.");
                 }
-                _result.ProfileID = result.First();
+                _result.ProfileId = result.First();
             }
         }
         private void FrindProfileByCDKeyHash()
@@ -91,14 +91,14 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = from s in db.Subprofiles
-                             join p in db.Profiles on s.Profileid equals p.Profileid
+                             join p in db.Profiles on s.ProfileId equals p.ProfileId
                              where s.Cdkeyenc == _request.KeyHash && p.Nick == _request.Nick
-                             select s.Profileid;
+                             select s.ProfileId;
                 if (result.Count() != 1)
                 {
                     throw new GSException("No records found in database by cdkey hash.");
                 }
-                _result.ProfileID = result.First();
+                _result.ProfileId = result.First();
             }
         }
 

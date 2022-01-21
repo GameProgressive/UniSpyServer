@@ -11,9 +11,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public uint ProfileID { get; private set; }
+        public int ProfileId { get; private set; }
         public string GameName { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public override void Parse()
         {
             base.Parse();
@@ -29,16 +29,16 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
                 throw new GPParseException("profileid or namespaceid is missing.");
             }
 
-            uint profileID = 0;
-            if (!RequestKeyValues.ContainsKey("profileid") && !uint.TryParse(RequestKeyValues["profileid"], out profileID))
+            int profileID = 0;
+            if (!RequestKeyValues.ContainsKey("profileid") && !int.TryParse(RequestKeyValues["profileid"], out profileID))
             {
                 throw new GPParseException("profileid is incorrect.");
             }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
             {
-                uint namespaceID;
-                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                int namespaceID;
+                if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     throw new GPParseException("namespaceid is incorrect.");
                 }
@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
                 NamespaceID = namespaceID;
             }
 
-            ProfileID = profileID;
+            ProfileId = profileID;
             GameName = RequestKeyValues["gamename"];
         }
     }

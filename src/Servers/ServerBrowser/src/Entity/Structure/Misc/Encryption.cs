@@ -60,7 +60,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
 
         private void InitEncryptionParameters()
         {
-            uint i;
+            int i;
             byte toSwap, swapTemp, randomSum;
             byte keyPosition;
 
@@ -164,7 +164,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
         /// <param name="randomSum"></param>
         /// <param name="keyPosition"></param>
         /// <returns></returns>
-        private byte IndexPositionGeneration(uint limit, ref byte randomSum, ref byte keyPosition)
+        private byte IndexPositionGeneration(int limit, ref byte randomSum, ref byte keyPosition)
         {
             byte swapIndex, retryLimiter, bitMask;
 

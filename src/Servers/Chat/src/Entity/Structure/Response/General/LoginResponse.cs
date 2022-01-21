@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
         {
             SendingBuffer = IRCReplyBuilder.Build(
                 ResponseName.Login,
-                cmdParams: $"* {_result.UserID} {_result.ProfileID}");
+                cmdParams: $"* {_result.UserID} {_result.ProfileId}");
         }
     }
 }

@@ -10,8 +10,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     [RequestContract("inviteto")]
     public sealed class InviteToRequest : RequestBase
     {
-        public uint ProductID { get; private set; }
-        public uint ProfileID { get; private set; }
+        public int ProductID { get; private set; }
+        public int ProfileId { get; private set; }
         public InviteToRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -31,20 +31,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
             }
 
-            uint productID;
-            if (!uint.TryParse(RequestKeyValues["productid"], out productID))
+            int productID;
+            if (!int.TryParse(RequestKeyValues["productid"], out productID))
             {
                 throw new GPParseException("productid format is incorrect.");
             }
 
             ProductID = productID;
 
-            uint profileID;
-            if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
+            int profileID;
+            if (!int.TryParse(RequestKeyValues["profileid"], out profileID))
             {
                 throw new GPParseException("profileid format is incorrect.");
             }
-            ProfileID = profileID;
+            ProfileId = profileID;
         }
     }
 }

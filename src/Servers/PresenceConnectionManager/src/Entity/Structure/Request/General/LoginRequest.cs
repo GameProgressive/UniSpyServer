@@ -12,11 +12,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public string Response { get; private set; }
         public string UniqueNick { get; private set; }
         public string UserData { get; private set; }
-        public uint? NamespaceID { get; private set; }
+        public int? NamespaceID { get; private set; }
         public string AuthToken { get; private set; }
         public string Nick { get; private set; }
         public string Email { get; private set; }
-        public uint? ProductID { get; private set; }
+        public int? ProductID { get; private set; }
         public LoginType? Type { get; private set; }
         public SDKRevisionType? SDKRevisionType { get; private set; }
 
@@ -42,8 +42,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
             if (RequestKeyValues.ContainsKey("uniquenick") && RequestKeyValues.ContainsKey("namespaceid"))
             {
-                uint namespaceID;
-                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                int namespaceID;
+                if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     throw new GPParseException("namespaceid format is incorrect");
                 }
@@ -74,8 +74,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 // we need to get namespaceid for email login
                 if (RequestKeyValues.ContainsKey("namespaceid"))
                 {
-                    uint namespaceID;
-                    if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                    int namespaceID;
+                    if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
                         throw new GPParseException("namespaceid format is incorrect");
                     }
@@ -91,9 +91,9 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         }
 
         public int? GamePort { get; private set; }
-        public uint? UserID { get; private set; }
-        public uint? ProfileID { get; private set; }
-        public uint? PartnerID { get; private set; }
+        public int? UserID { get; private set; }
+        public int? ProfileId { get; private set; }
+        public int? PartnerID { get; private set; }
         public string GameName { get; private set; }
         public QuietModeType? QuietModeFlags { get; private set; }
         public string Firewall { get; private set; }
@@ -102,8 +102,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         {
             if (RequestKeyValues.ContainsKey("userid"))
             {
-                uint userID;
-                if (!uint.TryParse(RequestKeyValues["userid"], out userID))
+                int userID;
+                if (!int.TryParse(RequestKeyValues["userid"], out userID))
                 {
                     throw new GPParseException("partnerid format is incorrect");
                 }
@@ -112,17 +112,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             }
             if (RequestKeyValues.ContainsKey("profileid"))
             {
-                uint profileID;
-                if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
+                int profileID;
+                if (!int.TryParse(RequestKeyValues["profileid"], out profileID))
                 {
                     throw new GPParseException("profileid format is incorrect");
                 }
-                ProfileID = profileID;
+                ProfileId = profileID;
             }
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
-                uint partnerID;
-                if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerID))
+                int partnerID;
+                if (!int.TryParse(RequestKeyValues["partnerid"], out partnerID))
                 {
                     throw new GPParseException("partnerid format is incorrect");
                 }
@@ -132,8 +132,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             //store sdkrevision
             if (RequestKeyValues.ContainsKey("sdkrevision"))
             {
-                uint sdkRevisionType;
-                if (!uint.TryParse(RequestKeyValues["sdkrevision"], out sdkRevisionType))
+                int sdkRevisionType;
+                if (!int.TryParse(RequestKeyValues["sdkrevision"], out sdkRevisionType))
                 {
                     throw new GPParseException("sdkrevision format is incorrect");
                 }
@@ -157,8 +157,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             }
             if (RequestKeyValues.ContainsKey("productid"))
             {
-                uint productID;
-                if (!uint.TryParse(RequestKeyValues["productid"], out productID))
+                int productID;
+                if (!int.TryParse(RequestKeyValues["productid"], out productID))
                 {
                     throw new GPParseException("productid format is incorrect");
                 }
@@ -172,8 +172,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
             if (RequestKeyValues.ContainsKey("quiet"))
             {
-                uint quiet;
-                if (!uint.TryParse(RequestKeyValues["quiet"], out quiet))
+                int quiet;
+                if (!int.TryParse(RequestKeyValues["quiet"], out quiet))
                 {
                     throw new GPParseException("quiet format is incorrect");
                 }

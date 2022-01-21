@@ -7,7 +7,7 @@ using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
-        private uint _protileid;
+        private int _protileid;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
         private new GetProfileIDResult _result{ get => (GetProfileIDResult)base._result; set => base._result = value; }
         public GetProfileIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -28,9 +28,9 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.Profileid equals s.Profileid
+                             join s in db.Subprofiles on p.ProfileId equals s.ProfileId
                              where s.Cdkeyenc == _request.KeyHash && p.Nick == _request.Nick
-                             select s.Profileid;
+                             select s.ProfileId;
                 if (result.Count() != 1)
                 {
                     throw new GSException("No records found in database by authtoken.");

@@ -7,7 +7,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 if (_request.IsReplaceNickName)
                 {
                     var result = from p in db.Profiles
-                                 where p.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                                 where p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                                  && p.Nick == _request.OldNick
                                  select p;
 
@@ -41,16 +41,16 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                         result.First().Nick = _request.NewNick;
                     }
 
-                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                    db.Profiles.Where(p => p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                     && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
 
                     db.SaveChanges();
                 }
                 else
                 {
-                    Profiles profiles = new Profiles
+                    Profile profiles = new Profile
                     {
-                        Profileid = _session.UserInfo.BasicInfo.ProfileID,
+                        ProfileId = _session.UserInfo.BasicInfo.ProfileId,
                         Nick = _request.NewNick,
                         Userid = _session.UserInfo.BasicInfo.UserID
                     };
@@ -58,7 +58,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     db.Add(profiles);
                 }
             }
-            _result.ProfileID = _session.UserInfo.BasicInfo.ProfileID;
+            _result.ProfileId = _session.UserInfo.BasicInfo.ProfileId;
         }
 
         protected override void ResponseConstruct()

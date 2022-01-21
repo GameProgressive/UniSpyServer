@@ -7,7 +7,7 @@
         public string Secretkey;
         public ushort QueryPort;
         public ushort BackendFlags;
-        public uint ServicesDisabled;
+        public int ServicesDisabled;
         public KeyData PushKeys;
         public byte NumPushKeys; //sb protocol sends as a byte so max of 255
     }

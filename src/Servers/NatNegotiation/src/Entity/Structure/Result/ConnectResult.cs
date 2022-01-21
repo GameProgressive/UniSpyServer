@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
         public byte[] RemoteIPAddressBytes => RemoteEndPoint.Address.GetAddressBytes();
         public byte[] RemotePortBytes => BitConverter.GetBytes((ushort)RemoteEndPoint.Port).Reverse().ToArray();
         public byte Version;
-        public uint Cookie;
+        public int Cookie;
         public ConnectResult()
         {
             PacketType = NatPacketType.Connect;

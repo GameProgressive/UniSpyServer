@@ -34,8 +34,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             if (!RequestKeyValues.ContainsKey("locstring"))
                 throw new GPParseException("locstring is missing.");
 
-            uint statusCode;
-            if (!uint.TryParse(RequestKeyValues["status"], out statusCode))
+            int statusCode;
+            if (!int.TryParse(RequestKeyValues["status"], out statusCode))
             {
                 throw new GPParseException("status format is incorrect.");
             }

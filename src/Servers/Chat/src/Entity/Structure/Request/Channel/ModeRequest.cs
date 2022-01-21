@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public ModeRequestType RequestType { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
-        public uint LimitNumber { get; set; }
+        public int LimitNumber { get; set; }
         public string ModeFlag { get; set; }
         public string Password { get; set; }
         public ModeRequest(string rawRequest) : base(rawRequest)
@@ -86,7 +86,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                         break;
                     case "+l":
                         ChannelName = _cmdParams[0];
-                        LimitNumber = uint.Parse(_cmdParams[2]);
+                        LimitNumber = int.Parse(_cmdParams[2]);
                         RequestType = ModeRequestType.AddChannelUserLimits;
                         break;
                     case "-l":
@@ -174,7 +174,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                         //                 break;
                         //             case "+l":
                         //                 ChannelName = _cmdParams[0];
-                        //                 LimitNumber = uint.Parse(_cmdParams[2]);
+                        //                 LimitNumber = int.Parse(_cmdParams[2]);
                         //                 RequestType = ModeRequestType.AddChannelUserLimits;
                         //                 break;
                         //             case "-l":
@@ -219,7 +219,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                         //         {
                         //             ChannelName = _cmdParams[0];
                         //             ModeFlag = _cmdParams[1];
-                        //             LimitNumber = uint.Parse(_cmdParams[2]);
+                        //             LimitNumber = int.Parse(_cmdParams[2]);
                         //             RequestType = ModeRequestType.SetChannelModesWithUserLimit;
                         //         }
                         //         // "MODE <channel name> <mode flags>"

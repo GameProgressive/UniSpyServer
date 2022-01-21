@@ -179,7 +179,7 @@
     /// different for any service that uses GameSpy as backend (for example Nintendo
     /// Wifi Connection).
     /// </summary>
-    public enum GPPartnerID : uint
+    public enum GPPartnerID : int
     {
         /// <summary>
         /// The client is directly connecting to the Server

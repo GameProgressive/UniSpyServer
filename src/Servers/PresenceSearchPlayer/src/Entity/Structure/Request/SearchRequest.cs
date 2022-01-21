@@ -18,12 +18,12 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         public int SkipNum { get; private set; }
         public SearchRequestType RequestType { get; private set; }
         public string GameName { get; private set; }
-        public uint ProfileID { get; private set; }
-        public uint PartnerID { get; private set; }
+        public int ProfileId { get; private set; }
+        public int PartnerID { get; private set; }
         public string Email { get; private set; }
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public SearchRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -49,19 +49,19 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
             if (RequestKeyValues.ContainsKey("profileid"))
             {
-                uint profileID;
-                if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
+                int profileID;
+                if (!int.TryParse(RequestKeyValues["profileid"], out profileID))
                 {
                     throw new GPParseException("profileid is incorrect.");
 
                 }
-                ProfileID = profileID;
+                ProfileId = profileID;
             }
 
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
-                uint partnerID;
-                if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerID))
+                int partnerID;
+                if (!int.TryParse(RequestKeyValues["partnerid"], out partnerID))
                 {
                     throw new GPParseException("partnerid is incorrect.");
                 }
@@ -82,8 +82,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
             {
                 if (RequestKeyValues.ContainsKey("namespaceid"))
                 {
-                    uint namespaceID;
-                    if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                    int namespaceID;
+                    if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
                         throw new GPParseException("namespaceid is incorrect.");
                     }

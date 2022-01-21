@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
     {
         public string Certificate { get; set; }
         public string Proof { get; set; }
-        public uint GameId { get; set; }
+        public int GameId { get; set; }
         public CreateMatchlessSessionRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
             var proof = _contentElement.Descendants().Where(p => p.Name.LocalName == "proof").First().Value;
             Proof = proof;
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
-            GameId = uint.Parse(gameid);
+            GameId = int.Parse(gameid);
         }
     }
 }

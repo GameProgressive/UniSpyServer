@@ -2,9 +2,9 @@
 {
     public class ResponseChallengeVerifier
     {
-        public static bool VerifyResponse(string response, uint connid)
+        public static bool VerifyResponse(string response, int connid)
         {
-            uint temp = connid & 0x38F371E6;
+            int temp = connid & 0x38F371E6;
             string connstr = temp.ToString();
             string result = "";
 

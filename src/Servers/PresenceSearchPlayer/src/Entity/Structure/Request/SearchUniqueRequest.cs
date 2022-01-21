@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
     public sealed class SearchUniqueRequest : RequestBase
     {
         public string Uniquenick { get; private set; }
-        public List<uint> Namespaces { get; private set; }
+        public List<int> Namespaces { get; private set; }
         public SearchUniqueRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -35,7 +35,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
             try
             {
-                Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+                Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(int.Parse).ToList();
             }
             catch
             {

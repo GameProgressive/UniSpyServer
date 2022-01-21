@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.GameStatus.Entity.Enumerate
 {
-    public enum PersistStorageType : uint
+    public enum PersistStorageType : int
     {
         /// <summary>
         /// Readable only by the authenticated client it belongs to, can only by set on the server

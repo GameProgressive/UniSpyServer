@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.WebServer.Abstraction.Sake
 {
     public abstract class RequestBase : Abstraction.RequestBase
     {
-        public uint GameId { get; set; }
+        public int GameId { get; set; }
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.WebServer.Abstraction.Sake
         public override void Parse()
         {
             var gameId = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
-            GameId = uint.Parse(gameId);
+            GameId = int.Parse(gameId);
             var secretKey = _contentElement.Descendants().Where(p => p.Name.LocalName == "secretKey").First().Value;
             SecretKey = secretKey;
             var loginTicket = _contentElement.Descendants().Where(p => p.Name.LocalName == "loginTicket").First().Value;

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -30,14 +30,14 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 //we have to make sure the search target has the same namespaceID
                 var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.Profileid equals s.Profileid
+                             join s in db.Subprofiles on p.ProfileId equals s.ProfileId
                              join u in db.Users on p.Userid equals u.Userid
-                             where p.Profileid == _request.ProfileID
+                             where p.ProfileId == _request.ProfileId
                              && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                              select new GetProfileDataModel
                              {
                                  Nick = p.Nick,
-                                 ProfileID = p.Profileid,
+                                 ProfileId = p.ProfileId,
                                  UniqueNick = s.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                                  Birthday = p.Birthday,
                                  Birthmonth = p.Birthmonth,
                                  Birthyear = p.Birthyear,
-                                 Sex = p.Sex,
+                                 Sex = (byte)p.Sex,
                                  Publicmask = p.Publicmask,
                                  Aim = p.Aim,
                                  Picture = p.Picture,
@@ -68,7 +68,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
                 if (result.Count() == 0)
                 {
-                    throw new GPDatabaseException($"No profile of profileid:{_request.ProfileID} found in database.");
+                    throw new GPDatabaseException($"No profile of profileid:{_request.ProfileId} found in database.");
                 }
 
                 _result.UserProfile = result.First();

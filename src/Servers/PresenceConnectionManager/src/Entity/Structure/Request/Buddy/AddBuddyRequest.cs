@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     [RequestContract("addbuddy")]
     public sealed class AddBuddyRequest : RequestBase
     {
-        public uint FriendProfileID { get; private set; }
+        public int FriendProfileID { get; private set; }
         public string Reason { get; private set; }
         public AddBuddyRequest(string rawRequest) : base(rawRequest)
         {
@@ -23,8 +23,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 throw new GPParseException("addbuddy request is invalid.");
             }
 
-            uint friendPID;
-            if (!uint.TryParse(RequestKeyValues["newprofileid"], out friendPID))
+            int friendPID;
+            if (!int.TryParse(RequestKeyValues["newprofileid"], out friendPID))
             {
                 throw new GPParseException("newprofileid format is incorrect.");
             }

@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
     [RequestContract(RequestType.NatNegRequest)]
     public sealed class NatNegMsgRequest : RequestBase
     {
-        public uint Cookie { get; set; }
+        public int Cookie { get; set; }
         public byte[] NatNegMessage => RawRequest;
         public NatNegMsgRequest(object rawRequest) : base(rawRequest)
         {
@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 
         public override void Parse()
         {
-            Cookie = BitConverter.ToUInt16(RawRequest.Skip(6).ToArray());
+            Cookie = BitConverter.ToInt16(RawRequest.Skip(6).ToArray());
         }
     }
 }

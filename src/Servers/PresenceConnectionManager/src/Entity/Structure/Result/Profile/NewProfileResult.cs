@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class NewProfileResult : ResultBase
     {
-        public uint ProfileID;
+        public int ProfileId;
 
         public NewProfileResult()
         {

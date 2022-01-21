@@ -5,8 +5,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class StatusInfoResult : ResultBase
     {
-        public uint ProfileID { get; set; }
-        public uint ProductID { get; set; }
+        public int ProfileId { get; set; }
+        public int ProductID { get; set; }
         public PCMUserStatusInfo StatusInfo { get; set; }
         public StatusInfoResult()
         {

@@ -4,7 +4,7 @@ using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
@@ -25,10 +25,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
 
-                var result = from p in db.Pstorage
-                             where p.Profileid == _request.ProfileID
+                var result = from p in db.Pstorages
+                             where p.ProfileId == _request.ProfileId
                              && p.Dindex == _request.DataIndex
-                             && p.Ptype == (uint)_request.StorageType
+                             && p.Ptype == (int)_request.StorageType
                              select p;
 
                 Pstorage ps;
@@ -37,10 +37,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
                     //insert a new record in database
                     ps = new Pstorage();
                     ps.Dindex = _request.DataIndex;
-                    ps.Profileid = _request.ProfileID;
-                    ps.Ptype = (uint)_request.StorageType;
+                    ps.ProfileId = _request.ProfileId;
+                    ps.Ptype = (int)_request.StorageType;
                     ps.Data = _request.KeyValueString;
-                    db.Pstorage.Add(ps);
+                    db.Pstorages.Add(ps);
                 }
                 else if (result.Count() == 1)
                 {

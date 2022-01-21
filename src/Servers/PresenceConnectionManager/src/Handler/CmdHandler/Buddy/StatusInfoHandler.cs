@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             if (_request.IsGetStatusInfo)
             {
                 var result = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
-                                .Where(session => ((Session)session).UserInfo.BasicInfo.ProfileID == _request.ProfileID
+                                .Where(session => ((Session)session).UserInfo.BasicInfo.ProfileId == _request.ProfileId
                                 && ((Session)session).UserInfo.BasicInfo.NamespaceID == _session.UserInfo.BasicInfo.NamespaceID)
                                 .FirstOrDefault();
                 if (result != null)

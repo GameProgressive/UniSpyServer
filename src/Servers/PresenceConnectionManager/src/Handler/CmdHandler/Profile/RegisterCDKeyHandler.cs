@@ -5,7 +5,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new UniSpyContext())
             {
-                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                var result = db.Subprofiles.Where(s => s.ProfileId == _session.UserInfo.BasicInfo.ProfileId
                 && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID);
                 //&& s.Productid == _session.UserInfo.ProductID);
 

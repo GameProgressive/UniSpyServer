@@ -5,7 +5,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
 {
     public sealed class ClientMessageResult : ResultBase
     {
-        public uint InstantKey { get; set; }
+        public int InstantKey { get; set; }
         public byte[] NatNegMessage { get; set; }
         public int? MessageKey { get; set; }
         public ClientMessageResult()

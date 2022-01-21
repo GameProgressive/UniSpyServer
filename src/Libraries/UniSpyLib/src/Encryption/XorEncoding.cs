@@ -2,7 +2,7 @@
 {
     public class XOREncoding
     {
-        public enum XorType : uint
+        public enum XorType : int
         {
             Type0,
             Type1,

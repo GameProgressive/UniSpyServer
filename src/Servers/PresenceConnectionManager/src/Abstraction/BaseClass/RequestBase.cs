@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
     {
         public new string CommandName{ get => (string)base.CommandName;
             protected set => base.CommandName = value; }
-        public uint OperationID { get; protected set; }
+        public int OperationID { get; protected set; }
 
         public new string RawRequest{ get => (string)base.RawRequest; set => base.RawRequest = value; }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
@@ -31,8 +31,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
 
             if (RequestKeyValues.ContainsKey("id"))
             {
-                uint operationID;
-                if (!uint.TryParse(RequestKeyValues["id"], out operationID))
+                int operationID;
+                if (!int.TryParse(RequestKeyValues["id"], out operationID))
                 {
                     throw new GPParseException("namespaceid is invalid.");
                 }

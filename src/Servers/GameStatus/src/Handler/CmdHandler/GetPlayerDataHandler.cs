@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
@@ -29,10 +29,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
             using (var db = new UniSpyContext())
             {
-                var result = from ps in db.Pstorage
-                             where ps.Ptype == (uint)_request.StorageType
+                var result = from ps in db.Pstorages
+                             where ps.Ptype == (int)_request.StorageType
                              && ps.Dindex == _request.DataIndex
-                             && ps.Profileid == _request.ProfileID
+                             && ps.ProfileId == _request.ProfileId
                              select ps.Data;
 
                 if (result.Count() != 1)

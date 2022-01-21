@@ -6,7 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {

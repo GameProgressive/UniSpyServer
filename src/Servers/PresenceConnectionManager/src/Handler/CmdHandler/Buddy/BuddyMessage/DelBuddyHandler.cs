@@ -5,7 +5,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = from friend in db.Friends
-                             where friend.Profileid == _request.DeleteProfileID
+                             where friend.ProfileId == _request.DeleteProfileID
                                    && friend.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                              select friend;
                 if (result.Count() == 0)

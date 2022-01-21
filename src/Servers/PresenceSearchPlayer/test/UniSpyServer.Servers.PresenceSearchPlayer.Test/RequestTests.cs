@@ -15,11 +15,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Test
             Assert.Equal("xiaojiuwo@gamespy.com", request.Email);
             // password 'xxx' is decoded and hash to '1e034b66363e5a081874ae022767f685'
             Assert.Equal("1e034b66363e5a081874ae022767f685", request.Password);
-            Assert.Equal((uint)0, request.ProductID);
-            Assert.Equal((uint)0, request.NamespaceID);
+            Assert.Equal((int)0, request.ProductID);
+            Assert.Equal((int)0, request.NamespaceID);
             Assert.Equal("xiaojiuwo", request.Uniquenick);
             Assert.Equal("xxx-xxx-xxx-xxx", request.CDKey);
-            Assert.Equal((uint)0, request.PartnerID);
+            Assert.Equal((int)0, request.PartnerID);
             Assert.Equal("gmtest", request.GameName);
         }
     }

@@ -9,7 +9,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -98,7 +98,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                         }
 
                     case NewUserStatus.AccountNotExist:
-                        _result.User = new Users { Email = _request.Email, Password = _request.Password };
+                        _result.User = new User { Email = _request.Email, Password = _request.Password };
                         db.Users.Add(_result.User);
                         db.SaveChanges();
                         goto case NewUserStatus.CheckProfile;
@@ -131,7 +131,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                         }
 
                     case NewUserStatus.ProfileNotExist:
-                        _result.Profile = new Profiles { Userid = _result.User.Userid, Nick = _request.Nick };
+                        _result.Profile = new Profile { Userid = _result.User.Userid, Nick = _request.Nick };
                         db.Profiles.Add(_result.Profile);
                         db.SaveChanges();
                         goto case NewUserStatus.CheckSubProfile;
@@ -140,7 +140,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     //we do nothing here
 
                     case NewUserStatus.CheckSubProfile:
-                        var subProfiles = db.Subprofiles.Where(s => s.Profileid == _result.Profile.Profileid && s.Namespaceid == _request.NamespaceID);
+                        var subProfiles = db.Subprofiles.Where(s => s.ProfileId == _result.Profile.ProfileId && s.Namespaceid == _request.NamespaceID);
                         if (subProfiles.Count() == 0)
                         {
                             goto case NewUserStatus.SubProfileNotExist;
@@ -157,9 +157,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
                     case NewUserStatus.SubProfileNotExist:
                         //we create subprofile and return
-                        _result.SubProfile = new Subprofiles
+                        _result.SubProfile = new Subprofile
                         {
-                            Profileid = _result.Profile.Profileid,
+                            ProfileId = _result.Profile.ProfileId,
                             Uniquenick = _request.Uniquenick,
                             Namespaceid = _request.NamespaceID
                         };

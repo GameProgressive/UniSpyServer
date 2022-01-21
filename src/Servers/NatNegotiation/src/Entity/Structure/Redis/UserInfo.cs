@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         [RedisKey]
         public NatPortType? PortType { get; set; }
         [RedisKey]
-        public uint? Cookie { get; set; }
+        public int? Cookie { get; set; }
         public InitRequest RequestInfo { get; set; }
         public DateTime? LastPacketRecieveTime;
         public int? RetryNATNegotiationTime;

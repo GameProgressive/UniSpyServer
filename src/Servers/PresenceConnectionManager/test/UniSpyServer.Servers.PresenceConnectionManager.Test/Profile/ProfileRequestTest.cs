@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
         {
             var request = new AddBlockRequest(ProfileRequests.AddBlock);
             request.Parse();
-            Assert.Equal((uint)0, request.ProfileID);
+            Assert.Equal((int)0, request.ProfileId);
         }
 
         [Fact]
@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
         {
             var request = new GetProfileRequest(ProfileRequests.GetProfile);
             request.Parse();
-            Assert.Equal((uint)0, request.ProfileID);
+            Assert.Equal((int)0, request.ProfileId);
             Assert.Equal("xxxx", request.SessionKey);
         }
 
@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
             Assert.Equal("xxxx", request.SessionKey);
             Assert.Equal("Spy", request.FirstName);
             Assert.Equal("Guy", request.LastName);
-            Assert.Equal((uint)0, request.ICQUIN);
+            Assert.Equal((int)0, request.ICQUIN);
             Assert.Equal("unispy.org", request.HomePage);
             Assert.Equal("00000", request.ZipCode);
             Assert.Equal("US", request.CountryCode);
@@ -78,7 +78,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
             Assert.Equal(3, request.BirthMonth);
             Assert.Equal(1980, request.BirthYear);
             Assert.Equal(0, request.Sex);
-            Assert.Equal((uint)0, request.PartnerID);
+            Assert.Equal((int)0, request.PartnerID);
             Assert.Equal("spyguy", request.Nick);
             Assert.Equal("spyguy", request.Uniquenick);
         }*/

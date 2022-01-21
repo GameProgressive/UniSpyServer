@@ -6,8 +6,8 @@
         public string Fristname;
         public string Lastname;
         public bool PublicMask;
-        public uint Latitude;
-        public uint Longitude;
+        public int Latitude;
+        public int Longitude;
         public string AimName;
         public int Picture;
         public int Interest1;

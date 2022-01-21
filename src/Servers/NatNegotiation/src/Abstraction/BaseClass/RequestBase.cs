@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public new byte[] RawRequest => (byte[])base.RawRequest;
         public byte Version { get; set; }
-        public uint Cookie { get; set; }
+        public int Cookie { get; set; }
         public new RequestType CommandName { get => (RequestType)base.CommandName; set => base.CommandName = value; }
         public RequestBase(byte[] rawRequest) : base(rawRequest)
         {
@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 
             Version = RawRequest[6];
             CommandName = (RequestType)RawRequest[7];
-            Cookie = BitConverter.ToUInt32(RawRequest.Skip(8).Take(4).ToArray());
+            Cookie = BitConverter.ToInt32(RawRequest.Skip(8).Take(4).ToArray());
         }
     }
 }

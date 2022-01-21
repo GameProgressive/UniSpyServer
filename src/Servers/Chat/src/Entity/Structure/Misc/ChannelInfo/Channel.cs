@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// The maximum number of users that can be in the channel
         /// </summary>
         /// <value></value>
-        public uint MaxNumberUser { get; private set; }
+        public int MaxNumberUser { get; private set; }
         public ChannelMode Mode { get; set; }
         public DateTime CreateTime { get; private set; }
         /// <summary>

@@ -6,7 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -32,12 +32,12 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     foreach (var pid in _request.ProfileIDs)
                     {
                         var result = from n in db.Subprofiles
-                                     where n.Profileid == pid
+                                     where n.ProfileId == pid
                                      && n.Namespaceid == _request.NamespaceID
                                      //select new { uniquenick = n.Uniquenick };
                                      select new OthersListDatabaseModel
                                      {
-                                         ProfileID = n.Profileid,
+                                         ProfileId = n.ProfileId,
                                          Uniquenick = n.Uniquenick
                                      };
 

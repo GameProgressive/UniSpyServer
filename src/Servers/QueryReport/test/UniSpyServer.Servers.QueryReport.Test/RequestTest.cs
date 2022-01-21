@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new AvaliableRequest(rawRequest);
             request.Parse();
             Assert.Equal(PacketType.AvaliableCheck, request.CommandName);
-            Assert.Equal((uint)0, request.InstantKey);
+            Assert.Equal((int)0, request.InstantKey);
         }
         [Fact]
         public void ChallengeTest()
@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new ChallengeRequest(rawRequest);
             request.Parse();
             Assert.Equal(PacketType.Challenge, request.CommandName);
-            Assert.Equal((uint)0, request.InstantKey);
+            Assert.Equal((int)0, request.InstantKey);
         }
         [Fact]
         public void EchoRequest()
@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new EchoRequest(rawRequest);
             request.Parse();
             Assert.Equal(PacketType.Echo, request.CommandName);
-            Assert.Equal((uint)0, request.InstantKey);
+            Assert.Equal((int)0, request.InstantKey);
         }
         [Fact]
         public void HeartBeatTest()
@@ -56,7 +56,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new HeartBeatRequest(rawRequest);
             request.Parse();
             Assert.Equal("gmtest", request.GameName);
-            Assert.Equal((uint)1685528494, request.InstantKey);
+            Assert.Equal((int)1685528494, request.InstantKey);
             Assert.Equal(6, request.PlayerData.Count);
             Assert.Equal(19, request.ServerData.Count);
             Assert.Equal(2, request.TeamData.Count);
@@ -72,7 +72,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             var request = new EchoRequest(rawRequest);
             request.Parse();
             Assert.Equal(PacketType.KeepAlive, request.CommandName);
-            Assert.Equal((uint)0, request.InstantKey);
+            Assert.Equal((int)0, request.InstantKey);
         }
     }
 }

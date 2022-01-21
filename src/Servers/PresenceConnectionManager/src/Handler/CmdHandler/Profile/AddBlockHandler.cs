@@ -4,7 +4,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Pr
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -20,18 +20,18 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new UniSpyContext())
             {
-                if (db.Blocked.Where(b => b.Targetid == _request.ProfileID
+                if (db.Blockeds.Where(b => b.Targetid == _request.ProfileId
                 && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
-                && b.Profileid == _session.UserInfo.BasicInfo.ProfileID).Count() == 0)
+                && b.ProfileId == _session.UserInfo.BasicInfo.ProfileId).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        Profileid = _session.UserInfo.BasicInfo.ProfileID,
-                        Targetid = _request.ProfileID,
+                        ProfileId = _session.UserInfo.BasicInfo.ProfileId,
+                        Targetid = _request.ProfileId,
                         Namespaceid = _session.UserInfo.BasicInfo.NamespaceID
                     };
 
-                    db.Blocked.Update(blocked);
+                    db.Blockeds.Update(blocked);
                 }
             }
         }

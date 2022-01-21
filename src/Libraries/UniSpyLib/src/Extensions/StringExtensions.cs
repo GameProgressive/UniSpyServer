@@ -47,15 +47,22 @@ namespace UniSpyServer.UniSpyLib.Extensions
         {
             using (MD5 Md5 = MD5.Create())
             {
-                if (Encoding == null)
-                {
-                    Encoding = Encoding.UTF8;
-                }
-                var inputBytes = Encoding.GetBytes(input);
-                var hash = Md5.ComputeHash(Encoding.GetBytes(input));
-
-                return Convert.ToHexString(inputBytes);
+                if (Encoding == null) Encoding = Encoding.UTF8;
+                return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
             }
+        }
+        /// <summary>
+        /// Converts the byte array to its Hex string equivlent
+        /// </summary>
+        /// <param name="upperCase">Do we uppercase the hex string?</param>
+        /// <returns></returns>
+        public static string ToHex(this byte[] bytes, bool upperCase = true)
+        {
+            StringBuilder result = new StringBuilder(bytes.Length * 2);
+            for (int i = 0; i < bytes.Length; i++)
+                result.Append(bytes[i].ToString(upperCase ? "X2" : "x2"));
+
+            return result.ToString();
         }
         #region Undisplayable char convert
         /// <summary>

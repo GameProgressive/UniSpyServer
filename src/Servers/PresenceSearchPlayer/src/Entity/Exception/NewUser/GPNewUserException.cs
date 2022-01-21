@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser
     public class GPNewUserException : GPException
     {
 
-        public override string ErrorResponse => $@"\nur\{(uint)ErrorCode}\final\";
+        public override string ErrorResponse => $@"\nur\{(int)ErrorCode}\final\";
         public GPNewUserException() : this("There was an unknown error creating user account.", GPErrorCode.NewUser)
         {
         }

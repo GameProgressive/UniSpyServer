@@ -10,9 +10,9 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
     [RequestContract("getpd")]
     public sealed class GetPlayerDataRequest : RequestBase
     {
-        public uint ProfileID { get; private set; }
+        public int ProfileId { get; private set; }
         public PersistStorageType StorageType { get; private set; }
-        public uint DataIndex { get; private set; }
+        public int DataIndex { get; private set; }
         public List<string> Keys { get; private set; }
         public bool GetAllDataFlag { get; private set; }
         public GetPlayerDataRequest(string rawRequest) : base(rawRequest)
@@ -27,12 +27,12 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 
             if (RequestKeyValues.ContainsKey("pid"))
             {
-                uint profileID;
-                if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
+                int profileID;
+                if (!int.TryParse(RequestKeyValues["pid"], out profileID))
                 {
                     throw new GSException("pid format is incorrect.");
                 }
-                ProfileID = profileID;
+                ProfileId = profileID;
             }
 
             if (RequestKeyValues.ContainsKey("ptype"))
@@ -48,8 +48,8 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 
             if (RequestKeyValues.ContainsKey("dindex"))
             {
-                uint dataIndex;
-                if (!uint.TryParse(RequestKeyValues["dindex"], out dataIndex))
+                int dataIndex;
+                if (!int.TryParse(RequestKeyValues["dindex"], out dataIndex))
                 {
                     throw new GSException("dindex format is incorrect.");
                 }

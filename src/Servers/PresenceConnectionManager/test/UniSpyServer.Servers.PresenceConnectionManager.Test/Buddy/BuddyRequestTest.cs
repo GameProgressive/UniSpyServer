@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Buddy
         {
             var request = new AddBuddyRequest(BuddyRequests.AddBuddy);
             request.Parse();
-            Assert.Equal((uint)0, request.FriendProfileID);
+            Assert.Equal((int)0, request.FriendProfileID);
             Assert.Equal("test", request.Reason);
         }
 
@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Buddy
         {
             var request = new DelBuddyRequest(BuddyRequests.DelBuddy);
             request.Parse();
-            Assert.Equal((uint)0, request.DeleteProfileID);
+            Assert.Equal((int)0, request.DeleteProfileID);
         }
 
         [Fact]
@@ -27,8 +27,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Buddy
         {
             var request = new InviteToRequest(BuddyRequests.InviteTo);
             request.Parse();
-            Assert.Equal((uint)0, request.ProductID);
-            Assert.Equal((uint)0, request.ProfileID);
+            Assert.Equal((int)0, request.ProductID);
+            Assert.Equal((int)0, request.ProfileId);
         }
 
         // TODO:
@@ -37,8 +37,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Buddy
         {
             var request = new StatusInfoRequest(BuddyRequests.StatusInfo);
             request.Parse();
-            Assert.Equal((uint)0, request.ProfileID);
-            Assert.Equal((uint)0, request.NamespaceID);
+            Assert.Equal((int)0, request.ProfileId);
+            Assert.Equal((int)0, request.NamespaceID);
         }*/
 
         [Fact]

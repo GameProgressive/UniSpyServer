@@ -72,7 +72,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             Assert.Equal(ModeRequestType.AddChannelUserLimits, request.RequestType);
             Assert.Equal("#GSP!room!test", request.ChannelName);
             Assert.Equal("+l", request.ModeFlag);
-            Assert.Equal((uint)2, request.LimitNumber);
+            Assert.Equal((int)2, request.LimitNumber);
         }
 
         [Fact]

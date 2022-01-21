@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
 
         public override void Build()
         {
-            SendingBuffer = $@"\nur\\pid\{_result.SubProfile.Profileid}\final\";
+            SendingBuffer = $@"\nur\\pid\{_result.SubProfile.ProfileId}\final\";
         }
     }
 }

@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     [RequestContract("getprofile")]
     public sealed class GetProfileRequest : RequestBase
     {
-        public uint ProfileID { get; private set; }
+        public int ProfileId { get; private set; }
         public string SessionKey { get; private set; }
         public GetProfileRequest(string rawRequest) : base(rawRequest)
         {
@@ -22,12 +22,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 throw new GPParseException("profileid is missing");
             }
 
-            uint profileID;
-            if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
+            int profileID;
+            if (!int.TryParse(RequestKeyValues["profileid"], out profileID))
             {
                 throw new GPParseException("profileid format is incorrect");
             }
-            ProfileID = profileID;
+            ProfileId = profileID;
 
             if (!RequestKeyValues.ContainsKey("sesskey"))
             {

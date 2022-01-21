@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
         public string Password { get; private set; }
         public string Email { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public bool IsRequireUniqueNicks { get; private set; }
 
         public override void Parse()
@@ -46,8 +46,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
             {
-                uint namespaceID;
-                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+                int namespaceID;
+                if (!int.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     throw new GPParseException("namespaceid is incorrect.");
                 }

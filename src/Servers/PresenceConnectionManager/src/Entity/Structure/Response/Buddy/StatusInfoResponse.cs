@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
         public override void Build()
         {
             SendingBuffer = $@"bsi\\state\{_result.StatusInfo.StatusState}\
-                profile\{_result.ProfileID}\bip\{_result.StatusInfo.BuddyIP}
+                profile\{_result.ProfileId}\bip\{_result.StatusInfo.BuddyIP}
                 hostIp\{_result.StatusInfo}\
                 hprivIp\{_result.StatusInfo.HostPrivateIP}\qport\{_result.StatusInfo.QueryReportPort}\
                 hport\{_result.StatusInfo.HostPort}\sessflags\{_result.StatusInfo.SessionFlags}\

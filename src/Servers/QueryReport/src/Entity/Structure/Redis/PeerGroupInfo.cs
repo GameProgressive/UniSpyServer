@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
     public class PeerGroupInfo
     {
         public string GameName { get; protected set; }
-        public uint GameID { get; protected set; }
+        public int GameID { get; protected set; }
         public List<PeerRoomInfo> PeerRooms { get; protected set; }
 
         public PeerGroupInfo()

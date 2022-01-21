@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     public sealed class DelBuddyRequest : RequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
-        public uint DeleteProfileID { get; private set; }
+        public int DeleteProfileID { get; private set; }
         public DelBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -25,8 +25,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 throw new GPParseException("delprofileid is missing.");
             }
 
-            uint deleteProfileID;
-            if (!uint.TryParse(RequestKeyValues["delprofileid"], out deleteProfileID))
+            int deleteProfileID;
+            if (!int.TryParse(RequestKeyValues["delprofileid"], out deleteProfileID))
             {
                 throw new GPParseException("delprofileid format is incorrect.");
             }

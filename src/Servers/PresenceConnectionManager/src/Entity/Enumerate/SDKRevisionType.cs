@@ -1,7 +1,7 @@
 ﻿
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate
 {
-    public enum SDKRevisionType : uint
+    public enum SDKRevisionType : int
     {
         Unknown = 0,
         /// <summary>

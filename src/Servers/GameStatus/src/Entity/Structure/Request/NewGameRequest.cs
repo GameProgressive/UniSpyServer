@@ -10,8 +10,8 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
     {
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string Challenge { get; private set; }
-        public uint? ConnectionID { get; private set; }
-        public uint? SessionKey { get; private set; }
+        public int? ConnectionID { get; private set; }
+        public int? SessionKey { get; private set; }
         public NewGameRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -22,10 +22,10 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             {
                 throw new GSException("sesskey is missing.");
             }
-            uint sessKey;
-            if (!uint.TryParse(RequestKeyValues["sesskey"], out sessKey))
+            int sessKey;
+            if (!int.TryParse(RequestKeyValues["sesskey"], out sessKey))
             {
-                throw new GSException("sesskey is not a valid uint.");
+                throw new GSException("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
 
@@ -41,8 +41,8 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             }
             else
             {
-                uint connectionID;
-                if (!uint.TryParse(RequestKeyValues["connid"], out connectionID))
+                int connectionID;
+                if (!int.TryParse(RequestKeyValues["connid"], out connectionID))
                 {
                     throw new GSException("connid format is incorrect.");
                 }

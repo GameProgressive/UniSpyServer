@@ -195,7 +195,7 @@
         NewStatusInfoNotSupported = 0xC01
     }
 
-    public enum GPSPResult : uint
+    public enum GPSPResult : int
     {
         NoError,
         MemoryError,

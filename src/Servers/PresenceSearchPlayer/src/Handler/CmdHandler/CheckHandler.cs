@@ -8,7 +8,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -44,11 +44,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                              where u.Email.Equals(_request.Email)
                              && u.Password.Equals(_request.Password)
                              && p.Nick.Equals(_request.Nick)
-                             select p.Profileid;
+                             select p.ProfileId;
 
                 if (result.Count() == 1)
                 {
-                    _result.ProfileID = result.First();
+                    _result.ProfileId = result.First();
                 }
                 else
                 {

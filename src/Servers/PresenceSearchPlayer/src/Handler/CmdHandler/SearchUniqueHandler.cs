@@ -7,7 +7,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -32,13 +32,13 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     foreach (var id in _request.Namespaces)
                     {
                         var result = from p in db.Profiles
-                                     join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                     join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                      join u in db.Users on p.Userid equals u.Userid
                                      where n.Uniquenick == _request.Uniquenick
                                      && n.Namespaceid == id
                                      select new SearchUniqueDatabaseModel
                                      {
-                                         Profileid = n.Profileid,
+                                         ProfileId = n.ProfileId,
                                          Nick = p.Nick,
                                          Uniquenick = n.Uniquenick,
                                          Email = u.Email,

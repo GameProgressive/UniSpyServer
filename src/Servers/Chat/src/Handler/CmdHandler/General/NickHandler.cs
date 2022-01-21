@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         {
             base.RequestCheck();
             string newNickName = _request.NickName;
-            uint count = 0;
+            int count = 0;
             if (ServerFactory.Server.SessionManager.SessionPool.Values.
                    Where(s => ((Session)s).UserInfo.NickName == newNickName)
                    .Count() == 1)

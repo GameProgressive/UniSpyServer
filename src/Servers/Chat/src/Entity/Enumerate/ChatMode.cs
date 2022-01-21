@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.Chat.Entity.Structure
 {
-    public enum ChatMode : uint
+    public enum ChatMode : int
     {
         End = 0,
         Ban = 1,

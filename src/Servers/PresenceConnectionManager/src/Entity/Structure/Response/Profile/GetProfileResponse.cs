@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
         }
         public override void Build()
         {
-            SendingBuffer = @"\pi\\profileid\" + _result.UserProfile.ProfileID;
+            SendingBuffer = @"\pi\\profileid\" + _result.UserProfile.ProfileId;
             SendingBuffer += @"\nick\" + _result.UserProfile.Nick;
             SendingBuffer += @"\uniquenick\" + _result.UserProfile.UniqueNick;
             SendingBuffer += @"\email\" + _result.UserProfile.Email;

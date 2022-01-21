@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
     [RequestContract(RequestType.ClientMessage)]
     public sealed class ClientMessageRequest : RequestBase
     {
-        public new uint InstantKey{ get => base.InstantKey; set => base.InstantKey = value; }
+        public new int InstantKey{ get => base.InstantKey; set => base.InstantKey = value; }
         public ClientMessageRequest(byte[] rawRequest) : base(rawRequest)
         {
         }

@@ -7,7 +7,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 /////////////////////////Finished?/////////////////////////////////
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 {
                     var result = from u in db.Users
                                  join p in db.Profiles on u.Userid equals p.Userid
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  where u.Email == _request.Email
                                  && u.Password == _request.Password
                                  && n.Namespaceid == _request.NamespaceID

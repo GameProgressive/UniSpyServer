@@ -11,9 +11,9 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
     {
         public string Certificate { get; set; }
         public string Proof { get; set; }
-        public uint CsId { get; set; }
-        public uint CcId { get; set; }
-        public uint GameId { get; set; }
+        public int CsId { get; set; }
+        public int CcId { get; set; }
+        public int GameId { get; set; }
         public string Authoritative { get; set; }
         public SetReportIntentionRequest(string rawRequest) : base(rawRequest)
         {
@@ -26,11 +26,11 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
             var proof = _contentElement.Descendants().Where(p => p.Name.LocalName == "proof").First().Value;
             Proof = proof;
             var csid = _contentElement.Descendants().Where(p => p.Name.LocalName == "csid").First().Value;
-            CsId = uint.Parse(csid);
+            CsId = int.Parse(csid);
             var ccid = _contentElement.Descendants().Where(p => p.Name.LocalName == "ccid").First().Value;
-            CcId = uint.Parse(ccid);
+            CcId = int.Parse(ccid);
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
-            GameId = uint.Parse(gameid);
+            GameId = int.Parse(gameid);
             var authoritative = _contentElement.Descendants().Where(p => p.Name.LocalName == "authoritative").First().Value;
             Authoritative = authoritative;
         }

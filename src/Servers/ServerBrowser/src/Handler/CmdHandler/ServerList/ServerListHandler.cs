@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;

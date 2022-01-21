@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
     {
         [RedisKey]
         public string GameName { get; set; }
-        public uint GameID { get; protected set; }
+        public int GameID { get; protected set; }
         public List<PeerRoomInfo> PeerRooms { get; protected set; }
 
         public PeerGroupInfo2() : base(expireTime: null)
@@ -20,22 +20,22 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
     }
     public class PeerRoomInfo
     {
-        public uint GroupID { get; set; }
+        public int GroupID { get; set; }
         public string HostName { get; set; }
-        public uint NumberOfWaitingPlayers { get; set; }
-        public uint MaxNumberOfWaitingPlayers { get; set; }
-        public uint NumberOfServers { get; set; }
-        public uint NumberOfPlayers { get; set; }
-        public uint MaxNumberOfPlayers { get; set; }
+        public int NumberOfWaitingPlayers { get; set; }
+        public int MaxNumberOfWaitingPlayers { get; set; }
+        public int NumberOfServers { get; set; }
+        public int NumberOfPlayers { get; set; }
+        public int MaxNumberOfPlayers { get; set; }
         public string Password { get; set; }
-        public uint NumberOfGames { get; set; }
-        public uint NumberOfPlayingPlayers { get; set; }
+        public int NumberOfGames { get; set; }
+        public int NumberOfPlayingPlayers { get; set; }
         public DateTime UpdateTime;
 
         public PeerRoomInfo(Grouplist groupList)
         {
             UpdateTime = DateTime.Now;
-            GroupID = groupList.GroupID;
+            GroupID = groupList.Groupid;
             HostName = groupList.Roomname;
             NumberOfWaitingPlayers = 0;
             MaxNumberOfWaitingPlayers = 200;

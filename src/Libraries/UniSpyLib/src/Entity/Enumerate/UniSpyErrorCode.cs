@@ -1,6 +1,6 @@
 namespace UniSpyServer.UniSpyLib.Entity.Enumerate
 {
-    public enum UniSpyErrorCode : uint
+    public enum UniSpyErrorCode : int
     {
         // General.
         ///////////

@@ -6,7 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 //last one we search with email this may get few profile so we can not return GPErrorCode
 //SearchWithEmail(client,dict );
 //\search\\sesskey\0\profileid\0\namespaceid\1\partnerid\0\nick\mycrysis\uniquenick\xiaojiuwo\email\koujiangheng@live.cn\gamename\gmtest\final\
@@ -39,13 +39,13 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 {
                     case SearchRequestType.NickSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  join u in db.Users on p.Userid equals u.Userid
                                  where p.Nick == _request.Nick
                                  //&& n.Namespaceid == _request.NamespaceID
                                  select new SearchDataBaseModel
                                  {
-                                     Profileid = n.Profileid,
+                                     ProfileId = n.ProfileId,
                                      Nick = p.Nick,
                                      Uniquenick = n.Uniquenick,
                                      Email = u.Email,
@@ -57,7 +57,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
                     case SearchRequestType.NickEmailSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  join u in db.Users on p.Userid equals u.Userid
                                  where p.Nick == _request.Nick && u.Email == _request.Email
                                  //&& n.Namespaceid == _request.NamespaceID
@@ -65,7 +65,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                                  //&& n.Partnerid == _request.PartnerID
                                  select new SearchDataBaseModel
                                  {
-                                     Profileid = n.Profileid,
+                                     ProfileId = n.ProfileId,
                                      Nick = p.Nick,
                                      Uniquenick = n.Uniquenick,
                                      Email = u.Email,
@@ -77,7 +77,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
                     case SearchRequestType.UniquenickNamespaceIDSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  join u in db.Users on p.Userid equals u.Userid
                                  where n.Uniquenick == _request.Uniquenick
                                  && n.Namespaceid == _request.NamespaceID
@@ -85,7 +85,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                                  //&& n.Partnerid == _request.PartnerID
                                  select new SearchDataBaseModel
                                  {
-                                     Profileid = n.Profileid,
+                                     ProfileId = n.ProfileId,
                                      Nick = p.Nick,
                                      Uniquenick = n.Uniquenick,
                                      Email = u.Email,
@@ -96,12 +96,12 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                         break;
                     case SearchRequestType.EmailSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  join u in db.Users on p.Userid equals u.Userid
                                  where u.Email == _request.Email
                                  select new SearchDataBaseModel
                                  {
-                                     Profileid = n.Profileid,
+                                     ProfileId = n.ProfileId,
                                      Nick = p.Nick,
                                      Uniquenick = n.Uniquenick,
                                      Email = u.Email,

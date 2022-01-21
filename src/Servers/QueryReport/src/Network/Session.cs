@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.QueryReport.Network
 {
     public sealed class Session : UniSpyUdpSession
     {
-        public uint InstantKey { get; set; }
+        public int InstantKey { get; set; }
         public Session(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }

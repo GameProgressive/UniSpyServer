@@ -1,7 +1,5 @@
-using System;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Extensions;
 using Xunit;
 
 namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test

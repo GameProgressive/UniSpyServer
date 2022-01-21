@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
 
             foreach (var info in _result.DatabaseResults)
             {
-                SendingBuffer += @"\o\" + info.Profileid;
+                SendingBuffer += @"\o\" + info.ProfileId;
                 SendingBuffer += @"\nick\" + info.Nick;
                 SendingBuffer += @"\uniquenick\" + info.Uniquenick;
                 SendingBuffer += @"\first\" + info.Firstname;

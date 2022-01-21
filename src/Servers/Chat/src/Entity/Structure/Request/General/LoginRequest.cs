@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         }
 
         public LoginReqeustType ReqeustType { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public int NamespaceID { get; private set; }
         public string NickName { get; private set; }
         public string Email { get; private set; }
         public string UniqueNick { get; private set; }
@@ -27,8 +27,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-            uint namespaceid;
-            if (!uint.TryParse(_cmdParams[0], out namespaceid))
+            int namespaceid;
+            if (!int.TryParse(_cmdParams[0], out namespaceid))
             {
                 throw new Exception.Exception("The namespaceid format is incorrect.");
             }

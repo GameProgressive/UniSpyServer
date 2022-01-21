@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.UniSpyLib.Config;
 using System.Linq;
 using System.Collections.Generic;

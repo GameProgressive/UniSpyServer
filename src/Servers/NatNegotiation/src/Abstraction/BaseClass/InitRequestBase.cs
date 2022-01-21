@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             UseGamePort = RawRequest[14];
             var ipBytes = RawRequest.Skip(15).Take(4).ToArray();
             var portBytes = RawRequest.Skip(19).Take(2).ToArray();
-            var port = BitConverter.ToUInt16(portBytes);
+            var port = BitConverter.ToInt16(portBytes);
             RemoteIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
         }
     }

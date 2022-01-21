@@ -2,7 +2,7 @@
 {
     public sealed class GSPlayerInfo
     {
-        public uint SessionKey;
+        public int SessionKey;
         public string GameName;
     }
 }

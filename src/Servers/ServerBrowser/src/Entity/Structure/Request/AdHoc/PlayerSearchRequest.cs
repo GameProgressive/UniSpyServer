@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
     {
         public int SearchOption { get; private set; }
         public new int CommandName => SearchOption;
-        public uint MaxResults { get; private set; }
+        public int MaxResults { get; private set; }
         public string SearchName { get; private set; }
         public string Message { get; private set; }
 
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         {
             base.Parse();
             SearchOption = Convert.ToInt16(RawRequest.Skip(3).Take(4).ToArray());
-            MaxResults = Convert.ToUInt16(RawRequest.Skip(7).Take(4).ToArray());
+            MaxResults = Convert.ToInt16(RawRequest.Skip(7).Take(4).ToArray());
 
             int nameLength = BitConverter.ToInt32(RawRequest.Skip(11).Take(4).ToArray());
             SearchName = UniSpyEncoding.GetString(RawRequest.Skip(15).Take(nameLength).ToArray());

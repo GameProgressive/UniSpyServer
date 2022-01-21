@@ -14,8 +14,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public bool IsGetStatusInfo { get; set; }
 
         #region Get buddy status info
-        public uint ProfileID { get; set; }
-        public uint NamespaceID { get; set; }
+        public int ProfileId { get; set; }
+        public int NamespaceID { get; set; }
         #endregion
         public PCMUserStatusInfo StatusInfo { get; private set; }
 
@@ -64,8 +64,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             }
             StatusInfo.HostPort = hport;
 
-            uint sessflags;
-            if (!uint.TryParse(RequestKeyValues["sessflags"], out sessflags))
+            int sessflags;
+            if (!int.TryParse(RequestKeyValues["sessflags"], out sessflags))
             {
                 throw new GPParseException("sessflags format is incorrect.");
             }

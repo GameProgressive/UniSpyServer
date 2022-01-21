@@ -6,7 +6,7 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
@@ -54,7 +54,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                              select new
                              {
                                  userid = u.Userid,
-                                 profileid = p.Profileid,
+                                 profileid = p.ProfileId,
                                  emailVerified = u.Emailverified,
                                  banned = u.Banned
                              };
@@ -63,7 +63,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 {
                     throw new Exception($"Can not find user with nickname:{_request.NickName} in database.");
                 }
-                _result.ProfileID = result.First().profileid;
+                _result.ProfileId = result.First().profileid;
                 _result.UserID = result.First().userid;
             }
         }
@@ -72,14 +72,14 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             using (var db = new UniSpyContext())
             {
                 var result = from n in db.Subprofiles
-                             join p in db.Profiles on n.Profileid equals p.Profileid
+                             join p in db.Profiles on n.ProfileId equals p.ProfileId
                              join u in db.Users on p.Userid equals u.Userid
                              where n.Uniquenick == _request.UniqueNick
                              && n.Namespaceid == _request.NamespaceID
                              select new
                              {
                                  userid = u.Userid,
-                                 profileid = p.Profileid,
+                                 profileid = p.ProfileId,
                                  uniquenick = n.Uniquenick,
                                  emailVerified = u.Emailverified,
                                  banned = u.Banned
@@ -88,7 +88,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 {
                     throw new Exception($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
                 }
-                _result.ProfileID = result.First().profileid;
+                _result.ProfileId = result.First().profileid;
                 _result.UserID = result.First().userid;
             }
         }

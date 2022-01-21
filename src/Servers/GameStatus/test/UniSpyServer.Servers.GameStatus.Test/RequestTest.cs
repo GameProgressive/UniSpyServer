@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             request.Parse();
             Assert.Equal("crysis2", request.GameName);
             Assert.Equal(30, request.Port);
-            Assert.Equal((uint)1, request.OperationID);
+            Assert.Equal((int)1, request.OperationID);
         }
         [Fact]
         public void AuthGameTest()
@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             request.Parse();
             Assert.Equal("gmtest", request.GameName);
             Assert.Equal(0, request.Port);
-            Assert.Equal((uint)1, request.OperationID);
+            Assert.Equal((int)1, request.OperationID);
         }
         [Fact]
         public void GetPlayerDataTest()
@@ -32,9 +32,9 @@ namespace UniSpyServer.Servers.GameStatus.Test
             var raw = @"\getpd\\pid\0\ptype\0\dindex\1\keys\hello" + "\x1" + @"hi\lid\1";
             var request = new GetPlayerDataRequest(raw);
             request.Parse();
-            Assert.Equal((uint)0, request.ProfileID);
+            Assert.Equal((int)0, request.ProfileId);
             Assert.Equal(PersistStorageType.PrivateRO, request.StorageType);
-            Assert.Equal((uint)1, request.DataIndex);
+            Assert.Equal((int)1, request.DataIndex);
             Assert.Equal(2, request.Keys.Count);
             Assert.Equal("hello", request.Keys[0]);
             Assert.Equal("hi", request.Keys[1]);
@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             request.Parse();
             Assert.Equal("xiaojiuwo", request.Nick);
             Assert.Equal("00000", request.KeyHash);
-            Assert.Equal((uint)1, request.OperationID);
+            Assert.Equal((int)1, request.OperationID);
         }
         [Fact]
         public void NewGameTest()
@@ -55,17 +55,17 @@ namespace UniSpyServer.Servers.GameStatus.Test
             var raw = @"\newgame\\connid\123\sesskey\123456\lid\1";
             var request = new NewGameRequest(raw);
             request.Parse();
-            Assert.Equal((uint)123, request.ConnectionID);
-            Assert.Equal((uint)123456, request.SessionKey);
-            Assert.Equal((uint)1, request.OperationID);
+            Assert.Equal((int)123, request.ConnectionID);
+            Assert.Equal((int)123456, request.SessionKey);
+            Assert.Equal((int)1, request.OperationID);
 
             raw = @"\newgame\\connid\123\sesskey\123456\challenge\123456789\lid\1";
             request = new NewGameRequest(raw);
             request.Parse();
-            Assert.Equal((uint)123, request.ConnectionID);
-            Assert.Equal((uint)123456, request.SessionKey);
+            Assert.Equal((int)123, request.ConnectionID);
+            Assert.Equal((int)123456, request.SessionKey);
             Assert.Equal("123456789", request.Challenge);
-            Assert.Equal((uint)1, request.OperationID);
+            Assert.Equal((int)1, request.OperationID);
         }
         [Fact]
         public void SetPlayerDataTest()
@@ -73,10 +73,10 @@ namespace UniSpyServer.Servers.GameStatus.Test
             var raw = @"\setpd\\pid\123\ptype\0\dindex\1\kv\%d\lid\1\length\5\data\11\lid\1";
             var request = new SetPlayerDataRequest(raw);
             request.Parse();
-            Assert.Equal((uint)123, request.ProfileID);
+            Assert.Equal((int)123, request.ProfileId);
             Assert.Equal(PersistStorageType.PrivateRO, request.StorageType);
-            Assert.Equal((uint)1, request.DataIndex);
-            Assert.Equal((uint)5, request.Length);
+            Assert.Equal((int)1, request.DataIndex);
+            Assert.Equal((int)5, request.Length);
 
         }
         [Fact]
@@ -85,7 +85,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             var raw = @"\updgame\\sesskey\0\done\1\gamedata\hello\lid\1";
             var request = new UpdateGameRequest(raw);
             request.Parse();
-            Assert.Equal((uint)0, request.SessionKey);
+            Assert.Equal((int)0, request.SessionKey);
             Assert.Equal(true, request.IsDone);
             Assert.Equal("hello", request.GameData);
             Assert.Null(request.ConnectionID);
@@ -94,10 +94,10 @@ namespace UniSpyServer.Servers.GameStatus.Test
             raw = @"\updgame\\sesskey\0\connid\1\done\1\gamedata\hello\lid\1";
             request = new UpdateGameRequest(raw);
             request.Parse();
-            Assert.Equal((uint)0, request.SessionKey);
+            Assert.Equal((int)0, request.SessionKey);
             Assert.Equal(true, request.IsDone);
             Assert.Equal("hello", request.GameData);
-            Assert.Equal((uint)1, request.ConnectionID);
+            Assert.Equal((int)1, request.ConnectionID);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck() { }
         protected override void DataOperation()
         {
             if (_session.UserInfo.SDKRevision.IsSupportGPINewListRetrevalOnLogin)

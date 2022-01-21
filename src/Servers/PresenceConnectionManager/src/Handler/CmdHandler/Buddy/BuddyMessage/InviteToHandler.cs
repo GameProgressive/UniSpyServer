@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             var session = ServerFactory.Server.SessionManager.SessionPool.Values.Where(
                 u => ((Session)u).UserInfo.BasicInfo.ProductID == _request.ProductID
-                && ((Session)u).UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
+                && ((Session)u).UserInfo.BasicInfo.ProfileId == _request.ProfileId).FirstOrDefault();
 
             //user is offline
             if (session == null)

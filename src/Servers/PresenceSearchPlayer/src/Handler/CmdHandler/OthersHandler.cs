@@ -7,7 +7,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -33,19 +33,19 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from b in db.Friends
-                                 where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID
+                                 where b.ProfileId == _request.ProfileId && b.Namespaceid == _request.NamespaceID
                                  select b.Targetid;
 
                     foreach (var info in result)
                     {
                         var b = from p in db.Profiles
-                                join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                 join u in db.Users on p.Userid equals u.Userid
                                 where n.Namespaceid == _request.NamespaceID
-                                && n.Profileid == info && n.Gamename == _request.GameName
+                                && n.ProfileId == info && n.Gamename == _request.GameName
                                 select new OthersDatabaseModel
                                 {
-                                    Profileid = p.Profileid,
+                                    ProfileId = p.ProfileId,
                                     Nick = p.Nick,
                                     Uniquenick = n.Uniquenick,
                                     Lastname = p.Lastname,

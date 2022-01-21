@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
 {
     public sealed class CheckResult : ResultBase
     {
-        public uint ProfileID { get; set; }
+        public int ProfileId { get; set; }
         public CheckResult()
         {
         }

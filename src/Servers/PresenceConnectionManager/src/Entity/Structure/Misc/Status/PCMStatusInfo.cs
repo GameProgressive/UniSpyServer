@@ -11,7 +11,7 @@
         public string HostPrivateIP { get; set; }
         public int? QueryReportPort { get; set; }
         public int? HostPort { get; set; }
-        public uint? SessionFlags { get; set; }
+        public int? SessionFlags { get; set; }
         public string RichStatus { get; set; }
         public string GameType { get; set; }
         public string GameVariant { get; set; }
