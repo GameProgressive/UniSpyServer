@@ -1,14 +1,15 @@
 {
-  "DataBase": {
-    "RemoteAddress": "127.0.0.1",
-    "RemotePort": "5432",
-    "UserName": "root",
+  "Database": {
+    "Server": "127.0.0.1",
+    "Port": "5432",
+    "Database": "unispy",
+    "Username": "root",
     "Password": "0000",
-    "DatabaseName": "unispy",
-    "SslMode": "Preferred",
-    "SslCert": "",
-    "SslKey": "",
-    "SslCa": ""
+    "SSLMode": "Prefer",
+    "TrustServerCert": "false",
+    "SSLKey": "",
+    "SSLPassword": "",
+    "RootCert": ""
   },
   "Redis": {
     "RemoteAddress": "127.0.0.1",

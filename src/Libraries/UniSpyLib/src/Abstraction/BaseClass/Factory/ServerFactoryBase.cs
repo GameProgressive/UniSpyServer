@@ -93,7 +93,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
                 throw new Exception($"Can not connect to {dbConfig.Type}!", e);
             }
 
-            Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.RemoteAddress}:{dbConfig.RemotePort}");
+            Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.Server}:{dbConfig.Port}");
         }
         protected static void ShowUniSpyLogo()
         {

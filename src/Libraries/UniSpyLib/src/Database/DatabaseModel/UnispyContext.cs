@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 {
@@ -33,7 +31,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Host=101.34.72.231;Database=unispy;Username=unispy;Password=0000");
+                optionsBuilder.UseNpgsql(ConfigManager.Config.Database.ConnectionString);
             }
         }
 

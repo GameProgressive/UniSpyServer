@@ -2,7 +2,6 @@
 {
     public enum DatabaseType
     {
-        MySql,
         PostgreSql
     }
 }

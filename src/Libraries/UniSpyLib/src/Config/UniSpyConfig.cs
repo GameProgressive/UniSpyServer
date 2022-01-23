@@ -16,21 +16,29 @@ namespace UniSpyServer.UniSpyLib.Config
     public class UniSpyDatabaseConfig
     {
         public string ConnectionString =>
-                    $"Host={RemoteAddress};"
-                    + $"Database={DatabaseName};"
-                    + $"Username={UserName};"
+                    $"Server={Server};"
+                    + $"Port={Port};"
+                    + $"Database={Database};"
+                    + $"Username={Username};"
                     + $"Password={Password};"
-                    + $"Port={RemotePort};";
+                    + $"SSL Mode={SSLMode};"
+                    + $"Trust Server Certificate={TrustServerCert};"
+                    + $"SSL Certificate={SSLCert};"
+                    + $"SSL Key={SSLKey};"
+                    + $"SSL Password={SSLPassword};"
+                    + $"Root Certificate={RootCert};";
         public DatabaseType Type;
-        public string RemoteAddress;
-        public int RemotePort;
-        public string UserName;
+        public string Server;
+        public int Port;
+        public string Database;
+        public string Username;
         public string Password;
-        public string DatabaseName;
-        public string SslMode;
-        public string SslCert;
-        public string SslKey;
-        public string SslCa;
+        public string SSLMode;
+        public bool TrustServerCert;
+        public string SSLCert;
+        public string SSLKey;
+        public string SSLPassword;
+        public string RootCert;
     }
     public class UniSpyRedisConfig
     {
