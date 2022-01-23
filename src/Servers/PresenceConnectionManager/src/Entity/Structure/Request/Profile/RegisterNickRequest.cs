@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     {
         public string UniqueNick { get; private set; }
         public string SessionKey { get; private set; }
-        public string PartnerId { get; private set; }
+        public int PartnerId { get; private set; }
         public RegisterNickRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -30,11 +30,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             }
             UniqueNick = RequestKeyValues["uniquenick"];
 
-            if (!RequestKeyValues.ContainsKey("partnerid"))
+            int partnerID;
+            if (!int.TryParse(RequestKeyValues["partnerid"], out partnerID))
             {
                 throw new GPParseException("partnerid is missing");
             }
-            PartnerId = RequestKeyValues["partnerid"];
+            PartnerId = partnerID;
         }
     }
 }

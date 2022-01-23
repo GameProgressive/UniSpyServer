@@ -1,8 +1,8 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.General;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test.General
+namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
     public class GeneralRequestTest
     {

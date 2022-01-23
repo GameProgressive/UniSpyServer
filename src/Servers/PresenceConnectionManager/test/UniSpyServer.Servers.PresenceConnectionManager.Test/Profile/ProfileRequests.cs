@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
+namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
     public static class ProfileRequests
     {
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
 
         public const string RegisterCDKey = @"\registercdkey\\sesskey\xxxx\cdkeyenc\xxxx\id\1\final\";
 
-        public const string RegisterNick = @"\registernick\\sesskey\xxxx\uniquenick\spyguy\id\1\final\";
+        public const string RegisterNick = @"\registernick\\sesskey\xxxx\uniquenick\spyguy\partnerid\0\id\1\final\";
 
         //public const string UpdatePro = @"\updatepro\\sesskey\xxxx\firstname\Spy\lastname\Guy\icquin\0\homepage\unispy.org\zipcode\00000\countrycode\US\birthday\335742908\sex\0\aim\spyguy@aim.com\pic\0\occ\0\ind\0\inc\0\mar\0\chc\0\i1\0\nick\spyguy\uniquenick\spyguy\publicmask\0\partnerid\0\final\";
 

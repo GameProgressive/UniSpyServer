@@ -1,8 +1,8 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
+namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
     public class ProfileRequestTest
     {
@@ -58,6 +58,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Profile
             request.Parse();
             Assert.Equal("xxxx", request.SessionKey);
             Assert.Equal("spyguy", request.UniqueNick);
+            Assert.Equal((int)0, request.PartnerId);
         }
 
         //TODO: publicmasks doesn't work

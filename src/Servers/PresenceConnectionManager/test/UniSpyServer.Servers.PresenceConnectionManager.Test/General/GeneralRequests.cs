@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test.General
+namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
     public static class GeneralRequests
     {
