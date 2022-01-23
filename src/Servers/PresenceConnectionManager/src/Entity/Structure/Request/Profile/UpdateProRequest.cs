@@ -5,7 +5,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("updatepro")]
     public sealed class UpdateProRequest : RequestBase

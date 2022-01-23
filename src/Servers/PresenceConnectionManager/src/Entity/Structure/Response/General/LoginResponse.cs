@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.General;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;

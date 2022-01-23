@@ -4,7 +4,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
 {
     /// <summary>
     /// Update a user's status information
@@ -23,7 +23,6 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public override void Parse()
         {
             base.Parse();
-
 
             if (!RequestKeyValues.ContainsKey("status"))
                 throw new GPParseException("status is missing.");

@@ -1,15 +1,15 @@
-﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.General;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using System;
-using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
