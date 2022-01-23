@@ -1,7 +1,7 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
 {
@@ -20,9 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
             return IRCReplyBuilder.Build(
                 ResponseName.Welcome,
                 cmdParams: nickName,
-                tailing: "Welcome to RetrosSpy!");
+                tailing: "Welcome to UniSpy!");
         }
-
-
     }
 }
