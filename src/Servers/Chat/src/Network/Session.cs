@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Network
         {
             if (UserInfo.IsUsingEncryption)
             {
-                return ChatCrypt.Handle(UserInfo.ClientCTX, buffer);
+                return ChatCrypt.Handle(UserInfo.ServerCTX, buffer);
             }
             else
             {
