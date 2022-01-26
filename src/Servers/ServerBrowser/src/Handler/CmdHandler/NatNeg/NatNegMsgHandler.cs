@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private AdHocRequest _adHocRequest;
         private NatNegCookie _natNegCookie;
-        private GameServerInfo2 _gameServer;
+        private GameServerInfo _gameServer;
         public NatNegMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

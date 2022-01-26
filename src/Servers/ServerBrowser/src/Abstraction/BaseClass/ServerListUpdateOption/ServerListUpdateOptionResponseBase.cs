@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             _serverListData.AddRange(cryptHeader);
         }
         protected abstract void BuildServersInfo();
-        protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo2 serverInfo)
+        protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
             List<byte> header = new List<byte>();
             //add key flag
@@ -59,7 +59,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 
             _serverListData.AddRange(header);
         }
-        protected void CheckPrivateIP(List<byte> header, GameServerInfo2 server)
+        protected void CheckPrivateIP(List<byte> header, GameServerInfo server)
         {
             string localIP = "";
             // now we check if there are private ip
@@ -79,7 +79,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 header.AddRange(bytesAddress);
             }
         }
-        protected void CheckNonStandardPort(List<byte> header, GameServerInfo2 server)
+        protected void CheckNonStandardPort(List<byte> header, GameServerInfo server)
         {
             ///only dedicated server have different query report port and host port
             ///the query report port and host port are the same on peer server
@@ -96,7 +96,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 }
             }
         }
-        protected void CheckPrivatePort(List<byte> header, GameServerInfo2 server)
+        protected void CheckPrivatePort(List<byte> header, GameServerInfo server)
         {
             // we check private port here
             if (server.ServerData.ContainsKey("privateport"))
@@ -109,7 +109,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 }
             }
         }
-        protected void CheckICMPSupport(List<byte> header, GameServerInfo2 server)
+        protected void CheckICMPSupport(List<byte> header, GameServerInfo server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
             byte[] address = server.RemoteQueryReportIPEndPoint.Address.GetAddressBytes();

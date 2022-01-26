@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result
 {
     public sealed class ServerInfoResult : ServerListUpdateOptionResultBase
     {
-        public GameServerInfo2 GameServerInfo { get; set; }
+        public GameServerInfo GameServerInfo { get; set; }
         public ServerInfoResult()
         {
         }

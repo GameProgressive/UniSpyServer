@@ -7,7 +7,6 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerList
 {
@@ -38,7 +37,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
                 foreach (var key in _request.Keys)
                 {
                     _serverListData.Add(StringFlag.NTSStringFlag);
-                    var value = room.GetValuebyGameSpyDefinedName(key);
+                    var value = room.GetValuebyGameName(key);
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(value));
                     _serverListData.Add(StringFlag.StringSpliter);
                 }

@@ -1,40 +1,41 @@
-﻿using Newtonsoft.Json;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.ReportData;
 using System;
+using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
+using UniSpyServer.LinqToRedis;
+using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
 {
-    /// <summary>
-    /// This is the server 
-    /// </summary>
-    public class GameServerInfo
+    public record GameServerInfo : LinqToRedis.RedisKeyValueObject
     {
-        /// <summary>
-        /// Last valid heart beat packet time
-        /// </summary>
+        [RedisKey]
+        public Guid? ServerID { get; set; }
+        [RedisKey]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint RemoteIPEndPoint { get; set; }
+        [RedisKey]
+        public int? InstantKey { get; set; }
+        [RedisKey]
+        public string GameName { get; set; }
         public DateTime LastPacketReceivedTime { get; set; }
         public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
-        public int InstantKey { get; set; }
-        public ServerData ServerData { get; set; }
-        public PlayerData PlayerData { get; set; }
-        public TeamData TeamData { get; set; }
-
-        public GameServerInfo()
+        public GameServerStatus ServerStatus;
+        public Dictionary<string, string> ServerData { get; set; }
+        public List<Dictionary<string, string>> PlayerData { get; set; }
+        public List<Dictionary<string, string>> TeamData { get; set; }
+        public GameServerInfo() : base(TimeSpan.FromMinutes(3))
         {
-            ServerData = new ServerData();
-            PlayerData = new PlayerData();
-            TeamData = new TeamData();
-            LastPacketReceivedTime = DateTime.Now;
         }
-
-        public GameServerInfo(IPEndPoint endPoint)
+    }
+    public class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
+    {
+        public RedisClient() : base(ConfigManager.Config.Redis.ConnectionString, (int)DbNumber.GameServer)
         {
-            ServerData = new ServerData();
-            PlayerData = new PlayerData();
-            TeamData = new TeamData();
-            RemoteQueryReportIPEndPoint = endPoint;
-            LastPacketReceivedTime = DateTime.Now;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
@@ -7,13 +9,12 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
-using System.Collections.Generic;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
@@ -126,12 +127,18 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 return false;
             }
 
-            List<string> peerGameKeys = RedisExtensions.GetAllKeys(DbNumber.PeerGroup);
-            if (buffer[2].Length > 2 && peerGameKeys.Contains(buffer[1]))
+            using (var client = new RedisClient())
             {
-                return true;
+                var peerRoom = client.Values.Where(x => x.GameName == buffer[1]).ToList();
+                if (buffer[2].Length > 2 && peerRoom.Count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            return false;
         }
 
         protected override void ResponseConstruct()

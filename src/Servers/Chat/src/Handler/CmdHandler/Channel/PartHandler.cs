@@ -1,10 +1,12 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
@@ -74,13 +76,17 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 _channel.MultiCastExceptSender(_user, _response);
 
                 // remove serverInfo in Redis
-                var searchKey = new GameServerInfoRedisKey()
+                using (var client = new RedisClient())
                 {
-                    RemoteIPEndPoint = _user.UserInfo.Session.RemoteIPEndPoint,
-                    GameName = _user.UserInfo.GameName
-                };
-
-                GameServerInfoRedisOperator.DeleteKeyValue(searchKey);
+                    var server = client.Values.Where(x =>
+                                            x.RemoteIPEndPoint == _user.UserInfo.Session.RemoteIPEndPoint &
+                                            x.GameName == _user.UserInfo.GameName)
+                                            .FirstOrDefault();
+                    if (server != null)
+                    {
+                        client.DeleteKeyValue(server);
+                    }
+                }
             }
             // remove channel in ChannelManager
             if (_channel.Users.Count == 0)

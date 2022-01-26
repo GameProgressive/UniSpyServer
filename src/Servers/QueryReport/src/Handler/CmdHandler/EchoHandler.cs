@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
-using System;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
 
@@ -24,13 +24,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
-            var searchKey = new GameServerInfoRedisKey()
-            {
-                InstantKey = _request.InstantKey
-            };
-
-            var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
-            if (matchedKeys.Count() != 1)
+            var servers = _redisClient.Values.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            if (servers.Count() != 1)
             {
                 LogWriter.Info("Can not find game server");
                 return;
@@ -38,11 +33,9 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //add recive echo packet on gameserverList
 
             //we get the first key in matchedKeys
-            _result.Info = GameServerInfoRedisOperator.GetSpecificValue(matchedKeys[0]);
-
+            _result.Info = servers.First();
             _result.Info.LastPacketReceivedTime = DateTime.Now;
-
-            GameServerInfoRedisOperator.SetKeyValue(matchedKeys[0], _result.Info);
+            _redisClient.SetValue(_result.Info);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
             _serverListData.AddRange(StringFlag.AllServerEndFlag);
         }
 
-        private bool IsSkipThisServer(GameServerInfo2 serverInfo)
+        private bool IsSkipThisServer(GameServerInfo serverInfo)
         {
             foreach (var key in _request.Keys)
             {

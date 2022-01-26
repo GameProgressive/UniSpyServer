@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result
 {
     public sealed class P2PGroupRoomListResult : ServerListUpdateOptionResultBase
     {
-        public PeerGroupInfo2 PeerGroupInfo { get; set; }
+        public PeerGroupInfo PeerGroupInfo { get; set; }
         public P2PGroupRoomListResult()
         {
         }

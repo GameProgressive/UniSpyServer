@@ -1,12 +1,13 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
@@ -24,20 +25,12 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var searchKey = new GameServerInfoRedisKey()
-            {
-                InstantKey = _request.InstantKey
-            };
-
-            var matchedKey = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
-            if (matchedKey.Count() != 1)
+            var servers = _redisClient.Values.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            if (servers.Count() != 1)
             {
                 throw new QRException("No server or multiple servers found in redis, please make sure there is only one server.");
             }
-            var fullKey = matchedKey[0];
-            _gameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(fullKey);
-
-            GameServerInfoRedisOperator.SetKeyValue(fullKey, _gameServerInfo);
+            _gameServerInfo = servers.First();
         }
 
         protected override void ResponseConstruct()

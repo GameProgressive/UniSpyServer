@@ -1,5 +1,5 @@
 ﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
 {
