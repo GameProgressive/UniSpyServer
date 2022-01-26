@@ -174,7 +174,7 @@
     }
 
     /// <summary>
-    /// This enum rapresers the known Parter IDs, This value was setted to 0 when
+    /// This enum represents the known Partner IDs, This value is set to 0 when
     /// a game is directly connecting to GameSpy, otherwise the Partner ID would be
     /// different for any service that uses GameSpy as backend (for example Nintendo
     /// Wifi Connection).
