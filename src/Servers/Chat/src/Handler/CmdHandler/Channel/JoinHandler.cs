@@ -14,6 +14,7 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
@@ -126,19 +127,31 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 return false;
             }
-
-            using (var client = new RedisClient())
+            using (var db = new UniSpyContext())
             {
-                var peerRoom = client.Values.Where(x => x.GameName == buffer[1]).ToList();
-                if (buffer[2].Length > 2 && peerRoom.Count > 0)
-                {
-                    return true;
-                }
-                else
+                var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).Where(x => x.gl.Roomname == buffer[1]).FirstOrDefault();
+                if (officialRoom == null)
                 {
                     return false;
                 }
+                else
+                {
+                    return true;
+                }
             }
+            // using (var client = new RedisClient())
+            // {
+
+            //     var peerRoom = client.Values.Where(x => x.GameName == buffer[1]).ToList();
+            //     if (buffer[2].Length > 2 && peerRoom.Count > 0)
+            //     {
+            //         return true;
+            //     }
+            //     else
+            //     {
+            //         return false;
+            //     }
+            // }
         }
 
         protected override void ResponseConstruct()

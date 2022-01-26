@@ -18,10 +18,29 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         public ServerListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
+        protected override void RequestCheck()
+        {
+            base.RequestCheck();
+            switch (_request.UpdateOption)
+            {
+                case ServerListUpdateOption.ServerMainList:
+                case ServerListUpdateOption.P2PServerMainList:
+                case ServerListUpdateOption.LimitResultCount:
+                case ServerListUpdateOption.ServerNetworkInfoList:
+                    _result = new ServerMainListResult();
+                    break;
+                case ServerListUpdateOption.P2PGroupRoomList:
+                    _result = new P2PGroupRoomListResult();
+                    break;
+                default:
+                    throw new SBException("unknown serverlist update option type");
+            }
+        }
         protected override void DataOperation()
         {
+            _result.GameSecretKey = _session.GameSecretKey;
+            _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
             //todo check protocol version!!!!
-
             switch (_request.UpdateOption)
             {
                 case ServerListUpdateOption.ServerMainList:
@@ -35,7 +54,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                     P2PGroupRoomList();
                     break;
                 case ServerListUpdateOption.ServerNetworkInfoList:
-                    ServerNetworkInfoList();
+                    // do nothing here
                     break;
                 default:
                     throw new SBException("unknown serverlist update option type");
@@ -43,7 +62,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void P2PGroupRoomList()
         {
-            _result = new P2PGroupRoomListResult();
             // Game name is unique in redis database
             var groupInfo = _peerGroupRedisClient.Values.Where(x => x.GameName == _request.GameName).FirstOrDefault();
             if (groupInfo == null)
@@ -57,7 +75,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                                  select gl;
                     if (result.Count() == 0)
                     {
-                        throw new SBException($"can not find peer group info in redis database and database, please check game name:{_request.GameName}");
+                        throw new SBException($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
                     }
                     else
                     {
@@ -65,12 +83,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                         {
                             GameName = _request.GameName,
                             GameID = result.First().Gameid,
+                            PeerRooms = result.Select(x => new PeerRoomInfo(x)).ToList()
                         };
-                        foreach (var g in result)
-                        {
-                            var room = new PeerRoomInfo(g);
-                            groupInfo.PeerRooms.Add(room);
-                        }
                     }
                 }
             }
@@ -78,7 +92,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void P2PServerMainList()
         {
-            _result = new ServerMainListResult();
             var serverInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasFullRulesFlag;
@@ -87,16 +100,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void ServerMainList()
         {
-            _result = new ServerMainListResult();
             var serverInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
         }
-        private void ServerNetworkInfoList()
-        {
-            _result = new ServerMainListResult();
-        }
-
 
         protected override void ResponseConstruct()
         {

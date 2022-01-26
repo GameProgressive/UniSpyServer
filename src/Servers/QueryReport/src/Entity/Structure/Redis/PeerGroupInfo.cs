@@ -12,11 +12,10 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
         [RedisKey]
         public string GameName { get; init; }
         public int GameID { get; init; }
-        public List<PeerRoomInfo> PeerRooms { get; private set; }
+        public List<PeerRoomInfo> PeerRooms { get; init; }
 
         public PeerGroupInfo() : base(expireTime: null)
         {
-            PeerRooms = new List<PeerRoomInfo>();
         }
     }
     public class PeerRoomInfo

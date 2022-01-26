@@ -1,8 +1,8 @@
-﻿using NetCoreServer;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
@@ -16,9 +16,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     public abstract class UniSpyTcpSession : TcpSession, IUniSpySession
     {
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
-        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
+        public IPEndPoint RemoteIPEndPoint => (this.Socket != null) ? (IPEndPoint)Socket.RemoteEndPoint : null;
         public new UniSpyTcpServer Server => (UniSpyTcpServer)base.Server;
-
         public UniSpyTcpSession(UniSpyTcpServer server) : base(server)
         {
         }

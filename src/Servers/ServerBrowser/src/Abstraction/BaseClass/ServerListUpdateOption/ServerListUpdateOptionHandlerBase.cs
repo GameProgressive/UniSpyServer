@@ -13,18 +13,22 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            string secretKey = DataOperationExtensions
-                .GetSecretKey(_request.GameName);
-            //we first check and get secrete key from database
-            if (secretKey == null)
+            if (_session.GameSecretKey == null)
             {
-                throw new System.ArgumentNullException("Can not find secretkey in database.");
+                string secretKey = DataOperationExtensions
+                                .GetSecretKey(_request.GameName);
+                //we first check and get secrete key from database
+                if (secretKey == null)
+                {
+                    throw new System.ArgumentNullException("Can not find secretkey in database.");
+                }
+                //this is client public ip and default query port
+                _session.GameSecretKey = secretKey;
             }
-            _result.GameSecretKey = secretKey;
-            //this is client public ip and default query port
-            _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
-            _session.GameSecretKey = secretKey;
-            _session.ClientChallenge = _request.ClientChallenge;
+            if (_session.ClientChallenge == null)
+            {
+                _session.ClientChallenge = _request.ClientChallenge;
+            }
         }
     }
 }
