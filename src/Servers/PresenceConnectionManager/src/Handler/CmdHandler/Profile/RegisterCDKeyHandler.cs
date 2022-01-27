@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = db.Subprofiles.Where(s => s.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID);
+                && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId);
                 //&& s.Productid == _session.UserInfo.ProductID);
 
                 if (result.Count() == 0 || result.Count() > 1)
@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     throw new GPDatabaseException("No user infomation found in database.");
                 }
 
-                db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileID)
+                db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileId)
                     .FirstOrDefault().Cdkeyenc = _request.CDKeyEnc;
 
                 db.SaveChanges();

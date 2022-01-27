@@ -4,15 +4,15 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {
     public sealed class PCMBasicInfo
     {
-        public int UserID { get; set; }
-        public int ProfileId { get; set; }
-        public int SubProfileID { get; set; }
+        public int? UserId { get; set; }
+        public int? ProfileId { get; set; }
+        public int? SubProfileId { get; set; }
         public string Nick { get; set; }
         public string UniqueNick { get; set; }
         public string Email { get; set; }
-        public int PartnerID { get; set; }
-        public int NamespaceID { get; set; }
-        public int ProductID { get; set; }
+        public int? PartnerId { get; set; }
+        public int? NamespaceId { get; set; }
+        public int? ProductId { get; set; }
         public int? GamePort { get; set; }
         public string GameName { get; set; }
         /// <summary>

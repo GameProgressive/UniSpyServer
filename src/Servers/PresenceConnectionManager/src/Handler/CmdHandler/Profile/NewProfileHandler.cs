@@ -48,15 +48,15 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 {
                     Profile profiles = new Profile
                     {
-                        ProfileId = _session.UserInfo.BasicInfo.ProfileId,
+                        ProfileId = (int)_session.UserInfo.BasicInfo.ProfileId,
                         Nick = _request.NewNick,
-                        Userid = _session.UserInfo.BasicInfo.UserID
+                        Userid = (int)_session.UserInfo.BasicInfo.UserId
                     };
 
                     db.Add(profiles);
                 }
             }
-            _result.ProfileId = _session.UserInfo.BasicInfo.ProfileId;
+            _result.ProfileId = (int)_session.UserInfo.BasicInfo.ProfileId;
         }
 
         protected override void ResponseConstruct()

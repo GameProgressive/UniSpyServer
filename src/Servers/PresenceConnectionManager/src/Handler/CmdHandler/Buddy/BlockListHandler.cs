@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 _result.ProfileIdList = db.Blockeds
                     .Where(f => f.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
+                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId)
                     .Select(f => f.Targetid).ToList();
             }
         }

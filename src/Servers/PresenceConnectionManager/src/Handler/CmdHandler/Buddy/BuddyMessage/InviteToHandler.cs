@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         protected override void DataOperation()
         {
             var session = ServerFactory.Server.SessionManager.SessionPool.Values.Where(
-                u => ((Session)u).UserInfo.BasicInfo.ProductID == _request.ProductID
+                u => ((Session)u).UserInfo.BasicInfo.ProductId == _request.ProductID
                 && ((Session)u).UserInfo.BasicInfo.ProfileId == _request.ProfileId).FirstOrDefault();
 
             //user is offline

@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 using (var db = new UniSpyContext())
                 {
-                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileID)
+                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileId)
                         .FirstOrDefault().Uniquenick = _request.UniqueNick;
                     db.SaveChanges();
                 }

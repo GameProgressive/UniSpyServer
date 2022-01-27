@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 var result = from friend in db.Friends
                              where friend.ProfileId == _request.DeleteProfileID
-                                   && friend.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
+                                   && friend.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId
                              select friend;
                 if (result.Count() == 0)
                 {

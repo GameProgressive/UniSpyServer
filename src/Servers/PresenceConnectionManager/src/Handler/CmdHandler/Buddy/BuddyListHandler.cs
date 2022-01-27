@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 var result = db.Friends
                     .Where(f => f.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
+                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId)
                     .Select(f => f.Targetid).ToList();
             }
         }
@@ -44,7 +44,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 var request = new StatusInfoRequest
                 {
                     ProfileId = profileID,
-                    NamespaceID = _session.UserInfo.BasicInfo.NamespaceID,
+                    NamespaceID = (int)_session.UserInfo.BasicInfo.NamespaceId,
                     IsGetStatusInfo = true
                 };
                 new StatusInfoHandler(_session, request).Handle();

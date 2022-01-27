@@ -19,14 +19,14 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 if (db.Blockeds.Where(b => b.Targetid == _request.ProfileId
-                && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
+                && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId
                 && b.ProfileId == _session.UserInfo.BasicInfo.ProfileId).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        ProfileId = _session.UserInfo.BasicInfo.ProfileId,
+                        ProfileId = (int)_session.UserInfo.BasicInfo.ProfileId,
                         Targetid = _request.ProfileId,
-                        Namespaceid = _session.UserInfo.BasicInfo.NamespaceID
+                        Namespaceid = (int)_session.UserInfo.BasicInfo.NamespaceId
                     };
 
                     db.Blockeds.Update(blocked);
