@@ -20,6 +20,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
         public override void Build()
         {
             base.Build();
+            // we add the server keys
+            BuildServerKeys();
+            //we use NTS string so total unique value list is 0
+            BuildUniqueValue();
+            //add server infomation such as public ip etc.
+            BuildServersInfo();
             SendingBuffer = _serverListData.ToArray();
         }
 
