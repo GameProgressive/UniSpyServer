@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     public sealed class NatNegMsgHandler : CmdHandlerBase
     {
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
-        private AdHocRequest _adHocRequest;
+        private ServerInfoRequest _adHocRequest;
         private NatNegCookie _natNegCookie;
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -57,9 +57,9 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             //TODO check the if the remote endpoint is correct
             _natNegCookie = new NatNegCookie
             {
-                GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint,
+                GameServerRemoteEndPoint = _gameServer.RemoteIPEndPoint,
                 GameServerRemoteIP = _adHocRequest.TargetServerIP,
-                GameServerRemotePort = _gameServer.RemoteQueryReportIPEndPoint.Port.ToString(),
+                GameServerRemotePort = _gameServer.RemoteIPEndPoint.Port.ToString(),
                 NatNegMessage = _request.NatNegMessage
             };
         }

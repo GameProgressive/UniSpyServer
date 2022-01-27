@@ -10,12 +10,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
-        public List<AdHocRequest> ServerMessageStack { get; set; }
+        public List<ServerInfoRequest> ServerMessageStack { get; set; }
         public EncryptionParameters EncParams { get; set; }
 
         public Session(UniSpyTcpServer server) : base(server)
         {
-            ServerMessageStack = new List<AdHocRequest>();
+            ServerMessageStack = new List<ServerInfoRequest>();
         }
 
         protected override void OnReceived(byte[] message) => new CmdSwitcher(this, message).Switch();
@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
             {
                 enc = new SBEncryption(EncParams);
             }
-            var cryptHeader = buffer.Take(14);
+            var cryptHeader = buffer.Take(14).ToArray();
             var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
             return cryptHeader.Concat(cipherBody).ToArray();
         }

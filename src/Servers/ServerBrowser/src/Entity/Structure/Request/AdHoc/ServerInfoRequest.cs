@@ -8,7 +8,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
     [RequestContract(RequestType.ServerInfoRequest)]
-    public sealed class AdHocRequest : RequestBase
+    public sealed class ServerInfoRequest : RequestBase
     {
         /// <summary>
         /// The game server client search for
@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         public string TargetServerHostPort => TargetIPEndPoint.Port.ToString();
         public IPEndPoint TargetIPEndPoint { get; private set; }
 
-        public AdHocRequest(byte[] rawRequest) : base(rawRequest)
+        public ServerInfoRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
 

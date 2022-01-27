@@ -1,10 +1,12 @@
-﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+﻿using System.Linq;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
@@ -13,9 +15,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
+    [HandlerContract(RequestType.ServerInfoRequest)]
     public sealed class ServerInfoHandler : CmdHandlerBase
     {
-        private new AdHocRequest _request => (AdHocRequest)base._request;
+        private new ServerInfoRequest _request => (ServerInfoRequest)base._request;
         private new ServerInfoResult _result { get => (ServerInfoResult)base._result; set => base._result = value; }
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

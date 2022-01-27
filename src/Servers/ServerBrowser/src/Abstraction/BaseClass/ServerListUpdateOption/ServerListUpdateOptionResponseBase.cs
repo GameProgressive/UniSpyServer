@@ -1,12 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
-using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
-using System;
-using System.Net;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
@@ -41,21 +42,33 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             _serverListData.AddRange(cryptHeader);
         }
         protected abstract void BuildServersInfo();
+        /// <summary>
+        /// Add more server info here
+        /// the sequence of server info is important
+        /// 1.PRIVATE_IP_FLAG length=4
+        /// 2.ICMP_IP_FLAG length=4
+        /// 3.NONSTANDARD_PORT_FLAG length=2
+        /// 4.NONSTANDARD_PRIVATE_PORT_FLAG length=2
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="serverInfo"></param>
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
+
             List<byte> header = new List<byte>();
             //add key flag
             header.Add((byte)flag);
             //we add server public ip here
-            header.AddRange(serverInfo.RemoteQueryReportIPEndPoint.Address.GetAddressBytes());
-            //we check host port is standard port or not
-            CheckNonStandardPort(header, serverInfo);
+            header.AddRange(serverInfo.RemoteIPEndPoint.Address.GetAddressBytes());
             // now we check if there are private ip
             CheckPrivateIP(header, serverInfo);
-            // we check private port here
-            CheckPrivatePort(header, serverInfo);
             //we check icmp support here
             CheckICMPSupport(header, serverInfo);
+            //we check host port is standard port or not
+            CheckNonStandardPort(header, serverInfo);
+            // we check private port here
+            CheckNonStandardPrivatePort(header, serverInfo);
+
 
             _serverListData.AddRange(header);
         }
@@ -91,12 +104,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                     && server.ServerData["hostport"] != "6500")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    byte[] htonPort = BitConverter.GetBytes(int.Parse(server.ServerData["hostport"]));
+                    byte[] htonPort = BitConverter.GetBytes(short.Parse(server.ServerData["hostport"])).Reverse().ToArray();
                     header.AddRange(htonPort);
                 }
             }
         }
-        protected void CheckPrivatePort(List<byte> header, GameServerInfo server)
+        protected void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo server)
         {
             // we check private port here
             if (server.ServerData.ContainsKey("privateport"))
@@ -104,7 +117,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 if (server.ServerData["privateport"] != "")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                    byte[] port = BitConverter.GetBytes(int.Parse(server.ServerData["privateport"]));
+                    byte[] port = BitConverter.GetBytes(short.Parse(server.ServerData["privateport"]));
                     header.AddRange(port);
                 }
             }
@@ -112,7 +125,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected void CheckICMPSupport(List<byte> header, GameServerInfo server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            byte[] address = server.RemoteQueryReportIPEndPoint.Address.GetAddressBytes();
+            byte[] address = server.RemoteIPEndPoint.Address.GetAddressBytes();
             header.AddRange(address);
         }
         protected void BuildUniqueValue()
