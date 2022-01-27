@@ -9,12 +9,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
         public const string ServerChallenge = "0000000000";
         public string UserData { get; private set; }
         public LoginType LoginType { get; private set; }
-        public int PartnerID { get; private set; }
+        public int? PartnerID { get; private set; }
         public string Challenge1 { get; private set; }
         public string Challenge2 { get; private set; }
         public string PasswordHash { get; private set; }
 
-        public LoginChallengeProof(string userData, LoginType loginType, int partnerID, string challenge1, string challenge2, string passwordHash)
+        public LoginChallengeProof(string userData, LoginType loginType, int? partnerID, string challenge1, string challenge2, string passwordHash)
         {
             UserData = userData;
             LoginType = loginType;
@@ -35,8 +35,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
         {
             string tempUserData = data.UserData;
 
-            // Auth token does not have partnerid append.
-            if (data.PartnerID != (int)GPPartnerID.Gamespy && data.LoginType != LoginType.AuthToken)
+            // Login types NickEmail and AuthToken don't use partnerID append
+            if (data.PartnerID != (int)GPPartnerID.Gamespy 
+                && data.LoginType != LoginType.NickEmail
+                && data.LoginType != LoginType.AuthToken
+            )
             {
                 tempUserData = $@"{data.PartnerID}@{data.UserData}";
             }

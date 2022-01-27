@@ -58,23 +58,22 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 throw new GPLoginBadProfileException();
             }
 
-            // Check the status of the account.
-            // If the single profile is banned, the account or the player status.
+            // Check if the user is flagged as banned.
             if (_result.DatabaseResults.BannedFlag)
             {
                 throw new GPLoginProfileDeletedException();
             }
 
             LoginChallengeProof proofData = new LoginChallengeProof(
-                            _request.UserData,
-                            (LoginType)_request.Type,
-                            (int)_request.PartnerID,
-                            LoginChallengeProof.ServerChallenge,
-                            _request.UserChallenge,
-                            _result.DatabaseResults.PasswordHash);
+                _request.UserData,
+                (LoginType)_request.Type,
+                (int?)_request.PartnerID,
+                LoginChallengeProof.ServerChallenge,
+                _request.UserChallenge,
+                _result.DatabaseResults.PasswordHash);
 
             _result.ResponseProof =
-               LoginChallengeProof.GenerateProof(proofData);
+                LoginChallengeProof.GenerateProof(proofData);
         }
 
         protected override void ResponseConstruct()
@@ -91,15 +90,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 case LoginType.NickEmail:
                     _session.UserInfo.BasicInfo.Nick = _request.Nick;
                     _session.UserInfo.BasicInfo.Email = _request.Email;
-                    _session.UserInfo.BasicInfo.NamespaceID = (int)_request.NamespaceID;
                     _session.UserInfo.BasicInfo.UniqueNick = _result.DatabaseResults.UniqueNick;
                     break;
                 case LoginType.UniquenickNamespaceID:
                     _session.UserInfo.BasicInfo.UniqueNick = _request.UniqueNick;
                     _session.UserInfo.BasicInfo.NamespaceID = (int)_request.NamespaceID;
+                    _session.UserInfo.BasicInfo.ProductID = (int)_request.ProductID;
+                    _session.UserInfo.SDKRevision.SDKRevisionType = _request.SDKRevisionType;
                     break;
                 case LoginType.AuthToken:
                     _session.UserInfo.BasicInfo.AuthToken = _request.AuthToken;
+                    _session.UserInfo.BasicInfo.ProductID = (int)_request.ProductID;
                     break;
                 default:
                     throw new GPParseException("Invalid login method detected.");
@@ -109,11 +110,9 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             _session.UserInfo.BasicInfo.UserID = _result.DatabaseResults.UserID;
             _session.UserInfo.BasicInfo.ProfileId = _result.DatabaseResults.ProfileId;
             _session.UserInfo.BasicInfo.SubProfileID = _result.DatabaseResults.SubProfileID;
-            _session.UserInfo.BasicInfo.ProductID = (int)_request.ProductID;
             _session.UserInfo.BasicInfo.GameName = _request.GameName;
             _session.UserInfo.BasicInfo.GamePort = _request.GamePort;
             _session.UserInfo.BasicInfo.LoginStatus = LoginStatus.Completed;
-            _session.UserInfo.SDKRevision.SDKRevisionType = _request.SDKRevisionType;
 
             new SdkRevisionHandler(_session, _request).Handle();
         }
@@ -132,27 +131,25 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
                 }
 
-                //Grab information from database
-                // default namespace id = 0
+                // Grab user from database via email and nick
+                // Default namespaceID is 0
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Userid equals p.Userid
-                           join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                           where u.Email == _request.Email
-                           && p.Nick == _request.Nick
-                           && n.Namespaceid == _request.NamespaceID
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               NamespaceID = n.Namespaceid,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = u.Banned
-                           };
+                            join p in db.Profiles on u.Userid equals p.Userid
+                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                            where u.Email == _request.Email
+                            && p.Nick == _request.Nick
+                            select new LogInDataModel
+                            {
+                                Email = u.Email,
+                                UserID = u.Userid,
+                                ProfileId = p.ProfileId,
+                                SubProfileID = n.Subprofileid,
+                                Nick = p.Nick,
+                                UniqueNick = n.Uniquenick,
+                                PasswordHash = u.Password,
+                                EmailVerifiedFlag = (bool)u.Emailverified,
+                                BannedFlag = (bool)u.Banned
+                            };
 
                 if (info.Count() != 1)
                 {
@@ -167,23 +164,23 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var info = from n in db.Subprofiles
-                           join p in db.Profiles on n.ProfileId equals p.ProfileId
-                           join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == _request.UniqueNick
-                           && n.Namespaceid == _request.NamespaceID
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               NamespaceID = n.Namespaceid,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = u.Banned
-                           };
+                            join p in db.Profiles on n.ProfileId equals p.ProfileId
+                            join u in db.Users on p.Userid equals u.Userid
+                            where n.Uniquenick == _request.UniqueNick
+                            && n.Namespaceid == _request.NamespaceID
+                            select new LogInDataModel
+                            {
+                                Email = u.Email,
+                                UserID = u.Userid,
+                                ProfileId = p.ProfileId,
+                                SubProfileID = n.Subprofileid,
+                                Nick = p.Nick,
+                                UniqueNick = n.Uniquenick,
+                                PasswordHash = u.Password,
+                                NamespaceID = n.Namespaceid,
+                                EmailVerifiedFlag = (bool)u.Emailverified,
+                                BannedFlag = (bool)u.Banned
+                            };
 
                 if (info.Count() != 1)
                 {
@@ -198,24 +195,24 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Userid equals p.Userid
-                           join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                           where n.Authtoken == _request.AuthToken
-                           && n.Partnerid == _request.PartnerID
-                           && n.Namespaceid == _request.NamespaceID
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               NamespaceID = n.Namespaceid,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = u.Banned
-                           };
+                            join p in db.Profiles on u.Userid equals p.Userid
+                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                            where n.Authtoken == _request.AuthToken
+                            && n.Partnerid == _request.PartnerID
+                            && n.Namespaceid == _request.NamespaceID
+                            select new LogInDataModel
+                            {
+                                Email = u.Email,
+                                UserID = u.Userid,
+                                ProfileId = p.ProfileId,
+                                SubProfileID = n.Subprofileid,
+                                Nick = p.Nick,
+                                UniqueNick = n.Uniquenick,
+                                PasswordHash = u.Password,
+                                NamespaceID = n.Namespaceid,
+                                EmailVerifiedFlag = (bool)u.Emailverified,
+                                BannedFlag = (bool)u.Banned
+                            };
 
                 if (info.Count() != 1)
                 {
@@ -230,10 +227,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
                 (LoginType)_request.Type,
-                (int)_request.PartnerID,
-               _request.UserChallenge,
-               LoginChallengeProof.ServerChallenge,
-               _result.DatabaseResults.PasswordHash);
+                (int?)_request.PartnerID,
+                _request.UserChallenge,
+                LoginChallengeProof.ServerChallenge,
+                _result.DatabaseResults.PasswordHash);
 
             string response = LoginChallengeProof.GenerateProof(proofData);
 
