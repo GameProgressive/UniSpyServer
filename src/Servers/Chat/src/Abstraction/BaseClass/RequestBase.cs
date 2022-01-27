@@ -1,5 +1,4 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Exception;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;

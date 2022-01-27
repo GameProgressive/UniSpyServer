@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+﻿using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.Servers.Chat.Handler.CommandSwitcher;

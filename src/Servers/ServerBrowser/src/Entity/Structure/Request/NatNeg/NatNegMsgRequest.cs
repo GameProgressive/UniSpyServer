@@ -1,24 +1,24 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+﻿using System;
 using System.Linq;
-using System;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
     [RequestContract(RequestType.NatNegRequest)]
     public sealed class NatNegMsgRequest : RequestBase
     {
-        public int Cookie { get; set; }
+        public uint? Cookie { get; set; }
         public byte[] NatNegMessage => RawRequest;
-        public NatNegMsgRequest(object rawRequest) : base(rawRequest)
+        public NatNegMsgRequest(byte[] rawRequest) : base(rawRequest)
         {
             CommandName = RequestType.NatNegRequest;
         }
 
         public override void Parse()
         {
-            Cookie = BitConverter.ToInt16(RawRequest.Skip(6).ToArray());
+            Cookie = BitConverter.ToUInt16(RawRequest.Skip(6).ToArray());
         }
     }
 }

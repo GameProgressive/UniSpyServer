@@ -3,7 +3,6 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using System;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Extensions;
 using System.Linq;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request

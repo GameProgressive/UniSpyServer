@@ -1,4 +1,3 @@
-using System;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using Xunit;

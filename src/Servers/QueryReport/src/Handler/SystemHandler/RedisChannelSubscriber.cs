@@ -7,7 +7,6 @@ using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.Servers.QueryReport.Network;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Entity.Structure;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler

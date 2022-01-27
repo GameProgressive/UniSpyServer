@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
+﻿namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 {
     /// <summary>
     /// Partner information, these information are used for authentication and login.

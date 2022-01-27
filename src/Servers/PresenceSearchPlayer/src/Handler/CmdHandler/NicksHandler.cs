@@ -4,7 +4,6 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;

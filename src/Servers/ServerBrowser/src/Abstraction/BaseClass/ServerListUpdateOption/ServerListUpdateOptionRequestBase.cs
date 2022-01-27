@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         public string Filter { get; protected set; }
         public IPAddress SourceIP { get; protected set; }
         public int? MaxServers { get; protected set; }
-        protected ServerListUpdateOptionRequestBase(object rawRequest) : base(rawRequest)
+        protected ServerListUpdateOptionRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 

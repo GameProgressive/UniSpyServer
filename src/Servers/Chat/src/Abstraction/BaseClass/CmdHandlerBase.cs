@@ -1,8 +1,6 @@
 ﻿using System;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response;
 using UniSpyServer.Servers.Chat.Network;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass

@@ -1,10 +1,9 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using System;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Extensions;
+﻿using System;
 using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -18,7 +17,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         public string Message { get; private set; }
 
 
-        public PlayerSearchRequest(object rawRequest) : base(rawRequest)
+        public PlayerSearchRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
 

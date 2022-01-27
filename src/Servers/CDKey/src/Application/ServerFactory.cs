@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.CDkey.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.CDkey.Application
 {

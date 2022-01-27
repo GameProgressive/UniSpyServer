@@ -1,5 +1,3 @@
-using System;
-
 namespace UniSpyServer.UniSpyLib.Abstraction.Contract
 {
     /// <summary>

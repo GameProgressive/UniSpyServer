@@ -3,7 +3,6 @@ using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {

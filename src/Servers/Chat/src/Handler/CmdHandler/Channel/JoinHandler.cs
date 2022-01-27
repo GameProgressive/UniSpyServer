@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
@@ -12,10 +11,8 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {

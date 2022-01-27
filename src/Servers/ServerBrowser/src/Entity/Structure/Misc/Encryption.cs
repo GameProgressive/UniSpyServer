@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
 {
     public class EncryptionParameters

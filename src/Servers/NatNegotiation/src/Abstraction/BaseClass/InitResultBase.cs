@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {

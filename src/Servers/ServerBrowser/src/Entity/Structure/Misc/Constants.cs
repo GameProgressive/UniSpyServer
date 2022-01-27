@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
 {

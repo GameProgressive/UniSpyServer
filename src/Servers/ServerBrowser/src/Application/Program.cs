@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
@@ -10,18 +7,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
     {
         static void Main(string[] args)
         {
-
             try
             {
                 new ServerFactory().Start();
-
             }
-
             catch (Exception e)
             {
                 LogWriter.ToLog(e);
             }
-
             Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }

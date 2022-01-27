@@ -6,7 +6,6 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
 {

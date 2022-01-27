@@ -1,5 +1,4 @@
 ﻿using System;
-using NetCoreServer;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Application

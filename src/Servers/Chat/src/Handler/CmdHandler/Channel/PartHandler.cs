@@ -5,7 +5,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 

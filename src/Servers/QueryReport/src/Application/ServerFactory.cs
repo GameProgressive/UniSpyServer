@@ -1,5 +1,4 @@
 ﻿using UniSpyServer.Servers.QueryReport.Network;
-using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyServer.Servers.QueryReport.Application

@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.GameStatus.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.GameStatus.Application
 {

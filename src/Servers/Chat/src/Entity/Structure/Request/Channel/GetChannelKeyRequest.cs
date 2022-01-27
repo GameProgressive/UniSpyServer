@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {

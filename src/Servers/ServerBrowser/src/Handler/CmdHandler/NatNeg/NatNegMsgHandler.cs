@@ -1,5 +1,4 @@
 ﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.NATNeg;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Application;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
@@ -60,7 +59,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 GameServerRemoteEndPoint = _gameServer.RemoteIPEndPoint,
                 GameServerRemoteIP = _adHocRequest.TargetServerIP,
                 GameServerRemotePort = _gameServer.RemoteIPEndPoint.Port.ToString(),
-                NatNegMessage = _request.NatNegMessage
+                NatNegMessage = _request.RawRequest
             };
         }
 

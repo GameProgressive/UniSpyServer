@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;

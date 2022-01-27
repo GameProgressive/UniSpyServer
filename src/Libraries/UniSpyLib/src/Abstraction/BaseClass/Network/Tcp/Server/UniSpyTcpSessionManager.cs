@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
+﻿namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
     public abstract class UniSpyTcpSessionManager : UniSpySessionManager
     {

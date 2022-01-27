@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.CDkey.Entity.Structure.Result;
 using UniSpyServer.Servers.CDkey.Network;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.CDkey.Abstraction.BaseClass

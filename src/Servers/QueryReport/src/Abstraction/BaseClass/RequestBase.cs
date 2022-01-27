@@ -3,7 +3,6 @@ using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
 {

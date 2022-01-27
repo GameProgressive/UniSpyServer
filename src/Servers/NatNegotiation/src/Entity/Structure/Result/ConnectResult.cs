@@ -3,7 +3,6 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {
