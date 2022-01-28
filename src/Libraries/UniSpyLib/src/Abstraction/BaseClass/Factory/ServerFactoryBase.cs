@@ -77,7 +77,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             {
                 throw new Exception("Can not connect to Redis", e);
             }
-            Console.WriteLine($"Successfully connected to Redis at {redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
+            Console.WriteLine($"Successfully connected to Redis at {redisConfig.Server}:{redisConfig.Port}");
         }
         protected void ConnectMySql()
         {

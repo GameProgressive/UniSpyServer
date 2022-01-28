@@ -12,8 +12,12 @@
     "RootCert": ""
   },
   "Redis": {
-    "RemoteAddress": "127.0.0.1",
-    "RemotePort": "6379"
+    "Server": "127.0.0.1",
+    "Port": "6379",
+    "User": "",
+    "Password": "",
+    "SSL": "false",
+    "SSLHost": ""
   },
   "Servers": [
     {

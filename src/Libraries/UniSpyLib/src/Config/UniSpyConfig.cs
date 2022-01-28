@@ -42,9 +42,13 @@ namespace UniSpyServer.UniSpyLib.Config
     }
     public class UniSpyRedisConfig
     {
-        public string ConnectionString => $"{RemoteAddress}:{RemotePort}";
-        public string RemoteAddress;
-        public int RemotePort;
+        public string ConnectionString => $"{Server}:{Port},user={User},password={Password},ssl={SSL},sslHost={SSLHost}";
+        public string Server;
+        public int Port;
+        public string User;
+        public string Password;
+        public bool SSL;
+        public string SSLHost;
     }
     public class UniSpyServerConfig
     {
