@@ -14,17 +14,6 @@
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Remove="Handler\GetPdr\**" />
-        <Compile Remove="Handler\GetPid\**" />
-        <Compile Remove="Handler\SetPdr\**" />
-        <EmbeddedResource Remove="Handler\GetPdr\**" />
-        <EmbeddedResource Remove="Handler\GetPid\**" />
-        <EmbeddedResource Remove="Handler\SetPdr\**" />
-        <None Remove="Handler\GetPdr\**" />
-        <None Remove="Handler\GetPid\**" />
-        <None Remove="Handler\SetPdr\**" />
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>

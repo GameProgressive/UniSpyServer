@@ -9,36 +9,16 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
-        <NoStdLib>true</NoStdLib>
-        <PlatformTarget>anycpu</PlatformTarget>
-        <NoStdLib>true</NoStdLib>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Remove="Handler\Switcher\**" />
-        <EmbeddedResource Remove="Handler\Switcher\**" />
-        <None Remove="Handler\Switcher\**" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Remove="Entity\Structure\Response\UpdateOptionResponse.cs~RFacb913f.TMP" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj" />
         <ProjectReference Include="..\..\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj" />
         <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Handler\SystemHandler\" />
-        <Folder Include="Handler\SystemHandler\KeyType\" />
-        <Folder Include="Handler\SystemHandler\Filter\" />
-        <Folder Include="Handler\SystemHandler\Error\" />
-        <Folder Include="Handler\CmdHandler\AdHoc\" />
-        <Folder Include="Handler\CmdHandler\NatNeg\" />
-        <Folder Include="Abstraction\BaseClass\ServerListUpdateOption\" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
 </Project>

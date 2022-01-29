@@ -3,7 +3,6 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <NoWin32Manifest>true</NoWin32Manifest>
         <ApplicationIcon>..\..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..\..</DockerfileContext>
@@ -15,20 +14,9 @@
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Remove="Handler\CommandHandler\NewUser\**" />
-        <EmbeddedResource Remove="Handler\CommandHandler\NewUser\**" />
-        <None Remove="Handler\CommandHandler\NewUser\**" />
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Abstraction\BaseClass\" />
-      <Folder Include="Entity\Structure\Request\" />
-      <Folder Include="Entity\Structure\Response\" />
-      <Folder Include="Entity\Structure\Result\" />
     </ItemGroup>
 </Project>
