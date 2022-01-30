@@ -10,7 +10,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsChannelOperator { get; set; }
         public UserInfo UserInfo { get; private set; }
         public Dictionary<string, string> UserKeyValue { get; private set; }
-
         public string BFlags => @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
         public string Modes
         {
@@ -56,9 +55,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         public void UpdateUserKeyValues(Dictionary<string, string> data)
         {
+            // TODO check if all key is send through the request or
+            // TODO only updated key send through the request
             foreach (var key in data.Keys)
             {
-                if (UserKeyValue.ContainsKey(key))
+                if (!UserKeyValue.ContainsKey(key))
                 {
                     //we update the key value
                     UserKeyValue[key] = data[key];
@@ -82,6 +83,5 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
             return values;
         }
-
     }
 }
