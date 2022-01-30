@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
         protected override void ProcessRawRequest()
         {
             var name = (RequestType)_rawRequest[2];
-            _cmdMapping.Add(name, _rawRequest);
+            DeserializeRequest(name, _rawRequest);
         }
     }
 }

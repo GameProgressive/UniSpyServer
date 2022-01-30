@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CommandSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 var name = rawRequest.TrimStart('\\').Split('\\').First();
-                _cmdMapping.Add(name, rawRequest);
+                DeserializeRequest(name, rawRequest);
             }
         }
     }

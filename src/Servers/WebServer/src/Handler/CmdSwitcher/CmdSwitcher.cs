@@ -14,8 +14,8 @@ namespace UniSpyServer.Servers.WebServer.Handler
         protected override void ProcessRawRequest()
         {
             dynamic xelements = XElement.Parse(_rawRequest);
-            string command = xelements.FirstNode.FirstNode.Name.LocalName;
-            _cmdMapping.Add(command, _rawRequest);
+            var name = xelements.FirstNode.FirstNode.Name.LocalName;
+            DeserializeRequest(name, _rawRequest);
         }
     }
 }

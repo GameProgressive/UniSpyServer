@@ -22,9 +22,8 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdSwitcher
             foreach (var rawRequest in splitedRawRequests)
             {
                 var name = GameSpyUtils.ConvertToKeyValue(rawRequest).Keys.First();
-                _cmdMapping.Add(name, rawRequest);
+                DeserializeRequest(name, rawRequest);
             }
-
         }
     }
 }

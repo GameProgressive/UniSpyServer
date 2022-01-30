@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdSwitcher
         protected override void ProcessRawRequest()
         {
             var name = (RequestType)_rawRequest[7];
-            _cmdMapping.Add(name, _rawRequest);
+            DeserializeRequest(name, _rawRequest);
         }
     }
 }

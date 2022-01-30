@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdSwitcher
                 throw new UniSpyException("Invalid request");
             }
             var name = (RequestType)_rawRequest[0];
-            _cmdMapping.Add(name, _rawRequest);
+            DeserializeRequest(name, _rawRequest);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using UniSpyServer.Servers.Chat.Network;
-using System;
+﻿using System;
 using System.Linq;
+using UniSpyServer.Servers.Chat.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
 {
@@ -24,7 +25,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
             foreach (var rawRequest in splitedRawRequests)
             {
                 var name = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList().First();
-                _cmdMapping.Add(name, rawRequest);
+                DeserializeRequest(name, rawRequest);
             }
         }
     }

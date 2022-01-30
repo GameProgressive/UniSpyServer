@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.UniSpyLib.Abstraction.Contract;
 using System.Linq;
 using System.Reflection;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyCmdSwitcherBase
     {
         protected object _rawRequest;
-        protected Dictionary<object, object> _cmdMapping;
         protected IUniSpySession _session;
         protected List<IUniSpyRequest> _requests;
         protected List<IUniSpyHandler> _handlers;
@@ -31,7 +30,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             _rawRequest = rawRequest;
             _requests = new List<IUniSpyRequest>();
             _handlers = new List<IUniSpyHandler>();
-            _cmdMapping = new Dictionary<object, object>();
         }
 
         protected UniSpyCmdSwitcherBase()
@@ -72,7 +70,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 //First we process the message split it to raw requests.
                 ProcessRawRequest();
                 // Then we process the raw requests to UniSpy requests.
-                DeserializeRequests();
                 if (_requests.Count == 0)
                 {
                     return;
@@ -101,16 +98,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         /// <returns>request type, single request</returns>
         protected abstract void ProcessRawRequest();
-        protected virtual void DeserializeRequests()
+        protected virtual void DeserializeRequest(object name, object rawRequest)
         {
-            foreach (var request in _cmdMapping)
+            if (!_requestMapping.ContainsKey(name))
             {
-                if (!_handlerMapping.ContainsKey(request.Key))
-                {
-                    LogWriter.Error($"request {request.Key} is not implemented");
-                }
-                _requests.Add((IUniSpyRequest)Activator.CreateInstance(_requestMapping[request.Key], request.Value));
+                LogWriter.Error($"request {name} is not implemented");
             }
+            _requests.Add((IUniSpyRequest)Activator.CreateInstance(_requestMapping[name], rawRequest));
         }
         protected virtual void CreateCmdHandlers()
         {
