@@ -36,11 +36,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             UserKeyValue = new Dictionary<string, string>();
         }
 
-        public void SetDefaultProperties(bool isCreator = false)
+        public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)
         {
             IsVoiceable = true;
-            IsChannelCreator = false;
-            IsChannelOperator = false;
+            IsChannelCreator = isCreator;
+            IsChannelOperator = isOperator;
             UserKeyValue.Add("username", UserInfo.UserName);
 
             if (isCreator)
@@ -59,7 +59,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             // TODO only updated key send through the request
             foreach (var key in data.Keys)
             {
-                if (!UserKeyValue.ContainsKey(key))
+                if (UserKeyValue.ContainsKey(key))
                 {
                     //we update the key value
                     UserKeyValue[key] = data[key];

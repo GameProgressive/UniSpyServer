@@ -96,16 +96,17 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             else
             {
                 //create
-                if (IsPeerServer(_request.ChannelName))
+                if (IsPeerLobby(_request.ChannelName))
                 {
                     _channel.IsPeerServer = true;
                     _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
+                    _user.SetDefaultProperties(false, false);
                 }
                 else
                 {
                     _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName);
+                    _user.SetDefaultProperties(true, true);
                 }
-                _user.SetDefaultProperties(true);
                 _channel.AddBindOnUserAndChannel(_user);
                 ChannelManager.AddChannel(_request.ChannelName, _channel);
             }
@@ -116,7 +117,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
         }
 
-        private bool IsPeerServer(string name)
+        private bool IsPeerLobby(string name)
         {
             // TODO! check the room name by search the name on the official room name in database
             string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);

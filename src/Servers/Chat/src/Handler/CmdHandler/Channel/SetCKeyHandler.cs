@@ -23,6 +23,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         private ChannelUser _otherUser;
         public SetCKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new SetCKeyResult();
         }
 
         protected override void RequestCheck()
@@ -39,7 +40,6 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 if (_otherUser == null)
                 {
                     throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName} in channel {_request.ChannelName}");
-
                 }
             }
         }
