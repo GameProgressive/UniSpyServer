@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Servers.Chat.Network;
-using System.Linq;
-using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using UniSpyServer.Servers.Chat.Network;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -184,44 +184,48 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <param name="cmd"></param>
         public void SetProperties(ChannelUser changer, ModeRequest request)
         {
-            switch (request.RequestType)
+            // todo check permission of each operation
+            foreach (var op in request.ModeOperations)
             {
-                case ModeRequestType.AddChannelUserLimits:
-                    AddChannelUserLimits(request);
-                    break;
-                case ModeRequestType.RemoveChannelUserLimits:
-                    RemoveChannelUserLimits(request);
-                    break;
-                case ModeRequestType.AddBanOnUser:
-                    AddBanOnUser(request);
-                    break;
-                case ModeRequestType.RemoveBanOnUser:
-                    RemoveBanOnUser(request);
-                    break;
-                case ModeRequestType.AddChannelPassword:
-                    AddChannelPassword(request);
-                    break;
-                case ModeRequestType.RemoveChannelPassword:
-                    RemoveChannelPassword(request);
-                    break;
-                case ModeRequestType.AddChannelOperator:
-                    AddChannelOperator(request);
-                    break;
-                case ModeRequestType.RemoveChannelOperator:
-                    RemoveChannelOperator(request);
-                    break;
-                case ModeRequestType.EnableUserVoicePermission:
-                    EnableUserVoicePermission(request);
-                    break;
-                case ModeRequestType.DisableUserVoicePermission:
-                    DisableUserVoicePermission(request);
-                    break;
-                case ModeRequestType.SetChannelModesWithUserLimit:
-                    AddChannelUserLimits(request);
-                    goto default;
-                default:
-                    Mode.ChangeModes(request);
-                    break;
+                switch (op)
+                {
+                    case ModeOperationType.AddChannelUserLimits:
+                        AddChannelUserLimits(request);
+                        break;
+                    case ModeOperationType.RemoveChannelUserLimits:
+                        RemoveChannelUserLimits(request);
+                        break;
+                    case ModeOperationType.AddBanOnUser:
+                        AddBanOnUser(request);
+                        break;
+                    case ModeOperationType.RemoveBanOnUser:
+                        RemoveBanOnUser(request);
+                        break;
+                    case ModeOperationType.AddChannelPassword:
+                        AddChannelPassword(request);
+                        break;
+                    case ModeOperationType.RemoveChannelPassword:
+                        RemoveChannelPassword(request);
+                        break;
+                    case ModeOperationType.AddChannelOperator:
+                        AddChannelOperator(request);
+                        break;
+                    case ModeOperationType.RemoveChannelOperator:
+                        RemoveChannelOperator(request);
+                        break;
+                    case ModeOperationType.EnableUserVoicePermission:
+                        EnableUserVoicePermission(request);
+                        break;
+                    case ModeOperationType.DisableUserVoicePermission:
+                        DisableUserVoicePermission(request);
+                        break;
+                    case ModeOperationType.SetChannelModesWithUserLimit:
+                        AddChannelUserLimits(request);
+                        goto default;
+                    default:
+                        Mode.ChangeModes(request);
+                        break;
+                }
             }
         }
 

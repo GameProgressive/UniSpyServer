@@ -1,6 +1,6 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -39,9 +39,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 case ModeRequestType.SetChannelModes:
                     SetChannelModes(cmd);
                     break;
-                case ModeRequestType.SetChannelModesWithUserLimit:
-                    SetChannelModes(cmd);
-                    break;
+                    // case ModeRequestType.SetChannelModesWithUserLimit:
+                    //     SetChannelModes(cmd);
+                    //     break;
             }
         }
 

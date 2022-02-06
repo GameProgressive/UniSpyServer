@@ -20,33 +20,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
         }
 
-        // protected override void RequestCheck()
-        // {
-
-        //     switch (_request.RequestType)
-        //     {
-        //         case ModeRequestType.EnableUserQuietFlag:
-        //         case ModeRequestType.DisableUserQuietFlag:
-        //             //we do not need to find user and its channel here
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
-
         protected override void DataOperation()
         {
             _result = new ModeResult();
             switch (_request.RequestType)
             {
-                case ModeRequestType.EnableUserQuietFlag:
-                    _session.UserInfo.IsQuietMode = true;
-                    _result.JoinerNickName = _session.UserInfo.NickName;
-                    break;
-                case ModeRequestType.DisableUserQuietFlag:
-                    _session.UserInfo.IsQuietMode = false;
-                    _result.JoinerNickName = _session.UserInfo.NickName;
-                    break;
                 // We get user nick name then get channel modes
                 case ModeRequestType.GetChannelUserModes:
                     _result.JoinerNickName = _request.NickName;
@@ -55,15 +33,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     _result.ChannelModes = _channel.Mode.ToString();
                     _result.ChannelName = _channel.Name;
                     break;
-                case ModeRequestType.GetBannedUsers:
-                    //TODO
-                    throw new NotImplementedException();
-                default:
-                    //we check if the user is operator in channel
-                    if (_user.IsChannelOperator)
-                    {
-                        _channel.SetProperties(_user, _request);
-                    }
+                case ModeRequestType.SetChannelModes:
+                    _channel.SetProperties(_user, _request);
                     break;
             }
         }

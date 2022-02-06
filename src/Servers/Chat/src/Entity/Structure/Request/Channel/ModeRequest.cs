@@ -1,4 +1,8 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
@@ -19,10 +23,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
     // "MODE <channel name> <mode flags>"
     // "MODE <channel name> <mode flags> <limit number>"
-    public enum ModeRequestType
+    public enum ModeOperationType
     {
-        GetChannelModes,
-        GetChannelUserModes,
         EnableUserQuietFlag,
         DisableUserQuietFlag,
         AddChannelPassword,
@@ -36,13 +38,34 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         RemoveChannelOperator,
         EnableUserVoicePermission,
         DisableUserVoicePermission,
-        SetChannelModes,
         SetChannelModesWithUserLimit,
+        SetInvitedOnly,
+        RemoveInvitedOnly,
+        SetPrivateChannelFlag,
+        RemovePrivateChannelFlag,
+        SetSecretChannelFlag,
+        RemoveSecretChannelFlag,
+        SetModeratedChannelFlag,
+        RemoveModeratedChannelFlag,
+        SetNoOutsideMessagesFlag,
+        RemoveNoOutsideMessagesFlag,
+        SetTopicChangeByOperatorFlag,
+        RemoveTopicChangeByOperatorFlag,
+        SetOperatorAbeyChannelLimits,
+        RemoveOperatorAbeyChannelLimits,
+    }
+    public enum ModeRequestType
+    {
+        GetChannelModes,
+        GetChannelUserModes,
+        SetChannelModes
+
     }
     [RequestContract("MODE")]
     public sealed class ModeRequest : ChannelRequestBase
     {
         public ModeRequestType RequestType { get; set; }
+        public List<ModeOperationType> ModeOperations { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
         public int LimitNumber { get; set; }
@@ -50,191 +73,143 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public string Password { get; set; }
         public ModeRequest(string rawRequest) : base(rawRequest)
         {
+            ModeOperations = new List<ModeOperationType>();
         }
         public ModeRequest() { }
+
         public override void Parse()
         {
             base.Parse();
             if (_cmdParams.Count == 1)
             {
-                ChannelName = _cmdParams[0];
                 RequestType = ModeRequestType.GetChannelModes;
             }
             else if (_cmdParams.Count == 2 || _cmdParams.Count == 3)
             {
+                RequestType = ModeRequestType.SetChannelModes;
                 ModeFlag = _cmdParams[1];
-                // TODO! We ignore multiple mode flags, maybe we need it in future for supporting games
-                switch (ModeFlag)
+                var modeFlags = Regex.Split(ModeFlag, @"(?=\+|\-)").Where(s => !String.IsNullOrEmpty(s)).ToArray();
+                foreach (var flag in modeFlags)
                 {
-                    case "+q":
-                        NickName = _cmdParams[0];
-                        RequestType = ModeRequestType.EnableUserQuietFlag;
-                        break;
-                    case "-q":
-                        NickName = _cmdParams[0];
-                        RequestType = ModeRequestType.DisableUserQuietFlag;
-                        break;
-                    case "+k":
-                        ChannelName = _cmdParams[0];
-                        Password = _cmdParams[2];
-                        RequestType = ModeRequestType.AddChannelPassword;
-                        break;
-                    case "-k":
-                        ChannelName = _cmdParams[0];
-                        Password = _cmdParams[2];
-                        RequestType = ModeRequestType.RemoveChannelPassword;
-                        break;
-                    case "+l":
-                        ChannelName = _cmdParams[0];
-                        LimitNumber = int.Parse(_cmdParams[2]);
-                        RequestType = ModeRequestType.AddChannelUserLimits;
-                        break;
-                    case "-l":
-                        ChannelName = _cmdParams[0];
-                        RequestType = ModeRequestType.RemoveChannelUserLimits;
-                        break;
-                    case "+b":
-                        ChannelName = _cmdParams[0];
-                        if (_cmdParams.Count == 3)
-                        {
+                    switch (flag)
+                    {
+                        case "+e":
+                            ModeOperations.Add(ModeOperationType.SetOperatorAbeyChannelLimits);
+                            break;
+                        case "-e":
+                            ModeOperations.Add(ModeOperationType.RemoveOperatorAbeyChannelLimits);
+                            break;
+                        case "+t":
+                            ModeOperations.Add(ModeOperationType.SetTopicChangeByOperatorFlag);
+                            break;
+                        case "-t":
+                            ModeOperations.Add(ModeOperationType.RemoveTopicChangeByOperatorFlag);
+                            break;
+                        case "+n":
+                            ModeOperations.Add(ModeOperationType.SetNoOutsideMessagesFlag);
+                            break;
+                        case "-n":
+                            ModeOperations.Add(ModeOperationType.RemoveNoOutsideMessagesFlag);
+                            break;
+                        case "+m":
+                            ModeOperations.Add(ModeOperationType.SetModeratedChannelFlag);
+                            break;
+                        case "-m":
+                            ModeOperations.Add(ModeOperationType.RemoveModeratedChannelFlag);
+                            break;
+                        case "+s":
+                            ModeOperations.Add(ModeOperationType.SetSecretChannelFlag);
+                            break;
+                        case "-s":
+                            ModeOperations.Add(ModeOperationType.RemoveSecretChannelFlag);
+                            break;
+                        case "+i":
+                            ModeOperations.Add(ModeOperationType.SetInvitedOnly);
+                            break;
+                        case "-i":
+                            ModeOperations.Add(ModeOperationType.RemoveInvitedOnly);
+                            break;
+                        case "-p":
+                            ModeOperations.Add(ModeOperationType.RemovePrivateChannelFlag);
+                            break;
+                        case "+p":
+                            ModeOperations.Add(ModeOperationType.SetPrivateChannelFlag);
+                            break;
+                        case "+q":
+                            NickName = _cmdParams[0];
+                            ModeOperations.Add(ModeOperationType.EnableUserQuietFlag);
+                            break;
+                        case "-q":
+                            NickName = _cmdParams[0];
+                            ModeOperations.Add(ModeOperationType.DisableUserQuietFlag);
+                            break;
+                        case "+k":
+                            ChannelName = _cmdParams[0];
+                            Password = _cmdParams[2];
+                            ModeOperations.Add(ModeOperationType.AddChannelPassword);
+                            break;
+                        case "-k":
+                            ChannelName = _cmdParams[0];
+                            Password = _cmdParams[2];
+                            ModeOperations.Add(ModeOperationType.RemoveChannelPassword);
+                            break;
+                        case "+l":
+                            ChannelName = _cmdParams[0];
+                            LimitNumber = int.Parse(_cmdParams[2]);
+                            ModeOperations.Add(ModeOperationType.AddChannelUserLimits);
+                            break;
+                        case "-l":
+                            ChannelName = _cmdParams[0];
+                            ModeOperations.Add(ModeOperationType.RemoveChannelUserLimits);
+                            break;
+                        case "+b":
+                            ChannelName = _cmdParams[0];
+                            if (_cmdParams.Count == 3)
+                            {
+                                NickName = _cmdParams[2];
+                                ModeOperations.Add(ModeOperationType.AddBanOnUser);
+                            }
+                            else
+                            {
+                                ModeOperations.Add(ModeOperationType.GetBannedUsers);
+                            }
+                            break;
+                        case "-b":
+                            ChannelName = _cmdParams[0];
+                            ModeOperations.Add(ModeOperationType.RemoveBanOnUser);
+                            break;
+                        case "+co":
+                            ChannelName = _cmdParams[0];
+                            UserName = _cmdParams[2];
+                            ModeOperations.Add(ModeOperationType.AddChannelOperator);
+                            break;
+                        case "-co":
+                            ChannelName = _cmdParams[0];
+                            UserName = _cmdParams[2];
+                            ModeOperations.Add(ModeOperationType.RemoveChannelOperator);
+                            break;
+                        case "+cv":
+                            ChannelName = _cmdParams[0];
                             NickName = _cmdParams[2];
-                            RequestType = ModeRequestType.AddBanOnUser;
-                        }
-                        else
-                        {
-                            RequestType = ModeRequestType.GetBannedUsers;
-                        }
-                        break;
-                    case "-b":
-                        ChannelName = _cmdParams[0];
-                        RequestType = ModeRequestType.RemoveBanOnUser;
-                        break;
-                    case "+co":
-                        ChannelName = _cmdParams[0];
-                        UserName = _cmdParams[2];
-                        RequestType = ModeRequestType.AddChannelOperator;
-                        break;
-                    case "-co":
-                        ChannelName = _cmdParams[0];
-                        UserName = _cmdParams[2];
-                        RequestType = ModeRequestType.RemoveChannelOperator;
-                        break;
-                    case "+cv":
-                        ChannelName = _cmdParams[0];
-                        NickName = _cmdParams[2];
-                        RequestType = ModeRequestType.EnableUserVoicePermission;
-                        break;
-                    case "-cv":
-                        ChannelName = _cmdParams[0];
-                        NickName = _cmdParams[2];
-                        RequestType = ModeRequestType.DisableUserVoicePermission;
-                        break;
-                    default:
-                        throw new Exception.Exception("Unknown mode request type.");
+                            ModeOperations.Add(ModeOperationType.EnableUserVoicePermission);
+                            break;
+                        case "-cv":
+                            ChannelName = _cmdParams[0];
+                            NickName = _cmdParams[2];
+                            ModeOperations.Add(ModeOperationType.DisableUserVoicePermission);
+                            break;
+                        default:
+                            throw new Exception.Exception("Unknown mode request type.");
+                    }
+
                 }
+                // TODO! We ignore multiple mode flags, maybe we need it in future for supporting games
+
             }
             else
             {
                 throw new Exception.Exception("number of IRC parameters are incorrect.");
             }
-
-            /**
-                        // if (_cmdParams.Count == 1)
-                        // {
-                        //     ChannelName = _cmdParams[0];
-                        //     RequestType = ModeRequestType.GetChannelModes;
-                        //     return;
-                        // }
-
-                        // if (_cmdParams.Count >= 2)
-                        // {
-                        //     if (_cmdParams[1].Length <= 3)
-                        //     {
-                        //         ModeFlag = _cmdParams[1];
-
-                        //         switch (ModeFlag)
-                        //         {
-                        //             case "+q":
-                        //                 NickName = _cmdParams[0];
-                        //                 RequestType = ModeRequestType.EnableUserQuietFlag;
-                        //                 break;
-                        //             case "-q":
-                        //                 NickName = _cmdParams[0];
-                        //                 RequestType = ModeRequestType.DisableUserQuietFlag;
-                        //                 break;
-                        //             case "+k":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 Password = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.AddChannelPassword;
-                        //                 break;
-                        //             case "-k":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 Password = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.RemoveChannelPassword;
-                        //                 break;
-                        //             case "+l":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 LimitNumber = int.Parse(_cmdParams[2]);
-                        //                 RequestType = ModeRequestType.AddChannelUserLimits;
-                        //                 break;
-                        //             case "-l":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 RequestType = ModeRequestType.RemoveChannelUserLimits;
-                        //                 break;
-                        //             case "+b":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 NickName = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.AddBanOnUser;
-                        //                 break;
-                        //             case "-b":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 RequestType = ModeRequestType.RemoveBanOnUser;
-                        //                 break;
-                        //             case "+co":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 UserName = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.AddChannelOperator;
-                        //                 break;
-                        //             case "-co":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 UserName = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.RemoveChannelOperator;
-                        //                 break;
-                        //             case "+cv":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 NickName = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.EnableUserVoicePermission;
-                        //                 break;
-                        //             case "-cv":
-                        //                 ChannelName = _cmdParams[0];
-                        //                 NickName = _cmdParams[2];
-                        //                 RequestType = ModeRequestType.DisableUserVoicePermission;
-                        //                 break;
-                        //         }
-                        //     }
-                        //     else
-                        //     {
-                        //         // "MODE <channel name> <mode flags> <limit number>"
-                        //         if (_cmdParams.Count == 3)
-                        //         {
-                        //             ChannelName = _cmdParams[0];
-                        //             ModeFlag = _cmdParams[1];
-                        //             LimitNumber = int.Parse(_cmdParams[2]);
-                        //             RequestType = ModeRequestType.SetChannelModesWithUserLimit;
-                        //         }
-                        //         // "MODE <channel name> <mode flags>"
-                        //         else
-                        //         {
-                        //             ChannelName = _cmdParams[0];
-                        //             ModeFlag = _cmdParams[1];
-                        //             RequestType = ModeRequestType.SetChannelModes;
-                        //         }
-                        //     }
-                        //     throw new Exception.Exception("Unknown mode request type.");
-                        // }
-                        // throw new Exception.Exception("number of IRC parameters are incorrect.");
-                    }
-                    **/
         }
     }
 }

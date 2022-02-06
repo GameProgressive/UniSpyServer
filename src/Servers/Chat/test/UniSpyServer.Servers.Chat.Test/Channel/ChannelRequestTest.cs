@@ -1,6 +1,6 @@
-using Xunit;
 using System.Collections.Generic;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using Xunit;
 
 namespace UniSpyServer.Servers.Chat.Test.Channel
 {
@@ -69,10 +69,15 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
         {
             var request = new ModeRequest(ChannelRequests.ModeChannel);
             request.Parse();
-            Assert.Equal(ModeRequestType.AddChannelUserLimits, request.RequestType);
+            Assert.Equal(ModeOperationType.AddChannelUserLimits, request.ModeOperations[0]);
             Assert.Equal("#GSP!room!test", request.ChannelName);
             Assert.Equal("+l", request.ModeFlag);
             Assert.Equal((int)2, request.LimitNumber);
+
+
+            request = new ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2");
+            request.Parse();
+
         }
 
         [Fact]
