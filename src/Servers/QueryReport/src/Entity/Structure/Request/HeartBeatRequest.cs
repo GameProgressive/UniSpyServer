@@ -1,10 +1,10 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
@@ -97,7 +97,14 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
                     continue;
                 }
                 // no matter happens we just update the key value
-                ServerData.Add(tempKey, tempValue);
+                if (ServerData.ContainsKey(tempKey))
+                {
+                    ServerData[tempKey] = tempValue;
+                }
+                else
+                {
+                    ServerData.Add(tempKey, tempValue);
+                }
             }
         }
         private void ParsePlayerData(string playerDataStr)
@@ -126,7 +133,14 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
                 {
                     string tempKey = keys[keyIndex] + playerIndex.ToString();
                     string tempValue = values[playerIndex * keys.Count + keyIndex];
-                    keyValue.Add(tempKey, tempValue);
+                    if (keyValue.ContainsKey(tempKey))
+                    {
+                        keyValue[tempKey] = tempValue;
+                    }
+                    else
+                    {
+                        keyValue.Add(tempKey, tempValue);
+                    }
                 }
                 PlayerData.Add(keyValue);
             }
@@ -155,7 +169,14 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
                 {
                     string tempKey = keys[keyIndex] + teamIndex.ToString();
                     string tempValue = values[teamIndex * keys.Count + keyIndex];
-                    keyValue.Add(tempKey, tempValue);
+                    if (keyValue.ContainsKey(tempKey))
+                    {
+                        keyValue[tempKey] = tempValue;
+                    }
+                    else
+                    {
+                        keyValue.Add(tempKey, tempValue);
+                    }
                     //LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new team key value {tempKey}:{tempValue}");
                 }
                 TeamData.Add(keyValue);
