@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     /// <summary>
     /// Get value of the channel user's key value of all channels
     /// </summary>
-    [HandlerContract("GetKey")]
+    [HandlerContract("GETKEY")]
     public sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
