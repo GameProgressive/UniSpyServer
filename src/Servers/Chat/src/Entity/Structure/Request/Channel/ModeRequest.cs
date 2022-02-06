@@ -38,7 +38,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         RemoveChannelOperator,
         EnableUserVoicePermission,
         DisableUserVoicePermission,
-        SetChannelModesWithUserLimit,
         SetInvitedOnly,
         RemoveInvitedOnly,
         SetPrivateChannelFlag,
@@ -47,8 +46,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         RemoveSecretChannelFlag,
         SetModeratedChannelFlag,
         RemoveModeratedChannelFlag,
-        SetNoOutsideMessagesFlag,
-        RemoveNoOutsideMessagesFlag,
+        EnableExternalMessagesFlag,
+        DisableExternalMessagesFlag,
         SetTopicChangeByOperatorFlag,
         RemoveTopicChangeByOperatorFlag,
         SetOperatorAbeyChannelLimits,
@@ -106,10 +105,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                             ModeOperations.Add(ModeOperationType.RemoveTopicChangeByOperatorFlag);
                             break;
                         case "+n":
-                            ModeOperations.Add(ModeOperationType.SetNoOutsideMessagesFlag);
+                            ModeOperations.Add(ModeOperationType.EnableExternalMessagesFlag);
                             break;
                         case "-n":
-                            ModeOperations.Add(ModeOperationType.RemoveNoOutsideMessagesFlag);
+                            ModeOperations.Add(ModeOperationType.DisableExternalMessagesFlag);
                             break;
                         case "+m":
                             ModeOperations.Add(ModeOperationType.SetModeratedChannelFlag);

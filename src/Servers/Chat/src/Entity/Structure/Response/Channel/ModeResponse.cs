@@ -9,12 +9,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     //TODO apply channel abstraction into this class
     public sealed class ModeResponse : ResponseBase
     {
+        private new ModeRequest _request => (ModeRequest)base._request;
+        private new ModeResult _result => (ModeResult)base._result;
         public ModeResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        private new ModeRequest _request => (ModeRequest)base._request;
-        private new ModeResult _result => (ModeResult)base._result;
         public override void Build()
         {
             if (_request.RequestType == ModeRequestType.GetChannelModes)
@@ -23,7 +22,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
                 string cmdParams = $"{_result.ChannelName} {_result.ChannelModes}";
                 SendingBuffer = IRCReplyBuilder.Build(ResponseName.Mode, cmdParams);
             }
-            else
+            else if (_request.RequestType == ModeRequestType.GetChannelUserModes)
             {
                 //channel user mode reply
                 string cmdParams = $"{_result.JoinerNickName} {_result.ChannelName} {_result.ChannelModes}";

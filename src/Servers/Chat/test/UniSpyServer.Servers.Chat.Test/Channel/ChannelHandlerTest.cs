@@ -64,5 +64,13 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var handler = new SetCKeyHandler(session, request);
             handler.Handle();
         }
+        [Fact]
+        public void ModeTest()
+        {
+            var session = SingleJoinTest("spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
+            var request = new ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2");
+            var handler = new ModeHandler(session, request);
+            handler.Handle();
+        }
     }
 }

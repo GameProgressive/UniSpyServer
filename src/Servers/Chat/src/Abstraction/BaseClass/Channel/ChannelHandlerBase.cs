@@ -1,4 +1,5 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+﻿using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -17,6 +18,10 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         {
             base.RequestCheck();
             _channel = _session.UserInfo.GetJoinedChannel(_request.ChannelName);
+            if (_channel == null)
+            {
+                throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
+            }
             _user = _channel.GetChannelUserBySession(_session);
             if (_user == null)
             {

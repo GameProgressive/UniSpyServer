@@ -18,6 +18,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsAllowExternalMessage { get; private set; }
         //t - toggle the topic settable by channel operator only flag;
         public bool IsTopicOnlySetByChannelOperator { get; private set; }
+        // e - toggle the operator allow channel limits flag;
+        public bool IsOperatorAbeyChannelLimits { get; private set; }
         /// <summary>
         /// default constructor
         /// </summary>
@@ -28,84 +30,59 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         public void SetDefaultModes()
         {
+            IsInviteOnly = false;
+            IsPrivateChannel = false;
+            IsSecretChannel = false;
             IsModeratedChannel = true;
+            IsAllowExternalMessage = true;
             IsTopicOnlySetByChannelOperator = true;
         }
 
-        public void ChangeModes(ModeRequest cmd)
+        public void SetChannelModes(ModeOperationType operation)
         {
-            switch (cmd.RequestType)
+            switch (operation)
             {
-                case ModeRequestType.SetChannelModes:
-                    SetChannelModes(cmd);
+                case ModeOperationType.SetOperatorAbeyChannelLimits:
+                    IsOperatorAbeyChannelLimits = true;
                     break;
-                    // case ModeRequestType.SetChannelModesWithUserLimit:
-                    //     SetChannelModes(cmd);
-                    //     break;
-            }
-        }
-
-        private void SetChannelModes(ModeRequest cmd)
-        {
-            List<string> flags = new List<string>();
-
-            if (cmd.ModeFlag == null)
-            {
-                return;
-            }
-            for (int i = 0; i < cmd.ModeFlag.Length; i += 2)
-            {
-                flags.Add($"{cmd.ModeFlag[i]}{cmd.ModeFlag[i + 1]}");
-            }
-
-            foreach (var f in flags)
-            {
-                SetModeByFlag(f);
-            }
-        }
-        private void SetModeByFlag(string flag)
-        {
-            //XiXpXsXmXnXtXlXe
-            switch (flag)
-            {
-                case "+i":
+                case ModeOperationType.RemoveOperatorAbeyChannelLimits:
+                    IsOperatorAbeyChannelLimits = false;
+                    break;
+                case ModeOperationType.SetInvitedOnly:
                     IsInviteOnly = true;
                     break;
-                case "-i":
+                case ModeOperationType.RemoveInvitedOnly:
                     IsInviteOnly = false;
                     break;
-                case "+p":
+                case ModeOperationType.SetPrivateChannelFlag:
                     IsPrivateChannel = true;
                     break;
-                case "-p":
+                case ModeOperationType.RemovePrivateChannelFlag:
                     IsPrivateChannel = false;
                     break;
-                case "+s":
+                case ModeOperationType.SetSecretChannelFlag:
                     IsSecretChannel = true;
                     break;
-                case "-s":
+                case ModeOperationType.RemoveSecretChannelFlag:
                     IsSecretChannel = false;
                     break;
-                case "+m":
+                case ModeOperationType.SetModeratedChannelFlag:
                     IsModeratedChannel = true;
                     break;
-                case "-m":
+                case ModeOperationType.RemoveModeratedChannelFlag:
                     IsModeratedChannel = false;
                     break;
-                case "+n":
+                case ModeOperationType.EnableExternalMessagesFlag:
                     IsAllowExternalMessage = true;
                     break;
-                case "-n":
+                case ModeOperationType.DisableExternalMessagesFlag:
                     IsAllowExternalMessage = false;
                     break;
-                case "+t":
+                case ModeOperationType.SetTopicChangeByOperatorFlag:
                     IsTopicOnlySetByChannelOperator = true;
                     break;
-                case "-t":
+                case ModeOperationType.RemoveTopicChangeByOperatorFlag:
                     IsTopicOnlySetByChannelOperator = false;
-                    break;
-                case "+e":
-                case "-e":
                     break;
             }
         }
@@ -143,17 +120,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
             //response is like +nt
             return buffer.ToString();
-        }
-        public static bool ConvertModeFlagToBool(string cmd)
-        {
-            if (cmd.Contains('+'))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

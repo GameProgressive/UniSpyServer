@@ -21,23 +21,23 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         /// <value></value>
         public int MaxNumberUser { get; private set; }
-        public ChannelMode Mode { get; set; }
+        public ChannelMode Mode { get; private set; }
         public DateTime CreateTime { get; private set; }
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public ConcurrentDictionary<string, ChannelUser> BanList { get; set; }
+        public ConcurrentDictionary<string, ChannelUser> BanList { get; private set; }
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public ConcurrentDictionary<string, ChannelUser> Users { get; set; }
-        public string Password { get; set; }
+        public ConcurrentDictionary<string, ChannelUser> Users { get; private set; }
         public Dictionary<string, string> ChannelKeyValue { get; private set; }
-        public string Topic { get; set; }
-        public bool IsPeerServer { get; set; }
         public ChannelUser Creator { get; private set; }
+        public bool IsPeerServer { get; set; }
+        public string Password { get; private set; }
+        public string Topic { get; set; }
         public Channel(string name, ChannelUser creator = null)
         {
             CreateTime = DateTime.Now;
@@ -149,32 +149,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
             return true;
         }
-        public bool IsUserBanned(Session session)
-        {
-            if (BanList.Keys.Contains(session.UserInfo.NickName))
-            {
-                var resultUser = BanList[session.UserInfo.NickName];
-                if (resultUser.UserInfo.Session.Id == session.Id)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
         public bool IsUserExisted(ChannelUser user) => Users.Keys.Contains(user.UserInfo.NickName);
+        public ChannelUser GetChannelUserByNickName(string nickName) => Users.Keys.Contains(nickName) == true ? Users[nickName] : null;
 
-        public ChannelUser GetChannelUserByNickName(string nickName)
-        {
-            if (Users.Keys.Contains(nickName))
-            {
-                return Users[nickName];
-            }
-            else
-            {
-                return null;
-            }
-        }
         /// <summary>
         /// We only care about how to set mode in this channel
         /// we do not need to care about if the user is legal
@@ -190,10 +167,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 switch (op)
                 {
                     case ModeOperationType.AddChannelUserLimits:
-                        AddChannelUserLimits(request);
+                        MaxNumberUser = request.LimitNumber;
                         break;
                     case ModeOperationType.RemoveChannelUserLimits:
-                        RemoveChannelUserLimits(request);
+                        MaxNumberUser = 200;
                         break;
                     case ModeOperationType.AddBanOnUser:
                         AddBanOnUser(request);
@@ -202,10 +179,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                         RemoveBanOnUser(request);
                         break;
                     case ModeOperationType.AddChannelPassword:
-                        AddChannelPassword(request);
+                        Password = request.Password;
                         break;
                     case ModeOperationType.RemoveChannelPassword:
-                        RemoveChannelPassword(request);
+                        Password = null;
                         break;
                     case ModeOperationType.AddChannelOperator:
                         AddChannelOperator(request);
@@ -219,24 +196,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                     case ModeOperationType.DisableUserVoicePermission:
                         DisableUserVoicePermission(request);
                         break;
-                    case ModeOperationType.SetChannelModesWithUserLimit:
-                        AddChannelUserLimits(request);
-                        goto default;
                     default:
-                        Mode.ChangeModes(request);
+                        Mode.SetChannelModes(op);
                         break;
                 }
             }
-        }
-
-        private void AddChannelUserLimits(ModeRequest request)
-        {
-            MaxNumberUser = request.LimitNumber;
-        }
-
-        private void RemoveChannelUserLimits(ModeRequest request)
-        {
-            MaxNumberUser = 200;
         }
         private void AddBanOnUser(ModeRequest request)
         {
@@ -268,20 +232,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 LogWriter.Error($"Multiple user with same nick name in channel {Name}");
             }
         }
-        private void AddChannelPassword(ModeRequest request)
-        {
-            if (Password == null)
-            {
-                Password = request.Password;
-            }
-        }
-        private void RemoveChannelPassword(ModeRequest request)
-        {
-            if (Password == request.Password)
-            {
-                Password = null;
-            }
-        }
+
         private void AddChannelOperator(ModeRequest request)
         {
             // check whether this user is in this channel
