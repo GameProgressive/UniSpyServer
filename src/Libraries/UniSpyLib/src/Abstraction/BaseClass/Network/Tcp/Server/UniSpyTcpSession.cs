@@ -15,8 +15,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     /// </summary>
     public abstract class UniSpyTcpSession : TcpSession, IUniSpySession
     {
-        public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
-        public IPEndPoint RemoteIPEndPoint => (this.Socket != null) ? (IPEndPoint)Socket.RemoteEndPoint : null;
+        public EndPoint RemoteEndPoint { get; private set; }
+        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
         public new UniSpyTcpServer Server => (UniSpyTcpServer)base.Server;
         public UniSpyTcpSession(UniSpyTcpServer server) : base(server)
         {
@@ -50,6 +50,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         protected virtual void OnReceived(byte[] buffer) => OnReceived(UniSpyEncoding.GetString(buffer));
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
+            if (RemoteEndPoint is null)
+            {
+                RemoteEndPoint = Socket.RemoteEndPoint;
+            }
             byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
             byte[] plainText = Decrypt(cipherText);
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, plainText);
