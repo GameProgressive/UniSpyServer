@@ -11,11 +11,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     /// <summary>
     /// Get value of the channel user's key value of all channels
     /// </summary>
-    [HandlerContract("GETKey")]
+    [HandlerContract("GetKey")]
     public sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
-        private new GetKeyResult _result{ get => (GetKeyResult)base._result; set => base._result = value; }
+        private new GetKeyResult _result { get => (GetKeyResult)base._result; set => base._result = value; }
         public GetKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new GetKeyResult();
