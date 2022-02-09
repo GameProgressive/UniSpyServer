@@ -5,11 +5,11 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
-    public abstract class UniSpyHttpServer : HttpServer, IUniSpyServer
+    public abstract class UniSpyHttpServer : HttpServer, IServer
     {
         public Guid ServerID { get; private set; }
         public UniSpyHttpSessionManager SessionManager { get; protected set; }
-        UniSpySessionManager IUniSpyServer.SessionManager => SessionManager;
+        SessionManager IServer.SessionManager => SessionManager;
         protected UniSpyHttpServer(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
         }
@@ -19,14 +19,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         {
             if (!SessionManager.SessionPool.ContainsKey(session.Id))
             {
-                SessionManager.SessionPool.TryAdd(session.Id, (UniSpyHttpSession)session);
+                SessionManager.SessionPool.Add(session.Id, (UniSpyHttpSession)session);
             }
             base.OnConnected(session);
         }
 
         protected override void OnDisconnected(TcpSession session)
         {
-            SessionManager.SessionPool.TryRemove(session.Id, out _);
+            SessionManager.SessionPool.Remove(session.Id);
             base.OnDisconnected(session);
         }
     }

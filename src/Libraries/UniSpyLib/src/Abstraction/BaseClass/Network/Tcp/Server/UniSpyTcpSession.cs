@@ -13,7 +13,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class UniSpyTcpSession : TcpSession, IUniSpySession
+    public abstract class UniSpyTcpSession : TcpSession, ISession
     {
         public EndPoint RemoteEndPoint { get; private set; }
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
@@ -73,7 +73,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <returns>plaintext</returns>
         protected virtual byte[] Decrypt(byte[] buffer) => buffer;
 
-        public bool Send(IUniSpyResponse response)
+        public bool Send(IResponse response)
         {
             response.Build();
             if (response.SendingBuffer == null)
@@ -96,7 +96,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             }
         }
 
-        public bool BaseSend(IUniSpyResponse response)
+        public bool BaseSend(IResponse response)
         {
             response.Build();
             if (response.SendingBuffer == null)

@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;

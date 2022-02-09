@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public int OperationID { get; protected set; }
         public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }

@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class BuddyListResponse : ResponseBase
     {
-        public BuddyListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public BuddyListResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

@@ -20,15 +20,17 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private new ServerInfoRequest _request => (ServerInfoRequest)base._request;
         private new ServerInfoResult _result { get => (ServerInfoResult)base._result; set => base._result = value; }
 
-        public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerInfoHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new ServerInfoResult();
         }
 
         protected override void DataOperation()
         {
-            _result.GameServerInfo = _gameServerRedisClient.Values.Where(x => x.RemoteIPEndPoint == _request.TargetIPEndPoint).FirstOrDefault();
-            //_result.Flags = hasFullrule
+            _result.GameServerInfo = _gameServerRedisClient.Values.Where(x =>
+                x.HostIPAddress == _request.TargetIPEndPoint.Address &
+                x.HostPort == _request.TargetIPEndPoint.Port).FirstOrDefault();
+
             //TODO if there are no server found, we still send response back to client
             if (_result.GameServerInfo == null)
             {

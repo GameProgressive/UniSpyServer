@@ -1,7 +1,6 @@
 ﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
@@ -9,7 +8,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
     {
         private new AuthGameResult _result => (AuthGameResult)base._result;
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
-        public AuthGameResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public AuthGameResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

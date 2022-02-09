@@ -15,13 +15,13 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     /// if error code bigger than noerror we need to process it in ConstructResponse()
     ///we also need to check the error code != noerror in ConstructResponse()
     /// </summary>
-    public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
         {
         }
         //if we use this structure the error response should also write to _sendingBuffer

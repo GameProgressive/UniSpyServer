@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
-    public abstract class UniSpyTcpSessionManager : UniSpySessionManager
+    public abstract class UniSpyTcpSessionManager : SessionManager
     {
         public UniSpyTcpSessionManager()
         {

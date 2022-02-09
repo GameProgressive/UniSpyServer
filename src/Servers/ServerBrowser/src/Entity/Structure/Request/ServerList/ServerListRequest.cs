@@ -22,10 +22,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         {
             base.Parse();
             CommandName = RequestType.ServerListRequest;
-            if (RequestLength != RawRequest.Length)
-            {
-                throw new SBException("Server list request length is not correct.");
-            }
+            // if (RequestLength != RawRequest.Length)
+            // {
+            //     throw new SBException("Server list request length is not correct.");
+            // }
 
             RequestVersion = RawRequest[2];
             ProtocolVersion = RawRequest[3];

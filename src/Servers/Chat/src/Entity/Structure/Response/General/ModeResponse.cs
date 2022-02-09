@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
 {
@@ -11,7 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result => (ModeResult)base._result;
-        public ModeResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ModeResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

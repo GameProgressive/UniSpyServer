@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new AddressCheckRequest _request => (AddressCheckRequest)base._request;
         private new AddressCheckResult _result { get => (AddressCheckResult)base._result; set => base._result = value; }
 
-        public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public AddressCheckHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new AddressCheckResult();
         }

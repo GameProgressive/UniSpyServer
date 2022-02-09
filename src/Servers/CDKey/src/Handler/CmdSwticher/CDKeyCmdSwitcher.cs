@@ -4,11 +4,11 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.CDkey.Handler.CmdSwitcher
 {
-    public sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CDKeyCmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 
-        public CDKeyCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
+        public CDKeyCmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

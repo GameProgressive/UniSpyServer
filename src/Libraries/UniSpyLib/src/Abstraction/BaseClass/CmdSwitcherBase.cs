@@ -8,31 +8,31 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyCmdSwitcherBase
+    public abstract class CmdSwitcherBase
     {
         protected object _rawRequest;
-        protected IUniSpySession _session;
-        protected List<IUniSpyRequest> _requests;
-        protected List<IUniSpyHandler> _handlers;
+        protected ISession _session;
+        protected List<IRequest> _requests;
+        protected List<IHandler> _handlers;
         /// <summary>
         /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
         protected static Dictionary<object, Type> _requestMapping { get; set; }
         protected static Dictionary<object, Type> _handlerMapping { get; set; }
-        static UniSpyCmdSwitcherBase()
+        static CmdSwitcherBase()
         {
             _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));
             _handlerMapping = LoadUniSpyComponents(typeof(HandlerContractBase));
         }
-        public UniSpyCmdSwitcherBase(IUniSpySession session, object rawRequest)
+        public CmdSwitcherBase(ISession session, object rawRequest)
         {
             _session = session;
             _rawRequest = rawRequest;
-            _requests = new List<IUniSpyRequest>();
-            _handlers = new List<IUniSpyHandler>();
+            _requests = new List<IRequest>();
+            _handlers = new List<IHandler>();
         }
 
-        protected UniSpyCmdSwitcherBase()
+        protected CmdSwitcherBase()
         {
         }
 
@@ -104,7 +104,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 LogWriter.Error($"request {name} is not implemented");
             }
-            _requests.Add((IUniSpyRequest)Activator.CreateInstance(_requestMapping[name], rawRequest));
+            _requests.Add((IRequest)Activator.CreateInstance(_requestMapping[name], rawRequest));
         }
         protected virtual void CreateCmdHandlers()
         {
@@ -116,7 +116,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     LogWriter.Error($"Handler {requestName} is not implemented");
 
                 }
-                var handler = (IUniSpyHandler)Activator.CreateInstance(_handlerMapping[requestName], _session, request);
+                var handler = (IHandler)Activator.CreateInstance(_handlerMapping[requestName], _session, request);
 
                 if (handler == null)
                 {

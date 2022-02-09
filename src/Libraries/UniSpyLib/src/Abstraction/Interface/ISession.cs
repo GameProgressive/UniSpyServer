@@ -2,11 +2,10 @@
 
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpySession
+    public interface ISession
     {
         EndPoint RemoteEndPoint { get; }
         IPEndPoint RemoteIPEndPoint { get; }
-        bool Send(IUniSpyResponse response);
-        bool BaseSend(IUniSpyResponse response);
+        bool Send(IResponse response);
     }
 }

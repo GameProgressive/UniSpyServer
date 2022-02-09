@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
-        public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public InitHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new InitResult();
         }

@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class UpdateProHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new UpdateProRequest _request => (UpdateProRequest)base._request;
-        public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public UpdateProHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

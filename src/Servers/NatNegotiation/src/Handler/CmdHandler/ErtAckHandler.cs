@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         private new ErtAckResult _result { get => (ErtAckResult)base._result; set => base._result = value; }
-        public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ErtAckHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new ErtAckResult();
         }

@@ -36,7 +36,10 @@ namespace UniSpyServer.LinqToRedis.Linq
                 {
                     value = Enum.ToObject(targetType, value);
                 }
-
+                else
+                {
+                    value = Convert.ChangeType(value, targetType);
+                }
                 keyProperty.SetValue(KeyObject, value);
             }
         }

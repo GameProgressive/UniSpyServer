@@ -35,7 +35,7 @@
         ServerMainList = 0,
         SendFieldForAll = 1,
         /// <summary>
-        /// this is used to check the connection to server browser
+        /// get the full information of this server
         /// </summary>
         ServerNetworkInfoList = 2,
         /// <summary>

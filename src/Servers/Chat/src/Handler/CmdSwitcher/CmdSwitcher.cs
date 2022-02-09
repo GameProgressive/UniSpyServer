@@ -10,11 +10,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
     /// <summary>
     /// Process request to Commands
     /// </summary>
-    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         private new Session _session => (Session)base._session;
-        public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

@@ -2,7 +2,7 @@
 
 namespace UniSpyServer.Servers.CDkey.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public RequestBase(string rawRequest) : base(rawRequest)
         {

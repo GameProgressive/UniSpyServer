@@ -4,7 +4,6 @@ using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
@@ -15,7 +14,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
     public sealed class ServerInfoResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;
-        public ServerInfoResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ServerInfoResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 
@@ -25,6 +24,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
             BuildServersInfo();
             // add message length here
             _serverListData.InsertRange(0, BitConverter.GetBytes((ushort)(_serverListData.Count + 2)).Reverse().ToArray());
+            SendingBuffer = _serverListData.ToArray();
         }
 
         protected override void BuildServersInfo()

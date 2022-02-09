@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
     {
         private new PrivateMsgRequest _request => (PrivateMsgRequest)base._request;
         private new PrivateMsgResult _result { get => (PrivateMsgResult)base._result; set => base._result = value; }
-        public PrivateMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public PrivateMsgHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new PrivateMsgResult();
         }

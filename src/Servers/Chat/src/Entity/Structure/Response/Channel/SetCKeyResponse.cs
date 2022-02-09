@@ -1,7 +1,6 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
 {
@@ -9,7 +8,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private new SetCKeyResult _result => (SetCKeyResult)base._result;
-        public SetCKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public SetCKeyResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -1,13 +1,12 @@
 ﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
 {
     public sealed class OthersListResponse : ResponseBase
     {
         private new OthersListResult _result => (OthersListResult)base._result;
-        public OthersListResponse(RequestBase request, UniSpyResultBase result) : base(request, result)
+        public OthersListResponse(RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

@@ -4,7 +4,6 @@ using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -16,7 +15,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
-        public PartHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public PartHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 
@@ -78,7 +77,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 using (var client = new RedisClient())
                 {
                     var server = client.Values.Where(x =>
-                                            x.RemoteIPEndPoint == _user.UserInfo.Session.RemoteIPEndPoint &
+                                            x.HeartBeatIPEndPoint == _user.UserInfo.Session.RemoteIPEndPoint &
                                             x.GameName == _user.UserInfo.GameName)
                                             .FirstOrDefault();
                     if (server != null)
@@ -90,7 +89,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             // remove channel in ChannelManager
             if (_channel.Users.Count == 0)
             {
-                ChannelManager.RemoveChannel(_channel);
+                JoinHandler.Channels.Remove(_channel.Name);
             }
         }
     }

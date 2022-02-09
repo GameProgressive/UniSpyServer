@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class GetUdpRelayHandler : CmdHandlerBase
     {
         new GetUdpRelayRequest _request => (GetUdpRelayRequest)base._request;
-        public GetUdpRelayHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public GetUdpRelayHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         protected override void DataOperation()

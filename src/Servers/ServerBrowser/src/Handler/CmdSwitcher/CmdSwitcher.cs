@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
 {
-    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
         static CmdSwitcher()
@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
             _requestMapping = LoadUniSpyComponents(typeof(RequestContract));
             _handlerMapping = LoadUniSpyComponents(typeof(HandlerContract));
         }
-        public CmdSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
-    public class RequestBase : UniSpyRequestBase
+    public class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         /// <summary>
         /// True means there are no errors

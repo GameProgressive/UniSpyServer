@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new PingRequest _request => (PingRequest)base._request;
         private new PingResult _result { get => (PingResult)base._result; set => base._result = value; }
-        public PingHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public PingHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         protected override void DataOperation()

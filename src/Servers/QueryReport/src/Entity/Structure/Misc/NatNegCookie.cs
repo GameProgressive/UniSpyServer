@@ -2,13 +2,14 @@
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.NATNeg
 {
-    public class NatNegCookie
+    public record NatNegCookie
     {
-        public string GameServerRemoteIP { get; set; }
-        public string GameServerRemotePort { get; set; }
-        public IPEndPoint GameServerRemoteEndPoint { get; set; }
-        public string GameName { get; set; }
-        public byte[] NatNegMessage { get; set; }
+        public IPAddress HostIPAddress { get; init; }
+        public ushort HostPort { get; init; }
+        public IPEndPoint HeartBeatIPEndPoint { get; init; }
+        public string GameName { get; init; }
+        public byte[] NatNegMessage { get; init; }
+        public uint InstantKey { get; init; }
 
         public NatNegCookie()
         {

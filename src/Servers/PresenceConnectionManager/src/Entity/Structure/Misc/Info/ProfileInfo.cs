@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Data
 {
-    public class PCMProfileInfo
+    public class ProfileInfo
     {
         public string Location;
         public string Fristname;

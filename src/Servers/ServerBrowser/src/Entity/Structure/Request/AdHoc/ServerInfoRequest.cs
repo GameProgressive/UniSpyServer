@@ -1,9 +1,9 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
-using System;
-using System.Net;
+﻿using System;
 using System.Linq;
+using System.Net;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
@@ -13,8 +13,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         /// <summary>
         /// The game server client search for
         /// </summary>
-        public string TargetServerIP => TargetIPEndPoint.Address.ToString();
-        public string TargetServerHostPort => TargetIPEndPoint.Port.ToString();
         public IPEndPoint TargetIPEndPoint { get; private set; }
 
         public ServerInfoRequest(byte[] rawRequest) : base(rawRequest)
@@ -32,9 +30,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 
             byte[] ip = RawRequest.Skip(3).Take(4).ToArray();
             // raw request is in big endian we need to convert it to little endian
+            // byte[] port = RawRequest.Skip(7).Take(2).Reverse().ToArray();
+
             byte[] port = RawRequest.Skip(7).Take(2).Reverse().ToArray();
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
-            TargetIPEndPoint = new IPEndPoint(new IPAddress(ip), BitConverter.ToInt16(port));
+            TargetIPEndPoint = new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
     {
         private new InitRequestBase _request => (InitRequestBase)base._request;
         private new InitResultBase _result => (InitResultBase)base._result;
-        public InitResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public InitResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

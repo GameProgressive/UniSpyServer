@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Auth
     {
         protected new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;
         protected new LoginResult _result => (LoginResult)base._result;
-        public LoginUniqueNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public LoginUniqueNickHandler(ISession session, IRequest request) : base(session, request)
         {
         }
     }

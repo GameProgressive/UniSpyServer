@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpyRedisChannelEvent
+    public interface IRedisChannelEvent
     {
         void StartSubscribe();
         void ReceivedMessage();

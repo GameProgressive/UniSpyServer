@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToNegotiatee;
         private UserInfo _negotiator;
         private UserInfo _negotiatee;
-        public ConnectHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ConnectHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new ConnectResult();
         }

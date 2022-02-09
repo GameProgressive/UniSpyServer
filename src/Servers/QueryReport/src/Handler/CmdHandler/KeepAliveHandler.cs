@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     [HandlerContract(RequestType.KeepAlive)]
     public sealed class KeepAliveHandler : CmdHandlerBase
     {
-        public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         protected override void DataOperation()

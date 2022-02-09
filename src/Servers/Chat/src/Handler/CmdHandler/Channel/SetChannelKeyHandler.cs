@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result{ get => (SetChannelKeyResult)base._result; set => base._result = value; }
-        public SetChannelKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public SetChannelKeyHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new SetChannelKeyResult();
         }

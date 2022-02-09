@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         private new NewUserResult _result{ get => (NewUserResult)base._result; set => base._result = value; }
 
-        public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public NewUserHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new NewUserResult();
         }

@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using System;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
@@ -10,7 +9,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
     {
         private new UpdateGameRequest _request => (UpdateGameRequest)base._request;
         private new UpdateGameResult _result => (UpdateGameResult)base._result;
-        public UpdateGameResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public UpdateGameResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

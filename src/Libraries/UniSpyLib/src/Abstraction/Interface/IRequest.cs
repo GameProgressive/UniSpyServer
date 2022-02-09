@@ -1,7 +1,7 @@
 ﻿
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpyRequest
+    public interface IRequest
     {
         object CommandName { get; }
         object RawRequest { get; }

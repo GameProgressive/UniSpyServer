@@ -2,7 +2,6 @@ using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Sake;
 using UniSpyServer.Servers.WebServer.Entity.Structure.Result.Sake;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Response.Sake
 {
@@ -10,7 +9,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Response.Sake
     {
         public new CreateRecordResult _result => (CreateRecordResult)base._result;
         public new CreateRecordRequest _request => (CreateRecordRequest)base._request;
-        public CreateRecordResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public CreateRecordResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

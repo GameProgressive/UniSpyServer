@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private GameServerInfo _gameServerInfo;
         private new HeartBeatResult _result { get => (HeartBeatResult)base._result; set => base._result = value; }
-        public HeartBeatHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public HeartBeatHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new HeartBeatResult();
         }
@@ -74,7 +74,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //we check if the database have multiple game server if it contains
             _gameServerInfo = _redisClient.Values.Where(x =>
                                     x.ServerID == ServerFactory.Server.ServerID &
-                                    x.RemoteIPEndPoint == _session.RemoteIPEndPoint &
+                                    x.HostIPAddress == _session.RemoteIPEndPoint.Address &
                                     x.InstantKey == _request.InstantKey &
                                     x.GameName == _request.GameName)
                                     .FirstOrDefault();
@@ -84,7 +84,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
                 _gameServerInfo = new GameServerInfo()
                 {
                     ServerID = ServerFactory.Server.ServerID,
-                    RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                    HostIPAddress = _session.RemoteIPEndPoint.Address,
+                    HostPort = _request.ServerData.ContainsKey("hostport") ? ushort.Parse(_request.ServerData["hostport"]) : (ushort)6500,
                     GameName = _request.GameName,
                     InstantKey = _request.InstantKey,
                     ServerStatus = GameServerStatus.Normal,

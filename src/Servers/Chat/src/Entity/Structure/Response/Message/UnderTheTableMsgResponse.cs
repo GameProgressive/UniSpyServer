@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Message;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Message
 {
@@ -10,7 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Message
     {
         private new UnderTheTableMsgResult _result => (UnderTheTableMsgResult)base._result;
         private new UnderTheTableMsgRequest _request => (UnderTheTableMsgRequest)base._request;
-        public UnderTheTableMsgResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public UnderTheTableMsgResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

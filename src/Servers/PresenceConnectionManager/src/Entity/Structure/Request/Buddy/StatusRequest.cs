@@ -12,11 +12,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     [RequestContract("status")]
     public sealed class StatusRequest : RequestBase
     {
-        public PCMUserStatus Status { get; private set; }
+        public UserStatus Status { get; private set; }
         public bool IsGetStatus { get; set; }
         public StatusRequest(string rawRequest) : base(rawRequest)
         {
-            Status = new PCMUserStatus();
+            Status = new UserStatus();
             IsGetStatus = false;
         }
 

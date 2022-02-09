@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
 {
@@ -11,7 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
         private new GetCKeyResult _result => (GetCKeyResult)base._result;
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
 
-        public GetCKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetCKeyResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)

@@ -14,10 +14,15 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
     {
         [RedisKey]
         public Guid? ServerID { get; set; }
-        [RedisKey]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint RemoteIPEndPoint { get; set; }
+        public IPEndPoint HeartBeatIPEndPoint { get; set; }
+        [RedisKey]
+        [JsonConverter(typeof(IPAddresConverter))]
+        public IPAddress HostIPAddress { get; set; }
+        [RedisKey]
+        public ushort? HostPort { get; set; }
+
         [RedisKey]
         public uint? InstantKey { get; set; }
         [RedisKey]

@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         private new AuthPlayerResult _result { get => (AuthPlayerResult)base._result; set => base._result = value; }
-        public AuthPlayerHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public AuthPlayerHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new AuthPlayerResult();
         }

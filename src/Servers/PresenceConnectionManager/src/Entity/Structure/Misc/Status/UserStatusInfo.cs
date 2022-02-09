@@ -3,7 +3,7 @@
     /// <summary>
     /// This status info class is for new SDK version
     /// </summary>
-    public sealed class PCMUserStatusInfo
+    public sealed class UserStatusInfo
     {
         public string StatusState { get; set; }
         public string BuddyIP { get; set; }
@@ -17,7 +17,7 @@
         public string GameVariant { get; set; }
         public string GameMapName { get; set; }
         public string QuietModeFlags { get; set; }
-        public PCMUserStatusInfo()
+        public UserStatusInfo()
         {
         }
     }

@@ -1,7 +1,7 @@
-﻿using NetCoreServer;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
+using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
@@ -12,14 +12,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
     /// This is a template class that helps creating a UDP Server with
     /// logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class UniSpyUdpServer : UdpServer, IUniSpyServer
+    public abstract class UniSpyUdpServer : UdpServer, IServer
     {
         public Guid ServerID { get; private set; }
         /// <summary>
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public UniSpyUdpSessionManager SessionManager { get; protected set; }
-        UniSpySessionManager IUniSpyServer.SessionManager => SessionManager;
+        SessionManager IServer.SessionManager => SessionManager;
         public UniSpyUdpServer(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -55,14 +55,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             UniSpyUdpSession session;
             if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
             {
-                IUniSpySession sess;
-                SessionManager.SessionPool.TryGetValue((IPEndPoint)endPoint, out sess);
-                session = (UniSpyUdpSession)sess;
+                session = (UniSpyUdpSession)SessionManager.SessionPool[(IPEndPoint)endPoint];
             }
             else
             {
                 session = CreateSession(endPoint);
-                SessionManager.SessionPool.TryAdd(session.RemoteIPEndPoint, session);
+                SessionManager.SessionPool.Add(session.RemoteIPEndPoint, session);
             }
             byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
             byte[] plainText = Decrypt(cipherText);
@@ -104,7 +102,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         protected virtual byte[] Decrypt(byte[] buffer) => buffer;
 
 
-        public bool Send(EndPoint endpoint, IUniSpyResponse response)
+        public bool Send(EndPoint endpoint, IResponse response)
         {
             response.Build();
             if (response.SendingBuffer == null)
@@ -126,7 +124,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             }
         }
 
-        public bool BaseSend(EndPoint endpoint, IUniSpyResponse response)
+        public bool BaseSend(EndPoint endpoint, IResponse response)
         {
             response.Build();
             if (response.SendingBuffer == null)

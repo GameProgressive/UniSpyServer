@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         private new UserIPRequest _request => (UserIPRequest)base._request;
         private new UserIPResult _result { get => (UserIPResult)base._result; set => base._result = value; }
-        public UserIPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public UserIPHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

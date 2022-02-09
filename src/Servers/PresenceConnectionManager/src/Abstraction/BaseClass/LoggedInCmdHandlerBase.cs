@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class LoggedInCmdHandlerBase : CmdHandlerBase
     {
-        public LoggedInCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public LoggedInCmdHandlerBase(ISession session, IRequest request) : base(session, request)
         {
         }
     }

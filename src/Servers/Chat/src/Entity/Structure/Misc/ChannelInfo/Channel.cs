@@ -27,13 +27,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public ConcurrentDictionary<string, ChannelUser> BanList { get; private set; }
+        public IDictionary<string, ChannelUser> BanList { get; private set; }
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public ConcurrentDictionary<string, ChannelUser> Users { get; private set; }
-        public Dictionary<string, string> ChannelKeyValue { get; private set; }
+        public IDictionary<string, ChannelUser> Users { get; private set; }
+        public IDictionary<string, string> ChannelKeyValue { get; private set; }
         public ChannelUser Creator { get; private set; }
         public bool IsPeerServer { get; set; }
         public string Password { get; private set; }
@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         {
             CreateTime = DateTime.Now;
             Mode = new ChannelMode();
-            ChannelKeyValue = new Dictionary<string, string>();
+            ChannelKeyValue = new ConcurrentDictionary<string, string>();
             BanList = new ConcurrentDictionary<string, ChannelUser>();
             Users = new ConcurrentDictionary<string, ChannelUser>();
             MaxNumberUser = 200;
@@ -56,7 +56,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public bool MultiCast(IUniSpyResponse message)
+        public bool MultiCast(IResponse message)
         {
             foreach (var kv in Users)
             {
@@ -65,7 +65,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
         }
-        public bool MultiCastExceptSender(ChannelUser sender, IUniSpyResponse message)
+        public bool MultiCastExceptSender(ChannelUser sender, IResponse message)
         {
             foreach (var kv in Users)
             {
@@ -100,12 +100,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         {
             // !! we can not directly use the Contains() method that ConcurrentDictionary or 
             // !! ConcurrentBag provide because it will not work properly.
-            if (!Users.Keys.Contains(joiner.UserInfo.NickName))
+            if (!Users.ContainsKey(joiner.UserInfo.NickName))
             {
                 Users.TryAdd(joiner.UserInfo.NickName, joiner);
             }
 
-            if (!joiner.UserInfo.JoinedChannels.Keys.Contains(this.Name))
+            if (!joiner.UserInfo.JoinedChannels.ContainsKey(this.Name))
             {
                 joiner.UserInfo.JoinedChannels.TryAdd(this.Name, this);
             }
@@ -116,19 +116,19 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             //!! we should use ConcurrentDictionary here
             //!! FIXME: when removing user from channel, 
             //!! we should do more checks on user not only just TryTake()
-            if (Users.Keys.Contains(leaver.UserInfo.NickName))
+            if (Users.ContainsKey(leaver.UserInfo.NickName))
             // !! we takeout wrong user from channel
             {
                 var kv = new KeyValuePair<string, ChannelUser>(
                     leaver.UserInfo.NickName,
                     Users[leaver.UserInfo.NickName]);
-                Users.TryRemove(kv);
+                Users.Remove(kv);
             }
 
-            if (leaver.UserInfo.JoinedChannels.Keys.Contains(this.Name))
+            if (leaver.UserInfo.JoinedChannels.ContainsKey(this.Name))
             {
                 var kv = new KeyValuePair<string, Channel>(this.Name, this);
-                leaver.UserInfo.JoinedChannels.TryRemove(kv);
+                leaver.UserInfo.JoinedChannels.Remove(kv);
             }
 
         }
@@ -139,7 +139,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool IsUserBanned(ChannelUser user)
         {
-            if (!BanList.Keys.Contains(user.UserInfo.NickName))
+            if (!BanList.ContainsKey(user.UserInfo.NickName))
             {
                 return false;
             }
@@ -149,8 +149,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
             return true;
         }
-        public bool IsUserExisted(ChannelUser user) => Users.Keys.Contains(user.UserInfo.NickName);
-        public ChannelUser GetChannelUserByNickName(string nickName) => Users.Keys.Contains(nickName) == true ? Users[nickName] : null;
+        public bool IsUserExisted(ChannelUser user) => Users.ContainsKey(user.UserInfo.NickName);
+        public ChannelUser GetChannelUserByNickName(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 
         /// <summary>
         /// We only care about how to set mode in this channel
@@ -224,7 +224,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             if (result.Count() == 1)
             {
                 var keyValue = result.First();
-                BanList.TryRemove(keyValue);
+                BanList.Remove(keyValue);
                 return;
             }
             if (result.Count() > 1)

@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public uint? InstantKey { get; protected set; }

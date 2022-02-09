@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class SdkRevisionHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
-        public SdkRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public SdkRevisionHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         protected override void RequestCheck() { }

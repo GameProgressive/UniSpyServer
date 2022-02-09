@@ -3,7 +3,7 @@ using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
-using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
+using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
@@ -13,16 +13,16 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class ListHandler : LogedInHandlerBase
     {
         private new ListRequest _request => (ListRequest)base._request;
-        private new ListResult _result{ get => (ListResult)base._result; set => base._result = value; }
+        private new ListResult _result { get => (ListResult)base._result; set => base._result = value; }
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public ListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ListHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new ListResult();
         }
         protected override void DataOperation()
         {
             //add list response header
-            foreach (var channel in ChannelManager.Channels.Values)
+            foreach (var channel in JoinHandler.Channels.Values)
             {
                 //TODO
                 //add channel information here

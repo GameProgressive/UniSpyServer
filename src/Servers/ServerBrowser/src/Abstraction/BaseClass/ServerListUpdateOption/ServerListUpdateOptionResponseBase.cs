@@ -5,7 +5,6 @@ using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
@@ -15,7 +14,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result => (ServerListUpdateOptionResultBase)base._result;
         protected List<byte> _serverListData;
-        public ServerListUpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ServerListUpdateOptionResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
             _serverListData = new List<byte>();
         }
@@ -58,73 +57,68 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             //add key flag
             header.Add((byte)flag);
             //we add server public ip here
-            header.AddRange(serverInfo.RemoteIPEndPoint.Address.GetAddressBytes());
-            // now we check if there are private ip
-            CheckPrivateIP(header, serverInfo);
-            //we check icmp support here
-            CheckICMPSupport(header, serverInfo);
+            header.AddRange(serverInfo.HostIPAddress.GetAddressBytes());
             //we check host port is standard port or not
             CheckNonStandardPort(header, serverInfo);
+            // now we check if there are private ip
+            CheckPrivateIP(header, serverInfo);
             // we check private port here
             CheckNonStandardPrivatePort(header, serverInfo);
-
-
+            //we check icmp support here
+            CheckICMPSupport(header, serverInfo);
             _serverListData.AddRange(header);
         }
-        protected void CheckPrivateIP(List<byte> header, GameServerInfo server)
+        protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
-            string localIP = "";
-            // now we check if there are private ip
-            if (server.ServerData.ContainsKey("localip0"))
+            // !Fix we do not know how to determine private ip
+            List<string> localIPs = serverInfo.ServerData.Where(k => k.Key.Contains("localip") == true).Select(k => k.Value).ToList();
+            if (localIPs.Count == 1 & localIPs.First() == serverInfo.HostIPAddress.ToString())
             {
-                localIP = server.ServerData["localip0"];
+                return;
             }
-            else if (server.ServerData.ContainsKey("localip1"))
-            {
-                localIP = server.ServerData["localip1"];
-            }
-
-            if (localIP != "")
+            else
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] bytesAddress = IPAddress.Parse(localIP).GetAddressBytes();
+                // there are multiple localip in dictionary we do not know which one is needed here,
+                // so we just send the first one.
+                byte[] bytesAddress = IPAddress.Parse(localIPs.First()).GetAddressBytes();
                 header.AddRange(bytesAddress);
             }
         }
-        protected void CheckNonStandardPort(List<byte> header, GameServerInfo server)
+        protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {
             ///only dedicated server have different query report port and host port
             ///the query report port and host port are the same on peer server
             ///so we do not need to check this for peer server
             //we check host port is standard port or not
-            if (server.ServerData.ContainsKey("hostport"))
+            if (serverInfo.ServerData.ContainsKey("hostport"))
             {
-                if (server.ServerData["hostport"] != ""
-                    && server.ServerData["hostport"] != "6500")
+                if (serverInfo.ServerData["hostport"] != ""
+                    && serverInfo.ServerData["hostport"] != "6500")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    byte[] htonPort = BitConverter.GetBytes(short.Parse(server.ServerData["hostport"])).Reverse().ToArray();
+                    byte[] htonPort = BitConverter.GetBytes(ushort.Parse(serverInfo.ServerData["hostport"])).Reverse().ToArray();
                     header.AddRange(htonPort);
                 }
             }
         }
-        protected void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo server)
+        protected void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo serverInfo)
         {
             // we check private port here
-            if (server.ServerData.ContainsKey("privateport"))
+            if (serverInfo.ServerData.ContainsKey("privateport"))
             {
-                if (server.ServerData["privateport"] != "")
+                if (serverInfo.ServerData["privateport"] != "")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                    byte[] port = BitConverter.GetBytes(short.Parse(server.ServerData["privateport"]));
+                    byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["privateport"]));
                     header.AddRange(port);
                 }
             }
         }
-        protected void CheckICMPSupport(List<byte> header, GameServerInfo server)
+        protected void CheckICMPSupport(List<byte> header, GameServerInfo serverInfo)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            byte[] address = server.RemoteIPEndPoint.Address.GetAddressBytes();
+            byte[] address = serverInfo.HostIPAddress.GetAddressBytes();
             header.AddRange(address);
         }
         protected void BuildUniqueValue()

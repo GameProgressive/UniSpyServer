@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
     /// <summary>
     /// NatNeg request base
     /// </summary>
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public new byte[] RawRequest => (byte[])base.RawRequest;

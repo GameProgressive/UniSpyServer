@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Redis
     /// redis channel is like a broadcast platform which will broadcast the message to all the user
     /// when user is connected to unispy chat server
     /// </summary>
-    public class ChatRedisChannel : UniSpyRedisChannel<string>
+    public class ChatRedisChannel : RedisChannel<string>
     {
         public ChatRedisChannel(string redisChannelName) : base(redisChannelName)
         {

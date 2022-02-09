@@ -1,7 +1,6 @@
 ﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
@@ -9,7 +8,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
     {
         private new GetProfileIDResult _result => (GetProfileIDResult)base._result;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
-        public GetProfileIDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetProfileIDResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

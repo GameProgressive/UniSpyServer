@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdateGameDataHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public UpdateGameDataHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new UpdateGameResult();
         }

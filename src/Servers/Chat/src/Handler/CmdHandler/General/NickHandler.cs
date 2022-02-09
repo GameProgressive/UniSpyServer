@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class NickHandler : CmdHandlerBase
     {
         private new NickRequest _request => (NickRequest)base._request;
-        public NickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public NickHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

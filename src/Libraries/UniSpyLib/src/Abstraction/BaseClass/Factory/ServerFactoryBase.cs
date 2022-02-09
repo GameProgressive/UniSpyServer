@@ -28,7 +28,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         /// <summary>
         /// A UniSpyServer instance
         /// </summary>
-        public static IUniSpyServer Server { get; protected set; }
+        public static Interface.IServer Server { get; protected set; }
         public ServerFactoryBase()
         {
         }
@@ -52,7 +52,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var assembly = Assembly.Load($"UniSpyServer.Servers.{ServerName}");
             var type = assembly.GetType($"UniSpyServer.Servers.{ServerName}.Network.Server");
 
-            Server = (IUniSpyServer)Activator.CreateInstance(type, cfg.ServerID, cfg.ListeningEndPoint);
+            Server = (Interface.IServer)Activator.CreateInstance(type, cfg.ServerID, cfg.ListeningEndPoint);
 
             if (Server == null)
             {

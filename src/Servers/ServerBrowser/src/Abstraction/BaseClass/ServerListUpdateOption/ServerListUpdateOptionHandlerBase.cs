@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result { get => (ServerListUpdateOptionResultBase)base._result; set => base._result = value; }
         protected new ServerListUpdateOptionResponseBase _response { get => (ServerListUpdateOptionResponseBase)base._response; set => base._response = value; }
-        public ServerListUpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListUpdateOptionHandlerBase(ISession session, IRequest request) : base(session, request)
         {
         }
         protected override void RequestCheck()

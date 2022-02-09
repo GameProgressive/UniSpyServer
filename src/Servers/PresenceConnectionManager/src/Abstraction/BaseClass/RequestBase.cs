@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public new string CommandName{ get => (string)base.CommandName;
             protected set => base.CommandName = value; }

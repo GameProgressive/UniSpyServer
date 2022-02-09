@@ -4,13 +4,13 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyCmdHandlerBase : IUniSpyHandler
+    public abstract class CmdHandlerBase : IHandler
     {
-        protected IUniSpySession _session { get; }
-        protected IUniSpyRequest _request { get; }
-        protected IUniSpyResponse _response { get; set; }
-        protected UniSpyResultBase _result { get; set; }
-        public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
+        protected ISession _session { get; }
+        protected IRequest _request { get; }
+        protected IResponse _response { get; set; }
+        protected ResultBase _result { get; set; }
+        public CmdHandlerBase(ISession session, IRequest request)
         {
             _session = session;
             _request = request;

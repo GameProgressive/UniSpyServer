@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     {
         private new TopicRequest _request => (TopicRequest)base._request;
         private new TopicResult _result{ get => (TopicResult)base._result; set => base._result = value; }
-        public TopicHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public TopicHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new TopicResult();
         }

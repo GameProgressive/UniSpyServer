@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
 {
@@ -8,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
     {
         private new CheckResult _result => (CheckResult)base._result;
 
-        public CheckResponse(RequestBase request, UniSpyResultBase result) : base(request, result)
+        public CheckResponse(RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

@@ -1,12 +1,14 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Network;
-using System.Collections.Concurrent;
+
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 {
     public sealed class UserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentDictionary<string, Channel> JoinedChannels { get; private set; }
+        public IDictionary<string, Channel> JoinedChannels { get; private set; }
         public Session Session { get; private set; }
         // secure connection
         public PeerChatCTX ClientCTX { get; set; }
@@ -30,18 +32,18 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
             Session = session;
             ClientCTX = new PeerChatCTX();
             ServerCTX = new PeerChatCTX();
-            JoinedChannels = new();
+            JoinedChannels = new ConcurrentDictionary<string, Channel>();
             NameSpaceID = 0;
             IsUsingEncryption = false;
             IsQuietMode = false;
             IsLoggedIn = false;
         }
 
-        public bool IsJoinedChannel(string channelName) => JoinedChannels.Keys.Contains(channelName);
+        public bool IsJoinedChannel(string channelName) => JoinedChannels.ContainsKey(channelName);
 
         public Channel GetJoinedChannel(string channelName)
         {
-            if (JoinedChannels.Keys.Contains(channelName))
+            if (JoinedChannels.ContainsKey(channelName))
             {
                 return JoinedChannels[channelName];
             }

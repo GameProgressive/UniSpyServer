@@ -2,7 +2,7 @@
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {
-    public sealed class PCMBasicInfo
+    public sealed class BasicInfo
     {
         public int? UserId { get; set; }
         public int? ProfileId { get; set; }
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
         public LoginStatus LoginStatus { get; set; }
         public GPBasic QuietModeFlag { get; set; }
         public SDKRevisionType SDKRevision { get; set; }
-        public PCMBasicInfo()
+        public BasicInfo()
         {
             LoginStatus = LoginStatus.Connected;
         }

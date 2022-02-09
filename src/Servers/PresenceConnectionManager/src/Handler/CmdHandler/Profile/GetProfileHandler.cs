@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         private new GetProfileResult _result{ get => (GetProfileResult)base._result; set => base._result = value; }
 
-        public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public GetProfileHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new GetProfileResult();
         }

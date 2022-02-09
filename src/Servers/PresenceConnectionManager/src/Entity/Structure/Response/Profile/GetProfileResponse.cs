@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response
@@ -8,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
     public sealed class GetProfileResponse : ResponseBase
     {
         private new GetProfileResult _result => (GetProfileResult)base._result;
-        public GetProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetProfileResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -3,7 +3,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.WebServer.Abstraction
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public new string RawRequest => (string)base.RawRequest;
         protected XElement _contentElement { get; private set; }

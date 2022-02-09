@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
     {
         private new P2PGroupRoomListResult _result => (P2PGroupRoomListResult)base._result;
         private new ServerListRequest _request => (ServerListRequest)base._request;
-        public P2PGroupRoomListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public P2PGroupRoomListResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

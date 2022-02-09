@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
         public new string RawRequest{ get => (string)base.RawRequest;

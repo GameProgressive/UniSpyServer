@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             // we know the endpoint object is not set, so System.NullReferenceException will be thrown
             joinHandler.Handle();
             Assert.Single(session.UserInfo.JoinedChannels);
-            Assert.True(session.UserInfo.JoinedChannels.Keys.Contains(channelName));
+            Assert.True(session.UserInfo.JoinedChannels.ContainsKey(channelName));
             Assert.True(session.UserInfo.IsJoinedChannel(channelName));
             return session;
         }

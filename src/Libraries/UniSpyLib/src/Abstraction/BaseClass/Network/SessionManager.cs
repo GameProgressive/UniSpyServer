@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network
@@ -8,15 +9,15 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TSession"></typeparam>
-    public abstract class UniSpySessionManager
+    public abstract class SessionManager
     {
         /// <summary>
         /// The contravariance method for access
         /// </summary>
-        public ConcurrentDictionary<object, IUniSpySession> SessionPool { get; private set; }
-        public UniSpySessionManager()
+        public IDictionary<object, ISession> SessionPool { get; private set; }
+        public SessionManager()
         {
-            SessionPool = new ConcurrentDictionary<object, IUniSpySession>();
+            SessionPool = new ConcurrentDictionary<object, ISession>();
         }
 
         public virtual bool Start()

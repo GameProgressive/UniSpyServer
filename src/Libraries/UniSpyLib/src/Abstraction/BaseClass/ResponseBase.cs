@@ -3,15 +3,15 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyResponseBase : IUniSpyResponse
+    public abstract class ResponseBase : IResponse
     {
         /// <summary>
         /// Represents the plaintext response data
         /// </summary>
         public object SendingBuffer { get; protected set; }
-        protected UniSpyResultBase _result { get; }
-        protected UniSpyRequestBase _request { get; }
-        public UniSpyResponseBase(UniSpyRequestBase request, UniSpyResultBase result)
+        protected ResultBase _result { get; }
+        protected RequestBase _request { get; }
+        public ResponseBase(RequestBase request, ResultBase result)
         {
             _request = request;
             _result = result;

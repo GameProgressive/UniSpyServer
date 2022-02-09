@@ -4,14 +4,14 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyRequestBase : IUniSpyRequest
+    public abstract class RequestBase : IRequest
     {
         [XmlIgnoreAttribute]
         public object CommandName { get; protected set; }
         [XmlIgnoreAttribute]
         public object RawRequest { get; protected set; }
-        public UniSpyRequestBase() { }
-        public UniSpyRequestBase(object rawRequest)
+        public RequestBase() { }
+        public RequestBase(object rawRequest)
         {
             RawRequest = rawRequest;
             LogWriter.LogCurrentClass(this);

@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
-    public abstract class UniSpyHttpSession : HttpSession, IUniSpySession
+    public abstract class UniSpyHttpSession : HttpSession, ISession
     {
         protected UniSpyHttpSession(UniSpyHttpServer server) : base(server)
         {
@@ -18,12 +18,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, request.Body);
             OnReceivedRequest(request.Body);
         }
-        public bool Send(IUniSpyResponse response)
+        public bool Send(IResponse response)
         {
             response.Build();
             return base.SendResponseBodyAsync((string)response.SendingBuffer);
         }
-        public bool BaseSend(IUniSpyResponse response)
+        public bool BaseSend(IResponse response)
         {
             response.Build();
             return base.SendResponseBodyAsync((string)response.SendingBuffer);

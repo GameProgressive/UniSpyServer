@@ -4,11 +4,11 @@ using UniSpyServer.Servers.WebServer.Entity.Structure;
 
 namespace UniSpyServer.Servers.WebServer.Abstraction
 {
-    public abstract class ResponseBase : UniSpyResponseBase
+    public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
     {
         protected SoapXElement _soapElement { get; private set; }
         public new string SendingBuffer => _soapElement.ToString();
-        public ResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
             _soapElement = new SoapXElement(SoapXElement.SoapElement);
         }

@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     [HandlerContract("logout")]
     public sealed class LogoutHandler : CmdHandlerBase
     {
-        public LogoutHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public LogoutHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

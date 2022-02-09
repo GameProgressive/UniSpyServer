@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
 {
@@ -10,7 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     {
         private new GetChannelKeyResult _result => (GetChannelKeyResult)base._result;
         private new GetChannelKeyRequest _request => (GetChannelKeyRequest)base._request;
-        public GetChannelKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetChannelKeyResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result { get => (ReportResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
-        public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ReportHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new ReportResult();
         }

@@ -2,14 +2,13 @@
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
 {
     public sealed class WhoIsResponse : ResponseBase
     {
         private new WhoIsResult _result => (WhoIsResult)base._result;
-        public WhoIsResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public WhoIsResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
-    public abstract class UniSpyUdpSessionManager : UniSpySessionManager
+    public abstract class UniSpyUdpSessionManager : SessionManager
     {
         protected TimeSpan _expireTimeInterval { get; set; }
         private Timer _timer;
@@ -33,7 +33,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
                 // we calculate the interval between last packe and current time
                 if (sess.SessionExistedTime > _expireTimeInterval)
                 {
-                    SessionPool.TryRemove(sess.RemoteIPEndPoint, out _);
+                    SessionPool.Remove(sess.RemoteIPEndPoint);
                 }
             });
         }

@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {
         /// <summary>
         /// Be careful the return of query function should be List type,
@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
         {
         }
 

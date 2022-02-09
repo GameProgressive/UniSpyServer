@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
@@ -10,7 +12,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -22,12 +23,17 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     [HandlerContract("JOIN")]
     public sealed class JoinHandler : LogedInHandlerBase
     {
+        public static IDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel> Channels { get; private set; }
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
         Entity.Structure.Misc.ChannelInfo.Channel _channel;
         ChannelUser _user;
-        public JoinHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        static JoinHandler()
+        {
+            Channels = new ConcurrentDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel>();
+        }
+        public JoinHandler(ISession session, IRequest request) : base(session, request)
         {
             _result = new JoinResult();
         }
@@ -59,8 +65,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             //     // this is for not making game crash
             //     // if user is in this channel and we send the channel info back
             // }
-            if (ChannelManager.GetChannel(_request.ChannelName, out _channel))
+            if (Channels.ContainsKey(_request.ChannelName))
             {
+                _channel = Channels[_request.ChannelName];
                 //join
                 if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
                 {
@@ -108,7 +115,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     _user.SetDefaultProperties(true, true);
                 }
                 _channel.AddBindOnUserAndChannel(_user);
-                ChannelManager.AddChannel(_request.ChannelName, _channel);
+                Channels.Add(_request.ChannelName, _channel);
             }
 
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();

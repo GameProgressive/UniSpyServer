@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public int? ProfileId { get; set; }
         public int? NamespaceID { get; set; }
         #endregion
-        public PCMUserStatusInfo StatusInfo { get; private set; }
+        public UserStatusInfo StatusInfo { get; private set; }
 
         public StatusInfoRequest()
         {

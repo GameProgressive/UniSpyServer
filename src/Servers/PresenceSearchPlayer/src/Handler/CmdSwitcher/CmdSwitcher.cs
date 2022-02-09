@@ -6,10 +6,10 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
-        public CmdSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(ISession session, string rawRequest) : base(session, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

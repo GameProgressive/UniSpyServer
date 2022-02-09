@@ -17,7 +17,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Client
 
             // Start receive datagrams
             ReceiveAsync();
-
         }
         protected override void OnDisconnected()
         {
