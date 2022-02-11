@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             cryptHeader.AddRange(UniSpyEncoding.GetBytes(Constants.ServerChallenge));
             _serverListData.AddRange(cryptHeader);
         }
-        protected abstract void BuildServersInfo();
+        protected abstract void BuildServerFullInfo();
         /// <summary>
         /// Add more server info here
         /// the sequence of server info is important

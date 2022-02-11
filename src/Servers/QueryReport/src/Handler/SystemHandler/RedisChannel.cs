@@ -11,9 +11,9 @@ using UniSpyServer.UniSpyLib.Entity.Structure;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler
 {
-    public class RedisChannelSubscriber : RedisChannel<NatNegCookie>
+    public class RedisChannel : RedisChannel<NatNegCookie>
     {
-        public RedisChannelSubscriber() : base(UniSpyRedisChannelName.NatNegCookieChannel)
+        public RedisChannel() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {
         }
 

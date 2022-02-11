@@ -9,16 +9,20 @@ namespace UniSpyServer.Servers.QueryReport.Network
     [ServerName("QueryReport")]
     public sealed class Server : UniSpyUdpServer
     {
-        public RedisChannelSubscriber ChannelSubScriber { get; private set; }
+        /// <summary>
+        /// We use this redis channel to exchange data between servers
+        /// </summary>
+        /// <value></value>
+        public RedisChannel InfoExchangeChannel { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
             SessionManager = new SessionManager();
-            ChannelSubScriber = new RedisChannelSubscriber();
+            InfoExchangeChannel = new RedisChannel();
         }
 
         public override bool Start()
         {
-            ChannelSubScriber.StartSubscribe();
+            InfoExchangeChannel.StartSubscribe();
             return base.Start();
         }
 

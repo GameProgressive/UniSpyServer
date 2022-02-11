@@ -25,12 +25,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
             //we use NTS string so total unique value list is 0
             BuildUniqueValue();
             //add server infomation such as public ip etc.
-            BuildServersInfo();
+            BuildServerFullInfo();
 
             SendingBuffer = _serverListData.ToArray();
         }
 
-        protected override void BuildServersInfo()
+        protected override void BuildServerFullInfo()
         {
             foreach (var serverInfo in _result.GameServerInfos)
             {

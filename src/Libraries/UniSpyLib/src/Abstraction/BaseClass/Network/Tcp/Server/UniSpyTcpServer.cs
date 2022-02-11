@@ -37,7 +37,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         {
             if (!SessionManager.SessionPool.ContainsKey(session.Id))
             {
-                SessionManager.SessionPool.Add(session.Id, (UniSpyTcpSession)session);
+                SessionManager.SessionPool.Add(session.Id, (ISession)session);
             }
             base.OnConnected(session);
         }

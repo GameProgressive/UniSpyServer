@@ -20,12 +20,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         }
         public bool Send(IResponse response)
         {
-            response.Build();
+            response.Assemble();
             return base.SendResponseBodyAsync((string)response.SendingBuffer);
         }
         public bool BaseSend(IResponse response)
         {
-            response.Build();
+            response.Assemble();
             return base.SendResponseBodyAsync((string)response.SendingBuffer);
         }
     }

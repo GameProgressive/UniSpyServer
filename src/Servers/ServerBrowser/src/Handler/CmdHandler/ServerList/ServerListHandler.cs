@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 case ServerListUpdateOption.ServerMainList:
                 case ServerListUpdateOption.P2PServerMainList:
                 case ServerListUpdateOption.LimitResultCount:
-                case ServerListUpdateOption.ServerNetworkInfoList:
+                case ServerListUpdateOption.ServerFullInfoList:
                     _result = new ServerMainListResult();
                     break;
                 case ServerListUpdateOption.P2PGroupRoomList:
@@ -53,7 +53,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 case ServerListUpdateOption.P2PGroupRoomList:
                     P2PGroupRoomList();
                     break;
-                case ServerListUpdateOption.ServerNetworkInfoList:
+                case ServerListUpdateOption.ServerFullInfoList:
                     // do nothing here
                     break;
                 default:
@@ -117,7 +117,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 case ServerListUpdateOption.P2PGroupRoomList:
                     _response = new P2PGroupRoomListResponse(_request, _result);
                     break;
-                case ServerListUpdateOption.ServerNetworkInfoList:
+                case ServerListUpdateOption.ServerFullInfoList:
                     _response = new ServerNetworkInfoListResponse(_request, _result);
                     break;
                 default:

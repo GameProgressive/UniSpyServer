@@ -1,8 +1,8 @@
-﻿using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace UniSpyServer.Servers.ServerBrowser.Network
 {
@@ -34,9 +34,17 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
             {
                 enc = new SBEncryption(EncParams);
             }
-            var cryptHeader = buffer.Take(14).ToArray();
-            var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
-            return cryptHeader.Concat(cipherBody).ToArray();
+            // if the response is PushServerMessage, we encrypt hole message
+            if (buffer[2] == 2)
+            {
+                return enc.Encrypt(buffer);
+            }
+            else
+            {
+                var cryptHeader = buffer.Take(14).ToArray();
+                var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
+                return cryptHeader.Concat(cipherBody).ToArray();
+            }
         }
     }
 }

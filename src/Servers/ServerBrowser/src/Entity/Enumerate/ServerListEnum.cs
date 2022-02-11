@@ -35,9 +35,9 @@
         ServerMainList = 0,
         SendFieldForAll = 1,
         /// <summary>
-        /// get the full information of this server
+        /// get the full information of all servers
         /// </summary>
-        ServerNetworkInfoList = 2,
+        ServerFullInfoList = 2,
         /// <summary>
         /// Push new local game status to QueryReport server
         /// </summary>

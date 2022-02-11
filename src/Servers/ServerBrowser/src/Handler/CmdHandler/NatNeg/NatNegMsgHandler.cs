@@ -32,11 +32,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             _adHocRequest = _session.ServerMessageStack.First();
             _session.ServerMessageStack.Remove(_adHocRequest);
 
-            var gameServer = _gameServerRedisClient.Values.Where(x =>
+            _gameServer = _gameServerRedisClient.Values.Where(x =>
                 x.HostIPAddress == _adHocRequest.TargetIPEndPoint.Address &
                 x.HostPort == (ushort)_adHocRequest.TargetIPEndPoint.Port)
                 .FirstOrDefault();
-            if (gameServer == null)
+            if (_gameServer == null)
             {
                 throw new SBException("There is no matching game server regesterd.");
             }

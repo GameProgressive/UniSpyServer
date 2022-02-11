@@ -1,6 +1,6 @@
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
-    public interface IEncryption
+    public interface ICryptography
     {
         byte[] Encrypt(byte[] data);
         byte[] Decrypt(byte[] data);

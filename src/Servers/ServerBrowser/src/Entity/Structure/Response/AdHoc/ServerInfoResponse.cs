@@ -21,13 +21,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response
         public override void Build()
         {
             _serverListData.Add((byte)ResponseType.PushServerMessage);
-            BuildServersInfo();
+            BuildServerFullInfo();
             // add message length here
-            _serverListData.InsertRange(0, BitConverter.GetBytes((ushort)(_serverListData.Count + 2)).Reverse().ToArray());
+            var msgLength = BitConverter.GetBytes((ushort)(_serverListData.Count + 2)).Reverse().ToArray();
+            _serverListData.InsertRange(0, msgLength);
             SendingBuffer = _serverListData.ToArray();
         }
 
-        protected override void BuildServersInfo()
+        protected override void BuildServerFullInfo()
         {
             BuildServerInfoHeader(
                 GameServerFlags.HasFullRulesFlag,

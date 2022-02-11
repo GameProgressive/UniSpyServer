@@ -75,7 +75,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 
         public bool Send(IResponse response)
         {
-            response.Build();
+            response.Assemble();
             if (response.SendingBuffer == null)
             {
                 throw new UniSpyException("SendingBuffer can not be null");
@@ -98,7 +98,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 
         public bool BaseSend(IResponse response)
         {
-            response.Build();
+            response.Assemble();
             if (response.SendingBuffer == null)
             {
                 throw new UniSpyException("SendingBuffer can not be null");
