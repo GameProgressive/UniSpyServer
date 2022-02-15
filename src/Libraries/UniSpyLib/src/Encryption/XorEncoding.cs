@@ -1,14 +1,23 @@
-﻿namespace UniSpyServer.UniSpyLib.Encryption
+﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
+
+namespace UniSpyServer.UniSpyLib.Encryption
 {
-    public class XOREncoding
+    public enum XorType : int
     {
-        public enum XorType : int
+        Type0,
+        Type1,
+        Type2,
+        Type3
+    }
+    public class XOREncoding : ICryptography
+    {
+        public XorType EncryptionType { get; private set; }
+
+        public XOREncoding(XorType type)
         {
-            Type0,
-            Type1,
-            Type2,
-            Type3
+            EncryptionType = type;
         }
+
         public static string Encode(string plainText, XorType type)
         {
             return
@@ -62,6 +71,16 @@
             }
 
             return plaintext;
+        }
+
+        public byte[] Encrypt(byte[] data)
+        {
+            return Encode(data, EncryptionType);
+        }
+
+        public byte[] Decrypt(byte[] data)
+        {
+            return Encode(data, EncryptionType);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdSwitcher
     {
         private new string _rawRequest => (string)base._rawRequest;
 
-        public CmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

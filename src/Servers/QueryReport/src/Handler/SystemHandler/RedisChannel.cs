@@ -19,13 +19,13 @@ namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler
 
         public override void ReceivedMessage(NatNegCookie message)
         {
-            var endPoint = new IPEndPoint(message.HostIPAddress, message.HostPort);
+            var serverEndPoint = new IPEndPoint(message.HostIPAddress, message.HostPort);
             if (!ServerFactory.Server.SessionManager.SessionPool.ContainsKey(message.HeartBeatIPEndPoint))
             {
                 throw new QRException("Can not find game server in QR");
             }
+            var ss = new Session(ServerFactory.Server, serverEndPoint);
             var session = ServerFactory.Server.SessionManager.SessionPool[message.HeartBeatIPEndPoint];
-
             var result = new ClientMessageResult
             {
                 NatNegMessage = message.NatNegMessage,
@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler
             var response = new ClientMessageResponse(request, result);
             response.Build();
             session.Send(response);
-            ServerFactory.Server.SendAsync(endPoint, response.SendingBuffer);
+            ServerFactory.Server.SendAsync(serverEndPoint, response.SendingBuffer);
         }
     }
 }

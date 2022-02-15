@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -12,30 +13,40 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
     /// This is a template class that helps creating a UDP Server with
     /// logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class UniSpyUdpServer : UdpServer, IServer
+    public class UniSpyUdpServer : UdpServer, IServer
     {
         public Guid ServerID { get; private set; }
         /// <summary>
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public UniSpyUdpSessionManager SessionManager { get; protected set; }
-        SessionManager IServer.SessionManager => SessionManager;
         public UniSpyUdpServer(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
         }
         public override bool Start()
         {
+            //可以将server中的事件绑定到CmdSwitcher中
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
-            SessionManager.Start();
+            // SessionManager.Start();
+            ReceiveAsync();
             return base.Start();
         }
 
         protected override void OnStarted() => ReceiveAsync();
-        protected virtual UniSpyUdpSession CreateSession(EndPoint endPoint) => new UniSpyUdpSession(this, endPoint);
+        protected virtual UniSpyUdpSession CreateSession(EndPoint endPoint)
+        {
+            var n = Assembly.GetEntryAssembly().GetName().Name;
+            var clientType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.Client");
+            var userInfoType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.UserInfo");
+            var userInfo = (UserInfoBase)Activator.CreateInstance(userInfoType, endPoint);
+            var session = new UniSpyUdpSession(this, endPoint);
+            var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session, userInfo });
+            return session;
+        }
         /// <summary>
         /// Continue receive datagrams
         /// </summary>
@@ -52,22 +63,25 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             //even if we did not response we keep receive message
-            UniSpyUdpSession session;
-            if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
-            {
-                session = (UniSpyUdpSession)SessionManager.SessionPool[(IPEndPoint)endPoint];
-            }
-            else
-            {
-                session = CreateSession(endPoint);
-                SessionManager.SessionPool.Add(session.RemoteIPEndPoint, session);
-            }
-            byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
-            byte[] plainText = Decrypt(cipherText);
-            LogWriter.LogNetworkReceiving(session.RemoteIPEndPoint, plainText);
+            // UniSpyUdpSession session;
+            // if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
+            // {
+            //     session = (UniSpyUdpSession)SessionManager.SessionPool[(IPEndPoint)endPoint];
+            // }
+            // else
+            // {
+            //     session = CreateSession(endPoint);
+            //     SessionManager.SessionPool.Add(session.RemoteIPEndPoint, session);
+            // }
+            // byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
+            // byte[] plainText = Decrypt(cipherText);
+            // LogWriter.LogNetworkReceiving(session.RemoteIPEndPoint, plainText);
+            var session = CreateSession(endPoint);
             // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
+
             ReceiveAsync();
-            session.OnReceived(plainText);
+            // session.OnReceived(plainText);
+            session.OnReceived(buffer);
         }
         protected virtual void OnReceived(UniSpyUdpSession session, byte[] message) { }
         /// <summary>
@@ -104,7 +118,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 
         public bool Send(EndPoint endpoint, IResponse response)
         {
-            response.Assemble();
+            response.Build();
             if (response.SendingBuffer == null)
             {
                 throw new UniSpyException("SendingBuffer can not be null");
@@ -126,7 +140,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 
         public bool BaseSend(EndPoint endpoint, IResponse response)
         {
-            response.Assemble();
+            response.Build();
             if (response.SendingBuffer == null)
             {
                 throw new UniSpyException("SendingBuffer can not be null");

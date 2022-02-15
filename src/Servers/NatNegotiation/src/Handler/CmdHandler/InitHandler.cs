@@ -1,14 +1,14 @@
-﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Application;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
-using System;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using System.Linq;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -38,7 +38,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     RemoteIPEndPoint = _session.RemoteIPEndPoint,
                     PortType = _request.PortType,
                     Cookie = _request.Cookie,
-                    RequestInfo = _request,
+                    LocalIPEndPoint = _request.LocalIPEndPoint,
+                    UseGamePort = _request.UseGamePort,
+                    ClientIndex = _request.ClientIndex,
                     LastPacketRecieveTime = DateTime.Now
                 };
             }

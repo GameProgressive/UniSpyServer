@@ -3,6 +3,6 @@
     public interface IResponse
     {
         object SendingBuffer { get; }
-        void Assemble();
+        void Build();
     }
 }

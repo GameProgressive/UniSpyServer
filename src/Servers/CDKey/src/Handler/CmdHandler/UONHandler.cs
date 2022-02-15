@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.CDkey.Handler.CmdHandler
+﻿namespace UniSpyServer.Servers.CDKey.Handler.CmdHandler
 {
     public sealed class UONHandler
     {

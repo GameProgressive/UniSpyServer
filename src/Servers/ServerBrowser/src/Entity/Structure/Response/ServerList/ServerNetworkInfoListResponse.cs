@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result.ServerList;
@@ -13,7 +12,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
     public sealed class ServerNetworkInfoListResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerNetworkInfoListResult _result => (ServerNetworkInfoListResult)base._result;
-        public ServerNetworkInfoListResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ServerNetworkInfoListResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
         public override void Build()

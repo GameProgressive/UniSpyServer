@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Events;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
@@ -15,6 +15,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
         public DateTime LastPacketReceivedTime { get; protected set; }
         public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
+        public event OnReceivedEventHandler OnReceive;
 
         public UniSpyUdpSession(UniSpyUdpServer server, EndPoint endPoint)
         {
@@ -22,8 +23,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             RemoteEndPoint = endPoint;
             LastPacketReceivedTime = DateTime.Now;
         }
-        public virtual void OnReceived(string message) { }
-        public virtual void OnReceived(byte[] message) => OnReceived(UniSpyEncoding.GetString(message));
+
+        public virtual void OnReceived(byte[] message) => OnReceive(message);
         public bool Send(IResponse response) => Server.Send(RemoteEndPoint, response);
         public bool BaseSend(IResponse response) => Server.BaseSend(RemoteEndPoint, response);
 

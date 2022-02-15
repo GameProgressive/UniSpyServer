@@ -8,7 +8,7 @@
         KeepAliveReply,
         MapLoopRequest,
         PlayerSearchRequest,
-        NatNegRequest,
+        NatNegRequest = 30,
     }
 
     public enum ResponseType

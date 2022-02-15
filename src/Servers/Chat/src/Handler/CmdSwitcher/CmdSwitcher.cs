@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
     {
         private new string _rawRequest => (string)base._rawRequest;
         private new Session _session => (Session)base._session;
-        public CmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using Newtonsoft.Json;
+using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
@@ -47,12 +48,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 
         public virtual string SerializeMessage(T message)
         {
-            return default;
+            return JsonConvert.SerializeObject(message);
         }
 
         public virtual T DeserializeMessage(string message)
         {
-            return default;
+            return JsonConvert.DeserializeObject<T>(message);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             };
             var request = new AvaliableRequest(rawRequest);
             request.Parse();
-            Assert.Equal(PacketType.AvaliableCheck, request.CommandName);
+            Assert.Equal(RequestType.AvaliableCheck, request.CommandName);
             Assert.Equal((uint)0, request.InstantKey);
         }
         [Fact]
@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             };
             var request = new ChallengeRequest(rawRequest);
             request.Parse();
-            Assert.Equal(PacketType.Challenge, request.CommandName);
+            Assert.Equal(RequestType.Challenge, request.CommandName);
             Assert.Equal((uint)0, request.InstantKey);
         }
         [Fact]
@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             };
             var request = new EchoRequest(rawRequest);
             request.Parse();
-            Assert.Equal(PacketType.Echo, request.CommandName);
+            Assert.Equal(RequestType.Echo, request.CommandName);
             Assert.Equal((uint)0, request.InstantKey);
         }
         [Fact]
@@ -72,7 +72,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
             };
             var request = new EchoRequest(rawRequest);
             request.Parse();
-            Assert.Equal(PacketType.KeepAlive, request.CommandName);
+            Assert.Equal(RequestType.KeepAlive, request.CommandName);
             Assert.Equal((uint)0, request.InstantKey);
         }
     }

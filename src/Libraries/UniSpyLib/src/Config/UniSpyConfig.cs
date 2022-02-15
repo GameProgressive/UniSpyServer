@@ -57,7 +57,6 @@ namespace UniSpyServer.UniSpyLib.Config
         public IPEndPoint ListeningEndPoint => new IPEndPoint(IPAddress.Parse(ListeningAddress), ListeningPort);
         public string ListeningAddress;
         public int ListeningPort;
-        public string RemoteAddress;
-        public int RemotePort;
+        public string SocketType;
     }
 }

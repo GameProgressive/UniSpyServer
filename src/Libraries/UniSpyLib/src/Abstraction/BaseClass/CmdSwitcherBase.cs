@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using UniSpyServer.UniSpyLib.Abstraction.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -13,12 +11,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
     public abstract class CmdSwitcherBase
     {
         // !! new architecture
-        /// <summary>
-        /// <IPEndPoint|IClient>
-        /// </summary>
-        public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
+        private IClient _client;
         protected object _rawRequest { get; private set; }
-        protected ISession _session { get; private set; }
+        // protected ISession _session { get; private set; }
         protected List<IRequest> _requests { get; private set; }
         protected List<IHandler> _handlers { get; private set; }
         /// <summary>
@@ -30,27 +25,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));
             _handlerMapping = LoadUniSpyComponents(typeof(HandlerContractBase));
-            ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
         }
-        public CmdSwitcherBase(ISession session, object rawRequest)
+        public CmdSwitcherBase(IClient client, object rawRequest)
         {
-            _session = session;
+            _client = client;
             _rawRequest = rawRequest;
             _requests = new List<IRequest>();
             _handlers = new List<IHandler>();
-            // if (ClientPool.ContainsKey(_session.RemoteIPEndPoint))
-            // {
-            //     _client = ClientPool[_session.RemoteIPEndPoint];
-            // }
-            // else
-            // {
-            //     _client = new Client(_session);
-            //     ClientPool.Add(_session.RemoteIPEndPoint, _client);
-            // }
-        }
-
-        protected CmdSwitcherBase()
-        {
         }
 
         public static Dictionary<object, Type> LoadUniSpyComponents(Type type)
@@ -133,7 +114,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     LogWriter.Error($"Handler {requestName} is not implemented");
 
                 }
-                var handler = (IHandler)Activator.CreateInstance(_handlerMapping[requestName], _session, request);
+                var handler = (IHandler)Activator.CreateInstance(_handlerMapping[requestName], _client, request);
 
                 if (handler == null)
                 {

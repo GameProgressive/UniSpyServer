@@ -1,7 +1,7 @@
-﻿using NetCoreServer;
-using UniSpyServer.Servers.QueryReport.Handler.SystemHandler;
-using System;
+﻿using System;
 using System.Net;
+using NetCoreServer;
+using UniSpyServer.Servers.QueryReport.Handler.SystemHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
@@ -14,11 +14,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
     [ServerName("ServerBrowser")]
     public sealed class Server : UniSpyTcpServer
     {
-        public RedisChannel RedisChannelSubscriber { get; private set; }
+        public RedisChannel InfoExchangeChannel { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
             SessionManager = new SessionManager();
-            RedisChannelSubscriber = new RedisChannel();
+            InfoExchangeChannel = new RedisChannel();
         }
         protected override TcpSession CreateSession() => new Session(this);
     }

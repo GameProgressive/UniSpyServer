@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdSwitcher
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
-        public CmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.CDkey.Abstraction.BaseClass;
+using UniSpyServer.Servers.CDKey.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.CDkey.Entity.Structure.Result
+namespace UniSpyServer.Servers.CDKey.Entity.Structure.Result
 {
     public sealed class CDKeyDefaultResult : ResultBase
     {

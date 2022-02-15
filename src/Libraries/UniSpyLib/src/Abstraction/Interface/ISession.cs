@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using UniSpyServer.UniSpyLib.Events;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 {
-    public sealed class UserInfo
+    public sealed class UserInfo : UserInfoBase
     {
         //indicates which channel this user is in
         public IDictionary<string, Channel> JoinedChannels { get; private set; }

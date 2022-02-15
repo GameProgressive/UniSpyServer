@@ -1,12 +1,13 @@
-﻿using ConsoleTables;
-using StackExchange.Redis;
-using System;
-using System.Reflection;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.UniSpyLib.Config;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ConsoleTables;
+using StackExchange.Redis;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
@@ -49,10 +50,20 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected void LoadServerConfig()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            var assembly = Assembly.Load($"UniSpyServer.Servers.{ServerName}");
-            var type = assembly.GetType($"UniSpyServer.Servers.{ServerName}.Network.Server");
-
-            Server = (Interface.IServer)Activator.CreateInstance(type, cfg.ServerID, cfg.ListeningEndPoint);
+            switch (cfg.SocketType)
+            {
+                case "Udp":
+                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyUdpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    break;
+                case "Tcp":
+                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyTcpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    break;
+                case "Http":
+                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyHttpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    break;
+                default:
+                    throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
+            }
 
             if (Server == null)
             {

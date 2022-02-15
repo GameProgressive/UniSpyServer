@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.UniSpyLib.Config;
 using TcpClient = NetCoreServer.TcpClient;
 
 namespace UniSpyServer.UniSpyLib.Network.Tcp.Client
@@ -11,20 +12,13 @@ namespace UniSpyServer.UniSpyLib.Network.Tcp.Client
 
     public abstract class UniSpyTcpClient : TcpClient
     {
+        protected UniSpyTcpClient(IPEndPoint endpoint) : base(endpoint)
+        {
+        }
+
         /// <summary>
         /// We automatic connect to remote server address
         /// </summary>
-        public UniSpyTcpClient() : base
-            (
-                ConfigManager.Config.Servers
-            .Where(s => s.ServerName == ServerFactoryBase.ServerName)
-            .First().RemoteAddress
-               , ConfigManager.Config.Servers
-            .Where(s => s.ServerName == ServerFactoryBase.ServerName)
-            .First().RemotePort
-            )
-        {
-        }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {

@@ -1,9 +1,10 @@
 ﻿using System;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Structure.Data
 {
-    public sealed class UserInfo
+    public sealed class UserInfo : UserInfoBase
     {
         public const ushort SessionKey = 1111;
         public const string LoginTicket = "0000000000000000000000__";

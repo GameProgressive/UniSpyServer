@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Reflection;
 using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -11,8 +12,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     public abstract class UniSpyTcpServer : TcpServer, IServer
     {
         public Guid ServerID { get; private set; }
-        SessionManager IServer.SessionManager => SessionManager;
-        public UniSpyTcpSessionManager SessionManager { get; protected set; }
         /// <summary>
         /// Initialize TCP server with a given IP address and port number
         /// </summary>
@@ -21,6 +20,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         public UniSpyTcpServer(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
+
         }
 
         public override bool Start()
@@ -29,23 +29,18 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             {
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
-            SessionManager.Start();
             return base.Start();
         }
 
-        protected override void OnConnected(TcpSession session)
+        protected override TcpSession CreateSession()
         {
-            if (!SessionManager.SessionPool.ContainsKey(session.Id))
-            {
-                SessionManager.SessionPool.Add(session.Id, (ISession)session);
-            }
-            base.OnConnected(session);
-        }
-
-        protected override void OnDisconnected(TcpSession session)
-        {
-            SessionManager.SessionPool.Remove(session.Id);
-            base.OnDisconnected(session);
+            var session = new UniSpyTcpSession(this);
+            var n = Assembly.GetEntryAssembly().GetName().Name;
+            var clientType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.Client");
+            var userInfoType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.UserInfo");
+            var userInfo = (UserInfoBase)Activator.CreateInstance(userInfoType, session.RemoteIPEndPoint);
+            var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session, userInfo });
+            return session;
         }
     }
 }

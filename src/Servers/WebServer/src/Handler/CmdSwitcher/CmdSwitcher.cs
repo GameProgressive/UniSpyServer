@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.WebServer.Handler
     public class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
-        public CmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
 

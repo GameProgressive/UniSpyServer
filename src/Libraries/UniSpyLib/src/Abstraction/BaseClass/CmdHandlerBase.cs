@@ -7,6 +7,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
     public abstract class CmdHandlerBase : IHandler
     {
         protected ISession _session { get; }
+        protected IClient _client { get; }
         protected IRequest _request { get; }
         protected IResponse _response { get; set; }
         protected ResultBase _result { get; set; }
@@ -16,7 +17,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             _request = request;
             LogWriter.LogCurrentClass(this);
         }
-
+        public CmdHandlerBase(IClient client, IRequest request)
+        {
+            _client = client;
+            _request = request;
+            LogWriter.LogCurrentClass(this);
+        }
         public virtual void Handle()
         {
             try

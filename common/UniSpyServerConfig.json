@@ -21,76 +21,67 @@
   },
   "Servers": [
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "PresenceConnectionManager",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29900",
-      "RemoteAddress": "",
-      "RemotePort": "29900"
+      "SocketType": "Tcp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "PresenceSearchPlayer",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29901",
-      "RemoteAddress": "",
-      "RemotePort": "29901"
+      "SocketType": "Tcp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "CDKey",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29910",
-      "RemoteAddress": "",
-      "RemotePort": "29910"
+      "SocketType": "Udp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "ServerBrowser",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "28910",
-      "RemoteAddress": "",
-      "RemotePort": "28910"
+      "SocketType": "Tcp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "QueryReport",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "27900",
-      "RemoteAddress": "",
-      "RemotePort": "27900"
+      "SocketType": "Udp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "NatNegotiation",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "27901",
-      "RemoteAddress": "",
-      "RemotePort": "27901"
+      "SocketType": "Udp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "GameStatus",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29920",
-      "RemoteAddress": "",
-      "RemotePort": "29920"
+      "SocketType": "Tcp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "Chat",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "6667",
-      "RemoteAddress": "",
-      "RemotePort": "6667"
+      "SocketType": "Tcp"
     },
     {
-      "ServerID":"00000000-0000-0000-0000-000000000000",
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "WebServer",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "80",
-      "RemoteAddress": "",
-      "RemotePort": "80"
+      "SocketType": "Http"
     }
   ],
   "MinimumLogLevel": "Verbose"

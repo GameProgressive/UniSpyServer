@@ -3,7 +3,6 @@ using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
@@ -12,7 +11,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
     {
         private new ServerListRequest _request => (ServerListRequest)base._request;
         private new ServerMainListResult _result => (ServerMainListResult)base._result;
-        public ServerMainListResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ServerMainListResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

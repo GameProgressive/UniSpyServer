@@ -8,7 +8,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     {
         Guid ServerID { get; }
         IPEndPoint Endpoint { get; }
-        SessionManager SessionManager { get; }
         bool Start();
     }
 }

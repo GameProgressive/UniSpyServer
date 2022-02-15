@@ -18,9 +18,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
                 Interval = 60000,
                 AutoReset = true
             };//10000
-            _expireTimeInterval = new TimeSpan(0, 0, 120);
+            _expireTimeInterval = new TimeSpan(0, 3, 0);
             _timer.Start();
             _timer.Elapsed += (s, e) => CheckExpiredSession();
+            // todo we should move timer to session it self so that session can check expire by itself
         }
 
         protected virtual void CheckExpiredSession()

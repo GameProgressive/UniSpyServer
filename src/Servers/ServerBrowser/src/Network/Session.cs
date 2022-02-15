@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Abstraction;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher;
@@ -10,14 +11,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Network
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
-        public List<ServerInfoRequest> ServerMessageStack { get; set; }
+        public AdHocRequest AdHocMessage { get; set; }
         public EncryptionParameters EncParams { get; set; }
-
         public Session(UniSpyTcpServer server) : base(server)
         {
-            ServerMessageStack = new List<ServerInfoRequest>();
         }
-
         protected override void OnReceived(byte[] message) => new CmdSwitcher(this, message).Switch();
         protected override byte[] Encrypt(byte[] buffer)
         {

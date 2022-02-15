@@ -1,29 +1,32 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-using UniSpyServer.UniSpyLib.MiscMethod;
 using UniSpyServer.LinqToRedis;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
     public record UserInfo : RedisKeyValueObject
     {
         [RedisKey]
-        public Guid? ServerID { get; set; }
+        public Guid? ServerID { get; init; }
         [RedisKey]
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [RedisKey]
-        public NatPortType? PortType { get; set; }
+        public NatPortType? PortType { get; init; }
         [RedisKey]
-        public int? Cookie { get; set; }
-        public InitRequest RequestInfo { get; set; }
-        public DateTime? LastPacketRecieveTime;
-        public int? RetryNATNegotiationTime;
+        public int? Cookie { get; init; }
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint LocalIPEndPoint { get; init; }
+        public DateTime? LastPacketRecieveTime { get; set; }
+        public int? RetryNATNegotiationTime { get; set; }
+        public byte? UseGamePort { get; init; }
+        public byte? ClientIndex { get; init; }
+
 
         public UserInfo() : base(TimeSpan.FromMinutes(3))
         {

@@ -1,5 +1,4 @@
-﻿using UniSpyServer.Servers.GameStatus.Network;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyServer.Servers.GameStatus.Application
 {
@@ -8,8 +7,7 @@ namespace UniSpyServer.Servers.GameStatus.Application
     /// </summary>
     public sealed class ServerFactory : ServerFactoryBase
     {
-        public new static Server Server  =>  (Server)ServerFactoryBase.Server;
-        public ServerFactory(): base()
+        public ServerFactory() : base()
         {
             ServerName = "GameStatus";
         }

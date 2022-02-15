@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result => (ResultBase)base._result;
         public new byte[] SendingBuffer { get => (byte[])base.SendingBuffer; set => base.SendingBuffer = value; }
-        protected ResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        protected ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

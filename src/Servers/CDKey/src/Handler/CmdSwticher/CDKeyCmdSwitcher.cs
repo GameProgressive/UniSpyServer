@@ -2,13 +2,13 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.CDkey.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.CDKey.Handler
 {
-    public sealed class CDKeyCmdSwitcher : CmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 
-        public CDKeyCmdSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
 

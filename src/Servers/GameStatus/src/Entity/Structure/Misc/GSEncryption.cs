@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Linq;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Misc
 {
-    public class GSEncryption
+    public class GSEncryption : ICryptography
     {
         /// <summary>
         /// Decrypt the message, skip decrypt \final\
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static byte[] Decrypt(byte[] buffer)
+        public byte[] Decrypt(byte[] buffer)
         {
             //remove \final\, later we add final back
             byte[] cipher = buffer.Take(buffer.Length - 7).ToArray();
-            byte[] plain = XOREncoding.Encode(cipher, XOREncoding.XorType.Type1);
+            byte[] plain = XOREncoding.Encode(cipher, XorType.Type1);
             Array.Copy(plain, buffer, plain.Length);
             return buffer;
         }
@@ -24,10 +25,10 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Misc
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static byte[] Encrypt(byte[] buffer)
+        public byte[] Encrypt(byte[] buffer)
         {
             byte[] plain = buffer.Take(buffer.Length - 7).ToArray();
-            byte[] cipher = XOREncoding.Encode(plain, XOREncoding.XorType.Type1);
+            byte[] cipher = XOREncoding.Encode(plain, XorType.Type1);
             Array.Copy(cipher, buffer, cipher.Length);
             return buffer;
         }

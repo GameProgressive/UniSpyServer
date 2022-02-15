@@ -1,15 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -46,8 +46,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             foreach (var key in _matchedUsers)
             {
                 //find negitiators and negotiatees by a same cookie
-                var negotiators = _matchedUsers.Where(s => s.RequestInfo.ClientIndex == 0);
-                var negotiatees = _matchedUsers.Where(s => s.RequestInfo.ClientIndex == 1);
+                var negotiators = _matchedUsers.Where(s => s.ClientIndex == 0);
+                var negotiatees = _matchedUsers.Where(s => s.ClientIndex == 1);
 
                 if (negotiators.Count() != 1 || negotiatees.Count() != 1)
                 {
