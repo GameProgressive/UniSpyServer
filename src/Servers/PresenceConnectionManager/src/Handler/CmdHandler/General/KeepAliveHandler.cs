@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     [HandlerContract("ka")]
     public sealed class KeepAliveHandler : CmdHandlerBase
     {
-        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
+        public KeepAliveHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

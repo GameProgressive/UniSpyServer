@@ -1,5 +1,5 @@
-﻿using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.Servers.NatNegotiation.Network;
+﻿using UniSpyServer.Servers.NatNegotiation.Entity;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
@@ -10,11 +10,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
     /// </summary>
     public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {
-        protected new Client _client => (Client)base._session;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
         protected RedisClient _redisClient;
-        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
             _redisClient = new RedisClient();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.GameStatus.Application
@@ -9,7 +10,7 @@ namespace UniSpyServer.Servers.GameStatus.Application
         {
             try
             {
-                new ServerFactory().Start();
+                new ServerFactory("GameStatus").Start();
             }
             catch (Exception e)
             {

@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
-        public ModeHandler(ISession session, IRequest request) : base(session, request)
+        public ModeHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

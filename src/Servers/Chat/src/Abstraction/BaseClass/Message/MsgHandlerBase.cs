@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected new MsgRequestBase _request => (MsgRequestBase)base._request;
         protected new MsgResultBase _result { get => (MsgResultBase)base._result; set => base._result = value; }
         protected ChannelUser _reciever;
-        public MsgHandlerBase(ISession session, IRequest request) : base(session, request)
+        public MsgHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
 

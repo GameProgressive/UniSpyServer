@@ -1,4 +1,5 @@
 ﻿using System;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Application
@@ -9,7 +10,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         {
             try
             {
-                new ServerFactory().Start();
+                new ServerFactory("NatNegotiation").Start();
             }
             catch (Exception e)
             {

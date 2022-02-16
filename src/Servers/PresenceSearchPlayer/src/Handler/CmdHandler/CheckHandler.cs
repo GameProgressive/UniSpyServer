@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         //check is request recieved correct and convert password into our MD5 type
         private new CheckRequest _request => (CheckRequest)base._request;
         private new CheckResult _result{ get => (CheckResult)base._result; set => base._result = value; }
-        public CheckHandler(ISession session, IRequest request) : base(session, request)
+        public CheckHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new CheckResult();
         }

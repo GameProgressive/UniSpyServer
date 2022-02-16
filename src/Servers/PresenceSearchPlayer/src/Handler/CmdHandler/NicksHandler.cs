@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     {
         private new NicksResult _result{ get => (NicksResult)base._result; set => base._result = value; }
         private new NicksRequest _request => (NicksRequest)base._request;
-        public NicksHandler(ISession session, IRequest request) : base(session, request)
+        public NicksHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new NicksResult();
         }

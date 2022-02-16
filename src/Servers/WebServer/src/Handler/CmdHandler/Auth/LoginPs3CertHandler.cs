@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Auth
     {
         protected new LoginPs3CertRequest _request => (LoginPs3CertRequest)base._request;
         protected new LoginPs3CertResult _result => (LoginPs3CertResult)base._result;
-        public LoginPs3CertHandler(ISession session, IRequest request) : base(session, request)
+        public LoginPs3CertHandler(IClient client, IRequest request) : base(client, request)
         {
         }
     }

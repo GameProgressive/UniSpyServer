@@ -13,13 +13,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new NatifyRequest _request => (NatifyRequest)base._request;
         private new NatifyResult _result { get => (NatifyResult)base._result; set => base._result = value; }
-        public NatifyHandler(ISession session, IRequest request) : base(session, request)
+        public NatifyHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new NatifyResult();
         }
         protected override void DataOperation()
         {
-            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {

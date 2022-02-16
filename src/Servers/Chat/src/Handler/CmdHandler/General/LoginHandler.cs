@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         private new LoginRequest _request => (LoginRequest)base._request;
         private new LoginResult _result{ get => (LoginResult)base._result; set => base._result = value; }
-        public LoginHandler(ISession session, IRequest request) : base(session, request)
+        public LoginHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new LoginResult();
         }

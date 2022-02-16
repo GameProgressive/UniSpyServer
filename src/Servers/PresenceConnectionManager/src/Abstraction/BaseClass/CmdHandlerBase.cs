@@ -12,10 +12,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
         /// Because all errors are sent by SendGPError()
         /// so we if the error code != noerror we send it
         /// </summary>
-        protected new Client _client => (Client)base._session;
+        protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
 

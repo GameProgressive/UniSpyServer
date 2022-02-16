@@ -6,8 +6,8 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {
-        protected new Client _client => (Client)base._session;
-        protected CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        protected new Client _client => (Client)base._client;
+        protected CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
     }

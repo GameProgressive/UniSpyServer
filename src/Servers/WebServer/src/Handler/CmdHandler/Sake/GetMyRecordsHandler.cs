@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake
     {
         private new GetMyRecordsRequest _request => (GetMyRecordsRequest)base._request;
         private new GetMyRecordsResult _result { get => (GetMyRecordsResult)base._result; set => base._result = value; }
-        public GetMyRecordsHandler(ISession session, IRequest request) : base(session, request)
+        public GetMyRecordsHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

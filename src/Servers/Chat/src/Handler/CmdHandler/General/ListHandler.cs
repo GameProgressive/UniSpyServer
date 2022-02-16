@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         private new ListRequest _request => (ListRequest)base._request;
         private new ListResult _result { get => (ListResult)base._result; set => base._result = value; }
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public ListHandler(ISession session, IRequest request) : base(session, request)
+        public ListHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ListResult();
         }

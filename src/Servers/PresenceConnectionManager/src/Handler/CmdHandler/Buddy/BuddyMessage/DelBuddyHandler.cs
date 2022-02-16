@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     {
         private new DelBuddyRequest _request => (DelBuddyRequest)base._request;
         //delete friend in database then send bm_revoke message to friend
-        public DelBuddyHandler(ISession session, IRequest request) : base(session, request)
+        public DelBuddyHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

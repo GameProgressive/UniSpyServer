@@ -6,9 +6,9 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public sealed class ServerFactory : ServerFactoryBase
+    public sealed class ServerFactory : UniSpyLib.Abstraction.BaseClass.Factory.ServerFactory
     {
-        public new static Server Server  =>  (Server)ServerFactoryBase.Server;
+        public new static Server Server  =>  (Server)UniSpyLib.Abstraction.BaseClass.Factory.ServerFactory.Server;
         public ServerFactory(): base()
         {
             ServerName = "ServerBrowser";

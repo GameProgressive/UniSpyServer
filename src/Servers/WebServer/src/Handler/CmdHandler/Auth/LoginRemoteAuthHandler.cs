@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Auth
     {
         protected new LoginRemoteAuthRequest _request => (LoginRemoteAuthRequest)base._request;
         protected new LoginResult _result => (LoginResult)base._result;
-        public LoginRemoteAuthHandler(ISession session, IRequest request) : base(session, request)
+        public LoginRemoteAuthHandler(IClient client, IRequest request) : base(client, request)
         {
         }
     }

@@ -10,14 +10,14 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected Channel _channel;
         protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
-        public ChannelHandlerBase(ISession session, IRequest request) : base(session, request)
+        public ChannelHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
 
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            _channel = _session.UserInfo.GetJoinedChannel(_request.ChannelName);
+            _channel = _client.UserInfo.GetJoinedChannel(_request.ChannelName);
             if (_channel == null)
             {
                 throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);

@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         private int _protileid;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
         private new GetProfileIDResult _result{ get => (GetProfileIDResult)base._result; set => base._result = value; }
-        public GetProfileIDHandler(ISession session, IRequest request) : base(session, request)
+        public GetProfileIDHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new GetProfileIDResult();
         }

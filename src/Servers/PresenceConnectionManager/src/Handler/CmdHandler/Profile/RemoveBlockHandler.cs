@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     [HandlerContract("removeblk")]
     public sealed class RemoveBlockHandler : Abstraction.BaseClass.CmdHandlerBase
     {
-        public RemoveBlockHandler(ISession session, IRequest request) : base(session, request)
+        public RemoveBlockHandler(IClient client, IRequest request) : base(client, request)
         {
             throw new NotImplementedException();
         }

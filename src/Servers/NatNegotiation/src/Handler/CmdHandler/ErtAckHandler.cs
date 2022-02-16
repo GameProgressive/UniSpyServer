@@ -13,13 +13,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         private new ErtAckResult _result { get => (ErtAckResult)base._result; set => base._result = value; }
-        public ErtAckHandler(ISession session, IRequest request) : base(session, request)
+        public ErtAckHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ErtAckResult();
         }
         protected override void DataOperation()
         {
-            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {

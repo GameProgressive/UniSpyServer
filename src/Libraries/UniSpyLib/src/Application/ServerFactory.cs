@@ -2,41 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleTables;
-using StackExchange.Redis;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
+using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
-    public abstract class ServerFactoryBase
+    public class ServerFactory
     {
         /// <summary>
         /// UniSpy server version
         /// </summary>
-        public static readonly string Version = "0.5.7";
+        public static readonly string Version = "0.6.1";
         /// <summary>
         /// UniSpy server name
         /// </summary>
         /// <returns></returns>
         public static string ServerName { get; protected set; }
-        /// <summary>
-        /// Redis connection
-        /// </summary>
-        public static ConnectionMultiplexer Redis { get; protected set; }
-        /// <summary>
-        /// A UniSpyServer instance
-        /// </summary>
-        public static Interface.IServer Server { get; protected set; }
-        public ServerFactoryBase()
+        public static Dictionary<string, IServer> Servers { get; protected set; }
+        public static IServer Server;
+        static ServerFactory()
         {
+            Servers = new Dictionary<string, IServer>();
         }
-        private List<string> _availableServers = new List<string>();
-        public ServerFactoryBase(List<string> servers)
+        public ServerFactory(string serverNames)
         {
-            _availableServers = servers;
+            ServerName = serverNames;
         }
 
         public virtual void Start()
@@ -50,21 +44,21 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected void LoadServerConfig()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
+            var serverParams = new object[] { cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint };
             switch (cfg.SocketType)
             {
                 case "Udp":
-                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyUdpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    Server = (IServer)Activator.CreateInstance(typeof(UdpServer), serverParams);
                     break;
                 case "Tcp":
-                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyTcpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    Server = (IServer)Activator.CreateInstance(typeof(TcpServer), serverParams);
                     break;
                 case "Http":
-                    Server = (Interface.IServer)Activator.CreateInstance(typeof(UniSpyHttpServer), cfg.ServerID, cfg.ListeningEndPoint);
+                    Server = (IServer)Activator.CreateInstance(typeof(HttpServer), serverParams);
                     break;
                 default:
                     throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
             }
-
             if (Server == null)
             {
                 throw new Exception("Server created failed");
@@ -74,6 +68,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
             table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
+            Servers.Add(cfg.ServerName, Server);
             Console.WriteLine("Server successfully started!");
         }
 
@@ -82,7 +77,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                Redis = ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
+                StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
             }
             catch (Exception e)
             {

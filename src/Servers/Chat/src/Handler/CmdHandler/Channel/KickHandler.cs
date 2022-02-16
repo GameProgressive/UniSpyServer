@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         private new KickResponse _response { get => (KickResponse)base._response; set => base._response = value; }
         private new KickResult _result { get => (KickResult)base._result; set => base._result = value; }
         private ChannelUser _kickee;
-        public KickHandler(ISession session, IRequest request) : base(session, request)
+        public KickHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new KickResult();
         }

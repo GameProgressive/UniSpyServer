@@ -2,16 +2,20 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using System.Timers;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
+using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class ClientBase : IClient
+    public abstract class ClientBase : IClient, IDisposable
     {
+        public static ConnectionMultiplexer Redis { get; set; }
         public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
         public ISession Session { get; private set; }
         public ICryptography Crypto { get; set; }
@@ -27,16 +31,26 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private Timer _timer;
         static ClientBase()
         {
+            Redis = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
             ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
+        }
+        public static ClientBase CreateClient(ISession session)
+        {
+            var n = Assembly.GetEntryAssembly().GetName().Name;
+            var clientType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.Client");
+            var userInfoType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.UserInfo");
+            var userInfo = (UserInfoBase)Activator.CreateInstance(userInfoType, session.RemoteIPEndPoint);
+            var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session, userInfo });
+            return client;
         }
         public ClientBase(ISession session, UserInfoBase userInfo)
         {
             Session = session;
             UserInfo = userInfo;
 
-            if (session.GetType() == typeof(UniSpyUdpSession))
+            if (session.GetType() == typeof(UdpSession))
             {
-                ((UniSpyUdpSession)session).OnReceive += OnReceived;
+                ((UdpSession)session).OnReceive += OnReceived;
                 // todo add timer here
                 _timer = new Timer
                 {
@@ -49,17 +63,17 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 _timer.Start();
                 _timer.Elapsed += (s, e) => CheckExpiredClient();
             }
-            else if (session.GetType() == typeof(UniSpyTcpSession))
+            else if (session.GetType() == typeof(TcpSession))
             {
-                ((UniSpyTcpSession)session).OnReceive += OnReceived;
-                ((UniSpyTcpSession)session).OnConnect += OnConnected;
-                ((UniSpyTcpSession)session).OnDisconnect += OnDisconnected;
+                ((TcpSession)session).OnReceive += OnReceived;
+                ((TcpSession)session).OnConnect += OnConnected;
+                ((TcpSession)session).OnDisconnect += OnDisconnected;
             }
-            else if (session.GetType() == typeof(UniSpyHttpSession))
+            else if (session.GetType() == typeof(HttpSession))
             {
-                ((UniSpyHttpSession)session).OnReceive += OnReceived;
-                ((UniSpyHttpSession)session).OnConnect += OnConnected;
-                ((UniSpyHttpSession)session).OnDisconnect += OnDisconnected;
+                ((HttpSession)session).OnReceive += OnReceived;
+                ((HttpSession)session).OnConnect += OnConnected;
+                ((HttpSession)session).OnDisconnect += OnDisconnected;
             }
             else
             {
@@ -98,9 +112,31 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private void CheckExpiredClient()
         {
             // we calculate the interval between last packe and current time
-            if (((UniSpyUdpSession)Session).SessionExistedTime > _expireTimeInterval)
+            if (((UdpSession)Session).SessionExistedTime > _expireTimeInterval)
             {
-                ClientPool.Remove(((UniSpyUdpSession)Session).RemoteIPEndPoint);
+                ClientPool.Remove(((UdpSession)Session).RemoteIPEndPoint);
+                Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            if (Session.GetType() == typeof(UdpSession))
+            {
+                ((UdpSession)Session).OnReceive -= OnReceived;
+                _timer.Elapsed -= (s, e) => CheckExpiredClient();
+            }
+            else if (Session.GetType() == typeof(TcpSession))
+            {
+                ((TcpSession)Session).OnReceive -= OnReceived;
+                ((TcpSession)Session).OnConnect -= OnConnected;
+                ((TcpSession)Session).OnDisconnect -= OnDisconnected;
+            }
+            else if (Session.GetType() == typeof(HttpSession))
+            {
+                ((HttpSession)Session).OnReceive -= OnReceived;
+                ((HttpSession)Session).OnConnect -= OnConnected;
+                ((HttpSession)Session).OnDisconnect -= OnDisconnected;
             }
         }
     }

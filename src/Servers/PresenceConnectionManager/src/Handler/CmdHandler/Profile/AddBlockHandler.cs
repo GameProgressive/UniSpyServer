@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class AddBlockHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;
-        public AddBlockHandler(ISession session, IRequest request) : base(session, request)
+        public AddBlockHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

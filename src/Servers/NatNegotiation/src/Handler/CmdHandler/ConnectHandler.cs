@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -23,7 +24,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToNegotiatee;
         private UserInfo _negotiator;
         private UserInfo _negotiatee;
-        public ConnectHandler(ISession session, IRequest request) : base(session, request)
+        public ConnectHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ConnectResult();
         }
@@ -38,8 +39,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 throw new NNException("No users match found we continue waitting.");
             }
-
-
         }
         protected override void DataOperation()
         {
@@ -81,9 +80,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _responseToNegotiatee.Build();
             _responseToNegotiator.Build();
             // we send the information to each user
-            _session.Server.SendAsync(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
-            _session.Server.SendAsync(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            var session = _client.Session as IUdpSession;
+            session.Send(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
+            session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            // test whether this way can notify users
+            var client = new UdpClient();
+            client.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
+            client.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
         }
-
     }
 }

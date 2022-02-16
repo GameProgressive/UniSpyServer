@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     {
         private new EchoRequest _request => (EchoRequest)base._request;
         private new EchoResult _result { get => (EchoResult)base._result; set => base._result = value; }
-        public EchoHandler(ISession session, IRequest request) : base(session, request)
+        public EchoHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new EchoResult();
         }

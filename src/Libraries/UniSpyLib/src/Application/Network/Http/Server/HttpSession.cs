@@ -1,20 +1,28 @@
+using System;
 using System.Net;
 using NetCoreServer;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Events;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 {
-    public abstract class UniSpyHttpSession : HttpSession, ISession
+    public class HttpSession : NetCoreServer.HttpSession, ISession
     {
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
+        IServer ISession.Server => (HttpServer)Server;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        protected UniSpyHttpSession(UniSpyHttpServer server) : base(server)
+        public HttpSession(HttpServer server) : base(server)
         {
+        }
+        protected override void OnConnected()
+        {
+            OnConnect();
+            base.OnConnected();
         }
         protected override void OnDisconnected()
         {
@@ -28,15 +36,21 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, request.Body);
             OnReceivedRequest(request.Body);
         }
-        public bool Send(IResponse response)
+        public bool Send(object response)
         {
-            response.Build();
-            return base.SendResponseBodyAsync((string)response.SendingBuffer);
+            if (response.GetType() != typeof(string))
+            {
+                throw new UniSpyException("UniSpyHttpSession.Send: response must be string");
+            }
+            else
+            {
+                return base.SendResponseBodyAsync((string)response);
+            }
         }
-        public bool BaseSend(IResponse response)
+
+        public bool Send(IPEndPoint endPoint, object response)
         {
-            response.Build();
-            return base.SendResponseBodyAsync((string)response.SendingBuffer);
+            throw new NotImplementedException();
         }
     }
 }

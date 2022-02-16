@@ -13,14 +13,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new AddressCheckRequest _request => (AddressCheckRequest)base._request;
         private new AddressCheckResult _result { get => (AddressCheckResult)base._result; set => base._result = value; }
-
-        public AddressCheckHandler(ISession session, IRequest request) : base(session, request)
+        public AddressCheckHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new AddressCheckResult();
         }
         protected override void DataOperation()
         {
-            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {

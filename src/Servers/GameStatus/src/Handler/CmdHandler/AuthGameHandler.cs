@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         //UniSpyServer.UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyServer.UniSpyLib.Encryption.Crc16(UniSpyServer.UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthGameResult _result{ get => (AuthGameResult)base._result; set => base._result = value; }
-        public AuthGameHandler(ISession session, IRequest request) : base(session, request)
+        public AuthGameHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new AuthGameResult();
         }

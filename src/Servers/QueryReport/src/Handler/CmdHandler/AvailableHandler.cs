@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     public sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;
-        public AvailableHandler(ISession session, IRequest request) : base(session, request)
+        public AvailableHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void ResponseConstruct()

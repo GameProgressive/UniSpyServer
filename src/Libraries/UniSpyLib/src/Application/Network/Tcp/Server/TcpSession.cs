@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Net;
 using NetCoreServer;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Events;
 
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
+namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class UniSpyTcpSession : TcpSession, ISession
+    public class TcpSession : NetCoreServer.TcpSession, ITcpSession
     {
         public EndPoint RemoteEndPoint { get; private set; }
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
-        public new UniSpyTcpServer Server => (UniSpyTcpServer)base.Server;
+        public new TcpServer Server => (TcpServer)base.Server;
+        IServer ISession.Server => Server;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        public UniSpyTcpSession(UniSpyTcpServer server) : base(server)
+        public TcpSession(TcpServer server) : base(server)
         {
         }
         protected override void OnConnected()
@@ -37,9 +40,20 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             base.OnReceived(buffer, offset, size);
         }
 
-        public bool Send(IResponse response)
+        public bool Send(object response)
         {
-            throw new NotImplementedException();
+            if (response.GetType() == typeof(string))
+            {
+                return SendAsync(UniSpyEncoding.GetBytes((string)response));
+            }
+            else if (response.GetType() == typeof(byte[]))
+            {
+                return SendAsync((byte[])response);
+            }
+            else
+            {
+                throw new UniSpyException("UniSpyTcpSession.Send: response must be string or byte[]");
+            }
         }
         // /// <summary>
         // /// Send unencrypted data

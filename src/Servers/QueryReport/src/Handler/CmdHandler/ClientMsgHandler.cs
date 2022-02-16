@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     public sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
-        public ClientMessageHandler(ISession session, IRequest request) : base(session, request)
+        public ClientMessageHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

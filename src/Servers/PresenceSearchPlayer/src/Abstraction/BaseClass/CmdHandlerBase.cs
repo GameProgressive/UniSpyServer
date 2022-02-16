@@ -12,10 +12,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0
         /// </summary>
-        protected new Client _client => (Client)base._session;
+        protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
 

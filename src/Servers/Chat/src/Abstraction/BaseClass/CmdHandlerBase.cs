@@ -17,11 +17,11 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     /// </summary>
     public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {
-        protected new Client _client => (Client)base._session;
+        protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
         //if we use this structure the error response should also write to _sendingBuffer
@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         {
             if (ex is IRCException)
             {
-                _session.SendAsync(((IRCException)ex).ErrorResponse);
+                _client.Session.Send(((IRCException)ex).ErrorResponse);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         }
         protected override void Response()
         {
-            if (_session.UserInfo.IsQuietMode)
+            if (_client.UserInfo.IsQuietMode)
             {
                 return;
             }

@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class RegisterNickHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new RegisterNickRequest _request => (RegisterNickRequest)base._request;
-        public RegisterNickHandler(ISession session, IRequest request) : base(session, request)
+        public RegisterNickHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private new ServerInfoRequest _request => (ServerInfoRequest)base._request;
         private new ServerInfoResult _result { get => (ServerInfoResult)base._result; set => base._result = value; }
 
-        public ServerInfoHandler(ISession session, IRequest request) : base(session, request)
+        public ServerInfoHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ServerInfoResult();
         }

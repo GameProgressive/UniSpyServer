@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         private new CryptRequest _request => (CryptRequest)base._request;
         private new CryptResult _result{ get => (CryptResult)base._result; set => base._result = value; }
         // CRYPT des 1 gamename
-        public CryptHandler(ISession session, IRequest request) : base(session, request)
+        public CryptHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new CryptResult();
         }

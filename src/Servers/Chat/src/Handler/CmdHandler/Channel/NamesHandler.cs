@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class NamesHandler : ChannelHandlerBase
     {
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
-        public NamesHandler(ISession session, IRequest request) : base(session, request)
+        public NamesHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

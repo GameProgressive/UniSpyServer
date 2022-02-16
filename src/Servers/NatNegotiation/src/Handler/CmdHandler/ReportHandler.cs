@@ -1,15 +1,15 @@
-﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Application;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
-using System;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
-using System.Linq;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result { get => (ReportResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
-        public ReportHandler(ISession session, IRequest request) : base(session, request)
+        public ReportHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ReportResult();
         }
@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _userInfo = _redisClient.Values.Where(
             k => k.ServerID == ServerFactory.Server.ServerID
-            & k.RemoteIPEndPoint == _session.RemoteIPEndPoint
+            & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
             & k.PortType == _request.PortType
             & k.Cookie == _request.Cookie).FirstOrDefault();
 
@@ -50,7 +50,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         Version = _request.Version,
                         Cookie = _request.Cookie
                     };
-                    new ConnectHandler(_session, request).Handle();
+                    new ConnectHandler(_client, request).Handle();
                 }
 
                 _userInfo.RetryNATNegotiationTime++;

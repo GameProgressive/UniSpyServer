@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result { get => (WhoResult)base._result; set => base._result = value; }
-        public WhoHandler(ISession session, IRequest request) : base(session, request)
+        public WhoHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

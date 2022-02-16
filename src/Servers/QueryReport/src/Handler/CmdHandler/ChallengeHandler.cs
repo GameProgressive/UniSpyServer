@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         private GameServerInfo _gameServerInfo;
         private new ChallengeRequest _request => (ChallengeRequest)base._request;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(ISession session, IRequest request) : base(session, request)
+        public ChallengeHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ChallengeResult();
         }

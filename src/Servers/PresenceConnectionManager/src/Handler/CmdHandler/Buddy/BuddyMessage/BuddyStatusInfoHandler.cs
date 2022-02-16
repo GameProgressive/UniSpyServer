@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.SystemHandl
         // "\bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\"
         // "\qport\\hport\\sessflags\\rstatus\\gameType\"
         // "\gameVnt\\gameMn\\product\\qmodeflags\"
-        public BuddyStatusInfoHandler(ISession session, IRequest request) : base(session, request)
+        public BuddyStatusInfoHandler(IClient client, IRequest request) : base(client, request)
         {
             throw new System.NotImplementedException();
         }

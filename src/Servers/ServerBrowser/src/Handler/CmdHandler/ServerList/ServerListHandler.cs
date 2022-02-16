@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     [HandlerContract(RequestType.ServerListRequest)]
     public class ServerListHandler : ServerListUpdateOptionHandlerBase
     {
-        public ServerListHandler(ISession session, IRequest request) : base(session, request)
+        public ServerListHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

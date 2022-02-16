@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
     {
         new AboveTheTableMsgRequest _request => (AboveTheTableMsgRequest)base._request;
         new AboveTheTableMsgResult _result{ get => (AboveTheTableMsgResult)base._result; set => base._result = value; }
-        public AboveTheTableMsgHandler(ISession session, IRequest request) : base(session, request)
+        public AboveTheTableMsgHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new AboveTheTableMsgResult();
         }

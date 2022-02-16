@@ -1,22 +1,17 @@
 ﻿using System;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : IHandler
     {
-        protected ISession _session { get; }
         protected IClient _client { get; }
         protected IRequest _request { get; }
         protected IResponse _response { get; set; }
         protected ResultBase _result { get; set; }
-        public CmdHandlerBase(ISession session, IRequest request)
-        {
-            _session = session;
-            _request = request;
-            LogWriter.LogCurrentClass(this);
-        }
+
         public CmdHandlerBase(IClient client, IRequest request)
         {
             _client = client;
@@ -49,7 +44,20 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         protected virtual void Response()
         {
-            _session.Send(_response);
+            byte[] buffer = null;
+            if (_response.SendingBuffer.GetType() == typeof(string))
+            {
+                buffer = UniSpyEncoding.GetBytes((string)_response.SendingBuffer);
+            }
+            else
+            {
+                buffer = (byte[])_response.SendingBuffer;
+            }
+            if (_client.Crypto != null)
+            {
+                buffer = _client.Crypto.Encrypt(buffer);
+            }
+            _client.Session.Send(buffer);
         }
         protected virtual void HandleException(Exception ex)
         {

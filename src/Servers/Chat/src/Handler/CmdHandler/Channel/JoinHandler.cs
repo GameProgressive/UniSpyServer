@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
             Channels = new ConcurrentDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel>();
         }
-        public JoinHandler(ISession session, IRequest request) : base(session, request)
+        public JoinHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new JoinResult();
         }

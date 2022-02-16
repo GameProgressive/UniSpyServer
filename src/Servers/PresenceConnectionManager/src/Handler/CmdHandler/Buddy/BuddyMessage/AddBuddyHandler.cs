@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     {
         private new AddBuddyRequest _request => (AddBuddyRequest)base._request;
 
-        public AddBuddyHandler(ISession session, IRequest request) : base(session, request)
+        public AddBuddyHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new AddBuddyResult();
         }

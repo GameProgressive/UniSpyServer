@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake
     public class CreateRecordHandler : Abstraction.Sake.CmdHandlerBase
     {
         protected new CreateRecordRequest _request => (CreateRecordRequest)base._request;
-        public CreateRecordHandler(ISession session, IRequest request) : base(session, request)
+        public CreateRecordHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

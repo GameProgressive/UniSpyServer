@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.WebServer.Abstraction.Sake
         protected new RequestBase _request => (RequestBase)base._request;
         protected string _sakeFilePath => $"./sake_storage/{_request.GameId}/{_request.TableId}/sake_storage.json";
         protected List<RecordFieldObject> _sakeData { get; private set; }
-        protected CmdHandlerBase(ISession session, IRequest request) : base(session, request)
+        protected CmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
         }
 

@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     [HandlerContract("updateui")]
     public sealed class UpdateUIHandler : Abstraction.BaseClass.CmdHandlerBase
     {
-        public UpdateUIHandler(ISession session, IRequest request) : base(session, request)
+        public UpdateUIHandler(IClient client, IRequest request) : base(client, request)
         {
             //todo find what data is belong to user info
             throw new System.NotImplementedException();

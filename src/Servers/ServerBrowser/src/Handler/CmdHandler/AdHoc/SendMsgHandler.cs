@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     public sealed class SendMsgHandler : CmdHandlerBase
     {
         private new SendMessageRequest _request => (SendMessageRequest)base._request;
-        public SendMsgHandler(ISession session, IRequest request) : base(session, request)
+        public SendMsgHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

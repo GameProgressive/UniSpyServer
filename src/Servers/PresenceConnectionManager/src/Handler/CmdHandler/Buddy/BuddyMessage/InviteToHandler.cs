@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
         private new InviteToRequest _request => (InviteToRequest)base._request;
-        public InviteToHandler(ISession session, IRequest request) : base(session, request)
+        public InviteToHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 

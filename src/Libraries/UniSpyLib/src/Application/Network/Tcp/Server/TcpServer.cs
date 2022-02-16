@@ -2,14 +2,15 @@
 using System.Net;
 using System.Reflection;
 using NetCoreServer;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
+namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Server with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class UniSpyTcpServer : TcpServer, IServer
+    public abstract class TcpServer : NetCoreServer.TcpServer, IServer
     {
         public Guid ServerID { get; private set; }
         /// <summary>
@@ -17,10 +18,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// </summary>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public UniSpyTcpServer(Guid serverID, IPEndPoint endpoint) : base(endpoint)
+        public string ServerName { get; private set; }
+        public TcpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
-
+            ServerName = serverName;
         }
 
         public override bool Start()
@@ -31,15 +33,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             }
             return base.Start();
         }
-
-        protected override TcpSession CreateSession()
+        protected override NetCoreServer.TcpSession CreateSession()
         {
-            var session = new UniSpyTcpSession(this);
-            var n = Assembly.GetEntryAssembly().GetName().Name;
-            var clientType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.Client");
-            var userInfoType = Assembly.GetEntryAssembly().GetType($"{n}.Entity.Structure.UserInfo");
-            var userInfo = (UserInfoBase)Activator.CreateInstance(userInfoType, session.RemoteIPEndPoint);
-            var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session, userInfo });
+            var session = new TcpSession(this);
+            ClientBase.CreateClient(session);
             return session;
         }
     }

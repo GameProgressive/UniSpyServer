@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new QuitRequest _request => (QuitRequest)base._request;
         // when a user disconnected with server we can call this function
-        public QuitHandler(ISession session, IRequest request) : base(session, request)
+        public QuitHandler(IClient client, IRequest request) : base(client, request)
         {
         }
 
