@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            _channel = _client.UserInfo.GetJoinedChannel(_request.ChannelName);
+            _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
             if (_channel == null)
             {
                 throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);

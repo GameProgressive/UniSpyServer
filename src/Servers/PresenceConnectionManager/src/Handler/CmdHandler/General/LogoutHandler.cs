@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _client.Connection.Disconnect();
+            _client.Session.Disconnect();
         }
     }
 }

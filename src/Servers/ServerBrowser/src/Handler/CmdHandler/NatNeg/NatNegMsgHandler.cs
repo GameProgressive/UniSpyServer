@@ -31,14 +31,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_session.AdHocMessage is null)
+            if (_client.Info.AdHocMessage is null)
             {
                 throw new SBException("There are no server messages in _session.ServerMessageList.");
             }
 
             _gameServer = _gameServerRedisClient.Values.Where(x =>
-                x.HostIPAddress == _session.AdHocMessage.TargetIPEndPoint.Address &
-                x.HostPort == (ushort)_session.AdHocMessage.TargetIPEndPoint.Port)
+                x.HostIPAddress == _client.Info.AdHocMessage.TargetIPEndPoint.Address &
+                x.HostPort == (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port)
                 .FirstOrDefault();
             if (_gameServer == null)
             {
@@ -60,8 +60,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 InstantKey = (uint)_gameServer.InstantKey,
                 GameName = _gameServer.GameName
             };
-
-            ServerFactory.Server.InfoExchangeChannel.PublishMessage(_natNegCookie);
+            // !Fix this
+            // ServerFactory.Server.InfoExchangeChannel.PublishMessage(_natNegCookie);
             var result = new ClientMessageResult
             {
                 NatNegMessage = _natNegCookie.NatNegMessage,

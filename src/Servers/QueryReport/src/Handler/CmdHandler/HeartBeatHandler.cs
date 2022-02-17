@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
             UpdateGameServerByState();
             //parse the endpoint information into result class
-            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
 
         private void UpdateGameServerByState()
@@ -73,8 +73,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //make sure one ip address create one server on each game
             //we check if the database have multiple game server if it contains
             _gameServerInfo = _redisClient.Values.Where(x =>
-                                    x.ServerID == ServerFactory.Server.ServerID &
-                                    x.HostIPAddress == _session.RemoteIPEndPoint.Address &
+                                    x.ServerID == _client.Session.Server.ServerID &
+                                    x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
                                     x.InstantKey == _request.InstantKey &
                                     x.GameName == _request.GameName)
                                     .FirstOrDefault();
@@ -83,8 +83,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             {
                 _gameServerInfo = new GameServerInfo()
                 {
-                    ServerID = ServerFactory.Server.ServerID,
-                    HostIPAddress = _session.RemoteIPEndPoint.Address,
+                    ServerID = _client.Session.Server.ServerID,
+                    HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
                     HostPort = _request.ServerData.ContainsKey("hostport") ? ushort.Parse(_request.ServerData["hostport"]) : (ushort)6500,
                     GameName = _request.GameName,
                     InstantKey = _request.InstantKey,

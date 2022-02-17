@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         }
         protected override void Response()
         {
-            if (_client.UserInfo.IsQuietMode)
+            if (_client.Info.IsQuietMode)
             {
                 return;
             }

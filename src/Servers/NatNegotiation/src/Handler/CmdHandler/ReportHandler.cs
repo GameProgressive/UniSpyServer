@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _userInfo = _redisClient.Values.Where(
             k => k.ServerID == ServerFactory.Server.ServerID
-            & k.RemoteIPEndPoint == _client.Connection.RemoteIPEndPoint
+            & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
             & k.PortType == _request.PortType
             & k.Cookie == _request.Cookie).FirstOrDefault();
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.Servers.PresenceSearchPlayer.Network;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
@@ -23,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
         {
             if (ex is GPException)
             {
-                _session.SendAsync(ex.Message);
+                _client.Session.Send(ex.Message);
             }
             else
             {

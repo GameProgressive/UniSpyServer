@@ -6,11 +6,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public new ITcpConnection Connection => (ITcpConnection)base.Connection;
+        public new ITcpSession Session => (ITcpSession)base.Session;
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public Client(IConnection session) : base(session)
+        public Client(ISession session) : base(session)
         {
-            Info = new ClientInfo(Connection.RemoteIPEndPoint);
+            Info = new ClientInfo(Session.RemoteIPEndPoint);
         }
     }
 }

@@ -6,9 +6,9 @@ namespace UniSpyServer.Servers.Chat.Entity
 {
     public class Client : ClientBase
     {
-        public new UserInfo UserInfo => (UserInfo)base.Info;
-        public new ITcpConnection Session => (ITcpConnection)base.Connection;
-        public Client(IConnection session) : base(session)
+        public new UserInfo Info => (UserInfo)base.Info;
+        public new ITcpSession Session => (ITcpSession)base.Session;
+        public Client(ISession session) : base(session)
         {
             base.Info = new UserInfo(session.RemoteIPEndPoint);
         }

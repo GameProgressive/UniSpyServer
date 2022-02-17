@@ -80,7 +80,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _responseToNegotiatee.Build();
             _responseToNegotiator.Build();
             // we send the information to each user
-            var session = _client.Connection as IUdpConnection;
+            var session = _client.Session as IUdpSession;
             session.Send(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
             session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
             // test whether this way can notify users

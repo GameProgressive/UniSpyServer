@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _session.AdHocMessage = _request;
+            _client.Info.AdHocMessage = _request;
         }
     }
 }

@@ -12,11 +12,11 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TcpSession : NetCoreServer.TcpSession, ITcpConnection
+    public class TcpSession : NetCoreServer.TcpSession, ITcpSession
     {
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public new TcpServer Server => (TcpServer)base.Server;
-        IServer IConnection.Server => Server;
+        IServer ISession.Server => Server;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
@@ -56,7 +56,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
             }
         }
 
-        void ITcpConnection.Disconnect() => Disconnect();
+        void ITcpSession.Disconnect() => Disconnect();
 
         // /// <summary>
         // /// Send unencrypted data

@@ -8,10 +8,10 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 {
-    public class HttpSession : NetCoreServer.HttpSession, IConnection
+    public class HttpSession : NetCoreServer.HttpSession, ISession
     {
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
-        IServer IConnection.Server => (HttpServer)Server;
+        IServer ISession.Server => (HttpServer)Server;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;

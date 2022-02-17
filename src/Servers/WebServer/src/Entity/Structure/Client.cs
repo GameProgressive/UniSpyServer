@@ -1,13 +1,13 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Entity
+namespace UniSpyServer.Servers.WebServer.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public Client(IConnection session) : base(session)
+        public Client(ISession session) : base(session)
         {
-            Info = new UserInfo(session.RemoteIPEndPoint);
+            Info = new ClientInfo(session.RemoteIPEndPoint);
         }
     }
 }

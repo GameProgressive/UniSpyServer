@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("NatNegotiation");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<IUdpConnection>();
+            var sessionMock = new Mock<IUdpSession>();
             sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
             _client = new Client(sessionMock.Object);

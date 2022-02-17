@@ -5,7 +5,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     public interface IClient
     {
         // we store client info here
-        IConnection Connection { get; }
+        ISession Session { get; }
         ICryptography Crypto { get; }
         ClientInfoBase Info { get; }
     }

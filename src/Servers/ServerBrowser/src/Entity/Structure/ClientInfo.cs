@@ -1,15 +1,16 @@
+using System.Net;
 using UniSpyServer.Servers.ServerBrowser.Abstraction;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.ServerBrowser.Entity
+namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure
 {
-    public class Client : ClientBase
+    public class ClientInfo : ClientInfoBase
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public AdHocRequest AdHocMessage { get; set; }
-        public Client(IConnection session) : base(session)
+        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
         {
         }
     }

@@ -8,15 +8,15 @@ using UniSpyServer.UniSpyLib.Events;
 namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
 {
     /// <summary>
-    /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="IConnection"/>
+    /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="ISession"/>
     /// </summary>
-    public class UdpSession : IUdpConnection
+    public class UdpSession : IUdpSession
     {
         public UdpServer Server { get; private set; }
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public DateTime LastPacketReceivedTime { get; protected set; }
         public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
-        IServer IConnection.Server => Server;
+        IServer ISession.Server => Server;
         public event OnReceivedEventHandler OnReceive;
 
         public UdpSession(UdpServer server, EndPoint endPoint)

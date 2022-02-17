@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.CDKey.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public Client(IConnection session) : base(session)
+        public Client(ISession session) : base(session)
         {
             Crypto = new XOREncoding(XorType.Type0);
         }

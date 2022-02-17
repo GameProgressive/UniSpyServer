@@ -38,8 +38,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            _result.GameSecretKey = _session.GameSecretKey;
-            _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
+            _result.GameSecretKey = _client.Info.GameSecretKey;
+            _result.ClientRemoteIP = _client.Info.RemoteIPEndPoint.Address.GetAddressBytes();
             //todo check protocol version!!!!
             switch (_request.UpdateOption)
             {

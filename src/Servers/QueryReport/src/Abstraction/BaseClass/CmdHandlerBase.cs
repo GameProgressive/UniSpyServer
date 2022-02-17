@@ -1,5 +1,5 @@
-﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
-using UniSpyServer.Servers.QueryReport.Network;
+﻿using UniSpyServer.Servers.QueryReport.Entity;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass

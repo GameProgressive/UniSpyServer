@@ -58,7 +58,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = _client.Crypto.Encrypt(buffer);
             }
-            _client.Connection.Send(buffer);
+            _client.Session.Send(buffer);
         }
         protected virtual void HandleException(Exception ex)
         {

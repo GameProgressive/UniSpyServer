@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_session.GameSecretKey == null)
+            if (_client.Info.GameSecretKey == null)
             {
                 string secretKey = DataOperationExtensions
                                 .GetSecretKey(_request.GameName);
@@ -23,11 +23,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                     throw new System.ArgumentNullException("Can not find secretkey in database.");
                 }
                 //this is client public ip and default query port
-                _session.GameSecretKey = secretKey;
+                _client.Info.GameSecretKey = secretKey;
             }
-            if (_session.ClientChallenge == null)
+            if (_client.Info.ClientChallenge == null)
             {
-                _session.ClientChallenge = _request.ClientChallenge;
+                _client.Info.ClientChallenge = _request.ClientChallenge;
             }
         }
     }

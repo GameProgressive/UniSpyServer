@@ -1,4 +1,5 @@
 ﻿using System;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
@@ -9,7 +10,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
         {
             try
             {
-                new ServerFactory().Start();
+                new ServerFactory("ServerBrowser").Start();
             }
             catch (Exception e)
             {

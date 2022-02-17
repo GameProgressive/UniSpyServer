@@ -24,8 +24,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             _userInfo = _redisClient.Values.Where(
-                  k => k.ServerID == _client.Connection.Server.ServerID
-                  & k.RemoteIPEndPoint == _client.Connection.RemoteIPEndPoint
+                  k => k.ServerID == _client.Session.Server.ServerID
+                  & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
                   & k.PortType == _request.PortType
                   & k.Cookie == _request.Cookie).FirstOrDefault();
             //TODO we get user infomation from redis
@@ -33,8 +33,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 _userInfo = new UserInfo()
                 {
-                    ServerID = _client.Connection.Server.ServerID,
-                    RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint,
+                    ServerID = _client.Session.Server.ServerID,
+                    RemoteIPEndPoint = _client.Session.RemoteIPEndPoint,
                     PortType = _request.PortType,
                     Cookie = _request.Cookie,
                     LocalIPEndPoint = _request.LocalIPEndPoint,
@@ -46,9 +46,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             else
             {
                 _userInfo.LastPacketRecieveTime = DateTime.Now;
-                _userInfo.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
+                _userInfo.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
             }
-            _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
             _redisClient.SetValue(_userInfo);
         }
 
