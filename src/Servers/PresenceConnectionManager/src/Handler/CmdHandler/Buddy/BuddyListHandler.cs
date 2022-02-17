@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -22,8 +22,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var result = db.Friends
-                    .Where(f => f.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId)
+                    .Where(f => f.ProfileId == _client.Info.BasicInfo.ProfileId
+                    && f.Namespaceid == _client.Info.BasicInfo.NamespaceId)
                     .Select(f => f.Targetid).ToList();
             }
         }
@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            if (!_session.UserInfo.SDKRevision.IsSupportGPINewStatusNotification)
+            if (!_client.Info.SDKRevision.IsSupportGPINewStatusNotification)
             {
                 return;
             }
@@ -44,10 +44,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 var request = new StatusInfoRequest
                 {
                     ProfileId = profileID,
-                    NamespaceID = (int)_session.UserInfo.BasicInfo.NamespaceId,
+                    NamespaceID = (int)_client.Info.BasicInfo.NamespaceId,
                     IsGetStatusInfo = true
                 };
-                new StatusInfoHandler(_session, request).Handle();
+                new StatusInfoHandler(_client, request).Handle();
             });
         }
     }

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 {
-    public sealed class UserInfo : UserInfoBase
+    public sealed class UserInfo : ClientInfoBase
     {
         //indicates which channel this user is in
         public IDictionary<string, Channel> JoinedChannels { get; private set; }
-        public Session Session { get; private set; }
         // secure connection
         public PeerChatCTX ClientCTX { get; set; }
         public PeerChatCTX ServerCTX { get; private set; }
@@ -24,12 +24,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
         public bool IsLoggedIn { get; set; }
         public bool IsUsingEncryption { get; set; }
         public bool IsQuietMode { get; set; }
-        public string PublicIPAddress => Session.RemoteIPEndPoint.Address.ToString();
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
 
-        public UserInfo(Session session)
+        public UserInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
         {
-            Session = session;
             ClientCTX = new PeerChatCTX();
             ServerCTX = new PeerChatCTX();
             JoinedChannels = new ConcurrentDictionary<string, Channel>();

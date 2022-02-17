@@ -1,4 +1,5 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
@@ -7,7 +8,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.Servers.Chat.Network;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class WhoIsHandler : CmdHandlerBase
     {
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
-        private new WhoIsResult _result{ get => (WhoIsResult)base._result; set => base._result = value; }
+        private new WhoIsResult _result { get => (WhoIsResult)base._result; set => base._result = value; }
         private UserInfo _userInfo;
         public WhoIsHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _result.NickName = _userInfo.NickName;
             _result.Name = _userInfo.Name;
             _result.UserName = _userInfo.UserName;
-            _result.PublicIPAddress = _userInfo.PublicIPAddress;
+            _result.PublicIPAddress = _userInfo.RemoteIPEndPoint.Address.ToString();
             foreach (var channel in _userInfo.JoinedChannels.Values)
             {
                 _result.JoinedChannelName.Add(channel.Name);

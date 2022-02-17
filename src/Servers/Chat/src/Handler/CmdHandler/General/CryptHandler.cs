@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class CryptHandler : CmdHandlerBase
     {
         private new CryptRequest _request => (CryptRequest)base._request;
-        private new CryptResult _result{ get => (CryptResult)base._result; set => base._result = value; }
+        private new CryptResult _result { get => (CryptResult)base._result; set => base._result = value; }
         // CRYPT des 1 gamename
         public CryptHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
             if (secretKey == null)
             {
-                _session.Disconnect();
+                _client.Session.Disconnect();
                 throw new Exception("secret key not found.");
             }
             _session.UserInfo.GameSecretKey = secretKey;

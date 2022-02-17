@@ -3,10 +3,10 @@ using UniSpyServer.UniSpyLib.Events;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UserInfoBase
+    public abstract class ClientInfoBase
     {
         public IPEndPoint RemoteIPEndPoint { get; private set; }
-        public UserInfoBase(IPEndPoint remoteIPEndPoint)
+        public ClientInfoBase(IPEndPoint remoteIPEndPoint)
         {
             RemoteIPEndPoint = remoteIPEndPoint;
         }

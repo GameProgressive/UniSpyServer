@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public AdHocRequest AdHocMessage { get; set; }
-        public Client(ISession session, UserInfoBase userInfo) : base(session, userInfo)
+        public Client(IConnection session) : base(session)
         {
         }
     }

@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                              join s in db.Subprofiles on p.ProfileId equals s.ProfileId
                              join u in db.Users on p.Userid equals u.Userid
                              where p.ProfileId == _request.ProfileId
-                             && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId
+                             && s.Namespaceid == _client.Info.BasicInfo.NamespaceId
                              select new GetProfileDataModel
                              {
                                  Nick = p.Nick,

@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdSwitcher
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
-        public CmdSwitcher(ISession session, string rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, string rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

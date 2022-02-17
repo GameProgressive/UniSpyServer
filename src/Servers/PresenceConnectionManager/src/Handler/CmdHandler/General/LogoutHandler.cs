@@ -1,6 +1,6 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _session.Disconnect();
+            _client.Connection.Disconnect();
         }
     }
 }

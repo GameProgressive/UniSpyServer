@@ -19,17 +19,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 Profile profile = db.Profiles.Where(
-                    p => p.Userid == _session.UserInfo.BasicInfo.UserId
-                    && p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
+                    p => p.Userid == _client.Info.BasicInfo.UserId
+                    && p.ProfileId == _client.Info.BasicInfo.ProfileId
                     && p.Nick == p.Nick).First();
 
                 User user = db.Users.Where(
-                    u => u.Userid == _session.UserInfo.BasicInfo.UserId).First();
+                    u => u.Userid == _client.Info.BasicInfo.UserId).First();
 
                 Subprofile subprofile = db.Subprofiles.Where(
-                    s => s.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                    && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId
-                    && s.Uniquenick == _session.UserInfo.BasicInfo.UniqueNick).First();
+                    s => s.ProfileId == _client.Info.BasicInfo.ProfileId
+                    && s.Namespaceid == _client.Info.BasicInfo.NamespaceId
+                    && s.Uniquenick == _client.Info.BasicInfo.UniqueNick).First();
 
                 if (_request.HasPublicMaskFlag)
                 {

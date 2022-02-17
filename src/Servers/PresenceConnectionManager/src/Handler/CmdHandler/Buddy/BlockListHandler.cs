@@ -2,6 +2,7 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -21,8 +22,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 _result.ProfileIdList = db.Blockeds
-                    .Where(f => f.ProfileId == _session.UserInfo.BasicInfo.ProfileId
-                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceId)
+                    .Where(f => f.ProfileId == _client.Info.BasicInfo.ProfileId
+                    && f.Namespaceid == _client.Info.BasicInfo.NamespaceId)
                     .Select(f => f.Targetid).ToList();
             }
         }

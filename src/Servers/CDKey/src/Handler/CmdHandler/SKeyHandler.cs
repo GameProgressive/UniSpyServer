@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.CDKey.Handler.CmdHandler
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public static void IsCDKeyValid(ISession session, Dictionary<string, string> recv)
+        public static void IsCDKeyValid(IConnection session, Dictionary<string, string> recv)
         {
             //if (DBQuery.IsCDKeyValidate(recv["skey"]))
             //{

@@ -45,6 +45,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         protected virtual void Response()
         {
             byte[] buffer = null;
+            _response.Build();
             if (_response.SendingBuffer.GetType() == typeof(string))
             {
                 buffer = UniSpyEncoding.GetBytes((string)_response.SendingBuffer);
@@ -57,7 +58,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = _client.Crypto.Encrypt(buffer);
             }
-            _client.Session.Send(buffer);
+            _client.Connection.Send(buffer);
         }
         protected virtual void HandleException(Exception ex)
         {

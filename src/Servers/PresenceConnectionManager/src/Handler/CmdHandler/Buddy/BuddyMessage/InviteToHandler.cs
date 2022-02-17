@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceConnectionManager.Network;
+using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -20,9 +20,9 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var session = ServerFactory.Server.SessionManager.SessionPool.Values.Where(
-                u => ((Session)u).UserInfo.BasicInfo.ProductId == _request.ProductID
-                && ((Session)u).UserInfo.BasicInfo.ProfileId == _request.ProfileId).FirstOrDefault();
+            var session = Client.ClientPool.Values.Where(
+                c => ((ClientInfo)c.Info).BasicInfo.ProductId == _request.ProductID
+                && ((ClientInfo)c.Info).BasicInfo.ProfileId == _request.ProfileId).FirstOrDefault();
 
             //user is offline
             if (session == null)

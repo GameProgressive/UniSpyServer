@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 if (_request.IsReplaceNickName)
                 {
                     var result = from p in db.Profiles
-                                 where p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
+                                 where p.ProfileId == _client.Info.BasicInfo.ProfileId
                                  && p.Nick == _request.OldNick
                                  select p;
 
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                         result.First().Nick = _request.NewNick;
                     }
 
-                    db.Profiles.Where(p => p.ProfileId == _session.UserInfo.BasicInfo.ProfileId
+                    db.Profiles.Where(p => p.ProfileId == _client.Info.BasicInfo.ProfileId
                     && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
 
                     db.SaveChanges();
@@ -48,15 +48,15 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 {
                     Profile profiles = new Profile
                     {
-                        ProfileId = (int)_session.UserInfo.BasicInfo.ProfileId,
+                        ProfileId = (int)_client.Info.BasicInfo.ProfileId,
                         Nick = _request.NewNick,
-                        Userid = (int)_session.UserInfo.BasicInfo.UserId
+                        Userid = (int)_client.Info.BasicInfo.UserId
                     };
 
                     db.Add(profiles);
                 }
             }
-            _result.ProfileId = (int)_session.UserInfo.BasicInfo.ProfileId;
+            _result.ProfileId = (int)_client.Info.BasicInfo.ProfileId;
         }
 
         protected override void ResponseConstruct()

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.Servers.PresenceConnectionManager.Network;
+using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     public sealed class StatusInfoHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new StatusInfoRequest _request => (StatusInfoRequest)base._request;
-        private new StatusInfoResult _result{ get => (StatusInfoResult)base._result; set => base._result = value; }
+        private new StatusInfoResult _result { get => (StatusInfoResult)base._result; set => base._result = value; }
 
         public StatusInfoHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -27,19 +27,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             if (_request.IsGetStatusInfo)
             {
-                var result = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
-                                .Where(session => ((Session)session).UserInfo.BasicInfo.ProfileId == _request.ProfileId
-                                && ((Session)session).UserInfo.BasicInfo.NamespaceId == _session.UserInfo.BasicInfo.NamespaceId)
-                                .FirstOrDefault();
+                var result = (Client)Client.ClientPool.Values.Where(s => ((ClientInfo)s.Info).BasicInfo.ProfileId == _request.ProfileId && ((ClientInfo)s.Info).BasicInfo.NamespaceId == ((ClientInfo)s.Info).BasicInfo.NamespaceId).FirstOrDefault();
+
                 if (result != null)
                 {
                     // user is not online we do not need to send status info
-                    _result.StatusInfo = result.UserInfo.StatusInfo;
+                    _result.StatusInfo = result.Info.StatusInfo;
                 }
             }
             else
             {
-                _session.UserInfo.StatusInfo = _request.StatusInfo;
+                _client.Info.StatusInfo = _request.StatusInfo;
                 // TODO notify every online friend?
             }
         }

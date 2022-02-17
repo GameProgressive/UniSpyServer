@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
             _requestMapping = LoadUniSpyComponents(typeof(RequestContract));
             _handlerMapping = LoadUniSpyComponents(typeof(HandlerContract));
         }
-        public CmdSwitcher(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        public CmdSwitcher(IClient client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

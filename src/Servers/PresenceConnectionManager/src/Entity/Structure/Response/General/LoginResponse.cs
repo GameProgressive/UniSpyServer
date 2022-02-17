@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
 
             //_session.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
-            SendingBuffer = @"\lc\2\sesskey\" + UserInfo.SessionKey;
+            SendingBuffer = @"\lc\2\sesskey\" + ClientInfo.SessionKey;
             SendingBuffer += @"\proof\" + _result.ResponseProof;
             SendingBuffer += @"\userid\" + _result.DatabaseResults.UserID;
             SendingBuffer += @"\profileid\" + _result.DatabaseResults.ProfileId;
@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
             {
                 SendingBuffer += @"\uniquenick\" + _result.DatabaseResults.UniqueNick;
             }
-            SendingBuffer += $@"\lt\{UserInfo.LoginTicket}";
+            SendingBuffer += $@"\lt\{ClientInfo.LoginTicket}";
             SendingBuffer += $@"\id\{_request.OperationID}\final\";
         }
     }

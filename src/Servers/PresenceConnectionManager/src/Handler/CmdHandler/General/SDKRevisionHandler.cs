@@ -1,7 +1,7 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -15,11 +15,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         protected override void RequestCheck() { }
         protected override void DataOperation()
         {
-            if (_session.UserInfo.SDKRevision.IsSupportGPINewListRetrevalOnLogin)
+            if (_client.Info.SDKRevision.IsSupportGPINewListRetrevalOnLogin)
             {
                 //send buddy list and block list
-                new BuddyListHandler(_session, null).Handle();
-                new BlockListHandler(_session, null).Handle();
+                new BuddyListHandler(_client, null).Handle();
+                new BlockListHandler(_client, null).Handle();
             }
         }
     }
