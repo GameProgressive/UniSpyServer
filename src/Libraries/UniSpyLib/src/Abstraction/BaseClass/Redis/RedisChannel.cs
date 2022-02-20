@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using StackExchange.Redis;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 {

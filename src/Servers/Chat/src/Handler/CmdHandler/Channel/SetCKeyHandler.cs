@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_request.NickName != _session.UserInfo.NickName)
+            if (_request.NickName != _client.Info.NickName)
             {
                 if (!_user.IsChannelOperator)
                 {
@@ -50,12 +50,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             if (_result.IsSetOthersKeyValue)
             {
                 _otherUser.UpdateUserKeyValues(_request.KeyValues);
-                _result.NickName = _otherUser.UserInfo.NickName;
+                _result.NickName = _otherUser.Info.NickName;
             }
             else
             {
                 _user.UpdateUserKeyValues(_request.KeyValues);
-                _result.NickName = _user.UserInfo.NickName;
+                _result.NickName = _user.Info.NickName;
             }
         }
 

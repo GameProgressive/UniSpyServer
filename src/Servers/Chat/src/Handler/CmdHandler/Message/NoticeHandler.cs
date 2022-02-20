@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
 
         protected override void DataOperation()
         {
-            _result.UserIRCPrefix = _user.UserInfo.IRCPrefix;
+            _result.UserIRCPrefix = _user.Info.IRCPrefix;
             base.DataOperation();
         }
 

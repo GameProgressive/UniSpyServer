@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo

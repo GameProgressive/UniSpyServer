@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {

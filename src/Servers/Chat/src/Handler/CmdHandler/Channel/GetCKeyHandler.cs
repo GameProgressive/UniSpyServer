@@ -65,7 +65,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 GETCKEYDataModel model = new GETCKEYDataModel
                 {
-                    NickName = user.UserInfo.NickName,
+                    NickName = user.Info.NickName,
                     UserValues = user.BFlags
                 };
                 // we get user's BFlag
@@ -77,7 +77,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 string userValues = user.GetUserValues(_request.Keys);
                 GETCKEYDataModel model = new GETCKEYDataModel
                 {
-                    NickName = user.UserInfo.NickName,
+                    NickName = user.Info.NickName,
                     UserValues = userValues
                 };
                 _result.DataResults.Add(model);

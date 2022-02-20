@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             _result = new PartResult();
-            _result.LeaverIRCPrefix = _user.UserInfo.IRCPrefix;
+            _result.LeaverIRCPrefix = _user.Info.IRCPrefix;
             _result.ChannelName = _channel.Name;
             if (_channel.IsPeerServer && _user.IsChannelCreator)
             {
@@ -43,11 +43,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     // We create a new KICKHandler to handle KICK operation for us
                     var kickRequest = new KickRequest
                     {
-                        KickeeNickName = user.UserInfo.NickName,
+                        KickeeNickName = user.Info.NickName,
                         ChannelName = _channel.Name,
                         Reason = _request.Reason
                     };
-                    new KickHandler(_session, kickRequest).Handle();
+                    new KickHandler(_client, kickRequest).Handle();
                 }
 
             }
@@ -77,8 +77,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 using (var client = new RedisClient())
                 {
                     var server = client.Values.Where(x =>
-                                            x.HeartBeatIPEndPoint == _user.UserInfo.Session.RemoteIPEndPoint &
-                                            x.GameName == _user.UserInfo.GameName)
+                                            x.HeartBeatIPEndPoint == _user.Info.RemoteIPEndPoint &
+                                            x.GameName == _user.Info.GameName)
                                             .FirstOrDefault();
                     if (server != null)
                     {

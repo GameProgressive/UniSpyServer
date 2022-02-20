@@ -1,12 +1,11 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
-using UniSpyServer.Servers.Chat.Network;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
@@ -23,6 +22,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             base.RequestCheck();
             string newNickName = _request.NickName;
             int count = 0;
+            // if(Client.ClientPool.Values.Where(x=>((ClientInfo)(x.Info).)))
             if (ServerFactory.Server.SessionManager.SessionPool.Values.
                    Where(s => ((Session)s).UserInfo.NickName == newNickName)
                    .Count() == 1)

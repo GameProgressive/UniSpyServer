@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using NetCoreServer;
+﻿using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -57,6 +55,16 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         }
 
         void ITcpSession.Disconnect() => Disconnect();
+
+        void ISession.Send(string response)
+        {
+            SendAsync(response);
+        }
+
+        void ISession.Send(byte[] response)
+        {
+            SendAsync(response);
+        }
 
         // /// <summary>
         // /// Send unencrypted data

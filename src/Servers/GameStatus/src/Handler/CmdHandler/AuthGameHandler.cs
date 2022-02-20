@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //UniSpyServer.UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyServer.UniSpyLib.Encryption.Crc16(UniSpyServer.UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
-        private new AuthGameResult _result{ get => (AuthGameResult)base._result; set => base._result = value; }
+        private new AuthGameResult _result { get => (AuthGameResult)base._result; set => base._result = value; }
         public AuthGameHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new AuthGameResult();
@@ -20,8 +20,8 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         protected override void DataOperation()
         {
             // for now we do not check this challenge correction
-            _session.PlayerData.SessionKey = 2020;
-            _session.PlayerData.GameName = _request.GameName;
+            _client.Info.SessionKey = 2020;
+            _client.Info.GameName = _request.GameName;
         }
 
         protected override void ResponseConstruct()

@@ -35,21 +35,14 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, request.Body);
             OnReceivedRequest(request.Body);
         }
-        public bool Send(object response)
+        void ISession.Send(string response)
         {
-            if (response.GetType() != typeof(string))
-            {
-                throw new UniSpyException("UniSpyHttpSession.Send: response must be string");
-            }
-            else
-            {
-                return base.SendResponseBodyAsync((string)response);
-            }
+            base.SendResponseBodyAsync(response);
         }
 
-        public bool Send(IPEndPoint endPoint, object response)
+        void ISession.Send(byte[] response)
         {
-            throw new NotImplementedException();
+            base.SendResponseBodyAsync(response);
         }
     }
 }

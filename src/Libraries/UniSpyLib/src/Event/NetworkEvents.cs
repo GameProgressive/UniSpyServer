@@ -1,5 +1,3 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-
 namespace UniSpyServer.UniSpyLib.Events
 {
     public delegate void OnConnectedEventHandler();

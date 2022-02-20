@@ -9,16 +9,16 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     {
         IServer Server { get; }
         IPEndPoint RemoteIPEndPoint { get; }
-        bool Send(object response);
-        // void Send(string response);
-        // void Send(byte[] response);
+        void Send(string response);
+        void Send(byte[] response);
     }
     /// <summary>
     /// Represent a udp connection
     /// </summary>
     public interface IUdpSession : ISession
     {
-        bool Send(IPEndPoint endPoint, object response);
+        void Send(IPEndPoint endPoint, byte[] response);
+        void Send(IPEndPoint endPoint, string response);
     }
     /// <summary>
     /// Represent a tcp connection
@@ -26,5 +26,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     public interface ITcpSession : ISession
     {
         void Disconnect();
+    }
+    public interface IHttpSession:ITcpSession
+    {
+        
     }
 }

@@ -20,12 +20,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
         protected override void ChannelMessageDataOpration()
         {
             base.ChannelMessageDataOpration();
-            _result.UserIRCPrefix = _user.UserInfo.IRCPrefix;
+            _result.UserIRCPrefix = _user.Info.IRCPrefix;
         }
         protected override void UserMessageDataOperation()
         {
             base.UserMessageDataOperation();
-            _result.UserIRCPrefix = _reciever.UserInfo.IRCPrefix;
+            _result.UserIRCPrefix = _reciever.Info.IRCPrefix;
         }
         protected override void ResponseConstruct()
         {

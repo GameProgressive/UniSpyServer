@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Network;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
 
@@ -60,7 +59,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         {
             foreach (var kv in Users)
             {
-                kv.Value.UserInfo.Session.Send(message);
+                kv.Value.Session.Send(message);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
@@ -69,11 +68,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         {
             foreach (var kv in Users)
             {
-                if (kv.Value.UserInfo.Session.Id == sender.UserInfo.Session.Id)
+                if (kv.Value.Info.Session.Id == sender.Info.Session.Id)
                 {
                     continue;
                 }
-                kv.Value.UserInfo.Session.Send(message);
+                kv.Value.Info.Session.Send(message);
             }
 
             return true;
@@ -85,11 +84,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             {
                 if (kv.Value.IsChannelCreator)
                 {
-                    nicks += "@" + kv.Value.UserInfo.NickName + " ";
+                    nicks += "@" + kv.Value.Info.NickName + " ";
                 }
                 else
                 {
-                    nicks += kv.Value.UserInfo.NickName + " ";
+                    nicks += kv.Value.Info.NickName + " ";
                 }
             }
             //if user equals last user in channel we do not add space after it
@@ -100,14 +99,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         {
             // !! we can not directly use the Contains() method that ConcurrentDictionary or 
             // !! ConcurrentBag provide because it will not work properly.
-            if (!Users.ContainsKey(joiner.UserInfo.NickName))
+            if (!Users.ContainsKey(joiner.Info.NickName))
             {
-                Users.TryAdd(joiner.UserInfo.NickName, joiner);
+                Users.TryAdd(joiner.Info.NickName, joiner);
             }
 
-            if (!joiner.UserInfo.JoinedChannels.ContainsKey(this.Name))
+            if (!joiner.Info.JoinedChannels.ContainsKey(this.Name))
             {
-                joiner.UserInfo.JoinedChannels.TryAdd(this.Name, this);
+                joiner.Info.JoinedChannels.TryAdd(this.Name, this);
             }
 
         }
@@ -116,40 +115,40 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             //!! we should use ConcurrentDictionary here
             //!! FIXME: when removing user from channel, 
             //!! we should do more checks on user not only just TryTake()
-            if (Users.ContainsKey(leaver.UserInfo.NickName))
+            if (Users.ContainsKey(leaver.Info.NickName))
             // !! we takeout wrong user from channel
             {
                 var kv = new KeyValuePair<string, ChannelUser>(
-                    leaver.UserInfo.NickName,
-                    Users[leaver.UserInfo.NickName]);
+                    leaver.Info.NickName,
+                    Users[leaver.Info.NickName]);
                 Users.Remove(kv);
             }
 
-            if (leaver.UserInfo.JoinedChannels.ContainsKey(this.Name))
+            if (leaver.Info.JoinedChannels.ContainsKey(this.Name))
             {
                 var kv = new KeyValuePair<string, Channel>(this.Name, this);
-                leaver.UserInfo.JoinedChannels.Remove(kv);
+                leaver.Info.JoinedChannels.Remove(kv);
             }
 
         }
 
-        public ChannelUser GetChannelUserBySession(Session session)
+        public ChannelUser GetChannelUserBySession(IClient client)
         {
-            return Users.Values.Where(u => u.UserInfo.Session.Id == session.Id).FirstOrDefault();
+            return Users.Values.Where(u => u.Info.RemoteIPEndPoint == client.Info.RemoteIPEndPoint).FirstOrDefault();
         }
         public bool IsUserBanned(ChannelUser user)
         {
-            if (!BanList.ContainsKey(user.UserInfo.NickName))
+            if (!BanList.ContainsKey(user.Info.NickName))
             {
                 return false;
             }
-            if (BanList[user.UserInfo.NickName].UserInfo.Session.Id != user.UserInfo.Session.Id)
+            if (BanList[user.Info.NickName].Info.RemoteIPEndPoint != user.Info.RemoteIPEndPoint)
             {
                 return false;
             }
             return true;
         }
-        public bool IsUserExisted(ChannelUser user) => Users.ContainsKey(user.UserInfo.NickName);
+        public bool IsUserExisted(ChannelUser user) => Users.ContainsKey(user.Info.NickName);
         public ChannelUser GetChannelUserByNickName(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 
         /// <summary>
@@ -204,23 +203,23 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         private void AddBanOnUser(ModeRequest request)
         {
-            var result = Users.Values.Where(u => u.UserInfo.NickName == request.NickName);
+            var result = Users.Values.Where(u => u.Info.NickName == request.NickName);
             if (result.Count() != 1)
             {
                 return;
             }
             ChannelUser user = result.First();
 
-            if (BanList.Values.Where(u => u.UserInfo.NickName == request.NickName).Count() == 1)
+            if (BanList.Values.Where(u => u.Info.NickName == request.NickName).Count() == 1)
             {
                 return;
             }
 
-            BanList.TryAdd(user.UserInfo.NickName, user);
+            BanList.TryAdd(user.Info.NickName, user);
         }
         private void RemoveBanOnUser(ModeRequest request)
         {
-            var result = BanList.Where(u => u.Value.UserInfo.NickName == request.NickName);
+            var result = BanList.Where(u => u.Value.Info.NickName == request.NickName);
             if (result.Count() == 1)
             {
                 var keyValue = result.First();
@@ -236,7 +235,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         private void AddChannelOperator(ModeRequest request)
         {
             // check whether this user is in this channel
-            var result = Users.Where(u => u.Value.UserInfo.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -253,7 +252,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         private void RemoveChannelOperator(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.UserInfo.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -268,7 +267,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         private void EnableUserVoicePermission(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.UserInfo.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -284,7 +283,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         private void DisableUserVoicePermission(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.UserInfo.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;

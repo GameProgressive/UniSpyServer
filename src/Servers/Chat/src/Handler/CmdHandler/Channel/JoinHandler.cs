@@ -51,15 +51,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             base.RequestCheck();
             //some GameSpy game only allow one player join one chat room
             //but GameSpy Arcade can join more than one channel
-            if (_session.UserInfo.JoinedChannels.Count > 3)
+            if (_client.Info.JoinedChannels.Count > 3)
             {
-                throw new ChatIRCTooManyChannels($"{_session.UserInfo.NickName} is join too many channels");
+                throw new ChatIRCTooManyChannels($"{_client.Info.NickName} is join too many channels");
             }
         }
 
         protected override void DataOperation()
         {
-            _user = new ChannelUser(_session.UserInfo);
+            _user = new ChannelUser(_client.Info);
             // if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
             // {
             //     // this is for not making game crash
@@ -69,10 +69,10 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 _channel = Channels[_request.ChannelName];
                 //join
-                if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
+                if (_client.Info.IsJoinedChannel(_request.ChannelName))
                 {
                     // we do not send anything to this user and users in this channel
-                    throw new Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
+                    throw new Exception($"User: {_user.Info.NickName} is already joined the channel: {_request.ChannelName}");
                 }
                 else
                 {
@@ -94,10 +94,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        throw new Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
+                        throw new Exception($"{_client.Info.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
-
                 }
             }
             else
@@ -119,9 +118,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             }
 
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
-            _result.JoinerNickName = _session.UserInfo.NickName;
+            _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
-            _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
+            _result.JoinerPrefix = _client.Info.IRCPrefix;
         }
 
         private bool IsPeerLobby(string name)
@@ -179,17 +178,17 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 ChannelName = _request.ChannelName
             };
-            new NamesHandler(_session, namesRequest).Handle();
+            new NamesHandler(_client, namesRequest).Handle();
 
             var userModeRequest = new ModeRequest
             {
                 RequestType = ModeRequestType.GetChannelUserModes,
                 ChannelName = _request.ChannelName,
-                NickName = _user.UserInfo.NickName,
-                UserName = _user.UserInfo.UserName,
+                NickName = _user.Info.NickName,
+                UserName = _user.Info.UserName,
                 Password = _request.Password
             };
-            new ModeHandler(_session, userModeRequest).Handle();
+            new ModeHandler(_client, userModeRequest).Handle();
         }
     }
 }

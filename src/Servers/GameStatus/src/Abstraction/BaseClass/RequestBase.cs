@@ -1,7 +1,6 @@
 ﻿using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass

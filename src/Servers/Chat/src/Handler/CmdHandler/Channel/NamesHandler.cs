@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             _result = new NamesResult();
             _result.AllChannelUserNick = _channel.GetAllUsersNickString();
             _result.ChannelName = _channel.Name;
-            _result.RequesterNickName = _user.UserInfo.NickName;
+            _result.RequesterNickName = _user.Info.NickName;
         }
         protected override void ResponseConstruct()
         {

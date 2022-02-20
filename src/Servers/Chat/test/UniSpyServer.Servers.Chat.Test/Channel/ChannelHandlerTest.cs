@@ -1,22 +1,18 @@
-using UniSpyServer.Servers.Chat.Application;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Message;
-using UniSpyServer.Servers.Chat.Network;
 using Xunit;
 
 namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {
-        private ServerFactory _serverFactory;
         public ChannelHandlerTest()
         {
-            _serverFactory = new ServerFactory();
-            _serverFactory.Start();
         }
         [Fact]
         public void JoinHandleTest()
@@ -33,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var privMsgHandler = new PrivateMsgHandler(session1, privMsgReq);
             privMsgHandler.Handle();
         }
-        public Session SingleLoginTest(string userName = "unispy", string nickName = "unispy")
+        public Client SingleLoginTest(string userName = "unispy", string nickName = "unispy")
         {
             var session = new Session(ServerFactory.Server);
             var userReq = new UserRequest($"USER {userName} 127.0.0.1 peerchat.unispy.org :{userName}");

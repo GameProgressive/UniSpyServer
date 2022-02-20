@@ -29,8 +29,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 _client.Session.Disconnect();
                 throw new Exception("secret key not found.");
             }
-            _session.UserInfo.GameSecretKey = secretKey;
-            _session.UserInfo.GameName = _request.GameName;
+            _client.Info.GameSecretKey = secretKey;
+            _client.Info.GameName = _request.GameName;
             // 2. Prepare two keys
             ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatConstants.ClientKey, _session.UserInfo.GameSecretKey);
             ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatConstants.ServerKey, _session.UserInfo.GameSecretKey);

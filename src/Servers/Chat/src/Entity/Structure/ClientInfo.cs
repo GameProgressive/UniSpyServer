@@ -1,12 +1,13 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
+namespace UniSpyServer.Servers.Chat.Entity.Structure
 {
-    public sealed class UserInfo : ClientInfoBase
+    public sealed class ClientInfo : ClientInfoBase
     {
         //indicates which channel this user is in
         public IDictionary<string, Channel> JoinedChannels { get; private set; }
@@ -26,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
         public bool IsQuietMode { get; set; }
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
 
-        public UserInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
         {
             ClientCTX = new PeerChatCTX();
             ServerCTX = new PeerChatCTX();

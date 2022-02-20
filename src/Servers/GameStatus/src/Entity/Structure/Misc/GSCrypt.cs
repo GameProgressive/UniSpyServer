@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Misc
 {
-    public class GSEncryption : ICryptography
+    public class GSCrypt : ICryptography
     {
         /// <summary>
         /// Decrypt the message, skip decrypt \final\

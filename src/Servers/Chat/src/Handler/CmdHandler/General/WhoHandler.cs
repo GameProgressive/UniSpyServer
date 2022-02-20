@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
@@ -9,7 +8,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
-using UniSpyServer.Servers.Chat.Network;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
@@ -54,9 +52,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Name,
-                    UserName = user.UserInfo.UserName,
-                    NickName = user.UserInfo.NickName,
-                    PublicIPAddress = user.UserInfo.Session.RemoteIPEndPoint.Address.ToString(),
+                    UserName = user.Info.UserName,
+                    NickName = user.Info.NickName,
+                    PublicIPAddress = user.Info.RemoteIPEndPoint.Address.ToString(),
                     Modes = user.Modes
                 };
                 _result.DataModels.Add(data);

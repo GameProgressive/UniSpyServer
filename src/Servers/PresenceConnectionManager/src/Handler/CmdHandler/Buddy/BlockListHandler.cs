@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 

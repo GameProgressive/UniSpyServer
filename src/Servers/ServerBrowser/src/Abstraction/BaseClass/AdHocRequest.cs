@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction

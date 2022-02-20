@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using UniSpyServer.Servers.Chat.Network;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
 {
@@ -13,7 +12,6 @@ namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
-        private new Session _session => (Session)base._session;
         public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }

@@ -39,9 +39,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             _channel.RemoveBindOnUserAndChannel(_kickee);
-            _result.KickeeNickName = _session.UserInfo.NickName;
-            _result.KickerIRCPrefix = _session.UserInfo.IRCPrefix;
-            _result.KickeeNickName = _kickee.UserInfo.NickName;
+            _result.KickeeNickName = _client.Info.NickName;
+            _result.KickerIRCPrefix = _client.Info.IRCPrefix;
+            _result.KickeeNickName = _kickee.Info.NickName;
         }
 
         protected override void ResponseConstruct()

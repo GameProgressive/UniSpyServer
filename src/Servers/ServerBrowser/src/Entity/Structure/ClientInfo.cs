@@ -1,7 +1,6 @@
 using System.Net;
 using UniSpyServer.Servers.ServerBrowser.Abstraction;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 // ReSharper disable All
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass

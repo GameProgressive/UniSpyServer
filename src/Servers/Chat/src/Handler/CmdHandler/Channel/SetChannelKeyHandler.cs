@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             }
             _channel.SetChannelKeyValue(_request.KeyValue);
             _result.ChannelName = _result.ChannelName;
-            _result.ChannelUserIRCPrefix = _user.UserInfo.IRCPrefix;
+            _result.ChannelUserIRCPrefix = _user.Info.IRCPrefix;
 
         }
         protected override void ResponseConstruct()

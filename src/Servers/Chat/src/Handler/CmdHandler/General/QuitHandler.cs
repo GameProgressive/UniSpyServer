@@ -1,8 +1,8 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            foreach (var channel in _session.UserInfo.JoinedChannels.Values)
+            foreach (var channel in _client.Info.JoinedChannels.Values)
             {
                 ChannelUser user = channel.GetChannelUserBySession(_session);
                 if (user == null)

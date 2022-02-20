@@ -43,21 +43,21 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
                 throw new UniSpyException("UniSpyTcpSession.Send: response must be string or byte[]");
             }
         }
-
-        public bool Send(IPEndPoint endPoint, object response)
+        public void Send(string response)
         {
-            if (response.GetType() == typeof(string))
-            {
-                return Server.SendAsync(endPoint, UniSpyEncoding.GetBytes((string)response));
-            }
-            else if (response.GetType() == typeof(byte[]))
-            {
-                return Server.SendAsync(endPoint, (byte[])response);
-            }
-            else
-            {
-                throw new UniSpyException("UniSpyTcpSession.Send: response must be string or byte[]");
-            }
+            Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));
+        }
+        public void Send(byte[] response)
+        {
+            Server.SendAsync(RemoteIPEndPoint, response);
+        }
+        public void Send(IPEndPoint endPoint, string response)
+        {
+            Send(endPoint, UniSpyEncoding.GetBytes(response));
+        }
+        public void Send(IPEndPoint endPoint, byte[] response)
+        {
+            Send(endPoint, response);
         }
     }
 }

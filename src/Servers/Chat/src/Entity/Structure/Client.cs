@@ -1,16 +1,15 @@
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Entity
+namespace UniSpyServer.Servers.Chat.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public new UserInfo Info => (UserInfo)base.Info;
+        public new ClientInfo Info => (ClientInfo)base.Info;
         public new ITcpSession Session => (ITcpSession)base.Session;
         public Client(ISession session) : base(session)
         {
-            base.Info = new UserInfo(session.RemoteIPEndPoint);
+            base.Info = new ClientInfo(session.RemoteIPEndPoint);
         }
     }
 }

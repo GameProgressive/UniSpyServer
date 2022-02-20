@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             _result = new PingResult();
-            _result.RequesterIRCPrefix = _session.UserInfo.IRCPrefix;
+            _result.RequesterIRCPrefix = _client.Info.IRCPrefix;
         }
         protected override void ResponseConstruct()
         {

@@ -68,7 +68,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                     _channel.MultiCastExceptSender(_user, _response);
                     break;
                 case MessageType.UserMessage:
-                    _reciever.UserInfo.Session.Send(_response);
+                    _reciever.Info.Session.Send(_response);
                     break;
             }
         }

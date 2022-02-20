@@ -15,9 +15,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            _session.UserInfo.UserName = _request.UserName;
-            _session.UserInfo.Name = _request.Name;
-            _session.UserInfo.IsLoggedIn = true;
+            _client.Info.UserName = _request.UserName;
+            _client.Info.Name = _request.Name;
+            _client.Info.IsLoggedIn = true;
         }
     }
 }

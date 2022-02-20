@@ -6,7 +6,6 @@ using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Application;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
