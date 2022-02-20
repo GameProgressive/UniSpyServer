@@ -22,10 +22,10 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
             {
                 throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
             }
-            _user = _channel.GetChannelUserBySession(_session);
+            _user = _channel.GetChannelUser(_client);
             if (_user == null)
             {
-                throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_session.UserInfo.NickName} username: {_session.UserInfo.UserName}");
+                throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
             }
         }
     }

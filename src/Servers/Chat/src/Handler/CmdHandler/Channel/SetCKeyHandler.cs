@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     throw new Exception("SETCKEY failed because you are not channel operator.");
                 }
                 _result.IsSetOthersKeyValue = true;
-                _otherUser = _channel.GetChannelUserByNickName(_request.NickName);
+                _otherUser = _channel.GetChannelUser(_request.NickName);
                 if (_otherUser == null)
                 {
                     throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName} in channel {_request.ChannelName}");

@@ -3,6 +3,7 @@ using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
@@ -65,23 +66,21 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
-                .Where(s => ((Session)s).UserInfo.NickName == _request.NickName)
-                .FirstOrDefault();
-            if (session == null)
+            var client = (Client)Client.ClientPool.Values.Where(c => ((ClientInfo)(c.Info)).NickName == _request.NickName).FirstOrDefault();
+            if (client == null)
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
 
             }
-            foreach (var channel in session.UserInfo.JoinedChannels.Values)
+            foreach (var channel in ((ClientInfo)(client.Info)).JoinedChannels.Values)
             {
-                var user = channel.GetChannelUserBySession(session);
+                var user = channel.GetChannelUser(client);
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Name,
-                    NickName = session.UserInfo.NickName,
-                    UserName = session.UserInfo.UserName,
-                    PublicIPAddress = session.RemoteIPEndPoint.Address.ToString(),
+                    NickName = client.Info.NickName,
+                    UserName = client.Info.UserName,
+                    PublicIPAddress = client.Info.RemoteIPEndPoint.Address.ToString(),
                     Modes = user.Modes
                 };
                 _result.DataModels.Add(data);

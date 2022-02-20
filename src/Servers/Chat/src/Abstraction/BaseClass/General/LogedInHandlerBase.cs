@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 
         public override void Handle()
         {
-            if (!_session.UserInfo.IsLoggedIn)
+            if (!_client.Info.IsLoggedIn)
             {
                 LogWriter.Info("Please login first!");
                 return;

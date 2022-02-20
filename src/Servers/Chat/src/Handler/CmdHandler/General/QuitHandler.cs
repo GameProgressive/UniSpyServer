@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         {
             foreach (var channel in _client.Info.JoinedChannels.Values)
             {
-                ChannelUser user = channel.GetChannelUserBySession(_session);
+                ChannelUser user = channel.GetChannelUser(_client);
                 if (user == null)
                 {
                     continue;
@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                     ChannelName = channel.Name,
                     Reason = _request.Reason
                 };
-                new PartHandler(_session, partRequest).Handle();
+                new PartHandler(_client, partRequest).Handle();
             }
         }
     }

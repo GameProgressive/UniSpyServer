@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.Chat.Entity.Structure;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
@@ -21,25 +21,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         {
             base.RequestCheck();
             string newNickName = _request.NickName;
-            int count = 0;
-            // if(Client.ClientPool.Values.Where(x=>((ClientInfo)(x.Info).)))
-            if (ServerFactory.Server.SessionManager.SessionPool.Values.
-                   Where(s => ((Session)s).UserInfo.NickName == newNickName)
-                   .Count() == 1)
+            if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 1)
             {
-                while (true)
-                {
-                    if (ServerFactory.Server.SessionManager.SessionPool.Values.
-                        Where(s => ((Session)s).UserInfo.NickName == newNickName)
-                        .Count() == 1)
-                    {
-                        newNickName = $"{newNickName}{count++}";
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
                 throw new ChatIRCNickNameInUseException(
                     $"The nick name: {_request.NickName} is already in use",
                     _request.NickName,
@@ -49,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            _session.UserInfo.NickName = _request.NickName;
+            _client.Info.NickName = _request.NickName;
         }
         protected override void ResponseConstruct()
         {

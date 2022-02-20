@@ -44,7 +44,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             switch (_request.RequestType)
             {
                 case TopicRequestType.GetChannelTopic:
-                    _client.Session.Send(_response);
+                    _response.Build();
+                    _client.Session.Send(_response.SendingBuffer);
                     break;
                 case TopicRequestType.SetChannelTopic:
                     _channel.MultiCast(_response);

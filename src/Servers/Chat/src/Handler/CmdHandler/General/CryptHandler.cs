@@ -39,10 +39,5 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         {
             _response = new CryptResponse(_request, _result);
         }
-        protected override void Response()
-        {
-            base.Response();
-            _session.UserInfo.IsUsingEncryption = true;
-        }
     }
 }

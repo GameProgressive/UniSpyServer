@@ -57,22 +57,24 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <returns></returns>
         public bool MultiCast(IResponse message)
         {
+            message.Build();
             foreach (var kv in Users)
             {
-                kv.Value.Session.Send(message);
+                kv.Value.Session.Send((string)message.SendingBuffer);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
         }
         public bool MultiCastExceptSender(ChannelUser sender, IResponse message)
         {
+            message.Build();
             foreach (var kv in Users)
             {
-                if (kv.Value.Info.Session.Id == sender.Info.Session.Id)
+                if (kv.Value.Info.RemoteIPEndPoint == sender.Info.RemoteIPEndPoint)
                 {
                     continue;
                 }
-                kv.Value.Info.Session.Send(message);
+                kv.Value.Session.Send((string)message.SendingBuffer);
             }
 
             return true;
@@ -132,7 +134,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         }
 
-        public ChannelUser GetChannelUserBySession(IClient client)
+        public ChannelUser GetChannelUser(IClient client)
         {
             return Users.Values.Where(u => u.Info.RemoteIPEndPoint == client.Info.RemoteIPEndPoint).FirstOrDefault();
         }
@@ -149,7 +151,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             return true;
         }
         public bool IsUserExisted(ChannelUser user) => Users.ContainsKey(user.Info.NickName);
-        public ChannelUser GetChannelUserByNickName(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
+        public ChannelUser GetChannelUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 
         /// <summary>
         /// We only care about how to set mode in this channel

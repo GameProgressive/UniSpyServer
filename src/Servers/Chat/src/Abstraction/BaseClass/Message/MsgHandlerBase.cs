@@ -4,6 +4,7 @@ using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
+
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
     public abstract class MsgHandlerBase : ChannelHandlerBase
@@ -26,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                 case MessageType.UserMessage:
                     if (_request.MessageType == MessageType.UserMessage)
                     {
-                        _reciever = _channel.GetChannelUserByNickName(_request.NickName);
+                        _reciever = _channel.GetChannelUser(_request.NickName);
                         if (_reciever == null)
                         {
                             throw new ChatIRCNoSuchNickException(
@@ -68,7 +69,8 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                     _channel.MultiCastExceptSender(_user, _response);
                     break;
                 case MessageType.UserMessage:
-                    _reciever.Info.Session.Send(_response);
+                _response.Build();
+                    _reciever.Session.Send(_response.SendingBuffer);
                     break;
             }
         }

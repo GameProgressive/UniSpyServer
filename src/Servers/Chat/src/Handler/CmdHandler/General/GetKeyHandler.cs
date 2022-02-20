@@ -23,10 +23,10 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            _result.NickName = _session.UserInfo.NickName;
-            foreach (var channel in _session.UserInfo.JoinedChannels.Values)
+            _result.NickName = _client.Info.NickName;
+            foreach (var channel in _client.Info.JoinedChannels.Values)
             {
-                var user = channel.GetChannelUserByNickName(_request.NickName);
+                var user = channel.GetChannelUser(_request.NickName);
                 if (user == null)
                 {
                     throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName}");

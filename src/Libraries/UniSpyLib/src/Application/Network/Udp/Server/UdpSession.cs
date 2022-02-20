@@ -57,7 +57,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         }
         public void Send(IPEndPoint endPoint, byte[] response)
         {
-            Send(endPoint, response);
+            Server.SendAsync(endPoint, response);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -9,6 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
         public ClientInfo Info { get; private set; }
+        public ISession Session { get; private set; }
         public Dictionary<string, string> UserKeyValue { get; private set; }
         public string BFlags => @"\" + Info.UserName + @"\" + UserKeyValue["b_flags"];
         public string Modes
@@ -30,9 +32,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 return buffer.ToString();
             }
         }
-        public ChannelUser(ClientInfo userInfo)
+        public ChannelUser(ClientInfo userInfo, ISession session)
         {
             Info = userInfo;
+            Session = session;
             UserKeyValue = new Dictionary<string, string>();
         }
 

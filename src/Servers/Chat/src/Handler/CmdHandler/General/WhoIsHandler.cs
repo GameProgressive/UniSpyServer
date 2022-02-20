@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
@@ -14,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
         private new WhoIsResult _result { get => (WhoIsResult)base._result; set => base._result = value; }
-        private ClientInfo _userInfo;
+        private ClientInfo _clientInfo;
         public WhoIsHandler(IClient client, IRequest request) : base(client, request)
         {
         }
@@ -25,22 +27,22 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
             // there only existed one nick name
             base.RequestCheck();
-            var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
-                 .Where(s => ((Session)s).UserInfo.NickName == _request.NickName)
-                 .FirstOrDefault();
-            if (session == null)
+            var clients = (ICollection<Client>)Client.ClientPool.Values;
+            var client = clients.Where(x=>x.Info.NickName == _request.NickName).FirstOrDefault();
+  
+            if (client == null)
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
             }
-            _userInfo = session.UserInfo;
+            _clientInfo = client.Info;
         }
         protected override void DataOperation()
         {
-            _result.NickName = _userInfo.NickName;
-            _result.Name = _userInfo.Name;
-            _result.UserName = _userInfo.UserName;
-            _result.PublicIPAddress = _userInfo.RemoteIPEndPoint.Address.ToString();
-            foreach (var channel in _userInfo.JoinedChannels.Values)
+            _result.NickName = _clientInfo.NickName;
+            _result.Name = _clientInfo.Name;
+            _result.UserName = _clientInfo.UserName;
+            _result.PublicIPAddress = _clientInfo.RemoteIPEndPoint.Address.ToString();
+            foreach (var channel in _clientInfo.JoinedChannels.Values)
             {
                 _result.JoinedChannelName.Add(channel.Name);
             }

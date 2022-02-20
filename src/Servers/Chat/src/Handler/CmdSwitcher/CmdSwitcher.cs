@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
