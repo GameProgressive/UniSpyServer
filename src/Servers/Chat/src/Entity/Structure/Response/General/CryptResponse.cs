@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
         }
         public override void Build()
         {
-            var cmdParams = $"* {ChatConstants.ClientKey} {ChatConstants.ServerKey}";
+            var cmdParams = $"* {ChatCrypt.ClientKey} {ChatCrypt.ServerKey}";
             SendingBuffer = IRCReplyBuilder.Build(
                 ResponseName.SecureKey, cmdParams);
         }

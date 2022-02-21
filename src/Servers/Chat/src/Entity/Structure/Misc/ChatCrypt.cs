@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
@@ -9,13 +10,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
     /// Note: this is a C-sharp version of the peerchat algorithm created by aluigi.
     /// Original C implementation: http://aluigi.altervista.org/papers/gs_peerchat.h
     /// </summary>
-    public sealed class ChatCrypt
+    public sealed class ChatCrypt : ICryptography
     {
         public const string DigitsHex = "0123456789abcdef";
         public const string DigitsCrypt = "aFl4uOD9sfWq1vGp";
         public const string NewDigitsCrypt = "qJ1h4N9cP3lzD0Ka";
         public const uint IPXorMask = 0xc3801dc7;
-
+        public const string ClientKey = "0000000000000000";
+        public const string ServerKey = "0000000000000000";
         public static byte[] Handle(PeerChatCTX ctx, byte[] data)
         {
             byte num1 = ctx.Buffer1;
@@ -93,6 +95,24 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
         public static bool EncodeIP()
         {
             return false;
+        }
+        public PeerChatCTX ClientCtx { get; private set; }
+        public PeerChatCTX ServerCtx { get; private set; }
+        public ChatCrypt(string gameSecretKey)
+        {
+            ClientCtx = new PeerChatCTX();
+            ServerCtx = new PeerChatCTX();
+            Init(ClientCtx, ClientKey, gameSecretKey);
+            Init(ServerCtx, ServerKey, gameSecretKey);
+        }
+        public byte[] Encrypt(byte[] data)
+        {
+            return Handle(ClientCtx, data);
+        }
+
+        public byte[] Decrypt(byte[] data)
+        {
+            return Handle(ServerCtx, data);
         }
     }
 }

@@ -32,8 +32,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _client.Info.GameSecretKey = secretKey;
             _client.Info.GameName = _request.GameName;
             // 2. Prepare two keys
-            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatConstants.ClientKey, _session.UserInfo.GameSecretKey);
-            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatConstants.ServerKey, _session.UserInfo.GameSecretKey);
+            _client.Crypto = new ChatCrypt(_client.Info.GameSecretKey);
         }
         protected override void ResponseConstruct()
         {
