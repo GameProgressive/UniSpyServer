@@ -3,7 +3,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.GameStatus.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.GameStatus.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

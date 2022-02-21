@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
 
     public class HandlerTest
     {
-        IClient _client;
+        Client _client;
         public HandlerTest()
         {
             var serverMock = new Mock<IServer>();

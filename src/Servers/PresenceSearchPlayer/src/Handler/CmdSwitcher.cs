@@ -4,7 +4,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
