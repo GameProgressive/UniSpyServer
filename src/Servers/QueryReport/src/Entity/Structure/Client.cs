@@ -1,7 +1,7 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Entity
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure
 {
     public class Client : ClientBase
     {

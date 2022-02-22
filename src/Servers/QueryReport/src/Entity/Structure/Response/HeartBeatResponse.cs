@@ -1,16 +1,18 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
 {
     public sealed class HeartBeatResponse : ResponseBase
     {
         private new HeartBeatResult _result => (HeartBeatResult)base._result;
+        private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private static readonly byte[] Challenge = { 0x54, 0x54, 0x54, 0x00, 0x00 };
         private static readonly byte[] Spliter = { 0x00, 0x00, 0x00, 0x00 };
-        public HeartBeatResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public HeartBeatResponse(HeartBeatRequest request, HeartBeatResult result) : base(request, result)
         {
         }
 

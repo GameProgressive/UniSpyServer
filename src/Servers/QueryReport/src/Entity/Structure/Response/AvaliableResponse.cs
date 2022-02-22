@@ -1,6 +1,7 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using System.Collections.Generic;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using System.Collections.Generic;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
 {
@@ -8,7 +9,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
     {
         public static readonly byte[] ResponsePrefix = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 
-        public AvaliableResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public AvaliableResponse(AvaliableRequest request) : base(request, null)
         {
         }
 

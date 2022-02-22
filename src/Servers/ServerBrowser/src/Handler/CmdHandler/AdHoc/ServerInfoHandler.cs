@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;

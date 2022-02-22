@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Events;
@@ -33,7 +34,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            OnReceive(buffer);
+            OnReceive(buffer.Skip((int)offset).Take((int)size).ToArray());
             base.OnReceived(buffer, offset, size);
         }
         void ITcpSession.Disconnect() => Disconnect();

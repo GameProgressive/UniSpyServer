@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CmdSwitcherBase
+    public abstract class CmdSwitcherBase : ISwitcher
     {
         // !! new architecture
         private IClient _client;

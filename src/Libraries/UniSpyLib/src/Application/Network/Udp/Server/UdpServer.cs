@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -58,8 +59,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
             // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
 
             ReceiveAsync();
-            // session.OnReceived(plainText);
-            session.OnReceived(buffer);
+            session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
     }
 }

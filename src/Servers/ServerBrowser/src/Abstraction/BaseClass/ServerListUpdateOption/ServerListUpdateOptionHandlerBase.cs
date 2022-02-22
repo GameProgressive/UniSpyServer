@@ -31,19 +31,18 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 _client.Info.ClientChallenge = _request.ClientChallenge;
             }
             // initialize sb encryption
-            if(_client.Crypto==null)
+            if (_client.Crypto == null)
             {
 
             }
         }
-        protected override void Response()
+        
+        protected override byte[] EncryptMessage(byte[] buffer)
         {
-            _response.Build();
             var bodyBuffer = _response.SendingBuffer.Skip(14).ToArray();
             var headBuffer = _response.SendingBuffer.Take(14).ToArray();
             var bufferEncrypted = _client.Crypto.Encrypt(bodyBuffer);
-            var buffer = headBuffer.Concat(bufferEncrypted).ToArray();
-            _client.Session.Send(buffer);
+            return headBuffer.Concat(bufferEncrypted).ToArray();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         }
         protected override void ResponseConstruct()
         {
-            _response = new AvaliableResponse(_request, _result);
+            _response = new AvaliableResponse(_request);
         }
     }
 }

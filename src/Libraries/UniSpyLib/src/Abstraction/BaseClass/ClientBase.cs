@@ -10,6 +10,7 @@ using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
 using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
 using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
@@ -38,6 +39,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         public ClientBase(ISession session)
         {
             Session = session;
+            EventBinding();
         }
         private void EventBinding()
         {
@@ -77,7 +79,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         public static ClientBase CreateClient(ISession session)
         {
-            var n = Assembly.GetEntryAssembly().GetName().Name;
             var clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
             var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session });
             return client;
@@ -95,6 +96,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 ClientPool.Remove(Session.RemoteIPEndPoint);
             }
+            Dispose();
         }
         protected virtual void OnReceived(object buffer)
         {
@@ -107,6 +109,24 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 _timer.Stop();
                 _timer.Start();
+            }
+            buffer = DecryptMessage((byte[])buffer);
+            LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+            // create switcher instance by reflection
+            var switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
+            var switcher = (ISwitcher)Activator.CreateInstance(switcherType, new object[] { this, buffer });
+            switcher.Switch();
+        }
+
+        protected virtual byte[] DecryptMessage(byte[] buffer)
+        {
+            if (Crypto != null)
+            {
+                return Crypto.Decrypt(buffer);
+            }
+            else
+            {
+                return buffer;
             }
         }
         /// <summary>

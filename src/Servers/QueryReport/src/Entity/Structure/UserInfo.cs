@@ -1,7 +1,7 @@
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.QueryReport.Entity
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure
 {
     public class ClientInfo : ClientInfoBase
     {

@@ -27,6 +27,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
         public uint? InstantKey { get; set; }
         [RedisKey]
         public string GameName { get; set; }
+        [JsonIgnore]
         public IPEndPoint HostIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
         public DateTime LastPacketReceivedTime { get; set; }
         // public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }

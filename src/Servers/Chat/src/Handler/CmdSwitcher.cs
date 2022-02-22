@@ -2,6 +2,7 @@
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
 {
@@ -10,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
     /// </summary>
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
-        private new string _rawRequest => (string)base._rawRequest;
+        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
         public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
