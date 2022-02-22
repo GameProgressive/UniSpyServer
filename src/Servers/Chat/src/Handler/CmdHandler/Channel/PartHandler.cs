@@ -77,7 +77,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 using (var client = new RedisClient())
                 {
                     var server = client.Values.Where(x =>
-                                            x.HeartBeatIPEndPoint == _user.Info.RemoteIPEndPoint &
+                                            x.HeartBeatIPEndPoint == _user.Session.RemoteIPEndPoint &
                                             x.GameName == _user.Info.GameName)
                                             .FirstOrDefault();
                     if (server != null)

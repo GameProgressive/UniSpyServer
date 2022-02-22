@@ -4,7 +4,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyServer.Servers.Chat.Handler.CommandSwitcher
+namespace UniSpyServer.Servers.Chat.Handler
 {
     /// <summary>
     /// Process request to Commands

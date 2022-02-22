@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
@@ -33,10 +34,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             // initialize sb encryption
             if (_client.Crypto == null)
             {
-
+                _client.Crypto = new SBCrypt(
+                    _client.Info.GameSecretKey,
+                    _client.Info.ClientChallenge);
             }
         }
-        
+
         protected override byte[] EncryptMessage(byte[] buffer)
         {
             var bodyBuffer = _response.SendingBuffer.Skip(14).ToArray();

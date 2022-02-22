@@ -72,10 +72,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 throw new System.Exception("Unsupported session type");
             }
-            if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
-            {
-                ClientPool.Add(Session.RemoteIPEndPoint, this);
-            }
         }
         public static ClientBase CreateClient(ISession session)
         {

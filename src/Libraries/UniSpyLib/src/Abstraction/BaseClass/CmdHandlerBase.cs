@@ -66,7 +66,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             if (_client.Crypto != null)
             {
-                return _client.Crypto.Decrypt(buffer);
+                return _client.Crypto.Encrypt(buffer);
             }
             else
             {

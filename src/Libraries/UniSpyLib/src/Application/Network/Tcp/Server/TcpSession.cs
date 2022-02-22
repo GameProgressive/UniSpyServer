@@ -20,10 +20,10 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         public event OnReceivedEventHandler OnReceive;
         public TcpSession(TcpServer server) : base(server)
         {
-            RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
         }
         protected override void OnConnected()
         {
+            RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
             OnConnect();
             base.OnConnected();
         }
@@ -34,6 +34,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
+            RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
             OnReceive(buffer.Skip((int)offset).Take((int)size).ToArray());
             base.OnReceived(buffer, offset, size);
         }

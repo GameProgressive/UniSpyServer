@@ -8,7 +8,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
     /// <summary>
     /// This is a template class that helps creating a TCP Server with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class TcpServer : NetCoreServer.TcpServer, IServer
+    public class TcpServer : NetCoreServer.TcpServer, IServer
     {
         public Guid ServerID { get; private set; }
         /// <summary>

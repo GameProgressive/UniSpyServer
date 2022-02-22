@@ -28,8 +28,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             // there only existed one nick name
             base.RequestCheck();
             var clients = (ICollection<Client>)Client.ClientPool.Values;
-            var client = clients.Where(x=>x.Info.NickName == _request.NickName).FirstOrDefault();
-  
+            var client = clients.Where(x => x.Info.NickName == _request.NickName).FirstOrDefault();
+
             if (client == null)
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _result.NickName = _clientInfo.NickName;
             _result.Name = _clientInfo.Name;
             _result.UserName = _clientInfo.UserName;
-            _result.PublicIPAddress = _clientInfo.RemoteIPEndPoint.Address.ToString();
+            _result.PublicIPAddress = _client.Session.RemoteIPEndPoint.Address.ToString();
             foreach (var channel in _clientInfo.JoinedChannels.Values)
             {
                 _result.JoinedChannelName.Add(channel.Name);

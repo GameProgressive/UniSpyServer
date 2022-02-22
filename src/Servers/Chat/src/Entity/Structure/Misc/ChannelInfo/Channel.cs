@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             message.Build();
             foreach (var kv in Users)
             {
-                if (kv.Value.Info.RemoteIPEndPoint == sender.Info.RemoteIPEndPoint)
+                if (kv.Value.Session.RemoteIPEndPoint == sender.Session.RemoteIPEndPoint)
                 {
                     continue;
                 }
@@ -136,7 +136,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         public ChannelUser GetChannelUser(IClient client)
         {
-            return Users.Values.Where(u => u.Info.RemoteIPEndPoint == client.Info.RemoteIPEndPoint).FirstOrDefault();
+            return Users.Values.Where(u => u.Session.RemoteIPEndPoint == client.Session.RemoteIPEndPoint).FirstOrDefault();
         }
         public bool IsUserBanned(ChannelUser user)
         {
@@ -144,7 +144,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return false;
             }
-            if (BanList[user.Info.NickName].Info.RemoteIPEndPoint != user.Info.RemoteIPEndPoint)
+            if (BanList[user.Info.NickName].Session.RemoteIPEndPoint != user.Session.RemoteIPEndPoint)
             {
                 return false;
             }

@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CommandSwitcher
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

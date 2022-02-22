@@ -3,7 +3,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
+namespace UniSpyServer.Servers.ServerBrowser.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

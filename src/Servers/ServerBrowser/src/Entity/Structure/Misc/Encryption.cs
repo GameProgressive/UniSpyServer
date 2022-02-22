@@ -186,8 +186,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
             }
             return cipherText;
         }
-        public byte[] Decrypt(byte[] buffer)=> throw new SBException("Only encryption method avaliable");
-        
+        public byte[] Decrypt(byte[] buffer) => buffer;
+
     }
     public class SBEncryption
     {
