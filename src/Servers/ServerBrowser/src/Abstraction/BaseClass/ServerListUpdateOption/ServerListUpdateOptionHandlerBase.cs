@@ -1,4 +1,5 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
+﻿using System.Linq;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
@@ -29,6 +30,20 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             {
                 _client.Info.ClientChallenge = _request.ClientChallenge;
             }
+            // initialize sb encryption
+            if(_client.Crypto==null)
+            {
+
+            }
+        }
+        protected override void Response()
+        {
+            _response.Build();
+            var bodyBuffer = _response.SendingBuffer.Skip(14).ToArray();
+            var headBuffer = _response.SendingBuffer.Take(14).ToArray();
+            var bufferEncrypted = _client.Crypto.Encrypt(bodyBuffer);
+            var buffer = headBuffer.Concat(bufferEncrypted).ToArray();
+            _client.Session.Send(buffer);
         }
     }
 }

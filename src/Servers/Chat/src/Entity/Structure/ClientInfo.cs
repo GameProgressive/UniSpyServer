@@ -12,8 +12,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         //indicates which channel this user is in
         public IDictionary<string, Channel> JoinedChannels { get; private set; }
         // secure connection
-        public PeerChatCTX ClientCTX { get; set; }
-        public PeerChatCTX ServerCTX { get; private set; }
         public string GameName { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
@@ -29,8 +27,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
 
         public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
         {
-            ClientCTX = new PeerChatCTX();
-            ServerCTX = new PeerChatCTX();
             JoinedChannels = new ConcurrentDictionary<string, Channel>();
             NameSpaceID = 0;
             IsUsingEncryption = false;

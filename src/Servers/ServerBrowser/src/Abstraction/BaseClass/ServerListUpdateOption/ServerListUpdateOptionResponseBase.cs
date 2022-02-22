@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.UniSpyLib.Encryption;
 
@@ -25,7 +26,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             //Add crypt header
             BuildCryptHeader();
             _serverListData.AddRange(_result.ClientRemoteIP);
-            _serverListData.AddRange(Constants.HtonQueryReportDefaultPort);
+            _serverListData.AddRange(ClientInfo.HtonQueryReportDefaultPort);
         }
         protected void BuildCryptHeader()
         {
@@ -35,8 +36,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             #region message length?
             cryptHeader.AddRange(new byte[] { 0, 0 });
             #endregion
-            cryptHeader.Add((byte)(Constants.ServerChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(UniSpyEncoding.GetBytes(Constants.ServerChallenge));
+            cryptHeader.Add((byte)(ClientInfo.ServerChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(UniSpyEncoding.GetBytes(ClientInfo.ServerChallenge));
             _serverListData.AddRange(cryptHeader);
         }
         protected abstract void BuildServerFullInfo();

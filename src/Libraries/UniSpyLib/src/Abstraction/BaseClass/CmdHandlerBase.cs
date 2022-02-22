@@ -54,6 +54,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = (byte[])_response.SendingBuffer;
             }
+            
+            //Encrypt the response if Crypto is not null
             if (_client.Crypto != null)
             {
                 buffer = _client.Crypto.Encrypt(buffer);
