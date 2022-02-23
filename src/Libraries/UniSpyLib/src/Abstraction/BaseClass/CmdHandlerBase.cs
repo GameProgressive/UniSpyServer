@@ -55,13 +55,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 buffer = (byte[])_response.SendingBuffer;
             }
 
-            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, (byte[])_response.SendingBuffer);
+            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, (byte[])buffer);
 
             //Encrypt the response if Crypto is not null
             buffer = EncryptMessage(buffer);
             _client.Session.Send(buffer);
         }
-        
+
         protected virtual byte[] EncryptMessage(byte[] buffer)
         {
             if (_client.Crypto != null)

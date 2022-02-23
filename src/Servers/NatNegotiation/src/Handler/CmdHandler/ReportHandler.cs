@@ -3,13 +3,13 @@ using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -37,7 +37,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             if (_userInfo == null)
             {
-                throw new NNException("No user found in redis.");
+                LogWriter.Info("No user found in redis.");
+                return;
             }
 
             if (_request.NatResult != NatNegResult.Success)
