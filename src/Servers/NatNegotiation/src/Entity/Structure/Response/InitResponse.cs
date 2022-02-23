@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result => (InitResult)base._result;
-        public InitResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public InitResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
     }

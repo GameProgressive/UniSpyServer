@@ -55,7 +55,6 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
-            // ReceiveAsync();
             var session = CreateSession(endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }

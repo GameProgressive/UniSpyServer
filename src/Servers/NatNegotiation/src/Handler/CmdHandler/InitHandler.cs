@@ -59,13 +59,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            // var request = new ConnectRequest
-            // {
-            //     PortType = _request.PortType,
-            //     Version = _request.Version,
-            //     Cookie = _request.Cookie
-            // };
-            // new ConnectHandler(_client, request).Handle();
+            var request = new ConnectRequest
+            {
+                PortType = _request.PortType,
+                Version = _request.Version,
+                Cookie = _request.Cookie
+            };
+            new ConnectHandler(_client, request).Handle();
         }
     }
 }

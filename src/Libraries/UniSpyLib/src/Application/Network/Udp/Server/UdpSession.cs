@@ -24,7 +24,11 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
             RemoteIPEndPoint = (IPEndPoint)endPoint;
             LastPacketReceivedTime = DateTime.Now;
         }
-        public virtual void OnReceived(byte[] message) => OnReceive(message);
+        public virtual void OnReceived(byte[] message)
+        {
+            Server.ReceiveAsync();
+            OnReceive(message);
+        }
 
         public bool Send(object response)
         {

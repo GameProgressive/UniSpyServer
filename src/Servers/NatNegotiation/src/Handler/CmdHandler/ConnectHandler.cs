@@ -37,11 +37,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // because cookie is unique for each client we will only get 2 of keys
             if (_matchedUsers.Count != 2)
             {
-                throw new NNException("No users match found we continue waitting.");
+                // throw new NNException("No users match found we continue waitting.");
+                LogWriter.Info("No users match found we continue waitting.");
             }
         }
         protected override void DataOperation()
         {
+            if (_matchedUsers.Count != 2)
+            {
+                return;
+            }
             foreach (var key in _matchedUsers)
             {
                 //find negitiators and negotiatees by a same cookie
