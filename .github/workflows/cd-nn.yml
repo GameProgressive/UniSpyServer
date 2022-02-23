@@ -6,7 +6,7 @@ on:
       - master
       - candidate
     paths:
-      - "src/Servers/NATNegotiation/**"
+      - "src/Servers/NatNegotiation/**"
       - "src/Libraries/UniSpyLib/**"
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/NATNegotiation/Dockerfile
+          dockerfile: ./src/Servers/NatNegotiation/Dockerfile
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@3.01
@@ -32,4 +32,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/NATNegotiation/Dockerfile
+          dockerfile: ./src/Servers/NatNegotiation/Dockerfile

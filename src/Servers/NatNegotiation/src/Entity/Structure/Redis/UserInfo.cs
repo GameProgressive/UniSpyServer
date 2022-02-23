@@ -19,11 +19,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         [RedisKey]
         public NatPortType? PortType { get; init; }
         [RedisKey]
-        public int? Cookie { get; init; }
+        public uint? Cookie { get; init; }
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint LocalIPEndPoint { get; init; }
         public DateTime? LastPacketRecieveTime { get; set; }
-        public int? RetryNATNegotiationTime { get; set; }
+        public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
         public byte? ClientIndex { get; init; }
 

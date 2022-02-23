@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             var request = new InitRequest(rawRequest);
             request.Parse();
             Assert.Equal(RequestType.Init, request.CommandName);
-            Assert.Equal((int)151191552, request.Cookie);
+            Assert.Equal((uint)151191552, request.Cookie);
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             var request = new AddressCheckRequest(rawRequest);
             request.Parse();
             Assert.Equal(RequestType.AddressCheck, request.CommandName);
-            Assert.Equal((int)151191552, request.Cookie);
+            Assert.Equal((uint)151191552, request.Cookie);
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             var request = new ErtAckRequest(rawRequest);
             request.Parse();
             Assert.Equal(RequestType.ErtAck, request.CommandName);
-            Assert.Equal((int)151191552, request.Cookie);
+            Assert.Equal((uint)151191552, request.Cookie);
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
@@ -66,7 +66,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             var request = new ErtAckRequest(rawRequest);
             request.Parse();
             Assert.Equal(RequestType.NatifyRequest, request.CommandName);
-            Assert.Equal((int)151191552, request.Cookie);
+            Assert.Equal((uint)151191552, request.Cookie);
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);

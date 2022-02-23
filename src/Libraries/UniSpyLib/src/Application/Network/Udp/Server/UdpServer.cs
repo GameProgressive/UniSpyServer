@@ -17,7 +17,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public string ServerName { get; private set; }
-
+        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
         public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -31,7 +31,6 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
             // SessionManager.Start();
-            ReceiveAsync();
             return base.Start();
         }
 
@@ -55,10 +54,9 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// <returns>is sending succeed</returns>
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            var session = CreateSession(endPoint);
             // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
-
-            ReceiveAsync();
+            // ReceiveAsync();
+            var session = CreateSession(endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
     }

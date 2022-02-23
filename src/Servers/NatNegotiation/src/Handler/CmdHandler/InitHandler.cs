@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     ServerID = _client.Session.Server.ServerID,
                     RemoteIPEndPoint = _client.Session.RemoteIPEndPoint,
                     PortType = _request.PortType,
-                    Cookie = _request.Cookie,
+                    Cookie = (uint)_request.Cookie,
                     LocalIPEndPoint = _request.LocalIPEndPoint,
                     UseGamePort = _request.UseGamePort,
                     ClientIndex = _request.ClientIndex,
@@ -59,13 +59,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            var request = new ConnectRequest
-            {
-                PortType = _request.PortType,
-                Version = _request.Version,
-                Cookie = _request.Cookie
-            };
-            new ConnectHandler(_client, request).Handle();
+            // var request = new ConnectRequest
+            // {
+            //     PortType = _request.PortType,
+            //     Version = _request.Version,
+            //     Cookie = _request.Cookie
+            // };
+            // new ConnectHandler(_client, request).Handle();
         }
     }
 }

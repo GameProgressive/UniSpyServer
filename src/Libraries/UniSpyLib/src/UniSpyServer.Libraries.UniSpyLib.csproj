@@ -12,7 +12,7 @@
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NetCoreServer" Version="5.1.0" />
+        <PackageReference Include="NetCoreServer" Version="6.2.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <PackageReference Include="Serilog" Version="2.10.0" />

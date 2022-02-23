@@ -5,7 +5,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class InitResponseBase : ResponseBase
     {
-        private new InitRequestBase _request => (InitRequestBase)base._request;
         private new InitResultBase _result => (InitResultBase)base._result;
         public InitResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
@@ -16,9 +15,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
             data.Add((byte)_request.PortType);
-            data.Add(_request.ClientIndex);
-            data.Add(_request.UseGamePort);
-            data.AddRange(_result.RemoteIPBytes);
+            data.Add((byte)_request.ClientIndex);
+            data.Add((byte)_request.UseGamePort);
+            data.AddRange(_result.RemoteIPAddressBytes);
             data.AddRange(_result.RemotePortBytes);
             SendingBuffer = data.ToArray();
         }

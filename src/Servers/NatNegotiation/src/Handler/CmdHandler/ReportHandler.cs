@@ -53,7 +53,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     new ConnectHandler(_client, request).Handle();
                 }
 
-                _userInfo.RetryNATNegotiationTime++;
+                _userInfo.RetryNatNegotiationTime++;
                 _redisClient.SetValue(_userInfo);
             }
             else

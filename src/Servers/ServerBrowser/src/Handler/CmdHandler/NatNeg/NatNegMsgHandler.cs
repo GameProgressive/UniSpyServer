@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Sockets;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.NATNeg;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.NatNeg;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;

@@ -14,9 +14,6 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
     {
         [RedisKey]
         public Guid? ServerID { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint HeartBeatIPEndPoint { get; set; }
         [RedisKey]
         [JsonConverter(typeof(IPAddresConverter))]
         public IPAddress HostIPAddress { get; set; }
@@ -29,6 +26,8 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
         public string GameName { get; set; }
         [JsonIgnore]
         public IPEndPoint HostIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
+        [JsonIgnore]
+        public IPEndPoint HeartBeatIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
         public DateTime LastPacketReceivedTime { get; set; }
         // public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
         public GameServerStatus ServerStatus;

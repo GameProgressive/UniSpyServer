@@ -6,7 +6,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
     [RequestContract(RequestType.Connect)]
     public sealed class ConnectRequest : RequestBase
     {
-        public NatPortType PortType { get; set; }
+        public new byte? Version { get => base.Version; set => base.Version = value; }
+        public new uint? Cookie { get => base.Cookie; set => base.Cookie = value; }
+        public new NatPortType? PortType { get => base.PortType; set => base.PortType = value; }
         public ConnectRequest() { }
     }
 }

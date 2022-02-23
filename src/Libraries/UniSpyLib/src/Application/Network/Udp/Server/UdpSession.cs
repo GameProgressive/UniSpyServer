@@ -18,7 +18,6 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
         IServer ISession.Server => Server;
         public event OnReceivedEventHandler OnReceive;
-
         public UdpSession(UdpServer server, EndPoint endPoint)
         {
             Server = server;

@@ -17,6 +17,9 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
         public string ServerName { get; private set; }
+
+        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+
         public TcpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;

@@ -83,7 +83,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
             {
-                ClientPool.Add(Session.RemoteIPEndPoint, this);
+                ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
             }
         }
         protected virtual void OnDisconnected()
@@ -98,7 +98,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
             {
-                ClientPool.Add(Session.RemoteIPEndPoint, this);
+                try
+                {
+                    ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             // reset timer for udp session
             if (Session.GetType() == typeof(UdpSession))

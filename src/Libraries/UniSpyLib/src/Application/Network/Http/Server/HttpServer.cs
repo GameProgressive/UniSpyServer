@@ -9,6 +9,8 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
     {
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }
+        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+
         protected HttpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerName = serverName;
