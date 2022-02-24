@@ -30,6 +30,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
+        private static Type _clientType;
+        private static Type _switcherType;
+
         static ClientBase()
         {
             Redis = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
@@ -75,8 +78,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         public static ClientBase CreateClient(ISession session)
         {
-            var clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
-            var client = (ClientBase)Activator.CreateInstance(clientType, new object[] { session });
+            if (_clientType is null)
+            {
+                _clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
+            }
+            var client = (ClientBase)Activator.CreateInstance(_clientType, new object[] { session });
             return client;
         }
         protected virtual void OnConnected()
@@ -109,8 +115,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             buffer = DecryptMessage((byte[])buffer);
             LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
             // create switcher instance by reflection
-            var switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
-            var switcher = (ISwitcher)Activator.CreateInstance(switcherType, new object[] { this, buffer });
+            if (_switcherType is null)
+            {
+                _switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
+            }
+            var switcherParams = new object[] { this, buffer };
+            var switcher = (ISwitcher)Activator.CreateInstance(_switcherType, switcherParams);
             switcher.Switch();
         }
 

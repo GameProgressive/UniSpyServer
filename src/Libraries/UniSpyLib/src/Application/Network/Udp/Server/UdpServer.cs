@@ -25,22 +25,15 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         }
         public override bool Start()
         {
-            //可以将server中的事件绑定到CmdSwitcher中
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
-            // SessionManager.Start();
             return base.Start();
         }
 
         protected override void OnStarted() => ReceiveAsync();
-        protected UdpSession CreateSession(EndPoint endPoint)
-        {
-            var session = new UdpSession(this, endPoint);
-            ClientBase.CreateClient(session);
-            return session;
-        }
+
         /// <summary>
         /// Continue receive datagrams
         /// </summary>
@@ -54,9 +47,25 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// <returns>is sending succeed</returns>
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
+            ReceiveAsync();
             var session = CreateSession(endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
+        }
+
+        protected UdpSession CreateSession(EndPoint endPoint)
+        {
+            // we have to check if the endPoint is already in the dictionary,
+            // which means the client is already in the dictionary, we do not need to create it
+            if (ClientBase.ClientPool.ContainsKey((IPEndPoint)endPoint))
+            {
+                return (UdpSession)ClientBase.ClientPool[(IPEndPoint)endPoint].Session;
+            }
+            else
+            {
+                var session = new UdpSession(this, endPoint);
+                ClientBase.CreateClient(session);
+                return session;
+            }
         }
     }
 }
