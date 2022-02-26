@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Exception;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
         private new CheckRequest _request => (CheckRequest)base._request;
-        private new CheckResult _result{ get => (CheckResult)base._result; set => base._result = value; }
+        private new CheckResult _result { get => (CheckResult)base._result; set => base._result = value; }
         public CheckHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new CheckResult();
@@ -40,18 +40,21 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
                 var result = from p in db.Profiles
                              join u in db.Users on p.Userid equals u.Userid
+                             join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
                              where u.Email.Equals(_request.Email)
                              && u.Password.Equals(_request.Password)
                              && p.Nick.Equals(_request.Nick)
+                             && sp.Partnerid.Equals(_request.PartnerId)
                              select p.ProfileId;
 
+                var results = result.ToList();
                 if (result.Count() == 1)
                 {
                     _result.ProfileId = result.First();
                 }
                 else
                 {
-                    throw new CheckException();
+                    _result.ProfileId = null;
                 }
             }
         }

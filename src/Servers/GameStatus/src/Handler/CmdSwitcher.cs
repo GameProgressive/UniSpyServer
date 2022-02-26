@@ -19,12 +19,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler
             {
                 throw new UniSpyException("Invalid request");
             }
-            string[] splitedRawRequests = _rawRequest.TrimStart('\\').Split('\\');
-            foreach (var rawRequest in splitedRawRequests)
-            {
-                var name = GameSpyUtils.ConvertToKeyValue(rawRequest).Keys.First();
-                DeserializeRequest(name, rawRequest);
-            }
+
+            var name = GameSpyUtils.ConvertToKeyValue(_rawRequest).Keys.First();
+            DeserializeRequest(name, _rawRequest);
+
         }
     }
 }

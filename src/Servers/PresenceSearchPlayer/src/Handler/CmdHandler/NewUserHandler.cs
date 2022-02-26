@@ -1,4 +1,6 @@
-﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
@@ -6,10 +8,9 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using System;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -18,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;
 
-        private new NewUserResult _result{ get => (NewUserResult)base._result; set => base._result = value; }
+        private new NewUserResult _result { get => (NewUserResult)base._result; set => base._result = value; }
 
         public NewUserHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -27,18 +28,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new UniSpyContext())
-            {
-                try
-                {
-                    DatabaseOperationByType();
-                }
-                catch (Exception e)
-                {
-                    throw new GPDatabaseException("Unknown error occurs in database operation.", e);
-                }
-                UpdateOtherInfo();
-            }
+            DatabaseOperationByType();
+            UpdateOtherInfo();
         }
 
         private void UpdateOtherInfo()
@@ -140,7 +131,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     //we do nothing here
 
                     case NewUserStatus.CheckSubProfile:
-                        var subProfiles = db.Subprofiles.Where(s => s.ProfileId == _result.Profile.ProfileId && s.Namespaceid == _request.NamespaceID);
+                        var subProfiles = db.Subprofiles.Where(s =>
+                        s.ProfileId == _result.Profile.ProfileId &&
+                        s.Namespaceid == _request.NamespaceID &&
+                        s.Productid == _request.ProductID);
                         if (subProfiles.Count() == 0)
                         {
                             goto case NewUserStatus.SubProfileNotExist;

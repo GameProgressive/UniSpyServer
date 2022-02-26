@@ -19,11 +19,19 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
             base.OnConnected();
             Session.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
         }
-        protected override void OnReceived(object buffer)
+        protected override byte[] DecryptMessage(byte[] buffer)
         {
-            base.OnReceived(buffer);
-            var data = Crypto.Decrypt(buffer as byte[]);
-            new CmdSwitcher(this, data).Switch();
+            var data = UniSpyEncoding.GetString(buffer);
+            // gamestatus client will send plaintext message 
+            // we do not need to decrypt it
+            if (data.StartsWith("\u001b\0"))
+            {
+                return Crypto.Decrypt(buffer);
+            }
+            else
+            {
+                return buffer;
+            }
         }
     }
 }

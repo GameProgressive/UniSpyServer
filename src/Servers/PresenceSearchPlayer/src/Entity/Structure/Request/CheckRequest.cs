@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         public string Nick { get; private set; }
         public string Password { get; private set; }
         public string Email { get; private set; }
-
+        public int? PartnerId { get; private set; }
         public override void Parse()
         {
             base.Parse();
@@ -40,6 +40,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
             Nick = RequestKeyValues["nick"];
             Email = RequestKeyValues["email"];
+
+            if (RequestKeyValues.ContainsKey("partnerid"))
+            {
+                PartnerId = int.Parse(RequestKeyValues["partnerid"]);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
 {
@@ -22,7 +23,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
         {
             if (ex is GPException)
             {
-                _client.Session.Send(ex.Message);
+                LogWriter.Error(ex.Message);
+                LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, ((GPException)ex).ErrorResponse);
+                _client.Session.Send(((GPException)ex).ErrorResponse);
             }
             else
             {
