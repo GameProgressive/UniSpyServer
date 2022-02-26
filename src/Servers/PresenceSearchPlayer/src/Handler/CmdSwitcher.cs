@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-        public CmdSwitcher(IClient client, string rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(IClient client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

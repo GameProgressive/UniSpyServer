@@ -47,21 +47,23 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// <returns>is sending succeed</returns>
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            ReceiveAsync();
-            var session = CreateSession(endPoint);
+            var session = CreateSession((IPEndPoint)endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
 
-        protected UdpSession CreateSession(EndPoint endPoint)
+        protected UdpSession CreateSession(IPEndPoint endPoint)
         {
             // we have to check if the endPoint is already in the dictionary,
             // which means the client is already in the dictionary, we do not need to create it
-            if (ClientBase.ClientPool.ContainsKey((IPEndPoint)endPoint))
+            // we just retrieve the session from the dictionary
+            if (ClientBase.ClientPool.ContainsKey(endPoint))
             {
-                return (UdpSession)ClientBase.ClientPool[(IPEndPoint)endPoint].Session;
+                return (UdpSession)ClientBase.ClientPool[endPoint].Session;
             }
             else
             {
+                // we create session and create client 
+                // then we bind the event with client and session
                 var session = new UdpSession(this, endPoint);
                 ClientBase.CreateClient(session);
                 return session;

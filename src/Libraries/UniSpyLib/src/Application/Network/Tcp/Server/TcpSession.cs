@@ -12,6 +12,11 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
     /// </summary>
     public class TcpSession : NetCoreServer.TcpSession, ITcpSession
     {
+        /// <summary>
+        /// remote endpoint will dispose when disconnecting, however we need that in some situation,
+        /// we must save it here for further use
+        /// </summary>
+        /// <value></value>
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public new TcpServer Server => (TcpServer)base.Server;
         IServer ISession.Server => Server;
@@ -21,9 +26,17 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         public TcpSession(TcpServer server) : base(server)
         {
         }
+        protected override void OnConnecting()
+        {
+            // we set ipendpoint here
+            if (RemoteIPEndPoint is null)
+            {
+                RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
+            }
+            base.OnConnecting();
+        }
         protected override void OnConnected()
         {
-            RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
             OnConnect();
             base.OnConnected();
         }
@@ -34,19 +47,14 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
             OnReceive(buffer.Skip((int)offset).Take((int)size).ToArray());
             base.OnReceived(buffer, offset, size);
         }
         void ITcpSession.Disconnect() => Disconnect();
-        public new void Send(string response)
-        {
-            Send(UniSpyEncoding.GetBytes(response));
-        }
-        public new void Send(byte[] response)
-        {
-            base.SendAsync(response);
-        }
+        public new void Send(string response) => Send(UniSpyEncoding.GetBytes(response));
+
+        public new void Send(byte[] response) => base.SendAsync(response);
+
     }
 }
 

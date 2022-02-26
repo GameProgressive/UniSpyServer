@@ -18,14 +18,15 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
         IServer ISession.Server => Server;
         public event OnReceivedEventHandler OnReceive;
-        public UdpSession(UdpServer server, EndPoint endPoint)
+        public UdpSession(UdpServer server, IPEndPoint endPoint)
         {
             Server = server;
-            RemoteIPEndPoint = (IPEndPoint)endPoint;
+            RemoteIPEndPoint = endPoint;
             LastPacketReceivedTime = DateTime.Now;
         }
         public virtual void OnReceived(byte[] message)
         {
+            Server.ReceiveAsync();
             OnReceive(message);
         }
 
@@ -44,21 +45,10 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
                 throw new UniSpyException("UniSpyTcpSession.Send: response must be string or byte[]");
             }
         }
-        public void Send(string response)
-        {
-            Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));
-        }
-        public void Send(byte[] response)
-        {
-            Server.SendAsync(RemoteIPEndPoint, response);
-        }
-        public void Send(IPEndPoint endPoint, string response)
-        {
-            Send(endPoint, UniSpyEncoding.GetBytes(response));
-        }
-        public void Send(IPEndPoint endPoint, byte[] response)
-        {
-            Server.SendAsync(endPoint, response);
-        }
+        public void Send(string response) => Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));
+        public void Send(byte[] response) => Server.SendAsync(RemoteIPEndPoint, response);
+        public void Send(IPEndPoint endPoint, string response) => Send(endPoint, UniSpyEncoding.GetBytes(response));
+        public void Send(IPEndPoint endPoint, byte[] response) => Server.SendAsync(endPoint, response);
+
     }
 }

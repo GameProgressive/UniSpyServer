@@ -82,6 +82,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 _clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
             }
+
+            // create client and bind client with session
             var client = (ClientBase)Activator.CreateInstance(_clientType, new object[] { session });
             return client;
         }
