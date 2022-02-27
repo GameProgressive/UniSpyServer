@@ -107,12 +107,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
         }
         public byte[] Encrypt(byte[] data)
         {
-            return Handle(ClientCtx, data);
+            return Handle(ServerCtx, data);
         }
 
         public byte[] Decrypt(byte[] data)
         {
-            return Handle(ServerCtx, data);
+            return Handle(ClientCtx, data);
         }
     }
 }

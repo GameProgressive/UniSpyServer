@@ -6,7 +6,9 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
@@ -37,6 +39,13 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void ResponseConstruct()
         {
             _response = new CryptResponse(_request, _result);
+        }
+
+        protected override void Response()
+        {
+            _response.Build();
+            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, _response.SendingBuffer);
+            _client.Session.Send(_response.SendingBuffer);
         }
     }
 }
