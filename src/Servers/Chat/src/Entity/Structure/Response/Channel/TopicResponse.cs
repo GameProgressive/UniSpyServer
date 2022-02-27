@@ -32,8 +32,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
             {
                 SendingBuffer =
                     TopicResponse.BuildTopicReply(
-                   _result.ChannelName,
-                   _result.ChannelTopic);
+                    _result.ChannelName,
+                    _result.ChannelTopic);
             }
         }
     }

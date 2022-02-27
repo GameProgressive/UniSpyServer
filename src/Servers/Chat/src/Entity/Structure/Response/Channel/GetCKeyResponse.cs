@@ -38,8 +38,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
             }
 
             SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetCKey,
-                 $"* {_result.ChannelName} {_request.Cookie}",
-                 "End Of /GETCKEY.");
+                $"* {_result.ChannelName} {_request.Cookie}",
+                "End Of /GETCKEY.");
         }
     }
 }

@@ -16,9 +16,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Message
         public override void Build()
         {
             SendingBuffer = IRCReplyBuilder.Build(_result.UserIRCPrefix,
-                                                      ResponseName.PrivateMsg,
-                                                      _result.TargetName,
-                                                      _request.Message);
+                ResponseName.PrivateMsg,
+                _result.TargetName,
+                _request.Message);
         }
     }
 }

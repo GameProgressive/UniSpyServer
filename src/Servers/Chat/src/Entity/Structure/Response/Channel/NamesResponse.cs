@@ -23,8 +23,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
         public static string BuildNameReply(string nickName, string channelName, string nicksString)
         {
             return IRCReplyBuilder.Build(
-                    ResponseName.NameReply,
-                    $"{nickName} = {channelName}", nicksString);
+                ResponseName.NameReply,
+                $"{nickName} = {channelName}", nicksString);
         }
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
