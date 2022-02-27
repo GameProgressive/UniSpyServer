@@ -33,36 +33,21 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response
         {
             foreach (var serverInfo in _result.GameServerInfos)
             {
-                //we check the server
-                //This is the way we can not crash by some
-                //fake server
-                if (IsSkipThisServer(serverInfo))
-                {
-                    continue;
-                }
                 BuildServerInfoHeader(_result.Flag, serverInfo);
                 foreach (var key in _request.Keys)
                 {
                     _serverListData.Add(StringFlag.NTSStringFlag);
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData[key]));
+                    // if the key is in our database, we just add it
+                    // otherwise we leave it empty, game will set default value
+                    if (serverInfo.ServerData.ContainsKey(key))
+                    {
+                        _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData[key]));
+                    }
                     _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
             //after all server information is added we add the end flag
             _serverListData.AddRange(StringFlag.AllServerEndFlag);
-        }
-
-        private bool IsSkipThisServer(GameServerInfo serverInfo)
-        {
-            foreach (var key in _request.Keys)
-            {
-                //do not skip empty value
-                if (!serverInfo.ServerData.ContainsKey(key))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
