@@ -65,7 +65,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "QueryReport",
+            "name": "QR",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_qr",
@@ -77,7 +77,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "ServerBrowser",
+            "name": "SB",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_sb",
@@ -89,7 +89,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "GameStatus",
+            "name": "GS",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_gs",
@@ -101,7 +101,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "WebServer",
+            "name": "Web",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_web",
@@ -124,21 +124,21 @@
         {
             "name": "QR and SB",
             "configurations": [
-                "QueryReport",
-                "ServerBrowser"
+                "QR",
+                "SB"
             ]
         },
         {
             "name": "GS and PSP",
             "configurations": [
                 "PSP",
-                "GameStatus"
+                "GS"
             ]
         },
         {
             "name": "SAKE and PCM",
             "configurations": [
-                "WebServer",
+                "Web",
                 "PCM"
             ]
         },
@@ -150,9 +150,9 @@
                 "NatNeg",
                 "CDKey",
                 "Chat",
-                "QueryReport",
-                "ServerBrowser",
-                "GameStatus"
+                "QR",
+                "SB",
+                "GS"
             ]
         },
         {
@@ -163,9 +163,9 @@
                 "NatNeg",
                 "CDKey",
                 "Chat",
-                "QueryReport",
-                "ServerBrowser",
-                "WebServer"
+                "QR",
+                "SB",
+                "Web"
             ]
         },
         {
@@ -176,10 +176,10 @@
                 "NatNeg",
                 "CDKey",
                 "Chat",
-                "QueryReport",
-                "ServerBrowser",
-                "GameStatus",
-                "WebServer"
+                "QR",
+                "SB",
+                "GS",
+                "Web"
             ]
         }
     ]

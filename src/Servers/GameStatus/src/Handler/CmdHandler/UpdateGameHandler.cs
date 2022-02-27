@@ -1,5 +1,7 @@
 ﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Contract;
+using UniSpyServer.Servers.GameStatus.Entity.Exception;
+using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -13,20 +15,21 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
+        private new UpdateGameRequest _request => (UpdateGameRequest)base._request;
         public UpdateGameHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new UpdateGameResult();
         }
         protected override void RequestCheck()
         {
-            throw new System.NotImplementedException();
+            base.RequestCheck();
+            if (_request.SessionKey != _client.Info.SessionKey)
+            {
+                throw new GSException("Session key is not match");
+            }
         }
         protected override void DataOperation()
         {
-            throw new System.NotImplementedException();
-        }
-        protected override void ResponseConstruct()
-        {
+            // replace game data with new data
             throw new System.NotImplementedException();
         }
     }
