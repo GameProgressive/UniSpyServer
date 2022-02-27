@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.1 (Debian 14.1-1.pgdg110+1)
+-- Dumped from database version 14.2 (Debian 14.2-1.pgdg110+1)
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-01-19 22:45:26 CET
+-- Started on 2022-02-27 02:04:35 CET
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3 (class 2615 OID 2200)
+-- TOC entry 5 (class 2615 OID 16385)
 -- Name: unispy; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -28,7 +28,7 @@ CREATE SCHEMA unispy;
 
 --
 -- TOC entry 3466 (class 0 OID 0)
--- Dependencies: 3
+-- Dependencies: 5
 -- Name: SCHEMA unispy; Type: COMMENT; Schema: -; Owner: -
 --
 
@@ -40,7 +40,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 224 (class 1259 OID 16626)
+-- TOC entry 209 (class 1259 OID 16386)
 -- Name: addrequests; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -56,7 +56,7 @@ CREATE TABLE unispy.addrequests (
 
 --
 -- TOC entry 3467 (class 0 OID 0)
--- Dependencies: 224
+-- Dependencies: 209
 -- Name: TABLE addrequests; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -64,7 +64,7 @@ COMMENT ON TABLE unispy.addrequests IS 'Friend request.';
 
 
 --
--- TOC entry 223 (class 1259 OID 16625)
+-- TOC entry 210 (class 1259 OID 16391)
 -- Name: addrequests_addrequestid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -79,7 +79,7 @@ CREATE SEQUENCE unispy.addrequests_addrequestid_seq
 
 --
 -- TOC entry 3468 (class 0 OID 0)
--- Dependencies: 223
+-- Dependencies: 210
 -- Name: addrequests_addrequestid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -87,7 +87,7 @@ ALTER SEQUENCE unispy.addrequests_addrequestid_seq OWNED BY unispy.addrequests.a
 
 
 --
--- TOC entry 222 (class 1259 OID 16614)
+-- TOC entry 211 (class 1259 OID 16392)
 -- Name: blocked; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -101,7 +101,7 @@ CREATE TABLE unispy.blocked (
 
 --
 -- TOC entry 3469 (class 0 OID 0)
--- Dependencies: 222
+-- Dependencies: 211
 -- Name: TABLE blocked; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -109,7 +109,7 @@ COMMENT ON TABLE unispy.blocked IS 'Block list.';
 
 
 --
--- TOC entry 221 (class 1259 OID 16613)
+-- TOC entry 212 (class 1259 OID 16395)
 -- Name: blocked_blockid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -124,7 +124,7 @@ CREATE SEQUENCE unispy.blocked_blockid_seq
 
 --
 -- TOC entry 3470 (class 0 OID 0)
--- Dependencies: 221
+-- Dependencies: 212
 -- Name: blocked_blockid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -132,7 +132,7 @@ ALTER SEQUENCE unispy.blocked_blockid_seq OWNED BY unispy.blocked.blockid;
 
 
 --
--- TOC entry 226 (class 1259 OID 16640)
+-- TOC entry 213 (class 1259 OID 16396)
 -- Name: friends; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -146,7 +146,7 @@ CREATE TABLE unispy.friends (
 
 --
 -- TOC entry 3471 (class 0 OID 0)
--- Dependencies: 226
+-- Dependencies: 213
 -- Name: TABLE friends; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -154,7 +154,7 @@ COMMENT ON TABLE unispy.friends IS 'Friend list.';
 
 
 --
--- TOC entry 225 (class 1259 OID 16639)
+-- TOC entry 214 (class 1259 OID 16399)
 -- Name: friends_friendid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -169,7 +169,7 @@ CREATE SEQUENCE unispy.friends_friendid_seq
 
 --
 -- TOC entry 3472 (class 0 OID 0)
--- Dependencies: 225
+-- Dependencies: 214
 -- Name: friends_friendid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -177,7 +177,7 @@ ALTER SEQUENCE unispy.friends_friendid_seq OWNED BY unispy.friends.friendid;
 
 
 --
--- TOC entry 209 (class 1259 OID 16407)
+-- TOC entry 215 (class 1259 OID 16400)
 -- Name: games; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -192,7 +192,7 @@ CREATE TABLE unispy.games (
 
 --
 -- TOC entry 3473 (class 0 OID 0)
--- Dependencies: 209
+-- Dependencies: 215
 -- Name: TABLE games; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -200,7 +200,7 @@ COMMENT ON TABLE unispy.games IS 'Game list.';
 
 
 --
--- TOC entry 229 (class 1259 OID 16669)
+-- TOC entry 216 (class 1259 OID 16405)
 -- Name: grouplist; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -213,7 +213,7 @@ CREATE TABLE unispy.grouplist (
 
 --
 -- TOC entry 3474 (class 0 OID 0)
--- Dependencies: 229
+-- Dependencies: 216
 -- Name: TABLE grouplist; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -221,7 +221,7 @@ COMMENT ON TABLE unispy.grouplist IS 'Old games use grouplist to create their ga
 
 
 --
--- TOC entry 215 (class 1259 OID 16513)
+-- TOC entry 217 (class 1259 OID 16410)
 -- Name: messages; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -238,7 +238,7 @@ CREATE TABLE unispy.messages (
 
 --
 -- TOC entry 3475 (class 0 OID 0)
--- Dependencies: 215
+-- Dependencies: 217
 -- Name: TABLE messages; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -246,7 +246,7 @@ COMMENT ON TABLE unispy.messages IS 'Friend messages.';
 
 
 --
--- TOC entry 214 (class 1259 OID 16512)
+-- TOC entry 218 (class 1259 OID 16416)
 -- Name: messages_messageid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -261,7 +261,7 @@ CREATE SEQUENCE unispy.messages_messageid_seq
 
 --
 -- TOC entry 3476 (class 0 OID 0)
--- Dependencies: 214
+-- Dependencies: 218
 -- Name: messages_messageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -269,7 +269,7 @@ ALTER SEQUENCE unispy.messages_messageid_seq OWNED BY unispy.messages.messageid;
 
 
 --
--- TOC entry 216 (class 1259 OID 16519)
+-- TOC entry 219 (class 1259 OID 16417)
 -- Name: partner; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -281,7 +281,7 @@ CREATE TABLE unispy.partner (
 
 --
 -- TOC entry 3477 (class 0 OID 0)
--- Dependencies: 216
+-- Dependencies: 219
 -- Name: TABLE partner; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -289,7 +289,7 @@ COMMENT ON TABLE unispy.partner IS 'Partner information, these information are u
 
 
 --
--- TOC entry 213 (class 1259 OID 16506)
+-- TOC entry 220 (class 1259 OID 16422)
 -- Name: profiles; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -342,7 +342,7 @@ CREATE TABLE unispy.profiles (
 
 --
 -- TOC entry 3478 (class 0 OID 0)
--- Dependencies: 213
+-- Dependencies: 220
 -- Name: TABLE profiles; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -350,7 +350,7 @@ COMMENT ON TABLE unispy.profiles IS 'User profiles.';
 
 
 --
--- TOC entry 212 (class 1259 OID 16505)
+-- TOC entry 221 (class 1259 OID 16459)
 -- Name: profiles_profileid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -365,7 +365,7 @@ CREATE SEQUENCE unispy.profiles_profileid_seq
 
 --
 -- TOC entry 3479 (class 0 OID 0)
--- Dependencies: 212
+-- Dependencies: 221
 -- Name: profiles_profileid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -373,7 +373,7 @@ ALTER SEQUENCE unispy.profiles_profileid_seq OWNED BY unispy.profiles.profileid;
 
 
 --
--- TOC entry 220 (class 1259 OID 16600)
+-- TOC entry 222 (class 1259 OID 16460)
 -- Name: pstorage; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -382,13 +382,13 @@ CREATE TABLE unispy.pstorage (
     profileid integer NOT NULL,
     ptype integer NOT NULL,
     dindex integer NOT NULL,
-    data character varying
+    data jsonb
 );
 
 
 --
 -- TOC entry 3480 (class 0 OID 0)
--- Dependencies: 220
+-- Dependencies: 222
 -- Name: TABLE pstorage; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -396,7 +396,7 @@ COMMENT ON TABLE unispy.pstorage IS 'Old games use pstorage to store game data.'
 
 
 --
--- TOC entry 219 (class 1259 OID 16599)
+-- TOC entry 223 (class 1259 OID 16465)
 -- Name: pstorage_pstorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -411,7 +411,7 @@ CREATE SEQUENCE unispy.pstorage_pstorageid_seq
 
 --
 -- TOC entry 3481 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 223
 -- Name: pstorage_pstorageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -419,7 +419,7 @@ ALTER SEQUENCE unispy.pstorage_pstorageid_seq OWNED BY unispy.pstorage.pstoragei
 
 
 --
--- TOC entry 218 (class 1259 OID 16591)
+-- TOC entry 224 (class 1259 OID 16466)
 -- Name: sakestorage; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -431,7 +431,7 @@ CREATE TABLE unispy.sakestorage (
 
 --
 -- TOC entry 3482 (class 0 OID 0)
--- Dependencies: 218
+-- Dependencies: 224
 -- Name: TABLE sakestorage; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -439,7 +439,7 @@ COMMENT ON TABLE unispy.sakestorage IS 'Sake storage system.';
 
 
 --
--- TOC entry 217 (class 1259 OID 16590)
+-- TOC entry 225 (class 1259 OID 16471)
 -- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -454,7 +454,7 @@ CREATE SEQUENCE unispy.sakestorage_sakestorageid_seq
 
 --
 -- TOC entry 3483 (class 0 OID 0)
--- Dependencies: 217
+-- Dependencies: 225
 -- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -462,7 +462,7 @@ ALTER SEQUENCE unispy.sakestorage_sakestorageid_seq OWNED BY unispy.sakestorage.
 
 
 --
--- TOC entry 228 (class 1259 OID 16652)
+-- TOC entry 226 (class 1259 OID 16472)
 -- Name: subprofiles; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -483,7 +483,7 @@ CREATE TABLE unispy.subprofiles (
 
 --
 -- TOC entry 3484 (class 0 OID 0)
--- Dependencies: 228
+-- Dependencies: 226
 -- Name: TABLE subprofiles; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -491,7 +491,7 @@ COMMENT ON TABLE unispy.subprofiles IS 'User subprofiles.';
 
 
 --
--- TOC entry 227 (class 1259 OID 16651)
+-- TOC entry 227 (class 1259 OID 16481)
 -- Name: subprofiles_subprofileid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -514,7 +514,7 @@ ALTER SEQUENCE unispy.subprofiles_subprofileid_seq OWNED BY unispy.subprofiles.s
 
 
 --
--- TOC entry 211 (class 1259 OID 16494)
+-- TOC entry 228 (class 1259 OID 16482)
 -- Name: users; Type: TABLE; Schema: unispy; Owner: -
 --
 
@@ -533,7 +533,7 @@ CREATE TABLE unispy.users (
 
 --
 -- TOC entry 3486 (class 0 OID 0)
--- Dependencies: 211
+-- Dependencies: 228
 -- Name: TABLE users; Type: COMMENT; Schema: unispy; Owner: -
 --
 
@@ -541,7 +541,7 @@ COMMENT ON TABLE unispy.users IS 'User account information.';
 
 
 --
--- TOC entry 210 (class 1259 OID 16493)
+-- TOC entry 229 (class 1259 OID 16492)
 -- Name: users_userid_seq; Type: SEQUENCE; Schema: unispy; Owner: -
 --
 
@@ -556,7 +556,7 @@ CREATE SEQUENCE unispy.users_userid_seq
 
 --
 -- TOC entry 3487 (class 0 OID 0)
--- Dependencies: 210
+-- Dependencies: 229
 -- Name: users_userid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: -
 --
 
@@ -564,7 +564,7 @@ ALTER SEQUENCE unispy.users_userid_seq OWNED BY unispy.users.userid;
 
 
 --
--- TOC entry 3263 (class 2604 OID 16629)
+-- TOC entry 3219 (class 2604 OID 16493)
 -- Name: addrequests addrequestid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -572,7 +572,7 @@ ALTER TABLE ONLY unispy.addrequests ALTER COLUMN addrequestid SET DEFAULT nextva
 
 
 --
--- TOC entry 3262 (class 2604 OID 16617)
+-- TOC entry 3220 (class 2604 OID 16494)
 -- Name: blocked blockid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -580,7 +580,7 @@ ALTER TABLE ONLY unispy.blocked ALTER COLUMN blockid SET DEFAULT nextval('unispy
 
 
 --
--- TOC entry 3264 (class 2604 OID 16643)
+-- TOC entry 3221 (class 2604 OID 16495)
 -- Name: friends friendid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -588,7 +588,7 @@ ALTER TABLE ONLY unispy.friends ALTER COLUMN friendid SET DEFAULT nextval('unisp
 
 
 --
--- TOC entry 3258 (class 2604 OID 16516)
+-- TOC entry 3223 (class 2604 OID 16496)
 -- Name: messages messageid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -596,7 +596,7 @@ ALTER TABLE ONLY unispy.messages ALTER COLUMN messageid SET DEFAULT nextval('uni
 
 
 --
--- TOC entry 3225 (class 2604 OID 16509)
+-- TOC entry 3256 (class 2604 OID 16497)
 -- Name: profiles profileid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -604,7 +604,7 @@ ALTER TABLE ONLY unispy.profiles ALTER COLUMN profileid SET DEFAULT nextval('uni
 
 
 --
--- TOC entry 3261 (class 2604 OID 16603)
+-- TOC entry 3257 (class 2604 OID 16498)
 -- Name: pstorage pstorageid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -612,7 +612,7 @@ ALTER TABLE ONLY unispy.pstorage ALTER COLUMN pstorageid SET DEFAULT nextval('un
 
 
 --
--- TOC entry 3260 (class 2604 OID 16594)
+-- TOC entry 3258 (class 2604 OID 16499)
 -- Name: sakestorage sakestorageid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -620,7 +620,7 @@ ALTER TABLE ONLY unispy.sakestorage ALTER COLUMN sakestorageid SET DEFAULT nextv
 
 
 --
--- TOC entry 3265 (class 2604 OID 16655)
+-- TOC entry 3263 (class 2604 OID 16500)
 -- Name: subprofiles subprofileid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -628,7 +628,7 @@ ALTER TABLE ONLY unispy.subprofiles ALTER COLUMN subprofileid SET DEFAULT nextva
 
 
 --
--- TOC entry 3219 (class 2604 OID 16497)
+-- TOC entry 3269 (class 2604 OID 16501)
 -- Name: users userid; Type: DEFAULT; Schema: unispy; Owner: -
 --
 
@@ -636,8 +636,8 @@ ALTER TABLE ONLY unispy.users ALTER COLUMN userid SET DEFAULT nextval('unispy.us
 
 
 --
--- TOC entry 3455 (class 0 OID 16626)
--- Dependencies: 224
+-- TOC entry 3440 (class 0 OID 16386)
+-- Dependencies: 209
 -- Data for Name: addrequests; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -646,8 +646,8 @@ COPY unispy.addrequests (addrequestid, profileid, namespaceid, targetid, reason,
 
 
 --
--- TOC entry 3453 (class 0 OID 16614)
--- Dependencies: 222
+-- TOC entry 3442 (class 0 OID 16392)
+-- Dependencies: 211
 -- Data for Name: blocked; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -656,8 +656,8 @@ COPY unispy.blocked (blockid, profileid, namespaceid, targetid) FROM stdin;
 
 
 --
--- TOC entry 3457 (class 0 OID 16640)
--- Dependencies: 226
+-- TOC entry 3444 (class 0 OID 16396)
+-- Dependencies: 213
 -- Data for Name: friends; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -666,8 +666,8 @@ COPY unispy.friends (friendid, profileid, namespaceid, targetid) FROM stdin;
 
 
 --
--- TOC entry 3440 (class 0 OID 16407)
--- Dependencies: 209
+-- TOC entry 3446 (class 0 OID 16400)
+-- Dependencies: 215
 -- Data for Name: games; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -1431,6 +1431,7 @@ COPY unispy.games (gameid, gamename, secretkey, description, disabled) FROM stdi
 838	ut2004d	\N	Unreal Tournament 2004 Demo	f
 839	contractjackd	\N	Contract Jack Demo	f
 840	empiresd	\N	Empires: Dawn of the Modern World Demo	f
+1104	regimentps2	\N	The Regiment PS2	f
 841	empiresdam	\N	Empires: Dawn of the Modern World	f
 842	mtgbgrounds	\N	Magic The Gathering: Battlegrounds	f
 843	groundcontrol2	\N	Ground Control 2	f
@@ -1664,7 +1665,6 @@ COPY unispy.games (gameid, gamename, secretkey, description, disabled) FROM stdi
 1101	civ4	y3D9Hw	Civilization IV	f
 1102	civ4am	y3D9Hw	Civilization IV (Automatch)	f
 1103	regimentpc	\N	The Regiment PC	f
-1104	regimentps2	\N	The Regiment PS2	f
 1105	olvps2	\N	Outlaw Volleyball PS2	f
 1106	battlefield2d	\N	Battlefield 2 Demo	f
 1108	fswps2	\N	Full Spectrum Warrior PS2	f
@@ -2931,6 +2931,7 @@ COPY unispy.games (gameid, gamename, secretkey, description, disabled) FROM stdi
 2436	biahhPRps3	\N	Brothers In Arms: Hell's Highway (PS3) (RUS)	f
 2437	biahhPRps3am	\N	Brothers In Arms: Hell's Highway  Automatch (PS3) (POL/RUS)	f
 2438	biahhPRps3d	\N	Brothers In Arms: Hell's Highway  Demo (PS3) (RUS)	f
+2643	pokedngnwii	\N	Pokemon Dungeon (Wii)	f
 2439	biahhPCHpc	\N	Brothers In Arms: Hell's Highway (PC) (POL/CZE/HUNG)	f
 2440	biahhPCHpcam	\N	Brothers In Arms: Hell's Highway  Automatch (PC) (POL/CZE/HUNG)	f
 2441	biahhRUSpc	\N	Brothers In Arms: Hell's Highway (PC) (RUS)	f
@@ -3133,7 +3134,6 @@ COPY unispy.games (gameid, gamename, secretkey, description, disabled) FROM stdi
 2640	bderlandsx360d	\N	Borderlands Demo (360)	f
 2641	simsportsds	\N	MySims Sports (DS)	f
 2642	simsportswii	\N	MySims Sports (Wii)	f
-2643	pokedngnwii	\N	Pokemon Dungeon (Wii)	f
 2644	arma2pc	\N	Arma II (PC)	f
 2645	arma2pcam	\N	Arma II Automatch (PC)	f
 2646	arma2pcd	\N	Arma II Demo (PC)	f
@@ -3475,8 +3475,8 @@ COPY unispy.games (gameid, gamename, secretkey, description, disabled) FROM stdi
 
 
 --
--- TOC entry 3460 (class 0 OID 16669)
--- Dependencies: 229
+-- TOC entry 3447 (class 0 OID 16405)
+-- Dependencies: 216
 -- Data for Name: grouplist; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5176,8 +5176,8 @@ COPY unispy.grouplist (groupid, gameid, roomname) FROM stdin;
 
 
 --
--- TOC entry 3446 (class 0 OID 16513)
--- Dependencies: 215
+-- TOC entry 3448 (class 0 OID 16410)
+-- Dependencies: 217
 -- Data for Name: messages; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5186,8 +5186,8 @@ COPY unispy.messages (messageid, namespaceid, type, "from", "to", date, message)
 
 
 --
--- TOC entry 3447 (class 0 OID 16519)
--- Dependencies: 216
+-- TOC entry 3450 (class 0 OID 16417)
+-- Dependencies: 219
 -- Data for Name: partner; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5198,8 +5198,8 @@ COPY unispy.partner (partnerid, partnername) FROM stdin;
 
 
 --
--- TOC entry 3444 (class 0 OID 16506)
--- Dependencies: 213
+-- TOC entry 3451 (class 0 OID 16422)
+-- Dependencies: 220
 -- Data for Name: profiles; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5213,8 +5213,8 @@ COPY unispy.profiles (profileid, userid, nick, serverflag, status, statstring, l
 
 
 --
--- TOC entry 3451 (class 0 OID 16600)
--- Dependencies: 220
+-- TOC entry 3453 (class 0 OID 16460)
+-- Dependencies: 222
 -- Data for Name: pstorage; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5225,8 +5225,8 @@ COPY unispy.pstorage (pstorageid, profileid, ptype, dindex, data) FROM stdin;
 
 
 --
--- TOC entry 3449 (class 0 OID 16591)
--- Dependencies: 218
+-- TOC entry 3455 (class 0 OID 16466)
+-- Dependencies: 224
 -- Data for Name: sakestorage; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5235,8 +5235,8 @@ COPY unispy.sakestorage (sakestorageid, tableid) FROM stdin;
 
 
 --
--- TOC entry 3459 (class 0 OID 16652)
--- Dependencies: 228
+-- TOC entry 3457 (class 0 OID 16472)
+-- Dependencies: 226
 -- Data for Name: subprofiles; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5250,8 +5250,8 @@ COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partn
 
 
 --
--- TOC entry 3442 (class 0 OID 16494)
--- Dependencies: 211
+-- TOC entry 3459 (class 0 OID 16482)
+-- Dependencies: 228
 -- Data for Name: users; Type: TABLE DATA; Schema: unispy; Owner: -
 --
 
@@ -5266,7 +5266,7 @@ COPY unispy.users (userid, email, password, emailverified, lastip, lastonline, c
 
 --
 -- TOC entry 3488 (class 0 OID 0)
--- Dependencies: 223
+-- Dependencies: 210
 -- Name: addrequests_addrequestid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5275,7 +5275,7 @@ SELECT pg_catalog.setval('unispy.addrequests_addrequestid_seq', 1, false);
 
 --
 -- TOC entry 3489 (class 0 OID 0)
--- Dependencies: 221
+-- Dependencies: 212
 -- Name: blocked_blockid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5284,7 +5284,7 @@ SELECT pg_catalog.setval('unispy.blocked_blockid_seq', 1, false);
 
 --
 -- TOC entry 3490 (class 0 OID 0)
--- Dependencies: 225
+-- Dependencies: 214
 -- Name: friends_friendid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5293,7 +5293,7 @@ SELECT pg_catalog.setval('unispy.friends_friendid_seq', 1, false);
 
 --
 -- TOC entry 3491 (class 0 OID 0)
--- Dependencies: 214
+-- Dependencies: 218
 -- Name: messages_messageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5302,7 +5302,7 @@ SELECT pg_catalog.setval('unispy.messages_messageid_seq', 1, false);
 
 --
 -- TOC entry 3492 (class 0 OID 0)
--- Dependencies: 212
+-- Dependencies: 221
 -- Name: profiles_profileid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5311,7 +5311,7 @@ SELECT pg_catalog.setval('unispy.profiles_profileid_seq', 6, true);
 
 --
 -- TOC entry 3493 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 223
 -- Name: pstorage_pstorageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5320,7 +5320,7 @@ SELECT pg_catalog.setval('unispy.pstorage_pstorageid_seq', 3, true);
 
 --
 -- TOC entry 3494 (class 0 OID 0)
--- Dependencies: 217
+-- Dependencies: 225
 -- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5338,7 +5338,7 @@ SELECT pg_catalog.setval('unispy.subprofiles_subprofileid_seq', 5, true);
 
 --
 -- TOC entry 3496 (class 0 OID 0)
--- Dependencies: 210
+-- Dependencies: 229
 -- Name: users_userid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: -
 --
 
@@ -5346,7 +5346,7 @@ SELECT pg_catalog.setval('unispy.users_userid_seq', 5, true);
 
 
 --
--- TOC entry 3287 (class 2606 OID 16633)
+-- TOC entry 3271 (class 2606 OID 16503)
 -- Name: addrequests addrequests_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5355,7 +5355,7 @@ ALTER TABLE ONLY unispy.addrequests
 
 
 --
--- TOC entry 3285 (class 2606 OID 16619)
+-- TOC entry 3273 (class 2606 OID 16505)
 -- Name: blocked blocked_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5364,7 +5364,7 @@ ALTER TABLE ONLY unispy.blocked
 
 
 --
--- TOC entry 3289 (class 2606 OID 16645)
+-- TOC entry 3275 (class 2606 OID 16507)
 -- Name: friends friends_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5373,7 +5373,7 @@ ALTER TABLE ONLY unispy.friends
 
 
 --
--- TOC entry 3271 (class 2606 OID 16441)
+-- TOC entry 3277 (class 2606 OID 16509)
 -- Name: games games_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5382,7 +5382,7 @@ ALTER TABLE ONLY unispy.games
 
 
 --
--- TOC entry 3293 (class 2606 OID 16675)
+-- TOC entry 3279 (class 2606 OID 16511)
 -- Name: grouplist grouplist_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5391,7 +5391,7 @@ ALTER TABLE ONLY unispy.grouplist
 
 
 --
--- TOC entry 3277 (class 2606 OID 16518)
+-- TOC entry 3281 (class 2606 OID 16513)
 -- Name: messages messages_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5400,7 +5400,7 @@ ALTER TABLE ONLY unispy.messages
 
 
 --
--- TOC entry 3279 (class 2606 OID 16525)
+-- TOC entry 3283 (class 2606 OID 16515)
 -- Name: partner partner_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5409,7 +5409,7 @@ ALTER TABLE ONLY unispy.partner
 
 
 --
--- TOC entry 3275 (class 2606 OID 16511)
+-- TOC entry 3285 (class 2606 OID 16517)
 -- Name: profiles profiles_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5418,7 +5418,7 @@ ALTER TABLE ONLY unispy.profiles
 
 
 --
--- TOC entry 3283 (class 2606 OID 16607)
+-- TOC entry 3287 (class 2606 OID 16519)
 -- Name: pstorage pstorage_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5427,7 +5427,7 @@ ALTER TABLE ONLY unispy.pstorage
 
 
 --
--- TOC entry 3281 (class 2606 OID 16598)
+-- TOC entry 3289 (class 2606 OID 16521)
 -- Name: sakestorage sakestorage_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5436,7 +5436,7 @@ ALTER TABLE ONLY unispy.sakestorage
 
 
 --
--- TOC entry 3291 (class 2606 OID 16663)
+-- TOC entry 3291 (class 2606 OID 16523)
 -- Name: subprofiles subprofiles_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5445,7 +5445,7 @@ ALTER TABLE ONLY unispy.subprofiles
 
 
 --
--- TOC entry 3273 (class 2606 OID 16532)
+-- TOC entry 3293 (class 2606 OID 16525)
 -- Name: users users_pk; Type: CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5454,7 +5454,7 @@ ALTER TABLE ONLY unispy.users
 
 
 --
--- TOC entry 3297 (class 2606 OID 16634)
+-- TOC entry 3294 (class 2606 OID 16526)
 -- Name: addrequests addrequests_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5463,7 +5463,7 @@ ALTER TABLE ONLY unispy.addrequests
 
 
 --
--- TOC entry 3296 (class 2606 OID 16620)
+-- TOC entry 3295 (class 2606 OID 16531)
 -- Name: blocked blocked_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5472,7 +5472,7 @@ ALTER TABLE ONLY unispy.blocked
 
 
 --
--- TOC entry 3298 (class 2606 OID 16646)
+-- TOC entry 3296 (class 2606 OID 16536)
 -- Name: friends friends_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5481,7 +5481,7 @@ ALTER TABLE ONLY unispy.friends
 
 
 --
--- TOC entry 3300 (class 2606 OID 16676)
+-- TOC entry 3297 (class 2606 OID 16541)
 -- Name: grouplist grouplist_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5490,7 +5490,7 @@ ALTER TABLE ONLY unispy.grouplist
 
 
 --
--- TOC entry 3294 (class 2606 OID 16533)
+-- TOC entry 3298 (class 2606 OID 16546)
 -- Name: profiles profiles_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5499,7 +5499,7 @@ ALTER TABLE ONLY unispy.profiles
 
 
 --
--- TOC entry 3295 (class 2606 OID 16608)
+-- TOC entry 3299 (class 2606 OID 16551)
 -- Name: pstorage pstorage_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5508,7 +5508,7 @@ ALTER TABLE ONLY unispy.pstorage
 
 
 --
--- TOC entry 3299 (class 2606 OID 16664)
+-- TOC entry 3300 (class 2606 OID 16556)
 -- Name: subprofiles subprofiles_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: -
 --
 
@@ -5516,7 +5516,7 @@ ALTER TABLE ONLY unispy.subprofiles
     ADD CONSTRAINT subprofiles_fk FOREIGN KEY (profileid) REFERENCES unispy.profiles(profileid);
 
 
--- Completed on 2022-01-19 22:45:26 CET
+-- Completed on 2022-02-27 02:04:35 CET
 
 --
 -- PostgreSQL database dump complete
