@@ -10,6 +10,7 @@ using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
 using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
 using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
@@ -170,6 +171,32 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 ((HttpSession)Session).OnConnect -= OnConnected;
                 ((HttpSession)Session).OnDisconnect -= OnDisconnected;
             }
+        }
+        /// <summary>
+        /// Sending IResponse to client(ciphertext or plaintext)
+        /// </summary>
+        /// <param name="response"></param>
+        public void Send(IResponse response)
+        {
+            byte[] buffer = null;
+            response.Build();
+            if (response.SendingBuffer.GetType() == typeof(string))
+            {
+                buffer = UniSpyEncoding.GetBytes((string)response.SendingBuffer);
+            }
+            else
+            {
+                buffer = (byte[])response.SendingBuffer;
+            }
+
+            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (byte[])buffer);
+
+            //Encrypt the response if Crypto is not null
+            if (Crypto is not null)
+            {
+                buffer = Crypto.Encrypt(buffer);
+            }
+            Session.Send(buffer);
         }
     }
 }

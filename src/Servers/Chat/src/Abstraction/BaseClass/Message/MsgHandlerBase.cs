@@ -3,7 +3,7 @@ using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
@@ -69,8 +69,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                     _channel.MultiCastExceptSender(_user, _response);
                     break;
                 case MessageType.UserMessage:
-                _response.Build();
-                    _reciever.Session.Send(_response.SendingBuffer);
+                    _client.Send(_response);
                     break;
             }
         }

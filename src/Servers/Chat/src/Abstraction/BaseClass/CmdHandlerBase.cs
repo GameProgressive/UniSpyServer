@@ -2,6 +2,7 @@
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
@@ -29,7 +30,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         {
             if (ex is IRCException)
             {
-                _client.Session.Send(((IRCException)ex).ErrorResponse);
+                _client.Send(((IRCException)ex));
             }
             else
             {

@@ -8,5 +8,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
         ISession Session { get; }
         ICryptography Crypto { get; }
         ClientInfoBase Info { get; }
+        public void Send(IResponse response);
     }
 }

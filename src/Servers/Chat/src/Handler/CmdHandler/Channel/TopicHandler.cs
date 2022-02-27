@@ -5,6 +5,7 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
@@ -12,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class TopicHandler : ChannelHandlerBase
     {
         private new TopicRequest _request => (TopicRequest)base._request;
-        private new TopicResult _result{ get => (TopicResult)base._result; set => base._result = value; }
+        private new TopicResult _result { get => (TopicResult)base._result; set => base._result = value; }
         public TopicHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new TopicResult();
@@ -45,7 +46,14 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 case TopicRequestType.GetChannelTopic:
                     _response.Build();
-                    _client.Session.Send(_response.SendingBuffer);
+                    if (_client.Crypto is not null)
+                    {
+                        _client.Session.Send(_client.Crypto.Encrypt(UniSpyEncoding.GetBytes(_response.SendingBuffer)));
+                    }
+                    else
+                    {
+                        _client.Session.Send(_response.SendingBuffer);
+                    }
                     break;
                 case TopicRequestType.SetChannelTopic:
                     _channel.MultiCast(_response);

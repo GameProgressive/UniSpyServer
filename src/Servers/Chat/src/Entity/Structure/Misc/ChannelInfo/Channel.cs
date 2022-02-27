@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
@@ -57,10 +58,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <returns></returns>
         public bool MultiCast(IResponse message)
         {
-            message.Build();
             foreach (var kv in Users)
             {
-                kv.Value.Session.Send((string)message.SendingBuffer);
+                var client = Client.ClientPool[kv.Value.Session.RemoteIPEndPoint];
+                if (client == null)
+                {
+                    continue;
+                }
+                client.Send(message);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
@@ -74,7 +79,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 {
                     continue;
                 }
-                kv.Value.Session.Send((string)message.SendingBuffer);
+                var client = Client.ClientPool[kv.Value.Session.RemoteIPEndPoint];
+                if (client == null)
+                {
+                    continue;
+                }
+                client.Send(message);
             }
 
             return true;
