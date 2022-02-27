@@ -73,6 +73,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
             _result.ResponseProof =
                 LoginChallengeProof.GenerateProof(proofData);
+
+            _client.Info.LoginPhase = LoginStatus.Completed;
         }
 
         protected override void ResponseConstruct()
@@ -95,7 +97,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     _client.Info.BasicInfo.UniqueNick = _request.UniqueNick;
                     _client.Info.BasicInfo.NamespaceId = _request.NamespaceID;
                     _client.Info.BasicInfo.ProductId = _request.ProductID;
-                    _client.Info.SDKRevision.SDKRevisionType = _request.SDKRevisionType;
+                    _client.Info.SdkRevision.SDKRevisionType = _request.SDKRevisionType;
                     break;
                 case LoginType.AuthToken:
                     _client.Info.BasicInfo.AuthToken = _request.AuthToken;

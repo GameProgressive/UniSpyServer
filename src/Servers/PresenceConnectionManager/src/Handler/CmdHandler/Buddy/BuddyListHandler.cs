@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            if (!_client.Info.SDKRevision.IsSupportGPINewStatusNotification)
+            if (!_client.Info.SdkRevision.IsSupportGPINewStatusNotification)
             {
                 return;
             }

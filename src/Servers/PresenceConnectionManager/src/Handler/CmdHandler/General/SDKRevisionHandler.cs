@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         protected override void RequestCheck() { }
         protected override void DataOperation()
         {
-            if (_client.Info.SDKRevision.IsSupportGPINewListRetrevalOnLogin)
+            if (_client.Info.SdkRevision.IsSupportGPINewListRetrevalOnLogin)
             {
                 //send buddy list and block list
                 new BuddyListHandler(_client, null).Handle();
