@@ -23,28 +23,28 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         {
             base.Parse();
 
-            if (RequestKeyValues.ContainsKey("pid") && RequestKeyValues.ContainsKey("resp"))
+            if (KeyValues.ContainsKey("pid") && KeyValues.ContainsKey("resp"))
             {
                 //we parse profileid here
                 int profileID;
-                if (!int.TryParse(RequestKeyValues["pid"], out profileID))
+                if (!int.TryParse(KeyValues["pid"], out profileID))
                 {
                     throw new GSException("pid format is incorrect.");
                 }
                 ProfileId = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
             }
-            else if (RequestKeyValues.ContainsKey("authtoken") && RequestKeyValues.ContainsKey("response"))
+            else if (KeyValues.ContainsKey("authtoken") && KeyValues.ContainsKey("response"))
             {
-                AuthToken = RequestKeyValues["authtoken"];
-                Response = RequestKeyValues["response"];
+                AuthToken = KeyValues["authtoken"];
+                Response = KeyValues["response"];
                 RequestType = AuthMethod.PartnerIDAuth;
             }
-            else if (RequestKeyValues.ContainsKey("keyhash") && RequestKeyValues.ContainsKey("nick"))
+            else if (KeyValues.ContainsKey("keyhash") && KeyValues.ContainsKey("nick"))
             {
                 RequestType = AuthMethod.CDkeyAuth;
-                KeyHash = RequestKeyValues["keyhash"];
-                Nick = RequestKeyValues["nick"];
+                KeyHash = KeyValues["keyhash"];
+                Nick = KeyValues["nick"];
             }
             else
             {

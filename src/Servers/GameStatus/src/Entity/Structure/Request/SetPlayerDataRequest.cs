@@ -28,28 +28,28 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             base.Parse();
 
 
-            if (!RequestKeyValues.ContainsKey("pid"))
+            if (!KeyValues.ContainsKey("pid"))
                 throw new GSException("length is missing.");
 
-            if (!RequestKeyValues.ContainsKey("ptype"))
+            if (!KeyValues.ContainsKey("ptype"))
                 throw new GSException("length is missing.");
 
-            if (!RequestKeyValues.ContainsKey("dindex"))
+            if (!KeyValues.ContainsKey("dindex"))
                 throw new GSException("length is missing.");
 
-            if (!RequestKeyValues.ContainsKey("length"))
+            if (!KeyValues.ContainsKey("length"))
                 throw new GSException("length is missing.");
 
 
             int profileID;
-            if (!int.TryParse(RequestKeyValues["pid"], out profileID))
+            if (!int.TryParse(KeyValues["pid"], out profileID))
             {
                 throw new GSException("pid format is incorrect.");
             }
             ProfileId = profileID;
 
             int storageType;
-            if (!int.TryParse(RequestKeyValues["ptype"], out storageType))
+            if (!int.TryParse(KeyValues["ptype"], out storageType))
             {
                 throw new GSException("ptype is missing.");
             }
@@ -62,21 +62,21 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             StorageType = (PersistStorageType)storageType;
 
             int dindex;
-            if (!int.TryParse(RequestKeyValues["dindex"], out dindex))
+            if (!int.TryParse(KeyValues["dindex"], out dindex))
             {
                 throw new GSException("dindex format is incorrect.");
             }
             DataIndex = dindex;
 
             int length;
-            if (!int.TryParse(RequestKeyValues["length"], out length))
+            if (!int.TryParse(KeyValues["length"], out length))
             {
                 throw new GSException("length format is incorrect.");
             }
             Length = length;
 
             //we extract the key value data
-            foreach (var d in RequestKeyValues.Skip(5))
+            foreach (var d in KeyValues.Skip(5))
             {
                 if (d.Key == "lid")
                     break;

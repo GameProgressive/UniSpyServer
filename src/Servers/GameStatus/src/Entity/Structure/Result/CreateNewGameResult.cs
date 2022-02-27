@@ -2,9 +2,9 @@
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
-    public sealed class CreateNewGameDataResult : ResultBase
+    public sealed class CreateNewGameResult : ResultBase
     {
-        public CreateNewGameDataResult()
+        public CreateNewGameResult()
         {
         }
     }

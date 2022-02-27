@@ -9,11 +9,11 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// Handles game snapshot and update game data
     /// </summary>
     [HandlerContract("updgame")]
-    public sealed class UpdateGameDataHandler : CmdHandlerBase
+    public sealed class UpdateGameHandler : CmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdateGameDataHandler(IClient client, IRequest request) : base(client, request)
+        public UpdateGameHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new UpdateGameResult();
         }
@@ -21,12 +21,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         {
             throw new System.NotImplementedException();
         }
-
         protected override void DataOperation()
         {
             throw new System.NotImplementedException();
         }
-
         protected override void ResponseConstruct()
         {
             throw new System.NotImplementedException();

@@ -18,19 +18,19 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         {
             base.Parse();
 
-            if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("keyhash"))
+            if (!KeyValues.ContainsKey("nick") || !KeyValues.ContainsKey("keyhash"))
             {
                 throw new GSException("nick or keyhash is missing.");
             }
 
-            if (RequestKeyValues.ContainsKey("nick"))
+            if (KeyValues.ContainsKey("nick"))
             {
-                Nick = RequestKeyValues["nick"];
+                Nick = KeyValues["nick"];
             }
             
-            if (RequestKeyValues.ContainsKey("keyhash"))
+            if (KeyValues.ContainsKey("keyhash"))
             {
-                KeyHash = RequestKeyValues["keyhash"];
+                KeyHash = KeyValues["keyhash"];
             }
         }
     }

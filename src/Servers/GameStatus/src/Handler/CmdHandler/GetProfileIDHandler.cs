@@ -11,14 +11,14 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("getpid")]
-    public sealed class GetProfileIDHandler : CmdHandlerBase
+    public sealed class GetProfileIdHandler : CmdHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private int _protileid;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
         private new GetProfileIDResult _result{ get => (GetProfileIDResult)base._result; set => base._result = value; }
-        public GetProfileIDHandler(IClient client, IRequest request) : base(client, request)
+        public GetProfileIdHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new GetProfileIDResult();
         }

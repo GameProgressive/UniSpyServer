@@ -1,21 +1,26 @@
 ﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Contract;
+using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
+    /// <summary>
+    /// Create a game specified information storage space
+    /// for further game snap shot storage
+    /// </summary>
     [HandlerContract("newgame")]
-
-    public sealed class CreateNewGameDataHandler : CmdHandlerBase
+    public sealed class CreateNewGameHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        private new CreateNewGameDataResult _result{ get => (CreateNewGameDataResult)base._result; set => base._result = value; }
-        public CreateNewGameDataHandler(IClient client, IRequest request) : base(client, request)
+        private new CreateNewGameResult _result { get => (CreateNewGameResult)base._result; set => base._result = value; }
+        private new CreateNewGameRequest _request => (CreateNewGameRequest)base._request;
+        public CreateNewGameHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new CreateNewGameDataResult();
+            _result = new CreateNewGameResult();
         }
 
         protected override void DataOperation()
@@ -24,7 +29,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         }
         protected override void ResponseConstruct()
         {
-            _response = new NewGameResponse(_request, _result);
+            _response = new CreateNewGameResponse(_request, _result);
         }
     }
 }

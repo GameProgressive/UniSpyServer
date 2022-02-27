@@ -115,7 +115,7 @@
     ],
     "compounds": [
         {
-            "name": "GP Servers",
+            "name": "PCM and PSP",
             "configurations": [
                 "PCM",
                 "PSP"
@@ -129,15 +129,14 @@
             ]
         },
         {
-            "name": "GameStatus servers",
+            "name": "GS and PSP",
             "configurations": [
-                "PCM",
                 "PSP",
                 "GameStatus"
             ]
         },
         {
-            "name": "Sake servers",
+            "name": "SAKE and PCM",
             "configurations": [
                 "WebServer",
                 "PCM"

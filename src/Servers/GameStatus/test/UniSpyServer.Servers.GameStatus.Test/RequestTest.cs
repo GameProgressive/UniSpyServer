@@ -53,14 +53,14 @@ namespace UniSpyServer.Servers.GameStatus.Test
         public void NewGameTest()
         {
             var raw = @"\newgame\\connid\123\sesskey\123456\lid\1";
-            var request = new NewGameRequest(raw);
+            var request = new CreateNewGameRequest(raw);
             request.Parse();
             Assert.Equal((int)123, request.ConnectionID);
             Assert.Equal((int)123456, request.SessionKey);
             Assert.Equal((int)1, request.OperationID);
 
             raw = @"\newgame\\connid\123\sesskey\123456\challenge\123456789\lid\1";
-            request = new NewGameRequest(raw);
+            request = new CreateNewGameRequest(raw);
             request.Parse();
             Assert.Equal((int)123, request.ConnectionID);
             Assert.Equal((int)123456, request.SessionKey);

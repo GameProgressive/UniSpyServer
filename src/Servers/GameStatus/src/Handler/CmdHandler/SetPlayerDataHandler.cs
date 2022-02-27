@@ -1,8 +1,8 @@
-﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Contract;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -39,14 +39,14 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
                     ps.Dindex = _request.DataIndex;
                     ps.ProfileId = _request.ProfileId;
                     ps.Ptype = (int)_request.StorageType;
-                    ps.Data = _request.KeyValueString;
+                    ps.Data = _request.KeyValues;
                     db.Pstorages.Add(ps);
                 }
                 else if (result.Count() == 1)
                 {
                     //update an existed record in database
                     ps = result.First();
-                    ps.Data = _request.KeyValueString;
+                    ps.Data = _request.KeyValues;
                 }
 
                 db.SaveChanges();

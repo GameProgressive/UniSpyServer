@@ -5,11 +5,11 @@ using System;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
-    public sealed class NewGameResponse : ResponseBase
+    public sealed class CreateNewGameResponse : ResponseBase
     {
-        private new CreateNewGameDataResult _result => (CreateNewGameDataResult)base._result;
-        private new NewGameRequest _request => (NewGameRequest)base._request;
-        public NewGameResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        private new CreateNewGameResult _result => (CreateNewGameResult)base._result;
+        private new CreateNewGameRequest _request => (CreateNewGameRequest)base._request;
+        public CreateNewGameResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

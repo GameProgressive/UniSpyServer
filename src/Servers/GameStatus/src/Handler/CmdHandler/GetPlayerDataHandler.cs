@@ -1,12 +1,12 @@
-﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Contract;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
-        private new GetPlayerDataResult _result{ get => (GetPlayerDataResult)base._result; set => base._result = value; }
+        private new GetPlayerDataResult _result { get => (GetPlayerDataResult)base._result; set => base._result = value; }
         public GetPlayerDataHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new GetPlayerDataResult();
@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
                 }
                 else
                 {
-                    keyValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(result.First());
+                    keyValues = result.FirstOrDefault();
                 }
                 //TODO figure out what is the function of keys in request
             }

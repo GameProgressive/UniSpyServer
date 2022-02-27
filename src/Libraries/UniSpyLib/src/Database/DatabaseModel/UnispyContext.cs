@@ -394,7 +394,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
                     .HasDefaultValueSql("nextval('pstorage_pstorageid_seq'::regclass)");
 
                 entity.Property(e => e.Data)
-                    .HasColumnType("character varying")
+                    .HasColumnType("jsonb")
                     .HasColumnName("data");
 
                 entity.Property(e => e.Dindex).HasColumnName("dindex");

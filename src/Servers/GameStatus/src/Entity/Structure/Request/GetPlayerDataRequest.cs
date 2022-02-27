@@ -25,20 +25,20 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             base.Parse();
 
 
-            if (RequestKeyValues.ContainsKey("pid"))
+            if (KeyValues.ContainsKey("pid"))
             {
                 int profileID;
-                if (!int.TryParse(RequestKeyValues["pid"], out profileID))
+                if (!int.TryParse(KeyValues["pid"], out profileID))
                 {
                     throw new GSException("pid format is incorrect.");
                 }
                 ProfileId = profileID;
             }
 
-            if (RequestKeyValues.ContainsKey("ptype"))
+            if (KeyValues.ContainsKey("ptype"))
             {
                 PersistStorageType storageType;
-                if (!Enum.TryParse(RequestKeyValues["ptype"], out storageType))
+                if (!Enum.TryParse(KeyValues["ptype"], out storageType))
                 {
                     throw new GSException("ptype format is incorrect.");
                 }
@@ -46,22 +46,22 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
             }
 
 
-            if (RequestKeyValues.ContainsKey("dindex"))
+            if (KeyValues.ContainsKey("dindex"))
             {
                 int dataIndex;
-                if (!int.TryParse(RequestKeyValues["dindex"], out dataIndex))
+                if (!int.TryParse(KeyValues["dindex"], out dataIndex))
                 {
                     throw new GSException("dindex format is incorrect.");
                 }
                 DataIndex = dataIndex;
             }
 
-            if (!RequestKeyValues.ContainsKey("keys"))
+            if (!KeyValues.ContainsKey("keys"))
             {
                 throw new GSException("keys is missing.");
             }
 
-            string keys = RequestKeyValues["keys"];
+            string keys = KeyValues["keys"];
             if (keys == "")
             {
                 GetAllDataFlag = true;
