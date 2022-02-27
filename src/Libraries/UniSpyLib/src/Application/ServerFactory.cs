@@ -16,7 +16,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         /// <summary>
         /// UniSpy server version
         /// </summary>
-        public static readonly string Version = "0.6.1";
+        public static readonly string Version = "0.7.0";
         /// <summary>
         /// UniSpy server name
         /// </summary>

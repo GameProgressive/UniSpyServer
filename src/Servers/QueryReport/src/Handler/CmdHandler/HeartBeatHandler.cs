@@ -85,6 +85,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
                     ServerID = _client.Session.Server.ServerID,
                     HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
                     HostPort = _request.ServerData.ContainsKey("hostport") ? ushort.Parse(_request.ServerData["hostport"]) : (ushort)6500,
+                    QueryReportPort = (ushort)_client.Session.RemoteIPEndPoint.Port,
                     GameName = _request.GameName,
                     InstantKey = _request.InstantKey,
                     ServerStatus = GameServerStatus.Normal,

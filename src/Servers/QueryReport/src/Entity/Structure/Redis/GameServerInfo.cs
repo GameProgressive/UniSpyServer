@@ -19,15 +19,20 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
         public IPAddress HostIPAddress { get; set; }
         [RedisKey]
         public ushort? HostPort { get; set; }
-
         [RedisKey]
         public uint? InstantKey { get; set; }
         [RedisKey]
         public string GameName { get; set; }
+        /// <summary>
+        /// The port for send heartbeat to query report server.
+        /// When a client want to connect to this game server, Server browser will send natneg message to this port.👌
+        /// </summary>
+        /// <value></value>
+        public ushort? QueryReportPort { get; set; }
         [JsonIgnore]
         public IPEndPoint HostIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
         [JsonIgnore]
-        public IPEndPoint HeartBeatIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
+        public IPEndPoint QueryReportIPEndPoint => new IPEndPoint(HostIPAddress, (int)QueryReportPort);
         public DateTime LastPacketReceivedTime { get; set; }
         // public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
         public GameServerStatus ServerStatus;

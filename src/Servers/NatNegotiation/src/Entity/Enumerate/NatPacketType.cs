@@ -9,6 +9,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         Init = 0,
         ErtAck = 3,
         Connect = 5,
+        ConnectAck = 6,
         AddressCheck = 10,
         NatifyRequest = 12,
         Report = 13,
@@ -39,6 +40,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         /// Notify participant to negotiate
         /// </summary>
         Connect,
+        /// <summary>
+        /// client received connect response
+        /// </summary>
         ConnectAck,
         /// <summary>
         /// Connect other participant with ping packet

@@ -26,6 +26,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
         public byte? ClientIndex { get; init; }
+        public bool IsGotConnectPacket { get; set; }
 
 
         public UserInfo() : base(TimeSpan.FromMinutes(3))

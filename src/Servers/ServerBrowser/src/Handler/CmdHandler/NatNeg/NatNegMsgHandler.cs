@@ -10,6 +10,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
@@ -52,7 +53,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             //TODO check the if the remote endpoint is correct
             _natNegCookie = new NatNegCookie
             {
-                HeartBeatIPEndPoint = _gameServer.HeartBeatIPEndPoint,
+                HeartBeatIPEndPoint = _gameServer.QueryReportIPEndPoint,
                 HostIPAddress = _gameServer.HostIPAddress,
                 HostPort = (ushort)_gameServer.HostPort,
                 NatNegMessage = _request.RawRequest,
@@ -73,10 +74,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             };
             var response = new ClientMessageResponse(request, result);
             response.Build();
-            _udpClient.Send(
-                (byte[])response.SendingBuffer,
-                response.SendingBuffer.Length,
-                _gameServer.HeartBeatIPEndPoint);
+            // we send 3 times to make sure the message is received
+            LogWriter.LogNetworkSending(_gameServer.QueryReportIPEndPoint, response.SendingBuffer);
+            // for (var i = 0; i < 3; i++)
+            // {
+            _udpClient.Send(response.SendingBuffer,
+                                response.SendingBuffer.Length,
+                                _gameServer.QueryReportIPEndPoint);
+            // }
         }
     }
 }

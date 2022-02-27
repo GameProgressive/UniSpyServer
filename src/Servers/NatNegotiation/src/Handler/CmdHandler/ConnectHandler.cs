@@ -28,7 +28,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _result = new ConnectResult();
         }
-
         protected override void RequestCheck()
         {
             _matchedUsers = _redisClient.Values.Where(
@@ -63,9 +62,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _negotiator = negotiators.First();
                 _negotiatee = negotiatees.First();
 
-                LogWriter.Info($"Find negotiatee {_negotiatee.RemoteIPEndPoint}");
-                LogWriter.Info($"Find negotiator {_negotiator.RemoteIPEndPoint}");
-
                 var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
                 _responseToNegotiator = new ConnectResponse(
                     request,
@@ -75,9 +71,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     _request,
                     new ConnectResult { RemoteEndPoint = _negotiator.RemoteIPEndPoint });
             }
-        }
-        protected override void Response()
-        {
+
+
             if (_responseToNegotiatee == null || _responseToNegotiator == null)
             {
                 return;
@@ -90,6 +85,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
             // test whether this way can notify users
             var client = new UdpClient();
+            LogWriter.Info($"Find two users: {_negotiator.RemoteIPEndPoint}, {_negotiatee.RemoteIPEndPoint}, we send connect packet to them.");
+            LogWriter.LogNetworkSending(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
+            LogWriter.LogNetworkSending(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
             client.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
             client.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
         }
