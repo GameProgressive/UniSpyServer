@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                throw new Exception("Edit topic failed because you are not channel operator.");
+                throw new ChatException("Edit topic failed because you are not channel operator.");
             }
             switch (_request.RequestType)
             {

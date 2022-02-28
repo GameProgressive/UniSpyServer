@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count != 1)
             {
-                throw new Exception.Exception("The number of IRC cmd params in WHOIS request is incorrect.");
+                throw new Exception.ChatException("The number of IRC cmd params in WHOIS request is incorrect.");
             }
 
             NickName = _cmdParams[0];

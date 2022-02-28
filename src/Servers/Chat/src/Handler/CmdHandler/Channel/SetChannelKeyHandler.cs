@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                throw new Exception("SETCHANKEY failed because you are not channel operator.");
+                throw new ChatException("SETCHANKEY failed because you are not channel operator.");
             }
             _channel.SetChannelKeyValue(_request.KeyValue);
             _result.ChannelName = _result.ChannelName;

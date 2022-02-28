@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 if (!_user.IsChannelOperator)
                 {
-                    throw new Exception("SETCKEY failed because you are not channel operator.");
+                    throw new ChatException("SETCKEY failed because you are not channel operator.");
                 }
                 _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetChannelUser(_request.NickName);

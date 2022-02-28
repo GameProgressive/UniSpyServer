@@ -19,13 +19,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count != 2)
             {
-                throw new Exception.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Exception.ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             int max;
             if (!int.TryParse(_cmdParams[0], out max))
             {
-                throw new Exception.Exception("The max number format is incorrect.");
+                throw new Exception.ChatException("The max number format is incorrect.");
             }
 
             MaxNumberOfChannels = max;

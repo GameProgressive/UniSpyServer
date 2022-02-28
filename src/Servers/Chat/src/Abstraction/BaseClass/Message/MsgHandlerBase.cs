@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                     }
                     break;
                 default:
-                    throw new Exception("Unknown chat message request type.");
+                    throw new ChatException("Unknown chat message request type.");
             }
         }
         protected override void DataOperation()

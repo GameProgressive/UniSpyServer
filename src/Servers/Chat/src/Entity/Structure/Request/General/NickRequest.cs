@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
                 return;
             }
             
-            throw new Exception.Exception("NICK request is invalid.");
+            throw new Exception.ChatException("NICK request is invalid.");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_longParam == null)
             {
-                throw new Exception.Exception("Quit reason is missing.");
+                throw new Exception.ChatException("Quit reason is missing.");
             }
 
             Reason = _longParam;

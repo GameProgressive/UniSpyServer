@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count < 3)
             {
-                throw new Exception.Exception("The number of IRC params in CRYPT request is incorrect.");
+                throw new Exception.ChatException("The number of IRC params in CRYPT request is incorrect.");
             }
 
             VersionID = _cmdParams[1];

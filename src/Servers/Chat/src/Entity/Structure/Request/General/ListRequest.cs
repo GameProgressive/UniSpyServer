@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count == 0)
             {
-                throw new Exception.Exception("The Search filter is missing.");
+                throw new Exception.ChatException("The Search filter is missing.");
             }
 
             IsSearchingChannel = true;

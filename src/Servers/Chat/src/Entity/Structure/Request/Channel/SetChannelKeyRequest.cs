@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
             if (_longParam == null)
             {
-                throw new Exception.Exception("Channel keys and values are missing.");
+                throw new Exception.ChatException("Channel keys and values are missing.");
             }
             _longParam = _longParam.Substring(1);
 

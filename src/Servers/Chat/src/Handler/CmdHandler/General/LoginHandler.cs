@@ -61,7 +61,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
                 if (result.Count() != 1)
                 {
-                    throw new Exception($"Can not find user with nickname:{_request.NickName} in database.");
+                    throw new ChatException($"Can not find user with nickname:{_request.NickName} in database.");
                 }
                 _result.ProfileId = result.First().profileid;
                 _result.UserID = result.First().userid;
@@ -86,7 +86,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                             };
                 if (result.Count() != 1)
                 {
-                    throw new Exception($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
+                    throw new ChatException($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
                 }
                 _result.ProfileId = result.First().profileid;
                 _result.UserID = result.First().userid;

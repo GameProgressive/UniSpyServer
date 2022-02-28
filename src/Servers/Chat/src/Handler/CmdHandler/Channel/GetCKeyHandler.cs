@@ -58,7 +58,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                throw new Exception("User's key value are empty.");
+                throw new ChatException("User's key value are empty.");
             }
 
             if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))

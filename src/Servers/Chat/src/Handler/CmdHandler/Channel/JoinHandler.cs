@@ -72,7 +72,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 if (_client.Info.IsJoinedChannel(_request.ChannelName))
                 {
                     // we do not send anything to this user and users in this channel
-                    throw new Exception($"User: {_user.Info.NickName} is already joined the channel: {_request.ChannelName}");
+                    throw new ChatException($"User: {_user.Info.NickName} is already joined the channel: {_request.ChannelName}");
                 }
                 else
                 {
@@ -94,7 +94,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        throw new Exception($"{_client.Info.NickName} is already in channel {_request.ChannelName}");
+                        throw new ChatException($"{_client.Info.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
                 }

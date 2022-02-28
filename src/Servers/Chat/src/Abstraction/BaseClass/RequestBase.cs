@@ -35,7 +35,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                throw new Entity.Exception.Exception($"IRC request is invalid {RawRequest}");
+                throw new Entity.Exception.ChatException($"IRC request is invalid {RawRequest}");
             }
 
             int indexOfColon = RawRequest.IndexOf(':');

@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             if (secretKey == null)
             {
                 _client.Session.Disconnect();
-                throw new Exception("secret key not found.");
+                throw new ChatException("secret key not found.");
             }
             _client.Info.GameSecretKey = secretKey;
             _client.Info.GameName = _request.GameName;

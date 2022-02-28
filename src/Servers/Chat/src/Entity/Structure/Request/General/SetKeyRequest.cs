@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 
             if (_longParam == null)
             {
-                throw new Exception.Exception("The keys and values are missing.");
+                throw new Exception.ChatException("The keys and values are missing.");
             }
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }
