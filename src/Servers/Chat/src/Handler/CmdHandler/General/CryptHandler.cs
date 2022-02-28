@@ -45,6 +45,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         {
             _response.Build();
             LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, _response.SendingBuffer);
+            // we need to send plaintext response here
             _client.Session.Send(_response.SendingBuffer);
         }
     }

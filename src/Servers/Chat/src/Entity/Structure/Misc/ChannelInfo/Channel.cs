@@ -58,14 +58,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <returns></returns>
         public bool MultiCast(IResponse message)
         {
-            foreach (var kv in Users)
+            foreach (var user in Users.Values)
             {
-                var client = Client.ClientPool[kv.Value.Session.RemoteIPEndPoint];
-                if (client == null)
-                {
-                    continue;
-                }
-                client.Send(message);
+                user.ClientRef.Send(message);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
@@ -73,18 +68,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool MultiCastExceptSender(ChannelUser sender, IResponse message)
         {
             message.Build();
-            foreach (var kv in Users)
+            foreach (var user in Users.Values)
             {
-                if (kv.Value.Session.RemoteIPEndPoint == sender.Session.RemoteIPEndPoint)
+                if (user.ClientRef.Session.RemoteIPEndPoint == sender.ClientRef.Session.RemoteIPEndPoint)
                 {
                     continue;
                 }
-                var client = Client.ClientPool[kv.Value.Session.RemoteIPEndPoint];
-                if (client == null)
-                {
-                    continue;
-                }
-                client.Send(message);
+                user.ClientRef.Send(message);
             }
 
             return true;
@@ -92,15 +82,15 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public string GetAllUsersNickString()
         {
             string nicks = "";
-            foreach (var kv in Users)
+            foreach (var user in Users.Values)
             {
-                if (kv.Value.IsChannelCreator)
+                if (user.IsChannelCreator)
                 {
-                    nicks += "@" + kv.Value.Info.NickName + " ";
+                    nicks += "@" + user.ClientRef.Info.NickName + " ";
                 }
                 else
                 {
-                    nicks += kv.Value.Info.NickName + " ";
+                    nicks += user.ClientRef.Info.NickName + " ";
                 }
             }
             //if user equals last user in channel we do not add space after it

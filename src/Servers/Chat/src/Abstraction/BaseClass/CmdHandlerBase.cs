@@ -32,10 +32,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
             {
                 _client.Send(((IRCException)ex));
             }
-            else
-            {
-                base.HandleException(ex);
-            }
+            base.HandleException(ex);
         }
         protected override void RequestCheck()
         {

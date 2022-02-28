@@ -2,6 +2,8 @@
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
+
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
@@ -40,12 +42,15 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             }
         }
 
-        protected override byte[] EncryptMessage(byte[] buffer)
+        protected override void Response()
         {
+            _response.Build();
             var bodyBuffer = _response.SendingBuffer.Skip(14).ToArray();
             var headBuffer = _response.SendingBuffer.Take(14).ToArray();
             var bufferEncrypted = _client.Crypto.Encrypt(bodyBuffer);
-            return headBuffer.Concat(bufferEncrypted).ToArray();
+            var buffer = headBuffer.Concat(bufferEncrypted).ToArray();
+            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, buffer);
+            _client.Session.Send(buffer);
         }
     }
 }

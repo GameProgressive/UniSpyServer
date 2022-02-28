@@ -34,11 +34,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
             foreach (var data in _result.DataResults)
             {
                 SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetCKey,
-                $"* {data.NickName} {_result.ChannelName} {_request.Cookie} {data.UserValues}");
+                $"* {data.NickName} {_request.ChannelName} {_request.Cookie} {data.UserValues}");
             }
 
             SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetCKey,
-                 $"* {_result.ChannelName} {_request.Cookie}",
+                 $"* {_request.ChannelName} {_request.Cookie}",
                  "End Of /GETCKEY.");
         }
     }

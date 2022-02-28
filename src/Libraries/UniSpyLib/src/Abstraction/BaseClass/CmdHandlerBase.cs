@@ -44,39 +44,20 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         protected virtual void Response()
         {
-            byte[] buffer = null;
-            _response.Build();
-            if (_response.SendingBuffer.GetType() == typeof(string))
-            {
-                buffer = UniSpyEncoding.GetBytes((string)_response.SendingBuffer);
-            }
-            else
-            {
-                buffer = (byte[])_response.SendingBuffer;
-            }
-
-            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, (byte[])buffer);
-
-            //Encrypt the response if Crypto is not null
-            buffer = EncryptMessage(buffer);
-            _client.Session.Send(buffer);
-        }
-
-        protected virtual byte[] EncryptMessage(byte[] buffer)
-        {
-            if (_client.Crypto != null)
-            {
-                return _client.Crypto.Encrypt(buffer);
-            }
-            else
-            {
-                return buffer;
-            }
+            _client.Send(_response);
         }
 
         protected virtual void HandleException(Exception ex)
         {
-            LogWriter.Error(ex.ToString());
+            // we only log exception message when this message is UniSpyException
+            if (ex is UniSpyException)
+            {
+                LogWriter.Error(ex.Message);
+            }
+            else
+            {
+                LogWriter.Error(ex.ToString());
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
 
             Info.LoginPhase = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
+            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, sendingBuffer);
             Session.Send(sendingBuffer);
         }
     }

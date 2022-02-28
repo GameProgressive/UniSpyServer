@@ -9,9 +9,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
-        public ClientInfo Info { get; private set; }
-        public ISession Session { get; private set; }
-        public Dictionary<string, string> UserKeyValue { get; private set; }
+        public Client ClientRef { get; private set; }
+        public ClientInfo Info => ClientRef.Info;
+        public ISession Session => ClientRef.Session;
+        public Dictionary<string, string> UserKeyValue { get; private set; } = new Dictionary<string, string>();
         public string BFlags => @"\" + Info.UserName + @"\" + UserKeyValue["b_flags"];
         public string Modes
         {
@@ -32,11 +33,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 return buffer.ToString();
             }
         }
-        public ChannelUser(ClientInfo userInfo, ISession session)
+        public ChannelUser(Client client)
         {
-            Info = userInfo;
-            Session = session;
-            UserKeyValue = new Dictionary<string, string>();
+            ClientRef = client;
         }
 
         public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)

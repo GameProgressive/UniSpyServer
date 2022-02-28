@@ -1,12 +1,15 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
 {
-    public class GPException : UniSpyException
+    public class GPException : UniSpyException, IResponse
     {
         public GPErrorCode ErrorCode { get; private set; }
-        public virtual string ErrorResponse => $@"\error\\err\{(int)ErrorCode}\fatal\\errmsg\{this.Message}\final\";
+        public string SendingBuffer { get; protected set; }
+        object IResponse.SendingBuffer => SendingBuffer;
+
         public GPException() : this("General Error!", GPErrorCode.General)
         {
         }
@@ -29,6 +32,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
             ErrorCode = errorCode;
         }
 
-
+        public virtual void Build()
+        {
+            SendingBuffer = $@"\error\\err\{(int)ErrorCode}\fatal\\errmsg\{this.Message}\final\";
+        }
     }
 }

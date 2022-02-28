@@ -1,7 +1,7 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
@@ -15,7 +15,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     public sealed class GetCKeyRequest : ChannelRequestBase
     {
         public GetKeyReqeustType RequestType { get; private set; }
-        public string Channel { get; private set; }
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
         public List<string> Keys { get; private set; }
@@ -48,8 +47,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
             {
                 RequestType = GetKeyReqeustType.GetChannelSpecificUserKeyValue;
             }
-
-            Channel = _cmdParams[0];
             Cookie = _cmdParams[2];
 
             if (!_longParam.Contains("\0") && !_longParam.Contains("\\"))

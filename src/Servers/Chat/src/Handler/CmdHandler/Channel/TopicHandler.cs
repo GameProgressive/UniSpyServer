@@ -45,15 +45,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             switch (_request.RequestType)
             {
                 case TopicRequestType.GetChannelTopic:
-                    _response.Build();
-                    if (_client.Crypto is not null)
-                    {
-                        _client.Session.Send(_client.Crypto.Encrypt(UniSpyEncoding.GetBytes(_response.SendingBuffer)));
-                    }
-                    else
-                    {
-                        _client.Session.Send(_response.SendingBuffer);
-                    }
+                    _client.Send(_response);
                     break;
                 case TopicRequestType.SetChannelTopic:
                     _channel.MultiCast(_response);

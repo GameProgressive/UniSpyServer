@@ -84,12 +84,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             session.Send(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
             session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
             // test whether this way can notify users
-            var client = new UdpClient();
+            var udpClient = new UdpClient();
             LogWriter.Info($"Find two users: {_negotiator.RemoteIPEndPoint}, {_negotiatee.RemoteIPEndPoint}, we send connect packet to them.");
             LogWriter.LogNetworkSending(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
             LogWriter.LogNetworkSending(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
-            client.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
-            client.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
+            udpClient.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
+            udpClient.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
         }
     }
 }

@@ -11,5 +11,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         {
             base.Info = new ClientInfo(session.RemoteIPEndPoint);
         }
+
+        //todo add ondisconnect event process
     }
 }

@@ -23,14 +23,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
         {
             if (ex is GPException)
             {
-                LogWriter.Error(ex.Message);
-                LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, ((GPException)ex).ErrorResponse);
-                _client.Session.Send(((GPException)ex).ErrorResponse);
+                _client.Send(((GPException)ex));
             }
-            else
-            {
-                base.HandleException(ex);
-            }
+            base.HandleException(ex);
         }
     }
 }
