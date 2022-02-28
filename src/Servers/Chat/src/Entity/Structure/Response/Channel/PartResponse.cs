@@ -14,9 +14,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
         public override void Build()
         {
             SendingBuffer = BuildPartReply(
-                  _result.LeaverIRCPrefix,
-                  _result.ChannelName,
-                  _result.Message);
+                _result.LeaverIRCPrefix,
+                _result.ChannelName,
+                _result.Message);
         }
 
         public static string BuildPartReply(string userIRCPrefix, string channelName, string message)

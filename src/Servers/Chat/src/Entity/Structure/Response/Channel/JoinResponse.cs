@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
                 _result.JoinerPrefix,
                 ResponseName.Join,
                 _request.ChannelName,
-                 null);
+                null);
         }
     }
 }
