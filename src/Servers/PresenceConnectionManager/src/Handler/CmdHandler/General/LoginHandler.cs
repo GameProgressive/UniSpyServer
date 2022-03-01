@@ -74,10 +74,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 throw new GPLoginProfileDeletedException();
             }
 
+            // PartnerID is optional
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
                 (LoginType)_request.Type,
-                _request.PartnerID,
+                (int?)_request.PartnerID,
                 LoginChallengeProof.ServerChallenge,
                 _request.UserChallenge,
                 _result.DatabaseResults.PasswordHash);
@@ -118,11 +119,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 // Grab user from database via email and nick
                 // Default namespaceID is 0
                 var info = from u in db.Users
-                           join p in db.Profiles on u.UserId equals p.Userid
-                           join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                           where u.Email == _request.Email
-                           && p.Nick == _request.Nick
-                           select new { u, p, n };
+                            join p in db.Profiles on u.UserId equals p.Userid
+                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                            where u.Email == _request.Email
+                            && p.Nick == _request.Nick
+                            select new { u, p, n };
 
                 if (info.Count() != 1)
                 {
@@ -139,11 +140,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var info = from n in db.Subprofiles
-                           join p in db.Profiles on n.ProfileId equals p.ProfileId
-                           join u in db.Users on p.Userid equals u.UserId
-                           where n.Uniquenick == _request.UniqueNick
-                           && n.NamespaceId == _request.NamespaceID
-                           select new { u, p, n };
+                            join p in db.Profiles on n.ProfileId equals p.ProfileId
+                            join u in db.Users on p.Userid equals u.UserId
+                            where n.Uniquenick == _request.UniqueNick
+                            && n.NamespaceId == _request.NamespaceID
+                            select new { u, p, n };
                 if (info.Count() != 1)
                 {
                     throw new GPLoginBadUniquenickException($"The uniquenick: {_request.UniqueNick} is invalid.");
@@ -159,12 +160,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var info = from u in db.Users
-                           join p in db.Profiles on u.UserId equals p.Userid
-                           join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                           where n.Authtoken == _request.AuthToken
-                           && n.PartnerId == _request.PartnerID
-                           && n.NamespaceId == _request.NamespaceID
-                           select new { u, p, n };
+                            join p in db.Profiles on u.UserId equals p.Userid
+                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                            where n.Authtoken == _request.AuthToken
+                            && n.PartnerId == _request.PartnerID
+                            && n.NamespaceId == _request.NamespaceID
+                            select new { u, p, n };
 
                 if (info.Count() != 1)
                 {
@@ -178,10 +179,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         private void IsChallengeCorrect()
         {
+            // PartnerID is optional
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
                 (LoginType)_request.Type,
-                _request.PartnerID,
+                (int?)_request.PartnerID,
                 _request.UserChallenge,
                 LoginChallengeProof.ServerChallenge,
                 _result.DatabaseResults.PasswordHash);
