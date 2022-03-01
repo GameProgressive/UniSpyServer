@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 
         public static string BuildInvitedOnlyChannelError(string channelName)
         {
-            return BuildChannelError(IRCErrorCode.InviteOnlyChan, channelName, "Invited only channel.");
+            return BuildChannelError(IRCErrorCode.InviteOnlyChan, channelName, "Invite only channel.");
         }
         public static string BuildNoSuchChannelError(string channelName)
         {

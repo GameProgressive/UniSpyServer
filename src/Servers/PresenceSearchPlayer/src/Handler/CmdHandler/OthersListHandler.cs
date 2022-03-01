@@ -32,14 +32,14 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     foreach (var pid in _request.ProfileIDs)
                     {
                         var result = from n in db.Subprofiles
-                                     where n.ProfileId == pid
-                                     && n.NamespaceId == _request.NamespaceID
-                                     //select new { uniquenick = n.Uniquenick };
-                                     select new OthersListDatabaseModel
-                                     {
-                                         ProfileId = n.ProfileId,
-                                         Uniquenick = n.Uniquenick
-                                     };
+                                    where n.ProfileId == pid
+                                    && n.NamespaceId == _request.NamespaceID
+                                    //select new { uniquenick = n.Uniquenick };
+                                    select new OthersListDatabaseModel
+                                    {
+                                        ProfileId = n.ProfileId,
+                                        Uniquenick = n.Uniquenick
+                                    };
 
                         _result.DatabaseResults.AddRange(result.ToList());
                     }

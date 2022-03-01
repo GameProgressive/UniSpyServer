@@ -27,9 +27,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from u in db.Users
-                                     //According to FSW partnerid is not nessesary
-                                 where u.Email == _request.Email
-                                 select u.UserId;
+                                //According to FSW partnerid is not nessesary
+                                where u.Email == _request.Email
+                                select u.UserId;
 
                     if (result.Count() == 0)
                     {

@@ -31,20 +31,20 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     foreach (var id in _request.Namespaces)
                     {
                         var result = from p in db.Profiles
-                                     join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                     join u in db.Users on p.Userid equals u.UserId
-                                     where n.Uniquenick == _request.Uniquenick
-                                     && n.NamespaceId == id
-                                     select new SearchUniqueDatabaseModel
-                                     {
-                                         ProfileId = n.ProfileId,
-                                         Nick = p.Nick,
-                                         Uniquenick = n.Uniquenick,
-                                         Email = u.Email,
-                                         Firstname = p.Firstname,
-                                         Lastname = p.Lastname,
-                                         NamespaceID = n.NamespaceId
-                                     };
+                                    join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                    join u in db.Users on p.Userid equals u.UserId
+                                    where n.Uniquenick == _request.Uniquenick
+                                    && n.NamespaceId == id
+                                    select new SearchUniqueDatabaseModel
+                                    {
+                                        ProfileId = n.ProfileId,
+                                        Nick = p.Nick,
+                                        Uniquenick = n.Uniquenick,
+                                        Email = u.Email,
+                                        Firstname = p.Firstname,
+                                        Lastname = p.Lastname,
+                                        NamespaceID = n.NamespaceId
+                                    };
                         _result.DatabaseResults.AddRange(result.ToList());
                     }
                 }

@@ -28,12 +28,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
     public sealed class Channel
     {
         /// <summary>
-        /// When game connects to server, the player will enter the default channel for communicating with other players.
+        /// When game connects to the server, the player will enter the default channel for communicating with other players.
         /// </summary>
         public const string TitleRoomPrefix = "#GSP";
         /// <summary>
         /// When a player creates their own game and is waiting for others to join they are placed in a separate chat room called the "staging room"
-        /// Staging room have two title seperator like #GSP!xxxx!xxxx
+        /// Staging rooms have two title seperator like #GSP!xxxx!xxxx
         /// </summary>
         public const string StagingRoomPrefix = "#GSP";
         /// <summary>
@@ -42,22 +42,23 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         public const string GroupRoomPrefix = "#GPG";
         public const char TitleSeperator = '!';
+        
         public static Func<string, PeerRoomType> GetRoomType = (channelName) =>
-         {
-             if (IsStagingRoom(channelName))
-             {
-                 return PeerRoomType.Staging;
-             }
-             else if (IsGroupRoom(channelName))
-             {
-                 return PeerRoomType.Group;
-             }
-             else if (IsTitleRoom(channelName))
-             {
-                 return PeerRoomType.Title;
-             }
-             throw new ChatException("Invalid channel name");
-         };
+        {
+            if (IsStagingRoom(channelName))
+            {
+                return PeerRoomType.Staging;
+            }
+            else if (IsTitleRoom(channelName))
+            {
+                return PeerRoomType.Title;
+            }
+            else if (IsGroupRoom(channelName))
+            {
+                return PeerRoomType.Group;
+            }
+            throw new ChatException("Invalid channel name.");
+        };
         private static Func<string, bool> IsStagingRoom = (channelName) =>
         {
             var a = channelName.Count(c => c == TitleSeperator) == 2 ? true : false;
@@ -72,7 +73,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         };
         private static Func<string, bool> IsGroupRoom = (channelName) =>
         {
-            var a = channelName.Count(c => c == TitleSeperator) == 0 ? true : false;
+            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
             var b = channelName.StartsWith(GroupRoomPrefix) ? true : false;
             return a && b;
         };
@@ -296,7 +297,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         private void AddChannelOperator(ModeRequest request)
         {
-            // check whether this user is in this channel
+            //check whether this user is in this channel
             var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {

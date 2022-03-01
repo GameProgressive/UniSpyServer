@@ -31,16 +31,16 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from u in db.Users
-                                 join p in db.Profiles on u.UserId equals p.Userid
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 where u.Email == _request.Email
-                                 && u.Password == _request.Password
-                                 && n.NamespaceId == _request.NamespaceID
-                                 select new NicksDataModel
-                                 {
-                                     NickName = p.Nick,
-                                     UniqueNick = n.Uniquenick
-                                 };
+                                join p in db.Profiles on u.UserId equals p.Userid
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                where u.Email == _request.Email
+                                && u.Password == _request.Password
+                                && n.NamespaceId == _request.NamespaceID
+                                select new NicksDataModel
+                                {
+                                    NickName = p.Nick,
+                                    UniqueNick = n.Uniquenick
+                                };
 
                     //we store data in strong type so we can use in next step
                     _result.DataBaseResults.AddRange(result.ToList());

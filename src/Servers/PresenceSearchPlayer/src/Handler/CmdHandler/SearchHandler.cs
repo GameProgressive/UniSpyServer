@@ -38,76 +38,76 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 {
                     case SearchRequestType.NickSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 join u in db.Users on p.Userid equals u.UserId
-                                 where p.Nick == _request.Nick
-                                 //&& n.Namespaceid == _request.NamespaceID
-                                 select new SearchDataBaseModel
-                                 {
-                                     ProfileId = n.ProfileId,
-                                     Nick = p.Nick,
-                                     Uniquenick = n.Uniquenick,
-                                     Email = u.Email,
-                                     Firstname = p.Firstname,
-                                     Lastname = p.Lastname,
-                                     NamespaceID = n.NamespaceId
-                                 };
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                join u in db.Users on p.Userid equals u.UserId
+                                where p.Nick == _request.Nick
+                                //&& n.Namespaceid == _request.NamespaceID
+                                select new SearchDataBaseModel
+                                {
+                                    ProfileId = n.ProfileId,
+                                    Nick = p.Nick,
+                                    Uniquenick = n.Uniquenick,
+                                    Email = u.Email,
+                                    Firstname = p.Firstname,
+                                    Lastname = p.Lastname,
+                                    NamespaceID = n.NamespaceId
+                                };
                         break;
 
                     case SearchRequestType.NickEmailSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 join u in db.Users on p.Userid equals u.UserId
-                                 where p.Nick == _request.Nick && u.Email == _request.Email
-                                 //&& n.Namespaceid == _request.NamespaceID
-                                 //&& n.Gamename == _request.GameName
-                                 //&& n.Partnerid == _request.PartnerID
-                                 select new SearchDataBaseModel
-                                 {
-                                     ProfileId = n.ProfileId,
-                                     Nick = p.Nick,
-                                     Uniquenick = n.Uniquenick,
-                                     Email = u.Email,
-                                     Firstname = p.Firstname,
-                                     Lastname = p.Lastname,
-                                     NamespaceID = n.NamespaceId
-                                 };
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                join u in db.Users on p.Userid equals u.UserId
+                                where p.Nick == _request.Nick && u.Email == _request.Email
+                                //&& n.Namespaceid == _request.NamespaceID
+                                //&& n.Gamename == _request.GameName
+                                //&& n.Partnerid == _request.PartnerID
+                                select new SearchDataBaseModel
+                                {
+                                    ProfileId = n.ProfileId,
+                                    Nick = p.Nick,
+                                    Uniquenick = n.Uniquenick,
+                                    Email = u.Email,
+                                    Firstname = p.Firstname,
+                                    Lastname = p.Lastname,
+                                    NamespaceID = n.NamespaceId
+                                };
                         break;
 
                     case SearchRequestType.UniquenickNamespaceIDSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 join u in db.Users on p.Userid equals u.UserId
-                                 where n.Uniquenick == _request.Uniquenick
-                                 && n.NamespaceId == _request.NamespaceID
-                                 //&& n.Gamename == _request.GameName
-                                 //&& n.Partnerid == _request.PartnerID
-                                 select new SearchDataBaseModel
-                                 {
-                                     ProfileId = n.ProfileId,
-                                     Nick = p.Nick,
-                                     Uniquenick = n.Uniquenick,
-                                     Email = u.Email,
-                                     Firstname = p.Firstname,
-                                     Lastname = p.Lastname,
-                                     NamespaceID = n.NamespaceId
-                                 };
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                join u in db.Users on p.Userid equals u.UserId
+                                where n.Uniquenick == _request.Uniquenick
+                                && n.NamespaceId == _request.NamespaceID
+                                //&& n.Gamename == _request.GameName
+                                //&& n.Partnerid == _request.PartnerID
+                                select new SearchDataBaseModel
+                                {
+                                    ProfileId = n.ProfileId,
+                                    Nick = p.Nick,
+                                    Uniquenick = n.Uniquenick,
+                                    Email = u.Email,
+                                    Firstname = p.Firstname,
+                                    Lastname = p.Lastname,
+                                    NamespaceID = n.NamespaceId
+                                };
                         break;
                     case SearchRequestType.EmailSearch:
                         result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 join u in db.Users on p.Userid equals u.UserId
-                                 where u.Email == _request.Email
-                                 select new SearchDataBaseModel
-                                 {
-                                     ProfileId = n.ProfileId,
-                                     Nick = p.Nick,
-                                     Uniquenick = n.Uniquenick,
-                                     Email = u.Email,
-                                     Firstname = p.Firstname,
-                                     Lastname = p.Lastname,
-                                     NamespaceID = n.NamespaceId
-                                 };
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                join u in db.Users on p.Userid equals u.UserId
+                                where u.Email == _request.Email
+                                select new SearchDataBaseModel
+                                {
+                                    ProfileId = n.ProfileId,
+                                    Nick = p.Nick,
+                                    Uniquenick = n.Uniquenick,
+                                    Email = u.Email,
+                                    Firstname = p.Firstname,
+                                    Lastname = p.Lastname,
+                                    NamespaceID = n.NamespaceId
+                                };
                         break;
                     default:
                         result = null;

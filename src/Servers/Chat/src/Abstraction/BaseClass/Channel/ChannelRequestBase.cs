@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 
             if (_cmdParams.Count < 1)
             {
-                throw new ChatException("channel name is missing.");
+                throw new ChatException("Channel name is missing.");
             }
             ChannelName = _cmdParams[0];
         }

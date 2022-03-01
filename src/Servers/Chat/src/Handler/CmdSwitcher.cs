@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Handler
         protected override void ProcessRawRequest()
         {
             string[] splitedRawRequests = _rawRequest.Replace("\r", "")
-                   .Split("\n", StringSplitOptions.RemoveEmptyEntries);
+                .Split("\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var rawRequest in splitedRawRequests)
             {
                 var name = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList().First();

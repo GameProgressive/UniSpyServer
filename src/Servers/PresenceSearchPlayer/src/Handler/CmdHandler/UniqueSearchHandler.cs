@@ -26,11 +26,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 where n.Uniquenick == _request.PreferredNick
-                                 && n.NamespaceId == _request.NamespaceID
-                                 && n.Gamename == _request.GameName
-                                 select p.ProfileId;
+                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                                where n.Uniquenick == _request.PreferredNick
+                                && n.NamespaceId == _request.NamespaceID
+                                && n.Gamename == _request.GameName
+                                select p.ProfileId;
 
                     if (result.Count() != 0)
                     {

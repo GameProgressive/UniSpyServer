@@ -38,14 +38,15 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
                 }
 
+                // Not every game uses PartnerId; optional
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.UserId
-                             join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
-                             where u.Email.Equals(_request.Email)
-                             && u.Password.Equals(_request.Password)
-                             && p.Nick.Equals(_request.Nick)
-                             && sp.PartnerId.Equals(_request.PartnerId)
-                             select p.ProfileId;
+                            join u in db.Users on p.Userid equals u.UserId
+                            join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
+                            where u.Email.Equals(_request.Email)
+                            && u.Password.Equals(_request.Password)
+                            && p.Nick.Equals(_request.Nick)
+                            || sp.PartnerId.Equals(_request.PartnerId)
+                            select p.ProfileId;
 
                 var results = result.ToList();
                 if (result.Count() == 1)

@@ -32,8 +32,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from b in db.Friends
-                                 where b.ProfileId == _request.ProfileId && b.Namespaceid == _request.NamespaceID
-                                 select b.Targetid;
+                                where b.ProfileId == _request.ProfileId && b.Namespaceid == _request.NamespaceID
+                                select b.Targetid;
 
                     foreach (var info in result)
                     {
@@ -61,7 +61,6 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
             {
                 throw new GPDatabaseException("Unknown error occurs in database operation.", e);
             }
-
         }
 
         protected override void ResponseConstruct()
