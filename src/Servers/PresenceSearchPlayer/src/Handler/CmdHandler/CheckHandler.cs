@@ -39,12 +39,12 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 }
 
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.Userid
+                             join u in db.Users on p.Userid equals u.UserId
                              join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
                              where u.Email.Equals(_request.Email)
                              && u.Password.Equals(_request.Password)
                              && p.Nick.Equals(_request.Nick)
-                             && sp.Partnerid.Equals(_request.PartnerId)
+                             && sp.PartnerId.Equals(_request.PartnerId)
                              select p.ProfileId;
 
                 var results = result.ToList();

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -19,8 +19,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new UniSpyContext())
             {
-                var result = db.Subprofiles.Where(s => s.ProfileId == _client.Info.BasicInfo.ProfileId
-                && s.Namespaceid == _client.Info.BasicInfo.NamespaceId);
+                var result = db.Subprofiles.Where(s => s.ProfileId == _client.Info.ProfileInfo.ProfileId
+                && s.NamespaceId == _client.Info.SubProfileInfo.NamespaceId);
                 //&& s.Productid == _client.Info.ProductID);
 
                 if (result.Count() == 0 || result.Count() > 1)
@@ -28,8 +28,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     throw new GPDatabaseException("No user infomation found in database.");
                 }
 
-                db.Subprofiles.Where(s => s.Subprofileid == _client.Info.BasicInfo.SubProfileId)
-                    .FirstOrDefault().Cdkeyenc = _request.CDKeyEnc;
+                db.Subprofiles.FirstOrDefault(s => s.SubProfileId == _client.Info.SubProfileInfo.SubProfileId).Cdkeyenc = _request.CDKeyEnc;
 
                 db.SaveChanges();
             }

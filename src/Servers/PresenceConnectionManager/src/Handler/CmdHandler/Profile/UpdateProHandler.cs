@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -19,17 +19,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 Profile profile = db.Profiles.Where(
-                    p => p.Userid == _client.Info.BasicInfo.UserId
-                    && p.ProfileId == _client.Info.BasicInfo.ProfileId
+                    p => p.Userid == _client.Info.UserInfo.UserId
+                    && p.ProfileId == _client.Info.ProfileInfo.ProfileId
                     && p.Nick == p.Nick).First();
 
                 User user = db.Users.Where(
-                    u => u.Userid == _client.Info.BasicInfo.UserId).First();
+                    u => u.UserId == _client.Info.UserInfo.UserId).First();
 
                 Subprofile subprofile = db.Subprofiles.Where(
-                    s => s.ProfileId == _client.Info.BasicInfo.ProfileId
-                    && s.Namespaceid == _client.Info.BasicInfo.NamespaceId
-                    && s.Uniquenick == _client.Info.BasicInfo.UniqueNick).First();
+                    s => s.ProfileId == _client.Info.ProfileInfo.ProfileId
+                    && s.NamespaceId == _client.Info.SubProfileInfo.NamespaceId
+                    && s.Uniquenick == _client.Info.SubProfileInfo.Uniquenick).First();
 
                 if (_request.HasPublicMaskFlag)
                 {

@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     var result = from u in db.Users
                                      //According to FSW partnerid is not nessesary
                                  where u.Email == _request.Email
-                                 select u.Userid;
+                                 select u.UserId;
 
                     if (result.Count() == 0)
                     {

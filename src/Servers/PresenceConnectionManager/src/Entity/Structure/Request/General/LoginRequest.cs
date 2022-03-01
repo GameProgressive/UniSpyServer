@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public string Email { get; private set; }
         public int? ProductID { get; private set; }
         public LoginType? Type { get; private set; }
-        public SDKRevisionType? SDKRevisionType { get; private set; }
+        public SdkRevisionType? SdkRevisionType { get; private set; }
 
         public LoginRequest(string rawRequest) : base(rawRequest)
         {
@@ -138,7 +138,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                     throw new GPParseException("sdkrevision format is incorrect");
                 }
 
-                SDKRevisionType = (SDKRevisionType)sdkRevisionType;
+                SdkRevisionType = (SdkRevisionType)sdkRevisionType;
             }
 
             if (RequestKeyValues.ContainsKey("gamename"))

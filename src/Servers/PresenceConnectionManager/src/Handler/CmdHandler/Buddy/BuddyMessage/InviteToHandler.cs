@@ -20,9 +20,9 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var session = Client.ClientPool.Values.Where(
-                c => ((ClientInfo)c.Info).BasicInfo.ProductId == _request.ProductID
-                && ((ClientInfo)c.Info).BasicInfo.ProfileId == _request.ProfileId).FirstOrDefault();
+            var session = Client.ClientPool.Values.FirstOrDefault(
+                c => ((ClientInfo)c.Info).SubProfileInfo.ProductId == _request.ProductID
+                && ((ClientInfo)c.Info).SubProfileInfo.ProfileId == _request.ProfileId);
 
             //user is offline
             if (session == null)

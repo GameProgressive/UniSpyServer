@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
         /// </summary>
         public LoginStatus LoginStatus { get; set; }
         public GPBasic QuietModeFlag { get; set; }
-        public SDKRevisionType SDKRevision { get; set; }
+        public SdkRevisionType SdkType { get; set; }
         public BasicInfo()
         {
             LoginStatus = LoginStatus.Connected;

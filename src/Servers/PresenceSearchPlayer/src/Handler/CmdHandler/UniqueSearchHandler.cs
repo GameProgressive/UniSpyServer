@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  where n.Uniquenick == _request.PreferredNick
-                                 && n.Namespaceid == _request.NamespaceID
+                                 && n.NamespaceId == _request.NamespaceID
                                  && n.Gamename == _request.GameName
                                  select p.ProfileId;
 

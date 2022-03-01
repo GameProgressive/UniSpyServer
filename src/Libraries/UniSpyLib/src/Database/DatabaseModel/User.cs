@@ -14,11 +14,11 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
             Profiles = new HashSet<Profile>();
         }
 
-        public int Userid { get; set; }
+        public int UserId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public bool? Emailverified { get; set; }
-        public IPAddress Lastip { get; set; }
+        public IPAddress LastIp { get; set; }
         public DateTime Lastonline { get; set; }
         public DateTime Createddate { get; set; }
         public bool Banned { get; set; }

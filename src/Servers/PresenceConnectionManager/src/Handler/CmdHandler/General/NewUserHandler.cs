@@ -49,12 +49,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
 
                 if (_request.HasPartnerIDFlag)
                 {
-                    _result.SubProfile.Partnerid = _request.PartnerID;
+                    _result.SubProfile.PartnerId = _request.PartnerID;
                 }
 
                 if (_request.HasProductIDFlag)
                 {
-                    _result.SubProfile.Productid = _request.ProductID;
+                    _result.SubProfile.ProductId = _request.ProductID;
                 }
 
                 if (_request.HasGameNameFlag)
@@ -116,7 +116,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                         }
 
                     case NewUserStatus.CheckProfile:
-                        var profiles = db.Profiles.Where(p => p.Userid == _result.User.Userid && p.Nick == _request.Nick);
+                        var profiles = db.Profiles.Where(p => p.Userid == _result.User.UserId && p.Nick == _request.Nick);
                         if (profiles.Count() == 0)
                         {
                             goto case NewUserStatus.ProfileNotExist;
@@ -132,7 +132,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                         }
 
                     case NewUserStatus.ProfileNotExist:
-                        _result.Profile = new Profile { Userid = _result.User.Userid, Nick = _request.Nick };
+                        _result.Profile = new Profile { Userid = _result.User.UserId, Nick = _request.Nick };
                         db.Profiles.Add(_result.Profile);
                         db.SaveChanges();
                         goto case NewUserStatus.CheckSubProfile;
@@ -141,7 +141,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                     //we do nothing here
 
                     case NewUserStatus.CheckSubProfile:
-                        var subProfiles = db.Subprofiles.Where(s => s.ProfileId == _result.Profile.ProfileId && s.Namespaceid == _request.NamespaceID);
+                        var subProfiles = db.Subprofiles.Where(s => s.ProfileId == _result.Profile.ProfileId && s.NamespaceId == _request.NamespaceID);
                         if (subProfiles.Count() == 0)
                         {
                             goto case NewUserStatus.SubProfileNotExist;
@@ -162,7 +162,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                         {
                             ProfileId = _result.Profile.ProfileId,
                             Uniquenick = _request.Uniquenick,
-                            Namespaceid = _request.NamespaceID
+                            NamespaceId = _request.NamespaceID
                         };
                         db.Subprofiles.Add(_result.SubProfile);
                         db.SaveChanges();

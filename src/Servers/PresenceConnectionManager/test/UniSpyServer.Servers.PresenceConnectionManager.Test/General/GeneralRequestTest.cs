@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             Assert.Equal(request.GamePort, (ushort)0);
             Assert.Equal(request.ProductID, (int)0);
             Assert.Equal("gmtest", request.GameName);
-            Assert.Equal((SDKRevisionType)3, request.SDKRevisionType);
+            Assert.Equal((SdkRevisionType)3, request.SdkRevisionType);
             Assert.Equal((QuietModeType)0, request.QuietModeFlags);
         }
 
@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             Assert.Equal((ushort)0, request.GamePort);
             Assert.Equal((int)0, request.ProductID);
             Assert.Equal("gmtest", request.GameName);
-            Assert.Equal((SDKRevisionType)3, request.SDKRevisionType);
+            Assert.Equal((SdkRevisionType)3, request.SdkRevisionType);
             Assert.Equal((QuietModeType)0, request.QuietModeFlags);
         }
 
@@ -74,7 +74,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             Assert.Equal((ushort)0, request.GamePort);
             Assert.Equal((int)0, request.ProductID);
             Assert.Equal("gmtest", request.GameName);
-            Assert.Equal((SDKRevisionType)3, request.SDKRevisionType);
+            Assert.Equal((SdkRevisionType)3, request.SdkRevisionType);
             Assert.Equal((QuietModeType)0, request.QuietModeFlags);
         }
 

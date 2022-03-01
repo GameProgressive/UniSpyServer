@@ -39,8 +39,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     {
                         var b = from p in db.Profiles
                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                join u in db.Users on p.Userid equals u.Userid
-                                where n.Namespaceid == _request.NamespaceID
+                                join u in db.Users on p.Userid equals u.UserId
+                                where n.NamespaceId == _request.NamespaceID
                                 && n.ProfileId == info && n.Gamename == _request.GameName
                                 select new OthersDatabaseModel
                                 {
@@ -49,7 +49,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                                     Uniquenick = n.Uniquenick,
                                     Lastname = p.Lastname,
                                     Firstname = p.Firstname,
-                                    Userid = u.Userid,
+                                    Userid = u.UserId,
                                     Email = u.Email
                                 };
 

@@ -21,8 +21,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 _result.ProfileIdList = db.Blockeds
-                    .Where(f => f.ProfileId == _client.Info.BasicInfo.ProfileId
-                    && f.Namespaceid == _client.Info.BasicInfo.NamespaceId)
+                    .Where(f => f.ProfileId == _client.Info.ProfileInfo.ProfileId
+                    && f.Namespaceid == _client.Info.SubProfileInfo.NamespaceId)
                     .Select(f => f.Targetid).ToList();
             }
         }

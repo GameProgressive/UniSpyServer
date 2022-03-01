@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
 
             SendingBuffer = @"\lc\2\sesskey\" + ClientInfo.SessionKey;
             SendingBuffer += @"\proof\" + _result.ResponseProof;
-            SendingBuffer += @"\userid\" + _result.DatabaseResults.UserID;
+            SendingBuffer += @"\userid\" + _result.DatabaseResults.UserId;
             SendingBuffer += @"\profileid\" + _result.DatabaseResults.ProfileId;
 
             if (_request.Type != LoginType.NickEmail)

@@ -5,12 +5,12 @@
     /// </summary>
     public partial class Subprofile
     {
-        public int Subprofileid { get; set; }
+        public int SubProfileId { get; set; }
         public int ProfileId { get; set; }
         public string Uniquenick { get; set; }
-        public int Namespaceid { get; set; }
-        public int Partnerid { get; set; }
-        public int? Productid { get; set; }
+        public int NamespaceId { get; set; }
+        public int PartnerId { get; set; }
+        public int? ProductId { get; set; }
         public string Gamename { get; set; }
         public string Cdkeyenc { get; set; }
         public short? Firewall { get; set; }

@@ -431,7 +431,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 
                 entity.HasComment("User subprofiles.");
 
-                entity.Property(e => e.Subprofileid)
+                entity.Property(e => e.SubProfileId)
                     .HasColumnName("subprofileid")
                     .HasDefaultValueSql("nextval('subprofiles_subprofileid_seq'::regclass)");
 
@@ -449,15 +449,15 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 
                 entity.Property(e => e.Gamename).HasColumnName("gamename");
 
-                entity.Property(e => e.Namespaceid).HasColumnName("namespaceid");
+                entity.Property(e => e.NamespaceId).HasColumnName("namespaceid");
 
-                entity.Property(e => e.Partnerid).HasColumnName("partnerid");
+                entity.Property(e => e.PartnerId).HasColumnName("partnerid");
 
                 entity.Property(e => e.Port)
                     .HasColumnName("port")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Productid).HasColumnName("productid");
+                entity.Property(e => e.ProductId).HasColumnName("productid");
 
                 entity.Property(e => e.ProfileId).HasColumnName("profileid");
 
@@ -478,7 +478,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 
                 entity.HasComment("User account information.");
 
-                entity.Property(e => e.Userid)
+                entity.Property(e => e.UserId)
                     .HasColumnName("userid")
                     .HasDefaultValueSql("nextval('users_userid_seq'::regclass)");
 
@@ -500,7 +500,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
                     .HasColumnName("emailverified")
                     .HasDefaultValueSql("true");
 
-                entity.Property(e => e.Lastip).HasColumnName("lastip");
+                entity.Property(e => e.LastIp).HasColumnName("lastip");
 
                 entity.Property(e => e.Lastonline)
                     .HasColumnType("timestamp without time zone")

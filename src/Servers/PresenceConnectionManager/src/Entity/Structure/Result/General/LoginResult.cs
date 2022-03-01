@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class LogInDataModel
     {
-        public int UserID;
+        public int UserId;
         public int ProfileId;
         public string Nick;
         public string Email;
@@ -12,8 +12,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
         public string PasswordHash;
         public bool EmailVerifiedFlag;
         public bool BannedFlag;
-        public int NamespaceID;
-        public int SubProfileID;
+        public int NamespaceId;
+        public int SubProfileId;
     }
 
     public sealed class LoginResult : ResultBase

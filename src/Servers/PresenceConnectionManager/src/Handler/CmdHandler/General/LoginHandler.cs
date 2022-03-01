@@ -41,6 +41,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                         AuthtokenLogin();
                         break;
                 }
+                _result.DatabaseResults = new LogInDataModel
+                {
+                    Email = _client.Info.UserInfo.Email,
+                    UserId = _client.Info.UserInfo.UserId,
+                    ProfileId = _client.Info.ProfileInfo.ProfileId,
+                    SubProfileId = _client.Info.SubProfileInfo.SubProfileId,
+                    Nick = _client.Info.ProfileInfo.Nick,
+                    UniqueNick = _client.Info.SubProfileInfo.Uniquenick,
+                    PasswordHash = _client.Info.UserInfo.Password,
+                    EmailVerifiedFlag = (bool)_client.Info.UserInfo.Emailverified,
+                    BannedFlag = (bool)_client.Info.UserInfo.Banned,
+                    NamespaceId = _client.Info.SubProfileInfo.NamespaceId
+                };
+                _client.Info.Status.CurrentStatus = GPStatusCode.Online;
             }
             catch (System.Exception e)
             {
@@ -83,35 +97,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             base.Response();
             //Arves is correct we need to check this
-            switch (_request.Type)
-            {
-                case LoginType.NickEmail:
-                    _client.Info.BasicInfo.Nick = _request.Nick;
-                    _client.Info.BasicInfo.Email = _request.Email;
-                    _client.Info.BasicInfo.UniqueNick = _result.DatabaseResults.UniqueNick;
-                    break;
-                case LoginType.UniquenickNamespaceID:
-                    _client.Info.BasicInfo.UniqueNick = _request.UniqueNick;
-                    _client.Info.BasicInfo.NamespaceId = _request.NamespaceID;
-                    _client.Info.BasicInfo.ProductId = _request.ProductID;
-                    _client.Info.SdkRevision.SDKRevisionType = _request.SDKRevisionType;
-                    break;
-                case LoginType.AuthToken:
-                    _client.Info.BasicInfo.AuthToken = _request.AuthToken;
-                    _client.Info.BasicInfo.ProductId = _request.ProductID;
-                    break;
-                default:
-                    throw new GPParseException("Invalid login method detected.");
-            }
-
-            _client.Info.Status.CurrentStatus = GPStatusCode.Online;
-            _client.Info.BasicInfo.UserId = _result.DatabaseResults.UserID;
-            _client.Info.BasicInfo.ProfileId = _result.DatabaseResults.ProfileId;
-            _client.Info.BasicInfo.SubProfileId = _result.DatabaseResults.SubProfileID;
-            _client.Info.BasicInfo.GameName = _request.GameName;
-            _client.Info.BasicInfo.GamePort = _request.GamePort;
-            _client.Info.BasicInfo.LoginStatus = LoginStatus.Completed;
-
+            // save information to client object
             new SdkRevisionHandler(_client, _request).Handle();
         }
 
@@ -122,7 +108,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 var email = from u in db.Users
                             where u.Email == _request.Email
-                            select u.Userid;
+                            select u.UserId;
 
                 if (email.Count() == 0)
                 {
@@ -132,28 +118,19 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 // Grab user from database via email and nick
                 // Default namespaceID is 0
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Userid equals p.Userid
+                           join p in db.Profiles on u.UserId equals p.Userid
                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                            where u.Email == _request.Email
                            && p.Nick == _request.Nick
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = (bool)u.Banned
-                           };
+                           select new { u, p, n };
 
                 if (info.Count() != 1)
                 {
                     throw new GPLoginBadProfileException();
                 }
-                _result.DatabaseResults = info.First();
+                _client.Info.UserInfo = info.First().u;
+                _client.Info.ProfileInfo = info.First().p;
+                _client.Info.SubProfileInfo = info.First().n;
             }
         }
 
@@ -163,28 +140,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.ProfileId equals p.ProfileId
-                           join u in db.Users on p.Userid equals u.Userid
+                           join u in db.Users on p.Userid equals u.UserId
                            where n.Uniquenick == _request.UniqueNick
-                           && n.Namespaceid == _request.NamespaceID
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               NamespaceID = n.Namespaceid,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = (bool)u.Banned
-                           };
-
+                           && n.NamespaceId == _request.NamespaceID
+                           select new { u, p, n };
                 if (info.Count() != 1)
                 {
                     throw new GPLoginBadUniquenickException($"The uniquenick: {_request.UniqueNick} is invalid.");
                 }
-                _result.DatabaseResults = info.First();
+                _client.Info.UserInfo = info.First().u;
+                _client.Info.ProfileInfo = info.First().p;
+                _client.Info.SubProfileInfo = info.First().n;
             }
         }
 
@@ -193,30 +159,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             using (var db = new UniSpyContext())
             {
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Userid equals p.Userid
+                           join p in db.Profiles on u.UserId equals p.Userid
                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                            where n.Authtoken == _request.AuthToken
-                           && n.Partnerid == _request.PartnerID
-                           && n.Namespaceid == _request.NamespaceID
-                           select new LogInDataModel
-                           {
-                               Email = u.Email,
-                               UserID = u.Userid,
-                               ProfileId = p.ProfileId,
-                               SubProfileID = n.Subprofileid,
-                               Nick = p.Nick,
-                               UniqueNick = n.Uniquenick,
-                               PasswordHash = u.Password,
-                               NamespaceID = n.Namespaceid,
-                               EmailVerifiedFlag = (bool)u.Emailverified,
-                               BannedFlag = (bool)u.Banned
-                           };
+                           && n.PartnerId == _request.PartnerID
+                           && n.NamespaceId == _request.NamespaceID
+                           select new { u, p, n };
 
                 if (info.Count() != 1)
                 {
                     throw new GPLoginBadPreAuthException("The pre-authentication token is invalid.");
                 }
-                _result.DatabaseResults = info.First();
+                _client.Info.UserInfo = info.First().u;
+                _client.Info.ProfileInfo = info.First().p;
+                _client.Info.SubProfileInfo = info.First().n;
             }
         }
 

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
     {
         private new NewProfileRequest _request => (NewProfileRequest)base._request;
 
-        private new NewProfileResult _result{ get => (NewProfileResult)base._result; set => base._result = value; }
+        private new NewProfileResult _result { get => (NewProfileResult)base._result; set => base._result = value; }
         public NewProfileHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new NewProfileResult();
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 if (_request.IsReplaceNickName)
                 {
                     var result = from p in db.Profiles
-                                 where p.ProfileId == _client.Info.BasicInfo.ProfileId
+                                 where p.ProfileId == _client.Info.ProfileInfo.ProfileId
                                  && p.Nick == _request.OldNick
                                  select p;
 
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                         result.First().Nick = _request.NewNick;
                     }
 
-                    db.Profiles.Where(p => p.ProfileId == _client.Info.BasicInfo.ProfileId
+                    db.Profiles.Where(p => p.ProfileId == _client.Info.ProfileInfo.ProfileId
                     && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
 
                     db.SaveChanges();
@@ -48,15 +48,15 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 {
                     Profile profiles = new Profile
                     {
-                        ProfileId = (int)_client.Info.BasicInfo.ProfileId,
+                        ProfileId = (int)_client.Info.ProfileInfo.ProfileId,
                         Nick = _request.NewNick,
-                        Userid = (int)_client.Info.BasicInfo.UserId
+                        Userid = (int)_client.Info.UserInfo.UserId
                     };
 
                     db.Add(profiles);
                 }
             }
-            _result.ProfileId = (int)_client.Info.BasicInfo.ProfileId;
+            _result.ProfileId = (int)_client.Info.ProfileInfo.ProfileId;
         }
 
         protected override void ResponseConstruct()

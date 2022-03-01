@@ -47,13 +47,13 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
-                            join p in db.Profiles on u.Userid equals p.Userid
+                            join p in db.Profiles on u.UserId equals p.Userid
                             where u.Email == _request.Email
                             && p.Nick == _request.NickName
                             && u.Password == _request.PasswordHash
                             select new
                             {
-                                userid = u.Userid,
+                                userid = u.UserId,
                                 profileid = p.ProfileId,
                                 emailVerified = u.Emailverified,
                                 banned = u.Banned
@@ -73,12 +73,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             {
                 var result = from n in db.Subprofiles
                             join p in db.Profiles on n.ProfileId equals p.ProfileId
-                            join u in db.Users on p.Userid equals u.Userid
+                            join u in db.Users on p.Userid equals u.UserId
                             where n.Uniquenick == _request.UniqueNick
-                            && n.Namespaceid == _request.NamespaceID
+                            && n.NamespaceId == _request.NamespaceID
                             select new
                             {
-                                userid = u.Userid,
+                                userid = u.UserId,
                                 profileid = p.ProfileId,
                                 uniquenick = n.Uniquenick,
                                 emailVerified = u.Emailverified,

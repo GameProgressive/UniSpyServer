@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                     {
                         var result = from n in db.Subprofiles
                                      where n.ProfileId == pid
-                                     && n.Namespaceid == _request.NamespaceID
+                                     && n.NamespaceId == _request.NamespaceID
                                      //select new { uniquenick = n.Uniquenick };
                                      select new OthersListDatabaseModel
                                      {

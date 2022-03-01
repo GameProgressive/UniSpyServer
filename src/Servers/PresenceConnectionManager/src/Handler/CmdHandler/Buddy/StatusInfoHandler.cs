@@ -27,7 +27,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             if (_request.IsGetStatusInfo)
             {
-                var result = (Client)Client.ClientPool.Values.Where(s => ((ClientInfo)s.Info).BasicInfo.ProfileId == _request.ProfileId && ((ClientInfo)s.Info).BasicInfo.NamespaceId == ((ClientInfo)s.Info).BasicInfo.NamespaceId).FirstOrDefault();
+                var result = (Client)Client.ClientPool.Values.FirstOrDefault(s => ((ClientInfo)s.Info).SubProfileInfo.ProfileId == _request.ProfileId
+                && ((ClientInfo)s.Info).SubProfileInfo.NamespaceId == ((ClientInfo)s.Info).SubProfileInfo.NamespaceId);
 
                 if (result != null)
                 {

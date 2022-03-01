@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             {
                 using (var db = new UniSpyContext())
                 {
-                    db.Subprofiles.Where(s => s.Subprofileid == _client.Info.BasicInfo.SubProfileId)
+                    db.Subprofiles.Where(s => s.SubProfileId == _client.Info.SubProfileInfo.SubProfileId)
                         .FirstOrDefault().Uniquenick = _request.UniqueNick;
                     db.SaveChanges();
                 }

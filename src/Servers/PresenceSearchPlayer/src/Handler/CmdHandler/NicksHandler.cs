@@ -31,11 +31,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                 using (var db = new UniSpyContext())
                 {
                     var result = from u in db.Users
-                                 join p in db.Profiles on u.Userid equals p.Userid
+                                 join p in db.Profiles on u.UserId equals p.Userid
                                  join n in db.Subprofiles on p.ProfileId equals n.ProfileId
                                  where u.Email == _request.Email
                                  && u.Password == _request.Password
-                                 && n.Namespaceid == _request.NamespaceID
+                                 && n.NamespaceId == _request.NamespaceID
                                  select new NicksDataModel
                                  {
                                      NickName = p.Nick,
