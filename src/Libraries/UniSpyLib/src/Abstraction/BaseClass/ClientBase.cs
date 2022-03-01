@@ -47,7 +47,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         private void EventBinding()
         {
-            if (Session.GetType() == typeof(UdpSession))
+            var sessionType = Session.GetType();
+            if (sessionType == typeof(UdpSession))
             {
                 ((UdpSession)Session).OnReceive += OnReceived;
                 // todo add timer here
@@ -62,15 +63,19 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 _timer.Start();
                 _timer.Elapsed += (s, e) => CheckExpiredClient();
             }
-            else if (Session.GetType() == typeof(TcpSession))
+            else if (sessionType == typeof(TcpSession))
             {
                 ((TcpSession)Session).OnReceive += OnReceived;
                 ((TcpSession)Session).OnConnect += OnConnected;
                 ((TcpSession)Session).OnDisconnect += OnDisconnected;
             }
-            else if (Session.GetType() == typeof(HttpSession))
+            else if (sessionType == typeof(HttpSession))
             {
                 ((HttpSession)Session).OnReceive += OnReceived;
+            }
+            else if (sessionType.ToString() == "Castle.Proxies.ITcpSessionProxy" || sessionType.ToString() == "Castle.Proxies.IUdpSessionProxy")
+            {
+                LogWriter.Info("Using unit-test proxy");
             }
             else
             {
