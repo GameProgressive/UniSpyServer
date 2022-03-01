@@ -10,6 +10,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
+using System.Data.Common;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
@@ -33,7 +34,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                 {
                     DatabaseOperationByType();
                 }
-                catch (Exception e)
+                catch (DbException e)
                 {
                     throw new GPDatabaseException("Unknown error occurs in database operation.", e);
                 }

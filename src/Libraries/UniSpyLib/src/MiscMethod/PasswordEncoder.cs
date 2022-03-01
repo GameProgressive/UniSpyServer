@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.UniSpyLib.MiscMethod
@@ -11,35 +13,32 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
         /// process password to string which stores in our database
         /// </summary>
         /// <param name="dict"></param>
-        public static bool ProcessPassword(Dictionary<string, string> dict, out string md5Password)
+        public static string ProcessPassword(Dictionary<string, string> dict)
         {
+            string md5Password;
             if (dict.ContainsKey("passwordenc"))
             {
                 //we decoded gamespy encoded password then get md5 of it         
                 md5Password = StringExtensions.GetMD5Hash(Decode(dict["passwordenc"]));
-                return true;
             }
             else if (dict.ContainsKey("passenc"))
             {
                 //we decoded gamespy encoded password then get md5 of it  
                 md5Password = StringExtensions.GetMD5Hash(Decode(dict["passenc"]));
-                return true;
             }
             else if (dict.ContainsKey("pass"))
             {
                 md5Password = StringExtensions.GetMD5Hash(dict["pass"]);
-                return true;
             }
             else if (dict.ContainsKey("password"))
             {
                 md5Password = StringExtensions.GetMD5Hash(dict["password"]);
-                return true;
             }
             else
             {
-                md5Password = null;
-                return false;
+                throw new UniSpyException("Can not find password field in request");
             }
+            return md5Password;
         }
         /// <summary>
         /// Encodes a password to Gamespy format
@@ -68,14 +67,10 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
         private static string Decode(string password)
         {
             // Convert Gamespy Base64 to Standard Base 64
-            StringBuilder builder = new StringBuilder(password);
-            builder.Replace('_', '=');
-            builder.Replace('[', '+');
-            builder.Replace(']', '/');
-
+            password = password.Replace('_', '=').Replace('[', '+').Replace(']', '/');
             // Decode passsword
-            byte[] passwordBytes = Convert.FromBase64String(builder.ToString());
-            return Encoding.UTF8.GetString(GameSpyEncodeMethod(passwordBytes));
+            byte[] passwordBytes = Convert.FromBase64String(password);
+            return UniSpyEncoding.GetString(GameSpyEncodeMethod(passwordBytes));
         }
 
         /// <summary>

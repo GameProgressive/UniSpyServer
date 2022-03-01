@@ -47,8 +47,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         {
             using (MD5 Md5 = MD5.Create())
             {
-                if (Encoding == null) Encoding = Encoding.UTF8;
-                return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
+                return Md5.ComputeHash(Encoding.ASCII.GetBytes(input)).ToHex(upperCase);
             }
         }
         /// <summary>

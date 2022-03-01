@@ -29,12 +29,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public override void Parse()
         {
             base.Parse();
-            string md5Password;
-            if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
-            {
-                throw new GPParseException("password provided is invalid.");
-            }
-            Password = md5Password;
+            Password = PasswordEncoder.ProcessPassword(RequestKeyValues);
 
             if (!RequestKeyValues.ContainsKey("nick"))
             {

@@ -47,10 +47,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 throw new GPDatabaseException(e.Message);
             }
 
-            if (!IsChallengeCorrect())
-            {
-                throw new GPLoginBadPasswordException();
-            }
+            IsChallengeCorrect();
 
             if (!_result.DatabaseResults.EmailVerifiedFlag)
             {
@@ -223,7 +220,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             }
         }
 
-        private bool IsChallengeCorrect()
+        private void IsChallengeCorrect()
         {
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
@@ -235,11 +232,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
             string response = LoginChallengeProof.GenerateProof(proofData);
 
-            if (_request.Response == response)
+            if (_request.Response != response)
             {
-                return true;
+                throw new GPLoginBadPasswordException("The response is not valid, this maybe caused by wrong password.");
             }
-            return false;
         }
     }
 }

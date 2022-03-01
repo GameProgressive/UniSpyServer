@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
         {
             IRequest request = new NewUserRequest(@"\newuser\\email\civ4@unispy.org\nick\civ4-tk\passwordenc\JMHGwQ__\productid\10435\gamename\civ4\namespaceid\17\uniquenick\civ4-tk\id\1\final\");
             IHandler handler = new NewUserHandler(_client, request);
-            handler.Handle();
+            // handler.Handle();
             request = new LoginRequest(@"\login\\challenge\xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT\uniquenick\civ4-tk\userid\25\profileid\26\response\7f2c9c6685570ea18b7207d2cbd72452\firewall\1\port\0\productid\10435\gamename\civ4\namespaceid\17\sdkrevision\1\id\1\final\");
             handler = new LoginHandler(_client, request);
             handler.Handle();
