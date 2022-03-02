@@ -1,10 +1,11 @@
 ﻿using System;
+using UniSpyServer.Servers.CDKey.Entity.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.CDKey.Handler
 {
-    public sealed class CmdSwitcher : CmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
         private new string _rawRequest => (string)base._rawRequest;
 

@@ -76,10 +76,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 // remove serverInfo in Redis
                 using (var client = new RedisClient())
                 {
-                    var server = client.Values.Where(x =>
+                    var server = client.Values.FirstOrDefault(x =>
                                             x.HostIPAddress == _user.Session.RemoteIPEndPoint.Address &
-                                            x.GameName == _user.Info.GameName)
-                                            .FirstOrDefault();
+                                            x.GameName == _user.Info.GameName);
                     if (server != null)
                     {
                         client.DeleteKeyValue(server);

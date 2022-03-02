@@ -6,7 +6,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.Logging;
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UniSpyServer.Servers.GameStatus.Entity.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -6,7 +7,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.GameStatus.Handler
 {
-    public sealed class CmdSwitcher : CmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
         private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -7,7 +8,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler
 {
-    public sealed class CmdSwitcher : CmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
         private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
         public CmdSwitcher(IClient client, byte[] rawRequest) : base(client, rawRequest)

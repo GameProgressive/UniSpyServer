@@ -8,9 +8,10 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CmdSwitcherBase : ISwitcher
+    public abstract class CmdSwitcherBase<TRequestContract, THandlerContract> : ISwitcher
+    where TRequestContract : RequestContractBase
+    where THandlerContract : HandlerContractBase
     {
-        // !! new architecture
         private IClient _client;
         protected object _rawRequest { get; private set; }
         // protected ISession _session { get; private set; }
@@ -29,28 +30,17 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             _handlers = new List<IHandler>();
             if (_requestMapping is null)
             {
-                _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));
+                _requestMapping = LoadUniSpyComponents(typeof(TRequestContract));
             }
             if (_handlerMapping is null)
             {
-                _handlerMapping = LoadUniSpyComponents(typeof(HandlerContractBase));
+                _handlerMapping = LoadUniSpyComponents(typeof(THandlerContract));
             }
         }
 
         public Dictionary<object, Type> LoadUniSpyComponents(Type type)
         {
             var mapping = new Dictionary<object, Type>();
-            // List<Type> assemblies;
-            // if (Assembly.GetEntryAssembly().FullName.Contains("testhost"))
-            // {
-            //     // we are in unittest, we load all assemblies
-
-            // }
-            // else
-            // {
-            //     assemblies = AppDomain.CurrentDomain.GetAssemblies()
-            //                .SelectMany(a => a.GetTypes().Where(t => t.IsDefined(type, false))).ToList();
-            // }
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Split(",")[0] == ($"UniSpyServer.Servers.{_client.Session.Server.ServerName}")).SelectMany(a => a.GetTypes().Where(t => t.IsDefined(type, false))).ToList();
             if (assemblies.Count() == 0)
             {

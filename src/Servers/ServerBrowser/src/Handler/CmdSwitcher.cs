@@ -5,14 +5,10 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler
 {
-    public sealed class CmdSwitcher : CmdSwitcherBase
+    public sealed class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
-        static CmdSwitcher()
-        {
-            _requestMapping = LoadUniSpyComponents(typeof(RequestContract));
-            _handlerMapping = LoadUniSpyComponents(typeof(HandlerContract));
-        }
+
         public CmdSwitcher(IClient client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
