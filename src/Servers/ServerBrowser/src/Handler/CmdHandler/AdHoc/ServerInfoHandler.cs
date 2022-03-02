@@ -26,9 +26,9 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _result.GameServerInfo = _gameServerRedisClient.Values.Where(x =>
+            _result.GameServerInfo = _gameServerRedisClient.Values.FirstOrDefault(x =>
                 x.HostIPAddress == _request.TargetIPEndPoint.Address &
-                x.HostPort == _request.TargetIPEndPoint.Port).FirstOrDefault();
+                x.HostPort == _request.TargetIPEndPoint.Port);
 
             //TODO if there are no server found, we still send response back to client
             if (_result.GameServerInfo == null)

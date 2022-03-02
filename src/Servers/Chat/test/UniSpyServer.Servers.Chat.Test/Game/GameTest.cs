@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Test
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
             var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Loopback, 8888));
+            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8888));
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
             _client = new Client(sessionMock.Object);
         }

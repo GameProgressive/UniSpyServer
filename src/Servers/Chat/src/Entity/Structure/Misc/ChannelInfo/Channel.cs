@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         public const string GroupRoomPrefix = "#GPG";
         public const char TitleSeperator = '!';
-        
+
         public static Func<string, PeerRoomType> GetRoomType = (channelName) =>
         {
             if (IsStagingRoom(channelName))
@@ -197,7 +197,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         public ChannelUser GetChannelUser(IClient client)
         {
-            return Users.Values.Where(u => u.Session.RemoteIPEndPoint == client.Session.RemoteIPEndPoint).FirstOrDefault();
+            return Users.Values.FirstOrDefault(u => u.Session.RemoteIPEndPoint == client.Session.RemoteIPEndPoint);
         }
         public bool IsUserBanned(ChannelUser user)
         {

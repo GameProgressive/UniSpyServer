@@ -66,7 +66,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var client = (Client)Client.ClientPool.Values.Where(c => ((ClientInfo)(c.Info)).NickName == _request.NickName).FirstOrDefault();
+            var client = (Client)Client.ClientPool.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
             if (client == null)
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");

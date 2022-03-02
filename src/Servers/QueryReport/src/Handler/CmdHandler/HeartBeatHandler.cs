@@ -71,12 +71,11 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         {
             //make sure one ip address create one server on each game
             //we check if the database have multiple game server if it contains
-            _gameServerInfo = _redisClient.Values.Where(x =>
+            _gameServerInfo = _redisClient.Values.FirstOrDefault(x =>
                                     x.ServerID == _client.Session.Server.ServerID &
                                     x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
                                     x.InstantKey == _request.InstantKey &
-                                    x.GameName == _request.GameName)
-                                    .FirstOrDefault();
+                                    x.GameName == _request.GameName);
 
             if (_gameServerInfo == null)
             {

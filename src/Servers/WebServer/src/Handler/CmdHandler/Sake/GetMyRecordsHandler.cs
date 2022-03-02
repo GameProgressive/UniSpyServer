@@ -1,8 +1,8 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Sake;
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Structure.Result.Sake;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
+using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Sake;
+using UniSpyServer.Servers.WebServer.Entity.Structure.Result.Sake;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake
 {
@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake
 
             foreach (var field in _request.Fields)
             {
-                var record = _sakeData.Where(x => x.FieldName == field.FieldName && x.FiledType == field.FiledType).FirstOrDefault();
+                var record = _sakeData.FirstOrDefault(x => x.FieldName == field.FieldName && x.FiledType == field.FiledType);
                 if (record != null)
                 {
                     _result.Records.Add(record);

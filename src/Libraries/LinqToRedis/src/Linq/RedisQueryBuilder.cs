@@ -12,12 +12,11 @@ namespace UniSpyServer.LinqToRedis.Linq
     public class RedisQueryBuilder<TKey> : ExpressionVisitor where TKey : RedisKeyValueObject
     {
         public TKey KeyObject { get; private set; }
-        private List<object> _builderStack;
+        private List<object> _builderStack = new List<object>();
         private Expression _expression;
         public RedisQueryBuilder(Expression expression)
         {
             _expression = expression;
-            _builderStack = new List<object>();
         }
 
         public void Build()
@@ -62,7 +61,16 @@ namespace UniSpyServer.LinqToRedis.Linq
                     Visit(node.Arguments[1]);
                     break;
                 case "FirstOrDefault":
-                    Visit(node.Arguments[0]);
+                    if (node.Arguments.Count == 1)
+                    {
+                        // FirstOrDefault() is called at the end of the query
+                        Visit(node.Arguments[0]);
+                    }
+                    else
+                    {
+                        // FirstOrDefault() is called at the start of the query
+                        Visit(node.Arguments[1]);
+                    }
                     break;
                 case "First":
                     Visit(node.Arguments[0]);
@@ -91,12 +99,6 @@ namespace UniSpyServer.LinqToRedis.Linq
 
             return node;
         }
-        // protected override Expression VisitUnary(UnaryExpression node)
-        // {
-        //     // return base.VisitUnary(node);
-        //     _builderStack.Add(Expression.Lambda(node).Compile().DynamicInvoke());
-        //     return node;
-        // }
         protected override Expression VisitBinary(BinaryExpression node)
         {
             Visit(node.Left);
@@ -118,7 +120,6 @@ namespace UniSpyServer.LinqToRedis.Linq
             if (node.Value == null)
             {
                 throw new NotSupportedException("The constant must have value");
-
             }
             _builderStack.Add(node.Value);
             return node;

@@ -23,11 +23,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            _userInfo = _redisClient.Values.Where(
+            _userInfo = _redisClient.Values.FirstOrDefault(
                   k => k.ServerID == _client.Session.Server.ServerID
                   & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
                   & k.PortType == _request.PortType
-                  & k.Cookie == _request.Cookie).FirstOrDefault();
+                  & k.Cookie == _request.Cookie);
             //TODO we get user infomation from redis
             if (_userInfo == null)
             {

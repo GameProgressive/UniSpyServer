@@ -133,7 +133,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             }
             using (var db = new UniSpyContext())
             {
-                var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).Where(x => x.gl.Roomname == buffer[1]).FirstOrDefault();
+                var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).FirstOrDefault(x => x.gl.Roomname == buffer[1]);
                 if (officialRoom == null)
                 {
                     return false;

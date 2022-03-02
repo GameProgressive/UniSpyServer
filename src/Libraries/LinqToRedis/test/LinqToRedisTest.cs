@@ -13,6 +13,7 @@ namespace UniSpy.Redis.Test
             var redis = new RedisClient();
             var data2 = redis.Values.Where(k => k.Cookie == 0).ToList();
             var data3 = redis.Values.Where(k => k.Cookie == 0).FirstOrDefault();
+            var data4 = redis.Values.FirstOrDefault(k => k.Cookie == 0);
         }
         [Fact]
         public void ReadTest2()

@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                     throw new GPDatabaseException("More than one buddy found in database, please check database.");
                 }
 
-                db.Friends.Remove(result.FirstOrDefault());
+                db.Friends.Remove(result.First());
             }
         }
     }

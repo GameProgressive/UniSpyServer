@@ -63,7 +63,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private void P2PGroupRoomList()
         {
             // Game name is unique in redis database
-            var groupInfo = _peerGroupRedisClient.Values.Where(x => x.GameName == _request.GameName).FirstOrDefault();
+            var groupInfo = _peerGroupRedisClient.Values.FirstOrDefault(x => x.GameName == _request.GameName);
             if (groupInfo == null)
             {
                 // search gamename in database

@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             // there only existed one nick name
             base.RequestCheck();
             var clients = (ICollection<Client>)Client.ClientPool.Values;
-            var client = clients.Where(x => x.Info.NickName == _request.NickName).FirstOrDefault();
+            var client = clients.FirstOrDefault(x => x.Info.NickName == _request.NickName);
 
             if (client == null)
             {
