@@ -5,7 +5,7 @@ services:
   cdkey:
     build:
       context: ../
-      dockerfile: ./src/Servers/CDKey/Dockerfile
+      dockerfile: ./src/Servers/CDKey/src/Dockerfile
     image: gameprogressive/cdkey
     ports:
     - "29910:29910"
@@ -16,7 +16,7 @@ services:
   chat:
     build:
       context: ../
-      dockerfile: ./src/Servers/Chat/Dockerfile
+      dockerfile: ./src/Servers/Chat/src/Dockerfile
     image: gameprogressive/chat
     ports:
     - "6667:6667"
@@ -26,7 +26,7 @@ services:
   nn:
     build:
       context: ../
-      dockerfile: ./src/Servers/NatNegotiation/Dockerfile
+      dockerfile: ./src/Servers/NatNegotiation/src/Dockerfile
     image: gameprogressive/nn
     ports:
     - "27901:27901"
@@ -37,7 +37,7 @@ services:
   pcm:
     build:
       context: ../
-      dockerfile: ./src/Servers/PresenceConnectionManager/Dockerfile
+      dockerfile: ./src/Servers/PresenceConnectionManager/src/Dockerfile
     image: gameprogressive/pcm
     ports:
     - "29900:29900"
@@ -47,7 +47,7 @@ services:
   psp:
     build:
       context: ../
-      dockerfile: ./src/Servers/PresenceSearchPlayer/Dockerfile
+      dockerfile: ./src/Servers/PresenceSearchPlayer/src/Dockerfile
     image: gameprogressive/psp
     ports:
     - "29901:29901"
@@ -57,7 +57,7 @@ services:
   qr:
     build:
       context: ../
-      dockerfile: ./src/Servers/QueryReport/Dockerfile
+      dockerfile: ./src/Servers/QueryReport/src/Dockerfile
     image: gameprogressive/qr
     ports:
     - "27900:27900"
@@ -68,7 +68,7 @@ services:
   sb:
     build:
       context: ../
-      dockerfile: ./src/Servers/ServerBrowser/Dockerfile
+      dockerfile: ./src/Servers/ServerBrowser/src/Dockerfile
     image: gameprogressive/sb
     ports:
     - "28910:28910"
@@ -78,7 +78,7 @@ services:
   gs:
     build:
       context: ../
-      dockerfile: ./src/Servers/GameStatus/Dockerfile
+      dockerfile: ./src/Servers/GameStatus/src/Dockerfile
     image: gameprogressive/gs
     ports:
     - "29920:29920"
@@ -88,8 +88,10 @@ services:
   ws:
     build:
       context: ../
-      dockerfile: ./src/Servers/WebServices/Dockerfile
+      dockerfile: ./src/Servers/WebServices/src/Dockerfile
     image: gameprogressive/ws
     ports:
     - "80:80"
     - "443:443"
+    stdin_open: true
+    tty: true
