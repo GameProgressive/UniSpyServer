@@ -40,7 +40,16 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new ModeResponse(_request, _result);
+            // we only response to get channel modes
+            switch (_request.RequestType)
+            {
+                case ModeRequestType.GetChannelUserModes:
+                case ModeRequestType.GetChannelModes:
+                    _response = new ModeResponse(_request, _result);
+                    break;
+                case ModeRequestType.SetChannelModes:
+                    break;
+            }
         }
     }
 }

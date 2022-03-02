@@ -72,6 +72,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 }
 
                 db.Update(profile);
+                // we update the profile in our memory
+                _client.Info.ProfileInfo = profile;
             }
         }
     }

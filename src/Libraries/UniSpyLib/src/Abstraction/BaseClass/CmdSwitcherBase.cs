@@ -21,25 +21,37 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         protected static Dictionary<object, Type> _requestMapping { get; set; }
         protected static Dictionary<object, Type> _handlerMapping { get; set; }
-        static CmdSwitcherBase()
-        {
-            _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));
-            _handlerMapping = LoadUniSpyComponents(typeof(HandlerContractBase));
-        }
         public CmdSwitcherBase(IClient client, object rawRequest)
         {
             _client = client;
             _rawRequest = rawRequest;
             _requests = new List<IRequest>();
             _handlers = new List<IHandler>();
+            if (_requestMapping is null)
+            {
+                _requestMapping = LoadUniSpyComponents(typeof(RequestContractBase));
+            }
+            if (_handlerMapping is null)
+            {
+                _handlerMapping = LoadUniSpyComponents(typeof(HandlerContractBase));
+            }
         }
 
-        public static Dictionary<object, Type> LoadUniSpyComponents(Type type)
+        public Dictionary<object, Type> LoadUniSpyComponents(Type type)
         {
             var mapping = new Dictionary<object, Type>();
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                       .SelectMany(a => a.GetTypes().Where(t => t.IsDefined(type, false))).ToList();
+            // List<Type> assemblies;
+            // if (Assembly.GetEntryAssembly().FullName.Contains("testhost"))
+            // {
+            //     // we are in unittest, we load all assemblies
 
+            // }
+            // else
+            // {
+            //     assemblies = AppDomain.CurrentDomain.GetAssemblies()
+            //                .SelectMany(a => a.GetTypes().Where(t => t.IsDefined(type, false))).ToList();
+            // }
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Split(",")[0] == ($"UniSpyServer.Servers.{_client.Session.Server.ServerName}")).SelectMany(a => a.GetTypes().Where(t => t.IsDefined(type, false))).ToList();
             if (assemblies.Count() == 0)
             {
                 throw new NotImplementedException("Components have not been implemented");
