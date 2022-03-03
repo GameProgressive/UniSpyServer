@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public Client ClientRef { get; private set; }
         public ClientInfo Info => ClientRef.Info;
         public ISession Session => ClientRef.Session;
-        public Dictionary<string, string> UserKeyValue { get; private set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> UserKeyValue { get; private set; }
         public string BFlags => @"\" + Info.UserName + @"\" + UserKeyValue["b_flags"];
         public string Modes
         {
@@ -36,6 +36,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public ChannelUser(Client client)
         {
             ClientRef = client;
+            UserKeyValue = new Dictionary<string, string>();
         }
 
         public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)

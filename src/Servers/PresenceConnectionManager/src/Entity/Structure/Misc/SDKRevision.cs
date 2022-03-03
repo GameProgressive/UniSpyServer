@@ -2,7 +2,7 @@
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {
-    public sealed class SDKRevision
+    public sealed class SdkRevision
     {
         public SdkRevisionType? SDKRevisionType { get; set; }
         public bool IsSDKRevisionValid => SDKRevisionType == 0 ? false : true;
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
         public bool IsSupportGPINewListRetrevalOnLogin => (SDKRevisionType ^ Enumerate.SdkRevisionType.GPINewListRetrevalOnLogin) != 0 ? true : false;
         public bool IsSupportGPIRemoteAuthIDSNotification => (SDKRevisionType ^ Enumerate.SdkRevisionType.GPIRemoteAuthIDSNotification) != 0 ? true : false;
         public bool IsSupportGPINewCDKeyRegistration => (SDKRevisionType ^ Enumerate.SdkRevisionType.GPINewCDKeyRegistration) != 0 ? true : false;
-        public SDKRevision()
+        public SdkRevision()
         {
         }
     }

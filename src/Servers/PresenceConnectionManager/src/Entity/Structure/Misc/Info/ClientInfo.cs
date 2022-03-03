@@ -13,28 +13,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure.Data
         public const string LoginTicket = "0000000000000000000000__";
         public DateTime CreatedTime { get; private set; }
         public Guid UserGuid { get; private set; }
-        // public BasicInfo BasicInfo { get; private set; } = new BasicInfo();
-        public SDKRevision SdkRevision { get; private set; } = new SDKRevision();
-        public UserStatus Status { get; set; } = new UserStatus();
-        public UserStatusInfo StatusInfo { get; set; } = new UserStatusInfo();
-        public LoginStatus LoginPhase { get; set; } = LoginStatus.Connected;
-        public User UserInfo { get; set; } = new();
-        public Subprofile SubProfileInfo { get; set; } = new();
-        public Profile ProfileInfo { get; set; } = new();
+        public SdkRevision SdkRevision { get; private set; }
+        public UserStatus Status { get; set; }
+        public UserStatusInfo StatusInfo { get; set; }
+        public LoginStatus LoginPhase { get; set; }
+        public User UserInfo { get; set; }
+        public Subprofile SubProfileInfo { get; set; }
+        public Profile ProfileInfo { get; set; }
         public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
         {
+            SdkRevision = new SdkRevision();
+            Status = new UserStatus();
+            StatusInfo = new UserStatusInfo();
+            CreatedTime = DateTime.Now;
+            LoginPhase = LoginStatus.Connected;
         }
-
-
-
-        // public ClientInfo(Guid guid)
-        // {
-        //     UserGuid = guid;
-        //     CreatedTime = DateTime.Now;
-        //     BasicInfo = new BasicInfo();
-        //     Status = new UserStatus();
-        //     SDKRevision = new SDKRevision();
-        //     StatusInfo = new UserStatusInfo();
-        // }
     }
 }

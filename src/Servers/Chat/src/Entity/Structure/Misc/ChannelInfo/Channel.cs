@@ -87,18 +87,18 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         /// <value></value>
         public int MaxNumberUser { get; private set; } = 200;
-        public ChannelMode Mode { get; private set; } = new ChannelMode();
-        public DateTime CreateTime { get; private set; } = DateTime.Now;
+        public ChannelMode Mode { get; private set; }
+        public DateTime CreateTime { get; private set; }
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public IDictionary<string, ChannelUser> BanList { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        public IDictionary<string, ChannelUser> BanList { get; private set; }
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         /// <value></value>
-        public IDictionary<string, ChannelUser> Users { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        public IDictionary<string, ChannelUser> Users { get; private set; }
         public IDictionary<string, string> ChannelKeyValue { get; private set; } =
         new ConcurrentDictionary<string, string>();
         public ChannelUser Creator { get; private set; }
@@ -110,6 +110,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             Name = name;
             Mode.SetDefaultModes();
             Creator = creator;
+            Mode = new ChannelMode();
+            CreateTime = DateTime.Now;
+            BanList = new ConcurrentDictionary<string, ChannelUser>();
+            Users = new ConcurrentDictionary<string, ChannelUser>();
         }
 
         /// <summary>
