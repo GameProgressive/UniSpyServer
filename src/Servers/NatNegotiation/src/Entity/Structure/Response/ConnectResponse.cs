@@ -7,7 +7,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
     public sealed class ConnectResponse : ResponseBase
     {
         private new ConnectResult _result => (ConnectResult)base._result;
-
         public ConnectResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
@@ -20,7 +19,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
             data.AddRange(_result.RemotePortBytes);
             data.Add((byte)_result.GotYourData);
             data.Add((byte)_result.Finished);
-
             SendingBuffer = data.ToArray();
         }
     }

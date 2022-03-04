@@ -34,7 +34,6 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
-            Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
@@ -77,6 +76,15 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
         public void ReportTest()
         {
 
+        }
+        [Fact]
+        public void PreInitTest()
+        {
+            var raw = new byte[] { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x04, 0x0f, 0xb5, 0xe0, 0x95, 0x2a, 0x00, 0x24, 0x38, 0xb2, 0xb3, 0x5e };
+            var request = new PreInitRequest(raw);
+            request.Parse();
+            Assert.Equal(RequestType.PreInit, request.CommandName);
+            Assert.Equal(PreInitState.WaitingForClient, request.State);
         }
     }
 }

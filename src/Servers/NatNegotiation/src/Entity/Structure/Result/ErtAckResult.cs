@@ -3,11 +3,11 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {
-    public sealed class ErtAckResult : InitResultBase
+    public sealed class ErtAckResult : CommonResultBase
     {
         public ErtAckResult()
         {
-            PacketType = NatPacketType.ErtAck;
+            PacketType = ResponseType.ErtAck;
         }
     }
 }

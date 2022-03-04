@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
         public int Cookie;
         public ConnectResult()
         {
-            PacketType = NatPacketType.Connect;
+            PacketType = ResponseType.Connect;
         }
     }
 }

@@ -3,11 +3,11 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {
-    public sealed class AddressCheckResult : InitResultBase
+    public sealed class AddressCheckResult : CommonResultBase
     {
         public AddressCheckResult()
         {
-            PacketType = NatPacketType.AddressReply;
+            PacketType = ResponseType.AddressReply;
         }
     }
 }

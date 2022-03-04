@@ -8,4 +8,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         PacketMap1b,
         NumPackets
     }
+
+    public enum PreInitState : byte
+    {
+        WaitingForClient = 0,
+        WaitingForMatchUp = 1,
+        Ready = 2
+    }
 }

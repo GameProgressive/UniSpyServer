@@ -6,7 +6,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.AddressCheck)]
-    public sealed class AddressCheckRequest : RequestBase
+    public sealed class AddressCheckRequest : CommonRequestBase
     {
         public AddressCheckRequest(byte[] rawRequest) : base(rawRequest)
         {

@@ -21,15 +21,15 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         {
             _result = new HeartBeatResult();
         }
-        protected override void RequestCheck()
-        {
-            base.RequestCheck();
-            // some game require qr server to detect the public ip.
-            if (!_request.ServerData.ContainsKey("publicip"))
-            {
-                _request.ServerData.Add("publicip", _client.Session.RemoteIPEndPoint.Address.ToString());
-            }
-        }
+        // protected override void RequestCheck()
+        // {
+        //     base.RequestCheck();
+        //     // some game require qr server to detect the public ip.
+        //     if (!_request.ServerData.ContainsKey("publicip"))
+        //     {
+        //         _request.ServerData.Add("publicip", _client.Session.RemoteIPEndPoint.Address.ToString());
+        //     }
+        // }
         protected override void DataOperation()
         {
             CheckSpamGameServer();

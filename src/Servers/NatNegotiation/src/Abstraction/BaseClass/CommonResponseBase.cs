@@ -3,10 +3,11 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
-    public abstract class InitResponseBase : ResponseBase
+    public abstract class CommonResponseBase : ResponseBase
     {
-        private new InitResultBase _result => (InitResultBase)base._result;
-        public InitResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        private new CommonResultBase _result => (CommonResultBase)base._result;
+        private new CommonRequestBase _request => (CommonRequestBase)base._request;
+        public CommonResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

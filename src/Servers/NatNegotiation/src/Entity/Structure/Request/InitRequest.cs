@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.Init)]
-    public sealed class InitRequest : RequestBase
+    public sealed class InitRequest : CommonRequestBase
     {
         public string GameName { get; private set; }
         [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]

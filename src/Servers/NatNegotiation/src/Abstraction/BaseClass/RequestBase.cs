@@ -14,8 +14,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         public byte? Version { get; protected set; }
         public uint? Cookie { get; protected set; }
         public NatPortType? PortType { get; protected set; }
-        public byte? ClientIndex { get; protected set; }
-        public byte? UseGamePort { get; protected set; }
+        // public byte? ClientIndex { get; protected set; }
+        // public byte? UseGamePort { get; protected set; }
         public new RequestType CommandName { get => (RequestType)base.CommandName; set => base.CommandName = value; }
         public RequestBase(byte[] rawRequest) : base(rawRequest)
         {
@@ -32,8 +32,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
             CommandName = (RequestType)RawRequest[7];
             Cookie = BitConverter.ToUInt32(RawRequest.Skip(8).Take(4).ToArray());
             PortType = (NatPortType)RawRequest[12];
-            ClientIndex = RawRequest[13];
-            UseGamePort = RawRequest[14];
+            // ClientIndex = RawRequest[13];
+            // UseGamePort = RawRequest[14];
         }
     }
 }

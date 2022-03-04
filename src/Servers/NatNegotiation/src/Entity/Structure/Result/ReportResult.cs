@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
     {
         public ReportResult()
         {
-            PacketType = NatPacketType.ReportAck;
+            PacketType = ResponseType.ReportAck;
         }
     }
 }

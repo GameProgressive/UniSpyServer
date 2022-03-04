@@ -19,9 +19,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
     {
         InitAck = 1,
         ErtTest = 2,
+        ErtAck = 3,
         Connect = 5,
         AddressReply = 11,
         ReportAck = 14,
+        PreInitAck = 16
     }
     public enum NatPacketType : byte
     {
