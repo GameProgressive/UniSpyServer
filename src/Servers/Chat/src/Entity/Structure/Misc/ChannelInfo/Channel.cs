@@ -5,7 +5,6 @@ using System.Linq;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
@@ -86,7 +85,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// The maximum number of users that can be in the channel
         /// </summary>
         /// <value></value>
-        public int MaxNumberUser { get; private set; } = 200;
+        public int MaxNumberUser { get; private set; }
         public ChannelMode Mode { get; private set; }
         public DateTime CreateTime { get; private set; }
         /// <summary>
@@ -99,8 +98,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         /// <value></value>
         public IDictionary<string, ChannelUser> Users { get; private set; }
-        public IDictionary<string, string> ChannelKeyValue { get; private set; } =
-        new ConcurrentDictionary<string, string>();
+        public IDictionary<string, string> ChannelKeyValue { get; private set; }
         public ChannelUser Creator { get; private set; }
         public bool IsPeerServer { get; set; }
         public string Password { get; private set; }
@@ -108,12 +106,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public Channel(string name, ChannelUser creator = null)
         {
             Name = name;
-            Mode.SetDefaultModes();
             Creator = creator;
-            Mode = new ChannelMode();
             CreateTime = DateTime.Now;
+            Mode = new ChannelMode();
             BanList = new ConcurrentDictionary<string, ChannelUser>();
             Users = new ConcurrentDictionary<string, ChannelUser>();
+            ChannelKeyValue = new ConcurrentDictionary<string, string>();
+            MaxNumberUser = 200;
+            Mode.SetDefaultModes();
         }
 
         /// <summary>
