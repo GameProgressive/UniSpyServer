@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
                 {
                     completeBuffer = message;
                 }
-                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])completeBuffer);
                 new CmdSwitcher(this, completeBuffer).Switch();
             }
             else

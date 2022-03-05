@@ -22,7 +22,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <summary>
         /// User created room which can be seperated by categories
         /// </summary>
-        Group
+        Group,
+        /// <summary>
+        /// Testing room
+        /// </summary>
+        Normal
     }
     public sealed class Channel
     {
@@ -56,7 +60,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return PeerRoomType.Group;
             }
-            throw new ChatException("Invalid channel name.");
+            else
+            {
+                return PeerRoomType.Normal;
+            }
         };
         private static Func<string, bool> IsStagingRoom = (channelName) =>
         {
