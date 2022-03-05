@@ -94,7 +94,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         {
             var serverInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
-            ((ServerMainListResult)_result).Flag = GameServerFlags.HasFullRulesFlag;
+            ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
             //TODO do filter
             //**************Currently we do not handle filter**********************
         }
