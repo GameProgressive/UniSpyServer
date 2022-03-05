@@ -8,7 +8,6 @@ services:
       dockerfile: ./src/Servers/CDKey/src/Dockerfile
     image: gameprogressive/cdkey
     ports:
-    - "29910:29910"
     - "29910:29910/udp"
     stdin_open: true
     tty: true
@@ -29,7 +28,6 @@ services:
       dockerfile: ./src/Servers/NatNegotiation/src/Dockerfile
     image: gameprogressive/nn
     ports:
-    - "27901:27901"
     - "27901:27901/udp"
     stdin_open: true
     tty: true
@@ -60,7 +58,6 @@ services:
       dockerfile: ./src/Servers/QueryReport/src/Dockerfile
     image: gameprogressive/qr
     ports:
-    - "27900:27900"
     - "27900:27900/udp"
     stdin_open: true
     tty: true
@@ -92,6 +89,5 @@ services:
     image: gameprogressive/ws
     ports:
     - "80:80"
-    - "443:443"
     stdin_open: true
     tty: true
