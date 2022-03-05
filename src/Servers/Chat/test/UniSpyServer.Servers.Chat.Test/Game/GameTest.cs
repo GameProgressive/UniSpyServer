@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Moq;
 using UniSpyServer.Servers.Chat.Entity.Structure;
@@ -50,6 +51,24 @@ namespace UniSpyServer.Servers.Chat.Test
             {
                 new CmdSwitcher(_client, UniSpyEncoding.GetBytes(raw)).Switch();
             }
+        }
+        [Fact]
+        public void TcpMessageSplitingTest()
+        {
+            var raws = new List<byte[]>(){
+                UniSpyEncoding.GetBytes("hello"),
+                UniSpyEncoding.GetBytes("world"),
+                UniSpyEncoding.GetBytes("hi").Concat(new byte[]{0x0D,0x0A}).ToArray(),
+            };
+            foreach (var raw in raws)
+            {
+                _client.TestReceived(raw);
+            }
+            // Given
+
+            // When
+
+            // Then
         }
     }
 }
