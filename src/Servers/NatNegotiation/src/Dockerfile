@@ -1,6 +1,5 @@
 FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
 WORKDIR /app
-EXPOSE 27901
 EXPOSE 27901/udp
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
