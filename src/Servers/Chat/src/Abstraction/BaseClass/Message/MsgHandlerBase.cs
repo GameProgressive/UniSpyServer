@@ -1,4 +1,5 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass.Message;
+﻿using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass.Message;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
@@ -19,14 +20,17 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected override void RequestCheck()
         {
             // base.RequestCheck();
-            switch (_request.MessageType)
+            _request.Parse();
+            switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
                     base.RequestCheck();
                     break;
                 case MessageType.UserMessage:
-                    if (_request.MessageType == MessageType.UserMessage)
+                    if (_request.Type == MessageType.UserMessage)
                     {
+                        // todo check if we only allow user join one channel
+                        _channel = _client.Info.JoinedChannels.Values.First();
                         _reciever = _channel.GetChannelUser(_request.NickName);
                         if (_reciever == null)
                         {
@@ -41,7 +45,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         }
         protected override void DataOperation()
         {
-            switch (_request.MessageType)
+            switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
                     ChannelMessageDataOpration();
@@ -63,13 +67,13 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected override void Response()
         {
             // response can not be null!
-            switch (_request.MessageType)
+            switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
                     _channel.MultiCastExceptSender(_user, _response);
                     break;
                 case MessageType.UserMessage:
-                    _client.Send(_response);
+                    _reciever.ClientRef.Send(_response);
                     break;
             }
         }

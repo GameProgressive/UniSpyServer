@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.Chat.Test.Message
         {
             var request = new AboveTheTableMsgRequest(MessageRequests.AboveTheTableMsg);
             request.Parse();
-            Assert.Equal(MessageType.ChannelMessage, request.MessageType);
+            Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
             Assert.Equal("#GSP!room!test", request.ChannelName);
         }
@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.Chat.Test.Message
         {
             var request = new NoticeRequest(MessageRequests.Notice);
             request.Parse();
-            Assert.Equal(MessageType.ChannelMessage, request.MessageType);
+            Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
             Assert.Equal("#GSP!room!test", request.ChannelName);
         }
@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Test.Message
         {
             var request = new PrivateMsgRequest(MessageRequests.PrivateMsg);
             request.Parse();
-            Assert.Equal(MessageType.ChannelMessage, request.MessageType);
+            Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
             Assert.Equal("#GSP!room!test", request.ChannelName);
         }
@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.Chat.Test.Message
         {
             var request = new UnderTheTableMsgRequest(MessageRequests.UnderTheTableMsg);
             request.Parse();
-            Assert.Equal(MessageType.ChannelMessage, request.MessageType);
+            Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
             Assert.Equal("#GSP!room!test", request.ChannelName);
         }

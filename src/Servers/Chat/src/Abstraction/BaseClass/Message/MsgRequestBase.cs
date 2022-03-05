@@ -12,7 +12,7 @@
         {
         }
 
-        public MessageType MessageType { get; protected set; }
+        public MessageType? Type { get; protected set; }
         public string NickName { get; protected set; }
         public string Message { get; protected set; }
 
@@ -22,12 +22,12 @@
 
             if (ChannelName.Contains("#"))
             {
-                MessageType = MessageType.ChannelMessage;
+                Type = MessageType.ChannelMessage;
             }
             else
             {
                 // todo check if there need user message
-                MessageType = MessageType.UserMessage;
+                Type = MessageType.UserMessage;
                 ChannelName = null;
                 NickName = _cmdParams[0];
             }
