@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new QuitRequest _request => (QuitRequest)base._request;
         // when a user disconnected with server we can call this function
-        public QuitHandler(IClient client, IRequest request) : base(client, request){ }
+        public QuitHandler(IClient client, IRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
@@ -40,6 +40,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 };
                 new PartHandler(_client, partRequest).Handle();
             }
+            // user already loged out
+            _client.Info.IsLoggedIn = false;
         }
     }
 }

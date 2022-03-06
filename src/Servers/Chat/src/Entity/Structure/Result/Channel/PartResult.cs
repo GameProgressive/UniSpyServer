@@ -7,7 +7,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel
         public string LeaverIRCPrefix { get; set; }
         public bool IsChannelCreator { get; set; }
         public string ChannelName { get; set; }
-        public string Message { get; set; }
-        public PartResult(){ }
+        public PartResult() { }
     }
 }

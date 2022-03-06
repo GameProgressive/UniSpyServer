@@ -107,6 +107,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public IDictionary<string, string> ChannelKeyValue { get; private set; }
         public ChannelUser Creator { get; private set; }
         public bool IsPeerServer { get; set; }
+        public PeerRoomType RoomType => GetRoomType(Name);
         public string Password { get; private set; }
         public string Topic { get; set; }
         public Channel(string name, ChannelUser creator = null)
@@ -127,18 +128,16 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public bool MultiCast(IResponse message)
+        public void MultiCast(IResponse message)
         {
             foreach (var user in Users.Values)
             {
                 user.ClientRef.Send(message);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
-            return true;
         }
-        public bool MultiCastExceptSender(ChannelUser sender, IResponse message)
+        public void MultiCastExceptSender(ChannelUser sender, IResponse message)
         {
-            message.Build();
             foreach (var user in Users.Values)
             {
                 if (user.ClientRef.Session.RemoteIPEndPoint == sender.ClientRef.Session.RemoteIPEndPoint)
@@ -147,8 +146,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 }
                 user.ClientRef.Send(message);
             }
-
-            return true;
         }
         public string GetAllUsersNickString()
         {

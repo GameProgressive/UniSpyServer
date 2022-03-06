@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
@@ -15,11 +18,21 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
-        public PartHandler(IClient client, IRequest request) : base(client, request){ }
+        public PartHandler(IClient client, IRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
             {
+                _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
+                if (_channel == null)
+                {
+                    throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
+                }
+                _user = _channel.GetChannelUser(_client);
+                if (_user == null)
+                {
+                    throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
+                }
                 return;
             }
             base.RequestCheck();
@@ -29,36 +42,36 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             _result = new PartResult();
             _result.LeaverIRCPrefix = _user.Info.IRCPrefix;
             _result.ChannelName = _channel.Name;
-            if (_channel.IsPeerServer && _user.IsChannelCreator)
+            switch (_channel.RoomType)
             {
-                // Parallel.ForEach(_channel.ChannelUsers, (user) =>
-                //  {
-                //     // KickAllUserAndShutDownChannel(user);
-                //     // We create a new KICKHandler to handle KICK operation for us
-                //     var kickRequest = new KICKRequest
-                //      {
-                //          NickName = user.UserInfo.NickName,
-                //          ChannelName = _channel.ChannelName,
-                //          Reason = "Server Hoster leaves channel"
-                //      };
-                //      new KICKHandler(_session, kickRequest).Handle();
-                //  });
-                foreach (var user in _channel.Users.Values)
-                {
-                    // We create a new KICKHandler to handle KICK operation for us
-                    var kickRequest = new KickRequest
+                case PeerRoomType.Normal:
+                case PeerRoomType.Staging:
+                    if (_user.IsChannelCreator)
                     {
-                        KickeeNickName = user.Info.NickName,
-                        ChannelName = _channel.Name,
-                        Reason = _request.Reason
-                    };
-                    new KickHandler(_client, kickRequest).Handle();
-                }
+                        foreach (var user in _channel.Users.Values)
+                        {
+                            // we do not need to send part message to leaver
+                            if (user.Info.NickName == _user.Info.NickName)
+                            {
+                                continue;
+                            }
+                            // We create a new KICKHandler to handle KICK operation for us
+                            var kickRequest = new KickRequest
+                            {
+                                KickeeNickName = user.Info.NickName,
+                                ChannelName = _channel.Name,
+                                Reason = _request.Reason
+                            };
+                            new KickHandler(_client, kickRequest).Handle();
+                        }
+                        JoinHandler.Channels.Remove(_channel.Name);
 
-            }
-            else
-            {
-                _channel.RemoveBindOnUserAndChannel(_user);
+                    }
+                    goto default;
+                default:
+                    // we need always remove the connection in leaver and channel
+                    _channel.RemoveBindOnUserAndChannel(_user);
+                    break;
             }
         }
 
@@ -69,31 +82,30 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            if (_channel.IsPeerServer && _user.IsChannelCreator)
+            switch (_channel.RoomType)
             {
-                // we do nothing here, becase we kicked all user
-            }
-            else
-            {
-                //broadcast to all user in channel
-                _channel.MultiCastExceptSender(_user, _response);
-
-                // remove serverInfo in Redis
-                using (var client = new RedisClient())
-                {
-                    var server = client.Values.FirstOrDefault(x =>
-                                            x.HostIPAddress == _user.Session.RemoteIPEndPoint.Address
-                                            && x.GameName == _user.Info.GameName);
-                    if (server != null)
+                case PeerRoomType.Normal:
+                case PeerRoomType.Staging:
+                    // we already kicked all user and remove the channel
+                    break;
+                default:
+                    //broadcast to all user in channel
+                    _channel.MultiCastExceptSender(_user, _response);
+                    // remove serverInfo in Redis
+                    if (_user.Info.GameName is not null)
                     {
-                        client.DeleteKeyValue(server);
+                        using (var client = new RedisClient())
+                        {
+                            var server = client.Values.FirstOrDefault(x =>
+                                                    x.HostIPAddress == _user.Session.RemoteIPEndPoint.Address
+                                                    && x.GameName == _user.Info.GameName);
+                            if (server != null)
+                            {
+                                client.DeleteKeyValue(server);
+                            }
+                        }
                     }
-                }
-            }
-            // remove channel in ChannelManager
-            if (_channel.Users.Count == 0)
-            {
-                JoinHandler.Channels.Remove(_channel.Name);
+                    break;
             }
         }
     }
