@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            var ipBytes = RawRequest.Skip(15).Take(4).Reverse().ToArray();
+            var ipBytes = RawRequest.Skip(15).Take(4).ToArray();
             var portBytes = RawRequest.Skip(19).Take(2).Reverse().ToArray();
             var port = BitConverter.ToUInt16(portBytes);
             LocalIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
