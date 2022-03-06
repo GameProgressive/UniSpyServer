@@ -8,9 +8,7 @@
 
     public class MsgRequestBase : ChannelRequestBase
     {
-        public MsgRequestBase(string rawRequest) : base(rawRequest)
-        {
-        }
+        public MsgRequestBase(string rawRequest) : base(rawRequest){ }
 
         public MessageType? Type { get; protected set; }
         public string NickName { get; protected set; }

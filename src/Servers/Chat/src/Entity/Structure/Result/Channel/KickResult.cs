@@ -8,8 +8,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel
         public string KickerNickName { get; set; }
         public string KickeeNickName { get; set; }
         public string KickerIRCPrefix { get; set; }
-        public KickResult()
-        {
-        }
+        public KickResult(){ }
     }
 }

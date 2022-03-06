@@ -6,8 +6,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Message
     [RequestContract("UTM")]
     public sealed class UnderTheTableMsgRequest : MsgRequestBase
     {
-        public UnderTheTableMsgRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public UnderTheTableMsgRequest(string rawRequest) : base(rawRequest){ }
     }
 }

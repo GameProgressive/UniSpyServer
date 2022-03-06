@@ -9,9 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     {
         public string Password { get; private set; }
         public PeerRoomType? RoomType { get; private set; }
-        public JoinRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public JoinRequest(string rawRequest) : base(rawRequest){ }
         public override void Parse()
         {
             base.Parse();

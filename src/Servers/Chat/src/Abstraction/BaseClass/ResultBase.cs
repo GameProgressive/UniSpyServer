@@ -4,8 +4,6 @@
     {
         public string IRCErrorCode { get; set; }
 
-        public ResultBase()
-        {
-        }
+        public ResultBase(){ }
     }
 }

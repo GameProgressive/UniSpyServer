@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     public sealed class TopicResponse : ResponseBase
     {
         private new TopicResult _result => (TopicResult)base._result;
-        public TopicResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public TopicResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public static string BuildNoTopicReply(string channelName)
         {

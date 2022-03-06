@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("REGISTERNICK")]
     public sealed class RegisterNickRequest : RequestBase
     {
-        public RegisterNickRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public RegisterNickRequest(string rawRequest) : base(rawRequest){ }
 
         public string NamespaceID { get; private set; }
         public string UniqueNick { get; private set; }

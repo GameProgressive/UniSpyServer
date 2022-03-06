@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("LIST")]
     public sealed class ListRequest : RequestBase
     {
-        public ListRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public ListRequest(string rawRequest) : base(rawRequest){ }
 
         public bool IsSearchingChannel { get; private set; }
         public bool IsSearchingUser { get; private set; }

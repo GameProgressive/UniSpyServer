@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     public sealed class PartResponse : ResponseBase
     {
         private new PartResult _result => (PartResult)base._result;
-        public PartResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public PartResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

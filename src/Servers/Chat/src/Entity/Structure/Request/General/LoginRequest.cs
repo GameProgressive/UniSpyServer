@@ -12,9 +12,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("LOGIN")]
     public sealed class LoginRequest : RequestBase
     {
-        public LoginRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public LoginRequest(string rawRequest) : base(rawRequest){ }
 
         public LoginReqeustType ReqeustType { get; private set; }
         public int NamespaceID { get; private set; }

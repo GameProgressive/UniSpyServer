@@ -1,8 +1,9 @@
 using System.Linq;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Handler;
+using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure
@@ -51,5 +52,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         }
         public void TestReceived(byte[] buffer) => OnReceived(buffer);
         //todo add ondisconnect event process
+        protected override void OnDisconnected()
+        {
+            base.OnDisconnected();
+            var req = new QuitRequest()
+            {
+                Reason = "Client Disconnected"
+            };
+            new QuitHandler(this, req).Handle();
+        }
     }
 }

@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("WHOIS")]
     public sealed class WhoIsRequest : RequestBase
     {
-        public WhoIsRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public WhoIsRequest(string rawRequest) : base(rawRequest){ }
 
         public string NickName { get; private set; }
 

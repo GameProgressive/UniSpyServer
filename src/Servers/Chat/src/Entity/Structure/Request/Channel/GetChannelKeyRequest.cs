@@ -8,9 +8,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("GETCHANKEY")]
     public sealed class GetChannelKeyRequest : ChannelRequestBase
     {
-        public GetChannelKeyRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public GetChannelKeyRequest(string rawRequest) : base(rawRequest){ }
         public string Cookie { get; private set; }
         public List<string> Keys { get; private set; }
 

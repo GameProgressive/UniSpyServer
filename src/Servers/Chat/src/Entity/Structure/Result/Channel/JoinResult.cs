@@ -11,8 +11,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel
 
         // public string ChannelModes { get; set; }
         // public List<string> NickNames { get; set; }
-        public JoinResult()
-        {
-        }
+        public JoinResult(){ }
     }
 }

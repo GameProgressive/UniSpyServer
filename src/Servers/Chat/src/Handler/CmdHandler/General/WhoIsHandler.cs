@@ -17,9 +17,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
         private new WhoIsResult _result { get => (WhoIsResult)base._result; set => base._result = value; }
         private ClientInfo _clientInfo;
-        public WhoIsHandler(IClient client, IRequest request) : base(client, request)
-        {
-        }
+        public WhoIsHandler(IClient client, IRequest request) : base(client, request){ }
 
         protected override void RequestCheck()
         {

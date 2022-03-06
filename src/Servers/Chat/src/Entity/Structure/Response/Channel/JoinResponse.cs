@@ -10,9 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
         private new JoinResult _result => (JoinResult)base._result;
         private new JoinRequest _request => (JoinRequest)base._request;
         // public string SendingBufferOfChannelUsers { get; private set; }
-        public JoinResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public JoinResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

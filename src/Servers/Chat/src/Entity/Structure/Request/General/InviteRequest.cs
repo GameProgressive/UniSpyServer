@@ -6,13 +6,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("INVITE")]
     public sealed class InviteRequest : RequestBase
     {
-        public InviteRequest(string rawRequest) : base(rawRequest)
-        {
-        }
-
         public string ChannelName { get; private set; }
         public string UserName { get; private set; }
-
+        public InviteRequest(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
             base.Parse();

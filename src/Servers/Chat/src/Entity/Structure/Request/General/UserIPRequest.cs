@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("USRIP")]
     public sealed class UserIPRequest : RequestBase
     {
-        public UserIPRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public UserIPRequest(string rawRequest) : base(rawRequest){ }
 
         public override void Parse()
         {

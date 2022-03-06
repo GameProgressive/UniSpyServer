@@ -9,8 +9,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Redis
     /// </summary>
     public class RedisChannel : RedisChannel<string>
     {
-        public RedisChannel(string redisChannelName) : base(redisChannelName)
-        {
-        }
+        public RedisChannel(string redisChannelName) : base(redisChannelName){ }
     }
 }

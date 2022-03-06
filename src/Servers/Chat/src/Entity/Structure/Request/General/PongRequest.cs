@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("PONG")]
     public sealed class PongRequest : RequestBase
     {
-        public PongRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public PongRequest(string rawRequest) : base(rawRequest){ }
 
         public string EchoMessage { get; private set; }
 

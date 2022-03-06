@@ -13,9 +13,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Exception.IRC.General
 
         public object SendingBuffer { get; private set; }
 
-        public IRCException()
-        {
-        }
+        public IRCException(){ }
 
         public IRCException(string message, string errorCode) : base(message)
         {

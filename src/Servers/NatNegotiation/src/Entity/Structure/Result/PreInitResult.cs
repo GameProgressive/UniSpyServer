@@ -1,6 +1,5 @@
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {

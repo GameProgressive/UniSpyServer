@@ -5,8 +5,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Message
     public sealed class UnderTheTableMsgResult : MsgResultBase
     {
         public string Name { get; set; }
-        public UnderTheTableMsgResult()
-        {
-        }
+        public UnderTheTableMsgResult(){ }
     }
 }

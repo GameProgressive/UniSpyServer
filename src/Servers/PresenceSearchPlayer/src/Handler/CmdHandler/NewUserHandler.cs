@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {

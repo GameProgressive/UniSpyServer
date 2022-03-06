@@ -56,9 +56,9 @@ namespace UniSpyServer.Servers.Chat.Test
         public void TcpMessageSplitingTest()
         {
             var raws = new List<byte[]>(){
-                UniSpyEncoding.GetBytes("hello"),
-                UniSpyEncoding.GetBytes("world"),
-                UniSpyEncoding.GetBytes("hi").Concat(new byte[]{0x0D,0x0A}).ToArray(),
+                UniSpyEncoding.GetBytes("GETCKEY"),
+                UniSpyEncoding.GetBytes(" world"),
+                UniSpyEncoding.GetBytes(" hi").Concat(new byte[]{0x0D,0x0A}).ToArray(),
             };
             foreach (var raw in raws)
             {

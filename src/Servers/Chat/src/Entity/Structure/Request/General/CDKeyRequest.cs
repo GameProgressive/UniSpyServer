@@ -6,12 +6,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("CDKEY")]
     public sealed class CDKeyRequest : RequestBase
     {
-        public CDKeyRequest(string rawRequest) : base(rawRequest)
-        {
-        }
 
         public string CDKey { get; private set; }
-
+        public CDKeyRequest(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
             base.Parse();

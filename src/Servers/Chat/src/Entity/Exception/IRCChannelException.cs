@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Exception
     {
         public string ChannelName { get; private set; }
         public override string ErrorResponse => IRCReplyBuilder.BuildChannelError(ErrorCode, ChannelName, Message);
-        public IRCChannelException()
-        {
-        }
+        public IRCChannelException(){ }
 
         public IRCChannelException(string message, string errorCode, string channelName) : base(message, errorCode)
         {

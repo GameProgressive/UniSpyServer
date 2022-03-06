@@ -6,8 +6,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.General
     {
         public int ProfileId { get; set; }
         public int UserID { get; set; }
-        public LoginResult()
-        {
-        }
+        public LoginResult(){ }
     }
 }

@@ -10,9 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result => (ModeResult)base._result;
-        public ModeResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public ModeResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public static string BuildChannelModeReply(string channelName, string modes)
         {

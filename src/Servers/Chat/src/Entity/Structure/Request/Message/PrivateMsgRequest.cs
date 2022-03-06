@@ -6,8 +6,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Message
     [RequestContract("PRIVMSG")]
     public sealed class PrivateMsgRequest : MsgRequestBase
     {
-        public PrivateMsgRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public PrivateMsgRequest(string rawRequest) : base(rawRequest){ }
     }
 }

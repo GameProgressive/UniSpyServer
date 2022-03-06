@@ -4,16 +4,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Exception.IRC.General
 {
     public sealed class ChatIRCLoginFailedException : IRCException
     {
-        public ChatIRCLoginFailedException()
-        {
-        }
+        public ChatIRCLoginFailedException(){ }
 
-        public ChatIRCLoginFailedException(string message) : base(message, IRCErrorCode.LoginFailed)
-        {
-        }
+        public ChatIRCLoginFailedException(string message) : base(message, IRCErrorCode.LoginFailed){ }
 
-        public ChatIRCLoginFailedException(string message, System.Exception innerException) : base(message, IRCErrorCode.LoginFailed, innerException)
-        {
-        }
+        public ChatIRCLoginFailedException(string message, System.Exception innerException) : base(message, IRCErrorCode.LoginFailed, innerException){ }
     }
 }

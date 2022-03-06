@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General
     public sealed class NickResponse : ResponseBase
     {
         private new NickRequest _request => (NickRequest)base._request;
-        public NickResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public NickResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = BuildWelcomeReply(_request.NickName);

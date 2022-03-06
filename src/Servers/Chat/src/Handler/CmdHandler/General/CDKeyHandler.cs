@@ -11,9 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     {
         private new CDKeyRequest _request => (CDKeyRequest)base._request;
 
-        public CDKeyHandler(IClient client, IRequest request) : base(client, request)
-        {
-        }
+        public CDKeyHandler(IClient client, IRequest request) : base(client, request){ }
 
         protected override void ResponseConstruct()
         {

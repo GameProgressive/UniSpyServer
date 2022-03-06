@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     public sealed class NamesResponse : ChannelResponseBase
     {
         private new NamesResult _result => (NamesResult)base._result;
-        public NamesResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public NamesResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = BuildNameReply(

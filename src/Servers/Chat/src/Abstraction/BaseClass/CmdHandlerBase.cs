@@ -2,7 +2,6 @@
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
@@ -22,9 +21,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
-        {
-        }
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request){ }
         //if we use this structure the error response should also write to _sendingBuffer
         protected override void HandleException(Exception ex)
         {
@@ -33,13 +30,6 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                 _client.Send(((IRCException)ex));
             }
             base.HandleException(ex);
-        }
-        protected override void RequestCheck()
-        {
-            if (_request.RawRequest != null)
-            {
-                base.RequestCheck();
-            }
         }
         protected override void Response()
         {

@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     {
         public string ChannelName { get; set; }
         public ChannelRequestBase() { }
-        public ChannelRequestBase(string rawRequest) : base(rawRequest)
-        {
-        }
+        public ChannelRequestBase(string rawRequest) : base(rawRequest){ }
         public override void Parse()
         {
             base.Parse();

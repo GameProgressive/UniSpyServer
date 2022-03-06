@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     public sealed class QuitRequest : RequestBase
     {
         public QuitRequest() { }
-        public QuitRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public QuitRequest(string rawRequest) : base(rawRequest){ }
 
         public string Reason { get; set; }
 

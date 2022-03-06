@@ -11,9 +11,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("WHO")]
     public sealed class WhoRequest : RequestBase
     {
-        public WhoRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public WhoRequest(string rawRequest) : base(rawRequest){ }
 
         public WhoRequestType RequestType { get; private set; }
         public string ChannelName { get; private set; }

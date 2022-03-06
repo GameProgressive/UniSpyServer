@@ -6,13 +6,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("CRYPT")]
     public sealed class CryptRequest : RequestBase
     {
-        public CryptRequest(string rawRequest) : base(rawRequest)
-        {
-        }
 
         public string VersionID { get; private set; }
         public string GameName { get; private set; }
-
+        public CryptRequest(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
             base.Parse();

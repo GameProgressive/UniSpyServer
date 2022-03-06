@@ -9,9 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result => (SetChannelKeyResult)base._result;
-        public SetChannelKeyResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public SetChannelKeyResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

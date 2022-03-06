@@ -3,7 +3,6 @@ using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
@@ -14,7 +13,6 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     [HandlerContract(RequestType.Challenge)]
     public sealed class ChallengeHandler : CmdHandlerBase
     {
-        private GameServerInfo _gameServerInfo;
         private new ChallengeRequest _request => (ChallengeRequest)base._request;
         //we do not need to implement this to check the correctness of the challenge response
         private new ChallengeResult _result { get => (ChallengeResult)base._result; set => base._result = value; }
@@ -26,11 +24,11 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             var servers = _redisClient.Values.Where(x => x.InstantKey == _request.InstantKey).ToList();
-            if (servers.Count() != 1)
+            if (servers.Count() == 0)
             {
-                throw new QRException("No server or multiple servers found in redis, please make sure there is only one server.");
+                throw new QRException("No server found in redis, please make sure there is only one server.");
             }
-            _gameServerInfo = servers.First();
+            // _gameServerInfo = servers.First();
         }
 
         protected override void ResponseConstruct()

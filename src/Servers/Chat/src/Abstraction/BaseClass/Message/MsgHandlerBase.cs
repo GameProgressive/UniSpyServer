@@ -4,7 +4,6 @@ using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
@@ -13,9 +12,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected new MsgRequestBase _request => (MsgRequestBase)base._request;
         protected new MsgResultBase _result { get => (MsgResultBase)base._result; set => base._result = value; }
         protected ChannelUser _reciever;
-        public MsgHandlerBase(IClient client, IRequest request) : base(client, request)
-        {
-        }
+        public MsgHandlerBase(IClient client, IRequest request) : base(client, request){ }
 
         protected override void RequestCheck()
         {

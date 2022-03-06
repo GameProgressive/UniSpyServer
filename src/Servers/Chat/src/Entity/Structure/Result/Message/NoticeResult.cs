@@ -4,8 +4,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Message
 {
     public sealed class NoticeResult : MsgResultBase
     {
-        public NoticeResult()
-        {
-        }
+        public NoticeResult(){ }
     }
 }

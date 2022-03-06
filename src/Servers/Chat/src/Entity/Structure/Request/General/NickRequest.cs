@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("NICK")]
     public sealed class NickRequest : RequestBase
     {
-        public NickRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public NickRequest(string rawRequest) : base(rawRequest){ }
 
         public string NickName { get; private set; }
 

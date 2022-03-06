@@ -10,9 +10,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     {
         public Dictionary<string, string> KeyValues { get; private set; }
 
-        public SetKeyRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public SetKeyRequest(string rawRequest) : base(rawRequest){ }
 
         public override void Parse()
         {

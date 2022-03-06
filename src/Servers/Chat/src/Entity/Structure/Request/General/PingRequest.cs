@@ -6,8 +6,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("PING")]
     public sealed class PingRequest : RequestBase
     {
-        public PingRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public PingRequest(string rawRequest) : base(rawRequest){ }
     }
 }

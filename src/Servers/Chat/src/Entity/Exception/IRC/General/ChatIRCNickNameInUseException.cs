@@ -7,9 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Exception.IRC.General
         private string _oldNickName;
         private string _newNickName;
         public override string ErrorResponse => IRCReplyBuilder.Build(IRCErrorCode.NickNameInUse, $"{_oldNickName} {_newNickName} *");
-        public ChatIRCNickNameInUseException()
-        {
-        }
+        public ChatIRCNickNameInUseException(){ }
 
         public ChatIRCNickNameInUseException(string message, string oldNick, string newNick) : base(message, IRCErrorCode.NickNameInUse)
         {

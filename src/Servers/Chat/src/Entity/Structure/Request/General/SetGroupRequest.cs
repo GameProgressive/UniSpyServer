@@ -6,9 +6,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("SETGROUP")]
     public sealed class SetGroupRequest : ChannelRequestBase
     {
-        public SetGroupRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public SetGroupRequest(string rawRequest) : base(rawRequest){ }
 
         public string GroupName { get; private set; }
         public override void Parse()

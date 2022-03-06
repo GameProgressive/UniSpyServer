@@ -6,13 +6,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
     [RequestContract("LISTLIMIT")]
     public sealed class ListLimitRequest : RequestBase
     {
-        public ListLimitRequest(string rawRequest) : base(rawRequest)
-        {
-        }
-
         public int MaxNumberOfChannels { get; private set; }
         public string Filter { get; private set; }
-
+        public ListLimitRequest(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
             base.Parse();

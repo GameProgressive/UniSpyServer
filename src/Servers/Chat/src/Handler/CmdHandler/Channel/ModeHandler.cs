@@ -15,10 +15,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
-        public ModeHandler(IClient client, IRequest request) : base(client, request)
+        public ModeHandler(IClient client, IRequest request) : base(client, request){ }
+        protected override void RequestCheck()
         {
+            if (_request.RawRequest is null)
+            {
+                return;
+            }
+            base.RequestCheck();
         }
-
         protected override void DataOperation()
         {
             _result = new ModeResult();

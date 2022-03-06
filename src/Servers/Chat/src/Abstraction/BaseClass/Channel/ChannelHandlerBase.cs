@@ -10,9 +10,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected Channel _channel;
         protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
-        public ChannelHandlerBase(IClient client, IRequest request) : base(client, request)
-        {
-        }
+        public ChannelHandlerBase(IClient client, IRequest request) : base(client, request){ }
 
         protected override void RequestCheck()
         {

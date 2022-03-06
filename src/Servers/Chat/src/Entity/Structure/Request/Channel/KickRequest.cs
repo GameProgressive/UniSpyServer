@@ -8,9 +8,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     {
         public new string ChannelName{ get => base.ChannelName; set => base.ChannelName = value; }
         public KickRequest() { }
-        public KickRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public KickRequest(string rawRequest) : base(rawRequest){ }
         public string KickeeNickName { get; set; }
         public string Reason { get; set; }
 

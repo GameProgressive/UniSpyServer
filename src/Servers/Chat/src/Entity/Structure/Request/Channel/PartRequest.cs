@@ -9,9 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public new string ChannelName{ get => base.ChannelName; set => base.ChannelName = value; }
         public string Reason { get; set; }
         public PartRequest() { }
-        public PartRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public PartRequest(string rawRequest) : base(rawRequest){ }
         public override void Parse()
         {
             base.Parse();

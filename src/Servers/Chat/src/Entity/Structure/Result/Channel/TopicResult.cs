@@ -7,8 +7,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel
         public string ChannelName { get; set; }
         public string ChannelTopic { get; set; }
 
-        public TopicResult()
-        {
-        }
+        public TopicResult(){ }
     }
 }

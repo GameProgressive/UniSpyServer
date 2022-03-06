@@ -15,10 +15,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
-        public PartHandler(IClient client, IRequest request) : base(client, request)
+        public PartHandler(IClient client, IRequest request) : base(client, request){ }
+        protected override void RequestCheck()
         {
+            if (_request.RawRequest is null)
+            {
+                return;
+            }
+            base.RequestCheck();
         }
-
         protected override void DataOperation()
         {
             _result = new PartResult();

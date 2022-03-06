@@ -6,8 +6,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Message
     [RequestContract("NOTICE")]
     public sealed class NoticeRequest : MsgRequestBase
     {
-        public NoticeRequest(string rawRequest) : base(rawRequest)
-        {
-        }
+        public NoticeRequest(string rawRequest) : base(rawRequest){ }
     }
 }

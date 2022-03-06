@@ -9,9 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Message
     {
         private new AboveTheTableMsgRequest _request => (AboveTheTableMsgRequest)base._request;
         private new AboveTheTableMsgResult _result => (AboveTheTableMsgResult)base._result;
-        public AboveTheTableMsgResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
-        {
-        }
+        public AboveTheTableMsgResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
 
         public override void Build()
         {
