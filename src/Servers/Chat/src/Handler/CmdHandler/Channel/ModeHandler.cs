@@ -1,5 +1,7 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
@@ -15,11 +17,21 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
-        public ModeHandler(IClient client, IRequest request) : base(client, request){ }
+        public ModeHandler(IClient client, IRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
             {
+                _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
+                if (_channel == null)
+                {
+                    throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
+                }
+                _user = _channel.GetChannelUser(_client);
+                if (_user == null)
+                {
+                    throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
+                }
                 return;
             }
             base.RequestCheck();

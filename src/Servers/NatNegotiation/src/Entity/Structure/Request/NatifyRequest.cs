@@ -5,7 +5,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.NatifyRequest)]
-    public sealed class NatifyRequest : RequestBase
+    public sealed class NatifyRequest : CommonRequestBase
     {
         public NatifyRequest(byte[] rawRequest) : base(rawRequest)
         {
