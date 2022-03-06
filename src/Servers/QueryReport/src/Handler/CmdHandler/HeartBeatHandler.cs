@@ -73,26 +73,16 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             _gameServerInfo = _redisClient.Values.FirstOrDefault(x =>
                                     x.ServerID == _client.Session.Server.ServerID &
                                     x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
+                                    x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
                                     x.InstantKey == _request.InstantKey &
                                     x.GameName == _request.GameName);
 
             if (_gameServerInfo == null)
             {
-                ushort? hostPort;
-                if (!_request.ServerData.ContainsKey("hostport")||_request.ServerData["hostport"] == "")
-                {
-                    hostPort = 6500;
-                }
-                else
-                {
-                    hostPort = ushort.Parse(_request.ServerData["hostport"]);
-                }
-
                 _gameServerInfo = new GameServerInfo()
                 {
                     ServerID = _client.Session.Server.ServerID,
                     HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
-                    HostPort = hostPort,
                     QueryReportPort = (ushort)_client.Session.RemoteIPEndPoint.Port,
                     GameName = _request.GameName,
                     InstantKey = _request.InstantKey,

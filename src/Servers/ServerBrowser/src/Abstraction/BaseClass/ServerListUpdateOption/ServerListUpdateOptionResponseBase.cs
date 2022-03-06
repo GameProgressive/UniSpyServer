@@ -88,19 +88,25 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         }
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {
-            ///only dedicated server have different query report port and host port
-            ///the query report port and host port are the same on peer server
-            ///so we do not need to check this for peer server
-            //we check host port is standard port or not
-            if (serverInfo.ServerData.ContainsKey("hostport"))
+            // !! only dedicated server have different query report port and host port
+            // !! but peer server have same query report port and host port
+            // todo we have to check when we need send host port or query report port
+
+            // if (serverInfo.ServerData.ContainsKey("hostport"))
+            // {
+            //     if (serverInfo.ServerData["hostport"] != ""
+            //         && serverInfo.ServerData["hostport"] != "6500")
+            //     {
+            //         header[0] ^= (byte)GameServerFlags.NonStandardPort;
+            //         byte[] htonPort = BitConverter.GetBytes(ushort.Parse(serverInfo.ServerData["hostport"])).Reverse().ToArray();
+            //         header.AddRange(htonPort);
+            //     }
+            // }
+            if (serverInfo.QueryReportPort != 6500)
             {
-                if (serverInfo.ServerData["hostport"] != ""
-                    && serverInfo.ServerData["hostport"] != "6500")
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    byte[] htonPort = BitConverter.GetBytes(ushort.Parse(serverInfo.ServerData["hostport"])).Reverse().ToArray();
-                    header.AddRange(htonPort);
-                }
+                header[0] ^= (byte)GameServerFlags.NonStandardPort;
+                byte[] htonPort = BitConverter.GetBytes((ushort)serverInfo.QueryReportPort).Reverse().ToArray();
+                header.AddRange(htonPort);
             }
         }
         protected void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo serverInfo)

@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
             _gameServer = _gameServerRedisClient.Values.FirstOrDefault(x =>
                 x.HostIPAddress == _client.Info.AdHocMessage.TargetIPEndPoint.Address &
-                x.HostPort == (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
+                x.QueryReportPort == (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
             if (_gameServer == null)
             {
                 throw new SBException("There is no matching game server regesterd.");
@@ -50,25 +50,16 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO check the if the remote endpoint is correct
-            _natNegCookie = new NatNegCookie
-            {
-                HeartBeatIPEndPoint = _gameServer.QueryReportIPEndPoint,
-                HostIPAddress = _gameServer.HostIPAddress,
-                HostPort = (ushort)_gameServer.HostPort,
-                NatNegMessage = _request.RawRequest,
-                InstantKey = (uint)_gameServer.InstantKey,
-                GameName = _gameServer.GameName
-            };
+
             // !Fix this
-            // ServerFactory.Server.InfoExchangeChannel.PublishMessage(_natNegCookie);
             var result = new ClientMessageResult
             {
-                NatNegMessage = _natNegCookie.NatNegMessage,
+                NatNegMessage = _request.RawRequest,
                 MessageKey = 0,
             };
             var request = new ClientMessageRequest()
             {
-                InstantKey = _natNegCookie.InstantKey,
+                InstantKey = _gameServer.InstantKey,
                 CommandName = QueryReport.Entity.Enumerate.RequestType.ClientMessage
             };
             var response = new ClientMessageResponse(request, result);

@@ -214,28 +214,29 @@
     ],
     "compounds": [
         {
-            "name": "PCM and PSP",
+            "name": "PCM, PSP",
             "configurations": [
                 "PCM",
                 "PSP"
             ]
         },
         {
-            "name": "QR and SB",
+            "name": "QR, SB, NatNeg",
             "configurations": [
                 "QR",
-                "SB"
+                "SB",
+                "NatNeg"
             ]
         },
         {
-            "name": "GS and PSP",
+            "name": "GS, PSP",
             "configurations": [
                 "PSP",
                 "GS"
             ]
         },
         {
-            "name": "SAKE and PCM",
+            "name": "SAKE, PCM",
             "configurations": [
                 "Web",
                 "PCM"
