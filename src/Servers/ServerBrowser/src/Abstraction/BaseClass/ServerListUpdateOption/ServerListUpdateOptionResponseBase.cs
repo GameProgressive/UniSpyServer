@@ -72,19 +72,19 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
             // !Fix we do not know how to determine private ip
-            List<string> localIPs = serverInfo.ServerData.Where(k => k.Key.Contains("localip") == true).Select(k => k.Value).ToList();
-            if (localIPs.Count == 1 & localIPs.First() == serverInfo.HostIPAddress.ToString())
-            {
-                return;
-            }
-            else
-            {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                // there are multiple localip in dictionary we do not know which one is needed here,
-                // so we just send the first one.
-                byte[] bytesAddress = IPAddress.Parse(localIPs.First()).GetAddressBytes();
-                header.AddRange(bytesAddress);
-            }
+            // List<string> localIPs = serverInfo.ServerData.Where(k => k.Key.Contains("localip") == true).Select(k => k.Value).ToList();
+            // if (localIPs.Count == 1 & localIPs.First() == serverInfo.HostIPAddress.ToString())
+            // {
+            //     return;
+            // }
+            // else
+            // {
+            //     header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
+            //     // there are multiple localip in dictionary we do not know which one is needed here,
+            //     // so we just send the first one.
+            //     byte[] bytesAddress = IPAddress.Parse(localIPs.First()).GetAddressBytes();
+            //     header.AddRange(bytesAddress);
+            // }
         }
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {
@@ -112,21 +112,21 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo serverInfo)
         {
             // we check private port here
-            if (serverInfo.ServerData.ContainsKey("privateport"))
-            {
-                if (serverInfo.ServerData["privateport"] != "")
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                    byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["privateport"]));
-                    header.AddRange(port);
-                }
-            }
+            // if (serverInfo.ServerData.ContainsKey("privateport"))
+            // {
+            //     if (serverInfo.ServerData["privateport"] != "")
+            //     {
+            //         header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
+            //         byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["privateport"]));
+            //         header.AddRange(port);
+            //     }
+            // }
         }
         protected void CheckICMPSupport(List<byte> header, GameServerInfo serverInfo)
         {
-            header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            byte[] address = serverInfo.HostIPAddress.GetAddressBytes();
-            header.AddRange(address);
+            // header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
+            // byte[] address = serverInfo.HostIPAddress.GetAddressBytes();
+            // header.AddRange(address);
         }
         protected void BuildUniqueValue()
         {
