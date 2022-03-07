@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;

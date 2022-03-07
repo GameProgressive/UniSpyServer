@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;

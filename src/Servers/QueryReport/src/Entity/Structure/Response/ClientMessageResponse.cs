@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
 {

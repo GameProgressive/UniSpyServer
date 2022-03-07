@@ -1,4 +1,3 @@
-using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
