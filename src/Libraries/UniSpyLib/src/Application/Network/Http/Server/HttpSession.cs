@@ -8,13 +8,21 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 {
     public class HttpSession : NetCoreServer.HttpSession, ISession
     {
-        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
+        public IPEndPoint RemoteIPEndPoint { get; private set; }
         IServer ISession.Server => (HttpServer)Server;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
         public HttpSession(HttpServer server) : base(server)
         {
+        }
+        protected override void OnConnecting()
+        {
+            if (RemoteIPEndPoint is null)
+            {
+                RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
+            }
+            base.OnConnecting();
         }
         protected override void OnConnected()
         {

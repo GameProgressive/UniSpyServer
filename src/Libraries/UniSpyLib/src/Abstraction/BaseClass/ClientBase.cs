@@ -121,14 +121,25 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
             }
             // reset timer for udp session
-            if (Session.GetType() == typeof(UdpSession))
+            var sessionType = Session.GetType();
+            if (sessionType == typeof(UdpSession))
             {
                 _timer.Stop();
                 _timer.Start();
+                buffer = DecryptMessage((byte[])buffer);
+                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
             }
-            buffer = DecryptMessage((byte[])buffer);
-            LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+            else if (sessionType == typeof(TcpSession))
+            {
+                buffer = DecryptMessage((byte[])buffer);
+                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+            }
+            else if (sessionType == typeof(HttpSession))
+            {
+                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((NetCoreServer.HttpRequest)buffer).Body);
+            }
             // create switcher instance by reflection
+
             if (_switcherType is null)
             {
                 _switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");

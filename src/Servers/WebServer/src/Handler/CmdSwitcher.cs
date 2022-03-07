@@ -8,14 +8,14 @@ namespace UniSpyServer.Servers.WebServer.Handler
 {
     public class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
-        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
+        private new NetCoreServer.HttpRequest _rawRequest => (NetCoreServer.HttpRequest)base._rawRequest;
         public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
 
         protected override void ProcessRawRequest()
         {
-            dynamic xelements = XElement.Parse(_rawRequest);
+            dynamic xelements = XElement.Parse(_rawRequest.Body);
             var name = xelements.FirstNode.FirstNode.Name.LocalName;
             DeserializeRequest(name, _rawRequest);
         }
