@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
         public Dictionary<string, string> ServerData { get; set; }
         public List<Dictionary<string, string>> PlayerData { get; set; }
         public List<Dictionary<string, string>> TeamData { get; set; }
-        public GameServerInfo() : base(TimeSpan.FromMinutes(3))
+        public GameServerInfo() : base(TimeSpan.FromSeconds(30))
         {
         }
     }

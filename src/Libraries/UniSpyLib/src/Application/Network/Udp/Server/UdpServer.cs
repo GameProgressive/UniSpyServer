@@ -47,7 +47,6 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// <returns>is sending succeed</returns>
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            ReceiveAsync();
             var session = CreateSession((IPEndPoint)endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }

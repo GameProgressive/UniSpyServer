@@ -26,7 +26,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         }
         public virtual void OnReceived(byte[] message)
         {
-            // Server.ReceiveAsync();
+            Server.ReceiveAsync();
             OnReceive(message);
         }
 

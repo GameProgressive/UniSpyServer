@@ -7,7 +7,6 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
 
@@ -30,37 +29,48 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             _userInfo = _redisClient.Values.FirstOrDefault(
-            k => k.ServerID == ServerFactory.Server.ServerID
-            & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
+            k => k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
             & k.PortType == _request.PortType
             & k.Cookie == _request.Cookie);
 
             if (_userInfo == null)
             {
-                LogWriter.Info("No user found in redis.");
+                // LogWriter.Info("No user found in redis.");
                 return;
             }
-
-            if (_request.NatResult != NatNegResult.Success)
+            switch (_request.NatResult)
             {
-                foreach (NatPortType portType in Enum.GetValues(typeof(NatPortType)))
-                {
-                    var request = new ConnectRequest
+                case NatNegResult.Success:
+                    // natnegotiation successed we delete the negotiator
+                    _redisClient.DeleteKeyValue(_userInfo);
+                    break;
+                case NatNegResult.DeadBeatPartner:
+                    LogWriter.Warning($"Parter of client {_client.Session.RemoteIPEndPoint} has no response.");
+                    goto default;
+                case NatNegResult.InitTimeOut:
+                    LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat initialization failed.");
+                    break;
+                case NatNegResult.PingTimeOut:
+                    LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat ping failed.");
+                    goto default;
+                case NatNegResult.UnknownError:
+                    LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat negotiation unknown error occured.");
+                    break;
+                default:
+                    foreach (NatPortType portType in Enum.GetValues(typeof(NatPortType)))
                     {
-                        PortType = portType,
-                        Version = _request.Version,
-                        Cookie = _request.Cookie
-                    };
-                    new ConnectHandler(_client, request).Handle();
-                }
+                        var request = new ConnectRequest
+                        {
+                            PortType = portType,
+                            Version = _request.Version,
+                            Cookie = _request.Cookie
+                        };
+                        new ConnectHandler(_client, request).Handle();
+                    }
 
-                _userInfo.RetryNatNegotiationTime++;
-                _redisClient.SetValue(_userInfo);
-            }
-            else
-            {
-                // natnegotiation successed we delete the negotiator
-                _redisClient.DeleteKeyValue(_userInfo);
+                    _userInfo.RetryNatNegotiationTime++;
+                    _redisClient.SetValue(_userInfo);
+                    break;
             }
         }
 

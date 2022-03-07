@@ -118,15 +118,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
             {
-                try
-                {
-                    ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
-
-                }
-                catch
-                {
-
-                }
+                ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
             }
             // reset timer for udp session
             if (Session.GetType() == typeof(UdpSession))
