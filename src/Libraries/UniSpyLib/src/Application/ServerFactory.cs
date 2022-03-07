@@ -44,17 +44,16 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected void LoadServerConfig()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            var serverParams = new object[] { cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint };
             switch (cfg.SocketType)
             {
                 case "Udp":
-                    Server = (IServer)Activator.CreateInstance(typeof(UdpServer), serverParams);
+                    Server = new UdpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
                     break;
                 case "Tcp":
-                    Server = (IServer)Activator.CreateInstance(typeof(TcpServer), serverParams);
+                    Server = new TcpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
                     break;
                 case "Http":
-                    Server = (IServer)Activator.CreateInstance(typeof(HttpServer), serverParams);
+                    Server = new HttpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
                     break;
                 default:
                     throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
