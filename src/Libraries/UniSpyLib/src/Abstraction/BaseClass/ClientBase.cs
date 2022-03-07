@@ -36,8 +36,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 
         static ClientBase()
         {
-            Redis = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
-            ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
+            if (Redis is null)
+            {
+                Redis = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
+            }
+            if (ClientPool is null)
+            {
+                ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
+            }
         }
 
         public ClientBase(ISession session)
@@ -112,7 +118,15 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
             {
-                ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
+                try
+                {
+                    ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
+
+                }
+                catch
+                {
+
+                }
             }
             // reset timer for udp session
             if (Session.GetType() == typeof(UdpSession))

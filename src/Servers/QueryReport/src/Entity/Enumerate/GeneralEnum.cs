@@ -6,6 +6,7 @@
         Challenge = 0x01,
         HeartBeat = 0x03,
         ClientMessage = 0x06,
+        ClientMessageAck = 0x07,
         AddError = 0x04,
         Echo = 0x02,
         KeepAlive = 0x08,

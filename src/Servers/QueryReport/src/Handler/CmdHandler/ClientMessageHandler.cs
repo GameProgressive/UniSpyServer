@@ -1,8 +1,10 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+﻿using System;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 using UniSpyServer.Servers.QueryReport.Entity.contract;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using System;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
@@ -11,23 +13,17 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     public sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
+        public static RedisChannel Channel;
         public ClientMessageHandler(IClient client, IRequest request) : base(client, request)
         {
         }
-
         protected override void RequestCheck()
         {
-            throw new NotImplementedException();
+            // we do not need to execute request.Parse()
         }
-
-        protected override void DataOperation()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override void ResponseConstruct()
         {
-            throw new NotImplementedException();
+            _response = new ClientMessageResponse(_request);
         }
     }
 }

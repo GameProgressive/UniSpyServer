@@ -9,9 +9,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
     public sealed class ClientMessageResponse : ResponseBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
-        private new ClientMessageResult _result => (ClientMessageResult)base._result;
-
-        public ClientMessageResponse(ClientMessageRequest request, ClientMessageResult result) : base(request, result)
+        public ClientMessageResponse(ClientMessageRequest request) : base(request, null)
         {
         }
 
@@ -20,8 +18,8 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
             base.Build();
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
-            data.AddRange(BitConverter.GetBytes((int)_result.MessageKey));
-            data.AddRange(_result.NatNegMessage);
+            data.AddRange(BitConverter.GetBytes((int)_request.MessageKey));
+            data.AddRange(_request.Message);
             SendingBuffer = data.ToArray();
         }
     }

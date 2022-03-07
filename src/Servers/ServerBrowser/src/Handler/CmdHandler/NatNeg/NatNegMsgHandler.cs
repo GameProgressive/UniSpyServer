@@ -1,16 +1,13 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.NatNeg;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
@@ -20,11 +17,16 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     [HandlerContract(ServerBrowser.Entity.Enumerate.RequestType.NatNegRequest)]
     public sealed class NatNegMsgHandler : CmdHandlerBase
     {
-        private static UdpClient _udpClient = new UdpClient();
+        private static QueryReport.Entity.Structure.Redis.RedisChannel _redisChannel;
+        // private static UdpClient _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 27900));
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IClient client, IRequest request) : base(client, request)
         {
+            if (_redisChannel == null)
+            {
+                _redisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
+            }
         }
 
         protected override void RequestCheck()
@@ -42,35 +44,24 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             {
                 throw new SBException("There is no matching game server regesterd.");
             }
-            // reset message to null
-            // _session.AdHocMessage = null;
+
         }
 
         protected override void DataOperation()
         {
-            //TODO check the if the remote endpoint is correct
+            // fix the message must be sent by query report server 
 
             // !Fix this
-            var result = new ClientMessageResult
-            {
-                NatNegMessage = _request.RawRequest,
-                MessageKey = 0,
-            };
             var request = new ClientMessageRequest()
             {
+                Message = _request.RawRequest,
                 InstantKey = _gameServer.InstantKey,
+                TargetIPEndPoint = _gameServer.QueryReportIPEndPoint,
                 CommandName = QueryReport.Entity.Enumerate.RequestType.ClientMessage
             };
-            var response = new ClientMessageResponse(request, result);
-            response.Build();
-            // we send 3 times to make sure the message is received
-            LogWriter.LogNetworkSending(_gameServer.QueryReportIPEndPoint, response.SendingBuffer);
-            // for (var i = 0; i < 3; i++)
-            // {
-            _udpClient.Send(response.SendingBuffer,
-                                response.SendingBuffer.Length,
-                                _gameServer.QueryReportIPEndPoint);
-            // }
+            _redisChannel.PublishMessage(request);
+            // set adhoc message to null
+            _client.Info.AdHocMessage = null;
         }
     }
 }

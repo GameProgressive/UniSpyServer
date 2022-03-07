@@ -45,12 +45,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
             _subscriber.Publish(_redisChannelName, jsonStr);
         }
 
-        public virtual string SerializeMessage(T message)
+        protected virtual string SerializeMessage(T message)
         {
             return JsonConvert.SerializeObject(message);
         }
 
-        public virtual T DeserializeMessage(string message)
+        protected virtual T DeserializeMessage(string message)
         {
             return JsonConvert.DeserializeObject<T>(message);
         }
