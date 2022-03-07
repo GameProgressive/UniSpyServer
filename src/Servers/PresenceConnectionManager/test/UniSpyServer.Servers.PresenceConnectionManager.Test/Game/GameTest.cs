@@ -21,6 +21,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             var sessionMock = new Mock<ITcpSession>();
             sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            sessionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+
             _client = new Client(sessionMock.Object);
         }
 

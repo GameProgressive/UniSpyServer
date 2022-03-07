@@ -20,6 +20,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             var sessionMock = new Mock<IUdpSession>();
             sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            sessionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Udp);
             _client = new Client(sessionMock.Object);
         }
         [Fact]

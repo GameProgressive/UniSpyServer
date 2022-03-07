@@ -53,39 +53,35 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         private void EventBinding()
         {
-            var sessionType = Session.GetType();
-            if (sessionType == typeof(UdpSession))
+            switch (Session.ConnectionType)
             {
-                ((UdpSession)Session).OnReceive += OnReceived;
-                // todo add timer here
-                _timer = new Timer
-                {
-                    Enabled = true,
-                    Interval = 60000,
-                    AutoReset = true
-                };//10000
-                // we set expire time to 1 hour
-                _expireTimeInterval = new TimeSpan(1, 0, 0);
-                _timer.Start();
-                _timer.Elapsed += (s, e) => CheckExpiredClient();
-            }
-            else if (sessionType == typeof(TcpSession))
-            {
-                ((TcpSession)Session).OnReceive += OnReceived;
-                ((TcpSession)Session).OnConnect += OnConnected;
-                ((TcpSession)Session).OnDisconnect += OnDisconnected;
-            }
-            else if (sessionType == typeof(HttpSession))
-            {
-                ((HttpSession)Session).OnReceive += OnReceived;
-            }
-            else if (sessionType.ToString() == "Castle.Proxies.ITcpSessionProxy" || sessionType.ToString() == "Castle.Proxies.IUdpSessionProxy")
-            {
-                LogWriter.Info("Using unit-test proxy");
-            }
-            else
-            {
-                throw new System.Exception("Unsupported session type");
+                case NetworkConnectionType.Tcp:
+                    ((ITcpSession)Session).OnReceive += OnReceived;
+                    ((ITcpSession)Session).OnConnect += OnConnected;
+                    ((ITcpSession)Session).OnDisconnect += OnDisconnected;
+                    break;
+                case NetworkConnectionType.Udp:
+                    ((IUdpSession)Session).OnReceive += OnReceived;
+                    // todo add timer here
+                    _timer = new Timer
+                    {
+                        Enabled = true,
+                        Interval = 60000,
+                        AutoReset = true
+                    };//10000
+                      // we set expire time to 1 hour
+                    _expireTimeInterval = new TimeSpan(1, 0, 0);
+                    _timer.Start();
+                    _timer.Elapsed += (s, e) => CheckExpiredClient();
+                    break;
+                case NetworkConnectionType.Http:
+                    ((IHttpSession)Session).OnReceive += OnReceived;
+                    break;
+                case NetworkConnectionType.Test:
+                    LogWriter.Info("Using unit-test proxy");
+                    break;
+                default:
+                    throw new Exception("Unsupported session type");
             }
         }
         public static ClientBase CreateClient(ISession session)
@@ -120,26 +116,26 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
             }
-            // reset timer for udp session
-            var sessionType = Session.GetType();
-            if (sessionType == typeof(UdpSession))
+            switch (Session.ConnectionType)
             {
-                _timer.Stop();
-                _timer.Start();
-                buffer = DecryptMessage((byte[])buffer);
-                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
-            }
-            else if (sessionType == typeof(TcpSession))
-            {
-                buffer = DecryptMessage((byte[])buffer);
-                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
-            }
-            else if (sessionType == typeof(HttpSession))
-            {
-                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((NetCoreServer.HttpRequest)buffer).Body);
+                case NetworkConnectionType.Tcp:
+                    // reset timer for udp session
+                    _timer.Stop();
+                    _timer.Start();
+                    goto default;
+                case NetworkConnectionType.Udp:
+                    goto default;
+                case NetworkConnectionType.Http:
+                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((NetCoreServer.HttpRequest)buffer).Body);
+                    break;
+                case NetworkConnectionType.Test:
+                    goto default;
+                default:
+                    buffer = DecryptMessage((byte[])buffer);
+                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+                    break;
             }
             // create switcher instance by reflection
-
             if (_switcherType is null)
             {
                 _switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
@@ -176,22 +172,21 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 
         public void Dispose()
         {
-            if (Session.GetType() == typeof(UdpSession))
+            switch (Session.ConnectionType)
             {
-                ((UdpSession)Session).OnReceive -= OnReceived;
-                _timer.Elapsed -= (s, e) => CheckExpiredClient();
-            }
-            else if (Session.GetType() == typeof(TcpSession))
-            {
-                ((TcpSession)Session).OnReceive -= OnReceived;
-                ((TcpSession)Session).OnConnect -= OnConnected;
-                ((TcpSession)Session).OnDisconnect -= OnDisconnected;
-            }
-            else if (Session.GetType() == typeof(HttpSession))
-            {
-                ((HttpSession)Session).OnReceive -= OnReceived;
-                ((HttpSession)Session).OnConnect -= OnConnected;
-                ((HttpSession)Session).OnDisconnect -= OnDisconnected;
+                case NetworkConnectionType.Tcp:
+                    ((ITcpSession)Session).OnReceive -= OnReceived;
+                    ((ITcpSession)Session).OnConnect -= OnConnected;
+                    ((ITcpSession)Session).OnDisconnect -= OnDisconnected;
+                    break;
+                case NetworkConnectionType.Udp:
+                    ((IUdpSession)Session).OnReceive -= OnReceived;
+                    _timer.Elapsed -= (s, e) => CheckExpiredClient();
+                    _timer.Dispose();
+                    break;
+                case NetworkConnectionType.Http:
+                    ((IHttpSession)Session).OnReceive -= OnReceived;
+                    break;
             }
         }
         /// <summary>

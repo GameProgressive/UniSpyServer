@@ -20,6 +20,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public new TcpServer Server => (TcpServer)base.Server;
         IServer ISession.Server => Server;
+        public NetworkConnectionType ConnectionType => NetworkConnectionType.Tcp;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
