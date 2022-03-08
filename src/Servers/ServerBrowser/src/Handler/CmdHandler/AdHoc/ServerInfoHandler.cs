@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;

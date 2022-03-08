@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;

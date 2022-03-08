@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate
 {
     public enum GPErrorCode : int
     {

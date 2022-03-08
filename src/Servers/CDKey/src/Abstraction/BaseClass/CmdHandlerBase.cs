@@ -1,4 +1,4 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.CDKey.Abstraction.BaseClass
 {

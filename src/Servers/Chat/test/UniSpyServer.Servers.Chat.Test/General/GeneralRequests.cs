@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.Chat.Test.General
+namespace UniSpyServer.Servers.Chat.Test.General
 {
     public class GeneralRequests
     {

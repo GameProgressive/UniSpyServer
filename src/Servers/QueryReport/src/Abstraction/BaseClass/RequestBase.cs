@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;

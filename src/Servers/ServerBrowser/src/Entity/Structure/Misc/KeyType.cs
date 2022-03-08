@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.ServerBrowser.Handler.SystemHandler.KeyType
+namespace UniSpyServer.Servers.ServerBrowser.Handler.SystemHandler.KeyType
 {
     /// <summary>
     /// all unique value string has 255 limits,

@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login
 {

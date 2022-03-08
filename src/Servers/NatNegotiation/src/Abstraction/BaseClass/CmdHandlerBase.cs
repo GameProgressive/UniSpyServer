@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 

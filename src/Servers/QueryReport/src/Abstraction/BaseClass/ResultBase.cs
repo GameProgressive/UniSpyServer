@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
 {

@@ -1,4 +1,4 @@
-﻿using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {

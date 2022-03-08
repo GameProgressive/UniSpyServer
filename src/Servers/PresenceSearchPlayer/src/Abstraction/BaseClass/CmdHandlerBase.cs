@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

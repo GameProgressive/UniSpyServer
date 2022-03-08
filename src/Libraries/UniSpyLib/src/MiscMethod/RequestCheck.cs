@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.UniSpyLib.MiscMethod
+namespace UniSpyServer.UniSpyLib.MiscMethod
 {
     public class RequestCheck
     {

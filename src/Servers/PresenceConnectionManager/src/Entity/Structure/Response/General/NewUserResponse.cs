@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response

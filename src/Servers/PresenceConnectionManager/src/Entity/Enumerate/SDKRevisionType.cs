@@ -1,4 +1,4 @@
-﻿
+
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate
 {
     public enum SdkRevisionType : int

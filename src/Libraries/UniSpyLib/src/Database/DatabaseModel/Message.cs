@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;

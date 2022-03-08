@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UniSpyServer.Servers.GameStatus.Entity.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

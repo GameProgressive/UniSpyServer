@@ -1,4 +1,4 @@
-﻿// using System;
+// using System;
 // using System.Net;
 // using UniSpyServer.UniSpyLib.Encryption;
 // using UniSpyServer.UniSpyLib.Logging;

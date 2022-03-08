@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 

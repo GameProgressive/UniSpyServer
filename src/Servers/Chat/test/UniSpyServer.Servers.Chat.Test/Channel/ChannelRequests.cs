@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.Chat.Test.Channel
+namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelRequests
     {

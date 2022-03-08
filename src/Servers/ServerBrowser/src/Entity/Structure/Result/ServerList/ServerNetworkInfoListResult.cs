@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result.ServerList

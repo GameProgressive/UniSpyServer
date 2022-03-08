@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.UniSpyLib.Database
+namespace UniSpyServer.UniSpyLib.Database
 {
     public enum DatabaseType
     {

@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Exception;
+using UniSpyServer.Servers.Chat.Entity.Exception;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {

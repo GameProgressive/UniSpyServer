@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.Chat.Entity.Structure.Enumerate
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Enumerate
 {
     public enum ChatServerMessage
     {

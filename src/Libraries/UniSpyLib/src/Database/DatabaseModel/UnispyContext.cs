@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Database.DatabaseModel

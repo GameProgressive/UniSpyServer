@@ -1,4 +1,4 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Misc
 {

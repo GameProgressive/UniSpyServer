@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {

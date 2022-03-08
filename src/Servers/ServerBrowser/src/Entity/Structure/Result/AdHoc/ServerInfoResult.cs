@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result

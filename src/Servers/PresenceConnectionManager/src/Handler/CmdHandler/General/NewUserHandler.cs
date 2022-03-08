@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;

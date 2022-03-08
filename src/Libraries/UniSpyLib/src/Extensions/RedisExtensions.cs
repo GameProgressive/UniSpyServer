@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.UniSpyLib.Extensions
+namespace UniSpyServer.UniSpyLib.Extensions
 {
     public enum DbNumber : int
     {

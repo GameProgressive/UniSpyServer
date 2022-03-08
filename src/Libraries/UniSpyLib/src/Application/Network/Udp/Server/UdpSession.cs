@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
 {

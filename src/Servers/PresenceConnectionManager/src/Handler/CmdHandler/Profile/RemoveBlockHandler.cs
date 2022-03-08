@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 

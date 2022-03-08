@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis

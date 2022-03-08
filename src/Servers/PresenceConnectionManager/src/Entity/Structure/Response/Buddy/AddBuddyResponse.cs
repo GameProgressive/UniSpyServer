@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 

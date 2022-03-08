@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.WebServer.Test.Racing
+namespace UniSpyServer.Servers.WebServer.Test.Racing
 {
     public class RawRequests
     {

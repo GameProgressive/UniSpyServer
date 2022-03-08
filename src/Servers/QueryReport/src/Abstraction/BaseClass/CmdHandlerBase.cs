@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.QueryReport.Entity.Structure;
+using UniSpyServer.Servers.QueryReport.Entity.Structure;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 

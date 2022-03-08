@@ -1,4 +1,4 @@
-﻿using System.Timers;
+using System.Timers;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass

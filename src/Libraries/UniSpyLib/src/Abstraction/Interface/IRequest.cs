@@ -1,4 +1,4 @@
-﻿
+
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
     public interface IRequest

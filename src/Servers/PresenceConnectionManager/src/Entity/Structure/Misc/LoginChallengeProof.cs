@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using System.Text;
 using UniSpyServer.UniSpyLib.Extensions;
 

@@ -1,4 +1,4 @@
-﻿//using UniSpyServer.UniSpyLib.Common;
+//using UniSpyServer.UniSpyLib.Common;
 //using UniSpyServer.Servers.PresenceSearchPlayer.Enumerate;
 //using System;
 //using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
 
     /// <summary>

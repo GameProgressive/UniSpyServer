@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.General

@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
+namespace UniSpyServer.UniSpyLib.Database.DatabaseModel
 {
     /// <summary>
     /// Friend list.

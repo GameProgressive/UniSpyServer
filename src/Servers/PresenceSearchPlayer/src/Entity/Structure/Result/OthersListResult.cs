@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 using System.Collections.Generic;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result

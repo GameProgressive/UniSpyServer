@@ -1,4 +1,4 @@
-﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler

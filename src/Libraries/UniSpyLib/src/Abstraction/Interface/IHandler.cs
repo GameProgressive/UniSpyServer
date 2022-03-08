@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.UniSpyLib.Abstraction.Interface
+namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
     public interface IHandler
     {

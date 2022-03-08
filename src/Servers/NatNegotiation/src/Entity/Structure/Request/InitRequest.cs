@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             {
                 if (RawRequest[RawRequest.Length - 1] == 0)
                 {
-                    var gameNameBytes = RawRequest.Skip(21).ToArray();
+                    var gameNameBytes = RawRequest.Skip(21).Take(RawRequest.Length - 22).ToArray();
                     GameName = UniSpyEncoding.GetString(gameNameBytes);
                 }
             }

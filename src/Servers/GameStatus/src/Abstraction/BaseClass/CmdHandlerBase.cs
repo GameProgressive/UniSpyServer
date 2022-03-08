@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.GameStatus.Entity.Structure;
+using UniSpyServer.Servers.GameStatus.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
