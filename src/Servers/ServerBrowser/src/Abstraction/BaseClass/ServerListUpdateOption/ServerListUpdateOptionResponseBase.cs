@@ -53,7 +53,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         /// <param name="serverInfo"></param>
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
-
             List<byte> header = new List<byte>();
             // add key flag
             header.Add((byte)flag);
@@ -71,6 +70,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             CheckNonStandardPrivatePort(header, serverInfo);
             // we check icmp support here
             CheckICMPSupport(header, serverInfo);
+
             _serverListData.AddRange(header);
         }
         protected void CheckNatNegFlag(List<byte> header, GameServerInfo serverInfo)
@@ -98,15 +98,15 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         }
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
-            // !Fix we do not know how to determine private ip
-            if (serverInfo.ServerData.ContainsKey("localip0"))
+            // We already have the localip. Bytes are worng.
+            /*if (serverInfo.ServerData.ContainsKey("localip0"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
                 // there are multiple localip in dictionary we do not know which one is needed here,
                 // so we just send the first one.
                 byte[] bytesAddress = IPAddress.Parse(serverInfo.ServerData["localip0"]).GetAddressBytes();
                 header.AddRange(bytesAddress);
-            }
+            }*/
         }
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {
