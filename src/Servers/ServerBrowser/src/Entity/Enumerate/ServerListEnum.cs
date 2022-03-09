@@ -53,7 +53,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Enumerate
         /// <summary>
         /// game can directly send request to dedicate server
         /// </summary>
-        UnsolicitedUDPFlag = 1,
+        UnsolicitedUdpFlag = 1,
         /// <summary>
         /// private ip exist
         /// </summary>
@@ -65,12 +65,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Enumerate
         /// <summary>
         /// server has icmp
         /// </summary>
-        ICMPIPFlag = 8,
+        IcmpIpFlag = 8,
         /// <summary>
         /// non standard query port
         /// </summary>
         NonStandardPort = 16,
-
         /// <summary>
         /// nonstandard private port
         /// </summary>

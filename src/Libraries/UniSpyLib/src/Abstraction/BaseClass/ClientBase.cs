@@ -119,11 +119,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             switch (Session.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
+                    goto default;
+                case NetworkConnectionType.Udp:
                     // reset timer for udp session
                     _timer.Stop();
                     _timer.Start();
-                    goto default;
-                case NetworkConnectionType.Udp:
                     goto default;
                 case NetworkConnectionType.Http:
                     LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((NetCoreServer.HttpRequest)buffer).Body);
