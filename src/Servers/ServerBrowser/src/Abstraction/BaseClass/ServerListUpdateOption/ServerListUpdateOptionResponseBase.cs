@@ -113,7 +113,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             // !! only dedicated server have different query report port and host port
             // !! but peer server have same query report port and host port
             // todo we have to check when we need send host port or query report port
-            if (serverInfo.QueryReportPort != 6500)
+            if (serverInfo.QueryReportPort != ClientInfo.QueryReportDefaultPort)
             {
                 header[0] ^= (byte)GameServerFlags.NonStandardPort;
                 byte[] htonPort = BitConverter.GetBytes((ushort)serverInfo.QueryReportPort).Reverse().ToArray();
@@ -125,7 +125,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             // we check private port here
             if (serverInfo.ServerData.ContainsKey("localport"))
             {
-                if (serverInfo.ServerData["localport"] != "")
+                if (serverInfo.ServerData["localport"] != ""
+                && serverInfo.ServerData["localport"] != ClientInfo.QueryReportDefaultPort.ToString())
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
                     byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["localport"]));

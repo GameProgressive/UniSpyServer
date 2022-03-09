@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
     {
         protected SoapXElement _soapElement { get; private set; }
         public new string SendingBuffer => _soapElement.ToString();
-        public ResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
             _soapElement = new SoapXElement(SoapXElement.SoapElement);
         }

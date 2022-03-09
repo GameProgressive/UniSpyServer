@@ -1,5 +1,5 @@
 using Xunit;
-using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Auth;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 
 namespace UniSpyServer.Servers.WebServer.Test.Auth
 {

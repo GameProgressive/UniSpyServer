@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Timers;
 using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
-using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
 using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Encryption;

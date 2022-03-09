@@ -2,7 +2,6 @@ using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.WebServer.Handler
 {
