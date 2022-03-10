@@ -32,11 +32,11 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                     throw new System.Exception("No account exists with the provided email address.");
                 }
                 var data = result.First();
-                _result.Certificate.UserId = data.u.UserId;
-                _result.Certificate.ProfileId = data.p.ProfileId;
-                _result.Certificate.CdKeyHash = data.sp.Cdkeyenc;
+                _result.UserId = data.u.UserId;
+                _result.ProfileId = data.p.ProfileId;
+                _result.CdKeyHash = data.sp.Cdkeyenc;
                 // currently we set this to uniquenick
-                _result.Certificate.ProfileNick = data.sp.Uniquenick;
+                _result.ProfileNick = data.sp.Uniquenick;
             }
         }
         protected override void ResponseConstruct()

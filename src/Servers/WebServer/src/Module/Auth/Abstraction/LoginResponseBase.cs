@@ -17,27 +17,24 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
 
             var certElement = new XElement(SoapXElement.SakeNamespace + "certificate");
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "length", _result.Certificate.Length));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "length", _result.Length));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "version", _request.Version));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "partnercode", _request.PartnerCode));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "namespaceid", _request.NamespaceId));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "userid", _result.Certificate.UserId));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "profileid", _result.Certificate.ProfileId));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "expiretime", _result.Certificate.ExpireTime));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "profilenick", _result.Certificate.ProfileNick));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "userid", _result.UserId));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "profileid", _result.ProfileId));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "expiretime", ClientInfo.ExpireTime));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "profilenick", _result.ProfileNick));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "uniquenick", _result.UniqueNick));
 
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "uniquenick", _result.Certificate.UniqueNick));
-
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "cdkeyhash", _result.Certificate.CdKeyHash));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeymodulus", _result.Certificate.PeerKeyModulus));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyexponent", _result.Certificate.PeerKeyExponent));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "serverdata", _result.Certificate.ServerData));
-            certElement.Add(new XElement(SoapXElement.SakeNamespace + "signature", _result.Certificate.Signature));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "cdkeyhash", _result.CdKeyHash));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeymodulus", ClientInfo.PeerKeyModulus));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyexponent", ClientInfo.PeerKeyExponent));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "serverdata", ClientInfo.ServerData));
+            certElement.Add(new XElement(SoapXElement.SakeNamespace + "signature", ClientInfo.Signature));
 
             _soapElement.Add(certElement);
-
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "certificate", _result.Certificate));
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", _result.PeerKeyPrivate));
+            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
         }
     }
 }
