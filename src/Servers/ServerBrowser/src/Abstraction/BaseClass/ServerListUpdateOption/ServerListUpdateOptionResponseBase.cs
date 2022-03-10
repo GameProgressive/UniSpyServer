@@ -53,7 +53,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         /// <param name="serverInfo"></param>
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
-
             List<byte> header = new List<byte>();
             // add key flag
             header.Add((byte)flag);
@@ -71,6 +70,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             CheckNonStandardPrivatePort(header, serverInfo);
             // we check icmp support here
             CheckICMPSupport(header, serverInfo);
+
             _serverListData.AddRange(header);
         }
         protected void CheckNatNegFlag(List<byte> header, GameServerInfo serverInfo)
@@ -98,22 +98,22 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         }
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
-            // !Fix we do not know how to determine private ip
-            if (serverInfo.ServerData.ContainsKey("localip0"))
+            // We already have the localip. Bytes are worng.
+            /*if (serverInfo.ServerData.ContainsKey("localip0"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
                 // there are multiple localip in dictionary we do not know which one is needed here,
                 // so we just send the first one.
                 byte[] bytesAddress = IPAddress.Parse(serverInfo.ServerData["localip0"]).GetAddressBytes();
                 header.AddRange(bytesAddress);
-            }
+            }*/
         }
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {
             // !! only dedicated server have different query report port and host port
             // !! but peer server have same query report port and host port
             // todo we have to check when we need send host port or query report port
-            if (serverInfo.QueryReportPort != 6500)
+            if (serverInfo.QueryReportPort != ClientInfo.QueryReportDefaultPort)
             {
                 header[0] ^= (byte)GameServerFlags.NonStandardPort;
                 byte[] htonPort = BitConverter.GetBytes((ushort)serverInfo.QueryReportPort).Reverse().ToArray();
@@ -125,7 +125,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             // we check private port here
             if (serverInfo.ServerData.ContainsKey("localport"))
             {
-                if (serverInfo.ServerData["localport"] != "")
+                if (serverInfo.ServerData["localport"] != ""
+                && serverInfo.ServerData["localport"] != ClientInfo.QueryReportDefaultPort.ToString())
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
                     byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["localport"]));
