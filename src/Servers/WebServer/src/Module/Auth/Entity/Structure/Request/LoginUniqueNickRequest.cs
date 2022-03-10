@@ -4,7 +4,7 @@ using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginUniqueNick")]
+    [RequestContract("LoginUniqueNickWithGameId")]
     public class LoginUniqueNickRequest : LoginRequestBase
     {
         public string Uniquenick { get; private set; }

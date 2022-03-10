@@ -4,7 +4,7 @@ using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginRemoteAuth")]
+    [RequestContract("LoginRemoteAuthWithGameId")]
     public class LoginRemoteAuthRequest : LoginRequestBase
     {
         public int? GameId { get; private set; }

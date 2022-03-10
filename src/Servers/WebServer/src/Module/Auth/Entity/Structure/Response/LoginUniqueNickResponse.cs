@@ -15,9 +15,9 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response
         }
         public override void Build()
         {
-            base.Build();
-            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "LoginUniqueNickWithGameIdResult"));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "LoginUniqueNickWithGameIdResult"));
             BuildContext();
+            base.Build();
         }
     }
 }

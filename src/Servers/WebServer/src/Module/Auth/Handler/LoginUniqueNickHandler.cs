@@ -10,7 +10,7 @@ using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginUniqueNick")]
+    [HandlerContract("LoginUniqueNickWithGameId")]
     public class LoginUniqueNickHandler : CmdHandlerBase
     {
         protected new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;

@@ -15,6 +15,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
                                 new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"),
                                 new XAttribute(XNamespace.Xmlns + "ns1", "http://gamespy.net/sake"));
         public static XNamespace SakeNamespace = "http://gamespy.net/sake";
+        public static XNamespace AuthNamespace = "http://gamespy.net/AuthService/";
         public SoapXElement(XElement other) : base(other) { }
 
         public SoapXElement(XName name) : base(name) { }

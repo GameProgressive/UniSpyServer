@@ -16,11 +16,11 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response
         }
         public override void Build()
         {
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "LoginPs3CertWithGameIdResult"));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "authToken", _result.AuthToken));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "partnerChallenge", _result.PartnerChallenge));
             base.Build();
-            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "LoginPs3CertWithGameIdResult"));
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "authToken", _result.AuthToken));
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "partnerChallenge", _result.PartnerChallenge));
         }
     }
 }

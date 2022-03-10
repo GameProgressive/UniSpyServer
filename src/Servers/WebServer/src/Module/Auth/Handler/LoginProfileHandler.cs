@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginProfile")]
+    [HandlerContract("LoginProfileWithGameId")]
     public class LoginProfileHandler : CmdHandlerBase
     {
         protected new LoginProfileRequest _request => (LoginProfileRequest)base._request;

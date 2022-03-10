@@ -5,17 +5,21 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
     {
-        protected SoapXElement _soapElement { get; private set; }
-        public new string SendingBuffer => _soapElement.ToString();
+        private SoapXElement _soapEnvelop;
+        protected XElement _soapBody { get; private set; }
+        public new string SendingBuffer { get => (string)base.SendingBuffer; set => base.SendingBuffer = value; }
         public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
-            _soapElement = new SoapXElement(SoapXElement.SoapElement);
+            _soapEnvelop = new SoapXElement(SoapXElement.SoapElement);
+            _soapBody = new XElement(SoapXElement.SoapNamespace + "Body");
         }
         public override void Build()
         {
             // Because the response is kind of soap object, so we did not use SoapXElement as a soap object
             // SoapXElement only acts like XElement
-            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "Body"));
+            // !! call at last
+            _soapEnvelop.Add(_soapBody);
+            SendingBuffer = _soapEnvelop.ToString();
         }
     }
 }

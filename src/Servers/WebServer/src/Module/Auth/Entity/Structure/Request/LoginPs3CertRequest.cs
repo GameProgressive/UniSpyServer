@@ -4,7 +4,7 @@ using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginPs3Cert")]
+    [RequestContract("LoginPs3CertWithGameId")]
     public class LoginPs3CertRequest : LoginRequestBase
     {
         public int? GameId { get; private set; }

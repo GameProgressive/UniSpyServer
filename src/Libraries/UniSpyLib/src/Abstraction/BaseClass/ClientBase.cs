@@ -74,6 +74,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpSession)Session).OnReceive += OnReceived;
+                    ((IHttpSession)Session).OnConnect += OnConnected;
+                    ((IHttpSession)Session).OnDisconnect += OnDisconnected;
                     break;
                 case NetworkConnectionType.Test:
                     LogWriter.Info("Using unit-test proxy");
@@ -197,14 +199,15 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             response.Build();
             if (response.SendingBuffer.GetType() == typeof(string))
             {
+                LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (string)response.SendingBuffer);
                 buffer = UniSpyEncoding.GetBytes((string)response.SendingBuffer);
             }
             else
             {
                 buffer = (byte[])response.SendingBuffer;
-            }
+                LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (byte[])buffer);
 
-            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (byte[])buffer);
+            }
 
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)

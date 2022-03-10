@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
@@ -14,8 +15,9 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
         }
         protected void BuildContext()
         {
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
-
+            // find the node with command name
+            var context = _soapBody.Elements().First();
+            context.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
             var certElement = new XElement(SoapXElement.SakeNamespace + "certificate");
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "length", _result.Length));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "version", _request.Version));
@@ -33,8 +35,8 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "serverdata", ClientInfo.ServerData));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "signature", ClientInfo.Signature));
 
-            _soapElement.Add(certElement);
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
+            context.Add(certElement);
+            context.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
         }
     }
 }
