@@ -21,17 +21,16 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             Assert.Equal("spyguy@unispy.org", request.Email);
             Assert.Equal("spyguy", request.Uniquenick);
             Assert.Equal("XXXXXXXXXXX", request.CDKey);
-            Assert.Equal("XXXXXXXXXXX", request.Password[0].FieldName);
-            Assert.Equal("Value", request.Password[0].FiledType);
+            Assert.Equal("XXXXXXXXXXX", request.Password);
         }
         [Fact]
         public void LoginPs3Cert()
         {
             var request = new LoginPs3CertRequest(RawRequests.LoginPs3Cert);
             request.Parse();
-            Assert.Equal("0", request.GameId.ToString());
-            Assert.Equal("0", request.PartnerCode.ToString());
-            Assert.Equal("0", request.PS3cert.ToString());
+            Assert.Equal(0, request.GameId);
+            Assert.Equal(0, request.PartnerCode);
+            Assert.Equal("0001", request.PS3cert);
         }
         [Fact]
         public void LoginRemoteAuth()
@@ -54,8 +53,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             Assert.Equal("0", request.PartnerCode.ToString());
             Assert.Equal("0", request.NamespaceId.ToString());
             Assert.Equal("spyguy", request.Uniquenick);
-            Assert.Equal("XXXXXXXXXXX", request.Password[0].FieldName);
-            Assert.Equal("Value", request.Password[0].FiledType);
+            Assert.Equal("XXXXXXXXXXX", request.Password);
         }
     }
 }

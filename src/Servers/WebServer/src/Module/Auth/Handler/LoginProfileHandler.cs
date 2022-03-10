@@ -1,6 +1,7 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
+using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
@@ -12,10 +13,10 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
     public class LoginProfileHandler : CmdHandlerBase
     {
         protected new LoginProfileRequest _request => (LoginProfileRequest)base._request;
-        protected new LoginResult _result { get => (LoginResult)base._result; set => base._result = value; }
+        protected new LoginResultBase _result { get => (LoginResultBase)base._result; set => base._result = value; }
         public LoginProfileHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new LoginResult();
+            _result = new LoginProfileResult();
         }
         protected override void DataOperation()
         {

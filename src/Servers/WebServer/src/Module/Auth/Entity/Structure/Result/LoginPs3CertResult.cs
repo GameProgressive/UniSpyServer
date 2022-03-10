@@ -1,10 +1,9 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result
 {
-    public class LoginPs3CertResult : ResultBase
+    public class LoginPs3CertResult : LoginResultBase
     {
-        public int ResponseCode { get; set; }
         public string AuthToken { get; set; }
         public string PartnerChallenge { get; set; }
         public LoginPs3CertResult()

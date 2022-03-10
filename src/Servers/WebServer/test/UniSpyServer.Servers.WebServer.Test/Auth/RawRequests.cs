@@ -34,9 +34,11 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
                 xmlns:ns1=""http://gamespy.net/sake"">
                 <SOAP-ENV:Body>
                     <ns1:LoginPs3Cert>
+                        <ns1:version>0</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
+                        <ns1:namespaceid>0</ns1:namespaceid>
                         <ns1:partnercode>0</ns1:partnercode>
-                        <ns1:ps3cert>0</ns1:ps3cert>
+                        <ns1:npticket>0001</ns1:npticket>
                     </ns1:LoginPs3Cert>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>";

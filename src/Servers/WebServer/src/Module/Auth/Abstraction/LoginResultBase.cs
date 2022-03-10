@@ -1,6 +1,6 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result
+namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
 {
     public record LoginCertificate
     {
@@ -36,13 +36,13 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result
             ExpireTime = "U3VuZGF5LCBPY3RvYmVyIDE4LCAyMDA5IDE6MTk6NTMgQU0=";
         }
     }
-    public class LoginResult : ResultBase
+    public abstract class LoginResultBase : ResultBase
     {
+        public string ResponseName { get; set; }
         public int? ResponseCode { get; set; }
         public LoginCertificate Certificate { get; set; }
         public string PeerKeyPrivate { get; private set; }
-
-        public LoginResult()
+        public LoginResultBase()
         {
             ResponseCode = 0;
             PeerKeyPrivate = "8818DA2AC0E0956E0C67CA8D785CFAF3A11A9404D1ED9A6E580EA8569E087B75316B85D77B2208916BE2E0D37C7D7FD18EFD6B2E77C11CDA6E1B689BF460A40BBAF861D800497822004880024B4E7F98A020B1896F536D7219E67AB24B17D60A7BDD7D42E3501BB2FA50BB071EF7A80F29870FFD7C409C0B7BB7A8F70489D04D";

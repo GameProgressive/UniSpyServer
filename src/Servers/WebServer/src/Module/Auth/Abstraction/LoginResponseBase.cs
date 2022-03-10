@@ -1,31 +1,21 @@
 using System.Xml.Linq;
+using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.WebServer.Abstraction.Auth
+namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
 {
-    public class LoginResponse : ResponseBase
+
+    public abstract class LoginResponseBase : ResponseBase
     {
-        private new LoginResult _result => (LoginResult)base._result;
-        private new LoginRequestBase _request => (LoginRequestBase)base._request;
-        public LoginResponse(LoginRequestBase request, LoginResult result) : base(request, result)
+        protected new LoginResultBase _result => (LoginResultBase)base._result;
+        protected new LoginRequestBase _request => (LoginRequestBase)base._request;
+        protected LoginResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
         }
-        public override void Build()
+        protected void BuildContext()
         {
-            base.Build();
-            _soapElement.Add(new XElement(SoapXElement.SoapNamespace + "LoginProfileWithGameIdResult"));
             _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "responseCode", _result.ResponseCode));
 
-            AddCertificate();
-
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "certificate", _result.Certificate));
-            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", _result.PeerKeyPrivate));
-        }
-
-        private void AddCertificate()
-        {
             var certElement = new XElement(SoapXElement.SakeNamespace + "certificate");
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "length", _result.Certificate.Length));
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "version", _request.Version));
@@ -45,6 +35,9 @@ namespace UniSpyServer.Servers.WebServer.Abstraction.Auth
             certElement.Add(new XElement(SoapXElement.SakeNamespace + "signature", _result.Certificate.Signature));
 
             _soapElement.Add(certElement);
+
+            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "certificate", _result.Certificate));
+            _soapElement.Add(new XElement(SoapXElement.SakeNamespace + "peerkeyprivate", _result.PeerKeyPrivate));
         }
     }
 }
