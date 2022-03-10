@@ -23,6 +23,28 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+        }
+        protected override void ResponseConstruct()
+        {
+            _response = new InitResponse(_request, _result);
+        }
+        protected override void Response()
+        {
+            base.Response();
+
+            UpdateUserInfo();
+            var request = new ConnectRequest
+            {
+                PortType = _request.PortType,
+                Version = _request.Version,
+                Cookie = _request.Cookie
+            };
+            new ConnectHandler(_client, request).Handle();
+        }
+
+        private void UpdateUserInfo()
+        {
             _userInfo = _redisClient.Values.FirstOrDefault(
                   k => k.ServerID == _client.Session.Server.ServerID
                   & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
@@ -48,24 +70,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _userInfo.LastPacketRecieveTime = DateTime.Now;
                 _userInfo.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
             }
-            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
             _redisClient.SetValue(_userInfo);
-        }
-
-        protected override void ResponseConstruct()
-        {
-            _response = new InitResponse(_request, _result);
-        }
-        protected override void Response()
-        {
-            base.Response();
-            var request = new ConnectRequest
-            {
-                PortType = _request.PortType,
-                Version = _request.Version,
-                Cookie = _request.Cookie
-            };
-            new ConnectHandler(_client, request).Handle();
         }
     }
 }
