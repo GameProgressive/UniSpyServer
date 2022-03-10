@@ -8,13 +8,13 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
     {
         private static XDeclaration _declaration = new XDeclaration("1.0", "utf-8", null);
         public static XNamespace SoapNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
-        public static XElement SoapElement = new XElement(SoapNamespace + "Envelope",
+        public static XElement SakeSoapHeader = new XElement(SoapNamespace + "Envelope",
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"),
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/"),
                                 new XAttribute(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance"),
                                 new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"),
                                 new XAttribute(XNamespace.Xmlns + "ns1", "http://gamespy.net/sake"));
-        public static XElement AuthElement = new XElement(SoapNamespace + "Envelope",
+        public static XElement AuthSoapHeader = new XElement(SoapNamespace + "Envelope",
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"),
                                 new XAttribute(XNamespace.Xmlns + "SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/"),
                                 new XAttribute(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance"),

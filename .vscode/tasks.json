@@ -21,7 +21,7 @@
             "type": "process",
             "args": [
                 "build",
-                "--no-dependencies",
+                
                 "--no-restore",
                 "${workspaceFolder}/src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj",
                 "-o",
@@ -37,7 +37,7 @@
             "type": "process",
             "args": [
                 "build",
-                "--no-dependencies",
+                
                 "--no-restore",
                 "${workspaceFolder}/src/Servers/CDKey/src/UniSpyServer.Servers.CDKey.csproj",
                 "-o",
@@ -54,7 +54,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/Chat/src/UniSpyServer.Servers.Chat.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -70,7 +70,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/PresenceConnectionManager/src/UniSpyServer.Servers.PresenceConnectionManager.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -86,7 +86,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/PresenceSearchPlayer/src/UniSpyServer.Servers.PresenceSearchPlayer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -102,7 +102,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/GameStatus/src/UniSpyServer.Servers.GameStatus.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -118,7 +118,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -134,7 +134,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/QueryReport/src/UniSpyServer.Servers.QueryReport.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -150,7 +150,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/ServerBrowser/src/UniSpyServer.Servers.ServerBrowser.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -166,7 +166,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "--no-dependencies",
+                
                 "${workspaceFolder}/src/Servers/WebServer/src/UniSpyServer.Servers.WebServer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",

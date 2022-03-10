@@ -31,14 +31,16 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
         protected override void OnReceivedRequest(HttpRequest request) => OnReceive(request);
         void ISession.Send(string response)
         {
-            Response.MakeOkResponse();
+            // Response.MakeOkResponse();
+            Response.SetBegin(200);
             Response.SetBody(response);
             base.SendResponseAsync();
         }
 
         void ISession.Send(byte[] response)
         {
-            Response.MakeOkResponse();
+            // Response.MakeOkResponse();
+            Response.SetBegin(200);
             Response.SetBody(response);
             base.SendResponseAsync();
         }

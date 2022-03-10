@@ -5,13 +5,11 @@ namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
     {
-        private SoapXElement _soapEnvelop;
-        protected XElement _soapBody { get; private set; }
+        protected SoapXElement _soapEnvelop { get; set; }
+        protected XElement _soapBody { get; set; }
         public new string SendingBuffer { get => (string)base.SendingBuffer; set => base.SendingBuffer = value; }
         public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
-            _soapEnvelop = new SoapXElement(SoapXElement.SoapElement);
-            _soapBody = new XElement(SoapXElement.SoapNamespace + "Body");
         }
         public override void Build()
         {
