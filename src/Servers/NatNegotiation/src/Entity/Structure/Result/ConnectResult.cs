@@ -8,8 +8,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
 {
     public class ConnectResult : ResultBase
     {
-        public byte? GotYourData { get; private set; } = 1;
-        public byte? Finished { get; private set; } = 0;
+        public byte? GotYourData { get; private set; }
+        public ConnectPacketStatus? Finished { get; private set; }
         public IPEndPoint RemoteEndPoint { private get; set; }
         public byte[] RemoteIPAddressBytes => RemoteEndPoint.Address.GetAddressBytes();
         public byte[] RemotePortBytes => BitConverter.GetBytes((ushort)RemoteEndPoint.Port).Reverse().ToArray();
@@ -18,6 +18,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
         public ConnectResult()
         {
             PacketType = ResponseType.Connect;
+            GotYourData = 1;
+            Finished = ConnectPacketStatus.NoError;
         }
     }
 }
