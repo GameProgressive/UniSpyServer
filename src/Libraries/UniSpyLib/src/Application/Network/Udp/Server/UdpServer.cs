@@ -53,11 +53,21 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         }
         protected UdpSession CreateSession(IPEndPoint endPoint)
         {
-            // we create session and create client 
-            // then we bind the event with client and session
-            var session = new UdpSession(this, endPoint);
-            ClientBase.CreateClient(session);
-            return session;
+            // we have to check if the endPoint is already in the dictionary,
+            // which means the client is already in the dictionary, we do not need to create it
+            // we just retrieve the session from the dictionary
+            if (ClientBase.ClientPool.ContainsKey(endPoint))
+            {
+                return (UdpSession)ClientBase.ClientPool[endPoint].Session;
+            }
+            else
+            {
+                // we create session and create client 
+                // then we bind the event with client and session
+                var session = new UdpSession(this, endPoint);
+                ClientBase.CreateClient(session);
+                return session;
+            }
         }
     }
 }
