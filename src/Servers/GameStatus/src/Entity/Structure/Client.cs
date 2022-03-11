@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
         public Client(ISession session) : base(session)
         {
-            Info = new ClientInfo(session.RemoteIPEndPoint);
+            Info = new ClientInfo();
             Crypto = new GSCrypt();
         }
         protected override void OnConnected()

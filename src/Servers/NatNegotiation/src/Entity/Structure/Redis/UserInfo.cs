@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
-    public record UserInfo : RedisKeyValueObject
+    public record NatUserInfo : RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
@@ -17,9 +17,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [RedisKey]
-        public NatPortType? PortType { get; init; }
+        public NatServerType? PortType { get; init; }
         [RedisKey]
         public uint? Cookie { get; init; }
+        [RedisKey]
+        public NatPortMappingScheme? MappingScheme { get; set; }
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint LocalIPEndPoint { get; init; }
         public DateTime? LastPacketRecieveTime { get; set; }
@@ -29,12 +31,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public bool IsGotConnectPacket { get; set; }
 
 
-        public UserInfo() : base(TimeSpan.FromMinutes(3))
+        public NatUserInfo() : base(TimeSpan.FromMinutes(3))
         {
             // _supportedTypes.Add(typeof(NatPortType?));
         }
     }
-    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<UserInfo>
+    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatUserInfo>
     {
         public RedisClient() :
         base(ConfigManager.Config.Redis.ConnectionString,

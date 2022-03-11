@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         public bool IsQuietMode { get; set; }
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
 
-        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo( )
         {
             JoinedChannels = new ConcurrentDictionary<string, Channel>();
             NameSpaceID = 0;

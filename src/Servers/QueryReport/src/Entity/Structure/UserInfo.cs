@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
     public class ClientInfo : ClientInfoBase
     {
         public uint? InstantKey { get; set; }
-        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo( )
         {
         }
     }

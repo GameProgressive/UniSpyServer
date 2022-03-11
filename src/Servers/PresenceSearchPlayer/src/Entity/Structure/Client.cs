@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure
     {
         public Client(ISession session) : base(session)
         {
-            Info = new ClientInfo(session.RemoteIPEndPoint);
+            Info = new ClientInfo();
         }
     }
 }

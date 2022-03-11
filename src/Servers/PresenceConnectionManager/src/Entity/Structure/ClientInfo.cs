@@ -5,7 +5,7 @@
 // {
 //     public class ClientInfo : ClientInfoBase
 //     {
-//         public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+//         public ClientInfo( )
 //         {
 //         }
 //     }

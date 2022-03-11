@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public Client(ISession session) : base(session)
         {
-            Info = new ClientInfo(Session.RemoteIPEndPoint);
+            Info = new ClientInfo();
         }
         protected override void OnConnected()
         {

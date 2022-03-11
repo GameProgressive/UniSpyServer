@@ -3,9 +3,9 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.CDKey.Entity.Structure
 {
-    public class UserInfo : ClientInfoBase
+    public class ClientInfo : ClientInfoBase
     {
-        public UserInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo()
         {
         }
     }

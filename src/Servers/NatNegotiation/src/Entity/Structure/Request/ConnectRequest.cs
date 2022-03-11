@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
     {
         public new byte? Version { get => base.Version; set => base.Version = value; }
         public new uint? Cookie { get => base.Cookie; set => base.Cookie = value; }
-        public new NatPortType? PortType { get => base.PortType; set => base.PortType = value; }
+        public new NatServerType? PortType { get => base.PortType; set => base.PortType = value; }
         public ConnectRequest() { }
     }
 }

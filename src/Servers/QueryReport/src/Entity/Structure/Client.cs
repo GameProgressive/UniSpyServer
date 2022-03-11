@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
                 ClientMessageHandler.Channel = new RedisChannel();
                 ClientMessageHandler.Channel.StartSubscribe();
             }
-            Info = new ClientInfo(session.RemoteIPEndPoint);
+            Info = new ClientInfo();
         }
     }
 }

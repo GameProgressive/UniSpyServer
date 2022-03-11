@@ -16,14 +16,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
-        private UserInfo _userInfo;
         public InitHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new InitResult();
         }
         protected override void DataOperation()
         {
-            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+            _result.PublicIPEndPoint = _client.Session.RemoteIPEndPoint;
+            _result.PrivateIPEndPoint = _request.PrivateIPEndPoint;
+            _client.Info.InitResults.Add((NatServerType)_request.PortType, _result);
         }
         protected override void ResponseConstruct()
         {
@@ -33,44 +34,44 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             base.Response();
 
-            UpdateUserInfo();
-            var request = new ConnectRequest
-            {
-                PortType = _request.PortType,
-                Version = _request.Version,
-                Cookie = _request.Cookie
-            };
-            new ConnectHandler(_client, request).Handle();
+            // UpdateUserInfo();
+            // var request = new ConnectRequest
+            // {
+            //     PortType = _request.PortType,
+            //     Version = _request.Version,
+            //     Cookie = _request.Cookie
+            // };
+            // new ConnectHandler(_client, request).Handle();
         }
 
         private void UpdateUserInfo()
         {
-            _userInfo = _redisClient.Values.FirstOrDefault(
-                  k => k.ServerID == _client.Session.Server.ServerID
-                  & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
-                  & k.PortType == _request.PortType
-                  & k.Cookie == _request.Cookie);
-            //TODO we get user infomation from redis
-            if (_userInfo == null)
-            {
-                _userInfo = new UserInfo()
-                {
-                    ServerID = _client.Session.Server.ServerID,
-                    RemoteIPEndPoint = _client.Session.RemoteIPEndPoint,
-                    PortType = _request.PortType,
-                    Cookie = (uint)_request.Cookie,
-                    LocalIPEndPoint = _request.LocalIPEndPoint,
-                    UseGamePort = _request.UseGamePort,
-                    ClientIndex = _request.ClientIndex,
-                    LastPacketRecieveTime = DateTime.Now
-                };
-            }
-            else
-            {
-                _userInfo.LastPacketRecieveTime = DateTime.Now;
-                _userInfo.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
-            }
-            _redisClient.SetValue(_userInfo);
+            // _userInfo = _redisClient.Values.FirstOrDefault(
+            //       k => k.ServerID == _client.Session.Server.ServerID
+            //       & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
+            //       & k.PortType == _request.PortType
+            //       & k.Cookie == _request.Cookie);
+            // //TODO we get user infomation from redis
+            // if (_userInfo == null)
+            // {
+            //     _userInfo = new NatUserInfo()
+            //     {
+            //         ServerID = _client.Session.Server.ServerID,
+            //         RemoteIPEndPoint = _client.Session.RemoteIPEndPoint,
+            //         PortType = _request.PortType,
+            //         Cookie = (uint)_request.Cookie,
+            //         LocalIPEndPoint = _request.LocalIPEndPoint,
+            //         UseGamePort = _request.UseGamePort,
+            //         ClientIndex = _request.ClientIndex,
+            //         LastPacketRecieveTime = DateTime.Now
+            //     };
+            // }
+            // else
+            // {
+            //     _userInfo.LastPacketRecieveTime = DateTime.Now;
+            //     _userInfo.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+            // }
+            // _redisClient.SetValue(_userInfo);
         }
     }
 }

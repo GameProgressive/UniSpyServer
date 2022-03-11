@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         private byte[] _incompleteBuffer;
         public Client(ISession session) : base(session)
         {
-            base.Info = new ClientInfo(session.RemoteIPEndPoint);
+            base.Info = new ClientInfo();
         }
         protected override void OnReceived(object buffer)
         {

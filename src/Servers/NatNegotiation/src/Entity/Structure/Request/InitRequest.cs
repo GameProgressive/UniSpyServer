@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
     {
         public string GameName { get; private set; }
         [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint LocalIPEndPoint { get; private set; }
+        public IPEndPoint PrivateIPEndPoint { get; private set; }
         public InitRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             var ipBytes = RawRequest.Skip(15).Take(4).ToArray();
             var portBytes = RawRequest.Skip(19).Take(2).Reverse().ToArray();
             var port = BitConverter.ToUInt16(portBytes);
-            LocalIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
+            PrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
             if (RawRequest.Length > 21)
             {
                 if (RawRequest[RawRequest.Length - 1] == 0)

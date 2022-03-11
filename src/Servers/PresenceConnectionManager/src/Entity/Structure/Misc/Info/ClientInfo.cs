@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure.Data
         public User UserInfo { get; set; }
         public Subprofile SubProfileInfo { get; set; }
         public Profile ProfileInfo { get; set; }
-        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo( )
         {
             SdkRevision = new SdkRevision();
             Status = new UserStatus();

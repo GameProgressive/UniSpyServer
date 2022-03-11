@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public AdHocRequest AdHocMessage { get; set; }
-        public ClientInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public ClientInfo( )
         {
         }
     }
