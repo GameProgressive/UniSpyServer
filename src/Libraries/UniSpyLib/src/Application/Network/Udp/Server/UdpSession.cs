@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Threading;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -28,7 +29,8 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         }
         public virtual void OnReceived(byte[] message)
         {
-            Server.ReceiveAsync();
+            // Server.ReceiveAsync();
+            ThreadPool.QueueUserWorkItem(o => { Server.ReceiveAsync(); });
             OnReceive(message);
         }
 

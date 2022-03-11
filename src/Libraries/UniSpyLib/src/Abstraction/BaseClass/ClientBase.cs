@@ -84,17 +84,40 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     throw new Exception("Unsupported session type");
             }
         }
-        public static ClientBase CreateClient(ISession session)
+        public static IClient CreateClient(ISession session)
         {
             if (_clientType is null)
             {
                 _clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
             }
 
-            // create client and bind client with session
-            var client = (ClientBase)Activator.CreateInstance(_clientType, new object[] { session });
-            return client;
+            if (session.ConnectionType == NetworkConnectionType.Udp)
+            {
+                if (ClientPool.ContainsKey(session.RemoteIPEndPoint))
+                {
+                    return ClientPool[session.RemoteIPEndPoint];
+                }
+                else
+                {
+                    // create client and bind client with session
+                    var client = (IClient)Activator.CreateInstance(_clientType, new object[] { session });
+                    // in udpsession we add it to client pool
+                    ClientPool.TryAdd(session.RemoteIPEndPoint, client);
+                    return client;
+                }
+            }
+            else
+            {
+                // if connection is Tcp Http we need to add client to ClientPool in OnConnected()
+                // because RemoteIPEndpoint in TcpSession is null now
+                var client = (IClient)Activator.CreateInstance(_clientType, new object[] { session });
+                return client;
+            }
+
         }
+        /// <summary>
+        /// Only work for tcp
+        /// </summary>
         protected virtual void OnConnected()
         {
             if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
@@ -102,6 +125,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
             }
         }
+        /// <summary>
+        /// Only work for tcp
+        /// </summary>
         protected virtual void OnDisconnected()
         {
             if (ClientPool.ContainsKey(Session.RemoteIPEndPoint))
@@ -112,10 +138,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         protected virtual void OnReceived(object buffer)
         {
-            if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
-            {
-                ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
-            }
             switch (Session.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:

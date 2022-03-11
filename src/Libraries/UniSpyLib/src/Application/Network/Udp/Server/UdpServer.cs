@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -39,7 +40,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         /// </summary>
         /// <param name="endpoint"></param>
         /// <param name="sent"></param>
-        protected override void OnSent(EndPoint endpoint, long sent) => ReceiveAsync();
+        protected override void OnSent(EndPoint endpoint, long sent) => ThreadPool.QueueUserWorkItem(o => { ReceiveAsync(); });
         /// <summary>
         /// Send unencrypted data
         /// </summary>
@@ -50,24 +51,13 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
             var session = CreateSession((IPEndPoint)endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
-
         protected UdpSession CreateSession(IPEndPoint endPoint)
         {
-            // we have to check if the endPoint is already in the dictionary,
-            // which means the client is already in the dictionary, we do not need to create it
-            // we just retrieve the session from the dictionary
-            if (ClientBase.ClientPool.ContainsKey(endPoint))
-            {
-                return (UdpSession)ClientBase.ClientPool[endPoint].Session;
-            }
-            else
-            {
-                // we create session and create client 
-                // then we bind the event with client and session
-                var session = new UdpSession(this, endPoint);
-                ClientBase.CreateClient(session);
-                return session;
-            }
+            // we create session and create client 
+            // then we bind the event with client and session
+            var session = new UdpSession(this, endPoint);
+            ClientBase.CreateClient(session);
+            return session;
         }
     }
 }
