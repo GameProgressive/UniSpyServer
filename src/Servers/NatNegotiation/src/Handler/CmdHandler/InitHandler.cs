@@ -34,20 +34,20 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             base.Response();
 
             UpdateUserInfo();
-            var request = new ConnectRequest
-            {
-                PortType = _request.PortType,
-                Version = _request.Version,
-                Cookie = _request.Cookie
-            };
-            new ConnectHandler(_client, request).Handle();
+            // var request = new ConnectRequest
+            // {
+            //     PortType = _request.PortType,
+            //     Version = _request.Version,
+            //     Cookie = _request.Cookie
+            // };
+            // new ConnectHandler(_client, request).Handle();
         }
 
         private void UpdateUserInfo()
         {
             _userInfo = _redisClient.Values.FirstOrDefault(
                   k => k.ServerID == _client.Session.Server.ServerID
-                  & k.RemoteIPEndPoint == _client.Session.RemoteIPEndPoint
+                  & k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
                   & k.PortType == _request.PortType
                   & k.Cookie == _request.Cookie);
             //TODO we get user infomation from redis
@@ -56,10 +56,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _userInfo = new UserInfo()
                 {
                     ServerID = _client.Session.Server.ServerID,
-                    RemoteIPEndPoint = _client.Session.RemoteIPEndPoint,
+                    PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
                     PortType = _request.PortType,
                     Cookie = (uint)_request.Cookie,
-                    LocalIPEndPoint = _request.LocalIPEndPoint,
+                    PrivateIPEndPoint = _request.PrivateIPEndPoint,
                     UseGamePort = _request.UseGamePort,
                     ClientIndex = _request.ClientIndex,
                     LastPacketRecieveTime = DateTime.Now
@@ -68,9 +68,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             else
             {
                 _userInfo.LastPacketRecieveTime = DateTime.Now;
-                _userInfo.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+                _userInfo.PublicIPEndPoint = _client.Session.RemoteIPEndPoint;
             }
             _redisClient.SetValue(_userInfo);
+            var count = _redisClient.Values.Count(k => k.ServerID == _client.Session.Server.ServerID);
         }
     }
 }

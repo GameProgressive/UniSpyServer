@@ -5,7 +5,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
 {
     public class UserInfo : ClientInfoBase
     {
-        public UserInfo(IPEndPoint remoteIPEndPoint) : base(remoteIPEndPoint)
+        public UserInfo(IPEndPoint remoteIPEndPoint) : base()
         {
         }
     }

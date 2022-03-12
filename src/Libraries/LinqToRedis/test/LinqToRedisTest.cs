@@ -89,5 +89,18 @@ namespace UniSpy.Redis.Test
                 var value = redis[key];
             }
         }
+
+        [Fact]
+        public void CountTest()
+        {
+            var redis = new RedisClient();
+            // Given
+            // var data2 = redis.Values.Count(k => k.Cookie == 0);
+            var data3 = redis.Values.First(k => k.Cookie == 0);
+            var data4 = redis.Values.Where(k => k.Cookie == 0).First();
+            // When
+
+            // Then
+        }
     }
 }

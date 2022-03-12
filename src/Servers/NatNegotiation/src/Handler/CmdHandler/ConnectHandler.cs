@@ -64,11 +64,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
                 _responseToNegotiator = new ConnectResponse(
                     request,
-                    new ConnectResult { RemoteEndPoint = _negotiatee.RemoteIPEndPoint });
+                    new ConnectResult { RemoteEndPoint = _negotiatee.PublicIPEndPoint });
 
                 _responseToNegotiatee = new ConnectResponse(
                     _request,
-                    new ConnectResult { RemoteEndPoint = _negotiator.RemoteIPEndPoint });
+                    new ConnectResult { RemoteEndPoint = _negotiator.PublicIPEndPoint });
             }
 
 
@@ -80,15 +80,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _responseToNegotiator.Build();
             // we send the information to each user
             var session = _client.Session as IUdpSession;
-            session.Send(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
-            session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            session.Send(_negotiator.PublicIPEndPoint, _responseToNegotiator.SendingBuffer);
+            session.Send(_negotiatee.PublicIPEndPoint, _responseToNegotiatee.SendingBuffer);
             // test whether this way can notify users
             var udpClient = new UdpClient();
-            LogWriter.Info($"Find two users: {_negotiator.RemoteIPEndPoint}, {_negotiatee.RemoteIPEndPoint}, we send connect packet to them.");
-            LogWriter.LogNetworkSending(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
-            LogWriter.LogNetworkSending(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
-            udpClient.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
-            udpClient.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
+            LogWriter.Info($"Find two users: {_negotiator.PublicIPEndPoint}, {_negotiatee.PublicIPEndPoint}, we send connect packet to them.");
+            LogWriter.LogNetworkSending(_negotiator.PublicIPEndPoint, _responseToNegotiator.SendingBuffer);
+            LogWriter.LogNetworkSending(_negotiatee.PublicIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            udpClient.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.PublicIPEndPoint);
+            udpClient.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.PublicIPEndPoint);
         }
     }
 }

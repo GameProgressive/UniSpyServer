@@ -15,13 +15,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public Guid? ServerID { get; init; }
         [RedisKey]
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint RemoteIPEndPoint { get; set; }
+        public IPEndPoint PublicIPEndPoint { get; set; }
         [RedisKey]
         public NatPortType? PortType { get; init; }
         [RedisKey]
         public uint? Cookie { get; init; }
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint LocalIPEndPoint { get; init; }
+        public IPEndPoint PrivateIPEndPoint { get; init; }
         public DateTime? LastPacketRecieveTime { get; set; }
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
