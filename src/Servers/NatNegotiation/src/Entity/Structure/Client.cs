@@ -1,15 +1,29 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public new UserInfo Info { get => (UserInfo)base.Info; private set => base.Info = value; }
+        public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new IUdpSession Session => (IUdpSession)base.Session;
         public Client(ISession session) : base(session)
         {
-            Info = new UserInfo(session.RemoteIPEndPoint);
+            Info = new ClientInfo();
+        }
+
+        protected override void OnReceived(object buffer)
+        {
+            if (Info.IsTransitNetowrkTraffic)
+            {
+                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficTransitTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+                Info.TrafficTransitTarget.Session.Send((byte[])buffer);
+            }
+            else
+            {
+                base.OnReceived(buffer);
+            }
         }
     }
 }

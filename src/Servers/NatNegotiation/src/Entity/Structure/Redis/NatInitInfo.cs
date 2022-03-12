@@ -9,32 +9,32 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
-    public record UserInfo : RedisKeyValueObject
+    public record NatInitInfo : RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
         [RedisKey]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint PublicIPEndPoint { get; set; }
-        [RedisKey]
         public NatPortType? PortType { get; init; }
         [RedisKey]
         public uint? Cookie { get; init; }
+        [RedisKey]
+        public NatClientIndex? ClientIndex { get; init; }
+        [RedisKey]
+        public byte? Version { get; init; }
+
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint PublicIPEndPoint { get; set; }
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PrivateIPEndPoint { get; init; }
-        public DateTime? LastPacketRecieveTime { get; set; }
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
-        public byte? ClientIndex { get; init; }
-        public bool IsGotConnectPacket { get; set; }
+        public int RetryCount { get; set; }
 
-
-        public UserInfo() : base(TimeSpan.FromMinutes(3))
+        public NatInitInfo() : base(TimeSpan.FromMinutes(3))
         {
-            // _supportedTypes.Add(typeof(NatPortType?));
         }
     }
-    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<UserInfo>
+    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatInitInfo>
     {
         public RedisClient() :
         base(ConfigManager.Config.Redis.ConnectionString,

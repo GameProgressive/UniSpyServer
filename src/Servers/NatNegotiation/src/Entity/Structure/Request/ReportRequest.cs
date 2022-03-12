@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
         {
             base.Parse();
             PortType = (NatPortType)RawRequest[13];
-            ClientIndex = RawRequest[14];
+            ClientIndex = (NatClientIndex)RawRequest[14];
             NatResult = (NatNegResult)RawRequest[15];
             NatType = (RequestType)BitConverter.ToUInt16(RawRequest.Skip(17).Take(2).ToArray());
             MappingScheme = (NatMappingScheme)BitConverter.ToInt32(RawRequest.Skip(19).Take(4).ToArray());

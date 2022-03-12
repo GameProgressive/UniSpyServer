@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 return;
             }
             // currently we do not know what this for, we just keep this
-            userInfo.IsGotConnectPacket = true;
+            // userInfo.IsGotConnectPacket = true;
             _redisClient.SetValue(userInfo);
         }
     }
