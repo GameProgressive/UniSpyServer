@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -63,6 +66,126 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 LogWriter.Info("No users match found we continue waitting.");
             }
         }
+
+        public static NatProperty DetermineNatPortMappingScheme(List<NatInitInfo> initResults)
+        {
+            NatType natType;
+            NatPromiscuty promiscuity;
+            NatPortMappingScheme map;
+            promiscuity = NatPromiscuty.PromiscuityNotApplicable;
+            if (initResults.Count != 4)
+            {
+                throw new NNException("We need 4 init results to determine the nat type.");
+            }
+            var isIPRestricted = false;
+            var isPortRestricted = false;
+
+            var gp = initResults.First(k => k.PortType == NatPortType.GP);
+            var nn1 = initResults.First(k => k.PortType == NatPortType.NN1);
+            var nn2 = initResults.First(k => k.PortType == NatPortType.NN2);
+            var nn3 = initResults.First(k => k.PortType == NatPortType.NN3);
+            if (!isIPRestricted && !isPortRestricted &&
+                (nn2.PublicIPEndPoint.Address == nn2.PrivateIPEndPoint.Address))
+            {
+                natType = NatType.NoNat;
+            }
+            else if (nn2.PublicIPEndPoint.Address == nn2.PrivateIPEndPoint.Address)
+            {
+                natType = NatType.FirewallOnly;
+            }
+            else
+            {
+                if (!isIPRestricted && !isPortRestricted && (Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1))
+                {
+                    natType = NatType.Symmetric;
+                    promiscuity = NatPromiscuty.Promiscuous;
+                }
+                else if (isIPRestricted && !isPortRestricted
+                && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
+                {
+                    natType = NatType.Symmetric;
+                    promiscuity = NatPromiscuty.PortPromiscuous;
+                }
+                else if (!isIPRestricted && isPortRestricted
+                    && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
+                {
+                    natType = NatType.Symmetric;
+                    promiscuity = NatPromiscuty.IpPromiscuous;
+                }
+                else if (isIPRestricted && isPortRestricted
+                    && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
+                {
+                    natType = NatType.Symmetric;
+                    promiscuity = NatPromiscuty.NotPromiscuous;
+                }
+                else if (isPortRestricted)
+                {
+                    natType = NatType.PortRestrictedCone;
+                }
+                else if (isIPRestricted && !isPortRestricted)
+                {
+                    natType = NatType.RestrictedCone;
+                }
+                else if (!isIPRestricted && !isPortRestricted)
+                {
+                    natType = NatType.FullCone;
+                }
+                else
+                {
+                    natType = NatType.Unknown;
+                }
+            }
+
+
+            bool hasGPPacket = gp.PublicIPEndPoint.Port != 0;
+            bool hasNN3 = nn3.PublicIPEndPoint.Port != 0;
+
+            if ((!hasGPPacket || gp.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port)
+            && (nn1.PublicIPEndPoint.Port == nn1.PrivateIPEndPoint.Port)
+            && (nn2.PublicIPEndPoint.Port == nn2.PublicIPEndPoint.Port)
+            && (!hasNN3 || nn3.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port))
+            {
+                map = NatPortMappingScheme.PrivateAsPublic;
+            }
+            else if (nn1.PublicIPEndPoint.Port == nn2.PublicIPEndPoint.Port
+            && (gp.PublicIPEndPoint.Port == 0 || nn2.PublicIPEndPoint.Port == nn3.PublicIPEndPoint.Port))
+            {
+                map = NatPortMappingScheme.ConsistentPort;
+            }
+            else if ((hasGPPacket
+            && (gp.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port))
+            && nn2.PublicIPEndPoint.Port == 1)
+            {
+                map = NatPortMappingScheme.Mixed;
+            }
+            else if (nn2.PublicIPEndPoint.Port - nn1.PublicIPEndPoint.Port == 1)
+            {
+                map = NatPortMappingScheme.Incremental;
+            }
+            else
+            {
+                map = NatPortMappingScheme.Unrecognized;
+            }
+
+            return new NatProperty()
+            {
+                Type = natType,
+                Promiscuity = promiscuity,
+                PortMapping = map
+            };
+        }
+        public static IPEndPoint GuessTargetAddress(NatProperty nat, IPEndPoint natFailedEd = null)
+        {
+            // first try guess the target address
+            // if (natFailedEd is null)
+            // {
+            //     if(nat.Type == NatType.NoNat)
+            //     {
+            //         return 
+            //     }
+            // }
+            return null;
+        }
         protected override void DataOperation()
         {
             if (_matchedInfos == null)
@@ -73,7 +196,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 return;
             }
-            
+
 
 
 

@@ -55,7 +55,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _userInfo = _redisClient.Values.FirstOrDefault(
                   k => k.ServerID == _client.Session.Server.ServerID
-                  & k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
                   & k.PortType == _request.PortType
                   & k.Cookie == _request.Cookie);
             //TODO we get user infomation from redis

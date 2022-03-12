@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -22,6 +21,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         public static IDictionary<string, Client> TrafficRedirectClientPool = new ConcurrentDictionary<string, Client>();
         private new PingRequest _request => (PingRequest)base._request;
         private Client _targetClient;
+        /// <summary>
+        /// The first ping packet will process by natneg server,
+        /// when the info is saved, next ping will directly send to another client
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public PingHandler(IClient client, IRequest request) : base(client, request)
         {
         }
@@ -69,6 +75,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     _client.Info.TrafficTransitTarget = _targetClient;
                 }
             }
+            TrafficRedirectClientPool.Remove($"{_request.Cookie},{_request.ClientIndex}");
         }
     }
 }
