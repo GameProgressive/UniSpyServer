@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -67,14 +68,26 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
 
             // if all client and server is ready we then start try nat punch
-            AddressCheckHandler.DeterminIPandPortRestriction(client.Info);
-            AddressCheckHandler.DeterminIPandPortRestriction(server.Info);
-            AddressCheckHandler.DetermineNatPortMapping(client.Info);
-            AddressCheckHandler.DetermineNatPortMapping(server.Info);
-            AddressCheckHandler.DetermineNatType(client.Info);
-            AddressCheckHandler.DetermineNatType(server.Info);
-            AddressCheckHandler.DetermineNextAddress(client.Info);
-            AddressCheckHandler.DetermineNextAddress(client.Info);
+            if (client.Info.IsTransitTraffic != true && server.Info.IsTransitTraffic != true)
+            {
+                AddressCheckHandler.DeterminIPandPortRestriction(client.Info);
+                AddressCheckHandler.DeterminIPandPortRestriction(server.Info);
+                AddressCheckHandler.DetermineNatPortMapping(client.Info);
+                AddressCheckHandler.DetermineNatPortMapping(server.Info);
+                AddressCheckHandler.DetermineNatType(client.Info);
+                AddressCheckHandler.DetermineNatType(server.Info);
+                AddressCheckHandler.DetermineNextAddress(client.Info);
+                AddressCheckHandler.DetermineNextAddress(client.Info);
+            }
+            else
+            {
+                string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+                var externalIp = IPAddress.Parse(externalIpString);
+                // we use natneg server to transit message
+                client.Info.GuessedPublicIPEndPoint = new IPEndPoint(externalIp, 27901);
+                server.Info.GuessedPublicIPEndPoint = new IPEndPoint(externalIp, 27902);
+            }
+
             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
             _responseToServer = new ConnectResponse(
                 request,
@@ -97,6 +110,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             LogWriter.LogNetworkSending(client.Session.RemoteIPEndPoint, _responseToClient.SendingBuffer);
             server.Session.Send(_responseToServer.SendingBuffer);
             client.Session.Send(_responseToClient.SendingBuffer);
+
+            server.Info.RetryNatNegotiationTime++;
+            client.Info.RetryNatNegotiationTime++;
         }
     }
 }
