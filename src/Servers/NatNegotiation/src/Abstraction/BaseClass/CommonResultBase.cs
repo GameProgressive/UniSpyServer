@@ -6,8 +6,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class CommonResultBase : ResultBase
     {
-        public IPEndPoint PublicIPEndPoint { get; set; }
-        public byte[] RemoteIPAddressBytes => PublicIPEndPoint.Address.GetAddressBytes().ToArray();
-        public byte[] RemotePortBytes => BitConverter.GetBytes((ushort)PublicIPEndPoint.Port).Reverse().ToArray();
+        public IPEndPoint RemoteIPEndPoint { get; set; }
+        public byte[] RemoteIPAddressBytes => RemoteIPEndPoint.Address.GetAddressBytes().ToArray();
+        public byte[] RemotePortBytes => BitConverter.GetBytes((ushort)RemoteIPEndPoint.Port).Reverse().ToArray();
     }
 }

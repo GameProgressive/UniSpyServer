@@ -60,6 +60,8 @@ namespace UniSpyServer.LinqToRedis.Linq
                 case "Where":
                     Visit(node.Arguments[1]);
                     break;
+                case "Count":
+                case "First":
                 case "FirstOrDefault":
                     if (node.Arguments.Count == 1)
                     {
@@ -71,9 +73,6 @@ namespace UniSpyServer.LinqToRedis.Linq
                         // FirstOrDefault() is called at the start of the query
                         Visit(node.Arguments[1]);
                     }
-                    break;
-                case "First":
-                    Visit(node.Arguments[0]);
                     break;
                 default:
                     throw new NotSupportedException(string.Format("The method '{0}' is not supported", node.Method.Name));

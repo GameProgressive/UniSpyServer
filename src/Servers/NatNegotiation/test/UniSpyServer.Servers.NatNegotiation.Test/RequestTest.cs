@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
             Assert.Equal((byte)0, request.UseGamePort);
-            Assert.Equal(NatPortType.Natneg1, request.PortType);
+            Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
         public void AddressTest()
@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal((byte)0, request.ClientIndex);
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
-            Assert.Equal(NatPortType.Natneg1, request.PortType);
+            Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
         public void ErtAckTest()
@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
             Assert.Equal((byte)0, request.UseGamePort);
-            Assert.Equal(NatPortType.Natneg1, request.PortType);
+            Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact]
         public void NatifyTest()
@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
             Assert.Equal((byte)0, request.UseGamePort);
             Assert.Equal((byte)3, request.Version);
             Assert.Equal((byte)0, request.UseGamePort);
-            Assert.Equal(NatPortType.Natneg1, request.PortType);
+            Assert.Equal(NatPortType.NN1, request.PortType);
         }
         [Fact(Skip = "Not implemented")]
         public void ReportTest()

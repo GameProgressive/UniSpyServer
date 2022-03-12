@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            _result.PublicIPEndPoint = _client.Session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {

@@ -5,18 +5,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         /// <summary>
         /// Use game port for nat neg
         /// </summary>
-        GamePort,
+        GP,
         /// <summary>
         /// IP and Port both restricted
         /// </summary>
-        Natneg1,
+        NN1,
         /// <summary>
         /// IP not restricted
         /// </summary>
-        Natneg2,
+        NN2,
         /// <summary>
         /// Port not restriced
         /// </summary>
-        Natneg3
+        NN3
     }
 }

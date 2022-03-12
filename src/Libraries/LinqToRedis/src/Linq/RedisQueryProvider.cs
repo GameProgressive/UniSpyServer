@@ -19,8 +19,14 @@ namespace UniSpyServer.LinqToRedis.Linq
             expression = QueryEvaluator.PartialEval(expression);
             var builder = new RedisQueryBuilder<TValue>(expression);
             builder.Build();
-            var values = _client.GetValues(builder.KeyObject);
+
             var node = (MethodCallExpression)expression;
+            if (node.Method.Name == "Count")
+            {
+                return _client.GetMatchedKeys(builder.KeyObject).Count;
+            }
+            var values = _client.GetValues(builder.KeyObject);
+
             switch (node.Method.Name)
             {
                 case "Where":
@@ -28,7 +34,12 @@ namespace UniSpyServer.LinqToRedis.Linq
                 case "FirstOrDefault":
                     return values.FirstOrDefault();
                 case "First":
-                    return values.First();
+                    if (values.Count == 0)
+                    {
+                        throw new InvalidOperationException("The result is empty, try to use FirstOrDefault instead.");
+                    }
+                    return values[0];
+                // return values.First();
                 default:
                     throw new NotSupportedException(string.Format("The method '{0}' is not supported", node.Method.Name));
             }

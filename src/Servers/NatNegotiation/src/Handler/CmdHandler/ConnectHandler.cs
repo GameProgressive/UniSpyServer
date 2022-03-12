@@ -1,120 +1,94 @@
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Net;
-// using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
-// using UniSpyServer.UniSpyLib.Abstraction.Interface;
-// using UniSpyServer.UniSpyLib.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
-// namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
-// {
-//     [HandlerContract(RequestType.Connect)]
-//     public sealed class ConnectHandler : CmdHandlerBase
-//     {
-//         private new ConnectRequest _request => (ConnectRequest)base._request;
-//         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
-//         private List<IClient> _matchedClients;
-//         private ConnectResponse _responseToServer;
-//         private ConnectResponse _responseToClient;
-//         public ConnectHandler(IClient client, IRequest request) : base(client, request)
-//         {
-//             _result = new ConnectResult();
-//         }
-//         protected override void RequestCheck()
-//         {
-//             _matchedClients = Client.ClientPool.Values.Where(
-//              c => ((Client)c).Info.Cookie == _request.Cookie).ToList();
-//             // because cookie is unique for each client we will only get 2 of keys
-//             if (_matchedClients.Count != 2)
-//             {
-//                 // throw new NNException("No users match found we continue waitting.");
-//                 LogWriter.Info("No users match found we continue waitting.");
-//                 return;
-//             }
-//         }
-//         protected override void DataOperation()
-//         {
-//             if (_matchedClients.Count != 2)
-//             {
-//                 return;
-//             }
+namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
+{
+    [HandlerContract(RequestType.Connect)]
+    public sealed class ConnectHandler : CmdHandlerBase
+    {
+        private new ConnectRequest _request => (ConnectRequest)base._request;
+        private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
+        private List<UserInfo> _matchedUsers;
+        private ConnectResponse _responseToNegotiator;
+        private ConnectResponse _responseToNegotiatee;
+        private UserInfo _negotiator;
+        private UserInfo _negotiatee;
+        public ConnectHandler(IClient client, IRequest request) : base(client, request)
+        {
+            _result = new ConnectResult();
+        }
+        protected override void RequestCheck()
+        {
+            _matchedUsers = _redisClient.Values.Where(
+             k => k.PortType == _request.PortType
+             & k.Cookie == _request.Cookie).ToList();
+            // because cookie is unique for each client we will only get 2 of keys
+            if (_matchedUsers.Count != 2)
+            {
+                // throw new NNException("No users match found we continue waitting.");
+                LogWriter.Info("No users match found we continue waitting.");
+            }
+        }
+        protected override void DataOperation()
+        {
+            if (_matchedUsers.Count != 2)
+            {
+                return;
+            }
+            foreach (var key in _matchedUsers)
+            {
+                //find negitiators and negotiatees by a same cookie
+                var negotiators = _matchedUsers.Where(s => s.ClientIndex == 0);
+                var negotiatees = _matchedUsers.Where(s => s.ClientIndex == 1);
 
-//             //find negitiators and negotiatees by a same cookie
-//             var client = (Client)_matchedClients.FirstOrDefault(s => ((Client)s).Info.ClientIndex == 0);
-//             var server = (Client)_matchedClients.FirstOrDefault(s => ((Client)s).Info.ClientIndex == 1);
+                if (negotiators.Count() != 1 || negotiatees.Count() != 1)
+                {
+                    LogWriter.ToLog("No match found, we keep waiting!");
+                    return;
+                }
 
-//             if (client is null || server is null)
-//             {
-//                 LogWriter.ToLog("No match found, we keep waiting!");
-//                 return;
-//             }
-//             var waitExpireTime = System.TimeSpan.FromSeconds(5);
-//             var waitStartTime = System.DateTime.Now;
-//             // we wait for init process is finished
-//             while (System.DateTime.Now.Subtract(waitStartTime) < waitExpireTime)
-//             {
-//                 if (client.Info.IsInitFinished != true
-//                 || server.Info.IsInitFinished != true)
-//                 {
-//                     LogWriter.ToLog("One of the client is not finish init process, we are waitting...");
-//                     return;
-//                 }
-//             }
+                // we only can find one pair of the users
+                _negotiator = negotiators.First();
+                _negotiatee = negotiatees.First();
+
+                var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
+                _responseToNegotiator = new ConnectResponse(
+                    request,
+                    new ConnectResult { RemoteEndPoint = _negotiatee.RemoteIPEndPoint });
+
+                _responseToNegotiatee = new ConnectResponse(
+                    _request,
+                    new ConnectResult { RemoteEndPoint = _negotiator.RemoteIPEndPoint });
+            }
 
 
-//             // if all client and server is ready we then start try nat punch
-//             if (client.Info.IsTransitTraffic != true && server.Info.IsTransitTraffic != true)
-//             {
-//                 AddressCheckHandler.DeterminIPandPortRestriction(client.Info);
-//                 AddressCheckHandler.DeterminIPandPortRestriction(server.Info);
-//                 AddressCheckHandler.DetermineNatPortMapping(client.Info);
-//                 AddressCheckHandler.DetermineNatPortMapping(server.Info);
-//                 AddressCheckHandler.DetermineNatType(client.Info);
-//                 AddressCheckHandler.DetermineNatType(server.Info);
-//                 AddressCheckHandler.DetermineNextAddress(client.Info);
-//                 AddressCheckHandler.DetermineNextAddress(client.Info);
-//             }
-//             else
-//             {
-//                 string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-//                 var externalIp = IPAddress.Parse(externalIpString);
-//                 // we use natneg server to transit message
-//                 client.Info.GuessedPublicIPEndPoint = new IPEndPoint(externalIp, 27901);
-//                 server.Info.GuessedPublicIPEndPoint = new IPEndPoint(externalIp, 27901);
-//                 client.Info.TrafficTransitTarget = server;
-//                 server.Info.TrafficTransitTarget = client;
-//             }
-
-//             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
-//             _responseToServer = new ConnectResponse(
-//                 request,
-//                 new ConnectResult { RemoteEndPoint = client.Info.GuessedPublicIPEndPoint });
-
-//             _responseToClient = new ConnectResponse(
-//                 _request,
-//                 new ConnectResult { RemoteEndPoint = server.Info.GuessedPublicIPEndPoint });
-
-//             if (_responseToClient == null || _responseToServer == null)
-//             {
-//                 return;
-//             }
-//             _responseToClient.Build();
-//             _responseToServer.Build();
-//             // we send the information to each user
-//             var session = _client.Session as IUdpSession;
-//             LogWriter.Info($"Find two users: {client.Session.RemoteIPEndPoint}, {server.Session.RemoteIPEndPoint}, we send connect packet to them.");
-//             LogWriter.LogNetworkSending(server.Session.RemoteIPEndPoint, _responseToServer.SendingBuffer);
-//             LogWriter.LogNetworkSending(client.Session.RemoteIPEndPoint, _responseToClient.SendingBuffer);
-//             server.Session.Send(_responseToServer.SendingBuffer);
-//             client.Session.Send(_responseToClient.SendingBuffer);
-
-//             server.Info.RetryNatNegotiationTime++;
-//             client.Info.RetryNatNegotiationTime++;
-//         }
-//     }
-// }
+            if (_responseToNegotiatee == null || _responseToNegotiator == null)
+            {
+                return;
+            }
+            _responseToNegotiatee.Build();
+            _responseToNegotiator.Build();
+            // we send the information to each user
+            var session = _client.Session as IUdpSession;
+            session.Send(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
+            session.Send(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            // test whether this way can notify users
+            var udpClient = new UdpClient();
+            LogWriter.Info($"Find two users: {_negotiator.RemoteIPEndPoint}, {_negotiatee.RemoteIPEndPoint}, we send connect packet to them.");
+            LogWriter.LogNetworkSending(_negotiator.RemoteIPEndPoint, _responseToNegotiator.SendingBuffer);
+            LogWriter.LogNetworkSending(_negotiatee.RemoteIPEndPoint, _responseToNegotiatee.SendingBuffer);
+            udpClient.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.RemoteIPEndPoint);
+            udpClient.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.RemoteIPEndPoint);
+        }
+    }
+}
