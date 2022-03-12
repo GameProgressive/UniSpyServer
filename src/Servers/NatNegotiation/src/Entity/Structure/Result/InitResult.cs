@@ -8,6 +8,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
     {
         public IPEndPoint PrivateIPEndPoint { get; set; }
         public uint? Cookie { get; set; }
+        public NatPortType PortType { get; set; }
+        public byte? ClientIndex { get; set; }
         public InitResult()
         {
             PacketType = ResponseType.InitAck;

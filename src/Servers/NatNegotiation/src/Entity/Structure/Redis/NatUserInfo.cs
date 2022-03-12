@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [RedisKey]
-        public NatServerType? PortType { get; init; }
+        public NatPortType? PortType { get; init; }
         [RedisKey]
         public uint? Cookie { get; init; }
         [RedisKey]

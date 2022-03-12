@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            PortType = (NatServerType)RawRequest[13];
+            PortType = (NatPortType)RawRequest[13];
             ClientIndex = RawRequest[14];
             NatResult = (NatNegResult)RawRequest[15];
             NatType = (NatType)BitConverter.ToUInt16(RawRequest.Skip(17).Take(2).ToArray());

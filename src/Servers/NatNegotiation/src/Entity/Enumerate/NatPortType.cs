@@ -1,22 +1,22 @@
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
 {
-    public enum NatServerType : byte
+    public enum NatPortType : byte
     {
         /// <summary>
         /// Use game port for nat neg
         /// </summary>
-        Map1A,
+        GamePort,
         /// <summary>
         /// IP and Port both restricted
         /// </summary>
-        Map2,
+        Natneg1,
         /// <summary>
         /// IP not restricted
         /// </summary>
-        Map3,
+        Natneg2,
         /// <summary>
         /// Port not restriced
         /// </summary>
-        Map1B
+        Natneg3
     }
 }
