@@ -25,15 +25,28 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _result.PublicIPEndPoint = _client.Session.RemoteIPEndPoint;
             _result.PrivateIPEndPoint = _request.PrivateIPEndPoint;
             _client.Info.InitResults.Add((NatServerType)_request.PortType, _result);
+            _client.Info.Cookie = _request.Cookie;
+            _client.Info.ClientIndex = _request.ClientIndex;
         }
         protected override void ResponseConstruct()
         {
-            _response = new InitResponse(_request, _result);
+
         }
         protected override void Response()
         {
             base.Response();
+            _response = new InitResponse(_request, _result);
 
+            if (_client.Info.IsInitFinished)
+            {
+                var request = new ConnectRequest
+                {
+                    PortType = _request.PortType,
+                    Version = _request.Version,
+                    Cookie = _request.Cookie
+                };
+                new ConnectHandler(_client, request).Handle();
+            }
             // UpdateUserInfo();
             // var request = new ConnectRequest
             // {

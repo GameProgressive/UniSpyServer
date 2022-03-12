@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
@@ -24,10 +25,24 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; set; }
         public byte? ClientIndex { get; set; }
-        public bool IsGotConnectPacket { get; set; }
+        public bool? IsGotConnectPacket { get; set; }
+        public bool IsInitFinished => InitResults.Count == 4;
+        public int NegotiationRetryTimes { get; set; }
+        /// <summary>
+        /// If max retry time is reached, we use natneg server to transit game data
+        /// </summary>
+        public bool? IsTransitTraffic => NegotiationRetryTimes == 4;
+        /// <summary>
+        /// If all nat punch through not working, we enable natneg server as redirector
+        /// for transitting the network traffic for each user
+        /// </summary>
+        /// <value></value>
+        public Client TrafficTransitTarget { get; set; }
+        public IPEndPoint GuessedPublicIPEndPoint { get; set; }
         public ClientInfo()
         {
             InitResults = new ConcurrentDictionary<NatServerType, InitResult>();
+            NegotiationRetryTimes = 0;
         }
     }
 }

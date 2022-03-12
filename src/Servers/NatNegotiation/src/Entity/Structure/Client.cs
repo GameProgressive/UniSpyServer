@@ -1,5 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
 {
@@ -10,6 +11,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         public Client(ISession session) : base(session)
         {
             Info = new ClientInfo();
+        }
+        protected override void OnReceived(object buffer)
+        {
+            // the ultimate solution, we redirect the game traffic for both clients
+            if (Info.IsTransitTraffic == true && Info.TrafficTransitTarget is not null)
+            {
+                LogWriter.LogNetworkTransit(Session.RemoteIPEndPoint, Info.TrafficTransitTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+                Info.TrafficTransitTarget.Session.Send((byte[])buffer);
+            }
+            else
+            {
+                base.OnReceived(buffer);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
     public sealed class InitResult : CommonResultBase
     {
         public IPEndPoint PrivateIPEndPoint { get; set; }
+        public uint? Cookie { get; set; }
         public InitResult()
         {
             PacketType = ResponseType.InitAck;

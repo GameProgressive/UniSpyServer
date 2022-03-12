@@ -28,30 +28,30 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-        public static void DeterminIPandPortRestriction(Client client)
+        public static void DeterminIPandPortRestriction(ClientInfo info)
         {
-            foreach (var req in client.Info.InitResults.Values)
+            foreach (var req in info.InitResults.Values)
             {
-                if (client.Info.IsIPRestricted is null)
+                if (info.IsIPRestricted is null)
                 {
                     if (req.PrivateIPEndPoint.Address.Equals(req.PrivateIPEndPoint.Address))
                     {
-                        client.Info.IsIPRestricted = false;
+                        info.IsIPRestricted = false;
                     }
                     else
                     {
-                        client.Info.IsIPRestricted = true;
+                        info.IsIPRestricted = true;
                     }
                 }
-                if (client.Info.IsPortRestricted is null)
+                if (info.IsPortRestricted is null)
                 {
                     if (req.PrivateIPEndPoint.Port == req.PrivateIPEndPoint.Port)
                     {
-                        client.Info.IsPortRestricted = false;
+                        info.IsPortRestricted = false;
                     }
                     else
                     {
-                        client.Info.IsPortRestricted = true;
+                        info.IsPortRestricted = true;
                     }
                 }
             }
@@ -162,8 +162,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 info.PortMappingScheme = NatPortMappingScheme.Unrecognized;
             }
         }
-        public static void DetermineNextAddress(ClientInfo info, IPEndPoint nextPublicIPEndPoint, IPEndPoint nextPrivateIPEndPoint)
+        public static void DetermineNextAddress(ClientInfo info)
         {
+            IPEndPoint nextPublicIPEndPoint, nextPrivateIPEndPoint;
             IPEndPoint topEndPoint, bottomEndPoint, endPoint;
             var publicIP = BitConverter.ToInt32(info.InitResults[NatServerType.Map1A].PublicIPEndPoint.Address.GetAddressBytes());
             int i = -1;
@@ -205,6 +206,26 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     break;
             }
             nextPublicIPEndPoint = endPoint;
+
+            if (info.GuessedPublicIPEndPoint is null)
+            {
+                info.GuessedPublicIPEndPoint = nextPublicIPEndPoint;
+            }
+            else
+            {
+                if (nextPublicIPEndPoint.Address == info.GuessedPublicIPEndPoint.Address)
+                {
+                    info.GuessedPublicIPEndPoint = nextPrivateIPEndPoint;
+                    if (info.GuessedPublicIPEndPoint.Port == 0)
+                    {
+                        info.GuessedPublicIPEndPoint.Port = nextPublicIPEndPoint.Port;
+                    }
+                }
+                else
+                {
+                    info.GuessedPublicIPEndPoint = nextPublicIPEndPoint;
+                }
+            }
         }
 
 
