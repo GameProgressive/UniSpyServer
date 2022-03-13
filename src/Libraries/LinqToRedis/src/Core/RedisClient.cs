@@ -1,17 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using System.Net;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis.Linq;
-using System;
 
 namespace UniSpyServer.LinqToRedis
 {
     public class RedisClient<TValue> : IDisposable where TValue : RedisKeyValueObject
     {
         public TimeSpan? ExpireTime { get; private set; }
-        public ConnectionMultiplexer Multiplexer { get; private set; }
+        public IConnectionMultiplexer Multiplexer { get; private set; }
         public IDatabase Db { get; private set; }
         private EndPoint[] _endPoints => Multiplexer.GetEndPoints();
         private RedisQueryProvider<TValue> _provider;
@@ -24,6 +24,19 @@ namespace UniSpyServer.LinqToRedis
         public RedisClient(string connectionString, int db)
         {
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
+            Db = Multiplexer.GetDatabase(db);
+            _provider = new RedisQueryProvider<TValue>(this);
+            Values = new QueryableObject<TValue>(_provider);
+        }
+
+        /// <summary>
+        /// Use existing multiplexer for performance
+        /// </summary>
+        /// <param name="multiplexer"></param>
+        /// <param name="db"></param>
+        public RedisClient(IConnectionMultiplexer multiplexer, int db)
+        {
+            Multiplexer = multiplexer;
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
             Values = new QueryableObject<TValue>(_provider);

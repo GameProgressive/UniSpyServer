@@ -15,7 +15,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, IDisposable
     {
-        public static ConnectionMultiplexer Redis { get; set; }
+        public static IConnectionMultiplexer RedisConnection { get; set; }
         public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
         public ISession Session { get; private set; }
         public ICryptography Crypto { get; set; }
@@ -34,9 +34,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 
         static ClientBase()
         {
-            if (Redis is null)
+            if (RedisConnection is null)
             {
-                Redis = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
+                RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
             }
             if (ClientPool is null)
             {

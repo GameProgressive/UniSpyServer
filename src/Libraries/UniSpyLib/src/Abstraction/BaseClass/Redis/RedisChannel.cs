@@ -9,7 +9,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
         /// <summary>
         /// Get all subscriber in Redis
         /// </summary>
-        protected ISubscriber _subscriber => ClientBase.Redis.GetSubscriber();
+        protected ISubscriber _subscriber => ClientBase.RedisConnection.GetSubscriber();
         public RedisChannel(string redisChannelName)
         {
             _redisChannelName = redisChannelName;
