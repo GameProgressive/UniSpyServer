@@ -18,8 +18,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         public Client TrafficTransitTarget { get; set; }
         public uint? Cookie { get; set; }
         public NatClientIndex? ClientIndex { get; set; }
-        public bool IsInitFinish { get; set; }
-        public bool IsStartNegotiation { get; set; }
         public ClientInfo() : base()
         {
         }

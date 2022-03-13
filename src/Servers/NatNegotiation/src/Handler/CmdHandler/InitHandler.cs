@@ -78,14 +78,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         private void StartConnecting()
         {
-            // var request = new ConnectRequest
-            // {
-            //     PortType = _request.PortType,
-            //     Version = _request.Version,
-            //     Cookie = _request.Cookie,
-            //     ClientIndex = _request.ClientIndex
-            // };
-            // new ConnectHandler(_client, request).Handle();
+            var request = new ConnectRequest
+            {
+                PortType = _request.PortType,
+                Version = _request.Version,
+                Cookie = _request.Cookie,
+                ClientIndex = _request.ClientIndex
+            };
+            new ConnectHandler(_client, request).Handle();
         }
         private void UpdateUserInfo()
         {

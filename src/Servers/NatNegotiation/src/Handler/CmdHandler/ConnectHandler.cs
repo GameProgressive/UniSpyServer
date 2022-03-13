@@ -8,7 +8,7 @@ using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -29,10 +29,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
         private Dictionary<NatPortType, NatInitInfo> _matchedInfos;
-        private ConnectResponse _responseToNegotiator;
-        private ConnectResponse _responseToNegotiatee;
-        private NatInitInfo _negotiator;
-        private NatInitInfo _negotiatee;
+        private ConnectResponse _responseToClient;
+        private ConnectResponse _responseToServer;
+        private Client _gameClient;
+        private Client _gameServer;
         static ConnectHandler()
         {
             ConnectStatus = new Dictionary<uint, bool>();
@@ -60,12 +60,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 else
                 {
                     _matchedInfos = _redisClient.Values.Where(k =>
-                                                                k.Cookie == _request.Cookie
-                                                                && k.Version == _request.Version)
-                                                                .ToDictionary(k => (NatPortType)k.PortType, k => k);
+                                            k.Cookie == _request.Cookie
+                                            && k.Version == _request.Version)
+                                            .ToDictionary(k => (NatPortType)k.PortType, k => k);
                 }
             }
-            // if we can not find the matched user, we can not do the negotiation
 
             // because cookie is unique for each client we will only get 2 of keys
             if (_matchedInfos == null)
@@ -75,154 +74,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
         }
 
-        public static NatProperty DetermineNatPortMappingScheme(Dictionary<NatPortType, NatInitInfo> initResults)
-        {
-            NatType natType;
-            NatPromiscuty promiscuity;
-            NatPortMappingScheme map;
-            promiscuity = NatPromiscuty.PromiscuityNotApplicable;
-            if (initResults.Count != 4)
-            {
-                throw new NNException("We need 4 init results to determine the nat type.");
-            }
-            var isIPRestricted = false;
-            var isPortRestricted = false;
 
-            var gp = initResults[NatPortType.GP];
-            var nn1 = initResults[NatPortType.NN1];
-            var nn2 = initResults[NatPortType.NN2];
-            var nn3 = initResults[NatPortType.NN3];
-            if (!isIPRestricted && !isPortRestricted &&
-                (nn2.PublicIPEndPoint.Address == nn2.PrivateIPEndPoint.Address))
-            {
-                natType = NatType.NoNat;
-            }
-            else if (nn2.PublicIPEndPoint.Address == nn2.PrivateIPEndPoint.Address)
-            {
-                natType = NatType.FirewallOnly;
-            }
-            else
-            {
-                if (!isIPRestricted && !isPortRestricted && (Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1))
-                {
-                    natType = NatType.Symmetric;
-                    promiscuity = NatPromiscuty.Promiscuous;
-                }
-                else if (isIPRestricted && !isPortRestricted
-                && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
-                {
-                    natType = NatType.Symmetric;
-                    promiscuity = NatPromiscuty.PortPromiscuous;
-                }
-                else if (!isIPRestricted && isPortRestricted
-                    && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
-                {
-                    natType = NatType.Symmetric;
-                    promiscuity = NatPromiscuty.IpPromiscuous;
-                }
-                else if (isIPRestricted && isPortRestricted
-                    && Math.Abs(nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port) >= 1)
-                {
-                    natType = NatType.Symmetric;
-                    promiscuity = NatPromiscuty.NotPromiscuous;
-                }
-                else if (isPortRestricted)
-                {
-                    natType = NatType.PortRestrictedCone;
-                }
-                else if (isIPRestricted && !isPortRestricted)
-                {
-                    natType = NatType.AddressRestrictedCone;
-                }
-                else if (!isIPRestricted && !isPortRestricted)
-                {
-                    natType = NatType.FullCone;
-                }
-                else
-                {
-                    natType = NatType.Unknown;
-                }
-            }
-
-
-            bool hasGPPacket = gp.PublicIPEndPoint.Port != 0;
-            bool hasNN3 = nn3.PublicIPEndPoint.Port != 0;
-
-            if ((!hasGPPacket || gp.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port)
-            && (nn1.PublicIPEndPoint.Port == nn1.PrivateIPEndPoint.Port)
-            && (nn2.PublicIPEndPoint.Port == nn2.PublicIPEndPoint.Port)
-            && (!hasNN3 || nn3.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port))
-            {
-                map = NatPortMappingScheme.PrivateAsPublic;
-            }
-            else if (nn1.PublicIPEndPoint.Port == nn2.PublicIPEndPoint.Port
-            && (gp.PublicIPEndPoint.Port == 0 || nn2.PublicIPEndPoint.Port == nn3.PublicIPEndPoint.Port))
-            {
-                map = NatPortMappingScheme.ConsistentPort;
-            }
-            else if ((hasGPPacket
-            && (gp.PublicIPEndPoint.Port == gp.PrivateIPEndPoint.Port))
-            && nn2.PublicIPEndPoint.Port == 1)
-            {
-                map = NatPortMappingScheme.Mixed;
-            }
-            else if (nn2.PublicIPEndPoint.Port - nn1.PublicIPEndPoint.Port == 1)
-            {
-                map = NatPortMappingScheme.Incremental;
-            }
-            else
-            {
-                map = NatPortMappingScheme.Unrecognized;
-            }
-
-            return new NatProperty()
-            {
-                NatType = natType,
-                Promiscuity = promiscuity,
-                PortMapping = map
-            };
-        }
-        public static IPEndPoint GuessTargetAddress(NatProperty property, Dictionary<NatPortType, NatInitInfo> initResults, IPEndPoint natFailedEd = null)
-        {
-            // first try guess the target address
-            // if (natFailedEd is null)
-            // {
-            //     if(nat.Type == NatType.NoNat)
-            //     {
-            //         return 
-            //     }
-            // }
-            switch (property.NatType)
-            {
-                case NatType.NoNat:
-                case NatType.FirewallOnly:
-                    // private is public
-                    return initResults[NatPortType.NN1].PrivateIPEndPoint;
-                case NatType.FullCone:
-                    // public address can accept all incoming message from any IP
-                    return initResults[NatPortType.NN1].PublicIPEndPoint;
-                case NatType.AddressRestrictedCone:
-                case NatType.PortRestrictedCone:
-                // // client must send packet to the negotiation target, otherwise the netotiation target's traffic will not pass the NAT
-                // return initResults[NatPortType.NN1].PublicIPEndPoint;
-                case NatType.Symmetric:
-                    switch (property.PortMapping)
-                    {
-                        case NatPortMappingScheme.PrivateAsPublic:
-                            return initResults[NatPortType.NN1].PublicIPEndPoint;
-                        case NatPortMappingScheme.ConsistentPort:
-                            throw new NotImplementedException();
-                        case NatPortMappingScheme.Mixed:
-                        case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(initResults[NatPortType.NN1].PublicIPEndPoint.Address, initResults[NatPortType.NN1].PublicIPEndPoint.Port + 1);
-                        case NatPortMappingScheme.Unrecognized:
-                            break;
-                    }
-                    break;
-            }
-            return initResults[NatPortType.NN1].PublicIPEndPoint;
-
-        }
 
         protected override void DataOperation()
         {
@@ -234,51 +86,35 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 return;
             }
-
-            // foreach (var key in _matchedUsers)
-            // {
-            //     //find negitiators and negotiatees by a same cookie
-            //     var negotiators = _matchedUsers.Where(s => s.ClientIndex == NatClientIndex.GameClient);
-            //     var negotiatees = _matchedUsers.Where(s => s.ClientIndex == NatClientIndex.GameServer);
-
-            //     if (negotiators.Count() != 1 || negotiatees.Count() != 1)
-            //     {
-            //         LogWriter.ToLog("No match found, we keep waiting!");
-            //         return;
-            //     }
-
-            //     // we only can find one pair of the users
-            //     _negotiator = negotiators.First();
-            //     _negotiatee = negotiatees.First();
-
-            //     var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
-            //     _responseToNegotiator = new ConnectResponse(
-            //         request,
-            //         new ConnectResult { RemoteEndPoint = _negotiatee.PublicIPEndPoint });
-
-            //     _responseToNegotiatee = new ConnectResponse(
-            //         _request,
-            //         new ConnectResult { RemoteEndPoint = _negotiator.PublicIPEndPoint });
-            // }
+            var matchedUsers = Client.ClientPool.Values.Where(k => ((Client)k).Info.Cookie == _request.Cookie).ToList();
+            // assume the all init result is received, the both client must be in our ClientPool
+            _gameClient = (Client)Client.ClientPool.Values.First(k => ((Client)k).Info.Cookie == _client.Info.Cookie && ((Client)k).Info.ClientIndex == NatClientIndex.GameClient);
+            _gameServer = (Client)Client.ClientPool.Values.First(k => ((Client)k).Info.Cookie == _client.Info.Cookie && ((Client)k).Info.ClientIndex == NatClientIndex.GameServer);
+            if (_gameServer == null || _gameClient == null)
+            {
+                throw new NNException("Init is finished, but two clients are not found in the ClientPool");
+            }
 
 
-            // if (_responseToNegotiatee == null || _responseToNegotiator == null)
-            // {
-            //     return;
-            // }
-            // _responseToNegotiatee.Build();
-            // _responseToNegotiator.Build();
-            // // we send the information to each user
-            // var session = _client.Session as IUdpSession;
-            // session.Send(_negotiator.PublicIPEndPoint, _responseToNegotiator.SendingBuffer);
-            // session.Send(_negotiatee.PublicIPEndPoint, _responseToNegotiatee.SendingBuffer);
-            // // test whether this way can notify users
-            // var udpClient = new UdpClient();
-            // LogWriter.Info($"Find two users: {_negotiator.PublicIPEndPoint}, {_negotiatee.PublicIPEndPoint}, we send connect packet to them.");
-            // LogWriter.LogNetworkSending(_negotiator.PublicIPEndPoint, _responseToNegotiator.SendingBuffer);
-            // LogWriter.LogNetworkSending(_negotiatee.PublicIPEndPoint, _responseToNegotiatee.SendingBuffer);
-            // udpClient.SendAsync(_responseToNegotiator.SendingBuffer, _responseToNegotiator.SendingBuffer.Length, _negotiator.PublicIPEndPoint);
-            // udpClient.SendAsync(_responseToNegotiatee.SendingBuffer, _responseToNegotiatee.SendingBuffer.Length, _negotiatee.PublicIPEndPoint);
+            var clientInfos = _matchedInfos.Values.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
+            var serverInfos = _matchedInfos.Values.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
+            var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
+            var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
+            var guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
+            var guessedServerIPEndpoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+
+
+            var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
+            _responseToClient = new ConnectResponse(
+                request,
+                new ConnectResult { RemoteEndPoint = guessedServerIPEndpoint });
+
+            _responseToServer = new ConnectResponse(
+                _request,
+                new ConnectResult { RemoteEndPoint = guessedClientIPEndpoint });
+
+            _gameClient.Send(_responseToClient);
+            _gameServer.Send(_responseToServer);
         }
 
         private void UpdateRetryCount()
