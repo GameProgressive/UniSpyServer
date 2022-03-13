@@ -60,6 +60,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
+            if (_targetClient == null)
+            {
+                return;
+            }
             lock (_client.Info)
             {
                 if (_client.Info.IsTransitNetowrkTraffic != true)

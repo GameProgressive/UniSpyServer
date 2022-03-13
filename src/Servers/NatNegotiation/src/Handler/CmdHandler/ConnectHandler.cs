@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
-        private List<NatInitInfo> _matchedInfos;
+        private Dictionary<NatPortType, NatInitInfo> _matchedInfos;
         private ConnectResponse _responseToNegotiator;
         private ConnectResponse _responseToNegotiatee;
         private NatInitInfo _negotiator;
@@ -54,7 +54,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _matchedInfos = _redisClient.Values.Where(k =>
                                                                 k.Cookie == _request.Cookie
-                                                                && k.Version == _request.Version).ToList();
+                                                                && k.Version == _request.Version).ToDictionary(k => (NatPortType)k.PortType, k => k);
                 }
             }
             // if we can not find the matched user, we can not do the negotiation
@@ -67,7 +67,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
         }
 
-        public static NatProperty DetermineNatPortMappingScheme(List<NatInitInfo> initResults)
+        public static NatProperty DetermineNatPortMappingScheme(Dictionary<NatPortType, NatInitInfo> initResults)
         {
             NatType natType;
             NatPromiscuty promiscuity;
@@ -80,10 +80,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var isIPRestricted = false;
             var isPortRestricted = false;
 
-            var gp = initResults.First(k => k.PortType == NatPortType.GP);
-            var nn1 = initResults.First(k => k.PortType == NatPortType.NN1);
-            var nn2 = initResults.First(k => k.PortType == NatPortType.NN2);
-            var nn3 = initResults.First(k => k.PortType == NatPortType.NN3);
+            var gp = initResults[NatPortType.GP];
+            var nn1 = initResults[NatPortType.NN1];
+            var nn2 = initResults[NatPortType.NN2];
+            var nn3 = initResults[NatPortType.NN3];
             if (!isIPRestricted && !isPortRestricted &&
                 (nn2.PublicIPEndPoint.Address == nn2.PrivateIPEndPoint.Address))
             {
@@ -124,7 +124,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
                 else if (isIPRestricted && !isPortRestricted)
                 {
-                    natType = NatType.RestrictedCone;
+                    natType = NatType.AddressRestrictedCone;
                 }
                 else if (!isIPRestricted && !isPortRestricted)
                 {
@@ -169,12 +169,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             return new NatProperty()
             {
-                Type = natType,
+                NatType = natType,
                 Promiscuity = promiscuity,
                 PortMapping = map
             };
         }
-        public static IPEndPoint GuessTargetAddress(NatProperty nat, IPEndPoint natFailedEd = null)
+        public static IPEndPoint GuessTargetAddress(NatProperty property, Dictionary<NatPortType, NatInitInfo> initResults, IPEndPoint natFailedEd = null)
         {
             // first try guess the target address
             // if (natFailedEd is null)
@@ -184,8 +184,38 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             //         return 
             //     }
             // }
-            return null;
+            switch (property.NatType)
+            {
+                case NatType.NoNat:
+                case NatType.FirewallOnly:
+                    // private is public
+                    return initResults[NatPortType.NN1].PrivateIPEndPoint;
+                case NatType.FullCone:
+                    // public address can accept all incoming message from any IP
+                    return initResults[NatPortType.NN1].PublicIPEndPoint;
+                case NatType.AddressRestrictedCone:
+                case NatType.PortRestrictedCone:
+                // // client must send packet to the negotiation target, otherwise the netotiation target's traffic will not pass the NAT
+                // return initResults[NatPortType.NN1].PublicIPEndPoint;
+                case NatType.Symmetric:
+                    switch (property.PortMapping)
+                    {
+                        case NatPortMappingScheme.PrivateAsPublic:
+                            return initResults[NatPortType.NN1].PublicIPEndPoint;
+                        case NatPortMappingScheme.ConsistentPort:
+                            throw new NotImplementedException();
+                        case NatPortMappingScheme.Mixed:
+                        case NatPortMappingScheme.Incremental:
+                            return new IPEndPoint(initResults[NatPortType.NN1].PublicIPEndPoint.Address, initResults[NatPortType.NN1].PublicIPEndPoint.Port + 1);
+                        case NatPortMappingScheme.Unrecognized:
+                            break;
+                    }
+                    break;
+            }
+            return initResults[NatPortType.NN1].PublicIPEndPoint;
+
         }
+
         protected override void DataOperation()
         {
             if (_matchedInfos == null)
@@ -248,7 +278,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         private void UpdateRetryCount()
         {
-            foreach (var info in _matchedInfos)
+            foreach (var info in _matchedInfos.Values)
             {
                 info.RetryCount++;
                 _redisClient.SetValue(info);

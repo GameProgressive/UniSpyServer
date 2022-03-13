@@ -85,7 +85,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup
     }
     public class RedisClient : LinqToRedis.RedisClient<PeerGroupInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.ConnectionString, (int)DbNumber.PeerGroup)
+        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.PeerGroup)
         {
         }
     }

@@ -37,7 +37,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
     public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatInitInfo>
     {
         public RedisClient() :
-        base(ConfigManager.Config.Redis.ConnectionString,
+        base(Client.RedisConnection,
             (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatNeg)
         { }
     }

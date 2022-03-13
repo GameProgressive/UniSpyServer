@@ -3,6 +3,7 @@ using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -34,31 +35,66 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             base.Response();
 
             UpdateUserInfo();
-            var count = _redisClient.Values.Count(k => k.Cookie == _request.Cookie && k.ClientIndex == _request.ClientIndex);
+            // we check if all init packet is received
+            var count = _redisClient.Values.Count(k =>
+            k.Cookie == _request.Cookie
+            && k.ClientIndex == _request.ClientIndex
+            && k.Version == _request.Version);
+
             if (count == 4)
             {
+                lock (_client.Info)
+                {
+                    if (_client.Info.IsInitFinish == false)
+                    {
+                        _client.Info.IsInitFinish = true;
+                    }
+                    if (_client.Info.IsStartNegotiation == false)
+                    {
+                        _client.Info.IsStartNegotiation = true;
+                        // start send connect packet here
+                        Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
+                        // var request = new ConnectRequest
+                        // {
+                        //     PortType = _request.PortType,
+                        //     Version = _request.Version,
+                        //     Cookie = _request.Cookie,
+                        //     ClientIndex = _request.ClientIndex
+                        // };
+                        // new ConnectHandler(_client, request).Handle();
+                    }
+                }
                 // this means that the client is init already, we can detect the nat type
+                var dd = Client.ClientPool.Count;
                 return;
             }
 
-            var request = new ConnectRequest
-            {
-                PortType = _request.PortType,
-                Version = _request.Version,
-                Cookie = _request.Cookie,
-                ClientIndex = _request.ClientIndex
-            };
-            new ConnectHandler(_client, request).Handle();
+
         }
 
         private void UpdateUserInfo()
         {
-            _userInfo = _redisClient.Values.FirstOrDefault(
-                  k => k.ServerID == _client.Session.Server.ServerID
-                  & k.PortType == _request.PortType
-                  & k.Cookie == _request.Cookie);
+            // because the init packet is send with small interval,
+            // we do not need to refresh the expire time in redis
+            lock (_client.Info)
+            {
+                if (_client.Info.ClientIndex is null)
+                {
+                    _client.Info.ClientIndex = _request.ClientIndex;
+                }
+                if (_client.Info.Cookie is null)
+                {
+                    _client.Info.Cookie = _request.Cookie;
+                }
+            }
+
+            var count = _redisClient.Values.Count(k =>
+              k.ClientIndex == _request.ClientIndex
+              & k.Version == _request.Version
+              & k.PortType == _request.PortType
+              & k.Cookie == _request.Cookie);
             //TODO we get user infomation from redis
-            if (_userInfo == null)
+            if (count == 0)
             {
                 _userInfo = new NatInitInfo()
                 {
@@ -71,12 +107,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     ClientIndex = (NatClientIndex)_request.ClientIndex,
                     Version = _request.Version
                 };
+                _redisClient.SetValue(_userInfo);
             }
-            else
-            {
-                _userInfo.PublicIPEndPoint = _client.Session.RemoteIPEndPoint;
-            }
-            _redisClient.SetValue(_userInfo);
         }
     }
 }

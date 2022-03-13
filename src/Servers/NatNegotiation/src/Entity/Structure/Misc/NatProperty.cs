@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc
 {
     public record NatProperty
     {
-        public NatType Type { get; init; }
+        public NatType NatType { get; init; }
         public NatPromiscuty Promiscuity { get; init; }
         public NatPortMappingScheme PortMapping { get; init; }
         public NatProperty()

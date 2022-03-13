@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
     }
     public class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.ConnectionString, (int)DbNumber.GameServer)
+        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.GameServer)
         {
         }
     }
