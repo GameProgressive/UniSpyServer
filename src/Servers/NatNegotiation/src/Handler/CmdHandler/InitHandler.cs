@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
@@ -18,6 +19,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
         private NatInitInfo _userInfo;
+
         public InitHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new InitResult();
@@ -43,27 +45,30 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             if (count == 4)
             {
-                lock (_client.Info)
+                lock (ConnectHandler.ConnectStatus)
                 {
-                    if (_client.Info.IsInitFinish == false)
+                    if (!ConnectHandler.ConnectStatus.ContainsKey((uint)_request.Cookie))
                     {
-                        _client.Info.IsInitFinish = true;
-                    }
-                    if (_client.Info.IsStartNegotiation == false)
-                    {
-                        _client.Info.IsStartNegotiation = true;
-                        // start send connect packet here
+                        ConnectHandler.ConnectStatus.Add((uint)_request.Cookie, true);
                         Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
-                        // var request = new ConnectRequest
-                        // {
-                        //     PortType = _request.PortType,
-                        //     Version = _request.Version,
-                        //     Cookie = _request.Cookie,
-                        //     ClientIndex = _request.ClientIndex
-                        // };
-                        // new ConnectHandler(_client, request).Handle();
+                        // we start sending connect packet to both of the clients
+                        StartConnecting();
                     }
                 }
+                // lock (_client.Info)
+                // {
+                //     if (_client.Info.IsInitFinish == false)
+                //     {
+                //         _client.Info.IsInitFinish = true;
+                //     }
+                //     if (_client.Info.IsStartNegotiation == false)
+                //     {
+                //         _client.Info.IsStartNegotiation = true;
+                //         // start send connect packet here
+                //         Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
+
+                //     }
+                // }
                 // this means that the client is init already, we can detect the nat type
                 var dd = Client.ClientPool.Count;
                 return;
@@ -71,7 +76,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
 
         }
-
+        private void StartConnecting()
+        {
+            // var request = new ConnectRequest
+            // {
+            //     PortType = _request.PortType,
+            //     Version = _request.Version,
+            //     Cookie = _request.Cookie,
+            //     ClientIndex = _request.ClientIndex
+            // };
+            // new ConnectHandler(_client, request).Handle();
+        }
         private void UpdateUserInfo()
         {
             // because the init packet is send with small interval,

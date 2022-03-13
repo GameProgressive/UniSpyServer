@@ -21,6 +21,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     [HandlerContract(RequestType.Connect)]
     public sealed class ConnectHandler : CmdHandlerBase
     {
+        /// <summary>
+        /// Indicate the init is already finished
+        /// |cooie|isFinished|
+        /// </summary>
+        public static Dictionary<uint, bool> ConnectStatus;
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
         private Dictionary<NatPortType, NatInitInfo> _matchedInfos;
@@ -28,14 +33,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToNegotiatee;
         private NatInitInfo _negotiator;
         private NatInitInfo _negotiatee;
+        static ConnectHandler()
+        {
+            ConnectStatus = new Dictionary<uint, bool>();
+        }
         public ConnectHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ConnectResult();
         }
         protected override void RequestCheck()
         {
-
-
             var waitExpireTime = TimeSpan.FromSeconds(10);
             var startTime = DateTime.Now;
             // we wait for 10 mins to wait for the other client to init finish
@@ -54,7 +61,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _matchedInfos = _redisClient.Values.Where(k =>
                                                                 k.Cookie == _request.Cookie
-                                                                && k.Version == _request.Version).ToDictionary(k => (NatPortType)k.PortType, k => k);
+                                                                && k.Version == _request.Version)
+                                                                .ToDictionary(k => (NatPortType)k.PortType, k => k);
                 }
             }
             // if we can not find the matched user, we can not do the negotiation
@@ -226,9 +234,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 return;
             }
-
-
-
 
             // foreach (var key in _matchedUsers)
             // {
