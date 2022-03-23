@@ -30,8 +30,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _userInfo = _redisClient.Values.FirstOrDefault(
             k => k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
-            & k.PortType == _request.PortType
-            & k.Cookie == _request.Cookie);
+            && k.PortType == _request.PortType
+            && k.Cookie == _request.Cookie);
 
             if (_userInfo == null)
             {
@@ -41,8 +41,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             switch (_request.NatResult)
             {
                 case NatNegResult.Success:
-                    // natnegotiation successed we delete the negotiator
-                    _redisClient.DeleteKeyValue(_userInfo);
+                    // if there is a success p2p connection, we delete the init info in redis
+                    _redisClient.Values.Where(
+                            k => k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
+                            && k.Cookie == _request.Cookie).ToList()
+                            .ForEach(k => _redisClient.DeleteKeyValue(k));
                     break;
                 case NatNegResult.DeadBeatPartner:
                     LogWriter.Warning($"Parter of client {_client.Session.RemoteIPEndPoint} has no response.");
@@ -63,7 +66,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         {
                             PortType = portType,
                             Version = _request.Version,
-                            Cookie = _request.Cookie
+                            Cookie = _request.Cookie,
+                            IsUsingRelay = true
                         };
                         new ConnectHandler(_client, request).Handle();
                     }

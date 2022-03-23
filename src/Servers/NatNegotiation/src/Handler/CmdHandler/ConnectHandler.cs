@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Threading;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -39,14 +36,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
+            if (_request.IsUsingRelay)
+            {
+                LogWriter.Info("we are using relay solution");
+                return;
+            }
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Values.Where(k =>
                                         k.Cookie == _request.Cookie
                                      && k.Version == _request.Version).ToList();
             if (_matchedInfos?.Count != 8)
             {
-                // throw new NNException("No users match found we continue waitting.");
-                LogWriter.Info("No users match found we continue waitting.");
+                throw new NNException("No users match found we continue waitting.");
+                // LogWriter.Info("No users match found we continue waitting.");
             }
         }
 
@@ -54,6 +56,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
+
+
             var clientRemoteIPEnd = _matchedInfos.Where(k =>
                 k.ServerID == _client.Session.Server.ServerID
                 && k.ClientIndex == NatClientIndex.GameClient
@@ -67,20 +71,29 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
             _gameServer = (Client)Client.ClientPool[serverRemoteIPEnd];
 
-
             if (_gameServer == null || _gameClient == null)
             {
                 throw new NNException("Init is finished, but two clients are not found in the ClientPool");
             }
 
 
-            var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
-            var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
-            var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
-            var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
-            var guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
-            var guessedServerIPEndpoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+            IPEndPoint guessedClientIPEndpoint, guessedServerIPEndpoint;
 
+            if (_request.IsUsingRelay)
+            {
+                // we directly construct the relay server for game client and server client
+                guessedClientIPEndpoint = _client.Session.Server.Endpoint;
+                guessedServerIPEndpoint = _client.Session.Server.Endpoint;
+            }
+            else
+            {
+                var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
+                var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
+                var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
+                var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
+                guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
+                guessedServerIPEndpoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+            }
 
             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
             _responseToClient = new ConnectResponse(
