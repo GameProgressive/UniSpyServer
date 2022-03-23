@@ -41,11 +41,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var initCount = _redisClient.Values.Count(k =>
             k.Cookie == _request.Cookie
             && k.Version == _request.Version);
+            // if there are 8 init result in redis, Client.Pool must have the information of both client
+            // we just find it from Client.Pool based on the initResult when we are in ConnectHandler 
 
-            var userCount = Client.ClientPool.Values.Count(u =>
-            ((Client)u).Info.Cookie == _request.Cookie);
-
-            if (initCount == 8 && userCount == 2)
+            if (initCount == 8)
             {
                 lock (ConnectHandler.ConnectStatus)
                 {
@@ -72,6 +71,20 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         private void UpdateUserInfo()
         {
+            // we just update the information on redis
+            _userInfo = new NatInitInfo()
+            {
+                ServerID = _client.Session.Server.ServerID,
+                PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
+                PortType = _request.PortType,
+                Cookie = (uint)_request.Cookie,
+                PrivateIPEndPoint = _request.PrivateIPEndPoint,
+                UseGamePort = _request.UseGamePort,
+                ClientIndex = (NatClientIndex)_request.ClientIndex,
+                Version = _request.Version
+            };
+            _redisClient.SetValue(_userInfo);
+
             // because the init packet is send with small interval,
             // we do not need to refresh the expire time in redis
             lock (_client.Info)
@@ -84,28 +97,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _client.Info.Cookie = _request.Cookie;
                 }
-            }
-
-            var count = _redisClient.Values.Count(k =>
-              k.ClientIndex == _request.ClientIndex
-              & k.Version == _request.Version
-              & k.PortType == _request.PortType
-              & k.Cookie == _request.Cookie);
-            //TODO we get user infomation from redis
-            if (count == 0)
-            {
-                _userInfo = new NatInitInfo()
-                {
-                    ServerID = _client.Session.Server.ServerID,
-                    PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
-                    PortType = _request.PortType,
-                    Cookie = (uint)_request.Cookie,
-                    PrivateIPEndPoint = _request.PrivateIPEndPoint,
-                    UseGamePort = _request.UseGamePort,
-                    ClientIndex = (NatClientIndex)_request.ClientIndex,
-                    Version = _request.Version
-                };
-                _redisClient.SetValue(_userInfo);
             }
         }
     }

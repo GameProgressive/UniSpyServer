@@ -43,30 +43,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            var waitExpireTime = TimeSpan.FromSeconds(5);
-            var startTime = DateTime.Now;
-            // we wait for 10 mins to wait for the other client to init finish
-            while (DateTime.Now.Subtract(startTime) < waitExpireTime)
-            {
-                var recordsCount = _redisClient.Values.Count(k =>
-                        k.Cookie == _request.Cookie
-                        && k.Version == _request.Version);
-                if (recordsCount != 8)
-                {
-                    // wait for the other side to init
-                    Thread.Sleep(1000);
-                    continue;
-                }
-                else
-                {
-                    _matchedInfos = _redisClient.Values.Where(k =>
-                                            k.Cookie == _request.Cookie
-                                         && k.Version == _request.Version).ToList();
-                    break;
-                }
-            }
-
-            // because cookie is unique for each client we will only get 2 of keys
+            // !! the initResult count is valid in InitHandler, we do not need validate it again
+            _matchedInfos = _redisClient.Values.Where(k =>
+                                        k.Cookie == _request.Cookie
+                                     && k.Version == _request.Version).ToList();
             if (_matchedInfos == null)
             {
                 // throw new NNException("No users match found we continue waitting.");
@@ -78,20 +58,20 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            if (_matchedInfos == null)
-            {
-                return;
-            }
-            if (_matchedInfos.Count != 8)
-            {
-                return;
-            }
-            
+            var clientRemoteIPEnd = _matchedInfos.Where(k => 
+                k.ServerID == _client.Session.Server.ServerID 
+                && k.ClientIndex == NatClientIndex.GameClient 
+                && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
 
-            var matchedUsers = Client.ClientPool.Values.Where(k => ((Client)k).Info.Cookie == _request.Cookie).ToList();
-            // assume the all init result is received, the both client must be in our ClientPool
-            _gameClient = (Client)Client.ClientPool.Values.First(k => ((Client)k).Info.Cookie == _client.Info.Cookie && ((Client)k).Info.ClientIndex == NatClientIndex.GameClient);
-            _gameServer = (Client)Client.ClientPool.Values.First(k => ((Client)k).Info.Cookie == _client.Info.Cookie && ((Client)k).Info.ClientIndex == NatClientIndex.GameServer);
+            var serverRemoteIPEnd = _matchedInfos.Where(k => 
+                k.ServerID == _client.Session.Server.ServerID 
+                && k.ClientIndex == NatClientIndex.GameServer 
+                && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
+
+            _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
+            _gameServer = (Client)Client.ClientPool[serverRemoteIPEnd];
+
+
             if (_gameServer == null || _gameClient == null)
             {
                 throw new NNException("Init is finished, but two clients are not found in the ClientPool");
@@ -117,15 +97,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             _gameClient.Send(_responseToClient);
             _gameServer.Send(_responseToServer);
-        }
-
-        private void UpdateRetryCount()
-        {
-            foreach (var info in _matchedInfos)
-            {
-                info.RetryCount++;
-                _redisClient.SetValue(info);
-            }
         }
     }
 }
