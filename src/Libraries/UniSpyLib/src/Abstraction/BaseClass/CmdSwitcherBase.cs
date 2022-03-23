@@ -103,6 +103,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             if (!_requestMapping.ContainsKey(name))
             {
                 LogWriter.Error($"request {name} is not implemented");
+                throw new UniSpyException($"request {name} is not implemented");
             }
             _requests.Add((IRequest)Activator.CreateInstance(_requestMapping[name], rawRequest));
         }

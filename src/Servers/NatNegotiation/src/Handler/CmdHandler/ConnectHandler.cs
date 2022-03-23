@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         public static Dictionary<uint, bool> ConnectStatus;
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
-        private Dictionary<NatPortType, NatInitInfo> _matchedInfos;
+        private List<NatInitInfo> _matchedInfos;
         private ConnectResponse _responseToClient;
         private ConnectResponse _responseToServer;
         private Client _gameClient;
@@ -43,7 +43,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            var waitExpireTime = TimeSpan.FromSeconds(10);
+            var waitExpireTime = TimeSpan.FromSeconds(5);
             var startTime = DateTime.Now;
             // we wait for 10 mins to wait for the other client to init finish
             while (DateTime.Now.Subtract(startTime) < waitExpireTime)
@@ -61,8 +61,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _matchedInfos = _redisClient.Values.Where(k =>
                                             k.Cookie == _request.Cookie
-                                            && k.Version == _request.Version)
-                                            .ToDictionary(k => (NatPortType)k.PortType, k => k);
+                                         && k.Version == _request.Version).ToList();
+                    break;
                 }
             }
 
@@ -86,6 +86,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 return;
             }
+            
+
             var matchedUsers = Client.ClientPool.Values.Where(k => ((Client)k).Info.Cookie == _request.Cookie).ToList();
             // assume the all init result is received, the both client must be in our ClientPool
             _gameClient = (Client)Client.ClientPool.Values.First(k => ((Client)k).Info.Cookie == _client.Info.Cookie && ((Client)k).Info.ClientIndex == NatClientIndex.GameClient);
@@ -96,8 +98,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
 
 
-            var clientInfos = _matchedInfos.Values.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
-            var serverInfos = _matchedInfos.Values.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
+            var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
+            var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
             var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
             var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
             var guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
@@ -119,7 +121,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         private void UpdateRetryCount()
         {
-            foreach (var info in _matchedInfos.Values)
+            foreach (var info in _matchedInfos)
             {
                 info.RetryCount++;
                 _redisClient.SetValue(info);

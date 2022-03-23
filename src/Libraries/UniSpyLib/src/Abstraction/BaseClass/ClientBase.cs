@@ -228,7 +228,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = (byte[])response.SendingBuffer;
                 LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (byte[])buffer);
-
             }
 
             //Encrypt the response if Crypto is not null

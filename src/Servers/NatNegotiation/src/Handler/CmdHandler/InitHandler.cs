@@ -38,12 +38,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             UpdateUserInfo();
             // we check if all init packet is received
-            var count = _redisClient.Values.Count(k =>
+            var initCount = _redisClient.Values.Count(k =>
             k.Cookie == _request.Cookie
-            && k.ClientIndex == _request.ClientIndex
             && k.Version == _request.Version);
 
-            if (count == 4)
+            var userCount = Client.ClientPool.Values.Count(u =>
+            ((Client)u).Info.Cookie == _request.Cookie);
+
+            if (initCount == 8 && userCount == 2)
             {
                 lock (ConnectHandler.ConnectStatus)
                 {
@@ -55,26 +57,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         StartConnecting();
                     }
                 }
-                // lock (_client.Info)
-                // {
-                //     if (_client.Info.IsInitFinish == false)
-                //     {
-                //         _client.Info.IsInitFinish = true;
-                //     }
-                //     if (_client.Info.IsStartNegotiation == false)
-                //     {
-                //         _client.Info.IsStartNegotiation = true;
-                //         // start send connect packet here
-                //         Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
-
-                //     }
-                // }
-                // this means that the client is init already, we can detect the nat type
-                var dd = Client.ClientPool.Count;
-                return;
             }
-
-
         }
         private void StartConnecting()
         {
