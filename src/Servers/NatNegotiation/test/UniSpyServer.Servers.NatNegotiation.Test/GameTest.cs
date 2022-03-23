@@ -60,7 +60,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
 
             foreach (var request in serverRequests)
             {
-                var switcher = new CmdSwitcher(client, request);
+                var switcher = new CmdSwitcher(server, request);
                 switcher.Switch();
             }
         }
@@ -111,7 +111,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
 
             foreach (var request in serverRequests)
             {
-                var switcher = new CmdSwitcher(client, request);
+                var switcher = new CmdSwitcher(server, request);
                 switcher.Switch();
             }
         }

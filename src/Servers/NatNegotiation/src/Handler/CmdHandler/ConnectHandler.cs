@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         /// Indicate the init is already finished
         /// |cooie|isFinished|
         /// </summary>
-        public static Dictionary<uint, bool> ConnectStatus;
+        // public static Dictionary<uint, bool> ConnectStatus;
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
         private List<NatInitInfo> _matchedInfos;
@@ -33,10 +33,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToServer;
         private Client _gameClient;
         private Client _gameServer;
-        static ConnectHandler()
-        {
-            ConnectStatus = new Dictionary<uint, bool>();
-        }
         public ConnectHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ConnectResult();
@@ -47,7 +43,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _matchedInfos = _redisClient.Values.Where(k =>
                                         k.Cookie == _request.Cookie
                                      && k.Version == _request.Version).ToList();
-            if (_matchedInfos == null)
+            if (_matchedInfos?.Count != 8)
             {
                 // throw new NNException("No users match found we continue waitting.");
                 LogWriter.Info("No users match found we continue waitting.");
@@ -58,14 +54,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var clientRemoteIPEnd = _matchedInfos.Where(k => 
-                k.ServerID == _client.Session.Server.ServerID 
-                && k.ClientIndex == NatClientIndex.GameClient 
+            var clientRemoteIPEnd = _matchedInfos.Where(k =>
+                k.ServerID == _client.Session.Server.ServerID
+                && k.ClientIndex == NatClientIndex.GameClient
                 && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
 
-            var serverRemoteIPEnd = _matchedInfos.Where(k => 
-                k.ServerID == _client.Session.Server.ServerID 
-                && k.ClientIndex == NatClientIndex.GameServer 
+            var serverRemoteIPEnd = _matchedInfos.Where(k =>
+                k.ServerID == _client.Session.Server.ServerID
+                && k.ClientIndex == NatClientIndex.GameServer
                 && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
 
             _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];

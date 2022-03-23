@@ -46,16 +46,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             if (initCount == 8)
             {
-                lock (ConnectHandler.ConnectStatus)
-                {
-                    if (!ConnectHandler.ConnectStatus.ContainsKey((uint)_request.Cookie))
-                    {
-                        ConnectHandler.ConnectStatus.Add((uint)_request.Cookie, true);
-                        Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
-                        // we start sending connect packet to both of the clients
-                        StartConnecting();
-                    }
-                }
+                // lock (ConnectHandler.ConnectStatus)
+                // {
+                //     if (!ConnectHandler.ConnectStatus.ContainsKey((uint)_request.Cookie))
+                //     {
+                //         ConnectHandler.ConnectStatus.Add((uint)_request.Cookie, true);
+                //         Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
+                // we start sending connect packet to both of the clients
+                //         StartConnecting();
+                //     }
+                // }
+                StartConnecting();
             }
         }
         private void StartConnecting()
