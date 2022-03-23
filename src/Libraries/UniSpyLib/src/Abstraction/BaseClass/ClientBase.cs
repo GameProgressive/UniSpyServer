@@ -185,9 +185,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private void CheckExpiredClient()
         {
             // we calculate the interval between last packe and current time
-            if (((UdpSession)Session).SessionExistedTime > _expireTimeInterval)
+            if (((IUdpSession)Session).SessionExistedTime > _expireTimeInterval)
             {
-                ClientPool.Remove(((UdpSession)Session).RemoteIPEndPoint);
+                ClientPool.Remove(((IUdpSession)Session).RemoteIPEndPoint);
                 Dispose();
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Events;
 
@@ -29,6 +30,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     /// </summary>
     public interface IUdpSession : ISession
     {
+        public TimeSpan SessionExistedTime { get; }
         void Send(IPEndPoint endPoint, byte[] response);
         void Send(IPEndPoint endPoint, string response);
     }

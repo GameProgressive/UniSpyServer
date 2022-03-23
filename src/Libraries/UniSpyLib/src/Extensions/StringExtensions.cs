@@ -76,6 +76,22 @@ namespace UniSpyServer.UniSpyLib.Extensions
             Array.Copy(message, tempMessage, length);
             return ReplaceUnreadableCharToHex(tempMessage);
         }
+        public static string FormatBytes(byte[] buffer)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (i == buffer.Length - 1)
+                {
+                    sb.Append("0x" + buffer[i].ToString("X2"));
+                }
+                else
+                {
+                    sb.Append("0x" + buffer[i].ToString("X2") + ",");
+                }
+            }
+            return sb.ToString();
+        }
         public static string ReplaceUnreadableCharToHex(byte[] buffer)
         {
             StringBuilder temp = new StringBuilder();
