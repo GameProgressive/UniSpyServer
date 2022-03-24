@@ -1,9 +1,11 @@
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
 {
@@ -17,6 +19,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             _soapEnvelop = new SoapXElement(SoapXElement.AuthSoapHeader);
             _soapBody = new XElement(SoapXElement.SoapNamespace + "Body");
         }
+
         protected void BuildContext()
         {
             // find the node with command name
@@ -34,18 +37,23 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "uniquenick", _result.UniqueNick));
 
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "cdkeyhash", _result.CdKeyHash));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.PeerKeyModulus));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.PeerKeyPublicExponent));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.ModulusHexStr));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.ExponentHexStr));
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "serverdata", ClientInfo.ServerData));
             using (var md5 = MD5.Create())
             {
                 var bytes = Encoding.ASCII.GetBytes(context.Value);
                 var hash = md5.ComputeHash(bytes);
                 var hashString = hash.ToString().Replace("-", string.Empty);
-                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", ClientInfo.SignaturePreFix + hashString));
+                var enc = EncSignature(hashString);
+                var reversedSigStr = enc.ToByteArray().Reverse().ToArray().ToString().Replace("-", string.Empty);
+                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", reversedSigStr));
             }
             context.Add(certElement);
             context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivateExponent));
         }
+
+        public static BigInteger EncSignature(string hashString) => EncSignature(BigInteger.Parse(ClientInfo.SignaturePreFix + hashString, System.Globalization.NumberStyles.AllowHexSpecifier));
+        public static BigInteger EncSignature(BigInteger data) => BigInteger.ModPow(data, ClientInfo.PeerKeyPrivateExponent, ClientInfo.PeerKeyModulus);
     }
 }

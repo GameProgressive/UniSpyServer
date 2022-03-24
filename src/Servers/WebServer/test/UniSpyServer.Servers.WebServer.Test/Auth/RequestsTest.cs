@@ -1,6 +1,8 @@
 using System;
 using System.Numerics;
+using UniSpyServer.Servers.WebServer.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Extensions;
 using Xunit;
 
 namespace UniSpyServer.Servers.WebServer.Test.Auth
@@ -75,6 +77,9 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             var signature = enc.ToString("x");
             var bytes = enc.ToByteArray(isBigEndian: true);
             var gamespyFormat = BitConverter.ToString(bytes).Replace("-", string.Empty);
+
+            var sigbytes = "0001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF003020300C06082A864886F70D020505000410".FromHexStringToBytes();
+
         }
     }
 }

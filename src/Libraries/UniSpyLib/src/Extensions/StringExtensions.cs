@@ -176,5 +176,20 @@ namespace UniSpyServer.UniSpyLib.Extensions
             }
             return true;
         }
+        /// <summary>
+        /// Get byte array from a hexstring
+        /// the hexstring is like "01020304"
+        /// two char as a byte
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] FromHexStringToBytes(this string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+              .Where(x => x % 2 == 0)
+              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+              .ToArray();
+        }
+
+
     }
 }
