@@ -88,17 +88,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             // because the init packet is send with small interval,
             // we do not need to refresh the expire time in redis
-            lock (_client.Info)
+            // lock (_client.Info)
+            // {
+            if (_client.Info.ClientIndex is null)
             {
-                if (_client.Info.ClientIndex is null)
-                {
-                    _client.Info.ClientIndex = _request.ClientIndex;
-                }
-                if (_client.Info.Cookie is null)
-                {
-                    _client.Info.Cookie = _request.Cookie;
-                }
+                _client.Info.ClientIndex = _request.ClientIndex;
             }
+            if (_client.Info.Cookie is null)
+            {
+                _client.Info.Cookie = _request.Cookie;
+            }
+            // }
         }
     }
 }

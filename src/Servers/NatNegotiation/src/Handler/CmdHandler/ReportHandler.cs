@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             _userInfo = _redisClient.Values.FirstOrDefault(
-            k => k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
+            k => k.ClientIndex == _request.ClientIndex
             && k.PortType == _request.PortType
             && k.Cookie == _request.Cookie);
 
