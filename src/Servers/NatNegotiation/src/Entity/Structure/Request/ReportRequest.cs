@@ -26,7 +26,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             NatResult = (NatNegResult)RawRequest[15];
             NatType = (RequestType)BitConverter.ToUInt16(RawRequest.Skip(17).Take(2).ToArray());
             MappingScheme = (NatPortMappingScheme)BitConverter.ToInt32(RawRequest.Skip(19).Take(4).ToArray());
-            GameName = UniSpyEncoding.GetString(RawRequest.Skip(23).ToArray());
+            var endIndex = Array.FindIndex(RawRequest.Skip(23).ToArray(), 1, k => k == 0);
+            GameName = UniSpyEncoding.GetString(RawRequest.Skip(23).Take(endIndex).ToArray());
         }
     }
 }
