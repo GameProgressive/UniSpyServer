@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
@@ -33,12 +35,17 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
 
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "cdkeyhash", _result.CdKeyHash));
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.PeerKeyModulus));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.PeerKeyExponent));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.PeerKeyPublicExponent));
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "serverdata", ClientInfo.ServerData));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", ClientInfo.Signature));
-
+            using (var md5 = MD5.Create())
+            {
+                var bytes = Encoding.ASCII.GetBytes(context.Value);
+                var hash = md5.ComputeHash(bytes);
+                var hashString = hash.ToString().Replace("-", string.Empty);
+                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", ClientInfo.SignaturePreFix + hashString));
+            }
             context.Add(certElement);
-            context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
+            context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivateExponent));
         }
     }
 }
