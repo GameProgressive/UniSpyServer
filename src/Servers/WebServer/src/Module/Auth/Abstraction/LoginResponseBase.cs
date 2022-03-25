@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -44,9 +45,9 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             {
                 var bytes = Encoding.ASCII.GetBytes(context.Value);
                 var hash = md5.ComputeHash(bytes);
-                var hashString = hash.ToString().Replace("-", string.Empty);
+                var hashString = BitConverter.ToString(hash).Replace("-", string.Empty);
                 var enc = EncSignature(hashString);
-                var reversedSigStr = enc.ToByteArray().Reverse().ToArray().ToString().Replace("-", string.Empty);
+                var reversedSigStr = BitConverter.ToString(enc.ToByteArray().Reverse().ToArray()).Replace("-", string.Empty);
                 certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", reversedSigStr));
             }
             context.Add(certElement);
