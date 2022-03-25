@@ -1,12 +1,12 @@
+using System.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using System.Linq;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
@@ -42,8 +42,9 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                 // _result.ProfileNick = data.sp.Uniquenick;
                 _result.UserId = 1;
                 _result.ProfileId = 1;
-                _result.CdKeyHash = "asdfasdfasdf";
+                _result.CdKeyHash = "00000000000000s";
                 _result.ProfileNick = "xiaojiuwo";
+                _result.UniqueNick = "xiaojiuwo";
             }
         }
         protected override void ResponseConstruct()

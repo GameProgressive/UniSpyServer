@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -36,26 +37,38 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "expiretime", ClientInfo.ExpireTime));
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "profilenick", _result.ProfileNick));
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "uniquenick", _result.UniqueNick));
-
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "cdkeyhash", _result.CdKeyHash));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.ModulusHexStr));
-            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.ExponentHexStr));
+
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.PeerKeyPublicModulus));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.PeerKeyPrivate));
+
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "serverdata", ClientInfo.ServerData));
             using (var md5 = MD5.Create())
             {
-                var bytes = Encoding.ASCII.GetBytes(certElement.Value);
-                var hash = md5.ComputeHash(bytes);
+                var dataToHash = new List<byte>();
+                dataToHash.AddRange(BitConverter.GetBytes(_result.Length));
+                dataToHash.AddRange(BitConverter.GetBytes(_request.Version));
+                dataToHash.AddRange(BitConverter.GetBytes(_request.PartnerCode));
+                dataToHash.AddRange(BitConverter.GetBytes(_request.NamespaceId));
+                dataToHash.AddRange(BitConverter.GetBytes(_result.UserId));
+                dataToHash.AddRange(BitConverter.GetBytes(_result.ProfileId));
+                dataToHash.AddRange(BitConverter.GetBytes(ClientInfo.ExpireTime));
+                dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.ProfileNick));
+                dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.UniqueNick));
+                dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.CdKeyHash));
+
+                // if these 2 value be 0 we do not need to add them to the list
+                // dataToHash.AddRange(ClientInfo.PeerKeyPublicModulus.FromHexStringToBytes());
+                // dataToHash.AddRange(ClientInfo.PeerKeyPrivate.FromHexStringToBytes());
+
+                // server data should be convert to bytes[128] then added to list
+                dataToHash.AddRange(ClientInfo.ServerData.FromHexStringToBytes());
+                var hash = md5.ComputeHash(dataToHash.ToArray());
                 var hashString = BitConverter.ToString(hash).Replace("-", string.Empty);
-                var signature = ClientInfo.SignaturePreFix + hashString;
-                // var enc = EncSignature(hashString);
-                // var reversedSigStr = BitConverter.ToString(enc.ToByteArray().Reverse().ToArray()).Replace("-", string.Empty);
-                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", signature));
+                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", ClientInfo.SignaturePreFix + hashString));
             }
             context.Add(certElement);
-            context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivateExponent));
+            context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
         }
-
-        public static BigInteger EncSignature(string hashString) => EncSignature(BigInteger.Parse(ClientInfo.SignaturePreFix + hashString, System.Globalization.NumberStyles.AllowHexSpecifier));
-        public static BigInteger EncSignature(BigInteger data) => BigInteger.ModPow(data, ClientInfo.PeerKeyPrivateExponent, ClientInfo.PeerKeyModulus);
     }
 }
