@@ -43,12 +43,13 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
             certElement.Add(new XElement(SoapXElement.AuthNamespace + "serverdata", ClientInfo.ServerData));
             using (var md5 = MD5.Create())
             {
-                var bytes = Encoding.ASCII.GetBytes(context.Value);
+                var bytes = Encoding.ASCII.GetBytes(certElement.Value);
                 var hash = md5.ComputeHash(bytes);
                 var hashString = BitConverter.ToString(hash).Replace("-", string.Empty);
-                var enc = EncSignature(hashString);
-                var reversedSigStr = BitConverter.ToString(enc.ToByteArray().Reverse().ToArray()).Replace("-", string.Empty);
-                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", reversedSigStr));
+                var signature = ClientInfo.SignaturePreFix + hashString;
+                // var enc = EncSignature(hashString);
+                // var reversedSigStr = BitConverter.ToString(enc.ToByteArray().Reverse().ToArray()).Replace("-", string.Empty);
+                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", signature));
             }
             context.Add(certElement);
             context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivateExponent));
