@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.Servers.WebServer.Handler;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Extensions;
 using Xunit;
@@ -16,7 +18,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginProfile()
         {
-            var request = new LoginProfileRequest(RawRequests.LoginProfile);
+            var request = new LoginProfileWithGameIdRequest(RawRequests.LoginProfile);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.GameId.ToString());
@@ -30,7 +32,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginPs3Cert()
         {
-            var request = new LoginPs3CertRequest(RawRequests.LoginPs3Cert);
+            var request = new LoginPs3CertWithGameIdRequest(RawRequests.LoginPs3Cert);
             request.Parse();
             Assert.Equal(0, request.GameId);
             Assert.Equal(0, request.PartnerCode);
@@ -39,7 +41,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginRemoteAuth()
         {
-            var request = new LoginRemoteAuthRequest(RawRequests.LoginRemoteAuth);
+            var request = new LoginRemoteAuthWithGameIdRequest(RawRequests.LoginRemoteAuth);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.GameId.ToString());
@@ -59,7 +61,6 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             Assert.Equal("spyguy", request.Uniquenick);
             Assert.Equal("XXXXXXXXXXX", request.Password);
         }
-
 
         [Fact]
         public void CustomRSATest()

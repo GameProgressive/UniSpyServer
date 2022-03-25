@@ -1,13 +1,13 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginRemoteAuthWithGameId")]
+    [RequestContract("LoginRemoteAuth")]
     public class LoginRemoteAuthRequest : LoginRequestBase
     {
-        public int? GameId { get; private set; }
         public string AuthToken { get; private set; }
         public string Challenge { get; private set; }
         public LoginRemoteAuthRequest(string rawRequest) : base(rawRequest)
@@ -17,9 +17,15 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            var gameid = _contentElement.Descendants().FirstOrDefault(p => p.Name.LocalName == "gameid").Value;
-            GameId = int.Parse(gameid);
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "authtoken"))
+            {
+                throw new AuthException("authtoken is missing from the request");
+            }
             AuthToken = _contentElement.Descendants().First(p => p.Name.LocalName == "authtoken").Value;
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "challenge"))
+            {
+                throw new AuthException("challenge is missing from the request");
+            }
             Challenge = _contentElement.Descendants().First(p => p.Name.LocalName == "challenge").Value;
         }
     }

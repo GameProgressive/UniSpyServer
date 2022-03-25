@@ -10,14 +10,7 @@ namespace UniSpyServer.Servers.WebServer.Handler
 {
     public class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {
-        private static Dictionary<string, string> _oldRequestMapping = new Dictionary<string, string>{
-            { "LoginRemoteAuth", "LoginRemoteAuthWithGameId" },
-            { "LoginPs3Cert", "LoginPs3CertWithGameId" },
-            { "LoginUniqueNick", "LoginUniqueNickWithGameId" },
-            {"LoginProfile", "LoginProfileWithGameId"}
-        };
-
-        private new NetCoreServer.HttpRequest _rawRequest => (NetCoreServer.HttpRequest)base._rawRequest;
+        private new IHttpRequest _rawRequest => (IHttpRequest)base._rawRequest;
         public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
@@ -31,11 +24,6 @@ namespace UniSpyServer.Servers.WebServer.Handler
             // }
             dynamic xelements = XElement.Parse(_rawRequest.Body);
             var name = xelements.FirstNode.FirstNode.Name.LocalName;
-            // convert old api to new api name
-            if (_oldRequestMapping.ContainsKey(name))
-            {
-                name = _oldRequestMapping[name];
-            }
             DeserializeRequest(name, _rawRequest.Body);
         }
     }

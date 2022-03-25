@@ -28,7 +28,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
         protected override void OnConnected() => OnConnect();
         protected override void OnDisconnected() => OnDisconnect();
 
-        protected override void OnReceivedRequest(HttpRequest request) => OnReceive(request);
+        protected override void OnReceivedRequest(NetCoreServer.HttpRequest request) => OnReceive(request);
         void ISession.Send(string response)
         {
             // Response.MakeOkResponse();

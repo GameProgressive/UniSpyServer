@@ -1,23 +1,17 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
 using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginProfile")]
-    public class LoginProfileHandler : CmdHandlerBase
+    [HandlerContract("LoginProfileWithGameId")]
+    public sealed class LoginProfileWithGameIdHandler : LoginProfileHandler
     {
-        protected new LoginProfileRequest _request => (LoginProfileRequest)base._request;
-        protected new LoginResultBase _result { get => (LoginResultBase)base._result; set => base._result = value; }
-        public LoginProfileHandler(IClient client, IRequest request) : base(client, request)
+        private new LoginProfileWithGameIdRequest _request => (LoginProfileWithGameIdRequest)base._request;
+        public LoginProfileWithGameIdHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new LoginProfileResult();
         }
         protected override void DataOperation()
         {
@@ -31,6 +25,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                              && sp.PartnerId == _request.PartnerCode
                              && sp.NamespaceId == _request.NamespaceId
                              && u.Email == _request.Email
+                             // we do not care about game id now
                              select new { u, p, sp };
                 if (result.Count() != 1)
                 {
@@ -43,10 +38,6 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                 // currently we set this to uniquenick
                 _result.ProfileNick = data.sp.Uniquenick;
             }
-        }
-        protected override void ResponseConstruct()
-        {
-            _response = new LoginProfileResponse(_request, _result);
         }
     }
 }

@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginRemoteAuthWithGameId")]
+    [HandlerContract("LoginRemoteAuth")]
     public class LoginRemoteAuthHandler : CmdHandlerBase
     {
         protected new LoginRemoteAuthRequest _request => (LoginRemoteAuthRequest)base._request;

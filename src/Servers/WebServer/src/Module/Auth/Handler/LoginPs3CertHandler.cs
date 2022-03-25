@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginPs3CertWithGameId")]
+    [HandlerContract("LoginPs3Cert")]
     public class LoginPs3CertHandler : CmdHandlerBase
     {
         protected new LoginPs3CertRequest _request => (LoginPs3CertRequest)base._request;

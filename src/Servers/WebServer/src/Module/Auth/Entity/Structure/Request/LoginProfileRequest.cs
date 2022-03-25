@@ -1,14 +1,13 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginProfileWithGameId")]
+    [RequestContract("LoginProfile")]
     public class LoginProfileRequest : LoginRequestBase
     {
-        public int GameId { get; private set; }
-
         public string Email { get; private set; }
         public string Uniquenick { get; private set; }
         public string CDKey { get; private set; }
@@ -20,11 +19,28 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            var gameid = _contentElement.Descendants().FirstOrDefault(p => p.Name.LocalName == "gameid").Value;
-            GameId = int.Parse(gameid);
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "email"))
+            {
+                throw new AuthException("email is missing from the request");
+            }
             Email = _contentElement.Descendants().First(p => p.Name.LocalName == "email").Value;
+            
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "uniquenick"))
+            {
+                throw new AuthException("uniquenick is missing from the request");
+            }
             Uniquenick = _contentElement.Descendants().First(p => p.Name.LocalName == "uniquenick").Value;
+
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "cdkey"))
+            {
+                throw new AuthException("cdkey is missing from the request");
+            }
             CDKey = _contentElement.Descendants().First(p => p.Name.LocalName == "cdkey").Value;
+            
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "password"))
+            {
+                throw new AuthException("password is missing from the request");
+            }
             Password = _contentElement.Descendants().First(p => p.Name.LocalName == "password").Value;
         }
     }

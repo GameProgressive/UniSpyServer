@@ -1,23 +1,17 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginUniqueNick")]
-    public class LoginUniqueNickHandler : CmdHandlerBase
+    [HandlerContract("LoginUniqueNickWithGameId")]
+    public sealed class LoginUniqueNickWithGameIdHandler : LoginUniqueNickHandler
     {
-        protected new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;
-        protected new LoginResultBase _result { get => (LoginResultBase)base._result; set => base._result = value; }
-        public LoginUniqueNickHandler(IClient client, IRequest request) : base(client, request)
+        private new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;
+        public LoginUniqueNickWithGameIdHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new LoginUniqueNickResult();
         }
         protected override void DataOperation()
         {
@@ -41,10 +35,6 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                 // currently we set this to uniquenick
                 _result.ProfileNick = data.sp.Uniquenick;
             }
-        }
-        protected override void ResponseConstruct()
-        {
-            _response = new LoginUniqueNickResponse(_request, _result);
         }
     }
 }
