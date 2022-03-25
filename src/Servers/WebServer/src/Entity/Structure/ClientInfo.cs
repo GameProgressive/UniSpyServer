@@ -1,12 +1,15 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Numerics;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure
 {
+    /// <summary>
+    /// Note!! the public exponent on SDK must set to 000001
+    /// because the multiple inverse of 1 is 1
+    /// data^1 mod n = data
+    /// enc^1 mod n = data^1^1 mod n = data 
+    /// I do not want let our server to compute the rsa encryption so I made this trick
+    /// I am very glad that my major is cryptography during my master degree
+    /// </summary>
     public class ClientInfo : ClientInfoBase
     {
         /// <summary>
