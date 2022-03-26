@@ -22,6 +22,10 @@ namespace UniSpyServer.Servers.WebServer.Handler
             // {
             //     throw new UniSpyException($"Invalid http path access:{_rawRequest.Url}");
             // }
+            if (_rawRequest.Body == "")
+            {
+                return;
+            }
             dynamic xelements = XElement.Parse(_rawRequest.Body);
             var name = xelements.FirstNode.FirstNode.Name.LocalName;
             DeserializeRequest(name, _rawRequest.Body);

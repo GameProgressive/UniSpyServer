@@ -36,10 +36,13 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
             string tempUserData = data.UserData;
 
             // Login types NickEmail and AuthToken don't use partnerID append
-            if (data?.PartnerID != (int)GPPartnerID.Gamespy
-             && data?.LoginType != LoginType.AuthToken)
+            if (data.PartnerID != null)
             {
-                tempUserData = $@"{data.PartnerID}@{data.UserData}";
+                if (data?.PartnerID != (int)GPPartnerID.Gamespy
+                             && data?.LoginType != LoginType.AuthToken)
+                {
+                    tempUserData = $@"{data.PartnerID}@{data.UserData}";
+                }
             }
 
             // Generate our response string
