@@ -111,13 +111,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             foreach (var request in _requests)
             {
-                var requestName = request.GetType().GetCustomAttribute<RequestContractBase>().Name;
-                if (!_handlerMapping.ContainsKey(requestName))
+                var name = request.GetType().GetCustomAttribute<RequestContractBase>().Name;
+                if (!_handlerMapping.ContainsKey(name))
                 {
-                    LogWriter.Error($"Handler {requestName} is not implemented");
-
+                    LogWriter.Error($"handler {name} is not implemented");
+                    throw new UniSpyException($"handler {name} is not implemented");
                 }
-                var handler = (IHandler)Activator.CreateInstance(_handlerMapping[requestName], _client, request);
+                var handler = (IHandler)Activator.CreateInstance(_handlerMapping[name], _client, request);
 
                 if (handler == null)
                 {

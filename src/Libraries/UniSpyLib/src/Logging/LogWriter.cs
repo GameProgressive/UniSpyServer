@@ -73,7 +73,7 @@ namespace UniSpyServer.UniSpyLib.Logging
         public static void LogNetworkSending(IPEndPoint endPoint, string buffer) => LogNetworkTraffic("Send", endPoint, buffer);
         public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic("Recv", endPoint, buffer);
         public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer) => LogNetworkTraffic("Recv", endPoint, buffer);
-        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic(type, endPoint, StringExtensions.FormatBytes(buffer));
+        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic(type, endPoint, StringExtensions.ReplaceUnreadableCharToHex(buffer));
         private static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer) => Debug($"[{type}] [{endPoint}] {buffer}");
         public static void LogNetworkSpam(IPEndPoint endPoint) => Error($"[Spam] [{endPoint}] spam we ignored!");
         public static void LogNetworkTransit(IPEndPoint sender, IPEndPoint receiver, byte[] buffer) => Verbose($"[{sender}]=>[{receiver}] {buffer}");

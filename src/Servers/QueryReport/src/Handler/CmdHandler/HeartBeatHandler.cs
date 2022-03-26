@@ -23,6 +23,13 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            //parse the endpoint information into result class
+            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+
+            if (_request.PlayerData.Count == 0)
+            {
+                return;
+            }
             CheckSpamGameServer();
 
             switch (_request.ReportType)
@@ -45,8 +52,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             }
 
             UpdateGameServerByState();
-            //parse the endpoint information into result class
-            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+
         }
 
         private void UpdateGameServerByState()
@@ -68,6 +74,10 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
         private void CheckSpamGameServer()
         {
+            if (_request.PlayerData.Count == 0)
+            {
+
+            }
             //make sure one ip address create one server on each game
             //we check if the database have multiple game server if it contains
             _gameServerInfo = _redisClient.Values.FirstOrDefault(x =>

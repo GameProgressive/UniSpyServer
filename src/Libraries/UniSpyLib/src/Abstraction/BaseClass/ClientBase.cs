@@ -148,7 +148,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     _timer.Start();
                     goto default;
                 case NetworkConnectionType.Http:
-                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((NetCoreServer.HttpRequest)buffer).Body);
+                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
                     break;
                 case NetworkConnectionType.Test:
                     goto default;

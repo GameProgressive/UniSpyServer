@@ -1,5 +1,5 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using System.Text;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
@@ -36,11 +36,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
             string tempUserData = data.UserData;
 
             // Login types NickEmail and AuthToken don't use partnerID append
-            if (data.PartnerID != null
-                && data.PartnerID != (int)GPPartnerID.Gamespy 
-                && data.LoginType != LoginType.NickEmail
-                && data.LoginType != LoginType.AuthToken
-            )
+            if (data?.PartnerID != (int)GPPartnerID.Gamespy
+             && data?.LoginType != LoginType.AuthToken)
             {
                 tempUserData = $@"{data.PartnerID}@{data.UserData}";
             }

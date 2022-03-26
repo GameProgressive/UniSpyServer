@@ -1,6 +1,7 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
@@ -38,6 +39,12 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
                 // currently we set this to uniquenick
                 _result.ProfileNick = data.sp.Uniquenick;
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            // base.ResponseConstruct();
+            _response = new LoginProfileWithGameIdResponse(_request, _result);
         }
     }
 }

@@ -3,25 +3,34 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 {
-    public class HttpRequest : NetCoreServer.HttpRequest, IHttpRequest
+    public class HttpRequest : IHttpRequest
     {
         public Uri Uri => new Uri(Url);
 
-        public object CommandName => throw new NotImplementedException();
+        public byte[] BodyBytes { get; private set; }
 
-        public object RawRequest => throw new NotImplementedException();
+        public string Body { get; private set; }
 
-        public HttpRequest()
+        public long Cookies { get; private set; }
+
+        public long Headers { get; private set; }
+
+        public string Protocol { get; private set; }
+
+        public string Url { get; private set; }
+
+        public string Method { get; private set; }
+
+
+        public HttpRequest(NetCoreServer.HttpRequest request)
         {
-        }
-
-        public HttpRequest(string method, string url, string protocol = "HTTP/1.1") : base(method, url, protocol)
-        {
-        }
-
-        public void Parse()
-        {
-            throw new NotImplementedException();
+            Url = request.Url;
+            BodyBytes = request.BodyBytes;
+            Body = request.Body;
+            Cookies = request.Cookies;
+            Headers = request.Headers;
+            Protocol = request.Protocol;
+            Method = request.Method;
         }
     }
 }

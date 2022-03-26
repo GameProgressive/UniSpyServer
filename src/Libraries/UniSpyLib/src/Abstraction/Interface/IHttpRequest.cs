@@ -1,6 +1,6 @@
 namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
-    public interface IHttpRequest : IRequest
+    public interface IHttpRequest
     {
         byte[] BodyBytes { get; }
         string Body { get; }
@@ -9,8 +9,5 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
         string Protocol { get; }
         string Url { get; }
         string Method { get; }
-        bool IsErrorSet { get; }
-        bool IsEmpty { get; }
-        long BodyLength { get; }
     }
 }
