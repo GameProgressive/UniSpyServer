@@ -8,14 +8,15 @@ namespace UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Request
     [RequestContract("GetStoreAvailability")]
     public class GetStoreAvailabilityRequest : RequestBase
     {
-        public int GameId { get; private set; }
-        public int Version { get; private set; }
-        public string Region { get; private set; }
-        public string AccessToken { get; private set; }
         public GetStoreAvailabilityRequest(string rawRequest) : base(rawRequest)
         {
         }
 
+        public int GameId { get; private set; }
+        public int Version { get; private set; }
+        public string Region { get; private set; }
+        public string AccessToken { get; private set; }
+        
         public override void Parse()
         {
             base.Parse();
