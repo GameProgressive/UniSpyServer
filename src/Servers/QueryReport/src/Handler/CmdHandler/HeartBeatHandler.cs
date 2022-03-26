@@ -27,11 +27,11 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //parse the endpoint information into result class
             _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
 
-            if (_request.PlayerData?.Count == 0 || _request.PlayerData == null)
-            {
-                LogWriter.Info("Ignore incorrect implementation of heartbeat");
-                return;
-            }
+            // if (_request.PlayerData?.Count == 0 || _request.PlayerData == null)
+            // {
+            //     LogWriter.Info("Ignore incorrect implementation of heartbeat");
+            //     return;
+            // }
             CheckSpamGameServer();
 
             switch (_request.ReportType)
