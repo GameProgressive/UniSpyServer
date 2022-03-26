@@ -12,6 +12,9 @@ namespace UniSpyServer.Servers.WebServer.Entity.Constant
             "/AuthService/AuthService.asmx",
             "/SakeStorageServer/StorageServer.asmx",
             "/CompetitionService/CompetitionService.asmx",
+            "/commerce/1.1/catalogservice.svc",
+            "/commerce/1.1/accountservice.svc",
+            "/commerce/1.1/purchaseservice.svc",
             "/RaceService/NintendoRacingService.asmx",
         };
     }
