@@ -9,5 +9,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
         string Protocol { get; }
         string Url { get; }
         string Method { get; }
+        bool KeepAlive { get; }
     }
 }

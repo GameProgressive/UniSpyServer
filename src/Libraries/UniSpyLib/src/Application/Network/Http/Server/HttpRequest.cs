@@ -21,6 +21,8 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 
         public string Method { get; private set; }
 
+        public bool KeepAlive { get; private set; }
+
 
         public HttpRequest(NetCoreServer.HttpRequest request)
         {
@@ -31,6 +33,14 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
             Headers = request.Headers;
             Protocol = request.Protocol;
             Method = request.Method;
+            KeepAlive = false;
+
+            for (var m = 0; m < request.Headers; m++)
+            {
+                var k = request.Header(m);
+                if (k.Item1 == "Connection" && k.Item2.ToLower() == "keep-alive")
+                    KeepAlive = true;
+            }
         }
     }
 }

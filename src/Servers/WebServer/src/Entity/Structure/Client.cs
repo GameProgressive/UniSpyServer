@@ -9,5 +9,13 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
         {
             Info = new ClientInfo();
         }
+
+        protected override void OnReceived(object buffer) 
+        {
+            base.OnReceived(buffer);
+            var rq = (IHttpRequest)buffer;
+            if (!rq.KeepAlive)
+                ((IHttpSession)Session).Disconnect();
+        }
     }
 }
