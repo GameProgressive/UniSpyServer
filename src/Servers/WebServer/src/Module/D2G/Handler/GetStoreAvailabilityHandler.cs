@@ -1,6 +1,6 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
-using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Result;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Result;
 using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
