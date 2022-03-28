@@ -20,7 +20,7 @@ SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';
 
 
 
-CREATE DATABASE IF NOT EXISTS `unispy` DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE IF NOT EXISTS `unispy` DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;
 USE `unispy`;
 
 
@@ -37,7 +37,7 @@ CREATE TABLE `addrequests` (
   UNIQUE KEY `id` (`addrequestid`),
   KEY `profileid` (`profileid`),
   CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Friend request.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Friend request.';
 
 
 CREATE TABLE `blocked` (
@@ -49,7 +49,7 @@ CREATE TABLE `blocked` (
   UNIQUE KEY `id` (`blockid`),
   KEY `profileid` (`profileid`),
   CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Block list.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Block list.';
 
 
 CREATE TABLE `friends` (
@@ -61,7 +61,7 @@ CREATE TABLE `friends` (
   UNIQUE KEY `id` (`friendid`),
   KEY `profileid` (`profileid`),
   CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Friend list.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Friend list.';
 
 
 CREATE TABLE `games` (
@@ -72,7 +72,7 @@ CREATE TABLE `games` (
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`gameid`),
   UNIQUE KEY `id` (`gameid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Game list.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Game list.';
 
 
 CREATE TABLE `grouplist` (
@@ -83,7 +83,7 @@ CREATE TABLE `grouplist` (
   UNIQUE KEY `id` (`groupid`),
   KEY `gameid` (`gameid`),
   CONSTRAINT `FK_grouplist_games` FOREIGN KEY (`gameid`) REFERENCES `games` (`gameid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Old games use grouplist to create their game rooms.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Old games use grouplist to create their game rooms.';
 
 
 CREATE TABLE `messages` (
@@ -96,7 +96,7 @@ CREATE TABLE `messages` (
   `message` varchar(200) NOT NULL,
   PRIMARY KEY (`messageid`),
   UNIQUE KEY `id` (`messageid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Friend messages.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='Friend messages.';
 
 
 CREATE TABLE `partner` (
@@ -104,7 +104,7 @@ CREATE TABLE `partner` (
   `partnername` varchar(50) NOT NULL,
   PRIMARY KEY (`partnerid`),
   UNIQUE KEY `id` (`partnerid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Partner information, these information are used for authentication and login.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Partner information, these information are used for authentication and login.';
 
 
 CREATE TABLE `profiles` (
@@ -155,7 +155,7 @@ CREATE TABLE `profiles` (
   UNIQUE KEY `id` (`profileid`),
   KEY `userid` (`userid`),
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='User profiles.';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='User profiles.';
 
 
 CREATE TABLE `pstorage` (
@@ -168,7 +168,7 @@ CREATE TABLE `pstorage` (
   UNIQUE KEY `id` (`pstorageid`),
   KEY `profileid` (`profileid`),
   CONSTRAINT `FK_pstorage_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Old games use pstorage to store game data.';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Old games use pstorage to store game data.';
 
 
 CREATE TABLE `sakestorage` (
@@ -176,7 +176,7 @@ CREATE TABLE `sakestorage` (
   `tableid` varchar(50) NOT NULL,
   PRIMARY KEY (`sakestorageid`),
   UNIQUE KEY `sakestorageid` (`sakestorageid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Sake storage system.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Sake storage system.';
 
 
 CREATE TABLE `subprofiles` (
@@ -195,7 +195,7 @@ CREATE TABLE `subprofiles` (
   UNIQUE KEY `id` (`subprofileid`),
   KEY `profileid` (`profileid`),
   CONSTRAINT `FK_subprofiles_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='User subprofiles.';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='User subprofiles.';
 
 
 CREATE TABLE `users` (
@@ -210,7 +210,7 @@ CREATE TABLE `users` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userid`),
   UNIQUE KEY `id` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='User account information.';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='User account information.';
 
 
 
@@ -431,7 +431,7 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `disabled
 	(249,'dtrsc',NULL,'Dirt Track Racing: Sprint Cars',0),
 	(250,'chspades',NULL,'Championship Spades',0),
 	(251,'chhearts',NULL,'Championship Hearts',0),
-	(252,'stef1',NULL,'Star Trek: Voyager – Elite Force',0),
+	(252,'stef1',NULL,'Star Trek: Voyager â€“ Elite Force',0),
 	(253,'orb',NULL,'O.R.B: Off-World Resource Base',0),
 	(254,'nolf',NULL,'No One Lives Forever',0),
 	(255,'dtr',NULL,'Dirt Track Racing',0),
@@ -497,7 +497,7 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `disabled
 	(316,'rfts',NULL,'Reach For The Stars',0),
 	(317,'cheuchre',NULL,'Championship Euchre',0),
 	(318,'links2001',NULL,'Links 2001',0),
-	(319,'stefdemo',NULL,'Star Trek: Voyager – Elite Force Demo',0),
+	(319,'stefdemo',NULL,'Star Trek: Voyager â€“ Elite Force Demo',0),
 	(320,'4x4evodemo',NULL,'4x4 Evolution Demo',0),
 	(321,'mcmaniadmo',NULL,'Motocross Mania Demo',0),
 	(322,'gamevoice',NULL,'MS Game Voice',0),
@@ -529,11 +529,11 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `disabled
 	(348,'waterloo',NULL,'Waterloo',0),
 	(349,'falloutbosd',NULL,'Fallout Tactics',0),
 	(350,'kohandemo',NULL,'Kohan Demo',0),
-	(351,'exploeman',NULL,'Explöman',0),
+	(351,'exploeman',NULL,'ExplÃ¶man',0),
 	(352,'segarally2',NULL,'Sega Rally 2',0),
-	(353,'explomän',NULL,'Explomän',0),
+	(353,'explomÃ¤n',NULL,'ExplomÃ¤n',0),
 	(354,'streetjam',NULL,'Ultra Wheels Street Jam',0),
-	(355,'explomaen',NULL,'Explomän',0),
+	(355,'explomaen',NULL,'ExplomÃ¤n',0),
 	(356,'bcommander',NULL,'Star Trek: Bridge Commander',0),
 	(357,'mrwtour',NULL,'Motoracer World Tour',0),
 	(358,'wordzap',NULL,'WordZap',0),
@@ -971,7 +971,7 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `disabled
 	(820,'apocalypticadi',NULL,'Apocalyptica',0),
 	(821,'robotech2',NULL,'Robotech 2 (PS2)',0),
 	(822,'spacepodd',NULL,'Space Pod Demo',0),
-	(823,'ccgenzh',NULL,'Command & Conquer: Generals – Zero Hour',0),
+	(823,'ccgenzh',NULL,'Command & Conquer: Generals â€“ Zero Hour',0),
 	(824,'ronb',NULL,'Rise of Nations Beta',0),
 	(825,'ronbam',NULL,'Rise of Nations Beta (Automatch)',0),
 	(826,'commandos3',NULL,'Commandos 3',0),
@@ -2876,8 +2876,8 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `disabled
 	(2829,'blahblahtest',NULL,'Just another test for masterid',0),
 	(2830,'blahtest',NULL,'Just another test for masterid',0),
 	(2831,'blahmasterid',NULL,'Just another test for masterid',0),
-	(2832,'bädmasterid',NULL,'',0),
-	(2833,'explomäntest',NULL,'blah',0),
+	(2832,'bÃ¤dmasterid',NULL,'',0),
+	(2833,'explomÃ¤ntest',NULL,'blah',0),
 	(2836,'3dpicrosseuds',NULL,'3D Picross (EU) (DS)',0),
 	(2837,'gticsfestwii',NULL,'GTI Club Supermini Festa (Wii)',0),
 	(2838,'narutor3euwii',NULL,'Naruto Shippuden: Clash of Ninja Revolution 3 EU (Wii)',0),
@@ -3198,7 +3198,7 @@ INSERT INTO `grouplist` (`groupid`, `gameid`, `roomname`) VALUES
 	(302,523,'{03}Admiral'),
 	(303,22,'{03}Capture the Flag'),
 	(304,22,'{04}Deathmatch'),
-	(305,292,'Français'),
+	(305,292,'FranÃ§ais'),
 	(306,292,'Deutsch'),
 	(307,292,'KIS'),
 	(308,292,'KAG'),
