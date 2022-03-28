@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
-using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Result;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Request
 {
