@@ -19,9 +19,13 @@ namespace UniSpyServer.Servers.WebServer.Module.D2G.Handler
 
         protected override void DataOperation()
         {
-            // TODO
             _result.Status = 0;
-            _result.StoreResult = 100;
+            _result.StoreResult = 50;
+            /*
+             *  10 -> Store is available
+             *  50 -> ERROR
+             *  100 -> Cannot download DLC information from backend server
+             */
         }
 
         protected override void ResponseConstruct()
