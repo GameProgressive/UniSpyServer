@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Handler;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Extensions;
 using Xunit;
 
@@ -80,7 +84,84 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             var gamespyFormat = BitConverter.ToString(bytes).Replace("-", string.Empty);
 
             var sigbytes = "0001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF003020300C06082A864886F70D020505000410".FromHexStringToBytes();
+        }
 
+
+        [Fact]
+        public void XmlTest()
+        {
+            // XNamespace SoapEnvelopNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
+
+            // var env = new XElement(SoapEnvelopNamespace + "Envelope",
+            //                          new XAttribute(XNamespace.Xmlns + "SOAP-ENV", SoapEnvelopNamespace),
+            //                          new XAttribute(XNamespace.Xmlns + "SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/"),
+            //                          new XAttribute(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance"),
+            //                          new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"));
+            // XNamespace SakeNamespace = "http://gamespy.net/sake";
+            // var attri = new XAttribute(XNamespace.Xmlns + "ns1", SakeNamespace);
+            // env.Add(attri);
+            // env.SetAttributeValue(XNamespace.Xmlns + "ns1", SakeNamespace);
+            // var soapEnvelop = new XElement(SoapXElement.Direct2GameSoapHeader);
+            // soapEnvelop.Add(new XElement(SoapXElement.SoapEnvelopNamespace + "Body"));
+            // var nn1 = soapEnvelop.NextNode;
+
+            // var _soapBody = new XElement(SoapXElement.SoapEnvelopNamespace + "Body");
+            // _soapBody.Add(new XElement(SoapXElement.Direct2GameNamespace + "GetStoreAvailabilityResult"));
+
+            // var e = _soapBody.Elements().First();
+            // e.Add(new XElement(SoapXElement.Direct2GameNamespace + "status"));
+            // e.Elements().First().Add(new XElement(SoapXElement.Direct2GameNamespace + "code", 0));
+            // e.Add(new XElement(SoapXElement.Direct2GameNamespace + "storestatusid", 1));
+
+            // _soapBody.Add(e);
+            // soapEnvelop.Add(e);
+            // soapEnvelop.DescendantNodes();
+            // soapEnvelop.Descendants();
+            // soapEnvelop.Nodes();
+            // var nn = soapEnvelop.NextNode;
+            // var auth = new AuthSoapEnvelope();
+            // auth.Add("heello", "hello");
+            // auth.Add("bitch", "bitch");
+            // // var nn2 = soapEnvelop.FirstNode.NextNode.FirstNode;
+            // // Given
+            // var authEle = new AuthXElement("certificate");
+            // authEle.Add("authtoken", "XXXXXXXXXXX");
+            // authEle.Add("challenge", "XXXXXXXXXXX");
+            // authEle.Add("email", "xiaojiuwo@gamspy.com");
+            // authEle.Add("password", "XXXXXXXXXXX");
+            // authEle.Add("partnercode", "0");
+            // authEle.Add("uniquenick", "xiaojiuwo");
+            // auth.Add("element", authEle.InnerElement);
+
+            // When
+            var _content = new AuthSoapEnvelope();
+            _content.Add("responseCode", 0);
+            _content.Add("certificate");
+            _content.Add("length", 0);
+            _content.Add("version", 2);
+            _content.Add("partnercode", 2);
+            _content.Add("namespaceid", 4);
+            _content.Add("userid", 1);
+            _content.Add("profileid", 1);
+            _content.Add("expretime", ClientInfo.ExpireTime);
+            _content.Add("uniqueid", "xiaojiuwo");
+            _content.ChangeToElement("Body");
+            _content.Add("values");
+            _content.Add("value1", 1);
+            _content.Add("value2", 2);
+            _content.Add("value3", 3);
+            // Then
+        }
+
+        [Fact]
+        public void TestName()
+        {
+            // Given
+            var resp = new GetPurchaseHistoryResponse(null, null);
+            resp.Build();
+            // When
+
+            // Then
         }
     }
 }

@@ -16,10 +16,10 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response
         }
         public override void Build()
         {
-            _soapBody.Add(new XElement(SoapXElement.AuthNamespace + "LoginPs3CertResult"));
-            _soapBody.Add(new XElement(SoapXElement.AuthNamespace + "responseCode", _result.ResponseCode));
-            _soapBody.Add(new XElement(SoapXElement.AuthNamespace + "authToken", _result.AuthToken));
-            _soapBody.Add(new XElement(SoapXElement.AuthNamespace + "partnerChallenge", _result.PartnerChallenge));
+            _content.Add("LoginPs3CertResult");
+            _content.Add("responseCode", _result.ResponseCode);
+            _content.Add("authToken", _result.AuthToken);
+            _content.Add("partnerChallenge", _result.PartnerChallenge);
             base.Build();
         }
     }
