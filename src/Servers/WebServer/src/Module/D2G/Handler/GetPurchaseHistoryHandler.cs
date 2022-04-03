@@ -1,10 +1,15 @@
-﻿using UniSpyServer.Servers.WebServer.Abstraction;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
+namespace UniSpyServer.Servers.WebServer.Module.D2G.Handler
 {
     [HandlerContract("GetPurchaseHistory")]
     internal class GetPurchaseHistoryHandler : CmdHandlerBase

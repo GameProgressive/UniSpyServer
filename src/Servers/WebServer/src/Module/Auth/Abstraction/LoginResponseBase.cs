@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
@@ -17,26 +18,31 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
         protected new LoginRequestBase _request => (LoginRequestBase)base._request;
         protected LoginResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
+            _soapEnvelop = new SoapXElement(SoapXElement.AuthSoapHeader);
+            _soapBody = new XElement(SoapXElement.SoapNamespace + "Body");
         }
 
         protected void BuildContext()
         {
-            _content.Add("responseCode", _result.ResponseCode);
-            _content.Add("certificate");
-            _content.Add("length", _result.Length);
-            _content.Add("version", _request.Version);
-            _content.Add("partnercode", _request.PartnerCode);
-            _content.Add("namespaceid", _request.NamespaceId);
-            _content.Add("userid", _result.UserId);
-            _content.Add("profileid", _result.ProfileId);
-            _content.Add("expiretime", ClientInfo.ExpireTime);
-            _content.Add("profilenick", _result.ProfileNick);
-            _content.Add("uniquenick", _result.UniqueNick);
-            _content.Add("cdkeyhash", _result.CdKeyHash);
-            _content.Add("peerkeymodulus", ClientInfo.PeerKeyPublicModulus);
-            _content.Add("peerkeyexponent", ClientInfo.PeerKeyPrivate);
-            _content.Add("serverdata", ClientInfo.ServerData);
+            // find the node with command name
+            var context = _soapBody.Elements().First();
+            context.Add(new XElement(SoapXElement.AuthNamespace + "responseCode", _result.ResponseCode));
+            var certElement = new XElement(SoapXElement.AuthNamespace + "certificate");
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "length", _result.Length));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "version", _request.Version));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "partnercode", _request.PartnerCode));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "namespaceid", _request.NamespaceId));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "userid", _result.UserId));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "profileid", _result.ProfileId));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "expiretime", ClientInfo.ExpireTime));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "profilenick", _result.ProfileNick));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "uniquenick", _result.UniqueNick));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "cdkeyhash", _result.CdKeyHash));
 
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeymodulus", ClientInfo.PeerKeyPublicModulus));
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyexponent", ClientInfo.PeerKeyPrivate));
+
+            certElement.Add(new XElement(SoapXElement.AuthNamespace + "serverdata", ClientInfo.ServerData));
             using (var md5 = MD5.Create())
             {
                 var dataToHash = new List<byte>();
@@ -59,10 +65,10 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
                 dataToHash.AddRange(ClientInfo.ServerData.FromHexStringToBytes());
                 var hash = md5.ComputeHash(dataToHash.ToArray());
                 var hashString = BitConverter.ToString(hash).Replace("-", string.Empty);
-                _content.Add("signature", ClientInfo.SignaturePreFix + hashString);
+                certElement.Add(new XElement(SoapXElement.AuthNamespace + "signature", ClientInfo.SignaturePreFix + hashString));
             }
-            _content.BackToParentElement();
-            _content.Add("peerkeyprivate", ClientInfo.PeerKeyPrivate);
+            context.Add(certElement);
+            context.Add(new XElement(SoapXElement.AuthNamespace + "peerkeyprivate", ClientInfo.PeerKeyPrivate));
         }
     }
 }

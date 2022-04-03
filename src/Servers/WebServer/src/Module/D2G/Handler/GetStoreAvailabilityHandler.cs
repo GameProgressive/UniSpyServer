@@ -1,16 +1,17 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Contract;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Result;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Result;
+using UniSpyServer.Servers.WebServer.Module.D2G.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
+namespace UniSpyServer.Servers.WebServer.Module.D2G.Handler
 {
     [HandlerContract("GetStoreAvailability")]
     public class GetStoreAvailabilityHandler : CmdHandlerBase
     {
         protected new GetStoreAvailabilityRequest _request => (GetStoreAvailabilityRequest)base._request;
         protected new GetStoreAvailabilityResult _result = new GetStoreAvailabilityResult();
+
         public GetStoreAvailabilityHandler(IClient client, IRequest request) : base(client, request)
         {
 
@@ -18,7 +19,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
 
         protected override void DataOperation()
         {
-            _result.StatusCode = 0;
+            _result.Status = 0;
             _result.StoreResult = 50;
             /*
              *  10 -> Store is available

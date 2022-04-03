@@ -1,7 +1,6 @@
 using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
-using UniSpyServer.Servers.WebServer.Module.Sake.Entity.Structure;
 
 namespace UniSpyServer.Servers.WebServer.Module.Sake.Abstraction
 {
@@ -9,7 +8,8 @@ namespace UniSpyServer.Servers.WebServer.Module.Sake.Abstraction
     {
         public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
-            _content = new SakeSoapEnvelope();
+            _soapEnvelop = new SoapXElement(SoapXElement.SakeSoapHeader);
+            _soapBody = new XElement(SoapXElement.SakeNamespace + "Body");
         }
     }
 }

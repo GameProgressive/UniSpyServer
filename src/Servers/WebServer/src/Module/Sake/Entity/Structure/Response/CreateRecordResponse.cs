@@ -15,13 +15,13 @@ namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Response
         }
         public override void Build()
         {
-            _content.Add("CreateRecordResult");
-            _content.Add("tableid", _result.TableID);
-            _content.Add("recordid", _result.RecordID);
+            _soapBody.Add(new XElement(SoapXElement.SoapNamespace + "CreateRecord"));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "tableid", _result.TableID));
+            _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "recordid", _result.RecordID));
 
             foreach (var field in _result.Fields)
             {
-                _content.Add("fileds", field);
+                _soapBody.Add(new XElement(SoapXElement.SakeNamespace + "fileds", field));
             }
             base.Build();
         }
