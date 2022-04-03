@@ -7,14 +7,22 @@ namespace UniSpyServer.Servers.WebServer.Entity.Constant
         //Contains all endpoints of the web server
         public static readonly List<string> AvailableEndpoints = new List<string>
         {
+            // Motd Service
             "/motd/motd.asp",
             "/motd/vercheck.asp",
+            // WSAuth Service
             "/AuthService/AuthService.asmx",
+            // WSSake Service
             "/SakeStorageServer/StorageServer.asmx",
+            "/SakeFileServer/download.aspx",
+            "/SakeFileServer/upload.aspx",
+            // WSAtlas Service
             "/CompetitionService/CompetitionService.asmx",
+            // WSDirect2Game Service
             "/commerce/1.1/catalogservice.svc",
             "/commerce/1.1/accountservice.svc",
             "/commerce/1.1/purchaseservice.svc",
+            // WSRacing Service
             "/RaceService/NintendoRacingService.asmx",
         };
     }
