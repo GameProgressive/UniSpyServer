@@ -22,6 +22,8 @@ namespace UniSpyServer.Servers.WebServer.Entity.Constant
             "/commerce/1.1/catalogservice.svc",
             "/commerce/1.1/accountservice.svc",
             "/commerce/1.1/purchaseservice.svc",
+            // WSIngameAd Service
+            "/IGNAdServer/service1.asmx",
             // WSRacing Service
             "/RaceService/NintendoRacingService.asmx",
         };
