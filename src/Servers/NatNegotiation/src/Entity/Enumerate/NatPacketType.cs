@@ -10,6 +10,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         ErtAck = 3,
         Connect = 5,
         ConnectAck = 6,
+        Ping = 7,
         AddressCheck = 10,
         NatifyRequest = 12,
         Report = 13,

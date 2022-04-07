@@ -66,7 +66,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PortType = _request.PortType,
                 Version = _request.Version,
                 Cookie = _request.Cookie,
-                ClientIndex = _request.ClientIndex
+                ClientIndex = _request.ClientIndex,
+                IsUsingRelay = true                
             };
             new ConnectHandler(_client, request).Handle();
         }

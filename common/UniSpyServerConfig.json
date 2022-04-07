@@ -82,6 +82,13 @@
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "80",
       "SocketType": "Http"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "GameTrafficRelay",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "10086",
+      "SocketType": "Udp"
     }
   ],
   "MinimumLogLevel": "Verbose"

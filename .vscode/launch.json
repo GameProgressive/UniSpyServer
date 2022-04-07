@@ -42,6 +42,18 @@
             "stopAtEntry": false
         },
         {
+            "name": "GameRelay build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_gametraffic",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameTrafficRelay.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
             "name": "CDKey build and run",
             "type": "coreclr",
             "request": "launch",

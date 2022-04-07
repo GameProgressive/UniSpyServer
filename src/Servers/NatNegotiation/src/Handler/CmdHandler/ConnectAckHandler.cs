@@ -19,19 +19,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            var userInfo = _redisClient.Values.FirstOrDefault(
-                k => k.ServerID == _client.Session.Server.ServerID
-                & k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
-                & k.PortType == _request.PortType
-                & k.Cookie == _request.Cookie);
-            if (userInfo is null)
-            {
-                // we do nothing here
-                return;
-            }
-            // currently we do not know what this for, we just keep this
-            // userInfo.IsGotConnectPacket = true;
-            _redisClient.SetValue(userInfo);
+            // var userInfo = _redisClient.Values.FirstOrDefault(
+            //     k => k.ServerID == _client.Session.Server.ServerID
+            //     && k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
+            //     && k.PortType == _request.PortType
+            //     && k.Cookie == _request.Cookie);
+            // if (userInfo is null)
+            // {
+            //     // we do nothing here
+            //     return;
+            // }
+            // // currently we do not know what this for, we just keep this
+            // // userInfo.IsGotConnectPacket = true;
+            // _redisClient.SetValue(userInfo);
         }
     }
 }

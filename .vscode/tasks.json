@@ -112,6 +112,22 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build_gametraffic",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "--no-restore",
+                
+                "${workspaceFolder}/src/Servers/GameTrafficRelay/src/UniSpyServer.Servers.GameTrafficRelay.csproj",
+                "-o",
+                "${workspaceFolder}/build/Debug/net6.0/",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build_natneg",
             "command": "dotnet",
             "type": "process",

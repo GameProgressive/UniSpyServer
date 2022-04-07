@@ -46,9 +46,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                             k => k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
                             && k.Cookie == _request.Cookie).ToList()
                             .ForEach(k => _redisClient.DeleteKeyValue(k));
+                    LogWriter.Info("Nat negotiation success.");
                     break;
                 case NatNegResult.DeadBeatPartner:
-                    LogWriter.Warning($"Parter of client {_client.Session.RemoteIPEndPoint} has no response.");
+                    LogWriter.Info($"Parter of client {_client.Session.RemoteIPEndPoint} has no response.");
                     goto default;
                 case NatNegResult.InitTimeOut:
                     LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat initialization failed.");

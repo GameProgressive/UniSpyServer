@@ -36,11 +36,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            if (_request.IsUsingRelay)
-            {
-                LogWriter.Info("we are using relay solution");
-                return;
-            }
+            // if (_request.IsUsingRelay)
+            // {
+            //     LogWriter.Info("we are using relay solution");
+            //     return;
+            // }
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Values.Where(k =>
                                         k.Cookie == _request.Cookie
@@ -77,13 +77,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
 
 
-            IPEndPoint guessedClientIPEndpoint, guessedServerIPEndpoint;
+            IPEndPoint guessedClientIPEndPoint, guessedServerIPEndPoint;
 
             if (_request.IsUsingRelay)
             {
+                // string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+                var publicEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.103"), _client.Session.Server.Endpoint.Port);
                 // we directly construct the relay server for game client and server client
-                guessedClientIPEndpoint = _client.Session.Server.Endpoint;
-                guessedServerIPEndpoint = _client.Session.Server.Endpoint;
+                guessedClientIPEndPoint = publicEndPoint;
+                guessedServerIPEndPoint = publicEndPoint;
             }
             else
             {
@@ -91,18 +93,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
                 var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
                 var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
-                guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
-                guessedServerIPEndpoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+                guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
+                guessedServerIPEndPoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
             }
 
             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
             _responseToClient = new ConnectResponse(
                 request,
-                new ConnectResult { RemoteEndPoint = guessedServerIPEndpoint });
+                new ConnectResult { RemoteEndPoint = guessedServerIPEndPoint });
 
             _responseToServer = new ConnectResponse(
                 _request,
-                new ConnectResult { RemoteEndPoint = guessedClientIPEndpoint });
+                new ConnectResult { RemoteEndPoint = guessedClientIPEndPoint });
 
             _gameClient.Send(_responseToClient);
             _gameServer.Send(_responseToServer);
