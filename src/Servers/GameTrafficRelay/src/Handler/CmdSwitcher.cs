@@ -3,7 +3,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.NatNegotiation.Handler
+namespace UniSpyServer.Servers.GameTrafficRelay.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase<RequestContract, HandlerContract>
     {

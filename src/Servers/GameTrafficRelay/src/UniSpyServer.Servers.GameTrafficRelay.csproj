@@ -17,7 +17,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
         <ProjectReference Include="..\..\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj" />
     </ItemGroup>
 </Project>

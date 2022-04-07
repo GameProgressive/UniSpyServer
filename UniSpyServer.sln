@@ -93,6 +93,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameTrafficRelay", "GameTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.GameTrafficRelay", "src\Servers\GameTrafficRelay\src\UniSpyServer.Servers.GameTrafficRelay.csproj", "{555A87B1-5FFE-4F24-B665-160693901D25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.GameTrafficRelay.Test", "src\Servers\GameTrafficRelay\test\UniSpyServer.Servers.GameTrafficRelay.Test\UniSpyServer.Servers.GameTrafficRelay.Test.csproj", "{FD4B4018-7283-41DB-AC57-AB62760269FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -355,6 +357,18 @@ Global
 		{555A87B1-5FFE-4F24-B665-160693901D25}.Release|x64.Build.0 = Release|Any CPU
 		{555A87B1-5FFE-4F24-B665-160693901D25}.Release|x86.ActiveCfg = Release|Any CPU
 		{555A87B1-5FFE-4F24-B665-160693901D25}.Release|x86.Build.0 = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x64.Build.0 = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -404,6 +418,7 @@ Global
 		{7780907C-CABF-4CCD-9039-7C17CC7391F9} = {65818A5E-64E6-4079-8224-295EEE9961CC}
 		{EF1CA185-B3C8-4F0A-B134-1114CB51E97D} = {EBF19CC8-39E4-490E-8BAB-4B0C2FADAC98}
 		{555A87B1-5FFE-4F24-B665-160693901D25} = {EF1CA185-B3C8-4F0A-B134-1114CB51E97D}
+		{FD4B4018-7283-41DB-AC57-AB62760269FB} = {EF1CA185-B3C8-4F0A-B134-1114CB51E97D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE7AD0FF-F1D1-4E34-8DE8-FBB2E63AA49F}
