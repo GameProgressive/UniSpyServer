@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         /// The other client that we transit message to
         /// </summary>
         /// <value></value>
-        public Client TrafficTransitTarget { get; set; }
+        public Client TrafficRelayTarget { get; set; }
         public uint? Cookie { get; set; }
         public NatClientIndex? ClientIndex { get; set; }
         public ClientInfo() : base()

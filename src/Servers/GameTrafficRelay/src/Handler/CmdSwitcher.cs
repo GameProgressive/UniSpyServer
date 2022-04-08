@@ -1,4 +1,4 @@
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.GameTrafficRelay.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

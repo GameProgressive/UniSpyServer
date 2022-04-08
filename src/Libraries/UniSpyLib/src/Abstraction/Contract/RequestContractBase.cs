@@ -5,7 +5,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Contract
     /// </summary>
     public abstract class RequestContractBase : CmdContractBase
     {
-        protected RequestContractBase(object name) : base(name)
+        public RequestContractBase(object name) : base(name)
         {
         }
     }

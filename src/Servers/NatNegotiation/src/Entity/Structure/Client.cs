@@ -17,8 +17,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         {
             if (Info.IsTransitNetowrkTraffic)
             {
-                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficTransitTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                Info.TrafficTransitTarget.Session.Send((byte[])buffer);
+                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+                Info.TrafficRelayTarget.Session.Send((byte[])buffer);
             }
             else
             {

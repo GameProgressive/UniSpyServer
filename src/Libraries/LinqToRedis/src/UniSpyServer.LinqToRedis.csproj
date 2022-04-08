@@ -4,7 +4,7 @@
     <PackageId>UniSpyServer.LinqToRedis</PackageId>
     <Version>1.0.4</Version>
     <Authors>xiaojiuwo</Authors>
-    <Company>GameProgressice</Company>
+    <Company>GameProgressive</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

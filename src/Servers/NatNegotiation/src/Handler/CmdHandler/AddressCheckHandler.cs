@@ -31,8 +31,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-
-
+        
         public static NatProperty DetermineNatProperties(Dictionary<NatPortType, NatInitInfo> initResults)
         {
             NatType natType;

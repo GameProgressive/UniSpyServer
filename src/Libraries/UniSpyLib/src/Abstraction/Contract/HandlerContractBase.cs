@@ -5,7 +5,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Contract
     /// </summary>
     public abstract class HandlerContractBase : CmdContractBase
     {
-        protected HandlerContractBase(object name) : base(name)
+        public HandlerContractBase(object name) : base(name)
         {
         }
     }
