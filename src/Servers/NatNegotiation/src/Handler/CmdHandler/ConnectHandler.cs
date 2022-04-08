@@ -82,7 +82,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             if (_request.IsUsingRelay)
             {
                 // string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-                var publicEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.103"), _client.Session.Server.Endpoint.Port);
+                var publicEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10086);
                 // we directly construct the relay server for game client and server client
                 guessedClientIPEndPoint = publicEndPoint;
                 guessedServerIPEndPoint = publicEndPoint;

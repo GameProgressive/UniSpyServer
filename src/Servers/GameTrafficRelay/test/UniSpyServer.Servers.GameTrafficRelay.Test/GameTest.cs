@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using System.Net;
 using Moq;
 using UniSpyServer.Servers.GameTrafficRelay.Handler;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
+using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using Xunit;
 

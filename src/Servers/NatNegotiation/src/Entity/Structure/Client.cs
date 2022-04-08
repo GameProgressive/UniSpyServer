@@ -13,17 +13,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
             Info = new ClientInfo();
         }
 
-        protected override void OnReceived(object buffer)
-        {
-            if (Info.IsTransitNetowrkTraffic)
-            {
-                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                Info.TrafficRelayTarget.Session.Send((byte[])buffer);
-            }
-            else
-            {
-                base.OnReceived(buffer);
-            }
-        }
+        // protected override void OnReceived(object buffer)
+        // {
+        //     if (Info.IsTransitNetowrkTraffic)
+        //     {
+        //         LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+        //         Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+        //     }
+        //     else
+        //     {
+        //         base.OnReceived(buffer);
+        //     }
+        // }
     }
 }

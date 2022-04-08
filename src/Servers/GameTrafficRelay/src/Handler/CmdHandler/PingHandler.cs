@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using UniSpyServer.Servers.GameTrafficRelay.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Contract;
+using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Request;
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
@@ -15,6 +12,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
     [HandlerContract(RequestType.Ping)]
     public sealed class PingHandler : CmdHandlerBase
     {
+        private new Client _client => (Client)base._client;
         private new PingRequest _request => (PingRequest)base._request;
         private Client _targetClient;
         /// <summary>
@@ -32,9 +30,9 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
         {
             _targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(
                 u => ((Client)u).Info.ClientIndex == _request.ClientIndex
-                && ((Client)u).Info.Cookie == _request.Cookie);
+                && ((Client)u).Info.Cookie == _request.Cookie
+                && u.Session.RemoteIPEndPoint != _client.Session.RemoteIPEndPoint);
 
-            Console.WriteLine($"Client index {_request.ClientIndex}-------------------------------------");
             lock (_client.Info)
             {
                 if (_client.Info.IsTransitNetowrkTraffic != true)
@@ -57,6 +55,14 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
                 {
                     _client.Info.TrafficRelayTarget = _targetClient;
                 }
+
+                // lock (_targetClient)
+                // {
+                //     if (_targetClient.Info.TrafficRelayTarget is null)
+                //     {
+                //         _targetClient.Info.TrafficRelayTarget = _client;
+                //     }
+                // }
             }
         }
     }
