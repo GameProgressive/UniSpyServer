@@ -1,4 +1,4 @@
-﻿using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response
