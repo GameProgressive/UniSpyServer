@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Xml.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;

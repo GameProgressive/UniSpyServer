@@ -3,6 +3,7 @@ using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -36,15 +37,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             if (_userInfo == null)
             {
                 // LogWriter.Info("No user found in redis.");
-                return;
+                throw new NNException("No user found in redis.");
             }
             switch (_request.NatResult)
             {
                 case NatNegResult.Success:
                     // if there is a success p2p connection, we delete the init info in redis
-                    _redisClient.Values.Where(
-                            k => k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
-                            && k.Cookie == _request.Cookie).ToList()
+                    _redisClient.Values.Where(k => k.Cookie == _request.Cookie).ToList()
                             .ForEach(k => _redisClient.DeleteKeyValue(k));
                     LogWriter.Info("Nat negotiation success.");
                     break;

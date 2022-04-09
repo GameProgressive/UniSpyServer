@@ -11,7 +11,6 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -82,7 +81,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             if (_request.IsUsingRelay)
             {
                 // string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-                var publicEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10086);
+                var publicEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.102"), 10086);
                 // we directly construct the relay server for game client and server client
                 guessedClientIPEndPoint = publicEndPoint;
                 guessedServerIPEndPoint = publicEndPoint;

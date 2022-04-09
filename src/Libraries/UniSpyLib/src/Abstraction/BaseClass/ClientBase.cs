@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Timers;
 using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
@@ -113,7 +112,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 var client = (IClient)Activator.CreateInstance(_clientType, new object[] { session });
                 return client;
             }
-
         }
         /// <summary>
         /// Only work for tcp

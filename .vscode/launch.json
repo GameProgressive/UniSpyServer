@@ -4,7 +4,6 @@
     // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
     "version": "0.2.0",
     "configurations": [
-        
         {
             "name": "PCM build and run",
             "type": "coreclr",
@@ -223,6 +222,17 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
+        },
+        {
+            "name": "GameRelay",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameTrafficRelay.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
         }
     ],
     "compounds": [
@@ -253,6 +263,13 @@
             "configurations": [
                 "Web",
                 "PCM"
+            ]
+        },
+        {
+            "name": "NatNeg, GTR",
+            "configurations": [
+                "NatNeg",
+                "GameRelay"
             ]
         },
         {

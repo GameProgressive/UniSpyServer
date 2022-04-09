@@ -1,6 +1,3 @@
-using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
-
 namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase

@@ -1,8 +1,6 @@
 using System.Net;
-using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Events;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
 {
