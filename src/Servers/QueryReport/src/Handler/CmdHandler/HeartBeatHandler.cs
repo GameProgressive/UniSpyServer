@@ -8,7 +8,6 @@ using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
@@ -24,7 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            //parse the endpoint information into result class
+            //Parse the endpoint information into result class
             _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
 
             // if (_request.PlayerData?.Count == 0 || _request.PlayerData == null)
@@ -76,18 +75,13 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
         private void CheckSpamGameServer()
         {
-            if (_request.PlayerData.Count == 0)
-            {
-
-            }
-            //make sure one ip address create one server on each game
-            //we check if the database have multiple game server if it contains
+            // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
             _gameServerInfo = _redisClient.Values.FirstOrDefault(x =>
-                                    x.ServerID == _client.Session.Server.ServerID &
-                                    x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
-                                    x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
-                                    x.InstantKey == _request.InstantKey &
-                                    x.GameName == _request.GameName);
+                x.ServerID == _client.Session.Server.ServerID &
+                x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
+                x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
+                x.InstantKey == _request.InstantKey &
+                x.GameName == _request.GameName);
 
             if (_gameServerInfo == null)
             {
