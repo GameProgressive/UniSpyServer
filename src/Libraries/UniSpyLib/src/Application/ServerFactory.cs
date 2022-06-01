@@ -27,6 +27,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         static ServerFactory()
         {
             Servers = new Dictionary<string, IServer>();
+            StackExchange.Redis.ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
         }
         public ServerFactory(string serverNames)
         {

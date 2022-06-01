@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
@@ -70,6 +70,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.GameTrafficRelay", "src\Servers\GameTrafficRelay\src\UniSpyServer.Servers.GameTrafficRelay.csproj", "{555A87B1-5FFE-4F24-B665-160693901D25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.GameTrafficRelay.Test", "src\Servers\GameTrafficRelay\test\UniSpyServer.Servers.GameTrafficRelay.Test.csproj", "{FD4B4018-7283-41DB-AC57-AB62760269FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B46172F1-8E97-4934-9969-3957B9129736}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{8B1B77AA-ED59-4B6F-8926-A65AAF28A713}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LinqToRedis", "LinqToRedis", "{98525275-1CA4-421F-AF18-12E906536814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpy.LinqToRedis.Test", "src\Libraries\LinqToRedis\test\UniSpy.LinqToRedis.Test.csproj", "{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -345,6 +353,18 @@ Global
 		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x64.Build.0 = Release|Any CPU
 		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x86.ActiveCfg = Release|Any CPU
 		{FD4B4018-7283-41DB-AC57-AB62760269FB}.Release|x86.Build.0 = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|x64.Build.0 = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Debug|x86.Build.0 = Debug|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x64.ActiveCfg = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x64.Build.0 = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x86.ActiveCfg = Release|Any CPU
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +402,9 @@ Global
 		{EF1CA185-B3C8-4F0A-B134-1114CB51E97D} = {EBF19CC8-39E4-490E-8BAB-4B0C2FADAC98}
 		{555A87B1-5FFE-4F24-B665-160693901D25} = {EF1CA185-B3C8-4F0A-B134-1114CB51E97D}
 		{FD4B4018-7283-41DB-AC57-AB62760269FB} = {EF1CA185-B3C8-4F0A-B134-1114CB51E97D}
+		{8B1B77AA-ED59-4B6F-8926-A65AAF28A713} = {B46172F1-8E97-4934-9969-3957B9129736}
+		{98525275-1CA4-421F-AF18-12E906536814} = {8B1B77AA-ED59-4B6F-8926-A65AAF28A713}
+		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3} = {98525275-1CA4-421F-AF18-12E906536814}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE7AD0FF-F1D1-4E34-8DE8-FBB2E63AA49F}

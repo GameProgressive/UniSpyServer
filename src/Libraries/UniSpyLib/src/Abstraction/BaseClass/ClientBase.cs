@@ -30,7 +30,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private Timer _timer;
         private static Type _clientType;
         private static Type _switcherType;
-
         static ClientBase()
         {
             if (RedisConnection is null)
@@ -142,8 +141,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     goto default;
                 case NetworkConnectionType.Udp:
                     // reset timer for udp session
-                    _timer.Stop();
-                    _timer.Start();
+                    lock (_timer)
+                    {
+                        _timer.Stop();
+                        _timer.Start();
+                    }
                     goto default;
                 case NetworkConnectionType.Http:
                     LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);

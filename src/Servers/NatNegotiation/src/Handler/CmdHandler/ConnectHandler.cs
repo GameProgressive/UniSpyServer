@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -35,11 +36,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            // if (_request.IsUsingRelay)
-            // {
-            //     LogWriter.Info("we are using relay solution");
-            //     return;
-            // }
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Values.Where(k =>
                                         k.Cookie == _request.Cookie
@@ -90,8 +86,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
                 var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
-                var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
-                var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
+                var clientNatProperty = AddressCheckHandler.DetermineNatType(clientInfos);
+                var serverNatProperty = AddressCheckHandler.DetermineNatType(serverInfos);
                 guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
                 guessedServerIPEndPoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
             }
@@ -104,7 +100,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _responseToServer = new ConnectResponse(
                 _request,
                 new ConnectResult { RemoteEndPoint = guessedClientIPEndPoint });
-
+            Debug.WriteLine($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
+            Debug.WriteLine($"server real: {serverRemoteIPEnd}, guessed: {guessedServerIPEndPoint}");
             _gameClient.Send(_responseToClient);
             _gameServer.Send(_responseToServer);
         }

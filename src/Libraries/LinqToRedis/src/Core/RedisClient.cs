@@ -21,6 +21,10 @@ namespace UniSpyServer.LinqToRedis
         /// <typeparam name="TKey">The redis key class</typeparam>
         /// <returns></returns>
         public QueryableObject<TValue> Values;
+        static RedisClient()
+        {
+            ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
+        }
         public RedisClient(string connectionString, int db)
         {
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
