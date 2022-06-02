@@ -79,12 +79,21 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
             }
 
+            // check if addresses are identical
             if (gp.PublicIPEndPoint.Address.Equals(gp.PrivateIPEndPoint.Address)
             && nn1.PublicIPEndPoint.Address.Equals(nn1.PublicIPEndPoint.Address)
             && nn2.PublicIPEndPoint.Address.Equals(nn2.PrivateIPEndPoint.Address)
-            && nn3.PublicIPEndPoint.Address.Equals(nn3.PrivateIPEndPoint.Address))
+            && nn3.PublicIPEndPoint.Address.Equals(nn3.PrivateIPEndPoint.Address)
+            // check if public ports are identical
+            && gp.PublicIPEndPoint.Port == nn1.PublicIPEndPoint.Port
+            && nn1.PublicIPEndPoint.Port == nn2.PublicIPEndPoint.Port
+            && nn2.PublicIPEndPoint.Port == nn3.PublicIPEndPoint.Port
+            // check if the public port and private port is identical
+            && nn2.PublicIPEndPoint.Port == nn2.PrivateIPEndPoint.Port
+            && nn3.PublicIPEndPoint.Port == nn3.PrivateIPEndPoint.Port)
             {
-                natProperty.NatType = NatType.Cone;
+                // actually, we can not determine the type of Cone NAT, because we do not send packet to client autonomously
+                natProperty.NatType = NatType.FullCone;
                 return natProperty;
             }
 
@@ -128,20 +137,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 case NatType.Symmetric:
                     switch (property.PortMapping)
                     {
-                        case NatPortMappingScheme.PrivateAsPublic:
-                            return initResults[NatPortType.NN1].PublicIPEndPoint;
-                        case NatPortMappingScheme.ConsistentPort:
-                            throw new NotImplementedException();
-                        case NatPortMappingScheme.Mixed:
                         case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(initResults[NatPortType.NN1].PublicIPEndPoint.Address, initResults[NatPortType.NN1].PublicIPEndPoint.Port + 1);
-                        case NatPortMappingScheme.Unrecognized:
-                            break;
+                            return new IPEndPoint(initResults[NatPortType.NN1].PublicIPEndPoint.Address,
+                                                    initResults[NatPortType.NN1].PublicIPEndPoint.Port + 1);
+                        default:
+                            return null;
                     }
-                    break;
+                default:
+                    return null;
             }
-            return initResults[NatPortType.NN1].PublicIPEndPoint;
-
         }
     }
 }
