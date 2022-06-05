@@ -41,7 +41,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
                         _client.Info.PingData = _request.RawRequest;
                         _client.Info.Cookie = _request.Cookie;
                         _client.Info.ClientIndex = _request.ClientIndex;
-
+                        // reset the target client
+                        _client.Info.TrafficRelayTarget = null;
                     }
                 }
                 var targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(

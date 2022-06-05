@@ -161,6 +161,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             if (_switcherType is null)
             {
                 _switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
+                // we get the switcher type in this way when we are unit testing
+                if (_switcherType is null)
+                {
+                    _switcherType = Assembly.GetCallingAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
+                }
             }
             var switcherParams = new object[] { this, buffer };
             var switcher = (ISwitcher)Activator.CreateInstance(_switcherType, switcherParams);
