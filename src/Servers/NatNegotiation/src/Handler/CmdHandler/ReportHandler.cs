@@ -1,9 +1,7 @@
-using System;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
@@ -20,7 +18,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result { get => (ReportResult)base._result; set => base._result = value; }
-        private NatInitInfo _initInfo;
         public ReportHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ReportResult();
@@ -57,9 +54,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         IsUsingRelay = true
                     };
                     new ConnectHandler(_client, request).Handle();
-
-                    _initInfo.RetryNatNegotiationTime++;
-                    _redisClient.SetValue(_initInfo);
+                    // var packets = _redisClient.Values.Where(k => k.Cookie == _request.Cookie).ToList();
+                    // foreach (var packet in packets)
+                    // {
+                    //     packet.RetryNatNegotiationTime++;
+                    //     _redisClient.SetValue(packet);
+                    // }
                     break;
             }
         }

@@ -1,3 +1,4 @@
+using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
@@ -15,24 +16,31 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
 
         protected override void OnReceived(object buffer)
         {
-            if(Info.TrafficRelayTarget is not null && (Info.TrafficRelayTarget.Info.TrafficRelayTarget is not null))
+            // if is ping packet
+            if (((byte[])buffer).Take(5).SequenceEqual(NatNegotiation.Abstraction.BaseClass.RequestBase.MagicData))
             {
-                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+                // if the received ping packet is already saved in user info, we just send to target client
+                if (Info.PingData.SequenceEqual((byte[])buffer))
+                {
+                    LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+                    Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+                }
+                else
+                {
+                    // if the received ping packet is not saved, we process the ping packet
+                    base.OnReceived(buffer);
+                }
             }
+            // if is not ping packet
             else
             {
-                base.OnReceived(buffer);
+                // only binded clients can be sent data
+                if (Info.TrafficRelayTarget is not null)
+                {
+                    LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
+                    Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+                }
             }
-            // if (Info.IsTransitNetowrkTraffic)
-            // {
-            //     LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-            //     Info.TrafficRelayTarget.Session.Send((byte[])buffer);
-            // }
-            // else
-            // {
-            //     base.OnReceived(buffer);
-            // }
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.GameTrafficRelay.Handler;
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
+using UniSpyServer.Servers.GameTrafficRelay.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using Xunit;
 
@@ -49,10 +49,6 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
 
             new CmdSwitcher(client, clientRequest).Switch();
             new CmdSwitcher(server, serverRequest).Switch();
-
-
-            Assert.True(client.Info.IsTransitNetowrkTraffic == true);
-            Assert.True(server.Info.IsTransitNetowrkTraffic == true);
 
             Assert.True(client.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == server.Session.RemoteIPEndPoint);
             Assert.True(server.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == client.Session.RemoteIPEndPoint);

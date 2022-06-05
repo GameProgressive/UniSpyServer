@@ -146,7 +146,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             };
 
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.AddressRestrictedCone);
+            Assert.Equal(prop.NatType, NatType.FullCone);
         }
         [Fact]
         public void PortRestrictedConeTest()

@@ -32,8 +32,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
             CommandName = (RequestType)RawRequest[7];
             Cookie = BitConverter.ToUInt32(RawRequest.Skip(8).Take(4).ToArray());
             PortType = (NatPortType)RawRequest[12];
-            // ClientIndex = RawRequest[13];
-            // UseGamePort = RawRequest[14];
         }
     }
 }

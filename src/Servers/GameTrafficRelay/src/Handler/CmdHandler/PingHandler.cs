@@ -13,7 +13,6 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
     {
         private new Client _client => (Client)base._client;
         private new PingRequest _request => (PingRequest)base._request;
-        private Client _targetClient;
         /// <summary>
         /// The first ping packet will process by natneg server,
         /// when the info is saved, next ping will directly send to another client
@@ -27,41 +26,37 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(
-                u => ((Client)u).Info.ClientIndex == _request.ClientIndex
-                && ((Client)u).Info.Cookie == _request.Cookie
-                && u.Session.RemoteIPEndPoint != _client.Session.RemoteIPEndPoint);
-
             lock (_client.Info)
             {
-                if (_client.Info.IsTransitNetowrkTraffic != true)
+                if (_client.Info.PingData is null)
                 {
-                    _client.Info.IsTransitNetowrkTraffic = true;
-                }
-                if (_client.Info.ClientIndex is null)
-                {
+                    _client.Info.PingData = _request.RawRequest;
+                    _client.Info.Cookie = _request.Cookie;
                     _client.Info.ClientIndex = _request.ClientIndex;
                 }
-                if (_client.Info.Cookie is null)
+                else
                 {
-                    _client.Info.Cookie = _request.Cookie;
+                    if (!_client.Info.PingData.SequenceEqual(_request.RawRequest))
+                    {
+                        _client.Info.PingData = _request.RawRequest;
+                        _client.Info.Cookie = _request.Cookie;
+                        _client.Info.ClientIndex = _request.ClientIndex;
+
+                    }
                 }
-                if (_targetClient is null)
+                var targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(
+                                u => ((Client)u).Info.Cookie == _request.Cookie
+                                && ((Client)u).Info.ClientIndex == _request.ClientIndex
+                                && u.Session.RemoteIPEndPoint != _client.Session.RemoteIPEndPoint);
+
+                if (targetClient is null)
                 {
                     return;
                 }
                 if (_client.Info.TrafficRelayTarget is null)
                 {
-                    _client.Info.TrafficRelayTarget = _targetClient;
+                    _client.Info.TrafficRelayTarget = targetClient;
                 }
-
-                // lock (_targetClient)
-                // {
-                //     if (_targetClient.Info.TrafficRelayTarget is null)
-                //     {
-                //         _targetClient.Info.TrafficRelayTarget = _client;
-                //     }
-                // }
             }
         }
     }
