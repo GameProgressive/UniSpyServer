@@ -1,4 +1,5 @@
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Handler;
 using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -18,5 +19,8 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
             }
             Info = new ClientInfo();
         }
+
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+
     }
 }

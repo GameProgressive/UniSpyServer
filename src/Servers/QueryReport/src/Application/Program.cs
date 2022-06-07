@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.QueryReport.Application
         {
             try
             {
-                new ServerFactory("QueryReport").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

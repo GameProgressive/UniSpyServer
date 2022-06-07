@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.WebServer.Application
         {
             try
             {
-                new ServerFactory("WebServer").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

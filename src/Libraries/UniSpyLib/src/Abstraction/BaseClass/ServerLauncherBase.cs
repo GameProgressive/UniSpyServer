@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleTables;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Application.Network.Http.Server;
-using UniSpyServer.UniSpyLib.Application.Network.Tcp.Server;
-using UniSpyServer.UniSpyLib.Application.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
-    public class ServerFactory
+    public abstract class ServerLauncherBase
     {
         /// <summary>
         /// UniSpy server version
@@ -24,12 +21,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         public static string ServerName { get; protected set; }
         public static Dictionary<string, IServer> Servers { get; protected set; }
         public static IServer Server;
-        static ServerFactory()
+        static ServerLauncherBase()
         {
             Servers = new Dictionary<string, IServer>();
             StackExchange.Redis.ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
         }
-        public ServerFactory(string serverNames)
+        public ServerLauncherBase(string serverNames)
         {
             ServerName = serverNames;
         }
@@ -40,25 +37,29 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             ShowUniSpyLogo();
             ConnectMySql();
             ConnectRedis();
-            LoadServerConfig();
+            LaunchServer();
         }
-        protected void LoadServerConfig()
+        protected abstract IServer LaunchNetworkService(UniSpyServerConfig config);
+        protected void LaunchServer()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            switch (cfg.SocketType)
-            {
-                case "Udp":
-                    Server = new UdpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-                    break;
-                case "Tcp":
-                    Server = new TcpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-                    break;
-                case "Http":
-                    Server = new HttpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-                    break;
-                default:
-                    throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
-            }
+            Server = LaunchNetworkService(cfg);
+            
+            // switch (cfg.SocketType)
+            // {
+            //     case "Udp":
+            //         Server = new UdpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
+            //         break;
+            //     case "Tcp":
+            //         Server = new TcpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
+            //         break;
+            //     case "Http":
+            //         Server = new HttpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
+            //         break;
+            //     default:
+            //         throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
+            // }
+
             if (Server == null)
             {
                 throw new Exception("Server created failed");

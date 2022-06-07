@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
-using System.Reflection;
 using System.Timers;
 using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -28,24 +27,24 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
-        private static Type _clientType;
-        private static Type _switcherType;
         static ClientBase()
         {
-            if (RedisConnection is null)
-            {
-                RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
-            }
-            if (ClientPool is null)
-            {
-                ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
-            }
+            RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
+            ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
         }
 
         public ClientBase(ISession session)
         {
             Session = session;
             EventBinding();
+            lock (ClientPool)
+            {
+                // we fire this when there are no record in Sessions
+                if (!ClientPool.ContainsKey(session.RemoteIPEndPoint))
+                {
+                    ClientPool.Add(Session.RemoteIPEndPoint, this);
+                }
+            }
         }
         private void EventBinding()
         {
@@ -82,36 +81,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     throw new Exception("Unsupported session type");
             }
         }
-        public static IClient CreateClient(ISession session)
-        {
-            if (_clientType is null)
-            {
-                _clientType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{session.Server.ServerName}.Entity.Structure.Client");
-            }
-
-            if (session.ConnectionType == NetworkConnectionType.Udp)
-            {
-                if (ClientPool.ContainsKey(session.RemoteIPEndPoint))
-                {
-                    return ClientPool[session.RemoteIPEndPoint];
-                }
-                else
-                {
-                    // create client and bind client with session
-                    var client = (IClient)Activator.CreateInstance(_clientType, new object[] { session });
-                    // in udpsession we add it to client pool
-                    ClientPool.TryAdd(session.RemoteIPEndPoint, client);
-                    return client;
-                }
-            }
-            else
-            {
-                // if connection is Tcp Http we need to add client to ClientPool in OnConnected()
-                // because RemoteIPEndpoint in TcpSession is null now
-                var client = (IClient)Activator.CreateInstance(_clientType, new object[] { session });
-                return client;
-            }
-        }
         /// <summary>
         /// Only work for tcp
         /// </summary>
@@ -133,6 +102,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             }
             Dispose();
         }
+
+        protected abstract ISwitcher CreateSwitcher(object buffer);
         protected virtual void OnReceived(object buffer)
         {
             switch (Session.ConnectionType)
@@ -157,18 +128,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
                     break;
             }
-            // create switcher instance by reflection
-            if (_switcherType is null)
-            {
-                _switcherType = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
-                // we get the switcher type in this way when we are unit testing
-                if (_switcherType is null)
-                {
-                    _switcherType = Assembly.GetCallingAssembly().GetType($"UniSpyServer.Servers.{Session.Server.ServerName}.Handler.CmdSwitcher");
-                }
-            }
-            var switcherParams = new object[] { this, buffer };
-            var switcher = (ISwitcher)Activator.CreateInstance(_switcherType, switcherParams);
+            // we let child class to create swicher for us
+            var switcher = CreateSwitcher(buffer);
             switcher.Switch();
         }
 

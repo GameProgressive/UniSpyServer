@@ -61,5 +61,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
             new QuitHandler(this, req).Handle();
             base.OnDisconnected();
         }
+
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+
     }
 }

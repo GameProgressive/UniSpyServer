@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.GameStatus.Application
         {
             try
             {
-                new ServerFactory("GameStatus").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

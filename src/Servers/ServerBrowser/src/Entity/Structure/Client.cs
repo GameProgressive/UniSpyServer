@@ -1,3 +1,4 @@
+using UniSpyServer.Servers.ServerBrowser.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
@@ -11,5 +12,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure
             Info = new ClientInfo();
             // Crypto is init in ServerListHandler
         }
+
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
     }
 }

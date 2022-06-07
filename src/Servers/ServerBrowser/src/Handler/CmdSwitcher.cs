@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
 
-        public CmdSwitcher(IClient client, byte[] rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
