@@ -1,10 +1,10 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
-    [RequestContract("JOIN")]
+    
     public sealed class JoinRequest : ChannelRequestBase
     {
         public string Password { get; private set; }

@@ -1,5 +1,5 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginRemoteAuthWithGameId")]
+    
     public sealed class LoginRemoteAuthWithGameIdHandler : LoginRemoteAuthHandler
     {
         private new LoginRemoteAuthWithGameIdRequest _request => (LoginRemoteAuthWithGameIdRequest)base._request;

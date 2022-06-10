@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure;
@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     /// Get a channel user's basic information
     /// same as WHOIS
     /// </summary>
-    [HandlerContract("WHO")]
+    
     public sealed class WhoHandler : LogedInHandlerBase
     {
         private new WhoRequest _request => (WhoRequest)base._request;

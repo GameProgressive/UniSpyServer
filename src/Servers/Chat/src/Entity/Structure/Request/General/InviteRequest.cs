@@ -1,9 +1,9 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
-    [RequestContract("INVITE")]
+    
     public sealed class InviteRequest : RequestBase
     {
         public string ChannelName { get; private set; }

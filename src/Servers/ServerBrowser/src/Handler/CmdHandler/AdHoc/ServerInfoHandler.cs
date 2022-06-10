@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response;
@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    [HandlerContract(RequestType.ServerInfoRequest)]
+    
     public sealed class ServerInfoHandler : CmdHandlerBase
     {
         private new ServerInfoRequest _request => (ServerInfoRequest)base._request;

@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    [HandlerContract("NAMES")]
+    
     public sealed class NamesHandler : ChannelHandlerBase
     {
         private new NamesRequest _request => (NamesRequest)base._request;

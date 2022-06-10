@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    [HandlerContract("nicks")]
+    
     public sealed class NicksHandler : CmdHandlerBase
     {
         private new NicksResult _result{ get => (NicksResult)base._result; set => base._result = value; }

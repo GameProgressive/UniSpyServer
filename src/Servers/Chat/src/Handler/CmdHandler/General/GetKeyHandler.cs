@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     /// <summary>
     /// Get value of the channel user's key value of all channels
     /// </summary>
-    [HandlerContract("GETKEY")]
+    
     public sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;

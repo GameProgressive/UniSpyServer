@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.contract;
+
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    [HandlerContract(RequestType.AvaliableCheck)]
+    
     public sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;

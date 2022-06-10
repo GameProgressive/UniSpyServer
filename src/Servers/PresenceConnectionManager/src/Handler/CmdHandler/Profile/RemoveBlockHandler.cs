@@ -1,10 +1,9 @@
 using System;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
-    [HandlerContract("removeblk")]
+
     public sealed class RemoveBlockHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         public RemoveBlockHandler(IClient client, IRequest request) : base(client, request)

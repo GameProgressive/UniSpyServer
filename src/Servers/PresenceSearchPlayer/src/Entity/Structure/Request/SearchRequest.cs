@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         EmailSearch
     }
 
-    [RequestContract("search")]
+    
     public sealed class SearchRequest : RequestBase
     {
         public int SkipNum { get; private set; }

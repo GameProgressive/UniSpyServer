@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
-    [RequestContract(RequestType.PlayerSearchRequest)]
+    
     public sealed class PlayerSearchRequest : RequestBase
     {
         public int SearchOption { get; private set; }

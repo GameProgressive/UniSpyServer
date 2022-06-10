@@ -1,13 +1,12 @@
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
-    [HandlerContract("registercdkey")]
+
     public sealed class RegisterCDKeyHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;

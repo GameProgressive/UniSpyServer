@@ -1,10 +1,10 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 {
-    [RequestContract("newgame")]
+    
 
     public sealed class CreateNewGameRequest : RequestBase
     {

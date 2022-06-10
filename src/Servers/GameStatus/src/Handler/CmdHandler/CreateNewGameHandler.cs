@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// Create a game specified information storage space
     /// for further game snap shot storage
     /// </summary>
-    [HandlerContract("newgame")]
+    
     public sealed class CreateNewGameHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";

@@ -1,11 +1,11 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
 {
-    [RequestContract("LoginRemoteAuth")]
+    
     public class LoginRemoteAuthRequest : LoginRequestBase
     {
         public string AuthToken { get; private set; }

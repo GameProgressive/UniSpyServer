@@ -2,7 +2,7 @@
 // using System.Linq;
 // using System.Net;
 // using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+// 
 // using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 // namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
@@ -10,7 +10,7 @@
 //     /// <summary>
 //     /// When client can not start p2p game, it will use our server to redirect his game traffic
 //     /// </summary>
-//     [RequestContract(RequestType.Ping)]
+//     
 //     public sealed class PingRequest : CommonRequestBase
 //     {
 //         public IPEndPoint GuessedTargetIPEndPoint { get; set; }

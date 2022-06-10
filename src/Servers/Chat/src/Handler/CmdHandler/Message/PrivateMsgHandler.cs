@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Message;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Message;
@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
 {
-    [HandlerContract("PRIVMSG")]
+    
     public sealed class PrivateMsgHandler : MsgHandlerBase
     {
         private new PrivateMsgRequest _request => (PrivateMsgRequest)base._request;

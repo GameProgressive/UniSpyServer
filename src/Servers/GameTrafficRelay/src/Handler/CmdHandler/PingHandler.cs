@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.GameTrafficRelay.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameTrafficRelay.Entity.Contract;
+
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Ping)]
+    
     public sealed class PingHandler : CmdHandlerBase
     {
         private new Client _client => (Client)base._client;

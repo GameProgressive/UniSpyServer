@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 
     //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
     //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-    [RequestContract("otherslist")]
+    
     public sealed class OthersListRequest : RequestBase
     {
         public List<int> ProfileIDs { get; private set; }

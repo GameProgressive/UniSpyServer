@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
-    [HandlerContract("newuser")]
+    
     public sealed class NewUserHandler : CmdHandlerBase
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;

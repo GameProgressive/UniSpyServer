@@ -1,10 +1,10 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
 {
-    [RequestContract("GetFriendRankings")]
+    
     public class GetFriendRankingsRequest : RequestBase
     {
         public int GameId { get; set; }

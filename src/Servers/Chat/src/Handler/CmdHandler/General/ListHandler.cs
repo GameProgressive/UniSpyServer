@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
     //todo unfinished
-    [HandlerContract("LIST")]
+    
     public sealed class ListHandler : LogedInHandlerBase
     {
         private new ListRequest _request => (ListRequest)base._request;

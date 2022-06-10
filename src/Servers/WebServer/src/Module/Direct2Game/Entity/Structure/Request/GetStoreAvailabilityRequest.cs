@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request
 {
-    [RequestContract("GetStoreAvailability")]
+    
     public class GetStoreAvailabilityRequest : RequestBase
     {
         public int GameId { get; private set; }

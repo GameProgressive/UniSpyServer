@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
@@ -11,9 +10,9 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
-    [HandlerContract("login")]
+
     public sealed class LoginHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;

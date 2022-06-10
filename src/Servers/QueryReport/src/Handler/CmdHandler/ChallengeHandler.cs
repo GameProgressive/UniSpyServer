@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.contract;
+
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Challenge)]
+    
     public sealed class ChallengeHandler : CmdHandlerBase
     {
         private new ChallengeRequest _request => (ChallengeRequest)base._request;

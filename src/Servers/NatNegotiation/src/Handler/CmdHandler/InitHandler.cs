@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Init)]
+    
     public sealed class InitHandler : CmdHandlerBase
     {
         private new InitRequest _request => (InitRequest)base._request;

@@ -2,7 +2,7 @@ using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    [HandlerContract(ServerBrowser.Entity.Enumerate.RequestType.NatNegRequest)]
+    
     public sealed class NatNegMsgHandler : CmdHandlerBase
     {
         private static QueryReport.Entity.Structure.Redis.RedisChannel _redisChannel;

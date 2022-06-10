@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
-    [RequestContract("auth")]
+    
     public sealed class AuthGameRequest : RequestBase
     {
         public string GameName { get; private set; }

@@ -1,11 +1,11 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 {
-    [RequestContract("newuser")]
+    
     public sealed class NewUserRequest : RequestBase
     {
         public int ProductID { get; private set; }

@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    [HandlerContract(RequestType.Report)]
+    
     public sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;

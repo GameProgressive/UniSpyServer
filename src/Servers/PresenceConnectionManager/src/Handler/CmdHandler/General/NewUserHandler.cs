@@ -2,7 +2,6 @@ using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
@@ -13,12 +12,12 @@ using System.Data.Common;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
-    [HandlerContract("newuser")]
+
     public sealed class NewUserHandler : CmdHandlerBase
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;
 
-        private new NewUserResult _result{ get => (NewUserResult)base._result; set => base._result = value; }
+        private new NewUserResult _result { get => (NewUserResult)base._result; set => base._result = value; }
 
         public NewUserHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -131,7 +130,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                         }
 
                     case NewUserStatus.ProfileNotExist:
-                        _result.Profile = new Profile { Userid = _result.User.UserId, Nick = _request.Nick };
+                        _result.Profile = new UniSpyLib.Database.DatabaseModel.Profile { Userid = _result.User.UserId, Nick = _request.Nick };
                         db.Profiles.Add(_result.Profile);
                         db.SaveChanges();
                         goto case NewUserStatus.CheckSubProfile;

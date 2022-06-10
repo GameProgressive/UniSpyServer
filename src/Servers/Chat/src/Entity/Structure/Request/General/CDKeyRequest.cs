@@ -1,9 +1,9 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
-    [RequestContract("CDKEY")]
+    
     public sealed class CDKeyRequest : RequestBase
     {
 

@@ -1,9 +1,8 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
 {
-    [RequestContract("updateui")]
+
     public sealed class UpdateUiRequest : RequestBase
     {
         public UpdateUiRequest(string rawRequest) : base(rawRequest)

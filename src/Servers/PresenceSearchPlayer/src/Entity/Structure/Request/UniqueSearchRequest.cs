@@ -1,11 +1,11 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    [RequestContract("uniquesearch")]
+    
     public sealed class UniqueSearchRequest : RequestBase
     {
         public string PreferredNick { get; private set; }

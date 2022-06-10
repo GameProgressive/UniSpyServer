@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
@@ -7,7 +6,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     /// <summary>
     /// Invite a user to a room or a game
     /// </summary>
-    [RequestContract("inviteto")]
+
     public sealed class InviteToRequest : RequestBase
     {
         public int ProductID { get; private set; }

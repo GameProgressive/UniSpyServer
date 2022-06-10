@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
-    [RequestContract(RequestType.Report)]
+    
     public sealed class ReportRequest : CommonRequestBase
     {
         public NatNegResult? NatResult { get; private set; }

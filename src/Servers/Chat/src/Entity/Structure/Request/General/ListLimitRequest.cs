@@ -1,9 +1,9 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
-    [RequestContract("LISTLIMIT")]
+    
     public sealed class ListLimitRequest : RequestBase
     {
         public int MaxNumberOfChannels { get; private set; }

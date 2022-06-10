@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    [HandlerContract("LOGIN")]
+    
     public sealed class LoginHandler : CmdHandlerBase
     {
 

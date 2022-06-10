@@ -1,13 +1,13 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Handler.CmdHandler.Sake
+namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
 {
-    [HandlerContract("GetMyRecords")]
+    
     public class GetMyRecordsHandler : CmdHandlerBase
     {
         private new GetMyRecordsRequest _request => (GetMyRecordsRequest)base._request;

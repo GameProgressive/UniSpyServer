@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 {
-    [RequestContract("getpd")]
+    
     public sealed class GetPlayerDataRequest : RequestBase
     {
         public int ProfileId { get; private set; }

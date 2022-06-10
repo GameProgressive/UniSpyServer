@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginUniqueNick")]
+    
     public class LoginUniqueNickHandler : CmdHandlerBase
     {
         protected new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;

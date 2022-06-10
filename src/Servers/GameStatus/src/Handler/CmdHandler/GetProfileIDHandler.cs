@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
-    [HandlerContract("getpid")]
+    
     public sealed class GetProfileIdHandler : CmdHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d

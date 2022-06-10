@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server

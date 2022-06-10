@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    [HandlerContract("NICK")]
+    
     public sealed class NickHandler : CmdHandlerBase
     {
         private new NickRequest _request => (NickRequest)base._request;

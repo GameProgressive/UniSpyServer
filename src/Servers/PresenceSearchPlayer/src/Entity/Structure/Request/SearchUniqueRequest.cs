@@ -1,12 +1,12 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 {
-    [RequestContract("searchunique")]
+    
     public sealed class SearchUniqueRequest : RequestBase
     {
         public string Uniquenick { get; private set; }

@@ -1,7 +1,7 @@
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response;
@@ -12,7 +12,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.ServerListRequest)]
+    
     public class ServerListHandler : ServerListUpdateOptionHandlerBase
     {
         public ServerListHandler(IClient client, IRequest request) : base(client, request)

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.UniSpyLib.Encryption;
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
     /// <summary>
     /// ServerList also called ServerRule in GameSpy SDK
     /// </summary>
-    [RequestContract(RequestType.ServerListRequest)]
+    
     public sealed class ServerListRequest : ServerListUpdateOptionRequestBase
     {
         public ServerListRequest(byte[] rawRequest) : base(rawRequest)

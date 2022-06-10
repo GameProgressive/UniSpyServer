@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
-    [RequestContract(RequestType.Init)]
+    
     public sealed class InitRequest : CommonRequestBase
     {
         public string GameName { get; private set; }

@@ -1,12 +1,12 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Result;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
 {
-    [HandlerContract("GetStoreAvailability")]
+    
     public class GetStoreAvailabilityHandler : CmdHandlerBase
     {
         protected new GetStoreAvailabilityRequest _request => (GetStoreAvailabilityRequest)base._request;
