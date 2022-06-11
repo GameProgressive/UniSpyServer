@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
@@ -12,7 +12,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    [HandlerContract("PART")]
+    
     public sealed class PartHandler : ChannelHandlerBase
     {
         private new PartRequest _request => (PartRequest)base._request;

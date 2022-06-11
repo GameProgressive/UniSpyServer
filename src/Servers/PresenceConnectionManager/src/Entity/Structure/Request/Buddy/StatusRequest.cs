@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
@@ -9,7 +8,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     /// <summary>
     /// Update a user's status information
     /// </summary>
-    [RequestContract("status")]
+
     public sealed class StatusRequest : RequestBase
     {
         public UserStatus Status { get; private set; }

@@ -1,13 +1,13 @@
 using System.IO;
 using Newtonsoft.Json;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
 {
-    [HandlerContract("CreateRecord")]
+    
     public class CreateRecordHandler : CmdHandlerBase
     {
         protected new CreateRecordRequest _request => (CreateRecordRequest)base._request;

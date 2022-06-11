@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
@@ -11,14 +11,19 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
     /// This is a template class that helps creating a UDP Server with
     /// logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class UdpServer : NetCoreServer.UdpServer, IServer
+    public abstract class UdpServer : NetCoreServer.UdpServer, IServer
     {
         public Guid ServerID { get; private set; }
         /// <summary>
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public string ServerName { get; private set; }
+        public static IDictionary<IPEndPoint, UdpSession> Sessions;
         IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+        static UdpServer()
+        {
+            Sessions = new ConcurrentDictionary<IPEndPoint, UdpSession>();
+        }
         public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -36,12 +41,6 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         protected override void OnStarted() => ReceiveAsync();
 
         /// <summary>
-        /// Continue receive datagrams
-        /// </summary>
-        /// <param name="endpoint"></param>
-        /// <param name="sent"></param>
-        protected override void OnSent(EndPoint endpoint, long sent) => ThreadPool.QueueUserWorkItem(o => { ReceiveAsync(); });
-        /// <summary>
         /// Send unencrypted data
         /// </summary>
         /// <param name="buffer">plaintext</param>
@@ -51,23 +50,42 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
             var session = CreateSession((IPEndPoint)endPoint);
             session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
-        protected UdpSession CreateSession(IPEndPoint endPoint)
+        protected abstract IClient CreateClient(ISession session);
+        protected virtual UdpSession CreateSession(IPEndPoint endPoint)
         {
             // we have to check if the endPoint is already in the dictionary,
             // which means the client is already in the dictionary, we do not need to create it
             // we just retrieve the session from the dictionary
-            if (ClientBase.ClientPool.ContainsKey(endPoint))
+            lock (Sessions)
             {
-                return (UdpSession)ClientBase.ClientPool[endPoint].Session;
+                if (Sessions.ContainsKey(endPoint))
+                {
+                    return Sessions[endPoint];
+                }
+                else
+                {
+                    var session = new UdpSession(this, endPoint);
+                    CreateClient(session);
+                    Sessions.Add(endPoint, session);
+                    return session;
+                }
             }
-            else
-            {
-                // we create session and create client 
-                // then we bind the event with client and session
-                var session = new UdpSession(this, endPoint);
-                ClientBase.CreateClient(session);
-                return session;
-            }
+            // lock (ClientBase.ClientPool)
+            // {
+            //     if (ClientBase.ClientPool.ContainsKey(endPoint))
+            //     {
+            //         return (UdpSession)ClientBase.ClientPool[endPoint].Session;
+            //     }
+            //     else
+            //     {
+            //         // we create session and create client 
+            //         // then we bind the event with client and session
+            //         var session = new UdpSession(this, endPoint);
+            //         var client = CreateClient(session);
+            //         ClientBase.ClientPool.Add(endPoint, client);
+            //         return session;
+            //     }
         }
     }
 }
+

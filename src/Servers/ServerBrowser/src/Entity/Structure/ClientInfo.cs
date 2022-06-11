@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using UniSpyServer.Servers.ServerBrowser.Abstraction;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 

@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -13,7 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Init)]
+    
     public sealed class InitHandler : CmdHandlerBase
     {
         private new InitRequest _request => (InitRequest)base._request;
@@ -46,16 +43,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             if (initCount == 8)
             {
-                // lock (ConnectHandler.ConnectStatus)
-                // {
-                //     if (!ConnectHandler.ConnectStatus.ContainsKey((uint)_request.Cookie))
-                //     {
-                //         ConnectHandler.ConnectStatus.Add((uint)_request.Cookie, true);
-                //         Console.WriteLine("Connect 执行了!!!!!!!!!!!!!!!!!!!!!!!!!!! " + _request.PortType.ToString());
-                // we start sending connect packet to both of the clients
-                //         StartConnecting();
-                //     }
-                // }
                 StartConnecting();
             }
         }
@@ -66,7 +53,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PortType = _request.PortType,
                 Version = _request.Version,
                 Cookie = _request.Cookie,
-                ClientIndex = _request.ClientIndex
+                ClientIndex = _request.ClientIndex,
+                IsUsingRelay = false
             };
             new ConnectHandler(_client, request).Handle();
         }

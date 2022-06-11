@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         GetChannelUsersInfo,
         GetUserInfo
     }
-    [RequestContract("WHO")]
+    
     public sealed class WhoRequest : RequestBase
     {
         public WhoRequest(string rawRequest) : base(rawRequest){ }

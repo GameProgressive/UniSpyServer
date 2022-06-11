@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
         {
             try
             {
-                new ServerFactory("PresenceSearchPlayer").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
-    [RequestContract(RequestType.NatNegRequest)]
+    
     public sealed class NatNegMsgRequest : RequestBase
     {
         public uint? Cookie { get; set; }

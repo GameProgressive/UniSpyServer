@@ -1,10 +1,10 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 {
-    [RequestContract("others")]
+    
     public sealed class OthersRequest : RequestBase
     {
         public OthersRequest(string rawRequest) : base(rawRequest)

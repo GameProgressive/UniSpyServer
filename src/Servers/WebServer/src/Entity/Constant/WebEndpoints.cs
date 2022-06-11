@@ -7,6 +7,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Constant
         //Contains all endpoints of the web server
         public static readonly List<string> AvailableEndpoints = new List<string>
         {
+            // WSMotd Service
             "/motd/motd.asp",
             "/motd/vercheck.asp",
             // WSAuth Service

@@ -1,5 +1,4 @@
 using System;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
@@ -10,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Application
         {
             try
             {
-                new ServerFactory("PresenceConnectionManager").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

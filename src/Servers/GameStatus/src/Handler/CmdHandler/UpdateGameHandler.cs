@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// <summary>
     /// Handles game snapshot and update game data
     /// </summary>
-    [HandlerContract("updgame")]
+    
     public sealed class UpdateGameHandler : CmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"

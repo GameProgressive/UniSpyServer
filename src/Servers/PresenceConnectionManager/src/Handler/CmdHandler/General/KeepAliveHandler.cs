@@ -1,11 +1,10 @@
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
-    [HandlerContract("ka")]
+
     public sealed class KeepAliveHandler : CmdHandlerBase
     {
         public KeepAliveHandler(IClient client, IRequest request) : base(client, request)

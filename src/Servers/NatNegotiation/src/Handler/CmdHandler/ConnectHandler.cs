@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
@@ -11,11 +12,10 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Connect)]
+    
     public sealed class ConnectHandler : CmdHandlerBase
     {
         /// <summary>
@@ -36,11 +36,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            if (_request.IsUsingRelay)
-            {
-                LogWriter.Info("we are using relay solution");
-                return;
-            }
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Values.Where(k =>
                                         k.Cookie == _request.Cookie
@@ -51,58 +46,61 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 // LogWriter.Info("No users match found we continue waitting.");
             }
         }
-
-
-
         protected override void DataOperation()
         {
 
-
-            var clientRemoteIPEnd = _matchedInfos.Where(k =>
-                k.ServerID == _client.Session.Server.ServerID
-                && k.ClientIndex == NatClientIndex.GameClient
-                && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
-
-            var serverRemoteIPEnd = _matchedInfos.Where(k =>
-                k.ServerID == _client.Session.Server.ServerID
-                && k.ClientIndex == NatClientIndex.GameServer
-                && k.PortType == NatPortType.NN3).Select(k => k.PublicIPEndPoint).First();
-
-            _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
-            _gameServer = (Client)Client.ClientPool[serverRemoteIPEnd];
-
-            if (_gameServer == null || _gameClient == null)
-            {
-                throw new NNException("Init is finished, but two clients are not found in the ClientPool");
-            }
-
-
-            IPEndPoint guessedClientIPEndpoint, guessedServerIPEndpoint;
+            IPEndPoint guessedClientIPEndPoint, guessedServerIPEndPoint;
 
             if (_request.IsUsingRelay)
             {
+                // string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+                var publicEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.102"), 10086);
                 // we directly construct the relay server for game client and server client
-                guessedClientIPEndpoint = _client.Session.Server.Endpoint;
-                guessedServerIPEndpoint = _client.Session.Server.Endpoint;
+                guessedClientIPEndPoint = publicEndPoint;
+                guessedServerIPEndPoint = publicEndPoint;
             }
             else
             {
-                var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient).ToDictionary(k => (NatPortType)k.PortType, k => k);
-                var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer).ToDictionary(k => (NatPortType)k.PortType, k => k);
-                var clientNatProperty = AddressCheckHandler.DetermineNatProperties(clientInfos);
-                var serverNatProperty = AddressCheckHandler.DetermineNatProperties(serverInfos);
-                guessedClientIPEndpoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
-                guessedServerIPEndpoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+                var clientRemoteIPEnd = _matchedInfos.Where(k =>
+                    k.ServerID == _client.Session.Server.ServerID
+                    && k.ClientIndex == NatClientIndex.GameClient
+                    && k.PortType == NatPortType.NN3)
+                    .Select(k => k.PublicIPEndPoint).First();
+
+                var serverRemoteIPEnd = _matchedInfos.Where(k =>
+                    k.ServerID == _client.Session.Server.ServerID
+                    && k.ClientIndex == NatClientIndex.GameServer
+                    && k.PortType == NatPortType.NN3)
+                    .Select(k => k.PublicIPEndPoint).First();
+
+                _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
+                _gameServer = (Client)Client.ClientPool[serverRemoteIPEnd];
+
+                if (_gameServer == null || _gameClient == null)
+                {
+                    throw new NNException("Init is finished, but two clients are not found in the ClientPool");
+                }
+
+                var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient)
+                .ToDictionary(k => (NatPortType)k.PortType, k => k);
+                var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer)
+                .ToDictionary(k => (NatPortType)k.PortType, k => k);
+                var clientNatProperty = AddressCheckHandler.DetermineNatType(clientInfos);
+                var serverNatProperty = AddressCheckHandler.DetermineNatType(serverInfos);
+                guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
+                guessedServerIPEndPoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+                Debug.WriteLine($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
+                Debug.WriteLine($"server real: {serverRemoteIPEnd}, guessed: {guessedServerIPEndPoint}");
             }
 
             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
             _responseToClient = new ConnectResponse(
                 request,
-                new ConnectResult { RemoteEndPoint = guessedServerIPEndpoint });
+                new ConnectResult { RemoteEndPoint = guessedServerIPEndPoint });
 
             _responseToServer = new ConnectResponse(
                 _request,
-                new ConnectResult { RemoteEndPoint = guessedClientIPEndpoint });
+                new ConnectResult { RemoteEndPoint = guessedClientIPEndPoint });
 
             _gameClient.Send(_responseToClient);
             _gameServer.Send(_responseToServer);

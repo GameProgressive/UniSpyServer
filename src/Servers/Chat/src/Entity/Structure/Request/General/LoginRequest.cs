@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using System.Linq;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         UniqueNickLogin,
         NickAndEmailLogin,
     }
-    [RequestContract("LOGIN")]
+    
     public sealed class LoginRequest : RequestBase
     {
         public LoginRequest(string rawRequest) : base(rawRequest){ }

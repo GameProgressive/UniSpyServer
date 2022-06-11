@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         {
             try
             {
-                new ServerFactory("NatNegotiation").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

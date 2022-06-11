@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// <summary>
     /// Set persist storage data
     /// </summary>
-    [HandlerContract("setpd")]
+    
     public sealed class SetPlayerDataHandler : CmdHandlerBase
     {
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;

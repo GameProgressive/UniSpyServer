@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request
 {
-    [RequestContract("SearchForRecords")]
+    
     public class SearchForRecordsRequest : RequestBase
     {
         public string Filter { get; set; }

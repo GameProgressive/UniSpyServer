@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    [HandlerContract("searchunique")]
+    
     public sealed class SearchUniqueHandler : CmdHandlerBase
     {
         private new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;

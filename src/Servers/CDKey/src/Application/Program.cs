@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.CDKey.Application
         {
             try
             {
-                new ServerFactory("CDKey").Start();
+                new ServerLauncher().Start();
             }
             catch (Exception e)
             {

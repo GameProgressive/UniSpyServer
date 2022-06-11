@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
 
-    [HandlerContract("otherslist")]
+    
     public sealed class OthersListHandler : CmdHandlerBase
     {
         private new OthersListRequest _request => (OthersListRequest)base._request;

@@ -1,11 +1,11 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 {
-    [RequestContract("authp")]
+    
     public sealed class AuthPlayerRequest : RequestBase
     {
         public AuthMethod RequestType { get; private set; }

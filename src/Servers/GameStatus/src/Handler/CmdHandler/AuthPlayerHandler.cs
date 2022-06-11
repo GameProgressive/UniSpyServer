@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Contract;
+
 using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    [HandlerContract("authp")]
+    
     public sealed class AuthPlayerHandler : CmdHandlerBase
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;

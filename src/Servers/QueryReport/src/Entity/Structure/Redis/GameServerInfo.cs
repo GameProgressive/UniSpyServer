@@ -4,7 +4,6 @@ using System.Net;
 using Newtonsoft.Json;
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;
 

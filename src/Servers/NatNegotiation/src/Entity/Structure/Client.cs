@@ -1,6 +1,6 @@
+using UniSpyServer.Servers.NatNegotiation.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
 {
@@ -13,17 +13,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
             Info = new ClientInfo();
         }
 
-        protected override void OnReceived(object buffer)
-        {
-            if (Info.IsTransitNetowrkTraffic)
-            {
-                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficTransitTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                Info.TrafficTransitTarget.Session.Send((byte[])buffer);
-            }
-            else
-            {
-                base.OnReceived(buffer);
-            }
-        }
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
     }
 }

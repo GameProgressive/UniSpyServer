@@ -1,4 +1,5 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceConnectionManager.Handler;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
@@ -31,5 +32,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
             LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, sendingBuffer);
             Session.Send(sendingBuffer);
         }
+
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
     }
 }

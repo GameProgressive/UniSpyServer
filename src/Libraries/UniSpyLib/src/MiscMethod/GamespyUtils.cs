@@ -27,6 +27,8 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
         /// <returns>A converted dictionary</returns>
         public static Dictionary<string, string> ConvertToKeyValue(string[] parts)
         {
+            // we remove final item
+            parts = parts.Where(p => p != "final").ToArray();
             Dictionary<string, string> dict = new Dictionary<string, string>();
             try
             {

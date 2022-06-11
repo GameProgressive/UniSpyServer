@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
-    [RequestContract(RequestType.PreInit)]
+    
     public sealed class PreInitRequest : RequestBase
     {
         public PreInitState? State { get; private set; }

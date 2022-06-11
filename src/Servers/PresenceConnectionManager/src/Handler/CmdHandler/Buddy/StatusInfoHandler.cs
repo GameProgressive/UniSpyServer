@@ -1,5 +1,4 @@
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
@@ -7,12 +6,12 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
     /// <summary>
     /// TODO Status info should be stored in redis
     /// </summary>
-    [HandlerContract("statusinfo")]
+
     public sealed class StatusInfoHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new StatusInfoRequest _request => (StatusInfoRequest)base._request;

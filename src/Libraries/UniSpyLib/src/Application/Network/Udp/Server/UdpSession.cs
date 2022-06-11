@@ -30,7 +30,7 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
         public virtual void OnReceived(byte[] message)
         {
             // Server.ReceiveAsync();
-            ThreadPool.QueueUserWorkItem(o => { Server.ReceiveAsync(); });
+            ThreadPool.QueueUserWorkItem(o => { try { Server.ReceiveAsync(); } catch { } });
             OnReceive(message);
         }
 
@@ -50,9 +50,9 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
             }
         }
         public void Send(string response) => Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));
-        public void Send(byte[] response) => Server.SendAsync(RemoteIPEndPoint, response);
+        public void Send(byte[] response) => Server.Send(RemoteIPEndPoint, response);
         public void Send(IPEndPoint endPoint, string response) => Send(endPoint, UniSpyEncoding.GetBytes(response));
-        public void Send(IPEndPoint endPoint, byte[] response) => Server.SendAsync(endPoint, response);
+        public void Send(IPEndPoint endPoint, byte[] response) => Server.Send(endPoint, response);
 
     }
 }

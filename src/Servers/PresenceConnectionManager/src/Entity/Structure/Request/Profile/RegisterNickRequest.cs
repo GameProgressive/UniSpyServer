@@ -1,10 +1,9 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
 {
-    [RequestContract("registernick")]
+
     public sealed class RegisterNickRequest : RequestBase
     {
         public string UniqueNick { get; private set; }

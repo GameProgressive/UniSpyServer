@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    [HandlerContract("KICK")]
+    
     public sealed class KickHandler : ChannelHandlerBase
     {
         private new KickRequest _request => (KickRequest)base._request;

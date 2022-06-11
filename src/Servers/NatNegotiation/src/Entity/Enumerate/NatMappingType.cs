@@ -22,14 +22,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
         Symmetric,
         Unknown
     }
-    public enum NatPromiscuty : byte
-    {
-        Promiscuous,
-        NotPromiscuous,
-        PortPromiscuous,
-        IpPromiscuous,
-        PromiscuityNotApplicable
-    }
     public enum NatPortMappingScheme : byte
     {
         Unrecognized,

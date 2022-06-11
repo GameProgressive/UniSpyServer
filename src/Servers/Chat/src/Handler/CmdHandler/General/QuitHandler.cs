@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    [HandlerContract("QUIT")]
+
     public sealed class QuitHandler : LogedInHandlerBase
     {
         private new QuitRequest _request => (QuitRequest)base._request;
@@ -39,9 +39,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                     Reason = _request.Reason
                 };
                 new PartHandler(_client, partRequest).Handle();
+                // client is loged out
+                _client.Info.IsLoggedIn = false;
             }
-            // user already loged out
-            _client.Info.IsLoggedIn = false;
         }
     }
 }

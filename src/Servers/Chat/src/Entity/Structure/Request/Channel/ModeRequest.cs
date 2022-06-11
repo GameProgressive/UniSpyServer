@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
@@ -60,7 +60,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         SetChannelModes
 
     }
-    [RequestContract("MODE")]
+    
     public sealed class ModeRequest : ChannelRequestBase
     {
         public ModeRequestType RequestType { get; set; }

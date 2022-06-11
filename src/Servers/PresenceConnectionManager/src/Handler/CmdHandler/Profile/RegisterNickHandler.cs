@@ -1,15 +1,14 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
-    [HandlerContract("registernick")]
+
     public sealed class RegisterNickHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new RegisterNickRequest _request => (RegisterNickRequest)base._request;

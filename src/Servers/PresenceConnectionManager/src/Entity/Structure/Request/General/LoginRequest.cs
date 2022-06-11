@@ -1,11 +1,10 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
 {
-    [RequestContract("login")]
+
     public sealed class LoginRequest : RequestBase
     {
         public string UserChallenge { get; private set; }

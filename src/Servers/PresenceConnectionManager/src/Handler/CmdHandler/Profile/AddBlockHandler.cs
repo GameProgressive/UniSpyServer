@@ -1,12 +1,11 @@
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
-    [HandlerContract("addblock")]
+
     public sealed class AddBlockHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;

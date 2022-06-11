@@ -54,12 +54,18 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         //todo add ondisconnect event process
         protected override void OnDisconnected()
         {
-            var req = new QuitRequest()
+            if (Info.IsLoggedIn)
             {
-                Reason = "Client Disconnected"
-            };
-            new QuitHandler(this, req).Handle();
+                var req = new QuitRequest()
+                {
+                    Reason = $"{Info.NickName} Disconnected."
+                };
+                new QuitHandler(this, req).Handle();
+                Info.IsLoggedIn = false;
+            }
             base.OnDisconnected();
         }
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+
     }
 }

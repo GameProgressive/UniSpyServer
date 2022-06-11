@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    [HandlerContract("CRYPT")]
+    
     public sealed class CryptHandler : CmdHandlerBase
     {
         private new CryptRequest _request => (CryptRequest)base._request;

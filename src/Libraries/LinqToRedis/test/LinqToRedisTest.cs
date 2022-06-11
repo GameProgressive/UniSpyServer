@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UniSpyServer.LinqToRedis;
 using Xunit;
 
@@ -7,6 +9,52 @@ namespace UniSpy.Redis.Test
 {
     public class LinqToRedisTest
     {
+        [Fact]
+        public void PerformaceTest()
+        {
+            // Given
+            var redis = new RedisClient();
+            var value = new UserInfo
+            {
+                Cookie = 0,
+                ServerID = new Guid(),
+                UserName = "hello0",
+                RemoteEndPoint = "127.0.0.1:7890"
+            };
+
+            // linqtoredis performance
+            // When
+            var start = System.DateTime.Now;
+            for (var i = 0; i < 100; i++)
+            {
+                redis.SetValue(value);
+            }
+            Console.WriteLine("linqtoredis sync: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
+
+            start = System.DateTime.Now;
+            
+            Parallel.For(0, 100,
+                               index =>
+                               {
+                                   redis.SetValue(value);
+                               });
+            Console.WriteLine("linqtoredis async: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
+            // natural redis api performance
+            start = System.DateTime.Now;
+            for (var i = 0; i < 100; i++)
+            {
+                redis.Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
+            }
+            Console.WriteLine("natural redis api sync: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
+            start = System.DateTime.Now;
+
+            Parallel.For(0, 100,
+                               index =>
+                               {
+                                   redis.Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
+                               });
+            Console.WriteLine("natural redis api async: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
+        }
         [Fact]
         public void ReadTest1()
         {

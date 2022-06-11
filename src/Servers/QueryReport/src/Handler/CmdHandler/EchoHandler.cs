@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.contract;
+
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    [HandlerContract(RequestType.Echo)]
+    
     public sealed class EchoHandler : CmdHandlerBase
     {
         private new EchoRequest _request => (EchoRequest)base._request;

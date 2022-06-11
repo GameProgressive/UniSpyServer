@@ -1,10 +1,10 @@
 using System.Linq;
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
 {
-    [RequestContract("SubmitReport")]
+    
     public class SubmitReportRequest : RequestBase
     {
         public string Certificate { get; set; }

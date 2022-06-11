@@ -1,9 +1,9 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
-    [RequestContract("PART")]
+    
     public sealed class PartRequest : ChannelRequestBase
     {
         public new string ChannelName{ get => base.ChannelName; set => base.ChannelName = value; }

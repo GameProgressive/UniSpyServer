@@ -1,5 +1,5 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Contract;
+
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
 using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
 {
-    [HandlerContract("LoginProfileWithGameId")]
+    
     public sealed class LoginProfileWithGameIdHandler : LoginProfileHandler
     {
         private new LoginProfileWithGameIdRequest _request => (LoginProfileWithGameIdRequest)base._request;

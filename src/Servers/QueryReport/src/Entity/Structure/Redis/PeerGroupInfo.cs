@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UniSpyServer.LinqToRedis;
-using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.UniSpyLib.Extensions;
 

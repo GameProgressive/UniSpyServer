@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
-    [HandlerContract("JOIN")]
+    
     public sealed class JoinHandler : LogedInHandlerBase
     {
         public static IDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel> Channels { get; private set; }

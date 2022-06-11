@@ -1,5 +1,4 @@
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
@@ -7,9 +6,9 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
-    [HandlerContract("newprofile")]
+
     public sealed class NewProfileHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new NewProfileRequest _request => (NewProfileRequest)base._request;
@@ -46,7 +45,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 }
                 else
                 {
-                    Profile profiles = new Profile
+                    var profiles = new UniSpyLib.Database.DatabaseModel.Profile
                     {
                         ProfileId = (int)_client.Info.ProfileInfo.ProfileId,
                         Nick = _request.NewNick,

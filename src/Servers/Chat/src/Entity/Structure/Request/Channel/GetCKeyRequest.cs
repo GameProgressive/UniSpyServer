@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Contract;
+
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         GetChannelSpecificUserKeyValue
     }
 
-    [RequestContract("GETCKEY")]
+    
     public sealed class GetCKeyRequest : ChannelRequestBase
     {
         public GetKeyReqeustType RequestType { get; private set; }
