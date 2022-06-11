@@ -8,6 +8,10 @@ using UniSpyServer.LinqToRedis.Linq;
 
 namespace UniSpyServer.LinqToRedis
 {
+    /// <summary>
+    /// TODO we need to implement get AllKeys, AllValues
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
     public class RedisClient<TValue> : IDisposable where TValue : RedisKeyValueObject
     {
         public TimeSpan? ExpireTime { get; private set; }
@@ -20,7 +24,9 @@ namespace UniSpyServer.LinqToRedis
         /// </summary>
         /// <typeparam name="TKey">The redis key class</typeparam>
         /// <returns></returns>
-        public QueryableObject<TValue> Values;
+        public QueryableObject<TValue> Context;
+        // public List<TValue> AllValues => Context.ToList();
+        // public List<TValue> AllKeys => Context.Select(k => k.Key).ToList();
         static RedisClient()
         {
             ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
@@ -30,7 +36,7 @@ namespace UniSpyServer.LinqToRedis
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
-            Values = new QueryableObject<TValue>(_provider);
+            Context = new QueryableObject<TValue>(_provider);
         }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace UniSpyServer.LinqToRedis
             Multiplexer = multiplexer;
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
-            Values = new QueryableObject<TValue>(_provider);
+            Context = new QueryableObject<TValue>(_provider);
         }
         public bool DeleteKeyValue(TValue key)
         {
@@ -53,20 +59,38 @@ namespace UniSpyServer.LinqToRedis
         {
             return GetKeyValues(key).Values.ToList();
         }
-        public List<string> GetMatchedKeys(IRedisKey key)
+        public List<string> GetMatchedKeys(IRedisKey key = null)
         {
             var matchedKeys = new List<string>();
             foreach (var end in _endPoints)
             {
                 var server = Multiplexer.GetServer(end);
-                foreach (var k in server.Keys(pattern: key.SearchKey, database: Db.Database))
+                if (key is null)
                 {
-                    matchedKeys.Add(k);
+                    // we get all key from database
+                    foreach (var k in server.Keys(pattern: "*", database: Db.Database))
+                    {
+                        matchedKeys.Add(k);
+                    }
+                }
+                else
+                {
+                    // we get specific key from database
+                    foreach (var k in server.Keys(pattern: key.SearchKey, database: Db.Database))
+                    {
+                        matchedKeys.Add(k);
+                    }
                 }
             }
             return matchedKeys;
         }
-        public Dictionary<string, TValue> GetKeyValues(IRedisKey key)
+        /// <summary>
+        /// Get matched key value by key from database.
+        /// if key is null this will get all key value from database
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public Dictionary<string, TValue> GetKeyValues(IRedisKey key = null)
         {
             var dict = new Dictionary<string, TValue>();
             var keys = GetMatchedKeys(key);

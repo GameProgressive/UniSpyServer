@@ -10,6 +10,12 @@ namespace UniSpy.Redis.Test
     public class LinqToRedisTest
     {
         [Fact]
+        public void GetAllValues()
+        {
+            var redis = new RedisClient();
+            var data = redis.Context.ToList();
+        }
+        [Fact]
         public void PerformaceTest()
         {
             // Given
@@ -32,7 +38,7 @@ namespace UniSpy.Redis.Test
             Console.WriteLine("linqtoredis sync: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
 
             start = System.DateTime.Now;
-            
+
             Parallel.For(0, 100,
                                index =>
                                {
@@ -59,15 +65,15 @@ namespace UniSpy.Redis.Test
         public void ReadTest1()
         {
             var redis = new RedisClient();
-            var data2 = redis.Values.Where(k => k.Cookie == 0).ToList();
-            var data3 = redis.Values.Where(k => k.Cookie == 0).FirstOrDefault();
-            var data4 = redis.Values.FirstOrDefault(k => k.Cookie == 0);
+            var data2 = redis.Context.Where(k => k.Cookie == 0).ToList();
+            var data3 = redis.Context.Where(k => k.Cookie == 0).FirstOrDefault();
+            var data4 = redis.Context.FirstOrDefault(k => k.Cookie == 0);
         }
         [Fact]
         public void ReadTest2()
         {
             var redis = new RedisClient();
-            var data2 = redis.Values.Where(k => k.RemoteEndPoint == "127.0.0.1:7777").ToList();
+            var data2 = redis.Context.Where(k => k.RemoteEndPoint == "127.0.0.1:7777").ToList();
             Console.WriteLine(data2.Count);
         }
         [Fact]
@@ -144,8 +150,8 @@ namespace UniSpy.Redis.Test
             var redis = new RedisClient();
             // Given
             // var data2 = redis.Values.Count(k => k.Cookie == 0);
-            var data3 = redis.Values.First(k => k.Cookie == 0);
-            var data4 = redis.Values.Where(k => k.Cookie == 0).First();
+            var data3 = redis.Context.First(k => k.Cookie == 0);
+            var data4 = redis.Context.Where(k => k.Cookie == 0).First();
             // When
 
             // Then

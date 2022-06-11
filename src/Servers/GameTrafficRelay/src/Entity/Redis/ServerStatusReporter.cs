@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Timers;
 using Newtonsoft.Json;
@@ -9,25 +10,8 @@ using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Redis
+namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis
 {
-    record RelayServerInfo : RedisKeyValueObject
-    {
-        [RedisKey]
-        public Guid ServerID { get; init; }
-        [RedisKey]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint PublicIPEndPoint { get; init; }
-
-        public RelayServerInfo() : base(TimeSpan.FromMinutes(1))
-        {
-        }
-    }
-
-    class RedisClient : UniSpyServer.LinqToRedis.RedisClient<RelayServerInfo>
-    {
-        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.GameTrafficRelay) { }
-    }
     class ServerStatusReporter
     {
         private Timer _timer;
@@ -39,10 +23,12 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Redis
             _timer = new Timer(60000);
             _expireTimeInterval = new TimeSpan(0, 1, 0);
             _redisClient = new RedisClient();
+            var clientCount = Client.ClientPool.Values.Where(x => ((Client)x).Info.TrafficRelayTarget is not null).Count();
             _info = new RelayServerInfo()
             {
                 ServerID = config.ServerID,
-                PublicIPEndPoint = config.ListeningEndPoint
+                PublicIPEndPoint = config.ListeningEndPoint,
+                ClientCount = clientCount
             };
         }
         public void Start()

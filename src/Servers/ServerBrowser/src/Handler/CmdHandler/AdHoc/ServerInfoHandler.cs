@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _result.GameServerInfo = _gameServerRedisClient.Values.FirstOrDefault(x =>
+            _result.GameServerInfo = _gameServerRedisClient.Context.FirstOrDefault(x =>
                 x.HostIPAddress == _request.TargetIPEndPoint.Address &
                 x.QueryReportPort == _request.TargetIPEndPoint.Port);
 

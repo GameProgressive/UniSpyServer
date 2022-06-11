@@ -63,7 +63,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private void P2PGroupRoomList()
         {
             // Game name is unique in redis database
-            var groupInfo = _peerGroupRedisClient.Values.FirstOrDefault(x => x.GameName == _request.GameName);
+            var groupInfo = _peerGroupRedisClient.Context.FirstOrDefault(x => x.GameName == _request.GameName);
             if (groupInfo == null)
             {
                 // search gamename in database
@@ -92,7 +92,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void P2PServerMainList()
         {
-            var serverInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
+            var serverInfos = _gameServerRedisClient.Context.Where(x => x.GameName == _request.GameName).ToList();
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
             //TODO do filter
@@ -100,7 +100,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void ServerMainList()
         {
-            var serverInfos = _gameServerRedisClient.Values.Where(x => x.GameName == _request.GameName).ToList();
+            var serverInfos = _gameServerRedisClient.Context.Where(x => x.GameName == _request.GameName).ToList();
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
         }

@@ -15,7 +15,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
-    
+
     public sealed class ConnectHandler : CmdHandlerBase
     {
         /// <summary>
@@ -30,6 +30,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToServer;
         private Client _gameClient;
         private Client _gameServer;
+        private static GameTrafficRelay.Entity.Structure.Redis.RedisClient _relayRedisClient;
+        static ConnectHandler()
+        {
+            _relayRedisClient = new GameTrafficRelay.Entity.Structure.Redis.RedisClient();
+        }
         public ConnectHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ConnectResult();
@@ -37,7 +42,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // !! the initResult count is valid in InitHandler, we do not need validate it again
-            _matchedInfos = _redisClient.Values.Where(k =>
+            _matchedInfos = _redisClient.Context.Where(k =>
                                         k.Cookie == _request.Cookie
                                      && k.Version == _request.Version).ToList();
             if (_matchedInfos?.Count != 8)
@@ -53,11 +58,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             if (_request.IsUsingRelay)
             {
-                // string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-                var publicEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.102"), 10086);
-                // we directly construct the relay server for game client and server client
-                guessedClientIPEndPoint = publicEndPoint;
-                guessedServerIPEndPoint = publicEndPoint;
+                var relayServers = _relayRedisClient.Context.ToList();
+                var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
+                guessedClientIPEndPoint = relayEndPoint;
+                guessedServerIPEndPoint = relayEndPoint;
             }
             else
             {

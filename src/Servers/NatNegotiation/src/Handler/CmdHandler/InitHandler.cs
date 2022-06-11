@@ -35,7 +35,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             UpdateUserInfo();
             // we check if all init packet is received
-            var initCount = _redisClient.Values.Count(k =>
+            var initCount = _redisClient.Context.Count(k =>
             k.Cookie == _request.Cookie
             && k.Version == _request.Version);
             // if there are 8 init result in redis, Client.Pool must have the information of both client

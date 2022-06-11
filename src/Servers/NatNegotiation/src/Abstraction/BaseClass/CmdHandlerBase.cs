@@ -13,10 +13,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        protected RedisClient _redisClient;
-        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
+        protected static RedisClient _redisClient;
+        static CmdHandlerBase()
         {
             _redisClient = new RedisClient();
+        }
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request)
+        {
         }
     }
 }

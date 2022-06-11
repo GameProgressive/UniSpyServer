@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
-            var servers = _redisClient.Values.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            var servers = _redisClient.Context.Where(x => x.InstantKey == _request.InstantKey).ToList();
             if (servers.Count() != 1)
             {
                 LogWriter.Info("Can not find game server");

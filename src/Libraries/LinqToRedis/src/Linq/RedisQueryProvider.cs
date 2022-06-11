@@ -15,16 +15,25 @@ namespace UniSpyServer.LinqToRedis.Linq
 
         public override object Execute(Expression expression)
         {
+            // if (node.Method.Name == "ToList")
+            /* TODO currently we do not know how to get the ToList() function name
+            we just simply do this*/
+            if (expression.GetType() == typeof(ConstantExpression))
+            {
+                return _client.GetKeyValues().Values;
+            }
+            var node = (MethodCallExpression)expression;
+            if (node.Method.Name == "Count")
+            {
+                return _client.GetMatchedKeys().Count;
+            }
+
             var matchedKeys = new List<string>();
             expression = QueryEvaluator.PartialEval(expression);
             var builder = new RedisQueryBuilder<TValue>(expression);
             builder.Build();
 
-            var node = (MethodCallExpression)expression;
-            if (node.Method.Name == "Count")
-            {
-                return _client.GetMatchedKeys(builder.KeyObject).Count;
-            }
+
             var values = _client.GetValues(builder.KeyObject);
 
             switch (node.Method.Name)

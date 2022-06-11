@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 case NatNegResult.Success:
                     // if there is a success p2p connection, we delete the init info in redis
-                    _redisClient.Values.Where(k => k.Cookie == _request.Cookie).ToList()
+                    _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList()
                             .ForEach(k => _redisClient.DeleteKeyValue(k));
                     LogWriter.Info("Nat negotiation success.");
                     break;

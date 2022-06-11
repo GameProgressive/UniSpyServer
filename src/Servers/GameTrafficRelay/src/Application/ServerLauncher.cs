@@ -1,4 +1,4 @@
-using UniSpyServer.Servers.GameTrafficRelay.Entity.Redis;
+using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;

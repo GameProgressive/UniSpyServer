@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            var result = _redisClient.Values.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            var result = _redisClient.Context.Where(x => x.InstantKey == _request.InstantKey).ToList();
             if (result.Count != 1)
             {
                 throw new QRException("No server or multiple servers found in redis, please make sure there is only one server.");
