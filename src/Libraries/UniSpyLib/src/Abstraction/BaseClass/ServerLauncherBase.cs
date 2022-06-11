@@ -45,21 +45,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
             Server = LaunchNetworkService(cfg);
             
-            // switch (cfg.SocketType)
-            // {
-            //     case "Udp":
-            //         Server = new UdpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-            //         break;
-            //     case "Tcp":
-            //         Server = new TcpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-            //         break;
-            //     case "Http":
-            //         Server = new HttpServer(cfg.ServerID, cfg.ServerName, cfg.ListeningEndPoint);
-            //         break;
-            //     default:
-            //         throw new Exception($"Unsupported socket type:{cfg.SocketType} please check config file");
-            // }
-
             if (Server == null)
             {
                 throw new Exception("Server created failed");
