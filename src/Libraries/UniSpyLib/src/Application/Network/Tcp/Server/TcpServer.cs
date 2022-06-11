@@ -35,12 +35,12 @@ namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
         }
         protected abstract IClient CreateClient(ISession session);
 
-        protected override NetCoreServer.TcpSession CreateSession()
+        protected override NetCoreServer.TcpSession CreateSession() => new TcpSession(this);
+
+        protected override void OnConnecting(NetCoreServer.TcpSession session)
         {
-            var session = new TcpSession(this);
-            // ClientBase.CreateClient(session);
-            CreateClient(session);
-            return session;
+            base.OnConnecting(session);
+            CreateClient((ISession)session);
         }
     }
 }

@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    
+
     public sealed class QuitHandler : LogedInHandlerBase
     {
         private new QuitRequest _request => (QuitRequest)base._request;
@@ -39,9 +39,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                     Reason = _request.Reason
                 };
                 new PartHandler(_client, partRequest).Handle();
+                // client is loged out
+                _client.Info.IsLoggedIn = false;
             }
-            // user already loged out
-            _client.Info.IsLoggedIn = false;
         }
     }
 }

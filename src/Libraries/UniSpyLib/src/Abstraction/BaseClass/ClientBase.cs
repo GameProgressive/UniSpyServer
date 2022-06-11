@@ -187,21 +187,27 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             response.Build();
             if (response.SendingBuffer.GetType() == typeof(string))
             {
-                LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (string)response.SendingBuffer);
                 buffer = UniSpyEncoding.GetBytes((string)response.SendingBuffer);
             }
             else
             {
                 buffer = (byte[])response.SendingBuffer;
-                LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, (byte[])buffer);
             }
-
+            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {
                 buffer = Crypto.Encrypt(buffer);
             }
             Session.Send(buffer);
+        }
+        protected virtual void LogNetworkSending(IPEndPoint ipEndPoint, byte[] buffer)
+        {
+            LogWriter.LogNetworkSending(ipEndPoint, buffer);
+        }
+        protected virtual void LogNetworkReceiving(IPEndPoint ipEndPoint, byte[] buffer)
+        {
+            LogWriter.LogNetworkReceiving(ipEndPoint, buffer);
         }
     }
 }
