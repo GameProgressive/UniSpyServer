@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
+using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Application
