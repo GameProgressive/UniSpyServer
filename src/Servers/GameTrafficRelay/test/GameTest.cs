@@ -33,9 +33,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
             var clientRequest = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x07, 0x00, 0x00, 0x02, 0x9A, 0xC0, 0xA8, 0x01, 0x67, 0x6C, 0xFD, 0x00, 0x00 };
             var serverRequest = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x07, 0x00, 0x00, 0x02, 0x9A, 0xC0, 0xA8, 0x00, 0x67, 0x6C, 0xFD, 0x00, 0x00 };
 
-            TestClient.ClientPool.Add(client.Session.RemoteIPEndPoint, client);
             client.OnReceived(clientRequest);
-            TestClient.ClientPool.Add(server.Session.RemoteIPEndPoint, server);
             server.OnReceived(serverRequest);
 
             client.OnReceived(clientRequest);
@@ -49,8 +47,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
             client.OnReceived(clientRequest);
             server.OnReceived(serverRequest);
 
-            Assert.True(client.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == server.Session.RemoteIPEndPoint);
-            Assert.True(server.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == client.Session.RemoteIPEndPoint);
+            Assert.True(client.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(server.Session.RemoteIPEndPoint));
+            Assert.True(server.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(client.Session.RemoteIPEndPoint));
         }
 
         [Fact]

@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
 {
-    
+
     public sealed class PingHandler : CmdHandlerBase
     {
         private new Client _client => (Client)base._client;
@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
                 var targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(
                                 u => ((Client)u).Info.Cookie == _request.Cookie
                                 && ((Client)u).Info.ClientIndex == _request.ClientIndex
-                                && u.Session.RemoteIPEndPoint != _client.Session.RemoteIPEndPoint);
+                                && !u.Session.RemoteIPEndPoint.Equals(_client.Session.RemoteIPEndPoint));
 
                 if (targetClient is null)
                 {
