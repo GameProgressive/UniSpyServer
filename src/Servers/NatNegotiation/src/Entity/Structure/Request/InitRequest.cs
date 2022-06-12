@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
-    
+
     public sealed class InitRequest : CommonRequestBase
     {
         public string GameName { get; private set; }
@@ -23,7 +23,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             base.Parse();
             var ipBytes = RawRequest.Skip(15).Take(4).ToArray();
             var portBytes = RawRequest.Skip(19).Take(2).Reverse().ToArray();
-            var port = BitConverter.ToUInt16(portBytes);
+            // we found that the local port is not correct in gamespy and wireshark
+            ushort port;
+            if (PortType == NatPortType.NN2 || PortType == NatPortType.NN3)
+            {
+                port = (ushort)(BitConverter.ToUInt16(portBytes) + 1);
+            }
+            else
+            {
+                port = BitConverter.ToUInt16(portBytes);
+            }
             PrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
             if (RawRequest.Length > 21)
             {
