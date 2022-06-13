@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
             {
                 // check last _incomplteBuffer if it has incomplete message, then combine them
                 byte[] completeBuffer;
-                if (_incompleteBuffer != null)
+                if (_incompleteBuffer is not null)
                 {
                     completeBuffer = _incompleteBuffer.Concat(message).ToArray();
                     _incompleteBuffer = null;

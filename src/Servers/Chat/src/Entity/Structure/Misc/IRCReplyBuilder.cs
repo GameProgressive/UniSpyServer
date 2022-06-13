@@ -109,14 +109,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
         {
             string buffer = "";
 
-            if (prefix != "" || prefix != null)
+            if (prefix != "" || prefix is not null)
             {
                 buffer = $":{prefix} ";
             }
 
             buffer += $"{cmd} {cmdParams}";
 
-            if (tailing == "" || tailing == null)
+            if (tailing == "" || tailing is null)
             {
                 buffer += "\r\n";
             }

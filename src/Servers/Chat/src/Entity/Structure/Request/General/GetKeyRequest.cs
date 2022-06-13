@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
                 throw new Exception.ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
-            if (_longParam == null)
+            if (_longParam is null)
             {
                 throw new Exception.ChatException("The number of IRC long params in GETKEY request is incorrect.");
             }

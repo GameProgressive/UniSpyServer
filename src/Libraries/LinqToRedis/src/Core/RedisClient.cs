@@ -117,7 +117,7 @@ namespace UniSpyServer.LinqToRedis
             //     throw new System.Exception("Set value failed, key already exists");
             // }
             var result = Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
-            if (value.ExpireTime != null)
+            if (value.ExpireTime is not null)
             {
                 Db.KeyExpire(value.FullKey, value.ExpireTime.Value);
             }

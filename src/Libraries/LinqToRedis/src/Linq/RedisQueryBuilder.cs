@@ -116,7 +116,7 @@ namespace UniSpyServer.LinqToRedis.Linq
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            if (node.Value == null)
+            if (node.Value is null)
             {
                 throw new NotSupportedException("The constant must have value");
             }

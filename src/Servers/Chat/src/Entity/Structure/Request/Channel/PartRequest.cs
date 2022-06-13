@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public override void Parse()
         {
             base.Parse();
-            if (_longParam == null)
+            if (_longParam is null)
             {
                 throw new Exception.ChatException("The reason of living channel is missing.");
             }

@@ -45,7 +45,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
             Server = LaunchNetworkService(cfg);
             
-            if (Server == null)
+            if (Server is null)
             {
                 throw new Exception("Server created failed");
             }

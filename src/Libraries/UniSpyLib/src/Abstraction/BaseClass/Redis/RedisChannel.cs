@@ -37,7 +37,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 
         public virtual void PublishMessage(T message)
         {
-            if (message == null)
+            if (message is null)
             {
                 return;
             }

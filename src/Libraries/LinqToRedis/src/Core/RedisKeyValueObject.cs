@@ -56,12 +56,12 @@ namespace UniSpyServer.LinqToRedis
                 // {
                 //     throw new NotSupportedException($"The complex type:{property.PropertyType} is not supported");
                 // }
-                if (property.GetValue(this) == null)
+                if (property.GetValue(this) is null)
                 {
                     throw new ArgumentNullException($"{property.Name} is null when building full key.");
                 }
                 var keyValueStr = $"{property.Name}={property.GetValue(this)}";
-                if (fullKey == null)
+                if (fullKey is null)
                 {
                     fullKey = $"{keyValueStr}";
                 }
@@ -84,7 +84,7 @@ namespace UniSpyServer.LinqToRedis
 
             foreach (var property in properties)
             {
-                if (property.GetValue(this) == null)
+                if (property.GetValue(this) is null)
                 {
                     continue;
                 }

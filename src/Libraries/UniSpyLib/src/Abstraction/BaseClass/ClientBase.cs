@@ -135,7 +135,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 
         protected virtual byte[] DecryptMessage(byte[] buffer)
         {
-            if (Crypto != null)
+            if (Crypto is not null)
             {
                 return Crypto.Decrypt(buffer);
             }

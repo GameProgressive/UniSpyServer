@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
         public Client(ISession session) : base(session)
         {
             // launch redis channel
-            if (ClientMessageHandler.Channel == null)
+            if (ClientMessageHandler.Channel is null)
             {
                 ClientMessageHandler.Channel = new RedisChannel();
                 ClientMessageHandler.Channel.StartSubscribe();

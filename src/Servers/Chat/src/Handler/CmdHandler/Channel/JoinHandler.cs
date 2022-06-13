@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
-    
+
     public sealed class JoinHandler : LogedInHandlerBase
     {
         public static IDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel> Channels { get; private set; }
@@ -134,7 +134,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             using (var db = new UniSpyContext())
             {
                 var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).FirstOrDefault(x => x.gl.Roomname == buffer[1]);
-                if (officialRoom == null)
+                if (officialRoom is null)
                 {
                     return false;
                 }
@@ -166,7 +166,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void Response()
         {
             // base.Response();
-            if (_response == null)
+            if (_response is null)
             {
                 return;
             }

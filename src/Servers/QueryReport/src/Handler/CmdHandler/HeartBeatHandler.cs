@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //Parse the endpoint information into result class
             _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
 
-            // if (_request.PlayerData?.Count == 0 || _request.PlayerData == null)
+            // if (_request.PlayerData?.Count == 0 || _request.PlayerData is null)
             // {
             //     LogWriter.Info("Ignore incorrect implementation of heartbeat");
             //     return;
@@ -83,7 +83,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
                 x.InstantKey == _request.InstantKey &
                 x.GameName == _request.GameName);
 
-            if (_gameServerInfo == null)
+            if (_gameServerInfo is null)
             {
                 _gameServerInfo = new GameServerInfo()
                 {

@@ -17,24 +17,24 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_client.Info.GameSecretKey == null)
+            if (_client.Info.GameSecretKey is null)
             {
                 string secretKey = DataOperationExtensions
                                 .GetSecretKey(_request.GameName);
                 //we first check and get secrete key from database
-                if (secretKey == null)
+                if (secretKey is null)
                 {
                     throw new System.ArgumentNullException("Can not find secretkey in database.");
                 }
                 //this is client public ip and default query port
                 _client.Info.GameSecretKey = secretKey;
             }
-            if (_client.Info.ClientChallenge == null)
+            if (_client.Info.ClientChallenge is null)
             {
                 _client.Info.ClientChallenge = _request.ClientChallenge;
             }
             // initialize sb encryption
-            if (_client.Crypto == null)
+            if (_client.Crypto is null)
             {
                 _client.Crypto = new SBCrypt(
                     _client.Info.GameSecretKey,

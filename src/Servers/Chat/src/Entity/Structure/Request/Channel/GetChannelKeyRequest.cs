@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                 throw new Exception.ChatException("The cmdParams number is invalid.");
             }
 
-            if (_longParam == null || _longParam.Last() != '\0')
+            if (_longParam is null || _longParam.Last() != '\0')
             {
                 throw new Exception.ChatException("The longParam number is invalid.");
             }

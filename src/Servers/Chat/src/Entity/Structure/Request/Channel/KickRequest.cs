@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
             KickeeNickName = _cmdParams[0];
 
-            if (_longParam == null)
+            if (_longParam is null)
             {
                 throw new Exception.ChatException("The IRC long parameters is missing.");
             }

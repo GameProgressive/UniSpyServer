@@ -1,6 +1,8 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 
 using UniSpyServer.Servers.Chat.Entity.Exception;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
@@ -10,7 +12,7 @@ using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    
+
     public sealed class KickHandler : ChannelHandlerBase
     {
         private new KickRequest _request => (KickRequest)base._request;
@@ -31,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 throw new ChatException("The Kick operation failed, because you are not channel operator.");
             }
             _kickee = _channel.GetChannelUser(_request.KickeeNickName);
-            if (_kickee != null)
+            if (_kickee is null)
             {
                 throw new ChatException($"Can not find kickee:{_request.KickeeNickName} in channel.");
             }

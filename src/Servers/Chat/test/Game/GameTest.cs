@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.Chat.Test
             var sessionMock = new Mock<ITcpSession>();
             sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8888));
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+            sessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
             _client = new Client(sessionMock.Object);
         }
 
@@ -143,6 +143,87 @@ namespace UniSpyServer.Servers.Chat.Test
                 new CmdSwitcher(client1, UniSpyEncoding.GetBytes(raw)).Switch();
             }
 
+            Assert.Equal(client1.Info.JoinedChannels.First().Value.Users.Count(), 2);
+
+        }
+        [Fact]
+        /// <summary>
+        /// !! the channel name is wrong because the ip get from somewhere cause the problem
+        /// client1 #GSP!worms3!MJ0NJ4c3aM
+        /// client2 #GSP!worms3!MPDNJKaNaM
+        /// </summary>
+        public void Worm3dTest20220613()
+        {
+
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
+            serverMock.Setup(s => s.ServerName).Returns("Chat");
+            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
+            var sessionMock = new Mock<ITcpSession>();
+            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("79.209.235.252"), 50558));
+            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            var client1 = new Client(sessionMock.Object);
+            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("211.83.127.54"), 39503));
+            var client2 = new Client(sessionMock.Object);
+            var request1 = new List<string>()
+            {
+                $"CRYPT des 1 worms3",
+                "USRIP",
+                "USER X419pGl4sX|7 127.0.0.1 peerchat.gamespy.com :9964fa3fe73f6a1fbb986d2a04b1eb65",
+                "NICK worms10",
+                "JOIN #GPG!622 ",
+                "MODE #GPG!622",
+                @"GETCKEY #GPG!622 * 000 0 :\username\b_flags",
+                "PRIVMSG #GPG!622 :hello",
+                "JOIN #GSP!worms3!MJ0NJ4c3aM",
+                "MODE #GSP!worms3!MJ0NJ4c3aM",
+                @"SETCKEY #GPG!622 worms10 :\b_flags\s",
+                @"SETCKEY #GSP!worms3!MJ0NJ4c3aM worms10 :\b_flags\sh",
+                @"GETCKEY #GSP!worms3!MJ0NJ4c3aM * 001 0 :\username\b_flags",
+                "TOPIC #GSP!worms3!MJ0NJ4c3aM :main lobby message test",
+                "MODE #GSP!worms3!MJ0NJ4c3aM +l 2",
+                "PART #GPG!622 :Joined staging room",
+                @"SETCKEY #GSP!worms3!MJ0NJ4c3aM worms10 :\b_firewall\1\b_profileid\7\b_ipaddress\\b_publicip\255.255.255.255\b_privateip\192.168.0.145\b_authresponse\\b_gamever\1073\b_val\0",
+                "WHO worms10",
+                @"SETCHANKEY #GSP!worms3!MJ0NJ4c3aM :\b_hostname\\b_hostport\\b_MaxPlayers\2\b_NumPlayers\0\b_SchemeChanging\0\b_gamever\1073\b_gametype\\b_mapname\Random\b_firewall\1\b_publicip\255.255.255.255\b_privateip\192.168.0.145\b_gamemode\openstaging\b_val\0\b_password\1",
+                "PRIVMSG #GSP!worms3!MJ0NJ4c3aM :staging lobby message test",
+                @"UTM #GSP!worms3!MJ0NJ4c3aM :ATS \nick\worms10\msg\2046\|name|Human Team 1|w0|Dave|w1|Patrick|w2|The Morriss|w3|Mike|w4|Tony|w5|Gluckman|skill|0|grave|0|SWeapon|0|flag|71|speech|Classic|InGame|0|player|worms10|alliance|1|wormCount|77111416",
+                @"UTM #GSP!worms3!MJ0NJ4c3aM :RTS \team\Human Team 1\nick\worms10\msg\2174"
+            };
+
+            var request2 = new List<string>()
+            {
+                "CRYPT des 1 worms3",
+                "USRIP",
+                "USER X419pGl4sX|6 127.0.0.1 peerchat.gamespy.com :dd6283e1e349806c20991020e0d6897a",
+                "NICK xiaojiuwo",
+                "JOIN #GPG!622" ,
+                "MODE #GPG!622",
+                @"GETCKEY #GPG!622 * 000 0 :\username\b_flags",
+                "PING",
+                "PRIVMSG #GPG!622 :hello from the other side",
+                "JOIN #GSP!worms3!MPDNJKaNaM",
+                "MODE #GSP!worms3!MPDNJKaNaM",
+                @"SETCKEY #GPG!622 xiaojiuwo :\b_flags\s",
+                @"SETCKEY #GSP!worms3!MPDNJKaNaM xiaojiuwo :\b_flags\s",
+                @"GETCKEY #GSP!worms3!MPDNJKaNaM * 001 0 :\username\b_flags",
+                "PART #GPG!622 :Joined staging room",
+                "UTM #GSP!worms3!MPDNJKaNaM :APE [01]privateip[02]192.168.0.109[01]publicip[02]255.255.255.255",
+                "WHO xiaojiuwo",
+                "PART #GSP!worms3!MPDNJKaNaM :Left Game"
+            };
+            // When
+
+            foreach (var raw in request1)
+            {
+                new CmdSwitcher(client1, UniSpyEncoding.GetBytes(raw)).Switch();
+            }
+            foreach (var raw in request2)
+            {
+                new CmdSwitcher(client2, UniSpyEncoding.GetBytes(raw)).Switch();
+            }
+            Assert.Equal(client1.Info.JoinedChannels.First().Value.Users.Count(), 2);
+            // Then
         }
     }
 }

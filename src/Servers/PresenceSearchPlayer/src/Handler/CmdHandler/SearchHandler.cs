@@ -113,7 +113,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
                         result = null;
                         break;
                 }
-                if (result == null)
+                if (result is null)
                 {
                     return;
                 }

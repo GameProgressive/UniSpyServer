@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
 
         public override void Build()
         {
-            if (_result.ChannelTopic == "" || _result.ChannelTopic == null)
+            if (_result.ChannelTopic == "" || _result.ChannelTopic is null)
             {
                 SendingBuffer =
                     TopicResponse.BuildNoTopicReply(

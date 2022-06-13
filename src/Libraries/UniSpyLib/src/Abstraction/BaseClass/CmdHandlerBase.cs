@@ -24,7 +24,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 RequestCheck();
                 DataOperation();
                 ResponseConstruct();
-                if (_response == null)
+                if (_response is null)
                 {
                     return;
                 }

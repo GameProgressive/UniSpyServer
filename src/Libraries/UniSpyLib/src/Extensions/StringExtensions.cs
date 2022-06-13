@@ -165,7 +165,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
 
         public static bool CheckResponseValidation(byte[] buffer)
         {
-            if (buffer == null)
+            if (buffer is null)
             {
                 return false;
             }

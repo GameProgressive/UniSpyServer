@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IClient client, IRequest request) : base(client, request)
         {
-            if (_redisChannel == null)
+            if (_redisChannel is null)
             {
                 _redisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
             }
@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             _gameServer = _gameServerRedisClient.Context.FirstOrDefault(x =>
                 x.HostIPAddress == _client.Info.AdHocMessage.TargetIPEndPoint.Address &
                 x.QueryReportPort == (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
-            if (_gameServer == null)
+            if (_gameServer is null)
             {
                 throw new SBException("There is no matching game server regesterd.");
             }

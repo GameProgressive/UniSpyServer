@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
             _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
             _gameServer = (Client)Client.ClientPool[serverRemoteIPEnd];
-            if (_gameServer == null || _gameClient == null)
+            if (_gameServer is null || _gameClient is null)
             {
                 throw new NNException("Init is finished, but two clients are not found in the ClientPool");
             }

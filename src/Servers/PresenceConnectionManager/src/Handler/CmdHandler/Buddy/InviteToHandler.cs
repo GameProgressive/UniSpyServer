@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
                 && ((ClientInfo)c.Info).SubProfileInfo.ProfileId == _request.ProfileId);
 
             //user is offline
-            if (session == null)
+            if (session is null)
             {
                 return;
             }

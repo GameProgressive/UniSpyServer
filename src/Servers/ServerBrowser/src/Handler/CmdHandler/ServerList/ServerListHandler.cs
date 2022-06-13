@@ -64,7 +64,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         {
             // Game name is unique in redis database
             var groupInfo = _peerGroupRedisClient.Context.FirstOrDefault(x => x.GameName == _request.GameName);
-            if (groupInfo == null)
+            if (groupInfo is null)
             {
                 // search gamename in database
                 using (var db = new UniSpyContext())

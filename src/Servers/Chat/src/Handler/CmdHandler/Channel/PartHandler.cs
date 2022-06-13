@@ -24,12 +24,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             if (_request.RawRequest is null)
             {
                 _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
-                if (_channel == null)
+                if (_channel is null)
                 {
                     throw new ChatIRCNoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
                 }
                 _user = _channel.GetChannelUser(_client);
-                if (_user == null)
+                if (_user is null)
                 {
                     throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
                 }
@@ -60,7 +60,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                             {
                                 KickeeNickName = user.Info.NickName,
                                 ChannelName = _channel.Name,
-                                Reason = _request.Reason
+                                Reason = _request.Reason,
                             };
                             new KickHandler(_client, kickRequest).Handle();
                         }
@@ -100,7 +100,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                             var server = client.Context.FirstOrDefault(x =>
                                                     x.HostIPAddress == _user.Session.RemoteIPEndPoint.Address
                                                     && x.GameName == _user.Info.GameName);
-                            if (server != null)
+                            if (server is not null)
                             {
                                 client.DeleteKeyValue(server);
                             }

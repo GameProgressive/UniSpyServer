@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
                 var result = (Client)Client.ClientPool.Values.FirstOrDefault(s => ((ClientInfo)s.Info).SubProfileInfo.ProfileId == _request.ProfileId
                 && ((ClientInfo)s.Info).SubProfileInfo.NamespaceId == ((ClientInfo)s.Info).SubProfileInfo.NamespaceId);
 
-                if (result != null)
+                if (result is not null)
                 {
                     // user is not online we do not need to send status info
                     _result.StatusInfo = result.Info.StatusInfo;

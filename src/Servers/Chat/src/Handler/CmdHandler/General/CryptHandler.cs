@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
-            if (secretKey == null)
+            if (secretKey is null)
             {
                 _client.Session.Disconnect();
                 throw new ChatException("secret key not found.");

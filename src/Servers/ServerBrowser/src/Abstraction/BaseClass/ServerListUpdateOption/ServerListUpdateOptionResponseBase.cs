@@ -96,17 +96,23 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
                 }
             }
         }
+        /// <summary>
+        /// when game create a channel chat, it will use the public ip and private ip to build the name.
+        /// Known game: Worm3d
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="serverInfo"></param>
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
             // We already have the localip. Bytes are worng.
-            /*if (serverInfo.ServerData.ContainsKey("localip0"))
+            if (serverInfo.ServerData.ContainsKey("localip0"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
                 // there are multiple localip in dictionary we do not know which one is needed here,
                 // so we just send the first one.
                 byte[] bytesAddress = IPAddress.Parse(serverInfo.ServerData["localip0"]).GetAddressBytes();
                 header.AddRange(bytesAddress);
-            }*/
+            }
         }
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
         {

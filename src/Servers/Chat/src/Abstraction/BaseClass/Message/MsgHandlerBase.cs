@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                         // todo check if we only allow user join one channel
                         _channel = _client.Info.JoinedChannels.Values.First();
                         _reciever = _channel.GetChannelUser(_request.NickName);
-                        if (_reciever == null)
+                        if (_reciever is null)
                         {
                             throw new ChatIRCNoSuchNickException(
                                 $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");

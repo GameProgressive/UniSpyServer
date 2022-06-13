@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                 throw new Exception.ChatException("The number of IRC parameters are incorrect.");
             }
 
-            if (_longParam == null)
+            if (_longParam is null)
             {
                 throw new Exception.ChatException("The IRC long parameter is incorrect.");
             }

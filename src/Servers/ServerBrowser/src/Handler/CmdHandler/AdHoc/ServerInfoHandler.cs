@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 x.QueryReportPort == _request.TargetIPEndPoint.Port);
 
             //TODO if there are no server found, we still send response back to client
-            if (_result.GameServerInfo == null)
+            if (_result.GameServerInfo is null)
             {
                 // throw new SBException("No server found in database.");
                 return;

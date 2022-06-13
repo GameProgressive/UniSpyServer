@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
         {
             base.Parse();
             Password = PasswordEncoder.ProcessPassword(RequestKeyValues);
-            if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password == null)
+            if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password is null)
             {
                 throw new GPParseException("check request is incompelete.");
             }

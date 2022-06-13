@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         {
             base.Parse();
 
-            if (_longParam == null)
+            if (_longParam is null)
             {
                 RequestType = TopicRequestType.GetChannelTopic;
                 return;

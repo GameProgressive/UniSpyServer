@@ -37,7 +37,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 }
                 _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetChannelUser(_request.NickName);
-                if (_otherUser == null)
+                if (_otherUser is null)
                 {
                     throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName} in channel {_request.ChannelName}");
                 }

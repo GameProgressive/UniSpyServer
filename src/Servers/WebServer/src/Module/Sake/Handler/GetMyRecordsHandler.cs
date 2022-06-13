@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
             foreach (var field in _request.Fields)
             {
                 var record = _sakeData.FirstOrDefault(x => x.FieldName == field.FieldName && x.FiledType == field.FiledType);
-                if (record != null)
+                if (record is not null)
                 {
                     _result.Records.Add(record);
                 }

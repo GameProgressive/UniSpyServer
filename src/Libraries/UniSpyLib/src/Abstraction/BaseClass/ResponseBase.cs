@@ -35,7 +35,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         public virtual void Assemble()
         {
             Build();
-            if (_client.Crypto != null)
+            if (_client.Crypto is not null)
             {
                 SendingBuffer = _client.Crypto.Encrypt(SendingBuffer as byte[]);
             }

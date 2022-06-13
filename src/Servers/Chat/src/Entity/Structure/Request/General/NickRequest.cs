@@ -14,13 +14,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-            if (_cmdParams != null)
+            if (_cmdParams is not null)
             {
                 NickName = _cmdParams[0];
                 return;
             }
 
-            if (_longParam != null)
+            if (_longParam is not null)
             {
                 NickName = _longParam;
                 return;
