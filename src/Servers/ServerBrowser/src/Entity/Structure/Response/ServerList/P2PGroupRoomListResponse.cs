@@ -35,15 +35,21 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerLis
                 //add has key flag
                 _serverListData.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
-
-                byte[] groupId = BitConverter.GetBytes(room.GroupID).Reverse().ToArray();
-                _serverListData.AddRange(groupId);
+                // group id = 0 means the end flag of group list
+                var groupId = 0;
+                if (room != _result.PeerGroupInfo.PeerRooms.Last())
+                {
+                    groupId = room.GroupId;
+                }
+                var groupIdBytes = BitConverter.GetBytes(groupId).Reverse().ToArray();
+                _serverListData.AddRange(groupIdBytes);
 
                 foreach (var key in _request.Keys)
                 {
                     _serverListData.Add(StringFlag.NTSStringFlag);
-                    var value = room.GetValuebyGameName(key);
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(value));
+                    var value = room.KeyValues.ContainsKey(key) ? room.KeyValues[key] : "";
+                    // if key is uint or int, we need first convert to ASCII string then get bytes
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(value.ToString()));
                     _serverListData.Add(StringFlag.StringSpliter);
                 }
             }

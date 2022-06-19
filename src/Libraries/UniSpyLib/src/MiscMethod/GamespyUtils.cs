@@ -16,7 +16,7 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
         /// <returns></returns>
         public static Dictionary<string, string> ConvertToKeyValue(string request)
         {
-            string[] commandParts = request.TrimStart('\\').Split('\\');
+            string[] commandParts = request.Replace(@"\final\","").TrimStart('\\').Split('\\');
             return ConvertToKeyValue(commandParts);
         }
 

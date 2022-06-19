@@ -12,7 +12,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
-    
+
     public class ServerListHandler : ServerListUpdateOptionHandlerBase
     {
         public ServerListHandler(IClient client, IRequest request) : base(client, request)

@@ -79,10 +79,10 @@ namespace UniSpyServer.Servers.Chat.Test
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
             var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8888));
+            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("107.244.81.1"), 8888));
             sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
             var client1 = new Client(sessionMock.Object);
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8889));
+            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("91.34.72.1"), 8889));
             var client2 = new Client(sessionMock.Object);
             var raws1 = new List<string>()
             {
@@ -142,8 +142,8 @@ namespace UniSpyServer.Servers.Chat.Test
             {
                 new CmdSwitcher(client1, UniSpyEncoding.GetBytes(raw)).Switch();
             }
-
-            Assert.Equal(client1.Info.JoinedChannels.First().Value.Users.Count(), 2);
+            int count = client1.Info.JoinedChannels.First().Value.Users.Count();
+            Assert.Equal(count, 2);
 
         }
         [Fact]
@@ -222,7 +222,8 @@ namespace UniSpyServer.Servers.Chat.Test
             {
                 new CmdSwitcher(client2, UniSpyEncoding.GetBytes(raw)).Switch();
             }
-            Assert.Equal(client1.Info.JoinedChannels.First().Value.Users.Count(), 2);
+            int count = client1.Info.JoinedChannels.First().Value.Users.Count();
+            Assert.Equal(count, 2);
             // Then
         }
     }

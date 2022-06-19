@@ -67,7 +67,7 @@ namespace UniSpyServer.UniSpyLib.Logging
         public static void LogUnkownRequest(string data) => Error($"[Unknown] {data}");
         public static void LogUnkownRequest(byte[] data) => Error($"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
         public static void LogCurrentClass(object param) => Verbose($"[ => ] [{param.GetType().Name}]");
-        public static void LogNetworkMultiCast(string buffer) => Debug($"[Muti] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
+        public static void LogNetworkMultiCast(string buffer) => Debug($"[Cast] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
         public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic("Send", endPoint, buffer);
         public static void LogNetworkSending(IPEndPoint endPoint, string buffer) => LogNetworkTraffic("Send", endPoint, buffer);
         public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic("Recv", endPoint, buffer);
