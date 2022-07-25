@@ -144,7 +144,6 @@ namespace UniSpyServer.Servers.Chat.Test
             }
             int count = client1.Info.JoinedChannels.First().Value.Users.Count();
             Assert.Equal(count, 2);
-
         }
         [Fact]
         /// <summary>

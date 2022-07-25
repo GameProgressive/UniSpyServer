@@ -39,6 +39,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                     case LoginType.AuthToken:
                         AuthtokenLogin();
                         break;
+                    // loginticket
                 }
                 _result.DatabaseResults = new LogInDataModel
                 {

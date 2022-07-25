@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    
+
     public sealed class HeartBeatHandler : CmdHandlerBase
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
@@ -51,9 +51,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
                     _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
                     break;
             }
-
             UpdateGameServerByState();
-
         }
 
         private void UpdateGameServerByState()
@@ -76,26 +74,26 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         private void CheckSpamGameServer()
         {
             // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
-            _gameServerInfo = _redisClient.Context.FirstOrDefault(x =>
-                x.ServerID == _client.Session.Server.ServerID &
-                x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
-                x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
-                x.InstantKey == _request.InstantKey &
-                x.GameName == _request.GameName);
+            // _gameServerInfo = _redisClient.Context.FirstOrDefault(x =>
+            //     x.ServerID == _client.Session.Server.ServerID &
+            //     x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
+            //     x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
+            //     x.InstantKey == _request.InstantKey &
+            //     x.GameName == _request.GameName);
 
-            if (_gameServerInfo is null)
+            // if (_gameServerInfo is null)
+            // {
+            _gameServerInfo = new GameServerInfo()
             {
-                _gameServerInfo = new GameServerInfo()
-                {
-                    ServerID = _client.Session.Server.ServerID,
-                    HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
-                    QueryReportPort = (ushort)_client.Session.RemoteIPEndPoint.Port,
-                    GameName = _request.GameName,
-                    InstantKey = _request.InstantKey,
-                    ServerStatus = GameServerStatus.Normal,
-                    LastPacketReceivedTime = DateTime.Now
-                };
-            }
+                ServerID = _client.Session.Server.ServerID,
+                HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
+                QueryReportPort = (ushort)_client.Session.RemoteIPEndPoint.Port,
+                GameName = _request.GameName,
+                InstantKey = _request.InstantKey,
+                ServerStatus = GameServerStatus.Normal,
+                LastPacketReceivedTime = DateTime.Now
+            };
+            // }
         }
     }
 }

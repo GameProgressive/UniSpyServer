@@ -12,6 +12,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Enumerate
         Normal = 0,
         Update = 1,
         Shutdown = 2,
+        // todo check this flag
         Playing = 3,
     }
 }

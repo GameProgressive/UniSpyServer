@@ -104,6 +104,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
         /// <param name="serverInfo"></param>
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
+            var privateFlagGame = new List<string>() { "Worm3d" };
+            if (!privateFlagGame.Contains(_request.GameName))
+            {
+                return;
+            }
             // We already have the localip. Bytes are worng.
             if (serverInfo.ServerData.ContainsKey("localip0"))
             {

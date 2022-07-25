@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a UDP Server with

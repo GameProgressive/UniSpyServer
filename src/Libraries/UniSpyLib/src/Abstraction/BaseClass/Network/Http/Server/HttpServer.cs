@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
     public abstract class HttpServer : NetCoreServer.HttpServer, IServer
     {

@@ -10,7 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
-    
+
     public sealed class InitHandler : CmdHandlerBase
     {
         private new InitRequest _request => (InitRequest)base._request;
@@ -41,7 +41,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // if there are 8 init result in redis, Client.Pool must have the information of both client
             // we just find it from Client.Pool based on the initResult when we are in ConnectHandler 
 
-            if (initCount == 8)
+            // if (initCount == 8)
+            // {
+            //     StartConnecting();
+            // }
+            if (_request.PortType == NatPortType.NN3)
             {
                 StartConnecting();
             }

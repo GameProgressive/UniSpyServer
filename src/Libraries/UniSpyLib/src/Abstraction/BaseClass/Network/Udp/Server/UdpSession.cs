@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Events;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Udp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
     /// <summary>
     /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="ISession"/>

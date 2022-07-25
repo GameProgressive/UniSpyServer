@@ -2,7 +2,7 @@ using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Events;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
     public class HttpSession : NetCoreServer.HttpSession, IHttpSession
     {

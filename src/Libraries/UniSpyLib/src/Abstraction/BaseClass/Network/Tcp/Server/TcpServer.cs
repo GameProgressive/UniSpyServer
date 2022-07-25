@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Server with logging functionality and ServerName, as required in the old network stack.

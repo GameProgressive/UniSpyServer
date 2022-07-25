@@ -4,7 +4,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Events;
 
-namespace UniSpyServer.UniSpyLib.Application.Network.Tcp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)

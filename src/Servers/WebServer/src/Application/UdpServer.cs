@@ -5,7 +5,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Application
 {
-    class HttpServer : UniSpyLib.Application.Network.Http.Server.HttpServer
+    class HttpServer : UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpServer
     {
         public HttpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(serverID, serverName, endpoint)
         {
