@@ -143,7 +143,7 @@ namespace UniSpyServer.Servers.Chat.Test
                 new CmdSwitcher(client1, UniSpyEncoding.GetBytes(raw)).Switch();
             }
             int count = client1.Info.JoinedChannels.First().Value.Users.Count();
-            Assert.Equal(count, 2);
+            Assert.Equal(2, count);
         }
         [Fact]
         /// <summary>
@@ -222,7 +222,7 @@ namespace UniSpyServer.Servers.Chat.Test
                 new CmdSwitcher(client2, UniSpyEncoding.GetBytes(raw)).Switch();
             }
             int count = client1.Info.JoinedChannels.First().Value.Users.Count();
-            Assert.Equal(count, 2);
+            Assert.Equal(2, count);
             // Then
         }
     }

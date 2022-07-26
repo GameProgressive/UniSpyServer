@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
 
             var prop = AddressCheckHandler.DetermineNatType(initResults);
 
-            Assert.Equal(prop.NatType, NatType.NoNat);
+            Assert.Equal(NatType.NoNat, prop.NatType);
         }
         [Fact]
         public void FullConeTest()
@@ -67,7 +67,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             }
             };
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.FullCone);
+            Assert.Equal(NatType.FullCone, prop.NatType);
 
         }
 
@@ -99,7 +99,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             };
 
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.Symmetric);
+            Assert.Equal(NatType.Symmetric, prop.NatType);
 
         }
         [Fact]
@@ -133,7 +133,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             };
 
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.FullCone);
+            Assert.Equal(NatType.FullCone, prop.NatType);
         }
         [Fact]
         /// <summary>
@@ -165,7 +165,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             }
             };
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.FullCone);
+            Assert.Equal(NatType.FullCone, prop.NatType);
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             };
             // Given
             bool result = AddressCheckHandler.IsInSameLan(clientPackets, serverPackets);
-            Assert.Equal(result, true);
+            Assert.True(result);
 
             #endregion
             clientPackets = new Dictionary<NatPortType, NatInitInfo>()
@@ -270,7 +270,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             } }
             };
             result = AddressCheckHandler.IsInSameLan(clientPackets, serverPackets);
-            Assert.Equal(result, true);
+            Assert.True(result);
         }
         [Fact]
         public void JuliusNetworkTest()
@@ -299,7 +299,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             }
             };
             var prop = AddressCheckHandler.DetermineNatType(initResults);
-            Assert.Equal(prop.NatType, NatType.Symmetric);
+            Assert.Equal(NatType.Symmetric, prop.NatType);
         }
     }
 }
