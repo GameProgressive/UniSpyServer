@@ -54,17 +54,17 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 serverPackets[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
 
         }
-        public static NatProperty DetermineNatType(List<NatInitInfo> initResults)
+        public static NatProperty DetermineNatType(Dictionary<NatPortType, NatInitInfo> initResults)
         {
             NatProperty natProperty = new NatProperty();
             if (initResults.Count != 4)
             {
                 throw new NNException("We need 4 init results to determine the nat type.");
             }
-            var gp = initResults[(int)NatPortType.GP];
-            var nn1 = initResults[(int)NatPortType.NN1];
-            var nn2 = initResults[(int)NatPortType.NN2];
-            var nn3 = initResults[(int)NatPortType.NN3];
+            var gp = initResults[NatPortType.GP];
+            var nn1 = initResults[NatPortType.NN1];
+            var nn2 = initResults[NatPortType.NN2];
+            var nn3 = initResults[NatPortType.NN3];
 
             // no nat
             if (gp.PublicIPEndPoint.Address.Equals(gp.PrivateIPEndPoint.Address)
@@ -76,15 +76,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 return natProperty;
             }
             // detect cone
-            else if (gp.PublicIPEndPoint.Equals(nn1.PublicIPEndPoint)
-            && nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
+            else if (nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
             && nn2.PublicIPEndPoint.Equals(nn3.PublicIPEndPoint))
             {
                 natProperty.NatType = NatType.FullCone;
                 return natProperty;
             }
-            else if (!gp.PublicIPEndPoint.Equals(nn1.PublicIPEndPoint)
-            || !nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
+            else if (!nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
             || !nn2.PublicIPEndPoint.Equals(nn3.PublicIPEndPoint))
             {
                 natProperty.NatType = NatType.Symmetric;
@@ -99,7 +97,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
         }
 
-        public static IPEndPoint GuessTargetAddress(NatProperty property, List<NatInitInfo> initResults, IPEndPoint natFailedEd = null)
+        public static IPEndPoint GuessTargetAddress(NatProperty property, Dictionary<NatPortType, NatInitInfo> initResults, IPEndPoint natFailedEd = null)
         {
             Debug.WriteLine(property.NatType.ToString() + property.PortMapping.ToString());
             switch (property.NatType)
@@ -107,15 +105,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 case NatType.NoNat:
                 case NatType.FirewallOnly:
                     // private is public
-                    return initResults[(int)NatPortType.NN1].PublicIPEndPoint;
+                    return initResults[NatPortType.GP].PublicIPEndPoint;
                 case NatType.FullCone:
-                    return new IPEndPoint(initResults[(int)NatPortType.NN1].PublicIPEndPoint.Address, initResults[(int)NatPortType.NN1].PublicIPEndPoint.Port);
+                    return new IPEndPoint(initResults[NatPortType.GP].PublicIPEndPoint.Address, initResults[NatPortType.GP].PublicIPEndPoint.Port);
                 case NatType.Symmetric:
                     switch (property.PortMapping)
                     {
                         case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(initResults[(int)NatPortType.NN3].PublicIPEndPoint.Address,
-                                                    initResults[(int)NatPortType.NN3].PublicIPEndPoint.Port + property.PortIncrement);
+                            return new IPEndPoint(initResults[NatPortType.GP].PublicIPEndPoint.Address,
+                                                    initResults[NatPortType.GP].PublicIPEndPoint.Port + property.PortIncrement);
                         default:
                             return null;
                     }

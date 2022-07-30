@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -83,11 +82,27 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
             else
             {
-
                 var clientInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameClient)
-                .ToDictionary(k => (NatPortType)k.PortType, k => k).Values.OrderBy(x => x.PortType).ToList();
+                                .ToDictionary(k => (NatPortType)k.PortType, k => k);
                 var serverInfos = _matchedInfos.Where(k => k.ClientIndex == NatClientIndex.GameServer)
-                .ToDictionary(k => (NatPortType)k.PortType, k => k).Values.OrderBy(x => x.PortType).ToList();
+                                .ToDictionary(k => (NatPortType)k.PortType, k => k);
+
+                // if two client is in same lan, we send each privateIPEndPoint
+                if (AddressCheckHandler.IsInSameLan(clientInfos, serverInfos))
+                {
+                    var responseToClient = new ConnectResponse(
+                        _request,
+                        new ConnectResult { RemoteEndPoint = serverInfos[NatPortType.NN1].PrivateIPEndPoint });
+
+                    _responseToServer = new ConnectResponse(
+                        _request,
+                        new ConnectResult { RemoteEndPoint = clientInfos[NatPortType.NN1].PrivateIPEndPoint });
+
+                    _gameClient.Send(_responseToClient);
+                    _gameServer.Send(_responseToServer);
+                }
+
+
                 var clientNatProperty = AddressCheckHandler.DetermineNatType(clientInfos);
                 var serverNatProperty = AddressCheckHandler.DetermineNatType(serverInfos);
                 guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);

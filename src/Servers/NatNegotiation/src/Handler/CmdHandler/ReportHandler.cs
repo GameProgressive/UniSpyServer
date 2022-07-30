@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -13,7 +12,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    
+
     public sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
@@ -23,8 +22,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _result = new ReportResult();
         }
 
-        protected override void DataOperation()
+        protected override void Response()
         {
+            // we first response, the client will timeout if no response is received in some interval
+            base.Response();
             switch (_request.NatResult)
             {
                 case NatNegResult.Success:
@@ -54,12 +55,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         IsUsingRelay = true
                     };
                     new ConnectHandler(_client, request).Handle();
-                    // var packets = _redisClient.Values.Where(k => k.Cookie == _request.Cookie).ToList();
-                    // foreach (var packet in packets)
-                    // {
-                    //     packet.RetryNatNegotiationTime++;
-                    //     _redisClient.SetValue(packet);
-                    // }
+                    var packets = _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList();
+                    foreach (var packet in packets)
+                    {
+                        packet.RetryNatNegotiationTime++;
+                        _redisClient.SetValue(packet);
+                    }
                     break;
             }
         }
