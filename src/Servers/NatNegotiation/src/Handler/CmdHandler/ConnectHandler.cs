@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
@@ -38,6 +39,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
+            Thread.Sleep(2000);
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Context.Where(k =>
                                         k.Cookie == _request.Cookie
@@ -70,6 +72,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 throw new NNException("Init is finished, but two clients are not found in the ClientPool");
             }
+
             if (_request.IsUsingRelay)
             {
                 var relayServers = _relayRedisClient.Context.ToList();
@@ -87,38 +90,37 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 // if two client is in same lan, we send each privateIPEndPoint
                 if (AddressCheckHandler.IsInSameLan(clientInfos, serverInfos))
                 {
-                    var respToClient = new ConnectResponse(
-                        _request,
-                        new ConnectResult { RemoteEndPoint = new IPEndPoint(serverInfos[NatPortType.NN3].PublicIPEndPoint.Address, serverInfos[NatPortType.NN3].PublicIPEndPoint.Port - 1) });
-
-                    var respToServer = new ConnectResponse(
-                        _request,
-                        new ConnectResult { RemoteEndPoint = new IPEndPoint(clientInfos[NatPortType.NN3].PublicIPEndPoint.Address, clientInfos[NatPortType.NN3].PublicIPEndPoint.Port - 1) });
-
-                    _gameClient.Send(respToClient);
-                    _gameServer.Send(respToServer);
+                    guessedClientIPEndPoint = new IPEndPoint(clientInfos[NatPortType.GP].PrivateIPEndPoint.Address,
+                             clientInfos[NatPortType.NN2].PrivateIPEndPoint.Port - 1);
+                    guessedServerIPEndPoint = new IPEndPoint(serverInfos[NatPortType.GP].PrivateIPEndPoint.Address,
+                            serverInfos[NatPortType.NN2].PrivateIPEndPoint.Port - 1);
                 }
-
-
-                var clientNatProperty = AddressCheckHandler.DetermineNatType(clientInfos);
-                var serverNatProperty = AddressCheckHandler.DetermineNatType(serverInfos);
-                guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
-                guessedServerIPEndPoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+                else
+                {
+                    var clientNatProperty = AddressCheckHandler.DetermineNatType(clientInfos);
+                    var serverNatProperty = AddressCheckHandler.DetermineNatType(serverInfos);
+                    guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, clientInfos);
+                    guessedServerIPEndPoint = AddressCheckHandler.GuessTargetAddress(serverNatProperty, serverInfos);
+                }
                 LogWriter.Debug($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
                 LogWriter.Debug($"server real: {serverRemoteIPEnd}, guessed: {guessedServerIPEndPoint}");
             }
 
-            var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
             var responseToClient = new ConnectResponse(
-                request,
+                _request,
                 new ConnectResult { RemoteEndPoint = guessedServerIPEndPoint });
 
             var responseToServer = new ConnectResponse(
                 _request,
                 new ConnectResult { RemoteEndPoint = guessedClientIPEndPoint });
-
-            _gameClient.Send(responseToClient);
-            _gameServer.Send(responseToServer);
+            if (_request.ClientIndex == NatClientIndex.GameClient)
+            {
+                _gameClient.Send(responseToClient);
+            }
+            else
+            {
+                _gameServer.Send(responseToServer);
+            }
         }
     }
 }

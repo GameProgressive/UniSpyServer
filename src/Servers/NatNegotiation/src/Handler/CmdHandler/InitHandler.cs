@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
@@ -72,12 +74,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 ClientIndex = (NatClientIndex)_request.ClientIndex,
                 Version = _request.Version
             };
-            _redisClient.SetValue(_userInfo);
+
+            new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    _redisClient.SetValue(_userInfo);
+                }).Start();
 
             // because the init packet is send with small interval,
             // we do not need to refresh the expire time in redis
-            // lock (_client.Info)
-            // {
+
             if (_client.Info.ClientIndex is null)
             {
                 _client.Info.ClientIndex = _request.ClientIndex;
@@ -86,7 +92,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 _client.Info.Cookie = _request.Cookie;
             }
-            // }
         }
     }
 }
