@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
@@ -26,8 +25,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
         private List<NatInitInfo> _matchedInfos;
-        private ConnectResponse _responseToClient;
-        private ConnectResponse _responseToServer;
         private Client _gameClient;
         private Client _gameServer;
         private static GameTrafficRelay.Entity.Structure.Redis.RedisClient _relayRedisClient;
@@ -58,13 +55,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var clientRemoteIPEnd = _matchedInfos.Where(k =>
                 k.ServerID == _client.Session.Server.ServerID
                 && k.ClientIndex == NatClientIndex.GameClient
-                && k.PortType == NatPortType.NN3)
+                && k.PortType == NatPortType.GP)
                 .Select(k => k.PublicIPEndPoint).First();
 
             var serverRemoteIPEnd = _matchedInfos.Where(k =>
                 k.ServerID == _client.Session.Server.ServerID
                 && k.ClientIndex == NatClientIndex.GameServer
-                && k.PortType == NatPortType.NN3)
+                && k.PortType == NatPortType.GP)
                 .Select(k => k.PublicIPEndPoint).First();
 
             _gameClient = (Client)Client.ClientPool[clientRemoteIPEnd];
@@ -90,16 +87,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 // if two client is in same lan, we send each privateIPEndPoint
                 if (AddressCheckHandler.IsInSameLan(clientInfos, serverInfos))
                 {
-                    var responseToClient = new ConnectResponse(
+                    var respToClient = new ConnectResponse(
                         _request,
-                        new ConnectResult { RemoteEndPoint = serverInfos[NatPortType.NN1].PrivateIPEndPoint });
+                        new ConnectResult { RemoteEndPoint = new IPEndPoint(serverInfos[NatPortType.NN3].PublicIPEndPoint.Address, serverInfos[NatPortType.NN3].PublicIPEndPoint.Port - 1) });
 
-                    _responseToServer = new ConnectResponse(
+                    var respToServer = new ConnectResponse(
                         _request,
-                        new ConnectResult { RemoteEndPoint = clientInfos[NatPortType.NN1].PrivateIPEndPoint });
+                        new ConnectResult { RemoteEndPoint = new IPEndPoint(clientInfos[NatPortType.NN3].PublicIPEndPoint.Address, clientInfos[NatPortType.NN3].PublicIPEndPoint.Port - 1) });
 
-                    _gameClient.Send(_responseToClient);
-                    _gameServer.Send(_responseToServer);
+                    _gameClient.Send(respToClient);
+                    _gameServer.Send(respToServer);
                 }
 
 
@@ -112,16 +109,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
 
             var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
-            _responseToClient = new ConnectResponse(
+            var responseToClient = new ConnectResponse(
                 request,
                 new ConnectResult { RemoteEndPoint = guessedServerIPEndPoint });
 
-            _responseToServer = new ConnectResponse(
+            var responseToServer = new ConnectResponse(
                 _request,
                 new ConnectResult { RemoteEndPoint = guessedClientIPEndPoint });
 
-            _gameClient.Send(_responseToClient);
-            _gameServer.Send(_responseToServer);
+            _gameClient.Send(responseToClient);
+            _gameServer.Send(responseToServer);
         }
     }
 }

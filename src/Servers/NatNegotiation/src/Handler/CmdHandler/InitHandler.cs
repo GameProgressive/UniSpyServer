@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // if there are 8 init result in redis, Client.Pool must have the information of both client
             // we just find it from Client.Pool based on the initResult when we are in ConnectHandler 
 
-            if (initCount == 8)
+            if (_request.PortType == NatPortType.NN3)
             {
                 StartConnecting();
             }
