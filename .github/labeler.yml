@@ -8,7 +8,7 @@ Game Status:
   - "src/Servers/GameStatus/**"
 
 Nat Negotation:
-  - "src/Servers/NATNegotiation/**"
+  - "src/Servers/NatNegotiation/**"
 
 Presence System:
   - "src/Servers/PresenceConnectionManager/**"

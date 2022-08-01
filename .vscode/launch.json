@@ -5,159 +5,311 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PresenceConnectionManager",
+            "name": "PCM build and run",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/PresenceConnectionManager.dll",
+            "preLaunchTask": "build_pcm",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.PresenceConnectionManager.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "stopAtEntry": false,
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
         },
         {
-            "name": "PresenceSearchPlayer",
+            "name": "PSP build and run",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/PresenceSearchPlayer.dll",
+            "preLaunchTask": "build_psp",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.PresenceSearchPlayer.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "NatNeg build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_natneg",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.NatNegotiation.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "GameRelay build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_gametraffic",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameTrafficRelay.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "CDKey build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_cdkey",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.CDKey.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Chat build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_chat",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.Chat.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "QR build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_qr",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.QueryReport.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "SB build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_sb",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.ServerBrowser.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "GS build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_gs",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameStatus.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Web build and run",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_web",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.WebServer.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "PCM",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.PresenceConnectionManager.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+        },
+        {
+            "name": "PSP",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.PresenceSearchPlayer.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
             "name": "NatNeg",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/NatNegotiation.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.NatNegotiation.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
             "name": "CDKey",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/CDKey.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.CDKey.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
             "name": "Chat",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/Chat.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.Chat.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
-            "name": "QueryReport",
+            "name": "QR",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/QueryReport.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.QueryReport.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
-            "name": "ServerBrowser",
+            "name": "SB",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/ServerBrowser.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.ServerBrowser.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
-            "name": "StatsAndTracking",
+            "name": "GS",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/StatsAndTracking.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameStatus.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         },
         {
-            "name": "WebServices",
+            "name": "Web",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/WebServices.dll",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.WebServer.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
+            "name": "GameRelay",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameTrafficRelay.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         }
     ],
     "compounds": [
         {
-            "name": "GP Servers",
+            "name": "PCM, PSP",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer"
+                "PCM",
+                "PSP"
+            ]
+        },
+        {
+            "name": "QR, SB, NatNeg",
+            "configurations": [
+                "QR",
+                "SB",
+                "NatNeg"
+            ]
+        },
+        {
+            "name": "GS, PSP",
+            "configurations": [
+                "PSP",
+                "GS"
+            ]
+        },
+        {
+            "name": "SAKE, PCM",
+            "configurations": [
+                "Web",
+                "PCM"
+            ]
+        },
+        {
+            "name": "NatNeg, GTR",
+            "configurations": [
+                "NatNeg",
+                "GameRelay"
             ]
         },
         {
             "name": "Legacy servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
+                "PCM",
+                "PSP",
                 "NatNeg",
                 "CDKey",
                 "Chat",
-                "QueryReport",
-                "ServerBrowser",
-                "StatsAndTracking"
-            ]
-        },
-        {
-            "name": "Stats test servers",
-            "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
-                "StatsAndTracking"
+                "QR",
+                "SB",
+                "GS"
             ]
         },
         {
             "name": "New servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
+                "PCM",
+                "PSP",
                 "NatNeg",
                 "CDKey",
                 "Chat",
-                "QueryReport",
-                "ServerBrowser",
-                "WebServices"
+                "QR",
+                "SB",
+                "Web"
             ]
         },
         {
-            "name": "QR and SB",
+            "name": "All servers",
             "configurations": [
-                "QueryReport",
-                "ServerBrowser"
-            ]
-        },
-        {
-            "name": "Sake servers",
-            "configurations": [
-                "WebServices",
-                "PresenceConnectionManager"
+                "PCM",
+                "PSP",
+                "NatNeg",
+                "CDKey",
+                "Chat",
+                "QR",
+                "SB",
+                "GS",
+                "Web"
             ]
         }
     ]

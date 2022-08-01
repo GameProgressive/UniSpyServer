@@ -1,0 +1,15 @@
+{
+	"name": "C# (.NET)",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			"VARIANT": "6.0"
+		}
+	},
+	"settings": {},
+	"extensions": [
+		"ms-dotnettools.csharp"
+	],
+	"appPort": [29900, 29901, 29910, 28910, 27900, 27901, 29920, 6667, 80],
+	"remoteUser": "vscode"
+}

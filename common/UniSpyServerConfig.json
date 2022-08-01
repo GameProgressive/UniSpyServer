@@ -1,0 +1,95 @@
+{
+  "Database": {
+    "Server": "127.0.0.1",
+    "Port": "5432",
+    "Database": "unispy",
+    "Username": "root",
+    "Password": "0000",
+    "SSLMode": "Prefer",
+    "TrustServerCert": "false",
+    "SSLKey": "",
+    "SSLPassword": "",
+    "RootCert": ""
+  },
+  "Redis": {
+    "Server": "127.0.0.1",
+    "Port": "6379",
+    "User": "",
+    "Password": "",
+    "SSL": "false",
+    "SSLHost": ""
+  },
+  "Servers": [
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "PresenceConnectionManager",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29900",
+      "SocketType": "Tcp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "PresenceSearchPlayer",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29901",
+      "SocketType": "Tcp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "CDKey",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29910",
+      "SocketType": "Udp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "ServerBrowser",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "28910",
+      "SocketType": "Tcp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "QueryReport",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "27900",
+      "SocketType": "Udp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "NatNegotiation",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "27901",
+      "SocketType": "Udp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "GameStatus",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29920",
+      "SocketType": "Tcp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "Chat",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "6667",
+      "SocketType": "Tcp"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "WebServer",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "80",
+      "SocketType": "Http"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "GameTrafficRelay",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "10086",
+      "SocketType": "Udp"
+    }
+  ],
+  "MinimumLogLevel": "Verbose"
+}

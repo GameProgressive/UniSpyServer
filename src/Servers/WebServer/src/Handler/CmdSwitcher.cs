@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
+
+using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.Servers.WebServer.Module.Sake.Handler;
+using UniSpyServer.Servers.WebServer.Module.Auth.Handler;
+using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+
+namespace UniSpyServer.Servers.WebServer.Handler
+{
+    public class CmdSwitcher : CmdSwitcherBase
+    {
+        private new IHttpRequest _rawRequest => (IHttpRequest)base._rawRequest;
+        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        {
+        }
+
+        protected override void ProcessRawRequest()
+        {
+            // var uri = new Uri(_rawRequest.Url);
+            // if (WebEndpoints.AvailableEndpoints.Contains(uri.LocalPath))
+            // {
+            //     throw new UniSpyException($"Invalid http path access:{_rawRequest.Url}");
+            // }
+            if (_rawRequest.Body == "")
+            {
+                return;
+            }
+            dynamic xelements = XElement.Parse(_rawRequest.Body);
+            var name = xelements.FirstNode.FirstNode.Name.LocalName;
+            _requests.Add(new KeyValuePair<object, object>(name, _rawRequest.Body));
+        }
+
+        protected override IHandler CreateCmdHandlers(object name, object rawRequest)
+        {
+            switch ((string)name)
+            {
+                #region Altas
+                case "CreateMatchlessSession":
+                case "CreateSession":
+                case "SetReportIntention":
+                case "SubmitReport":
+                    throw new NotImplementedException();
+                #endregion
+                #region Auth
+                case "LoginProfile":
+                    return new LoginProfileHandler(_client, new LoginProfileRequest((string)rawRequest));
+                case "LoginProfileWithGameid":
+                    return new LoginProfileWithGameIdHandler(_client, new LoginProfileWithGameIdRequest((string)rawRequest));
+                case "LoginRemoteAuth":
+                    return new LoginRemoteAuthHandler(_client, new LoginRemoteAuthRequest((string)rawRequest));
+                case "LoginRemoteAuthWithGameid":
+                    return new LoginRemoteAuthWithGameIdHandler(_client, new LoginRemoteAuthWithGameIdRequest((string)rawRequest));
+                case "LoginUniqueNick":
+                    return new LoginUniqueNickHandler(_client, new LoginUniqueNickRequest((string)rawRequest));
+                case "LoginUniqueNickWithGameid":
+                    return new LoginUniqueNickWithGameIdHandler(_client, new LoginUniqueNickWithGameIdRequest((string)rawRequest));
+                #endregion
+                #region Direct2Game
+                case "GetStoreAvailability":
+                case "GetPurchaseHistory":
+                case "GetTargettedAd":
+                    throw new NotImplementedException();
+                #endregion
+                #region InGameAd
+                case "ReportAdUsage":
+                    throw new NotImplementedException();
+                #endregion
+                #region PatchingAndTracking
+                case "Motd":
+                case "Vercheck":
+                    throw new NotImplementedException();
+                #endregion
+                #region Racing
+                case "GetContestData":
+                case "GetFriendRankings":
+                case "GetRegionalData":
+                case "GetTenAboveRankings":
+                case "GetTopTenRankings":
+                case "SubmitScores":
+                    throw new NotImplementedException();
+                #endregion
+                #region Sake
+                case "CreateRecord":
+                    return new CreateRecordHandler(_client, new CreateRecordRequest((string)rawRequest));
+                case "DeleteRecord":
+                    throw new NotImplementedException();
+                case "GetMyRecords":
+                    return new GetMyRecordsHandler(_client, new GetMyRecordsRequest((string)rawRequest));
+                case "GetRandomRecords":
+                    throw new NotImplementedException();
+                case "GetRecordLimit":
+                    throw new NotImplementedException();
+                case "RateRecord":
+                    throw new NotImplementedException();
+                case "SearchForRecords":
+                    return new SearchForRecordsHandler(_client, new SearchForRecordsRequest((string)rawRequest));
+                case "UpdateRecord":
+                    // return new UpdateRecordHandler(_client, new UpdateRecordRequest((string)rawRequest));
+                    throw new NotImplementedException();
+                #endregion
+                default:
+                    return null;
+            }
+        }
+    }
+}
