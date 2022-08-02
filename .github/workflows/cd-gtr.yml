@@ -1,4 +1,4 @@
-name: CD - SB
+name: CD - GTR
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
       - candidate
     paths:
-      - "src/Servers/ServerBrowser/src/**"
+      - "src/Servers/GameTrafficRelay/src/**"
       - "src/Libraries/UniSpyLib/src/**"
 
 jobs:
@@ -19,17 +19,17 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/candidate'
         uses: elgohr/Publish-Docker-Github-Action@3.01
         with:
-          name: gameprogressive/sb
+          name: gameprogressive/gtr
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/ServerBrowser/src/Dockerfile
+          dockerfile: ./src/Servers/GameTrafficRelay/src/Dockerfile
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@3.01
         with:
-          name: gameprogressive/sb
+          name: gameprogressive/gtr
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/ServerBrowser/src/Dockerfile
+          dockerfile: ./src/Servers/GameTrafficRelay/src/Dockerfile
