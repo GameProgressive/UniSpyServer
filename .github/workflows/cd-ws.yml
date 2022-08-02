@@ -6,7 +6,7 @@ on:
       - master
       - candidate
     paths:
-      - "src/Servers/WebServices/src/**"
+      - "src/Servers/WebServer/src/**"
       - "src/Libraries/UniSpyLib/src/**"
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/WebServices/src/Dockerfile
+          dockerfile: ./src/Servers/WebServer/src/Dockerfile
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@3.01
@@ -32,4 +32,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/WebServices/src/Dockerfile
+          dockerfile: ./src/Servers/WebServer/src/Dockerfile
