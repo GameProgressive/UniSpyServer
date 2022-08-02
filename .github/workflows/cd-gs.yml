@@ -6,8 +6,8 @@ on:
       - master
       - candidate
     paths:
-      - "src/Servers/GameStatus/**"
-      - "src/Libraries/UniSpyLib/**"
+      - "src/Servers/GameStatus/src/**"
+      - "src/Libraries/UniSpyLib/src/**"
 
 jobs:
   push:
@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/GameStatus/Dockerfile
+          dockerfile: ./src/Servers/GameStatus/src/Dockerfile
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@3.01
@@ -32,4 +32,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/GameStatus/Dockerfile
+          dockerfile: ./src/Servers/GameStatus/src/Dockerfile
