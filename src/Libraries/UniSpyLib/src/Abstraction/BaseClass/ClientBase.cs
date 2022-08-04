@@ -119,20 +119,19 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     }
                     goto default;
                 case NetworkConnectionType.Http:
-                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
+                    LogNetworkReceiving(Session.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
                     break;
                 case NetworkConnectionType.Test:
                     goto default;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
-                    LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+                    LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
                     break;
             }
             // we let child class to create swicher for us
             var switcher = CreateSwitcher(buffer);
             switcher.Switch();
         }
-
         protected virtual byte[] DecryptMessage(byte[] buffer)
         {
             if (Crypto is not null)
@@ -193,7 +192,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = (byte[])response.SendingBuffer;
             }
-            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
+            // LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
+            LogNetworkSending(Session.RemoteIPEndPoint, buffer);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {
@@ -201,13 +201,32 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             }
             Session.Send(buffer);
         }
-        protected virtual void LogNetworkSending(IPEndPoint ipEndPoint, byte[] buffer)
+        protected virtual void LogNetworkSending(IPEndPoint ipEndPoint, object buffer)
         {
-            LogWriter.LogNetworkSending(ipEndPoint, buffer);
+            var bufferType = buffer.GetType();
+            if (bufferType == typeof(byte[]))
+            {
+                LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer);
+                return;
+            }
+            if (bufferType == typeof(string))
+            {
+                LogWriter.LogNetworkSending(ipEndPoint, (string)buffer);
+            }
+
         }
-        protected virtual void LogNetworkReceiving(IPEndPoint ipEndPoint, byte[] buffer)
+        protected virtual void LogNetworkReceiving(IPEndPoint ipEndPoint, object buffer)
         {
-            LogWriter.LogNetworkReceiving(ipEndPoint, buffer);
+            var bufferType = buffer.GetType();
+            if (bufferType == typeof(byte[]))
+            {
+                LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer);
+                return;
+            }
+            if (bufferType == typeof(string))
+            {
+                LogWriter.LogNetworkSending(ipEndPoint, (string)buffer);
+            }
         }
     }
 }

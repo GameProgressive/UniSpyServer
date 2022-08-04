@@ -64,19 +64,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
             return result.ToString();
         }
         #region Undisplayable char convert
-        /// <summary>
-        /// Replace unreadable charactors to Hex for logging
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public static string ReplaceUnreadableCharToHex(byte[] message, long length)
-        {
-            byte[] tempMessage = new byte[length];
-            Array.Copy(message, tempMessage, length);
-            return ReplaceUnreadableCharToHex(tempMessage);
-        }
-        public static string FormatBytes(byte[] buffer)
+        public static string FormatBytesToRaw(byte[] buffer)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
