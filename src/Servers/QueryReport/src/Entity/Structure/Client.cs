@@ -1,8 +1,10 @@
+using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.Handler;
 using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure
 {
@@ -21,6 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
-
+        protected override void LogNetworkReceiving(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkReceiving(ipEndPoint, (byte[])buffer, true);
+        protected override void LogNetworkSending(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer, true);
     }
 }
