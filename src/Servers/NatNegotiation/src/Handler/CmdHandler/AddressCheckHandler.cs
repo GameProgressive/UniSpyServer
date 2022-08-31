@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
@@ -87,7 +85,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 natProperty.NatType = NatType.Symmetric;
                 natProperty.PortMapping = NatPortMappingScheme.Incremental;
-                natProperty.PortIncrement = Math.Abs(gp.PublicIPEndPoint.Port - nn1.PublicIPEndPoint.Port);
+                //todo get all interval of the port increment value
+                var portIncrement1 = nn2.PublicIPEndPoint.Port - nn1.PublicIPEndPoint.Port;
+                var portIncrement2 = nn3.PublicIPEndPoint.Port - nn2.PublicIPEndPoint.Port;
+                if (portIncrement1 == portIncrement2)
+                {
+                    natProperty.PortIncrement = portIncrement1;
+                }
+                else
+                {
+                    var increaseInterval = portIncrement2 - portIncrement1;
+                    natProperty.PortIncrement = portIncrement2 + increaseInterval;
+                }
                 return natProperty;
             }
             else
@@ -99,7 +108,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         public static IPEndPoint GuessTargetAddress(NatProperty property, Dictionary<NatPortType, NatInitInfo> initResults, IPEndPoint natFailedEd = null)
         {
-            Debug.WriteLine(property.NatType.ToString() + property.PortMapping.ToString());
             switch (property.NatType)
             {
                 case NatType.NoNat:

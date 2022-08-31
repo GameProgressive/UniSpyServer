@@ -69,7 +69,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
                 PortType = _request.PortType,
                 Cookie = (uint)_request.Cookie,
-                PrivateIPEndPoint = _request.PrivateIPEndPoint,
+                PrivateIPEndPoint = _request.GuessedPrivateIPEndPoint,
                 UseGamePort = _request.UseGamePort,
                 ClientIndex = (NatClientIndex)_request.ClientIndex,
                 Version = _request.Version
