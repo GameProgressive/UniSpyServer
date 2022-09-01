@@ -116,6 +116,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 case NatType.FullCone:
                     return new IPEndPoint(initResults[NatPortType.GP].PublicIPEndPoint.Address, initResults[NatPortType.GP].PublicIPEndPoint.Port);
                 case NatType.Symmetric:
+                    //todo add GameTrafficRelay alternative plan
                     switch (property.PortMapping)
                     {
                         case NatPortMappingScheme.Incremental:

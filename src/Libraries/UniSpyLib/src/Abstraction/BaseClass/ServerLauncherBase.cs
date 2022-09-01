@@ -40,7 +40,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             LaunchServer();
         }
         protected abstract IServer LaunchNetworkService(UniSpyServerConfig config);
-        protected void LaunchServer()
+        protected virtual void LaunchServer()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
             Server = LaunchNetworkService(cfg);

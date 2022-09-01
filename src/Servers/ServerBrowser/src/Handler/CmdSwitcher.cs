@@ -22,6 +22,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
         {
+            //todo add v1 support
             switch ((RequestType)name)
             {
                 case RequestType.ServerListRequest:

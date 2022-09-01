@@ -23,6 +23,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PublicIPEndPoint { get; set; }
+        /// <summary>
+        /// The nat negotiation private ip and port using as p2p port
+        /// nn1,nn2,nn3 is using to detect NAT type
+        /// </summary>
+        /// <value></value>
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint GPPrivateIPEndPoint { get; init; }
         public int? RetryNatNegotiationTime { get; set; }
