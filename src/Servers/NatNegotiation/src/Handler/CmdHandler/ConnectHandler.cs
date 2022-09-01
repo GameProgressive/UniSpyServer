@@ -92,9 +92,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 if (AddressCheckHandler.IsInSameLan(clientInfos, serverInfos))
                 {
                     guessedClientIPEndPoint = new IPEndPoint(clientInfos[NatPortType.GP].GPPrivateIPEndPoint.Address,
-                             clientInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port - 1);
+                             clientInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port);
                     guessedServerIPEndPoint = new IPEndPoint(serverInfos[NatPortType.GP].GPPrivateIPEndPoint.Address,
-                            serverInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port - 1);
+                            serverInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port);
                 }
                 else
                 {
