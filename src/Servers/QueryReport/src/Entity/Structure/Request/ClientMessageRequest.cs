@@ -1,7 +1,6 @@
 using System.Net;
 using Newtonsoft.Json;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.MiscMethod;
 

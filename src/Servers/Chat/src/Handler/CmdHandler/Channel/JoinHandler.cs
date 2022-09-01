@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;

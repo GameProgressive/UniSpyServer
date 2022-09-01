@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;

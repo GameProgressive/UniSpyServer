@@ -15,22 +15,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var initResults = new Dictionary<NatPortType, NatInitInfo>();
             initResults.Add(NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             });
             initResults.Add(NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             });
             var prop = AddressCheckHandler.DetermineNatType(initResults);
@@ -44,22 +44,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var initResults = new Dictionary<NatPortType, NatInitInfo>();
             initResults.Add(NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
 
@@ -74,22 +74,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var initResults = new Dictionary<NatPortType, NatInitInfo>();
             initResults.Add(NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             });
             initResults.Add(NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
             });
             initResults.Add(NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 83)
             });
 
@@ -106,22 +106,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var initResults = new Dictionary<NatPortType, NatInitInfo>();
             initResults.Add(NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
 
@@ -137,22 +137,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var initResults = new Dictionary<NatPortType, NatInitInfo>();
             initResults.Add(NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             initResults.Add(NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             });
             var prop = AddressCheckHandler.DetermineNatType(initResults);
@@ -167,22 +167,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 { NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             } },
                 { NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
             } }
             };
@@ -190,22 +190,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 { NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             } },
                 { NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             } }
             };
@@ -218,22 +218,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 { NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
             } },
                 { NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
             } }
             };
@@ -241,22 +241,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 { NatPortType.GP, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
             } },
                 { NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 83),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 83),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 83)
             } },
                 { NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 84),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 84),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 84)
             } }
             };
@@ -270,22 +270,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 { NatPortType.GP, new NatInitInfo()
             {
-                 PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 0),
+                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 51520)
             } },
                 { NatPortType.NN1, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 51521)
             } },
                 { NatPortType.NN2, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 49832)
             } },
                 { NatPortType.NN3, new NatInitInfo()
             {
-                PrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
+                GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 49832)
             } }
             };

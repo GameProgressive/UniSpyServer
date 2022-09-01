@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;

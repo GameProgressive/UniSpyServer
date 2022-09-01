@@ -1,5 +1,4 @@
 using System.Linq;
-
 using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result;

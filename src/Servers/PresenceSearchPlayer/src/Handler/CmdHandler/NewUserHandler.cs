@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;

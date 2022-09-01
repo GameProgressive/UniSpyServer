@@ -2,7 +2,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
@@ -69,7 +68,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
                 PortType = _request.PortType,
                 Cookie = (uint)_request.Cookie,
-                PrivateIPEndPoint = _request.GuessedPrivateIPEndPoint,
+                GPPrivateIPEndPoint = _request.GPPrivateIPEndPoint,
                 UseGamePort = _request.UseGamePort,
                 ClientIndex = (NatClientIndex)_request.ClientIndex,
                 Version = _request.Version

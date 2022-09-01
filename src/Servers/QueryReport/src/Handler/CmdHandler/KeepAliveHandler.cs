@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
@@ -13,12 +11,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
     public sealed class InitRequest : CommonRequestBase
     {
         public string GameName { get; private set; }
-        [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
         /// <summary>
-        /// Guessed private ip address and port, using for NAT negotiation
+        /// GamePort (GP) private ip address and port, using for NAT negotiation
         /// </summary>
-        /// <value></value>
-        public IPEndPoint GuessedPrivateIPEndPoint { get; private set; }
+        [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint GPPrivateIPEndPoint { get; private set; }
         public InitRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
@@ -31,7 +28,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             ushort port;
 
             port = (ushort)BitConverter.ToUInt16(portBytes);
-            GuessedPrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
+            GPPrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
             if (RawRequest.Length > 21)
             {
                 if (RawRequest[RawRequest.Length - 1] == 0)

@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-
 using System.Linq;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General

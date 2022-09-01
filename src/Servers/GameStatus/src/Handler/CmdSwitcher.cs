@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;

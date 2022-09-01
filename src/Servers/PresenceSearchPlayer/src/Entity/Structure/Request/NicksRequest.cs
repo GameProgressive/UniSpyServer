@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.MiscMethod;
 

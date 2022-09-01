@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;

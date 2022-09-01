@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
-
 using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;

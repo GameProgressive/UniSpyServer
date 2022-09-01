@@ -2,7 +2,6 @@ using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

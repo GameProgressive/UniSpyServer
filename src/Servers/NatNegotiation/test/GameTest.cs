@@ -46,8 +46,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var clientRequests = new List<byte[]> { clientInitGP, clientInitNN1, clientInitNN2, clientInitNN3 };
             var serverRequests = new List<byte[]> { serverInitGP, serverInitNN1, serverInitNN2, serverInitNN3 };
 
-            Client.ClientPool.Add(client.Session.RemoteIPEndPoint, client);
-            Client.ClientPool.Add(server.Session.RemoteIPEndPoint, server);
+            Client.ClientPool.TryAdd(client.Session.RemoteIPEndPoint, client);
+            Client.ClientPool.TryAdd(server.Session.RemoteIPEndPoint, server);
             foreach (var request in clientRequests)
             {
                 var switcher = new CmdSwitcher(client, request);
@@ -95,8 +95,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var clientRequests = new List<byte[]> { clientInitGP, clientInitNN1, clientInitNN2, clientInitNN3 };
             var serverRequests = new List<byte[]> { serverInitGP, serverInitNN1, serverInitNN2, serverInitNN3 };
 
-            Client.ClientPool.Add(client.Session.RemoteIPEndPoint, client);
-            Client.ClientPool.Add(server.Session.RemoteIPEndPoint, server);
+            Client.ClientPool.TryAdd(client.Session.RemoteIPEndPoint, client);
+            Client.ClientPool.TryAdd(server.Session.RemoteIPEndPoint, server);
             foreach (var request in clientRequests)
             {
                 var switcher = new CmdSwitcher(client, request);

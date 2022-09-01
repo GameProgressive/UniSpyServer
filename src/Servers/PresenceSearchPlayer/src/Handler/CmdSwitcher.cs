@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;

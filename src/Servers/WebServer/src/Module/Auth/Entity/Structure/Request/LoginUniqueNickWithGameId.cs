@@ -1,5 +1,4 @@
 using System.Linq;
-
 using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request

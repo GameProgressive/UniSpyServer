@@ -39,6 +39,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
+            // we need to wait for 2 seconds for another packets
             Thread.Sleep(2000);
             // !! the initResult count is valid in InitHandler, we do not need validate it again
             _matchedInfos = _redisClient.Context.Where(k =>
@@ -90,10 +91,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 // if two client is in same lan, we send each privateIPEndPoint
                 if (AddressCheckHandler.IsInSameLan(clientInfos, serverInfos))
                 {
-                    guessedClientIPEndPoint = new IPEndPoint(clientInfos[NatPortType.GP].PrivateIPEndPoint.Address,
-                             clientInfos[NatPortType.NN2].PrivateIPEndPoint.Port - 1);
-                    guessedServerIPEndPoint = new IPEndPoint(serverInfos[NatPortType.GP].PrivateIPEndPoint.Address,
-                            serverInfos[NatPortType.NN2].PrivateIPEndPoint.Port - 1);
+                    guessedClientIPEndPoint = new IPEndPoint(clientInfos[NatPortType.GP].GPPrivateIPEndPoint.Address,
+                             clientInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port - 1);
+                    guessedServerIPEndPoint = new IPEndPoint(serverInfos[NatPortType.GP].GPPrivateIPEndPoint.Address,
+                            serverInfos[NatPortType.NN2].GPPrivateIPEndPoint.Port - 1);
                 }
                 else
                 {

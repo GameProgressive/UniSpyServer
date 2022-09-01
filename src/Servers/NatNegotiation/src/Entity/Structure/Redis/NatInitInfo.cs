@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PublicIPEndPoint { get; set; }
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint PrivateIPEndPoint { get; init; }
+        public IPEndPoint GPPrivateIPEndPoint { get; init; }
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
         public int RetryCount { get; set; }

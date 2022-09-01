@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
