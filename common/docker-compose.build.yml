@@ -22,6 +22,26 @@ services:
     stdin_open: true
     tty: true
 
+  gs:
+    build:
+      context: ../
+      dockerfile: ./src/Servers/GameStatus/src/Dockerfile
+    image: gameprogressive/gs
+    ports:
+    - "29920:29920"
+    stdin_open: true
+    tty: true
+
+  gtr:
+    build:
+      context: ../
+      dockerfile: ./src/Servers/GameTrafficRelay/src/Dockerfile
+    image: gameprogressive/gtr
+    ports:
+    - "10086:10086/udp"
+    stdin_open: true
+    tty: true
+
   nn:
     build:
       context: ../
@@ -69,23 +89,14 @@ services:
     image: gameprogressive/sb
     ports:
     - "28910:28910"
-    stdin_open: true
-    tty: true
-
-  gs:
-    build:
-      context: ../
-      dockerfile: ./src/Servers/GameStatus/src/Dockerfile
-    image: gameprogressive/gs
-    ports:
-    - "29920:29920"
+    - "28900:28900"
     stdin_open: true
     tty: true
 
   ws:
     build:
       context: ../
-      dockerfile: ./src/Servers/WebServices/src/Dockerfile
+      dockerfile: ./src/Servers/WebServer/src/Dockerfile
     image: gameprogressive/ws
     ports:
     - "80:80"
