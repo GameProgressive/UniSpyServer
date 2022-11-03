@@ -27,5 +27,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\src\UniSpyServer.Servers.ServerBrowser.csproj" />
+        <ProjectReference Include="..\..\QueryReport\test\UniSpyServer.Servers.QueryReport.Test.csproj" />
+
     </ItemGroup>
 </Project>

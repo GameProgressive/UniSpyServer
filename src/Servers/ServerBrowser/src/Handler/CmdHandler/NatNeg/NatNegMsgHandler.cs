@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             base.RequestCheck();
             if (_client.Info.AdHocMessage is null)
             {
-                throw new SBException("There are no server messages in _session.ServerMessageList.");
+                throw new SBException("There are no server messages in client ServerMessageList.");
             }
 
             _gameServer = _gameServerRedisClient.Context.FirstOrDefault(x =>

@@ -6,7 +6,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.ServerBrowser.Abstraction
 {
-    public abstract class AdHocRequest : RequestBase
+    public abstract class AdHocRequest : ServerListUpdateOptionRequestBase
     {
         /// <summary>
         /// The game server client search for

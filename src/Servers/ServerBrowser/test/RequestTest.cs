@@ -2,7 +2,7 @@ using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
+namespace UniSpyServer.Servers.ServerBrowser.Test
 {
     public class RequestTest
     {
