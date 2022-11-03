@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
         }
         protected override void OnReceived(object buffer)
         {
-            var message = DecryptMessage((byte[])buffer); ;
+            var message = DecryptMessage((byte[])buffer);
             if (message[message.Length - 1] == 0x0A)
             {
                 // check last _incomplteBuffer if it has incomplete message, then combine them

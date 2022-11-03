@@ -154,16 +154,6 @@ namespace UniSpyServer.Servers.Chat.Test
         public void Worm3dTest20220613()
         {
 
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("Chat");
-            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("79.209.235.252"), 50558));
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            var client1 = new Client(sessionMock.Object);
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("211.83.127.54"), 39503));
-            var client2 = new Client(sessionMock.Object);
             var request1 = new List<string>()
             {
                 $"CRYPT des 1 worms3",
@@ -211,19 +201,32 @@ namespace UniSpyServer.Servers.Chat.Test
                 "WHO xiaojiuwo",
                 "PART #GSP!worms3!MPDNJKaNaM :Left Game"
             };
-            // When
 
             foreach (var raw in request1)
             {
-                new CmdSwitcher(client1, UniSpyEncoding.GetBytes(raw)).Switch();
+                ((ITestClient)TestClasses.Client1).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
             foreach (var raw in request2)
             {
-                new CmdSwitcher(client2, UniSpyEncoding.GetBytes(raw)).Switch();
+                ((ITestClient)TestClasses.Client2).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
-            int count = client1.Info.JoinedChannels.First().Value.Users.Count();
+            int count = ((Client)TestClasses.Client1).Info.JoinedChannels.First().Value.Users.Count();
             Assert.Equal(2, count);
-            // Then
+        }
+
+        [Fact]
+        public void ConflictGlobalStorm()
+        {
+            var request = new List<string>()
+            {
+                // "CRYPT des 1 conflictsopc\r\n",
+                ":s 705 * WKNYSMENXOZQHYVS MIYLETFVYDMBDFFV\r\n",
+                "LOGIN 1 cgs1 149815eb972b3c370dee3b89d645ae14\r\n"
+            };
+            foreach (var raw in request)
+            {
+                ((ITestClient)TestClasses.Client2).TestReceived(UniSpyEncoding.GetBytes(raw));
+            }
         }
     }
 }

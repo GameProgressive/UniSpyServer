@@ -220,12 +220,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             var bufferType = buffer.GetType();
             if (bufferType == typeof(byte[]))
             {
-                LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer);
+                LogWriter.LogNetworkReceiving(ipEndPoint, (byte[])buffer);
                 return;
             }
             if (bufferType == typeof(string))
             {
-                LogWriter.LogNetworkSending(ipEndPoint, (string)buffer);
+                LogWriter.LogNetworkReceiving(ipEndPoint, (string)buffer);
             }
         }
         /// <summary>

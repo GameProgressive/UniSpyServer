@@ -11,21 +11,6 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
     public class GameTest
     {
-        private Client _client;
-        public GameTest()
-        {
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("PresenceConnectionManager");
-            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-
-            _client = new Client(sessionMock.Object);
-        }
-
         [Fact]
         public void Civilization4()
         {
@@ -36,7 +21,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             };
             foreach (var raw in rawRequests)
             {
-                new CmdSwitcher(_client, UniSpyEncoding.GetBytes(raw)).Switch();
+                ((ITestClient)TestClasses.Client).TestReceived(UniSpyEncoding.GetBytes(raw));
+            }
+        }
+        public void ConflictGlobalStorm()
+        {
+            var rawRequests = new List<string>()
+            {
+                @"\lc\1\challenge\NRNUJLZMLX\id\1\final\",
+                @"\login\\challenge\KMylyQbZfqzKn9otxx32q4076sOUnKif\user\cgs1@cgs1@rs.de\response\c1a6638bbcfe130e4287bfe4aa792949\port\-15737\productid\10469\gamename\conflictsopc\namespaceid\1\id\1\final\",
+                @"\inviteto\\sesskey\58366\products\1038\final\"
+            };
+            foreach (var raw in rawRequests)
+            {
+                ((ITestClient)TestClasses.Client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
     }
