@@ -49,7 +49,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
             var headBuffer = _response.SendingBuffer.Take(14).ToArray();
             var bufferEncrypted = _client.Crypto.Encrypt(bodyBuffer);
             var buffer = headBuffer.Concat(bufferEncrypted).ToArray();
-            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, _response.SendingBuffer);
+            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, _response.SendingBuffer, true);
             _client.Session.Send(buffer);
         }
     }

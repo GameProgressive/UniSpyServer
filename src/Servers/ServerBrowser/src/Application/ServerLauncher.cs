@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
     public class ServerLauncher : ServerLauncherBase
     {
         public static IServer ServerV1;
-        public static IServer ServerV2 { get => Server; set => Server = value; }
+        public static IServer ServerV2;
         public ServerLauncher() : base("ServerBrowser")
         {
         }
@@ -29,10 +29,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
             ServerV2.Start();
 
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, Server.Endpoint.Address, $"{ServerV1.Endpoint.Port}, {ServerV2.Endpoint.Port}");
+            table.AddRow(ServerName, ServerV1.Endpoint.Address, $"{ServerV1.Endpoint.Port}, {ServerV2.Endpoint.Port}");
             table.Write(ConsoleTables.Format.Alternative);
-            Servers.Add(cfgs.Where(c => c.ServerName.Contains("V1")).First().ServerName, ServerV1);
-            Servers.Add(cfgs.Where(c => c.ServerName.Contains("V2")).First().ServerName, ServerV2);
+            Servers.Add(ServerV1.ServerName, ServerV1);
+            Servers.Add(ServerV2.ServerName, ServerV2);
 
             Console.WriteLine("Server successfully started!");
         }
