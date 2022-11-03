@@ -8,7 +8,6 @@ using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.UniSpyLib.Logging
 {
-
     /// <summary>
     /// Provides an object wrapper for a file that is used to
     /// store LogMessage's into. Uses a Multi-Thread safe Queueing
@@ -65,23 +64,25 @@ namespace UniSpyServer.UniSpyLib.Logging
         public static void ToLog(Exception e) => Error(e.Message);
         public static void ToLog(string message) => Info(message);
         public static void LogUnkownRequest(string data) => Error($"[Unknown] {data}");
-        public static void LogUnkownRequest(byte[] data) => Error($"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
+        public static void LogUnkownRequest(byte[] data) => Error($"[Unknown] {StringExtensions.ConvertNonprintableCharToHexString(data)}");
         public static void LogCurrentClass(object param) => Verbose($"[ => ] [{param.GetType().Name}]");
-        public static void LogNetworkMultiCast(string buffer) => Debug($"[Cast] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
+        public static void LogNetworkMultiCast(string buffer) => Debug($"[Cast] {StringExtensions.ConvertNonprintableCharToHex(buffer)}");
         # region Byte log
         public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer, bool isLogRaw = false) => LogNetworkTraffic("Send", endPoint, buffer, isLogRaw);
         public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer, bool isLogRaw = false) => LogNetworkTraffic("Recv", endPoint, buffer, isLogRaw);
         private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, bool isLogRaw)
         {
             // we format bytes to c# byte array format for convient unittest
+            // this method is for printable and nonprintable mixed network traffic such as serverbrowser and queryreport
             if (isLogRaw)
             {
-                LogNetworkTraffic(type, endPoint, StringExtensions.FormatBytesToRaw(buffer));
+                var tempLog = $"{StringExtensions.ConvertPrintableCharToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]";
+                LogNetworkTraffic(type, endPoint, tempLog);
             }
             else
             {
                 // maybe deprecated in the future
-                LogNetworkTraffic(type, endPoint, StringExtensions.ReplaceUnreadableCharToHex(buffer));
+                LogNetworkTraffic(type, endPoint, StringExtensions.ConvertNonprintableCharToHexString(buffer));
             }
         }
         # endregion
@@ -94,6 +95,6 @@ namespace UniSpyServer.UniSpyLib.Logging
         # endregion
 
         public static void LogNetworkSpam(IPEndPoint endPoint) => Error($"[Spam] [{endPoint}] spam we ignored!");
-        public static void LogNetworkTransit(IPEndPoint sender, IPEndPoint receiver, byte[] buffer) => Verbose($"[{sender}]=>[{receiver}] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
+        public static void LogNetworkTransit(IPEndPoint sender, IPEndPoint receiver, byte[] buffer) => Verbose($"[{sender}]=>[{receiver}] {StringExtensions.ConvertNonprintableCharToHexString(buffer)}");
     }
 }

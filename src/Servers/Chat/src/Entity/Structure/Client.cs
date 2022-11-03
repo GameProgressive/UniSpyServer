@@ -50,7 +50,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
             }
 
         }
-        public void TestReceived(byte[] buffer) => OnReceived(buffer);
         //todo add ondisconnect event process
         protected override void OnDisconnected()
         {

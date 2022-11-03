@@ -64,7 +64,12 @@ namespace UniSpyServer.UniSpyLib.Extensions
             return result.ToString();
         }
         #region Undisplayable char convert
-        public static string FormatBytesToRaw(byte[] buffer)
+        /// <summary>
+        /// Convert byte array to hex string dispite if byte is printable or non-pritable
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static string ConvertByteToHexString(byte[] buffer)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
@@ -80,7 +85,13 @@ namespace UniSpyServer.UniSpyLib.Extensions
             }
             return sb.ToString();
         }
-        public static string ReplaceUnreadableCharToHex(byte[] buffer)
+        /// <summary>
+        /// Convert nonpritable to hex string, combine with printable char to create a string: 
+        /// [0x00] [0x01] hello [0x02]
+        /// </summary>
+        /// <param name="buffer">Raw byte array</param>
+        /// <returns></returns>
+        public static string ConvertNonprintableCharToHexString(byte[] buffer)
         {
             StringBuilder temp = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
@@ -96,9 +107,36 @@ namespace UniSpyServer.UniSpyLib.Extensions
             }
             return temp.ToString();
         }
-        public static string ReplaceUnreadableCharToHex(string buffer)
+
+        /// <summary>
+        /// Only convert printable char to string
+        /// </summary>
+        /// <param name="buffer">raw byte array</param>
+        /// <returns></returns>
+        public static string ConvertPrintableCharToString(byte[] buffer)
         {
-            return ReplaceUnreadableCharToHex(UniSpyEncoding.GetBytes(buffer));
+            char delimiter = ' ';
+            StringBuilder temp = new StringBuilder();
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (buffer[i] < 0x1F || buffer[i] > 0x7E)
+                {
+                    // if the last char in temp is not delimiter, we add delemiter 
+                    if (temp.Length !=0 && temp[temp.Length - 1] != delimiter)
+                    {
+                        temp.Append(delimiter);
+                    }
+                }
+                else
+                {
+                    temp.Append((char)buffer[i]);
+                }
+            }
+            return temp.ToString();
+        }
+        public static string ConvertNonprintableCharToHex(string buffer)
+        {
+            return ConvertNonprintableCharToHexString(UniSpyEncoding.GetBytes(buffer));
         }
         #endregion
 

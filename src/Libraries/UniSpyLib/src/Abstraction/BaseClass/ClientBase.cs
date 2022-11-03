@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class ClientBase : IClient, IDisposable
+    public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
         public static IConnectionMultiplexer RedisConnection { get; set; }
         public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
@@ -228,5 +228,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 LogWriter.LogNetworkSending(ipEndPoint, (string)buffer);
             }
         }
+        /// <summary>
+        /// Received function for unit-test
+        /// </summary>
+        /// <param name="buffer">Raw byte array</param>
+        void ITestClient.TestReceived(byte[] buffer) => OnReceived(buffer);
     }
 }

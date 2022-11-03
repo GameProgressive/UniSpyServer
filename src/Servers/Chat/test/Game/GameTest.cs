@@ -63,7 +63,7 @@ namespace UniSpyServer.Servers.Chat.Test
             };
             foreach (var raw in raws)
             {
-                _client.TestReceived(raw);
+                ((ITestClient)_client).TestReceived(raw);
             }
             // Given
 

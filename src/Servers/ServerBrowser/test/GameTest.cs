@@ -54,12 +54,15 @@ namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
             };
             foreach (var qrReq in qrRequests)
             {
-                new QueryReport.Handler.CmdSwitcher(qrClient, qrReq).Switch();
+                ((ITestClient)qrClient).TestReceived(qrReq);
+                // new QueryReport.Handler.CmdSwitcher(qrClient, qrReq).Switch();
             }
 
             foreach (var sbReq in sb2Requests)
             {
-                new CmdSwitcher(sbClient, sbReq).Switch();
+                ((ITestClient)sbClient).TestReceived(sbReq);
+
+                // new CmdSwitcher(sbClient, sbReq).Switch();
             }
             // When
 
