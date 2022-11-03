@@ -2,7 +2,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpyServer.Servers.NatNegotiation.Test
 {
     public class RequestTest
     {

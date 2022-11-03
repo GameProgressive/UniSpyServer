@@ -5,7 +5,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using Xunit;
-namespace UniSpyServer.Servers.UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpyServer.Servers.NatNegotiation.Test
 {
 
     public class HandlerTest

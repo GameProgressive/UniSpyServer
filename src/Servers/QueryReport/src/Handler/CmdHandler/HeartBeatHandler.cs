@@ -14,8 +14,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
     public sealed class HeartBeatHandler : CmdHandlerBase
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
-        private GameServerInfo _gameServerInfo;
         private new HeartBeatResult _result { get => (HeartBeatResult)base._result; set => base._result = value; }
+        private GameServerInfo _gameServerInfo;
         public HeartBeatHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new HeartBeatResult();
