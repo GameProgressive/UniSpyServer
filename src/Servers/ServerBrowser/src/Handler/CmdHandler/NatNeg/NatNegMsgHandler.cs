@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    
+
     public sealed class NatNegMsgHandler : CmdHandlerBase
     {
         private static QueryReport.Entity.Structure.Redis.RedisChannel _redisChannel;
@@ -51,6 +51,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             // !Fix this
             var request = new ClientMessageRequest()
             {
+                ServerBrowserSenderId = _client.Session.Server.ServerID,
                 Message = _request.RawRequest,
                 InstantKey = _gameServer.InstantKey,
                 TargetIPEndPoint = _gameServer.QueryReportIPEndPoint,

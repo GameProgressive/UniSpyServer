@@ -79,6 +79,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LinqToRedis", "LinqToRedis"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpy.LinqToRedis.Test", "src\Libraries\LinqToRedis\test\UniSpy.LinqToRedis.Test.csproj", "{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Test", "src\test\UniSpyServer.Test.csproj", "{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -365,6 +367,18 @@ Global
 		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x64.Build.0 = Release|Any CPU
 		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x86.ActiveCfg = Release|Any CPU
 		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3}.Release|x86.Build.0 = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|x64.Build.0 = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|x64.Build.0 = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -405,6 +419,7 @@ Global
 		{8B1B77AA-ED59-4B6F-8926-A65AAF28A713} = {B46172F1-8E97-4934-9969-3957B9129736}
 		{98525275-1CA4-421F-AF18-12E906536814} = {8B1B77AA-ED59-4B6F-8926-A65AAF28A713}
 		{84DB61D5-C2DC-40D7-A67B-1729E85F7DF3} = {98525275-1CA4-421F-AF18-12E906536814}
+		{8A98B2B8-92E6-4649-92D7-77FB11E3C9C8} = {B46172F1-8E97-4934-9969-3957B9129736}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE7AD0FF-F1D1-4E34-8DE8-FBB2E63AA49F}

@@ -3,6 +3,8 @@ using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Entity.Structure;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
@@ -14,6 +16,8 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
         public override void ReceivedMessage(ClientMessageRequest message)
         {
             IClient client;
+            LogWriter.Info($"Get client message from server browser: {message.ServerBrowserSenderId} [{StringExtensions.ConvertByteToHexString(message.RawRequest)}]");
+            LogWriter.LogNetworkReceiving(message.TargetIPEndPoint,  message.RawRequest, true);
             if (Client.ClientPool.ContainsKey(message.TargetIPEndPoint))
             {
                 client = Client.ClientPool[message.TargetIPEndPoint];
