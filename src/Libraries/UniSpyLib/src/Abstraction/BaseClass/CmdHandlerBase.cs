@@ -35,7 +35,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 HandleException(ex);
             }
         }
-        protected virtual void RequestCheck() => _request.Parse();
+        protected virtual void RequestCheck()
+        {
+            // if there is gamespy raw request we convert it to unispy request
+            if (_request.RawRequest is not null)
+            {
+                _request.Parse();
+            }
+        }
         protected virtual void DataOperation() { }
         protected virtual void ResponseConstruct() { }
         /// <summary>

@@ -22,8 +22,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _result = new ReportResult();
         }
 
-
-
         protected override void ResponseConstruct()
         {
             _response = new ReportResponse(_request, _result);
@@ -33,24 +31,26 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             // we first response, the client will timeout if no response is received in some interval
             base.Response();
+            LogWriter.Error($"Natnegotiation success:{(bool)_request.IsNatSuccess}, version: {_request.Version} gamename: {_request.GameName}, mapping scheme:{_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
+            // when negotiation failed we log the information
 
-            if (!(bool)_request.IsNatSuccess)
-            {
-                var request = new ConnectRequest
-                {
-                    PortType = NatPortType.NN1,
-                    Version = _request.Version,
-                    Cookie = _request.Cookie,
-                    IsUsingRelay = true
-                };
-                new ConnectHandler(_client, request).Handle();
-                var packets = _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList();
-                foreach (var packet in packets)
-                {
-                    packet.RetryNatNegotiationTime++;
-                    _redisClient.SetValue(packet);
-                }
-            }
+            // if (!(bool)_request.IsNatSuccess)
+            // {
+            //     var request = new ConnectRequest
+            //     {
+            //         PortType = NatPortType.NN1,
+            //         Version = _request.Version,
+            //         Cookie = _request.Cookie,
+            //         IsUsingRelay = true
+            //     };
+            //     new ConnectHandler(_client, request).Handle();
+            //     var packets = _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList();
+            //     foreach (var packet in packets)
+            //     {
+            //         packet.RetryNatNegotiationTime++;
+            //         _redisClient.SetValue(packet);
+            //     }
+            // }
 
             // switch (_request.IsNatSuccess)
             // {

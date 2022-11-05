@@ -30,44 +30,44 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-        public static bool IsInSameLan(Dictionary<NatPortType, NatInitInfo> clientPackets, Dictionary<NatPortType, NatInitInfo> serverPackets)
-        {
+        // public static bool IsInSameLan(Dictionary<NatPortType, NatInitInfo> clientPackets, Dictionary<NatPortType, NatInitInfo> serverPackets)
+        // {
 
-            // todo private address should compare only xxx.xxx.xxx no need for last byte compare
-            return clientPackets[NatPortType.GP].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.GP].PublicIPEndPoint.Address)
-            && clientPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                serverPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+        //     // todo private address should compare only xxx.xxx.xxx no need for last byte compare
+        //     return clientPackets[NatPortType.GP].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.GP].PublicIPEndPoint.Address)
+        //     && clientPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+        //         serverPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-            && clientPackets[NatPortType.NN1].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN1].PublicIPEndPoint.Address)
-            && clientPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                serverPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+        //     && clientPackets[NatPortType.NN1].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN1].PublicIPEndPoint.Address)
+        //     && clientPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+        //         serverPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-            && clientPackets[NatPortType.NN2].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN2].PublicIPEndPoint.Address)
-            && clientPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                serverPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+        //     && clientPackets[NatPortType.NN2].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN2].PublicIPEndPoint.Address)
+        //     && clientPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+        //         serverPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-            && clientPackets[NatPortType.NN3].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN3].PublicIPEndPoint.Address)
-            && clientPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                serverPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
+        //     && clientPackets[NatPortType.NN3].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN3].PublicIPEndPoint.Address)
+        //     && clientPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+        //         serverPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
 
-        }
-        public static NatProperty DetermineNatType(Dictionary<NatPortType, NatInitInfo> initResults)
+        // }
+        public static NatProperty DetermineNatType(NatInitInfo iniInfo)
         {
             NatProperty natProperty = new NatProperty();
-            if (initResults.Count != 4)
+            if (iniInfo.NatMappingInfos.Count != 4)
             {
                 throw new NNException("We need 4 init results to determine the nat type.");
             }
-            var gp = initResults[NatPortType.GP];
-            var nn1 = initResults[NatPortType.NN1];
-            var nn2 = initResults[NatPortType.NN2];
-            var nn3 = initResults[NatPortType.NN3];
+            var gp = iniInfo.NatMappingInfos[NatPortType.GP];
+            var nn1 = iniInfo.NatMappingInfos[NatPortType.NN1];
+            var nn2 = iniInfo.NatMappingInfos[NatPortType.NN2];
+            var nn3 = iniInfo.NatMappingInfos[NatPortType.NN3];
 
             // no nat
-            if (gp.PublicIPEndPoint.Address.Equals(gp.GPPrivateIPEndPoint.Address)
-            && nn1.PublicIPEndPoint.Address.Equals(nn1.GPPrivateIPEndPoint.Address)
-            && nn2.PublicIPEndPoint.Equals(nn2.GPPrivateIPEndPoint)
-            && nn3.PublicIPEndPoint.Equals(nn3.GPPrivateIPEndPoint))
+            if (gp.PublicIPEndPoint.Address.Equals(gp.PrivateIPEndPoint.Address)
+            && nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
+            && nn2.PublicIPEndPoint.Equals(nn2.PrivateIPEndPoint)
+            && nn3.PublicIPEndPoint.Equals(nn3.PrivateIPEndPoint))
             {
                 natProperty.NatType = NatType.NoNat;
                 return natProperty;
@@ -105,23 +105,23 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
         }
 
-        public static IPEndPoint GuessTargetAddress(NatProperty property, Dictionary<NatPortType, NatInitInfo> initResults, IPEndPoint natFailedEd = null)
+        public static IPEndPoint GuessTargetAddress(NatProperty property, NatInitInfo initInfo, IPEndPoint natFailedEd = null)
         {
             switch (property.NatType)
             {
                 case NatType.NoNat:
                 case NatType.FirewallOnly:
                     // private is public
-                    return initResults[NatPortType.GP].PublicIPEndPoint;
+                    return initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
                 case NatType.FullCone:
-                    return new IPEndPoint(initResults[NatPortType.GP].PublicIPEndPoint.Address, initResults[NatPortType.GP].PublicIPEndPoint.Port);
+                    return new IPEndPoint(initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Address, initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Port);
                 case NatType.Symmetric:
                     //todo add GameTrafficRelay alternative plan
                     switch (property.PortMapping)
                     {
                         case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(initResults[NatPortType.GP].PublicIPEndPoint.Address,
-                                                  initResults[NatPortType.GP].PublicIPEndPoint.Port + property.PortIncrement);
+                            return new IPEndPoint(initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Address,
+                                                  initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Port + property.PortIncrement);
                         default:
                             return null;
                     }

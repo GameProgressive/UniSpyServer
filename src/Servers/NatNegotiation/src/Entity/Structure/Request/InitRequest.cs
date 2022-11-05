@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
         /// GamePort (GP) private ip address and port, using for NAT negotiation
         /// </summary>
         [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint GPPrivateIPEndPoint { get; private set; }
+        public IPEndPoint PrivateIPEndPoint { get; private set; }
         public InitRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
             ushort port;
 
             port = (ushort)BitConverter.ToUInt16(portBytes);
-            GPPrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
+            PrivateIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
             if (RawRequest.Length > 21)
             {
                 if (RawRequest[RawRequest.Length - 1] == 0)
