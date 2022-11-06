@@ -5,6 +5,8 @@ using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
@@ -46,18 +48,17 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            // fix the message must be sent by query report server 
-
-            // !Fix this
-            var request = new ClientMessageRequest()
+            // the message must be sent by query report server where client is reporting to.
+            var message = new ClientMessageRequest()
             {
                 ServerBrowserSenderId = _client.Session.Server.ServerID,
-                Message = _request.RawRequest,
+                NatNegMessage = _request.RawRequest,
                 InstantKey = _gameServer.InstantKey,
                 TargetIPEndPoint = _gameServer.QueryReportIPEndPoint,
                 CommandName = QueryReport.Entity.Enumerate.RequestType.ClientMessage
             };
-            _redisChannel.PublishMessage(request);
+            _redisChannel.PublishMessage(message);
+            LogWriter.Info($"Send client message to QueryReport Server: {_gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
             // set adhoc message to null
             _client.Info.AdHocMessage = null;
         }

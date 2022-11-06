@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Response
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
             data.AddRange(BitConverter.GetBytes((int)_request.MessageKey));
-            data.AddRange(_request.Message);
+            data.AddRange(_request.NatNegMessage);
             SendingBuffer = data.ToArray();
         }
     }

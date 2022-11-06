@@ -109,6 +109,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         /// </summary>
         private void PrepareForConnecting()
         {
+            LogWriter.Info($"Watting for other client's initInfo with cookie:{_initInfo.Cookie}");
             int waitCount = 0;
             // we only wait 8 seconds
             while (waitCount++ < 8)
@@ -124,8 +125,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
                 else
                 {
-                    throw new NNException("No user pair found we continue waitting.");
+                    LogWriter.Info($"No client pair found with cookie: {_initInfo.Cookie}, we continue waitting.");
                 }
+            }
+            // if server can not find the client2 within 8 retry, then we log the error. 
+            if (waitCount == 8)
+            {
+                LogWriter.Error($"No client pair found with cookie: {_initInfo.Cookie}, we continue waitting.");
             }
         }
 
