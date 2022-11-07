@@ -1,13 +1,13 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.MiscMethod;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
@@ -30,7 +30,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public Guid? ServerID { get; init; }
         [RedisKey]
         public uint? Cookie { get; init; }
-
         [RedisKey]
         public byte? Version { get; init; }
         [RedisKey]
@@ -40,7 +39,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         /// </summary>
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint GuessedPublicIPEndPoint { get; set; }
-
+        /// <summary>
+        /// Negotiating flag to set 
+        /// </summary>
+        public bool isNegotiating { get; set; }
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
         /// <summary>
@@ -48,11 +50,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         /// </summary>
         public bool IsUsingRelayServer { get; set; }
 
-        public ConcurrentDictionary<NatPortType, NatMappingInfo> NatMappingInfos { get; }
+        public Dictionary<NatPortType, NatMappingInfo> NatMappingInfos { get; }
 
         public NatInitInfo() : base(TimeSpan.FromMinutes(3))
         {
-            NatMappingInfos = new ConcurrentDictionary<NatPortType, NatMappingInfo>();
+            NatMappingInfos = new Dictionary<NatPortType, NatMappingInfo>();
         }
     }
 

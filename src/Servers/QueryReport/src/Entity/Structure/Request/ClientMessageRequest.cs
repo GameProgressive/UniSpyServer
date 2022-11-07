@@ -15,7 +15,6 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint TargetIPEndPoint { get; init; }
         public readonly int? MessageKey = 0;
-        private new byte[] RawRequest;
         public ClientMessageRequest() : base(null)
         {
         }

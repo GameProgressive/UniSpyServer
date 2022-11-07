@@ -54,18 +54,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         public static NatProperty DetermineNatType(NatInitInfo iniInfo)
         {
             NatProperty natProperty = new NatProperty();
-            if (iniInfo.NatMappingInfos.Count != 4)
+            if (iniInfo.NatMappingInfos.Count < 3)
             {
-                throw new NNException("We need 4 init results to determine the nat type.");
+                throw new NNException("We need 3 init records to determine the nat type.");
             }
-            var gp = iniInfo.NatMappingInfos[NatPortType.GP];
             var nn1 = iniInfo.NatMappingInfos[NatPortType.NN1];
             var nn2 = iniInfo.NatMappingInfos[NatPortType.NN2];
             var nn3 = iniInfo.NatMappingInfos[NatPortType.NN3];
 
             // no nat
-            if (gp.PublicIPEndPoint.Address.Equals(gp.PrivateIPEndPoint.Address)
-            && nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
+            if (nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
             && nn2.PublicIPEndPoint.Equals(nn2.PrivateIPEndPoint)
             && nn3.PublicIPEndPoint.Equals(nn3.PrivateIPEndPoint))
             {
@@ -107,21 +105,31 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         public static IPEndPoint GuessTargetAddress(NatProperty property, NatInitInfo initInfo, IPEndPoint natFailedEd = null)
         {
+            IPEndPoint guessedIPEndPoint;
+            // if is gameserver we return the GP IPEndPoint else we return NN3 IPEndPoint
+            if (initInfo.NatMappingInfos.ContainsKey(NatPortType.GP))
+            {
+                guessedIPEndPoint = initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
+            }
+            else
+            {
+                guessedIPEndPoint = initInfo.NatMappingInfos[NatPortType.NN3].PublicIPEndPoint;
+            }
             switch (property.NatType)
             {
                 case NatType.NoNat:
                 case NatType.FirewallOnly:
                     // private is public
-                    return initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
+                    return guessedIPEndPoint;
                 case NatType.FullCone:
-                    return new IPEndPoint(initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Address, initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Port);
+                    return guessedIPEndPoint;
                 case NatType.Symmetric:
                     //todo add GameTrafficRelay alternative plan
                     switch (property.PortMapping)
                     {
                         case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Address,
-                                                  initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint.Port + property.PortIncrement);
+                            return new IPEndPoint(guessedIPEndPoint.Address,
+                                                  guessedIPEndPoint.Port + property.PortIncrement);
                         default:
                             return null;
                     }

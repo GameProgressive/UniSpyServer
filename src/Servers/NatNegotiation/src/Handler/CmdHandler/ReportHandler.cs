@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
@@ -31,7 +30,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             // we first response, the client will timeout if no response is received in some interval
             base.Response();
-            LogWriter.Error($"Natnegotiation success:{(bool)_request.IsNatSuccess}, version: {_request.Version} gamename: {_request.GameName}, mapping scheme:{_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
+            LogWriter.Info($"[{_client.Session.RemoteIPEndPoint}] natneg success: {(bool)_request.IsNatSuccess}, version: {_request.Version}, gamename: {_request.GameName}, nat type: {_request.NatType} mapping scheme: {_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
             // when negotiation failed we log the information
 
             // if (!(bool)_request.IsNatSuccess)

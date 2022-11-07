@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -75,25 +76,64 @@ namespace UniSpyServer.LinqToRedis
         private string BuildSearchKey()
         {
             var builder = new StringBuilder();
-            var properties = GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(RedisKeyAttribute), false).Where(a => a is RedisKeyAttribute).Any());
+            var properties = GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(RedisKeyAttribute), false).Where(a => a is RedisKeyAttribute).Any()).ToList();
             if (properties.Count() == 0)
             {
                 throw new ArgumentNullException($"The RedisKeyValueObject:{this.GetType().Name} must have a key");
             }
-            builder.Append("*");
 
+
+            var propDict = new Dictionary<string, object>();
             foreach (var property in properties)
             {
-                if (property.GetValue(this) is null)
-                {
-                    continue;
-                }
-                else
-                {
-                    builder.Append($"{property.Name}={property.GetValue(this)}");
-                }
+                propDict.Add(property.Name, property.GetValue(this));
+            }
+            if (propDict.Values.ToList()[0] is null)
+            {
                 builder.Append("*");
             }
+            for (int i = 0; i < propDict.Keys.Count; i++)
+            {
+                if (propDict.Values.ToList()[i] is not null)
+                {
+                    builder.Append($"{propDict.Keys.ToList()[i]}={propDict.Values.ToList()[i]}");
+
+                    // determine whether two non-null property is close to each other, if yes then do not add * , if no add *
+                    if (propDict.Values.ToList()[i + 1] is null)
+                    {
+                        builder.Append("*");
+                    }
+                    else
+                    {
+                        if (i != propDict.Keys.Count)
+                        {
+                            builder.Append(":");
+                        }
+                    }
+                }
+            }
+            // determine whether last item is null, if yes add * 
+            if (propDict.Values.ToList()[propDict.Values.Count - 1] is null)
+            {
+                builder.Append("*");
+            }
+
+            // for (int i = 0; i < properties.Count; i++)
+            // {
+            //     // determine whether if property is first object
+            //     var property = properties[i];
+            //     if (property.GetValue(this) is null)
+            //     {
+            //         continue;
+            //     }
+            //     else
+            //     {
+
+            //         builder.Append($"{property.Name}={property.GetValue(this)}");
+            //     }
+            //     builder.Append("*");
+            // }
+
             return builder.ToString();
         }
     }

@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -19,14 +21,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
-        private static ConcurrentDictionary<string, NatInitInfo> _initInfoPool;
+        private static Dictionary<string, NatInitInfo> _initInfoPool;
         private NatMappingInfo _mappingInfo;
         private NatInitInfo _initInfo;
         private static GameTrafficRelay.Entity.Structure.Redis.RedisClient _relayRedisClient;
-
+        private string _searchKey;
         static InitHandler()
         {
-            _initInfoPool = new ConcurrentDictionary<string, NatInitInfo>();
+            _initInfoPool = new Dictionary<string, NatInitInfo>();
             _relayRedisClient = new GameTrafficRelay.Entity.Structure.Redis.RedisClient();
         }
         public InitHandler(IClient client, IRequest request) : base(client, request)
@@ -36,23 +38,26 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-
-            var searchKey = $"{_request.Cookie} {_request.ClientIndex}";
-            if (!_initInfoPool.Keys.Contains(searchKey))
+            _searchKey = $"{_request.Cookie} {_request.ClientIndex} {_request.Version}";
+            // note: async socket may cause problem when adding _initInfo to _initInfoPool, requires a lock
+            lock (_initInfoPool)
             {
-                _initInfo = new NatInitInfo()
+                if (!_initInfoPool.Keys.Contains(_searchKey))
                 {
-                    ServerID = _client.Session.Server.ServerID,
-                    Cookie = (uint)_request.Cookie,
-                    UseGamePort = _request.UseGamePort,
-                    ClientIndex = (NatClientIndex)_request.ClientIndex,
-                    Version = _request.Version
-                };
-                _initInfoPool.TryAdd(searchKey, _initInfo);
-            }
-            else
-            {
-                _initInfo = _initInfoPool[searchKey];
+                    _initInfo = new NatInitInfo()
+                    {
+                        ServerID = _client.Session.Server.ServerID,
+                        Cookie = (uint)_request.Cookie,
+                        UseGamePort = _request.UseGamePort,
+                        ClientIndex = (NatClientIndex)_request.ClientIndex,
+                        Version = _request.Version
+                    };
+                    _initInfoPool.TryAdd(_searchKey, _initInfo);
+                }
+                else
+                {
+                    _initInfo = _initInfoPool[_searchKey];
+                }
             }
         }
         protected override void DataOperation()
@@ -64,11 +69,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
-            _initInfo.NatMappingInfos.AddOrUpdate((NatPortType)_request.PortType, _mappingInfo, (s, i) => i = _mappingInfo);
-            //             if(!_initInfo.NatMappingInfos.Contains((NatPortType)_request.PortType))
-            //             {
-            // _initInfo.NatMappingInfos.Add(_request.PortType,)
-            //             }
+            // note: async socket may cause problem when adding _mappingInfo to _initInfo.NatMappingInfos, requires a lock
+            lock (_initInfo)
+            {
+                if (!_initInfo.NatMappingInfos.ContainsKey((NatPortType)_request.PortType))
+                {
+                    _initInfo.NatMappingInfos.Add((NatPortType)_request.PortType, _mappingInfo);
+                }
+            }
+
             _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
@@ -87,51 +96,61 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 _client.Info.Cookie = _request.Cookie;
             }
-
-            if (_initInfo.NatMappingInfos.Count == 4)
+            // note: async socket may cause multiple call of natnegotiation, requires a lock
+            lock (_initInfo)
             {
-                DetectNat();
-                // new Thread(() =>
-                //                 {
-                //                     Thread.CurrentThread.IsBackground = true;
-                _redisClient.SetValue(_initInfo);
-                // }).Start();
-                // Task.Run(()=>PrepareForConnecting());
-                new Thread(() =>
-                                {
-                                    Thread.CurrentThread.IsBackground = true;
-                                    PrepareForConnecting();
-                                }).Start();
+                if (_initInfo.NatMappingInfos.ContainsKey(NatPortType.NN1)
+                && _initInfo.NatMappingInfos.ContainsKey(NatPortType.NN2)
+                && _initInfo.NatMappingInfos.ContainsKey(NatPortType.NN3)
+                && _initInfo.isNegotiating == false)
+                {
+                    _initInfo.isNegotiating = true;
+                    DetectNat();
+                    // we have use sync code to make sure the data is saved on redis
+                    _redisClient.SetValue(_initInfo);
+                    Task.Run(() => PrepareForConnecting());
+                    // PrepareForConnecting();
+                }
             }
+
         }
         /// <summary>
         /// Prepare to send connect response
         /// </summary>
         private void PrepareForConnecting()
         {
-            LogWriter.Info($"Watting for other client's initInfo with cookie:{_initInfo.Cookie}");
-            int waitCount = 0;
+            LogWriter.Info($"Watting for negotiator's initInfo with cookie:{_initInfo.Cookie}");
+            int waitCount = 1;
             // we only wait 8 seconds
-            while (waitCount++ < 8)
+            while (waitCount <= 4)
             {
-                Thread.Sleep(1000);
                 var initCount = _redisClient.Context.Count(k =>
                         k.Cookie == _request.Cookie
                         && k.Version == _request.Version);
                 if (initCount == 2)
                 {
+                    LogWriter.Info("2 neigotiators found, start negotiating");
                     StartConnecting();
                     break;
                 }
                 else
                 {
-                    LogWriter.Info($"No client pair found with cookie: {_initInfo.Cookie}, we continue waitting.");
+                    LogWriter.Info($"[{_client.Session.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
                 }
+                waitCount++;
+                Thread.Sleep(2000);
             }
             // if server can not find the client2 within 8 retry, then we log the error. 
-            if (waitCount == 8)
+            if (waitCount > 4)
             {
-                LogWriter.Error($"No client pair found with cookie: {_initInfo.Cookie}, we continue waitting.");
+                LogWriter.Warning($"[{_client.Session.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
+                lock (_initInfoPool)
+                {
+                    if (_initInfoPool.ContainsKey(_searchKey))
+                    {
+                        _initInfoPool.Remove(_searchKey);
+                    }
+                }
             }
         }
 
@@ -152,7 +171,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
         private void DetectNat()
         {
-            var clientRemoteIPEnd = _initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
+            IPEndPoint clientRemoteIPEnd;
+            // if initInfo contains GP key which mean it is game server, we need to send this port to negotiator
+            if (_initInfo.NatMappingInfos.ContainsKey(NatPortType.GP))
+            {
+                clientRemoteIPEnd = _initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
+            }
+            else
+            {
+                clientRemoteIPEnd = _initInfo.NatMappingInfos[NatPortType.NN3].PublicIPEndPoint;
+            }
             var clientNatProperty = AddressCheckHandler.DetermineNatType(_initInfo);
             var guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, _initInfo);
             if (clientNatProperty.NatType == NatType.Symmetric || clientNatProperty.NatType == NatType.Unknown)
