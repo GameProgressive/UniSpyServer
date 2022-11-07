@@ -34,6 +34,7 @@ namespace UniSpy.Redis.Test
             for (var i = 0; i < 100; i++)
             {
                 redis.SetValue(value);
+                value.Cookie++;
             }
             Console.WriteLine("linqtoredis sync: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
 
@@ -43,6 +44,7 @@ namespace UniSpy.Redis.Test
                                index =>
                                {
                                    redis.SetValue(value);
+                                   value.Cookie++;
                                });
             Console.WriteLine("linqtoredis async: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
             // natural redis api performance
@@ -50,6 +52,7 @@ namespace UniSpy.Redis.Test
             for (var i = 0; i < 100; i++)
             {
                 redis.Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
+                value.Cookie++;
             }
             Console.WriteLine("natural redis api sync: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
             start = System.DateTime.Now;
@@ -58,6 +61,7 @@ namespace UniSpy.Redis.Test
                                index =>
                                {
                                    redis.Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
+                                   value.Cookie++;
                                });
             Console.WriteLine("natural redis api async: {0}", (System.DateTime.Now.Subtract(start).TotalSeconds));
         }
@@ -148,13 +152,23 @@ namespace UniSpy.Redis.Test
         public void CountTest()
         {
             var redis = new RedisClient();
+            var data1 = redis.Context.Count();
+            var data2 = redis.Context.Count(k => k.Cookie == 134);
+            var data3 = redis.Context.First(k => k.Cookie == 134);
+            var data4 = redis.Context.Where(k => k.Cookie == 134).First();
+        }
+        [Fact]
+        public void SearchKeyBuild()
+        {
             // Given
-            // var data2 = redis.Values.Count(k => k.Cookie == 0);
-            var data3 = redis.Context.First(k => k.Cookie == 0);
-            var data4 = redis.Context.Where(k => k.Cookie == 0).First();
-            // When
+            var user1 = new UserInfo() { Cookie = 0 };
+            var key1 = user1.SearchKey;
 
-            // Then
+            var user2 = new UserInfo() { ServerID = Guid.NewGuid(), Cookie = 0 };
+            var key2 = user2.SearchKey;
+
+            var user3 = new UserInfo() { ServerID = Guid.NewGuid(), Cookie = 0, UserName = "xiaojiuwo", RemoteEndPoint = "192.168.1.1" };
+            var key3 = user3.SearchKey;
         }
     }
 }

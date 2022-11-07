@@ -83,57 +83,28 @@ namespace UniSpyServer.LinqToRedis
             }
 
 
-            var propDict = new Dictionary<string, object>();
+            var propKVList = new List<KeyValuePair<string, object>>();
             foreach (var property in properties)
             {
-                propDict.Add(property.Name, property.GetValue(this));
+                propKVList.Add(new KeyValuePair<string, object>(property.Name, property.GetValue(this)));
             }
-            if (propDict.Values.ToList()[0] is null)
-            {
-                builder.Append("*");
-            }
-            for (int i = 0; i < propDict.Keys.Count; i++)
-            {
-                if (propDict.Values.ToList()[i] is not null)
-                {
-                    builder.Append($"{propDict.Keys.ToList()[i]}={propDict.Values.ToList()[i]}");
 
-                    // determine whether two non-null property is close to each other, if yes then do not add * , if no add *
-                    if (propDict.Values.ToList()[i + 1] is null)
-                    {
-                        builder.Append("*");
-                    }
-                    else
-                    {
-                        if (i != propDict.Keys.Count)
-                        {
-                            builder.Append(":");
-                        }
-                    }
+            foreach (var item in propKVList)
+            {
+                if (item.Value is null)
+                {
+                    builder.Append($"{item.Key}=*");
+                }
+                else
+                {
+                    builder.Append($"{item.Key}={item.Value}");
+                }
+
+                if (item.Key != propKVList.Last().Key)
+                {
+                    builder.Append(":");
                 }
             }
-            // determine whether last item is null, if yes add * 
-            if (propDict.Values.ToList()[propDict.Values.Count - 1] is null)
-            {
-                builder.Append("*");
-            }
-
-            // for (int i = 0; i < properties.Count; i++)
-            // {
-            //     // determine whether if property is first object
-            //     var property = properties[i];
-            //     if (property.GetValue(this) is null)
-            //     {
-            //         continue;
-            //     }
-            //     else
-            //     {
-
-            //         builder.Append($"{property.Name}={property.GetValue(this)}");
-            //     }
-            //     builder.Append("*");
-            // }
-
             return builder.ToString();
         }
     }
