@@ -26,22 +26,24 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
             var data = UniSpyEncoding.GetString((byte[])buffer);
             // gamestatus client will send plaintext message 
             // we do not need to decrypt it
-            if (data.StartsWith("\u001b\0"))
-            {
-                base.OnReceived(buffer);
-            }
-            else
-            {
-                // we ignore unencrypted message
-                return;
-            }
+            // if (data.StartsWith("\u001b\0"))
+            // if (data[0] == '\u001b' && data[1] == '\0')
+            // {
+            base.OnReceived(buffer);
+            // }
+            // else
+            // {
+            //     // we ignore unencrypted message
+            //     return;
+            // }
         }
         protected override byte[] DecryptMessage(byte[] buffer)
         {
             var data = UniSpyEncoding.GetString(buffer);
             // gamestatus client will send plaintext message 
             // we do not need to decrypt it
-            if (data.StartsWith("\u001b\0"))
+            // if (data.StartsWith("\u001b\0"))
+            if (data[0] == '\u001b' && data[1] == '\0')
             {
                 return Crypto.Decrypt(buffer);
             }
