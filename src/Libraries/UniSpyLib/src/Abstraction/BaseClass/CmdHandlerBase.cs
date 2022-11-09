@@ -58,11 +58,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             // we only log exception message when this message is UniSpyException
             if (ex is UniSpyException)
             {
-                LogWriter.Error(ex.Message);
+                _client.LogError(ex.Message);
             }
             else
             {
-                LogWriter.Error(ex.ToString());
+                _client.LogError(ex.ToString());
             }
         }
     }

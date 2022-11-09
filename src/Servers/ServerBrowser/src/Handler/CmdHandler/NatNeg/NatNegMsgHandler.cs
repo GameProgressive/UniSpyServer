@@ -58,7 +58,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 CommandName = QueryReport.Entity.Enumerate.RequestType.ClientMessage
             };
             _redisChannel.PublishMessage(message);
-            LogWriter.Info($"Send client message to QueryReport Server: {_gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
+            _client.LogInfo($"Send client message to QueryReport Server: {_gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
             // set adhoc message to null
             _client.Info.AdHocMessage = null;
         }

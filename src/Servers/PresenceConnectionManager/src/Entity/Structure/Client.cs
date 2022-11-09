@@ -24,12 +24,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
             {
                 Connection.Disconnect();
                 // Throw the error                
-                LogWriter.Warning("The server challenge has already been sent. Cannot send another login challenge.");
+                LogWarn("The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             Info.LoginPhase = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
-            LogWriter.LogNetworkSending(Connection.RemoteIPEndPoint, sendingBuffer);
+            LogNetworkSending(sendingBuffer);
             Connection.Send(sendingBuffer);
         }
 

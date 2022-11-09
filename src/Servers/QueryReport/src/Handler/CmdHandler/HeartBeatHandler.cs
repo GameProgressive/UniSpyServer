@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
             // if (_request.PlayerData?.Count == 0 || _request.PlayerData is null)
             // {
-            //     LogWriter.Info("Ignore incorrect implementation of heartbeat");
+            //     _client.LogInfo("Ignore incorrect implementation of heartbeat");
             //     return;
             // }
             CheckSpamGameServer();

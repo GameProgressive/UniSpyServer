@@ -25,7 +25,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             var servers = _redisClient.Context.Where(x => x.InstantKey == _request.InstantKey).ToList();
             if (servers.Count() != 1)
             {
-                LogWriter.Info("Can not find game server");
+                _client.LogInfo("Can not find game server");
                 return;
             }
             //add recive echo packet on gameserverList

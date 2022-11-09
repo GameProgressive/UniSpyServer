@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
         protected override void OnConnected()
         {
             base.OnConnected();
-            LogWriter.LogNetworkSending(Connection.RemoteIPEndPoint, ClientInfo.ChallengeResponse);
+            LogNetworkReceiving(ClientInfo.ChallengeResponse);
             Connection.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
         }
         protected override void OnReceived(object buffer)

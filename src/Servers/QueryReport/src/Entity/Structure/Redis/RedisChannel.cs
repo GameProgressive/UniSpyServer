@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
         public override void ReceivedMessage(ClientMessageRequest message)
         {
             IClient client;
-            LogWriter.Info($"Get client message from server browser: {message.ServerBrowserSenderId} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
+
             // LogWriter.LogNetworkReceiving(message.TargetIPEndPoint,  message.NatNegMessage, true);
             if (Client.ClientPool.ContainsKey(message.TargetIPEndPoint))
             {
@@ -26,6 +26,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
             {
                 throw new QRException($"Client:{message.TargetIPEndPoint} not found.");
             }
+            client.LogInfo($"Get client message from server browser: {message.ServerBrowserSenderId} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
             new ClientMessageHandler(client, message).Handle();
         }
     }

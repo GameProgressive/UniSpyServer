@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            LogWriter.Info("Get client message ack.");
+            _client.LogInfo("Get client message ack.");
         }
     }
 }

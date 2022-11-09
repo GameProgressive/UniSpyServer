@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         {
             if (!_client.Info.IsLoggedIn)
             {
-                LogWriter.Info($"{_client.Info.NickName} Please login first!");
+                _client.LogInfo($"{_client.Info.NickName} Please login first!");
                 return;
             }
 

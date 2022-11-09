@@ -119,7 +119,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         /// </summary>
         private void PrepareForConnecting()
         {
-            LogWriter.Info($"Watting for negotiator's initInfo with cookie:{_initInfo.Cookie}");
+            _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_initInfo.Cookie}");
             int waitCount = 1;
             // we only wait 8 seconds
             while (waitCount <= 4)
@@ -129,13 +129,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         && k.Version == _request.Version);
                 if (initCount == 2)
                 {
-                    LogWriter.Info("2 neigotiators found, start negotiating");
+                    _client.LogInfo("2 neigotiators found, start negotiating");
                     StartConnecting();
                     break;
                 }
                 else
                 {
-                    LogWriter.Info($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
+                    _client.LogInfo($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
                 }
                 waitCount++;
                 Thread.Sleep(2000);
@@ -143,7 +143,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // if server can not find the client2 within 8 retry, then we log the error. 
             if (waitCount > 4)
             {
-                LogWriter.Warning($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
+                _client.LogWarn($"cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
                 lock (_initInfoPool)
                 {
                     if (_initInfoPool.ContainsKey(_searchKey))
@@ -193,7 +193,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             else
             {
                 _initInfo.GuessedPublicIPEndPoint = guessedClientIPEndPoint;
-                LogWriter.Debug($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
+                _client.LogInfo($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
             }
         }
     }

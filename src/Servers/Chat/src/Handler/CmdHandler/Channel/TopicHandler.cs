@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    
+
     public sealed class TopicHandler : ChannelHandlerBase
     {
         private new TopicRequest _request => (TopicRequest)base._request;
@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     _client.Send(_response);
                     break;
                 case TopicRequestType.SetChannelTopic:
-                    _channel.MultiCast(_response);
+                    _channel.MultiCast(_client, _response);
                     break;
             }
         }

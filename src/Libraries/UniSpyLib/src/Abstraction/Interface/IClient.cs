@@ -6,7 +6,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     {
         public void TestReceived(byte[] buffer);
     }
-    public interface IClient
+    public interface IClient : ILogger
     {
         // we store client info here
         IConnection Connection { get; }

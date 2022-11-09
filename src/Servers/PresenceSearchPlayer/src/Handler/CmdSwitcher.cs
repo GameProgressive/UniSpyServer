@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler
         {
             if (_rawRequest[0] != '\\')
             {
-                LogWriter.Info("Invalid request recieved!");
+                _client.LogInfo("Invalid request recieved!");
                 return;
             }
             string[] rawRequests = _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);

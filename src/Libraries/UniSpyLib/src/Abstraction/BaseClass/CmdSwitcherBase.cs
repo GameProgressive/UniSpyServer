@@ -51,7 +51,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             }
             catch (UniSpyException e)
             {
-                LogWriter.Error(e.Message);
+                _client.LogError(e.Message);
             }
         }
         /// <summary>

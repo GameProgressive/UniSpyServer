@@ -65,7 +65,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            _channel.MultiCast(_response);
+            _channel.MultiCast(_client,_response);
         }
     }
 }

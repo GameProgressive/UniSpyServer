@@ -6,6 +6,7 @@ using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
@@ -26,6 +27,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
+        protected bool _isLogRawMessage;
         static ClientBase()
         {
             RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
@@ -74,7 +76,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     ((IHttpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
                 case NetworkConnectionType.Test:
-                    LogWriter.Info("Using unit-test proxy");
+                    LogInfo("Using unit-test proxy");
                     break;
                 default:
                     throw new Exception("Unsupported connection type");
@@ -109,6 +111,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
 
         protected abstract ISwitcher CreateSwitcher(object buffer);
+        /// <summary>
+        /// Invoked when received message from game client
+        /// </summary>
+        /// <param name="buffer">Byte[], string, Http</param>
         protected virtual void OnReceived(object buffer)
         {
             switch (Connection.ConnectionType)
@@ -124,13 +130,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     }
                     goto default;
                 case NetworkConnectionType.Http:
-                    LogNetworkReceiving(Connection.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
+                    var tempBuffer = ((IHttpRequest)buffer).Body;
+                    LogNetworkReceiving(UniSpyEncoding.GetBytes(tempBuffer));
                     break;
                 case NetworkConnectionType.Test:
                     goto default;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
-                    LogNetworkReceiving(Connection.RemoteIPEndPoint, (byte[])buffer);
+                    LogNetworkReceiving((byte[])buffer);
                     break;
             }
             // we let child class to create swicher for us
@@ -198,7 +205,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 buffer = (byte[])response.SendingBuffer;
             }
             // LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
-            LogNetworkSending(Connection.RemoteIPEndPoint, buffer);
+            LogNetworkSending(buffer);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {
@@ -206,37 +213,44 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             }
             Connection.Send(buffer);
         }
-        protected virtual void LogNetworkSending(IPEndPoint ipEndPoint, object buffer)
-        {
-            var bufferType = buffer.GetType();
-            if (bufferType == typeof(byte[]))
-            {
-                LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer);
-                return;
-            }
-            if (bufferType == typeof(string))
-            {
-                LogWriter.LogNetworkSending(ipEndPoint, (string)buffer);
-            }
-
-        }
-        protected virtual void LogNetworkReceiving(IPEndPoint ipEndPoint, object buffer)
-        {
-            var bufferType = buffer.GetType();
-            if (bufferType == typeof(byte[]))
-            {
-                LogWriter.LogNetworkReceiving(ipEndPoint, (byte[])buffer);
-                return;
-            }
-            if (bufferType == typeof(string))
-            {
-                LogWriter.LogNetworkReceiving(ipEndPoint, (string)buffer);
-            }
-        }
         /// <summary>
         /// Received function for unit-test
         /// </summary>
         /// <param name="buffer">Raw byte array</param>
         void ITestClient.TestReceived(byte[] buffer) => OnReceived(buffer);
+        #region Formated Logging
+        public void LogInfo(string message) => LogWriter.Info(FormatLogMessage(message));
+        public void LogVerbose(string message) => LogWriter.Verbose(FormatLogMessage(message));
+        public void LogDebug(string message) => LogWriter.Debug(FormatLogMessage(message));
+        public void LogWarn(string message) => LogWriter.Warning(FormatLogMessage(message));
+        public void LogError(string message) => LogWriter.Error(FormatLogMessage(message));
+        private string FormatLogMessage(string message) => $"[{Connection.RemoteIPEndPoint}] {message}";
+        private string FormatNetworkLogMessage(string type, string message) => FormatLogMessage($"[{type}] {message}");
+        protected void LogNetworkTraffic(string type, byte[] message, bool isLogRaw = false)
+        {
+            // we format bytes to c# byte array format for convient unittest
+            // this method is for printable and nonprintable mixed network traffic such as serverbrowser and queryreport
+            string tempNatLog;
+            if (isLogRaw)
+            {
+                var tempLog = $"{StringExtensions.ConvertPrintableCharToString(message)} [{StringExtensions.ConvertByteToHexString(message)}]";
+                tempNatLog = FormatNetworkLogMessage(type, tempLog);
+            }
+            else
+            {
+                var tempLog = StringExtensions.ConvertNonprintableCharToHexString(message);
+                tempNatLog = FormatNetworkLogMessage(type, tempLog);
+            }
+            LogWriter.Debug(tempNatLog);
+        }
+        public void LogNetworkReceiving(byte[] message) => LogNetworkTraffic("Recv", message, _isLogRawMessage);
+        public void LogNetworkSending(byte[] message) => LogNetworkTraffic("Send", message, _isLogRawMessage);
+        public void LogNetworkReceiving(string message) => LogNetworkReceiving(UniSpyEncoding.GetBytes(message));
+        public void LogNetworkSending(string message) => LogNetworkSending(UniSpyEncoding.GetBytes(message));
+        public void LogNetworkForwarding(IPEndPoint receiver, byte[] message) => LogVerbose($"=> [{receiver}] {StringExtensions.ConvertNonprintableCharToHexString(message)}");
+        public void LogNetworkForwarding(IPEndPoint receiver, string message) => LogNetworkForwarding(receiver, UniSpyEncoding.GetBytes(message));
+        public void LogNetworkMultiCast(byte[] message) => LogNetworkTraffic("Cast", message);
+        public void LogNetworkMultiCast(string message) => LogNetworkMultiCast(UniSpyEncoding.GetBytes(message));
+        #endregion
     }
 }

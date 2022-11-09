@@ -13,11 +13,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
         public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
+            _isLogRawMessage = true;
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
-
-        protected override void LogNetworkReceiving(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkReceiving(ipEndPoint, (byte[])buffer, true);
-        protected override void LogNetworkSending(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer, true);
     }
 }

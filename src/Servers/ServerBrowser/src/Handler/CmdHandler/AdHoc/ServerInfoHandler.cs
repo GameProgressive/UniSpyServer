@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             if (_result.GameServerInfo is null)
             {
                 // throw new SBException("No server found in database.");
-                LogWriter.Info($"No server found on IP {_request.TargetIPEndPoint}.");
+                _client.LogInfo($"No server found on IP {_request.TargetIPEndPoint}.");
                 return;
             }
         }

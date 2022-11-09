@@ -128,13 +128,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public void MultiCast(IResponse message)
+        public void MultiCast(IClient sender, IResponse message)
         {
             foreach (var user in Users.Values)
             {
                 user.ClientRef.Send(message);
             }
-            LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
+            sender.LogNetworkMultiCast((string)message.SendingBuffer);
         }
         public void MultiCastExceptSender(ChannelUser sender, IResponse message)
         {

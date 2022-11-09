@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void Response()
         {
             _response.Build();
-            LogWriter.LogNetworkSending(_client.Connection.RemoteIPEndPoint, _response.SendingBuffer);
+            _client.LogNetworkSending(_response.SendingBuffer);
             // we need to send plaintext response here
             _client.Connection.Send(_response.SendingBuffer);
         }

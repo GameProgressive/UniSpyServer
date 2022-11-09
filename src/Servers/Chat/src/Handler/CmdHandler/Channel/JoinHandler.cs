@@ -171,7 +171,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             }
 
             //first we send join information to all user in this channel
-            _channel.MultiCast(_response);
+            _channel.MultiCast(_client, _response);
 
             var namesRequest = new NamesRequest
             {

@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
                     // if the received ping packet is already saved in user info, we just send to target client
                     if (Info.PingData.SequenceEqual((byte[])buffer))
                     {
-                        LogWriter.LogNetworkTransit(this.Connection.RemoteIPEndPoint, Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
+                        LogNetworkForwarding(Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
                         Info.TrafficRelayTarget.Connection.Send((byte[])buffer);
                         return;
                     }
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             // only binded clients can be sent data
             if (Info.TrafficRelayTarget is not null)
             {
-                LogWriter.LogNetworkTransit(this.Connection.RemoteIPEndPoint, Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
+                LogNetworkForwarding(Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
                 Info.TrafficRelayTarget.Connection.Send((byte[])buffer);
                 return;
             }

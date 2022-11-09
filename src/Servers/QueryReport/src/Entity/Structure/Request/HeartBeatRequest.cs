@@ -109,7 +109,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
         private void ParsePlayerData(string playerDataStr)
         {
             PlayerData = new List<Dictionary<string, string>>();
-            // LogWriter.Debug(StringExtensions.ReplaceUnreadableCharToHex(playerDataStr));
+            // _client.LogInfo(StringExtensions.ReplaceUnreadableCharToHex(playerDataStr));
             //TODO check if each update contains all player information
             int playerCount = Convert.ToInt32(playerDataStr[0]);
             playerDataStr = playerDataStr.Substring(1);
@@ -147,7 +147,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
         private void ParseTeamData(string teamDataStr)
         {
             TeamData = new List<Dictionary<string, string>>();
-            // LogWriter.Debug(// StringExtensions.ReplaceUnreadableCharToHex(teamDataStr));
+            // _client.LogInfo(// StringExtensions.ReplaceUnreadableCharToHex(teamDataStr));
             //TODO check if each update contains all team information
 
             int teamCount = System.Convert.ToInt32(teamDataStr[0]);

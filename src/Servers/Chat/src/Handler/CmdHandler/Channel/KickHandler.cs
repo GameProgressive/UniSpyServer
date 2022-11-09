@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 return;
             }
-            _channel.MultiCast(_response);
+            _channel.MultiCast(_client, _response);
             _channel.RemoveBindOnUserAndChannel(_kickee);
             _result.KickeeNickName = _client.Info.NickName;
             _result.KickerIRCPrefix = _client.Info.IRCPrefix;

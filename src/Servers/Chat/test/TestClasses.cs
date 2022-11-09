@@ -12,11 +12,11 @@ namespace UniSpyServer.Servers.Chat.Test
 
         static TestClasses()
         {
-            Client1 = CreateChatClient("79.209.235.252", 50558);
-            Client2 = CreateChatClient("211.83.127.54", 39503);
+            Client1 = CreateClient("79.209.235.252", 50558);
+            Client2 = CreateClient("211.83.127.54", 39503);
         }
 
-        public static IClient CreateChatClient(string ipAddress = "79.209.235.252", int port = 50558)
+        public static IClient CreateClient(string ipAddress = "79.209.235.252", int port = 50558)
         {
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());

@@ -13,6 +13,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
         public Client(IConnection connection) : base(connection)
         {
+            _isLogRawMessage = true;
             // launch redis channel
             if (ClientMessageHandler.Channel is null)
             {
@@ -23,7 +24,5 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
-        protected override void LogNetworkReceiving(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkReceiving(ipEndPoint, (byte[])buffer, true);
-        protected override void LogNetworkSending(IPEndPoint ipEndPoint, object buffer) => LogWriter.LogNetworkSending(ipEndPoint, (byte[])buffer, true);
     }
 }
