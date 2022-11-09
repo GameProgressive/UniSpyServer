@@ -6,20 +6,20 @@ namespace UniSpyServer.Servers.GameStatus.Test
 {
     public static class TestClasses
     {
-        public static IClient Client = CreateGSClient();
+        public static IClient Client = CreateClient();
 
-        public static GameStatus.Entity.Structure.Client CreateGSClient(string ipAddress = "192.168.1.1", int port = 9999)
+        public static GameStatus.Entity.Structure.Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
         {
-            var qrServerMock = new Mock<IServer>();
-            qrServerMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            qrServerMock.Setup(s => s.ServerName).Returns("GameStatus");
-            qrServerMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var qrSessionMock = new Mock<ITcpConnection>();
-            qrSessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
-            qrSessionMock.Setup(s => s.Server).Returns(qrServerMock.Object);
-            qrSessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
+            serverMock.Setup(s => s.ServerName).Returns("GameStatus");
+            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
 
-            return new GameStatus.Entity.Structure.Client(qrSessionMock.Object);
+            return new GameStatus.Entity.Structure.Client(connectionMock.Object);
         }
     }
 }

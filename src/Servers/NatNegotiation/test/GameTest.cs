@@ -21,8 +21,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             // clean all stuff in database
             new RedisClient().Db.Execute("FLUSHALL");
 
-            var client = TestClasses.CreateNatNegClient("192.168.1.2", 9999);
-            var server = TestClasses.CreateNatNegClient("192.168.1.3", 9999);
+            var client = TestClasses.CreateClient("192.168.1.2", 9999);
+            var server = TestClasses.CreateClient("192.168.1.3", 9999);
             var clientInitGP = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x00, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN1 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x01, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN2 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x02, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0xBB, 0x37, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
@@ -55,8 +55,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             // clean all stuff in database
             new RedisClient().Db.Execute("FLUSHALL");
 
-            var client = TestClasses.CreateNatNegClient("192.168.1.2", 53935);
-            var server = TestClasses.CreateNatNegClient("192.168.1.3", 53935);
+            var client = TestClasses.CreateClient("192.168.1.2", 53935);
+            var server = TestClasses.CreateClient("192.168.1.3", 53935);
 
             var clientInitGP = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x00, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN1 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x01, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
@@ -85,21 +85,21 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
         [Fact]
         public void Anno1701()
         {
-            var client1GP = TestClasses.CreateNatNegClient("31.18.120.193", 21701);
-            var client1NN1 = TestClasses.CreateNatNegClient("31.18.120.193", 51463);
-            var client1NN2 = TestClasses.CreateNatNegClient("31.18.120.193", 51463);
-            var client1NN3 = TestClasses.CreateNatNegClient("31.18.120.193", 51463);
+            var client1GP = TestClasses.CreateClient("31.18.120.193", 21701);
+            var client1NN1 = TestClasses.CreateClient("31.18.120.193", 51463);
+            var client1NN2 = TestClasses.CreateClient("31.18.120.193", 51463);
+            var client1NN3 = TestClasses.CreateClient("31.18.120.193", 51463);
 
-            var client2GP = TestClasses.CreateNatNegClient("79.209.224.29", 21701);
-            var client2NN1 = TestClasses.CreateNatNegClient("79.209.224.29", 51463);
-            var client2NN2 = TestClasses.CreateNatNegClient("79.209.224.29", 51463);
-            var client2NN3 = TestClasses.CreateNatNegClient("79.209.224.29", 51463);
+            var client2GP = TestClasses.CreateClient("79.209.224.29", 21701);
+            var client2NN1 = TestClasses.CreateClient("79.209.224.29", 51463);
+            var client2NN2 = TestClasses.CreateClient("79.209.224.29", 51463);
+            var client2NN3 = TestClasses.CreateClient("79.209.224.29", 51463);
 
 
-            var client3GP = TestClasses.CreateNatNegClient("79.209.224.29", 1024);
-            var client3NN1 = TestClasses.CreateNatNegClient("79.209.224.29", 55111);
-            var client3NN2 = TestClasses.CreateNatNegClient("79.209.224.29", 55111);
-            var client3NN3 = TestClasses.CreateNatNegClient("79.209.224.29", 55111);
+            var client3GP = TestClasses.CreateClient("79.209.224.29", 1024);
+            var client3NN1 = TestClasses.CreateClient("79.209.224.29", 55111);
+            var client3NN2 = TestClasses.CreateClient("79.209.224.29", 55111);
+            var client3NN3 = TestClasses.CreateClient("79.209.224.29", 55111);
 
             var clients = new Dictionary<string, IClient>()
             {
