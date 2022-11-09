@@ -13,14 +13,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Client
         }
         protected override void OnConnected()
         {
-            Console.WriteLine($"Echo UDP client connected a new session with Id {Id}");
+            Console.WriteLine($"Echo UDP client connected a new connection with Id {Id}");
 
             // Start receive datagrams
             ReceiveAsync();
         }
         protected override void OnDisconnected()
         {
-            Console.WriteLine($"Echo UDP client disconnected a session with Id {Id}");
+            Console.WriteLine($"Echo UDP client disconnected a connection with Id {Id}");
             base.OnConnected();
         }
 

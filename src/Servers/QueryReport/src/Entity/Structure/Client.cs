@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure
     public class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
-        public Client(ISession session) : base(session)
+        public Client(IConnection connection) : base(connection)
         {
             // launch redis channel
             if (ClientMessageHandler.Channel is null)

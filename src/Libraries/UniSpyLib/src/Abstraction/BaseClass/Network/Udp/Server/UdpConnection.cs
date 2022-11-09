@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Threading;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Events;
@@ -9,19 +8,19 @@ using UniSpyServer.UniSpyLib.Events;
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
     /// <summary>
-    /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="ISession"/>
+    /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="IConnection"/>
     /// </summary>
-    public class UdpSession : IUdpSession
+    public class UdpConnection : IUdpConnection
     {
         public UdpServer Server { get; private set; }
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public DateTime LastPacketReceivedTime { get; protected set; }
-        public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
-        IServer ISession.Server => Server;
+        public TimeSpan ConnectionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
+        IServer IConnection.Server => Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Udp;
         public event OnReceivedEventHandler OnReceive;
 
-        public UdpSession(UdpServer server, IPEndPoint endPoint)
+        public UdpConnection(UdpServer server, IPEndPoint endPoint)
         {
             Server = server;
             RemoteIPEndPoint = endPoint;
@@ -46,7 +45,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             }
             else
             {
-                throw new UniSpyException("UniSpyTcpSession.Send: response must be string or byte[]");
+                throw new UniSpyException("ITcpConnection.Send: response must be string or byte[]");
             }
         }
         public void Send(string response) => Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));

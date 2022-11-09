@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
     public class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
-        public Client(ISession session) : base(session)
+        public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
             Crypto = new GSCrypt();
@@ -18,8 +18,8 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure
         protected override void OnConnected()
         {
             base.OnConnected();
-            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, ClientInfo.ChallengeResponse);
-            Session.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
+            LogWriter.LogNetworkSending(Connection.RemoteIPEndPoint, ClientInfo.ChallengeResponse);
+            Connection.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
         }
         protected override void OnReceived(object buffer)
         {

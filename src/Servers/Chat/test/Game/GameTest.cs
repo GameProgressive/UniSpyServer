@@ -20,11 +20,11 @@ namespace UniSpyServer.Servers.Chat.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8888));
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-            _client = new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8888));
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+            _client = new Client(connectionMock.Object);
         }
 
         [Fact]
@@ -79,12 +79,12 @@ namespace UniSpyServer.Servers.Chat.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("107.244.81.1"), 8888));
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            var client1 = new Client(sessionMock.Object);
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("91.34.72.1"), 8889));
-            var client2 = new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("107.244.81.1"), 8888));
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            var client1 = new Client(connectionMock.Object);
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("91.34.72.1"), 8889));
+            var client2 = new Client(connectionMock.Object);
             var raws1 = new List<string>()
             {
                 "CRYPT des 1 worms3",

@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsChannelOperator { get; set; }
         public Client ClientRef { get; private set; }
         public ClientInfo Info => ClientRef.Info;
-        public ISession Session => ClientRef.Session;
+        public IConnection Connection => ClientRef.Connection;
         public Dictionary<string, string> UserKeyValue { get; private set; }
         public string BFlags => @"\" + Info.UserName + @"\" + UserKeyValue["b_flags"];
         public string Modes

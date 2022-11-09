@@ -18,11 +18,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public string ServerName { get; private set; }
-        public static IDictionary<IPEndPoint, UdpSession> Sessions;
+        public static IDictionary<IPEndPoint, UdpConnection> Connections;
         IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
         static UdpServer()
         {
-            Sessions = new ConcurrentDictionary<IPEndPoint, UdpSession>();
+            Connections = new ConcurrentDictionary<IPEndPoint, UdpConnection>();
         }
         public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
@@ -47,44 +47,29 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// <returns>is sending succeed</returns>
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            var session = CreateSession((IPEndPoint)endPoint);
-            session.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
+            var connection = CreateConnection((IPEndPoint)endPoint);
+            connection.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
-        protected abstract IClient CreateClient(ISession session);
-        protected virtual UdpSession CreateSession(IPEndPoint endPoint)
+        protected abstract IClient CreateClient(IConnection connection);
+        protected virtual UdpConnection CreateConnection(IPEndPoint endPoint)
         {
             // we have to check if the endPoint is already in the dictionary,
             // which means the client is already in the dictionary, we do not need to create it
-            // we just retrieve the session from the dictionary
-            lock (Sessions)
+            // we just retrieve the connection from the dictionary
+            lock (Connections)
             {
-                if (Sessions.ContainsKey(endPoint))
+                if (Connections.ContainsKey(endPoint))
                 {
-                    return Sessions[endPoint];
+                    return Connections[endPoint];
                 }
                 else
                 {
-                    var session = new UdpSession(this, endPoint);
-                    CreateClient(session);
-                    Sessions.Add(endPoint, session);
-                    return session;
+                    var connection = new UdpConnection(this, endPoint);
+                    CreateClient(connection);
+                    Connections.Add(endPoint, connection);
+                    return connection;
                 }
             }
-            // lock (ClientBase.ClientPool)
-            // {
-            //     if (ClientBase.ClientPool.ContainsKey(endPoint))
-            //     {
-            //         return (UdpSession)ClientBase.ClientPool[endPoint].Session;
-            //     }
-            //     else
-            //     {
-            //         // we create session and create client 
-            //         // then we bind the event with client and session
-            //         var session = new UdpSession(this, endPoint);
-            //         var client = CreateClient(session);
-            //         ClientBase.ClientPool.Add(endPoint, client);
-            //         return session;
-            //     }
         }
     }
 }

@@ -52,7 +52,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                     ChannelName = channel.Name,
                     UserName = user.Info.UserName,
                     NickName = user.Info.NickName,
-                    PublicIPAddress = user.Session.RemoteIPEndPoint.Address.ToString(),
+                    PublicIPAddress = user.Connection.RemoteIPEndPoint.Address.ToString(),
                     Modes = user.Modes
                 };
                 _result.DataModels.Add(data);
@@ -77,7 +77,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                     ChannelName = channel.Name,
                     NickName = client.Info.NickName,
                     UserName = client.Info.UserName,
-                    PublicIPAddress = client.Session.RemoteIPEndPoint.Address.ToString(),
+                    PublicIPAddress = client.Connection.RemoteIPEndPoint.Address.ToString(),
                     Modes = user.Modes
                 };
                 _result.DataModels.Add(data);

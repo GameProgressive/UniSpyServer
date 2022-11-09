@@ -9,8 +9,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
     public class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public new IUdpSession Session => (IUdpSession)base.Session;
-        public Client(ISession session) : base(session)
+        public new IUdpConnection Connection => (IUdpConnection)base.Connection;
+        public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
         }
@@ -24,8 +24,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
                     // if the received ping packet is already saved in user info, we just send to target client
                     if (Info.PingData.SequenceEqual((byte[])buffer))
                     {
-                        LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                        Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+                        LogWriter.LogNetworkTransit(this.Connection.RemoteIPEndPoint, Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
+                        Info.TrafficRelayTarget.Connection.Send((byte[])buffer);
                         return;
                     }
                 }
@@ -39,8 +39,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             // only binded clients can be sent data
             if (Info.TrafficRelayTarget is not null)
             {
-                LogWriter.LogNetworkTransit(this.Session.RemoteIPEndPoint, Info.TrafficRelayTarget.Session.RemoteIPEndPoint, (byte[])buffer);
-                Info.TrafficRelayTarget.Session.Send((byte[])buffer);
+                LogWriter.LogNetworkTransit(this.Connection.RemoteIPEndPoint, Info.TrafficRelayTarget.Connection.RemoteIPEndPoint, (byte[])buffer);
+                Info.TrafficRelayTarget.Connection.Send((byte[])buffer);
                 return;
             }
 

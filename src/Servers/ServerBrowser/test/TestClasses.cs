@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Test
             sbServerMock.Setup(s => s.ServerID).Returns(new System.Guid());
             sbServerMock.Setup(s => s.ServerName).Returns("ServerBrowser");
             sbServerMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sbSessionMock = new Mock<IUdpSession>();
+            var sbSessionMock = new Mock<IUdpConnection>();
             sbSessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("192.168.1.2"), 9999));
             sbSessionMock.Setup(s => s.Server).Returns(sbServerMock.Object);
             sbSessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);

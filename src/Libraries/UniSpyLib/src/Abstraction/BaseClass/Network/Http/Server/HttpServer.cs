@@ -13,12 +13,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         {
             ServerName = serverName;
         }
-        protected abstract IClient CreateClient(ISession session);
+        protected abstract IClient CreateClient(IConnection connection);
         protected override NetCoreServer.TcpSession CreateSession()
         {
-            var session = new HttpSession(this);
-            CreateClient(session);
-            return session;
+            var connection = new UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpConnection(this);
+            CreateClient(connection);
+            return connection;
         }
     }
 }

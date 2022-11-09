@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
 
         protected override void DataOperation()
         {
-            _client.Session.Disconnect();
+            _client.Connection.Disconnect();
         }
     }
 }

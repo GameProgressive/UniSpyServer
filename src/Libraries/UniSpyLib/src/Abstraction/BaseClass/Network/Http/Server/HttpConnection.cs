@@ -4,15 +4,15 @@ using UniSpyServer.UniSpyLib.Events;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
-    public class HttpSession : NetCoreServer.HttpSession, IHttpSession
+    public class HttpConnection : NetCoreServer.HttpSession, IHttpConnection
     {
         public IPEndPoint RemoteIPEndPoint { get; private set; }
-        IServer ISession.Server => (HttpServer)Server;
+        IServer IConnection.Server => (HttpServer)Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Http;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        public HttpSession(HttpServer server) : base(server)
+        public HttpConnection(HttpServer server) : base(server)
         {
         }
         protected override void OnConnecting()
@@ -26,7 +26,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         protected override void OnConnected() => OnConnect();
         protected override void OnDisconnected() => OnDisconnect();
         protected override void OnReceivedRequest(NetCoreServer.HttpRequest request) => OnReceive(new HttpRequest(request));
-        void ISession.Send(string response)
+        void IConnection.Send(string response)
         {
             // Response.MakeOkResponse();
             Response.SetBegin(200);
@@ -34,7 +34,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             base.SendResponseAsync();
         }
 
-        void ISession.Send(byte[] response)
+        void IConnection.Send(byte[] response)
         {
             // Response.MakeOkResponse();
             Response.SetBegin(200);
@@ -42,7 +42,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             base.SendResponseAsync();
         }
 
-        void ITcpSession.Disconnect() => Disconnect();
+        void ITcpConnection.Disconnect() => Disconnect();
 
     }
 }

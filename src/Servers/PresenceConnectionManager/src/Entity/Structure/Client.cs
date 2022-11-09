@@ -10,9 +10,9 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public new ITcpSession Session => (ITcpSession)base.Session;
+        public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public Client(ISession session) : base(session)
+        public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
         }
@@ -22,15 +22,15 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
             // Only send the login challenge once
             if (Info.LoginPhase != LoginStatus.Connected)
             {
-                Session.Disconnect();
+                Connection.Disconnect();
                 // Throw the error                
                 LogWriter.Warning("The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             Info.LoginPhase = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
-            LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, sendingBuffer);
-            Session.Send(sendingBuffer);
+            LogWriter.LogNetworkSending(Connection.RemoteIPEndPoint, sendingBuffer);
+            Connection.Send(sendingBuffer);
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);

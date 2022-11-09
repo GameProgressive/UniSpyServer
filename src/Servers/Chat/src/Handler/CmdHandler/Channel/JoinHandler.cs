@@ -59,7 +59,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             _user = new ChannelUser(_client);
-            // if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
+            // if (_connection.UserInfo.IsJoinedChannel(_request.ChannelName))
             // {
             //     // this is for not making game crash
             //     // if user is in this channel and we send the channel info back

@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _initInfo = new NatInitInfo()
                     {
-                        ServerID = _client.Session.Server.ServerID,
+                        ServerID = _client.Connection.Server.ServerID,
                         Cookie = (uint)_request.Cookie,
                         UseGamePort = _request.UseGamePort,
                         ClientIndex = (NatClientIndex)_request.ClientIndex,
@@ -66,7 +66,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 Version = _request.Version,
                 PortType = _request.PortType,
-                PublicIPEndPoint = _client.Session.RemoteIPEndPoint,
+                PublicIPEndPoint = _client.Connection.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
             // note: async socket may cause problem when adding _mappingInfo to _initInfo.NatMappingInfos, requires a lock
@@ -78,7 +78,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
             }
 
-            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {
@@ -135,7 +135,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
                 else
                 {
-                    LogWriter.Info($"[{_client.Session.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
+                    LogWriter.Info($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
                 }
                 waitCount++;
                 Thread.Sleep(2000);
@@ -143,7 +143,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // if server can not find the client2 within 8 retry, then we log the error. 
             if (waitCount > 4)
             {
-                LogWriter.Warning($"[{_client.Session.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
+                LogWriter.Warning($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
                 lock (_initInfoPool)
                 {
                     if (_initInfoPool.ContainsKey(_searchKey))

@@ -23,7 +23,7 @@
 //                 throw new QRException("Can not find game server in QR");
 //             }
 //             var ss = new Session(ServerFactory.Server, serverEndPoint);
-//             var session = ServerFactory.Server.SessionManager.SessionPool[message.HeartBeatIPEndPoint];
+//             var connection = ServerFactory.Server.SessionManager.SessionPool[message.HeartBeatIPEndPoint];
 //             var result = new ClientMessageResult
 //             {
 //                 NatNegMessage = message.NatNegMessage,
@@ -31,11 +31,11 @@
 //             };
 //             var request = new ClientMessageRequest()
 //             {
-//                 InstantKey = ((Session)session).InstantKey
+//                 InstantKey = ((Session)connection).InstantKey
 //             };
 //             var response = new ClientMessageResponse(request, result);
 //             response.Build();
-//             session.Send(response);
+//             connection.Send(response);
 //             ServerFactory.Server.SendAsync(serverEndPoint, response.SendingBuffer);
 //         }
 //     }

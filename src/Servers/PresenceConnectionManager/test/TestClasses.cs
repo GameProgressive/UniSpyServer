@@ -17,11 +17,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("PresenceConnectionManager");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-            Client = new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+            Client = new Client(connectionMock.Object);
         }
     }
 }

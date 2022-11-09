@@ -1,22 +1,20 @@
 using System.Linq;
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
     /// <summary>
-    /// Set persist storage data
+    /// Save persist storage data
+    /// No response for this handler
     /// </summary>
-    
     public sealed class SetPlayerDataHandler : CmdHandlerBase
     {
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;
         public SetPlayerDataHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new SetPlayerDataResult();
         }
 
         protected override void DataOperation()
@@ -50,11 +48,6 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
                 db.SaveChanges();
             }
-        }
-
-        protected override void ResponseConstruct()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

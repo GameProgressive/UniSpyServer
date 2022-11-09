@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             qrServerMock.Setup(s => s.ServerID).Returns(new System.Guid());
             qrServerMock.Setup(s => s.ServerName).Returns("GameStatus");
             qrServerMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var qrSessionMock = new Mock<ITcpSession>();
+            var qrSessionMock = new Mock<ITcpConnection>();
             qrSessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             qrSessionMock.Setup(s => s.Server).Returns(qrServerMock.Object);
             qrSessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);

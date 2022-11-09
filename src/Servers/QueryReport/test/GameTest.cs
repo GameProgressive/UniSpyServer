@@ -9,19 +9,10 @@ namespace UniSpyServer.Servers.QueryReport.Test
 {
     public class GameTest
     {
-        Client _client;
+        IClient _client;
         public GameTest()
         {
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("QueryReport");
-            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<IUdpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
-
-            _client = new Client(sessionMock.Object);
+            _client = TestClasses.Client;
         }
         [Fact]
         public void FaltOut2()

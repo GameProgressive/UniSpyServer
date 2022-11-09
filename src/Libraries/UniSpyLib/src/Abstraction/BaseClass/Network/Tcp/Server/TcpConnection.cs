@@ -10,7 +10,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TcpSession : NetCoreServer.TcpSession, ITcpSession
+    public class TcpConnection : NetCoreServer.TcpSession, ITcpConnection
     {
         /// <summary>
         /// remote endpoint will dispose when disconnecting, however we need that in some situation,
@@ -19,12 +19,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <value></value>
         public IPEndPoint RemoteIPEndPoint { get; private set; }
         public new TcpServer Server => (TcpServer)base.Server;
-        IServer ISession.Server => Server;
+        IServer IConnection.Server => Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Tcp;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        public TcpSession(TcpServer server) : base(server)
+        public TcpConnection(TcpServer server) : base(server)
         {
         }
         protected override void OnConnecting()
@@ -51,7 +51,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             OnReceive(buffer.Skip((int)offset).Take((int)size).ToArray());
             base.OnReceived(buffer, offset, size);
         }
-        void ITcpSession.Disconnect() => Disconnect();
+        void ITcpConnection.Disconnect() => Disconnect();
         public new void Send(string response) => Send(UniSpyEncoding.GetBytes(response));
 
         public new void Send(byte[] response) => base.SendAsync(response);

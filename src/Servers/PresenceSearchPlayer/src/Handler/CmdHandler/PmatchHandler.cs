@@ -17,21 +17,21 @@
 
 //            //pmath\\sesskey\\profileid\\productid\\
 
-//        protected override void CheckRequest(GPSPSession session)
+//        protected override void CheckRequest(GPSPSession connection)
 //        {
-//            base.CheckRequest(session);
+//            base.CheckRequest(connection);
 //            if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("profileid") || !KeyValues.ContainsKey("productid"))
 //            {
 //                _errorCode = GPErrorCode.Parse;
 //            }
 //        }
 
-//        protected override void DataBaseOperation(GPSPSession session)
+//        protected override void DataBaseOperation(GPSPSession connection)
 //        {
 //            _result = PmatchQuery.PlayerMatch(Convert.Toint16(KeyValues["productid"]));
 //        }
 
-//        protected override void ConstructResponse(GPSPSession session)
+//        protected override void ConstructResponse(GPSPSession connection)
 //        {
 //            if(_result.Count==0)
 //            {

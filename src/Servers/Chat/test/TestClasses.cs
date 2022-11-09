@@ -22,10 +22,10 @@ namespace UniSpyServer.Servers.Chat.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 6666));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            return new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            return new Client(connectionMock.Object);
         }
     }
 }

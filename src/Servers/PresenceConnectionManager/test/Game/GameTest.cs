@@ -24,6 +24,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
                 ((ITestClient)TestClasses.Client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
+        [Fact]
         public void ConflictGlobalStorm()
         {
             var rawRequests = new List<string>()

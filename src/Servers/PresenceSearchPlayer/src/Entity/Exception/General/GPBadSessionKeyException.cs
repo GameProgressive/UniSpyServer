@@ -4,7 +4,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPBadSessionKeyException : GPException
     {
-        public GPBadSessionKeyException() : base("Your session key is not valid!", GPErrorCode.BadSessionKey)
+        public GPBadSessionKeyException() : base("Your connection key is not valid!", GPErrorCode.BadSessionKey)
         {
         }
 

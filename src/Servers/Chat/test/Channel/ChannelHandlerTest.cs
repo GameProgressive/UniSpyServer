@@ -21,25 +21,25 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("Chat");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Test);
-            _client = new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s=>s.ConnectionType).Returns(NetworkConnectionType.Test);
+            _client = new Client(connectionMock.Object);
         }
         [Fact]
         public void JoinHandleTest()
         {
-            var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
-            var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
+            var connection1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
+            var connection2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
         }
         [Fact]
         public void ChannelMsgTest()
         {
-            var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
-            var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
+            var connection1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
+            var connection2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
             var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test :hello this is a test.");
-            var privMsgHandler = new PrivateMsgHandler(session1, privMsgReq);
+            var privMsgHandler = new PrivateMsgHandler(connection1, privMsgReq);
             privMsgHandler.Handle();
         }
         public IClient SingleLoginTest(string userName = "unispy", string nickName = "unispy")
@@ -54,30 +54,30 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
         }
         public IClient SingleJoinTest(string userName = "unispy", string nickName = "unispy", string channelName = "#GSP!room!test")
         {
-            var session = SingleLoginTest(userName, nickName);
+            var connection = SingleLoginTest(userName, nickName);
             var joinReq = new JoinRequest($"JOIN {channelName}");
-            var joinHandler = new JoinHandler(session, joinReq);
+            var joinHandler = new JoinHandler(connection, joinReq);
             // we know the endpoint object is not set, so System.NullReferenceException will be thrown
             joinHandler.Handle();
             Assert.Single(_client.Info.JoinedChannels);
             Assert.True(_client.Info.JoinedChannels.ContainsKey(channelName));
             Assert.True(_client.Info.IsJoinedChannel(channelName));
-            return session;
+            return connection;
         }
         [Fact]
         public void SetCKeyTest()
         {
-            var session = SingleJoinTest("spyguy", "spyguy");
+            var connection = SingleJoinTest("spyguy", "spyguy");
             var request = new SetCKeyRequest(ChannelRequests.SetCKey);
-            var handler = new SetCKeyHandler(session, request);
+            var handler = new SetCKeyHandler(connection, request);
             handler.Handle();
         }
         [Fact]
         public void ModeTest()
         {
-            var session = SingleJoinTest("spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
+            var connection = SingleJoinTest("spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
             var request = new ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2");
-            var handler = new ModeHandler(session, request);
+            var handler = new ModeHandler(connection, request);
             handler.Handle();
         }
     }

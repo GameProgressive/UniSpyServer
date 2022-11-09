@@ -51,7 +51,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             // the message must be sent by query report server where client is reporting to.
             var message = new ClientMessageRequest()
             {
-                ServerBrowserSenderId = _client.Session.Server.ServerID,
+                ServerBrowserSenderId = _client.Connection.Server.ServerID,
                 NatNegMessage = _request.RawRequest,
                 InstantKey = _gameServer.InstantKey,
                 TargetIPEndPoint = _gameServer.QueryReportIPEndPoint,

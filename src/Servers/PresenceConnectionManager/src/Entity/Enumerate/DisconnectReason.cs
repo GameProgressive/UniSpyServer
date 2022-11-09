@@ -59,7 +59,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate
         ForcedLogout,
 
         /// <summary>
-        /// A new login detected with the old player _session still logged in
+        /// A new login detected with the old player _connection still logged in
         /// </summary>
         NewLoginDetected,
 

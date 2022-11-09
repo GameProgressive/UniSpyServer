@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _result.NickName = _clientInfo.NickName;
             _result.Name = _clientInfo.Name;
             _result.UserName = _clientInfo.UserName;
-            _result.PublicIPAddress = _client.Session.RemoteIPEndPoint.Address.ToString();
+            _result.PublicIPAddress = _client.Connection.RemoteIPEndPoint.Address.ToString();
             foreach (var channel in _clientInfo.JoinedChannels.Values)
             {
                 _result.JoinedChannelName.Add(channel.Name);

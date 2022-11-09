@@ -46,8 +46,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
                 ((ITestClient)clients[req.Key]).TestReceived(req.Value);
             }
 
-            Assert.True(client1.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(client2.Session.RemoteIPEndPoint));
-            Assert.True(client2.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(client1.Session.RemoteIPEndPoint));
+            Assert.True(client1.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint.Equals(client2.Connection.RemoteIPEndPoint));
+            Assert.True(client2.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint.Equals(client1.Connection.RemoteIPEndPoint));
         }
 
         [Fact]
@@ -114,8 +114,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
                 ((ITestClient)clients[req.Key]).TestReceived(req.Value);
             }
 
-            Assert.True(client1.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == client2.Session.RemoteIPEndPoint);
-            Assert.True(client2.Info.TrafficRelayTarget.Session.RemoteIPEndPoint == client1.Session.RemoteIPEndPoint);
+            Assert.True(client1.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint == client2.Connection.RemoteIPEndPoint);
+            Assert.True(client2.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint == client1.Connection.RemoteIPEndPoint);
         }
 
         [Fact]
@@ -155,8 +155,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
             {
                 ((ITestClient)clients[req.Key]).TestReceived(req.Value);
             }
-            Assert.True(client1.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(client2.Session.RemoteIPEndPoint));
-            Assert.True(client2.Info.TrafficRelayTarget.Session.RemoteIPEndPoint.Equals(client1.Session.RemoteIPEndPoint));
+            Assert.True(client1.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint.Equals(client2.Connection.RemoteIPEndPoint));
+            Assert.True(client2.Info.TrafficRelayTarget.Connection.RemoteIPEndPoint.Equals(client1.Connection.RemoteIPEndPoint));
         }
     }
 }

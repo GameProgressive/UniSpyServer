@@ -101,7 +101,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                         
                             // todo check how can we determine the server by existing info
                             var server = _redisClient.Context.FirstOrDefault(x =>
-                                                    x.HostIPAddress == _user.Session.RemoteIPEndPoint.Address
+                                                    x.HostIPAddress == _user.Connection.RemoteIPEndPoint.Address
                                                     && x.GameName == _user.Info.GameName);
                             if (server is not null)
                             {

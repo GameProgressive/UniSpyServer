@@ -18,8 +18,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             // var userInfo = _redisClient.Values.FirstOrDefault(
-            //     k => k.ServerID == _client.Session.Server.ServerID
-            //     && k.PublicIPEndPoint == _client.Session.RemoteIPEndPoint
+            //     k => k.ServerID == _client.Connection.Server.ServerID
+            //     && k.PublicIPEndPoint == _client.Connection.RemoteIPEndPoint
             //     && k.PortType == _request.PortType
             //     && k.Cookie == _request.Cookie);
             // if (userInfo is null)

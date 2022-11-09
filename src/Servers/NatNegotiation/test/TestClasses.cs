@@ -14,7 +14,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             qrServerMock.Setup(s => s.ServerID).Returns(new System.Guid());
             qrServerMock.Setup(s => s.ServerName).Returns("NatNegotiation");
             qrServerMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var qrSessionMock = new Mock<IUdpSession>();
+            var qrSessionMock = new Mock<IUdpConnection>();
             qrSessionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             qrSessionMock.Setup(s => s.Server).Returns(qrServerMock.Object);
             qrSessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);

@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             // we first response, the client will timeout if no response is received in some interval
             base.Response();
-            LogWriter.Info($"[{_client.Session.RemoteIPEndPoint}] natneg success: {(bool)_request.IsNatSuccess}, version: {_request.Version}, gamename: {_request.GameName}, nat type: {_request.NatType} mapping scheme: {_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
+            LogWriter.Info($"[{_client.Connection.RemoteIPEndPoint}] natneg success: {(bool)_request.IsNatSuccess}, version: {_request.Version}, gamename: {_request.GameName}, nat type: {_request.NatType} mapping scheme: {_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
             // when negotiation failed we log the information
 
             // if (!(bool)_request.IsNatSuccess)
@@ -60,16 +60,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             //         LogWriter.Info("Nat negotiation success.");
             //         break;
             //     case NatNegResult.DeadBeatPartner:
-            //         LogWriter.Info($"Parter of client {_client.Session.RemoteIPEndPoint} has no response.");
+            //         LogWriter.Info($"Parter of client {_client.Connection.RemoteIPEndPoint} has no response.");
             //         goto default;
             //     case NatNegResult.InitTimeOut:
-            //         LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat initialization failed.");
+            //         LogWriter.Info($"Client {_client.Connection.RemoteIPEndPoint} nat initialization failed.");
             //         break;
             //     case NatNegResult.PingTimeOut:
-            //         LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat ping failed.");
+            //         LogWriter.Info($"Client {_client.Connection.RemoteIPEndPoint} nat ping failed.");
             //         goto default;
             //     case NatNegResult.UnknownError:
-            //         LogWriter.Info($"Client {_client.Session.RemoteIPEndPoint} nat negotiation unknown error occured.");
+            //         LogWriter.Info($"Client {_client.Connection.RemoteIPEndPoint} nat negotiation unknown error occured.");
             //         break;
             //     default:
             //         var request = new ConnectRequest

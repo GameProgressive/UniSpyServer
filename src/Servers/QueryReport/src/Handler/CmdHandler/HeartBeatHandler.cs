@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //Parse the endpoint information into result class
-            _result.RemoteIPEndPoint = _client.Session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
 
             // if (_request.PlayerData?.Count == 0 || _request.PlayerData is null)
             // {
@@ -74,9 +74,9 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         {
             // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
             // _gameServerInfo = _redisClient.Context.FirstOrDefault(x =>
-            //     x.ServerID == _client.Session.Server.ServerID &
-            //     x.HostIPAddress == _client.Session.RemoteIPEndPoint.Address &
-            //     x.QueryReportPort == _client.Session.RemoteIPEndPoint.Port &
+            //     x.ServerID == _client.Connection.Server.ServerID &
+            //     x.HostIPAddress == _client.Connection.RemoteIPEndPoint.Address &
+            //     x.QueryReportPort == _client.Connection.RemoteIPEndPoint.Port &
             //     x.InstantKey == _request.InstantKey &
             //     x.GameName == _request.GameName);
 
@@ -84,9 +84,9 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             // {
             _gameServerInfo = new GameServerInfo()
             {
-                ServerID = _client.Session.Server.ServerID,
-                HostIPAddress = _client.Session.RemoteIPEndPoint.Address,
-                QueryReportPort = (ushort)_client.Session.RemoteIPEndPoint.Port,
+                ServerID = _client.Connection.Server.ServerID,
+                HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,
+                QueryReportPort = (ushort)_client.Connection.RemoteIPEndPoint.Port,
                 GameName = _request.GameName,
                 InstantKey = _request.InstantKey,
                 ServerStatus = GameServerStatus.Normal,

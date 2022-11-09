@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Handler.CmdHandler
                 var targetClient = (Client)Client.ClientPool.Values.FirstOrDefault(
                                 u => ((Client)u).Info.Cookie == _request.Cookie
                                 && ((Client)u).Info.ClientIndex == _request.ClientIndex
-                                && !u.Session.RemoteIPEndPoint.Equals(_client.Session.RemoteIPEndPoint));
+                                && !u.Connection.RemoteIPEndPoint.Equals(_client.Connection.RemoteIPEndPoint));
 
                 if (targetClient is null)
                 {

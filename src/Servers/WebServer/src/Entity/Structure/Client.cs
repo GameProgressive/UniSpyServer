@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
 {
     public class Client : ClientBase
     {
-        public Client(ISession session) : base(session)
+        public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
         }
@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure
             base.OnReceived(buffer);
             var rq = (IHttpRequest)buffer;
             if (!rq.KeepAlive)
-                ((IHttpSession)Session).Disconnect();
+                ((IHttpConnection)Connection).Disconnect();
         }
     }
 }

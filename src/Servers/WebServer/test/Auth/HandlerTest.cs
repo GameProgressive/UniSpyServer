@@ -18,11 +18,11 @@ namespace UniSpyServer.Servers.WebServer.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("WebServer");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var sessionMock = new Mock<ITcpSession>();
-            sessionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
-            sessionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            sessionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
-            _client = new Client(sessionMock.Object);
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
+            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
+            _client = new Client(connectionMock.Object);
         }
         [Fact]
         public void SwitcherTest()

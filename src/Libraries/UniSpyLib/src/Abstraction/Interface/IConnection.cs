@@ -16,7 +16,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     /// <summary>
     /// Represent a remote connection, tcp, udp, http etc.
     /// </summary>
-    public interface ISession
+    public interface IConnection
     {
         event OnReceivedEventHandler OnReceive;
         IServer Server { get; }
@@ -28,22 +28,22 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     /// <summary>
     /// Represent a udp connection
     /// </summary>
-    public interface IUdpSession : ISession
+    public interface IUdpConnection : IConnection
     {
-        public TimeSpan SessionExistedTime { get; }
+        public TimeSpan ConnectionExistedTime { get; }
         void Send(IPEndPoint endPoint, byte[] response);
         void Send(IPEndPoint endPoint, string response);
     }
     /// <summary>
     /// Represent a tcp connection
     /// </summary>
-    public interface ITcpSession : ISession
+    public interface ITcpConnection : IConnection
     {
         event OnConnectedEventHandler OnConnect;
         event OnDisconnectedEventHandler OnDisconnect;
         void Disconnect();
     }
-    public interface IHttpSession : ITcpSession
+    public interface IHttpConnection : ITcpConnection
     {
     }
 }

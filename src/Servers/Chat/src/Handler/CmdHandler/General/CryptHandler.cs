@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
             if (secretKey is null)
             {
-                _client.Session.Disconnect();
+                _client.Connection.Disconnect();
                 throw new ChatException("secret key not found.");
             }
             _client.Info.GameSecretKey = secretKey;
@@ -42,9 +42,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void Response()
         {
             _response.Build();
-            LogWriter.LogNetworkSending(_client.Session.RemoteIPEndPoint, _response.SendingBuffer);
+            LogWriter.LogNetworkSending(_client.Connection.RemoteIPEndPoint, _response.SendingBuffer);
             // we need to send plaintext response here
-            _client.Session.Send(_response.SendingBuffer);
+            _client.Connection.Send(_response.SendingBuffer);
         }
     }
 }

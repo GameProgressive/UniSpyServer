@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // we send client2's ip to client1
             NatClientIndex client2Index = (NatClientIndex)(1 - (int)_request.ClientIndex);
             var client2InitInfo = _redisClient.Context.Where(k =>
-                k.ServerID == _client.Session.Server.ServerID
+                k.ServerID == _client.Connection.Server.ServerID
                 && k.Cookie == _client.Info.Cookie
                 && k.ClientIndex == client2Index).First();
 

@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Respon
         {
             //string checkSumStr = _result.DatabaseResults.Nick + _result.DatabaseResults.UniqueNick + _result.DatabaseResults.NamespaceID;
 
-            //_session.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
+            //_connection.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
             SendingBuffer = @"\lc\2\sesskey\" + ClientInfo.SessionKey;
             SendingBuffer += @"\proof\" + _result.ResponseProof;

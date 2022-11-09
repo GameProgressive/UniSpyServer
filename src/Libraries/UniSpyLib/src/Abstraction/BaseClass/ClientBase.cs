@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Timers;
@@ -15,7 +14,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
     {
         public static IConnectionMultiplexer RedisConnection { get; set; }
         public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
-        public ISession Session { get; private set; }
+        public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
         /// <summary>
@@ -30,33 +29,33 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         static ClientBase()
         {
             RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
-            ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
+            ClientPool = new Dictionary<IPEndPoint, IClient>();
         }
 
-        public ClientBase(ISession session)
+        public ClientBase(IConnection connection)
         {
-            Session = session;
+            Connection = connection;
             EventBinding();
             lock (ClientPool)
             {
                 // we fire this when there are no record in Sessions
-                if (!ClientPool.ContainsKey(session.RemoteIPEndPoint))
+                if (!ClientPool.ContainsKey(connection.RemoteIPEndPoint))
                 {
-                    ClientPool.Add(Session.RemoteIPEndPoint, this);
+                    ClientPool.Add(Connection.RemoteIPEndPoint, this);
                 }
             }
         }
         private void EventBinding()
         {
-            switch (Session.ConnectionType)
+            switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
-                    ((ITcpSession)Session).OnReceive += OnReceived;
-                    ((ITcpSession)Session).OnConnect += OnConnected;
-                    ((ITcpSession)Session).OnDisconnect += OnDisconnected;
+                    ((ITcpConnection)Connection).OnReceive += OnReceived;
+                    ((ITcpConnection)Connection).OnConnect += OnConnected;
+                    ((ITcpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
                 case NetworkConnectionType.Udp:
-                    ((IUdpSession)Session).OnReceive += OnReceived;
+                    ((IUdpConnection)Connection).OnReceive += OnReceived;
                     // todo add timer here
                     _timer = new Timer
                     {
@@ -70,15 +69,15 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     _timer.Elapsed += (s, e) => CheckExpiredClient();
                     break;
                 case NetworkConnectionType.Http:
-                    ((IHttpSession)Session).OnReceive += OnReceived;
-                    ((IHttpSession)Session).OnConnect += OnConnected;
-                    ((IHttpSession)Session).OnDisconnect += OnDisconnected;
+                    ((IHttpConnection)Connection).OnReceive += OnReceived;
+                    ((IHttpConnection)Connection).OnConnect += OnConnected;
+                    ((IHttpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
                 case NetworkConnectionType.Test:
                     LogWriter.Info("Using unit-test proxy");
                     break;
                 default:
-                    throw new Exception("Unsupported session type");
+                    throw new Exception("Unsupported connection type");
             }
         }
         /// <summary>
@@ -86,9 +85,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         protected virtual void OnConnected()
         {
-            if (!ClientPool.ContainsKey(Session.RemoteIPEndPoint))
+            lock (ClientPool)
             {
-                ClientPool.TryAdd(Session.RemoteIPEndPoint, this);
+                if (!ClientPool.ContainsKey(Connection.RemoteIPEndPoint))
+                {
+                    ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
+                }
             }
         }
         /// <summary>
@@ -96,9 +98,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         protected virtual void OnDisconnected()
         {
-            if (ClientPool.ContainsKey(Session.RemoteIPEndPoint))
+            lock (ClientPool)
             {
-                ClientPool.Remove(Session.RemoteIPEndPoint);
+                if (ClientPool.ContainsKey(Connection.RemoteIPEndPoint))
+                {
+                    ClientPool.Remove(Connection.RemoteIPEndPoint);
+                }
             }
             Dispose();
         }
@@ -106,12 +111,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         protected abstract ISwitcher CreateSwitcher(object buffer);
         protected virtual void OnReceived(object buffer)
         {
-            switch (Session.ConnectionType)
+            switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
                     goto default;
                 case NetworkConnectionType.Udp:
-                    // reset timer for udp session
+                    // reset timer for udp connection
                     lock (_timer)
                     {
                         _timer.Stop();
@@ -119,13 +124,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     }
                     goto default;
                 case NetworkConnectionType.Http:
-                    LogNetworkReceiving(Session.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
+                    LogNetworkReceiving(Connection.RemoteIPEndPoint, ((IHttpRequest)buffer).Body);
                     break;
                 case NetworkConnectionType.Test:
                     goto default;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
-                    LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])buffer);
+                    LogNetworkReceiving(Connection.RemoteIPEndPoint, (byte[])buffer);
                     break;
             }
             // we let child class to create swicher for us
@@ -150,29 +155,29 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private void CheckExpiredClient()
         {
             // we calculate the interval between last packe and current time
-            if (((IUdpSession)Session).SessionExistedTime > _expireTimeInterval)
+            if (((IUdpConnection)Connection).ConnectionExistedTime > _expireTimeInterval)
             {
-                ClientPool.Remove(((IUdpSession)Session).RemoteIPEndPoint);
+                ClientPool.Remove(((IUdpConnection)Connection).RemoteIPEndPoint);
                 Dispose();
             }
         }
 
         public void Dispose()
         {
-            switch (Session.ConnectionType)
+            switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
-                    ((ITcpSession)Session).OnReceive -= OnReceived;
-                    ((ITcpSession)Session).OnConnect -= OnConnected;
-                    ((ITcpSession)Session).OnDisconnect -= OnDisconnected;
+                    ((ITcpConnection)Connection).OnReceive -= OnReceived;
+                    ((ITcpConnection)Connection).OnConnect -= OnConnected;
+                    ((ITcpConnection)Connection).OnDisconnect -= OnDisconnected;
                     break;
                 case NetworkConnectionType.Udp:
-                    ((IUdpSession)Session).OnReceive -= OnReceived;
+                    ((IUdpConnection)Connection).OnReceive -= OnReceived;
                     _timer.Elapsed -= (s, e) => CheckExpiredClient();
                     _timer.Dispose();
                     break;
                 case NetworkConnectionType.Http:
-                    ((IHttpSession)Session).OnReceive -= OnReceived;
+                    ((IHttpConnection)Connection).OnReceive -= OnReceived;
                     break;
             }
         }
@@ -193,13 +198,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 buffer = (byte[])response.SendingBuffer;
             }
             // LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
-            LogNetworkSending(Session.RemoteIPEndPoint, buffer);
+            LogNetworkSending(Connection.RemoteIPEndPoint, buffer);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {
                 buffer = Crypto.Encrypt(buffer);
             }
-            Session.Send(buffer);
+            Connection.Send(buffer);
         }
         protected virtual void LogNetworkSending(IPEndPoint ipEndPoint, object buffer)
         {

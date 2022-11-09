@@ -25,10 +25,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
         }
 
         /// <summary>
-        /// Generates an MD5 hash, which is used to verify the sessions login information
+        /// Generates an MD5 hash, which is used to verify the connections login information
         /// </summary>
         /// <returns>
-        ///     The proof verification MD5 hash string that can be compared to what the _session sends,
+        ///     The proof verification MD5 hash string that can be compared to what the _connection sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
         public static string GenerateProof(LoginChallengeProof data)

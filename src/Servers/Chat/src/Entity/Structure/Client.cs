@@ -11,9 +11,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
     public class Client : ClientBase
     {
         public new ClientInfo Info => (ClientInfo)base.Info;
-        public new ITcpSession Session => (ITcpSession)base.Session;
+        public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         private byte[] _incompleteBuffer;
-        public Client(ISession session) : base(session)
+        public Client(IConnection connection) : base(connection)
         {
             base.Info = new ClientInfo();
         }
@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure
                 {
                     completeBuffer = message;
                 }
-                LogWriter.LogNetworkReceiving(Session.RemoteIPEndPoint, (byte[])completeBuffer);
+                LogWriter.LogNetworkReceiving(Connection.RemoteIPEndPoint, (byte[])completeBuffer);
                 new CmdSwitcher(this, completeBuffer).Switch();
             }
             else
