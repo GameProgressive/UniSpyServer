@@ -75,11 +75,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     ((IHttpConnection)Connection).OnConnect += OnConnected;
                     ((IHttpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
-                case NetworkConnectionType.Test:
-                    LogInfo("Using unit-test proxy");
-                    break;
+                // case NetworkConnectionType.Test:
+                //     LogInfo("Using unit-test mock connection.");
+                //     break;
                 default:
-                    throw new Exception("Unsupported connection type");
+                    throw new Exception("Unsupported connection type.");
             }
         }
         /// <summary>
@@ -133,8 +133,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     var tempBuffer = ((IHttpRequest)buffer).Body;
                     LogNetworkReceiving(UniSpyEncoding.GetBytes(tempBuffer));
                     break;
-                case NetworkConnectionType.Test:
-                    goto default;
+                // case NetworkConnectionType.Test:
+                //     goto default;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
                     LogNetworkReceiving((byte[])buffer);

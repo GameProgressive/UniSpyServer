@@ -1,14 +1,15 @@
 using System.Net;
 using Moq;
+using UniSpyServer.Servers.QueryReport.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Test
 {
-    public static class TestClasses
+    public class TestClasses
     {
         public static IClient Client = CreateClient();
 
-        public static QueryReport.Entity.Structure.Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
+        public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
         {
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
@@ -17,9 +18,9 @@ namespace UniSpyServer.Servers.QueryReport.Test
             var connectionMock = new Mock<IUdpConnection>();
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
 
-            return new QueryReport.Entity.Structure.Client(connectionMock.Object);
+            return new Client(connectionMock.Object);
         }
     }
 }

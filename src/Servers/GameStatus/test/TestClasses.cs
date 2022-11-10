@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             var connectionMock = new Mock<ITcpConnection>();
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
 
             return new GameStatus.Entity.Structure.Client(connectionMock.Object);
         }

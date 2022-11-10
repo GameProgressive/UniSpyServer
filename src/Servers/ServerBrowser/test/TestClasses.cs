@@ -15,10 +15,10 @@ namespace UniSpyServer.Servers.ServerBrowser.Test
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("ServerBrowser");
             serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var connectionMock = new Mock<IUdpConnection>();
+            var connectionMock = new Mock<ITcpConnection>();
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Test);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
             return new ServerBrowser.Entity.Structure.Client(connectionMock.Object);
         }
     }

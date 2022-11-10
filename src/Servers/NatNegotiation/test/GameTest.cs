@@ -44,7 +44,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             {
                 ((ITestClient)server).TestReceived(request);
             }
-            // // because the process is running in background we need to wait it finish, so we can debug
+            // because the process is running in background we need to wait it finish, so we can debug
             Thread.Sleep(10000);
             // Console.Read();
         }

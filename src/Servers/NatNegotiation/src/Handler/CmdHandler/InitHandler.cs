@@ -40,18 +40,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             base.RequestCheck();
             _searchKey = $"{_request.Cookie} {_request.ClientIndex} {_request.Version}";
             // note: async socket may cause problem when adding _initInfo to _initInfoPool, requires a lock
+            _initInfo = new NatInitInfo()
+            {
+                ServerID = _client.Connection.Server.ServerID,
+                Cookie = (uint)_request.Cookie,
+                UseGamePort = _request.UseGamePort,
+                ClientIndex = (NatClientIndex)_request.ClientIndex,
+                Version = _request.Version
+            };
             lock (_initInfoPool)
             {
+                // we only have add or get in the lock to reduce performance cost on create object
                 if (!_initInfoPool.Keys.Contains(_searchKey))
                 {
-                    _initInfo = new NatInitInfo()
-                    {
-                        ServerID = _client.Connection.Server.ServerID,
-                        Cookie = (uint)_request.Cookie,
-                        UseGamePort = _request.UseGamePort,
-                        ClientIndex = (NatClientIndex)_request.ClientIndex,
-                        Version = _request.Version
-                    };
                     _initInfoPool.TryAdd(_searchKey, _initInfo);
                 }
                 else
@@ -69,6 +70,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 PublicIPEndPoint = _client.Connection.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
+            _client.LogInfo($"Received init request with private ip: [{_mappingInfo.PrivateIPEndPoint}], cookie: {_initInfo.Cookie}, client index: {_initInfo.ClientIndex}.");
             // note: async socket may cause problem when adding _mappingInfo to _initInfo.NatMappingInfos, requires a lock
             lock (_initInfo)
             {
@@ -77,7 +79,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     _initInfo.NatMappingInfos.Add((NatPortType)_request.PortType, _mappingInfo);
                 }
             }
-
             _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
@@ -119,7 +120,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         /// </summary>
         private void PrepareForConnecting()
         {
-            _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_initInfo.Cookie}");
+            _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_initInfo.Cookie}.");
             int waitCount = 1;
             // we only wait 8 seconds
             while (waitCount <= 4)
@@ -129,13 +130,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                         && k.Version == _request.Version);
                 if (initCount == 2)
                 {
-                    _client.LogInfo("2 neigotiators found, start negotiating");
+                    _client.LogInfo("2 neigotiators found, start negotiating.");
                     StartConnecting();
                     break;
                 }
                 else
                 {
-                    _client.LogInfo($"[{_client.Connection.RemoteIPEndPoint}], cookie: {_initInfo.Cookie} have no negotiator found, retry count: {waitCount}");
+                    _client.LogInfo($"Have no negotiator found with cookie: {_initInfo.Cookie}, retry count: {waitCount}.");
                 }
                 waitCount++;
                 Thread.Sleep(2000);
