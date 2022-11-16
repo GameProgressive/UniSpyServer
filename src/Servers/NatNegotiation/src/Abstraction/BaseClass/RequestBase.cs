@@ -12,6 +12,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public new byte[] RawRequest => (byte[])base.RawRequest;
         public byte? Version { get; protected set; }
+        /// <summary>
+        /// Cookie is a random int, which we can not trace two clients
+        /// </summary>
+        /// <value></value>
         public uint? Cookie { get; protected set; }
         public NatPortType? PortType { get; protected set; }
         // public byte? ClientIndex { get; protected set; }

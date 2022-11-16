@@ -54,6 +54,10 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             IPEndPoint ep = (IPEndPoint)value;
+            if(ep is null)
+            {
+                var ss = "asdasdf";
+            }
             JObject jo = new JObject();
             jo.Add("Address", JToken.FromObject(ep.Address.ToString(), serializer));
             jo.Add("Port", ep.Port);
@@ -62,6 +66,10 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            // if (reader.Value == null)
+            // {
+            //     return null;
+            // }
             JObject jo = JObject.Load(reader);
             IPAddress address = IPAddress.Parse(jo["Address"].ToObject<string>());
             int port = (int)jo["Port"];

@@ -30,37 +30,41 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-        // public static bool IsInSameLan(Dictionary<NatPortType, NatInitInfo> clientPackets, Dictionary<NatPortType, NatInitInfo> serverPackets)
-        // {
+        /// <summary>
+        /// Determine whether 2 clients are in same LAN, but due to the existence of multiple NATs, the detection of the same LAN may be inaccurate, and it needs to be analyzed according to the report packet.
+        /// </summary>
+        public static bool IsInSameLan(NatInitInfo client1, NatInitInfo client2)
+        {
+            // todo private address should compare only xxx.xxx.xxx no need for last byte compare
+            return client1.AddressInfos[NatPortType.GP].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.GP].PublicIPEndPoint.Address)
+            && client1.AddressInfos[NatPortType.GP].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+                client2.AddressInfos[NatPortType.GP].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-        //     // todo private address should compare only xxx.xxx.xxx no need for last byte compare
-        //     return clientPackets[NatPortType.GP].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.GP].PublicIPEndPoint.Address)
-        //     && clientPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-        //         serverPackets[NatPortType.GP].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+            && client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
+            && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+                client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-        //     && clientPackets[NatPortType.NN1].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN1].PublicIPEndPoint.Address)
-        //     && clientPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-        //         serverPackets[NatPortType.NN1].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+            && client1.AddressInfos[NatPortType.NN2].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN2].PublicIPEndPoint.Address)
+            && client1.AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+                client2.AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-        //     && clientPackets[NatPortType.NN2].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN2].PublicIPEndPoint.Address)
-        //     && clientPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-        //         serverPackets[NatPortType.NN2].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+            && client1.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address)
+            && client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+                client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-        //     && clientPackets[NatPortType.NN3].PublicIPEndPoint.Address.Equals(serverPackets[NatPortType.NN3].PublicIPEndPoint.Address)
-        //     && clientPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-        //         serverPackets[NatPortType.NN3].GPPrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
-
-        // }
+            // two clients' private ip can not be the same if they are in same LAN
+            && !client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
+        }
         public static NatProperty DetermineNatType(NatInitInfo iniInfo)
         {
             NatProperty natProperty = new NatProperty();
-            if (iniInfo.NatMappingInfos.Count < 3)
+            if (iniInfo.AddressInfos.Count < 3)
             {
                 throw new NNException("We need 3 init records to determine the nat type.");
             }
-            var nn1 = iniInfo.NatMappingInfos[NatPortType.NN1];
-            var nn2 = iniInfo.NatMappingInfos[NatPortType.NN2];
-            var nn3 = iniInfo.NatMappingInfos[NatPortType.NN3];
+            var nn1 = iniInfo.AddressInfos[NatPortType.NN1];
+            var nn2 = iniInfo.AddressInfos[NatPortType.NN2];
+            var nn3 = iniInfo.AddressInfos[NatPortType.NN3];
 
             // no nat
             if (nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
@@ -107,13 +111,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             IPEndPoint guessedIPEndPoint;
             // if is gameserver we return the GP IPEndPoint else we return NN3 IPEndPoint
-            if (initInfo.NatMappingInfos.ContainsKey(NatPortType.GP))
+            if (initInfo.AddressInfos.ContainsKey(NatPortType.GP))
             {
-                guessedIPEndPoint = initInfo.NatMappingInfos[NatPortType.GP].PublicIPEndPoint;
+                guessedIPEndPoint = initInfo.AddressInfos[NatPortType.GP].PublicIPEndPoint;
             }
             else
             {
-                guessedIPEndPoint = initInfo.NatMappingInfos[NatPortType.NN3].PublicIPEndPoint;
+                guessedIPEndPoint = initInfo.AddressInfos[NatPortType.NN3].PublicIPEndPoint;
             }
             switch (property.NatType)
             {

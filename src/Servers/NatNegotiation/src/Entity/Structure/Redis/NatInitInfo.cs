@@ -11,7 +11,7 @@ using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
-    public record NatMappingInfo
+    public record NatAddressInfo
     {
         public byte? Version { get; init; }
         public NatPortType? PortType { get; init; }
@@ -38,7 +38,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         /// The public ip for other client connect
         /// </summary>
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint GuessedPublicIPEndPoint { get; set; }
+        // [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPEndPoint PublicIPEndPoint { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonConverter(typeof(IPEndPointConverter))]
+        // [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPEndPoint PrivateIPEndPoint { get; set; }
         /// <summary>
         /// Negotiating flag to set 
         /// </summary>
@@ -50,11 +57,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         /// </summary>
         public bool IsUsingRelayServer { get; set; }
 
-        public Dictionary<NatPortType, NatMappingInfo> NatMappingInfos { get; }
+        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; }
 
         public NatInitInfo() : base(TimeSpan.FromMinutes(3))
         {
-            NatMappingInfos = new Dictionary<NatPortType, NatMappingInfo>();
+            AddressInfos = new Dictionary<NatPortType, NatAddressInfo>();
         }
     }
 

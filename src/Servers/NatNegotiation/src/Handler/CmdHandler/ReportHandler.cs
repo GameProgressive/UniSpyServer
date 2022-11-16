@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -16,11 +21,38 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result { get => (ReportResult)base._result; set => base._result = value; }
+        /// <summary>
+        /// The first layer key is the current client's public ip address, the second layer key is the current clients's private ip address, the third layer key is the other client's natneg server id, and the fourth key is the other client's private ip address
+        /// the hash value of the same IPAddress is the same, so it can be used as the dictionary key.
+        /// </summary>
+        internal static Dictionary<string, NatPunchStrategy> NatFailRecordInfos;
+        private NatInitInfo _myInitInfo;
+        private NatInitInfo _othersInitInfo;
+        private NatReportInfo _myReportInfo;
+        private string _searchKey;
+        static ReportHandler()
+        {
+            NatFailRecordInfos = new Dictionary<string, NatPunchStrategy>();
+        }
         public ReportHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ReportResult();
         }
-
+        protected override void RequestCheck()
+        {
+            base.RequestCheck();
+            var initInfos = _redisClient.Context.Where(k =>
+                k.ServerID == _client.Connection.Server.ServerID
+                && k.Cookie == _client.Info.Cookie).ToList();
+            if (initInfos.Count != 2)
+            {
+                throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");
+            }
+            NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
+            _myInitInfo = initInfos.Where(i => i.ClientIndex == NatClientIndex.GameClient).First();
+            _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
+            _searchKey = NatReportInfo.CreateKey(_myInitInfo.PrivateIPEndPoint.Address, _myInitInfo.PublicIPEndPoint.Address, (Guid)_othersInitInfo.ServerID, _othersInitInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
+        }
         protected override void ResponseConstruct()
         {
             _response = new ReportResponse(_request, _result);
@@ -30,64 +62,34 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             // we first response, the client will timeout if no response is received in some interval
             base.Response();
-            _client.LogInfo($"[{_client.Connection.RemoteIPEndPoint}] natneg success: {(bool)_request.IsNatSuccess}, version: {_request.Version}, gamename: {_request.GameName}, nat type: {_request.NatType} mapping scheme: {_request.MappingScheme}, cookie: {_request.Cookie}, port type: {_request.PortType}");
-            // when negotiation failed we log the information
+            _client.LogInfo($"natneg success: {(bool)_request.IsNatSuccess}, version: {_request.Version}, gamename: {_request.GameName}, nat type: {_request.NatType} mapping scheme: {_request.MappingScheme}, cookie: {_request.Cookie}, client index: {_request.ClientIndex} port type: {_request.PortType}");
+            // when negotiation failed we store the information
+            if (!(bool)_request.IsNatSuccess)
+            {
+                lock (NatFailRecordInfos)
+                {
+                    if (NatFailRecordInfos.ContainsKey(_searchKey))
+                    {
+                        var strategy = NatFailRecordInfos[_searchKey];
+                        // the final solusion is game relay service
+                        if (strategy < NatPunchStrategy.UsingGameRelay)
+                        {
+                            strategy++;
+                        }
+                        NatFailRecordInfos[_searchKey] = strategy;
+                        _client.LogInfo($"Updated negotiation strategy to {strategy}");
+                    }
+                    else
+                    {
+                        throw new NNException($"Client's info in NatFailRecordInfos did not created by ConnectHandler, please check search key: {_searchKey}");
+                    }
+                }
 
-            // if (!(bool)_request.IsNatSuccess)
-            // {
-            //     var request = new ConnectRequest
-            //     {
-            //         PortType = NatPortType.NN1,
-            //         Version = _request.Version,
-            //         Cookie = _request.Cookie,
-            //         IsUsingRelay = true
-            //     };
-            //     new ConnectHandler(_client, request).Handle();
-            //     var packets = _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList();
-            //     foreach (var packet in packets)
-            //     {
-            //         packet.RetryNatNegotiationTime++;
-            //         _redisClient.SetValue(packet);
-            //     }
-            // }
+            }
 
-            // switch (_request.IsNatSuccess)
-            // {
-            //     case NatNegResult.Success:
-            //         // if there is a success p2p connection, we delete the init info in redis
-            //         _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList()
-            //                 .ForEach(k => _redisClient.DeleteKeyValue(k));
-            //         _client.LogInfo("Nat negotiation success.");
-            //         break;
-            //     case NatNegResult.DeadBeatPartner:
-            //         _client.LogInfo($"Parter of client {_client.Connection.RemoteIPEndPoint} has no response.");
-            //         goto default;
-            //     case NatNegResult.InitTimeOut:
-            //         _client.LogInfo($"Client {_client.Connection.RemoteIPEndPoint} nat initialization failed.");
-            //         break;
-            //     case NatNegResult.PingTimeOut:
-            //         _client.LogInfo($"Client {_client.Connection.RemoteIPEndPoint} nat ping failed.");
-            //         goto default;
-            //     case NatNegResult.UnknownError:
-            //         _client.LogInfo($"Client {_client.Connection.RemoteIPEndPoint} nat negotiation unknown error occured.");
-            //         break;
-            //     default:
-            //         var request = new ConnectRequest
-            //         {
-            //             PortType = NatPortType.NN1,
-            //             Version = _request.Version,
-            //             Cookie = _request.Cookie,
-            //             IsUsingRelay = true
-            //         };
-            //         new ConnectHandler(_client, request).Handle();
-            //         var packets = _redisClient.Context.Where(k => k.Cookie == _request.Cookie).ToList();
-            //         foreach (var packet in packets)
-            //         {
-            //             packet.RetryNatNegotiationTime++;
-            //             _redisClient.SetValue(packet);
-            //         }
-            //         break;
-            // }
+            // we delete the information on redis
+            // _redisClient.DeleteKeyValue(_myInitInfo);
+            // _redisClient.DeleteKeyValue(_othersInitInfo);
         }
     }
 }
