@@ -7,6 +7,8 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.WebServer.Module.Sake.Handler;
 using UniSpyServer.Servers.WebServer.Module.Auth.Handler;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler;
 
 namespace UniSpyServer.Servers.WebServer.Handler
 {
@@ -60,7 +62,10 @@ namespace UniSpyServer.Servers.WebServer.Handler
                 #endregion
                 #region Direct2Game
                 case "GetStoreAvailability":
+                    return new GetStoreAvailabilityHandler(_client, new GetStoreAvailabilityRequest((string)rawRequest));
+
                 case "GetPurchaseHistory":
+                    return new GetPurchaseHistoryHandler(_client, new GetPurchaseHistoryRequest((string)rawRequest));
                 case "GetTargettedAd":
                     throw new NotImplementedException();
                 #endregion

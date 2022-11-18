@@ -1,5 +1,6 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
 using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request

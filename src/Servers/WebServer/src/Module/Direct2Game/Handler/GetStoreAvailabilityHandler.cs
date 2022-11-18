@@ -1,6 +1,6 @@
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Result;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
@@ -17,8 +17,8 @@ namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
 
         protected override void DataOperation()
         {
-            _result.StatusCode = 0;
-            _result.StoreResult = 50;
+            _result.Status = 0;
+            _result.StoreResult = 10;
             /*
              *  10 -> Store is available
              *  50 -> ERROR
