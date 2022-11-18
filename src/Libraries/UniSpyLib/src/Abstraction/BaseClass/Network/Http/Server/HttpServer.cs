@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
@@ -17,8 +18,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         protected override NetCoreServer.TcpSession CreateSession()
         {
             var connection = new UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpConnection(this);
-            CreateClient(connection);
             return connection;
+        }
+        protected override void OnConnecting(TcpSession connection)
+        {
+            base.OnConnecting(connection);
+            CreateClient((HttpConnection)connection);
         }
     }
 }

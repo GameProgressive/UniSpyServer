@@ -133,8 +133,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     var tempBuffer = ((IHttpRequest)buffer).Body;
                     LogNetworkReceiving(UniSpyEncoding.GetBytes(tempBuffer));
                     break;
-                // case NetworkConnectionType.Test:
-                //     goto default;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
                     LogNetworkReceiving((byte[])buffer);
