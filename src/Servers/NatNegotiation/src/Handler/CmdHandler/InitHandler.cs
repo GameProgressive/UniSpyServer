@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -12,7 +10,6 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -21,9 +18,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
+        /// <summary>
+        /// Local NatInitInfo storage, after init packets are received we send all into redis database
+        /// </summary>
         public static Dictionary<string, NatInitInfo> InitInfoPool;
-        private NatAddressInfo _mappingInfo;
+        private NatAddressInfo _addressInfo;
+        /// <summary>
+        /// The current init info of the client.
+        /// </summary>
         private NatInitInfo _initInfo;
+        /// <summary>
+        /// The key using to search on local storage InitInfoPool to get the client init info.
+        /// </summary>
         private string _searchKey;
         static InitHandler()
         {
@@ -36,7 +42,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            _searchKey = $"{_request.Cookie} {_request.ClientIndex} {_request.Version}";
+            _searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
             // note: async socket may cause problem when adding _initInfo to _initInfoPool, requires a lock
             _initInfo = new NatInitInfo()
             {
@@ -61,20 +67,20 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            _mappingInfo = new NatAddressInfo()
+            _addressInfo = new NatAddressInfo()
             {
                 Version = _request.Version,
                 PortType = _request.PortType,
                 PublicIPEndPoint = _client.Connection.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
-            _client.LogInfo($"Received init request with private ip: [{_mappingInfo.PrivateIPEndPoint}], cookie: {_initInfo.Cookie}, client index: {_initInfo.ClientIndex}.");
+            _client.LogInfo($"Received init request with private ip: [{_addressInfo.PrivateIPEndPoint}], cookie: {_initInfo.Cookie}, client index: {_initInfo.ClientIndex}.");
             // note: async socket may cause problem when adding _mappingInfo to _initInfo.NatMappingInfos, requires a lock
             lock (_initInfo)
             {
                 if (!_initInfo.AddressInfos.ContainsKey((NatPortType)_request.PortType))
                 {
-                    _initInfo.AddressInfos.Add((NatPortType)_request.PortType, _mappingInfo);
+                    _initInfo.AddressInfos.Add((NatPortType)_request.PortType, _addressInfo);
                 }
             }
             _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
@@ -103,8 +109,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 && _initInfo.AddressInfos.ContainsKey(NatPortType.NN3)
                 && _initInfo.isNegotiating == false)
                 {
-                    DetermineGPPublicAddress();
-                    DetermineGPPrivateAddress();
                     _initInfo.isNegotiating = true;
                     // we have use sync code to make sure the data is saved on redis
                     _redisClient.SetValue(_initInfo);
@@ -112,30 +116,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
             }
         }
-        private void DetermineGPPublicAddress()
-        {
-            lock (_initInfo)
-            {
-                if (_initInfo.AddressInfos.ContainsKey(NatPortType.GP) && _initInfo.ClientIndex == NatClientIndex.GameServer)
-                {
-                    _initInfo.PublicIPEndPoint = _initInfo.AddressInfos[NatPortType.GP].PublicIPEndPoint;
-                }
-                else
-                {
-                    _initInfo.PublicIPEndPoint = _initInfo.AddressInfos[NatPortType.NN3].PublicIPEndPoint;
-                }
-            }
-        }
-        private void DetermineGPPrivateAddress()
-        {
-            lock (_initInfo)
-            {
-                if (_initInfo.AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(_initInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
-                {
-                    _initInfo.PrivateIPEndPoint = _initInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
-                }
-            }
-        }
+
 
         /// <summary>
         /// Prepare to send connect response

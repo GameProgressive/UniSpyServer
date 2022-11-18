@@ -53,12 +53,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // we need both info to determine nat type
             _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
             _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
-
         }
         protected override void DataOperation()
         {
-            var searchKey = NatReportInfo.CreateKey(_myInitInfo.PrivateIPEndPoint.Address,
-                                                    _myInitInfo.PublicIPEndPoint.Address,
+            var searchKey = NatReportInfo.CreateKey(_myInitInfo.PublicIPEndPoint.Address,
+                                                    _myInitInfo.PrivateIPEndPoint.Address,
                                                     (Guid)_othersInitInfo.ServerID,
                                                     _othersInitInfo.PrivateIPEndPoint.Address);
 

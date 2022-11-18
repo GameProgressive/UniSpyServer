@@ -36,11 +36,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         public static bool IsInSameLan(NatInitInfo client1, NatInitInfo client2)
         {
             // todo private address should compare only xxx.xxx.xxx no need for last byte compare
-            return client1.AddressInfos[NatPortType.GP].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.GP].PublicIPEndPoint.Address)
-            && client1.AddressInfos[NatPortType.GP].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.GP].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
-
-            && client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
+            return client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
             && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
                 client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 

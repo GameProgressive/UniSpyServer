@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
@@ -34,18 +33,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public byte? Version { get; init; }
         [RedisKey]
         public NatClientIndex? ClientIndex { get; init; }
-        /// <summary>
-        /// The public ip for other client connect
-        /// </summary>
-        [JsonConverter(typeof(IPEndPointConverter))]
-        // [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IPEndPoint PublicIPEndPoint { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        [JsonConverter(typeof(IPEndPointConverter))]
-        // [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IPEndPoint PrivateIPEndPoint { get; set; }
+
         /// <summary>
         /// Negotiating flag to set 
         /// </summary>
@@ -57,11 +45,58 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         /// </summary>
         public bool IsUsingRelayServer { get; set; }
 
-        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; }
+        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
+        /// <summary>
+        /// The public ip for other client connect
+        /// </summary>
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint PublicIPEndPoint
+        {
+            get
+            {
+                if (ClientIndex == NatClientIndex.GameServer && AddressInfos.ContainsKey(NatPortType.GP))
+                {
+                    return AddressInfos[NatPortType.GP].PublicIPEndPoint;
+                }
+                else
+                {
+                    return AddressInfos[NatPortType.NN3].PublicIPEndPoint;
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint PrivateIPEndPoint
+        {
+            get
+            {
+                if (AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
+                {
+                    return AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
+                }
+                else
+                {
+                    throw new NNException("All init packets are not ready, check the call of this property, make sure call after init packets are collected.");
+                }
+            }
+        }
 
         public NatInitInfo() : base(TimeSpan.FromMinutes(3))
         {
             AddressInfos = new Dictionary<NatPortType, NatAddressInfo>();
+        }
+        /// <summary>
+        /// Create the key to search in Dictionary
+        /// </summary>
+        /// <param name="cookie">The cookie of natneg protocol</param>
+        /// <param name="clientIndex">The client index of current packet</param>
+        /// <param name="version">The version of natneg protocol</param>
+        /// <returns>Key string</returns>
+        public static string CreateKey(uint cookie, NatClientIndex clientIndex, uint version)
+        {
+            return $"{cookie} {clientIndex} {version}";
         }
     }
 

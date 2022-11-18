@@ -48,6 +48,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");
             }
+
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
             _myInitInfo = initInfos.Where(i => i.ClientIndex == NatClientIndex.GameClient).First();
             _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
