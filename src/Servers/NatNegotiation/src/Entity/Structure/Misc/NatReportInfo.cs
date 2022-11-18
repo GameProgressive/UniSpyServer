@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc
 {
@@ -14,9 +15,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc
     {
         public NatReportRecord MyRecord;
         public NatReportRecord OthersRecord;
-        public static string CreateKey(IPAddress myPublicIPAddress, IPAddress myPrivateIPAddress, Guid otherClientServerId, IPAddress otherClientPrivateIP)
+        public static string CreateKey(IPAddress myPublicIPAddress, IPAddress myPrivateIPAddress, Guid otherClientServerId, IPAddress otherClientPrivateIP, NatClientIndex clientIndex)
         {
-            return $"{myPublicIPAddress} {myPrivateIPAddress} {otherClientServerId} {otherClientPrivateIP}";
+            return $"{myPublicIPAddress} {myPrivateIPAddress} {otherClientServerId} {otherClientPrivateIP} {clientIndex}";
         }
     }
 }

@@ -59,21 +59,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var searchKey = NatReportInfo.CreateKey(_myInitInfo.PublicIPEndPoint.Address,
                                                     _myInitInfo.PrivateIPEndPoint.Address,
                                                     (Guid)_othersInitInfo.ServerID,
-                                                    _othersInitInfo.PrivateIPEndPoint.Address);
+                                                    _othersInitInfo.PrivateIPEndPoint.Address,
+                                                    (NatClientIndex)_myInitInfo.ClientIndex);
 
-            var isInSameLan = AddressCheckHandler.IsInSameLan(_myInitInfo, _othersInitInfo);
             lock (ReportHandler.NatFailRecordInfos)
             {
-                if (isInSameLan)
+                if (ReportHandler.NatFailRecordInfos.ContainsKey(searchKey))
                 {
-                    _punchStrategy = NatPunchStrategy.UsingPrivateIPEndpoint;
-                    ReportHandler.NatFailRecordInfos[searchKey] = _punchStrategy;
+                    _punchStrategy = ReportHandler.NatFailRecordInfos[searchKey];
                 }
                 else
                 {
-                    if (ReportHandler.NatFailRecordInfos.ContainsKey(searchKey))
+                    var isInSameLan = AddressCheckHandler.IsInSameLan(_myInitInfo, _othersInitInfo);
+                    if (isInSameLan)
                     {
-                        _punchStrategy = ReportHandler.NatFailRecordInfos[searchKey];
+                        _punchStrategy = NatPunchStrategy.UsingPrivateIPEndpoint;
+                        ReportHandler.NatFailRecordInfos[searchKey] = _punchStrategy;
                     }
                     else
                     {

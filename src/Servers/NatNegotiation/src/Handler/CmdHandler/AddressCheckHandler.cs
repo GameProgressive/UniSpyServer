@@ -40,16 +40,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
                 client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
-            && client1.AddressInfos[NatPortType.NN2].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN2].PublicIPEndPoint.Address)
-            && client1.AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+            && client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
+            && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
+                client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
 
             && client1.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address)
             && client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
+                client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
 
-            // two clients' private ip can not be the same if they are in same LAN
-            && !client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
+            // todo check whether two clients' private ip can not be the same if they are in same LAN????
+            // && !client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
         }
         public static NatProperty DetermineNatType(NatInitInfo iniInfo)
         {

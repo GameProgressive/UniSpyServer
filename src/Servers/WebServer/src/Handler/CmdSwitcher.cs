@@ -102,6 +102,7 @@ namespace UniSpyServer.Servers.WebServer.Handler
                     throw new NotImplementedException();
                 #endregion
                 default:
+                    _client.LogError($"Unkown {(string)name} request received");
                     return null;
             }
         }

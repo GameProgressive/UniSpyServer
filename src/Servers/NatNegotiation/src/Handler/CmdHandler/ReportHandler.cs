@@ -41,6 +41,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
+            // if (_request.ClientIndex != _client.Info.ClientIndex)
+            // {
+            //     throw new NNException("Client index in request dose not match info in UniSpy");
+            // }
+            // if (_request.Cookie != _client.Info.Cookie)
+            // {
+            //     throw new NNException("Cookie in request dose not match info in UniSpy");
+            // }
             var initInfos = _redisClient.Context.Where(k =>
                 k.ServerID == _client.Connection.Server.ServerID
                 && k.Cookie == _client.Info.Cookie).ToList();
@@ -50,9 +58,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
 
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
-            _myInitInfo = initInfos.Where(i => i.ClientIndex == NatClientIndex.GameClient).First();
+            _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
             _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
-            _searchKey = NatReportInfo.CreateKey(_myInitInfo.PrivateIPEndPoint.Address, _myInitInfo.PublicIPEndPoint.Address, (Guid)_othersInitInfo.ServerID, _othersInitInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
+            _searchKey = NatReportInfo.CreateKey(_myInitInfo.PrivateIPEndPoint.Address,
+                                                _myInitInfo.PublicIPEndPoint.Address,
+                                                (Guid)_othersInitInfo.ServerID,
+                                                _othersInitInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address,
+                                                (NatClientIndex)_request.ClientIndex);
         }
         protected override void ResponseConstruct()
         {
@@ -73,10 +85,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     {
                         var strategy = NatFailRecordInfos[_searchKey];
                         // the final solusion is game relay service
-                        if (strategy < NatPunchStrategy.UsingGameRelay)
+                        if (strategy == NatPunchStrategy.UsingPrivateIPEndpoint)
                         {
-                            strategy++;
+                            strategy = NatPunchStrategy.UsingPublicIPEndPoint;
                         }
+                        else if (strategy == NatPunchStrategy.UsingPublicIPEndPoint)
+                        {
+                            strategy = NatPunchStrategy.UsingGameRelay;
+                        }
+                        else
+                        {
+                            _client.LogWarn("Can not negotiate with game relay server");
+                        }
+
                         NatFailRecordInfos[_searchKey] = strategy;
                         _client.LogInfo($"Updated negotiation strategy to {strategy}");
                     }
