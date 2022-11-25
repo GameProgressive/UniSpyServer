@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "ps3cert"))
+            if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "npticket"))
             {
                 throw new AuthException("ps3cert is missing from the request");
             }

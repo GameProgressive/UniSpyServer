@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request
 {

@@ -1,4 +1,4 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result;
 
@@ -13,6 +13,7 @@ namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Response
         }
         public override void Build()
         {
+            base.Build();
             _content.Add("CreateRecordResult");
             _content.Add("tableid", _result.TableID);
             _content.Add("recordid", _result.RecordID);

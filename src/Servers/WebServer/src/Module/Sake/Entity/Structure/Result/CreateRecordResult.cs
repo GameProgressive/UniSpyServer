@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result
 {

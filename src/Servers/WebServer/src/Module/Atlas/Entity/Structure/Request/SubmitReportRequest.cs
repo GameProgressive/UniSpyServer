@@ -4,7 +4,7 @@ using UniSpyServer.Servers.WebServer.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
 {
-    
+
     public class SubmitReportRequest : RequestBase
     {
         public string Certificate { get; set; }
@@ -19,6 +19,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
 
         public override void Parse()
         {
+            base.Parse();
             var certificate = _contentElement.Descendants().Where(p => p.Name.LocalName == "certificate").First().Value;
             Certificate = certificate;
             var proof = _contentElement.Descendants().Where(p => p.Name.LocalName == "proof").First().Value;

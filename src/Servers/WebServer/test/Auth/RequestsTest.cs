@@ -35,7 +35,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             var request = new LoginPs3CertWithGameIdRequest(RawRequests.LoginPs3Cert);
             request.Parse();
             Assert.Equal(0, request.GameId);
-            Assert.Equal(0, request.PartnerCode);
+            Assert.Equal(1, request.PartnerCode);
             Assert.Equal("0001", request.PS3cert);
         }
         [Fact]
@@ -149,7 +149,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
             // Then
         }
 
-        [Fact]
+        [Fact(Skip = "not implemented")]
         public void TestName()
         {
             // Given

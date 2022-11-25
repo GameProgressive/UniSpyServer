@@ -1,5 +1,5 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
+
+using UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response
@@ -10,7 +10,6 @@ namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Res
 
         public GetPurchaseHistoryResponse(RequestBase request, ResultBase result) : base(request, result)
         {
-            _content = new Direct2GameSoapEnvelope();
         }
 
         public override void Build()

@@ -37,7 +37,8 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
                         <ns1:version>0</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
                         <ns1:namespaceid>0</ns1:namespaceid>
-                        <ns1:partnercode>0</ns1:partnercode>
+                        <ns1:partnercode>0001</ns1:partnercode>
+                        <ns1:ps3sert>0</ns1:ps3sert>
                         <ns1:npticket>0001</ns1:npticket>
                     </ns1:LoginPs3Cert>
                 </SOAP-ENV:Body>

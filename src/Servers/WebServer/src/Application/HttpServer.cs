@@ -11,6 +11,6 @@ namespace UniSpyServer.Servers.WebServer.Application
         {
         }
 
-        public override IClient CreateClient(IConnection connection) => new Client(connection);
+        protected override IClient CreateClient(IConnection connection) => new Client(connection);
     }
 }

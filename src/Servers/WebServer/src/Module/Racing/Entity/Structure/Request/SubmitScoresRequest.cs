@@ -4,7 +4,7 @@ using UniSpyServer.Servers.WebServer.Abstraction;
 
 namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
 {
-    
+
     public class SubmitScoresRequest : RequestBase
     {
         public int GameData { get; set; }
@@ -19,6 +19,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
 
         public override void Parse()
         {
+            base.Parse();
             var gamedata = _contentElement.Descendants().Where(p => p.Name.LocalName == "gamedata").First().Value;
             GameData = int.Parse(gamedata);
             var regionid = _contentElement.Descendants().Where(p => p.Name.LocalName == "regionid").First().Value;

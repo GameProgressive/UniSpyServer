@@ -19,6 +19,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
 
         public override void Parse()
         {
+            base.Parse();
             var certificate = _contentElement.Descendants().Where(p => p.Name.LocalName == "certificate").First().Value;
             Certificate = certificate;
             var proof = _contentElement.Descendants().Where(p => p.Name.LocalName == "proof").First().Value;

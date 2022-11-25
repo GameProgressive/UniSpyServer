@@ -15,6 +15,7 @@ namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
 
         public override void Parse()
         {
+            base.Parse();
             var gameid = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
             GameId = int.Parse(gameid);
             var regionid = _contentElement.Descendants().Where(p => p.Name.LocalName == "regionid").First().Value;
