@@ -14,7 +14,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
         {
             ServerName = serverName;
         }
-        public abstract IClient CreateClient(IConnection connection);
+        protected abstract IClient CreateClient(IConnection connection);
         protected override NetCoreServer.TcpSession CreateSession()
         {
             var connection = new UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpConnection(this);

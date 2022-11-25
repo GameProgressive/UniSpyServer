@@ -21,7 +21,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             {
                 RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
             }
-            ((HttpServer)Server).CreateClient(this);
             base.OnConnecting();
         }
         protected override void OnConnected() => OnConnect();
