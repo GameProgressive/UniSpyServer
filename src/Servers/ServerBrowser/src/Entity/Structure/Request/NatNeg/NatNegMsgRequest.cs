@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
         public byte[] NatNegMessage => RawRequest;
         public NatNegMsgRequest(byte[] rawRequest) : base(rawRequest)
         {
-            CommandName = RequestType.NatNegRequest;
+            CommandName = RequestType.NatNegMsgRequest;
         }
 
         public override void Parse()

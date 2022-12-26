@@ -6,6 +6,7 @@ using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.QueryReport.Handler
 {
@@ -42,28 +43,34 @@ namespace UniSpyServer.Servers.QueryReport.Handler
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
         {
-            if (name.GetType() == typeof(string))
+
+            // first we need to determine whether the first two char is \\, if yes, then it is protocol v1
+            if (((byte[])rawRequest).Take(2).SequenceEqual(UniSpyEncoding.GetBytes("\\")))
             {
+                var req = UniSpyEncoding.GetString((byte[])rawRequest);
+                //todo add v1 support
+                _client.LogError("todo add v1 support");
                 return null;
-                // todo add v1 protocol
             }
+            // else it is protocol v2
             else
             {
+                var req = (byte[])rawRequest;
                 // query report v2
                 switch ((RequestType)name)
                 {
                     case RequestType.HeartBeat:
-                        return new HeartBeatHandler(_client, new HeartBeatRequest((byte[])rawRequest));
+                        return new HeartBeatHandler(_client, new HeartBeatRequest(req));
                     case RequestType.Challenge:
-                        return new ChallengeHandler(_client, new ChallengeRequest((byte[])rawRequest));
+                        return new ChallengeHandler(_client, new ChallengeRequest(req));
                     case RequestType.AvaliableCheck:
-                        return new AvailableHandler(_client, new AvaliableRequest((byte[])rawRequest));
+                        return new AvailableHandler(_client, new AvaliableRequest(req));
                     case RequestType.ClientMessageAck:
-                        return new ClientMessageAckHandler(_client, new ClientMessageAckRequest((byte[])rawRequest));
+                        return new ClientMessageAckHandler(_client, new ClientMessageAckRequest(req));
                     case RequestType.Echo:
-                        return new EchoHandler(_client, new EchoRequest((byte[])rawRequest));
+                        return new EchoHandler(_client, new EchoRequest(req));
                     case RequestType.KeepAlive:
-                        return new KeepAliveHandler(_client, new KeepAliveRequest((byte[])rawRequest));
+                        return new KeepAliveHandler(_client, new KeepAliveRequest(req));
                     default:
                         return null;
                 }

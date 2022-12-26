@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    
+
     public sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
@@ -18,6 +18,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // we do not need to execute request.Parse()
+            _client.LogInfo($"Received client message with cookie: {_request.Coookie}");
         }
         protected override void ResponseConstruct()
         {
