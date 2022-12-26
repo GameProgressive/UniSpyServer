@@ -1,4 +1,5 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.Servers.GameStatus.Application;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -9,7 +10,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// Create a game specified information storage space
     /// for further game snap shot storage
     /// </summary>
-    
+
     public sealed class CreateNewGameHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
@@ -29,7 +30,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         protected override void DataOperation()
         {
             // store game data to database
-            throw new System.NotImplementedException();
+            StorageOperation.Persistance.CreateNewGameData();
         }
     }
 }

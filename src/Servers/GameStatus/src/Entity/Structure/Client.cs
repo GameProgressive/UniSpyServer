@@ -3,7 +3,6 @@ using UniSpyServer.Servers.GameStatus.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure
 {

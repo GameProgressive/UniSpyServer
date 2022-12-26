@@ -10,36 +10,36 @@ namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
         public int OperationID { get; protected set; }
         public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }
         public new string RawRequest { get => (string)base.RawRequest; set => base.RawRequest = value; }
-        public Dictionary<string, string> KeyValues { get; protected set; }
+        public Dictionary<string, string> PlayerData { get; protected set; }
 
         public RequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
-            KeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
-            CommandName = KeyValues.Keys.First();
+            PlayerData = GameSpyUtils.ConvertToKeyValue(rawRequest);
+            CommandName = PlayerData.Keys.First();
         }
 
         public override void Parse()
         {
-            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
+            if (!PlayerData.ContainsKey("lid") && !PlayerData.ContainsKey("id"))
             {
                 throw new GSException("namespaceid is missing.");
             }
 
-            if (KeyValues.ContainsKey("lid"))
+            if (PlayerData.ContainsKey("lid"))
             {
                 int operationID;
-                if (!int.TryParse(KeyValues["lid"], out operationID))
+                if (!int.TryParse(PlayerData["lid"], out operationID))
                 {
                     throw new GSException("namespaceid format is incorrect.");
                 }
                 OperationID = operationID;
             }
             //worms 3d use id not lid so we added an condition here
-            else if (KeyValues.ContainsKey("id"))
+            else if (PlayerData.ContainsKey("id"))
             {
                 int operationID;
-                if (!int.TryParse(KeyValues["id"], out operationID))
+                if (!int.TryParse(PlayerData["id"], out operationID))
                 {
                     throw new GSException("namespaceid format is incorrect.");
                 }

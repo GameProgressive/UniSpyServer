@@ -18,27 +18,27 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!KeyValues.ContainsKey("gamename"))
+            if (!PlayerData.ContainsKey("gamename"))
             {
                 throw new GSException("gamename is missing.");
             }
 
-            if (!KeyValues.ContainsKey("response"))
+            if (!PlayerData.ContainsKey("response"))
             {
                 throw new GSException("response is missing.");
             }
 
-            if (KeyValues.ContainsKey("port"))
+            if (PlayerData.ContainsKey("port"))
             {
                 int port;
-                if (!int.TryParse(KeyValues["port"], out port))
+                if (!int.TryParse(PlayerData["port"], out port))
                 {
                     throw new GSException("port format is incorrect.");
                 }
                 Port = port;
             }
 
-            GameName = KeyValues["gamename"];
+            GameName = PlayerData["gamename"];
         }
     }
 }

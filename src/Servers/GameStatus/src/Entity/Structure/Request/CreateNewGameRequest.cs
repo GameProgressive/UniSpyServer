@@ -17,31 +17,31 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!KeyValues.ContainsKey("sesskey"))
+            if (!PlayerData.ContainsKey("sesskey"))
             {
                 throw new GSException("sesskey is missing.");
             }
             int sessKey;
-            if (!int.TryParse(KeyValues["sesskey"], out sessKey))
+            if (!int.TryParse(PlayerData["sesskey"], out sessKey))
             {
                 throw new GSException("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
-            if (!KeyValues.ContainsKey("connid"))
+            if (!PlayerData.ContainsKey("connid"))
             {
                 throw new GSException("connid is missing.");
             }
             int connectionID;
-            if (!int.TryParse(KeyValues["connid"], out connectionID))
+            if (!int.TryParse(PlayerData["connid"], out connectionID))
             {
                 throw new GSException("connid format is incorrect.");
             }
             ConnectionID = connectionID;
 
-            if (KeyValues.ContainsKey("challenge"))
+            if (PlayerData.ContainsKey("challenge"))
             {
                 IsClientLocalStorageAvailable = true;
-                Challenge = KeyValues["challenge"];
+                Challenge = PlayerData["challenge"];
             }
         }
     }

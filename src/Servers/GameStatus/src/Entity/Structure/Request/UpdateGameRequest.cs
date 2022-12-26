@@ -20,22 +20,22 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
         {
             base.Parse();
 
-            if (KeyValues.ContainsKey("dl"))
+            if (PlayerData.ContainsKey("dl"))
             {
                 IsClientLocalStorageAvailable = true;
             }
 
-            if (!KeyValues.ContainsKey("done"))
+            if (!PlayerData.ContainsKey("done"))
             {
                 throw new GSException("done is missing.");
             }
 
 
-            if (KeyValues["done"] == "1")
+            if (PlayerData["done"] == "1")
             {
                 IsDone = true;
             }
-            else if (KeyValues["done"] == "0")
+            else if (PlayerData["done"] == "0")
             {
                 IsDone = false;
             }
@@ -46,21 +46,21 @@ namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
 
 
             int sessKey;
-            if (!int.TryParse(KeyValues["sesskey"], out sessKey))
+            if (!int.TryParse(PlayerData["sesskey"], out sessKey))
             {
                 throw new GSException("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
 
-            if (!KeyValues.ContainsKey("gamedata"))
+            if (!PlayerData.ContainsKey("gamedata"))
             {
                 throw new GSException("gamedata is missing.");
             }
-            GameData = KeyValues["gamedata"];
-            if (KeyValues.ContainsKey("connid"))
+            GameData = PlayerData["gamedata"];
+            if (PlayerData.ContainsKey("connid"))
             {
                 int connID;
-                if (!int.TryParse(KeyValues["connid"], out connID))
+                if (!int.TryParse(PlayerData["connid"], out connID))
                 {
                     throw new GSException("connid is not a valid int.");
                 }

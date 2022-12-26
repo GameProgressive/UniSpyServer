@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.Servers.GameStatus.Application;
 using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
@@ -10,7 +11,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
-    
+
     public sealed class GetPlayerDataHandler : CmdHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
@@ -25,24 +26,9 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             //search player data in database;
             Dictionary<string, string> keyValues;
 
-            using (var db = new UniSpyContext())
-            {
-                var result = from ps in db.Pstorages
-                             where ps.Ptype == (int)_request.StorageType
-                             && ps.Dindex == _request.DataIndex
-                             && ps.ProfileId == _request.ProfileId
-                             select ps.Data;
+            keyValues = StorageOperation.Persistance.GetPlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex);
+            //TODO figure out what is the function of keys in request
 
-                if (result.Count() != 1)
-                {
-                    throw new GSException("No records found in database.");
-                }
-                else
-                {
-                    keyValues = result.FirstOrDefault();
-                }
-                //TODO figure out what is the function of keys in request
-            }
 
             if (_request.GetAllDataFlag)
             {

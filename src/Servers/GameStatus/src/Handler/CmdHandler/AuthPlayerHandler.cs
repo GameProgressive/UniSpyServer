@@ -7,6 +7,7 @@ using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.GameStatus.Application;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
@@ -15,7 +16,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    
+
     public sealed class AuthPlayerHandler : CmdHandlerBase
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
@@ -33,15 +34,15 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
                 switch (_request.RequestType)
                 {
                     case AuthMethod.PartnerIDAuth:
-                        FindProfileByAuthtoken();
+                        StorageOperation.Persistance.GetProfileId(_request.AuthToken);
                         break;
                     case AuthMethod.ProfileIDAuth:
                         //even if we do not check response challenge
                         //we have to check the pid is in our databse
-                        FindProfileByProfileid();
+                        StorageOperation.Persistance.GetProfileId(_request.ProfileId);
                         break;
                     case AuthMethod.CDkeyAuth:
-                        FrindProfileByCDKeyHash();
+                        StorageOperation.Persistance.GetProfileId(_request.CdKeyHash, _request.NickName);
                         break;
                     default:
                         throw new GSException("Unknown AuthP request type.");
@@ -55,51 +56,6 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             _response = new AuthPlayerResponse(_request, _result);
             //we did not store the plaintext of user password so we do not need to check this
         }
-
-        private void FindProfileByAuthtoken()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from s in db.Subprofiles
-                             where s.Authtoken == _request.AuthToken
-                             select s.ProfileId;
-                if (result.Count() != 1)
-                {
-                    throw new GSException("No records found in database by authtoken.");
-                }
-                _result.ProfileId = result.First();
-            }
-        }
-        private void FindProfileByProfileid()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from p in db.Profiles
-                             where p.ProfileId == _request.ProfileId
-                             select p.ProfileId;
-                if (result.Count() != 1)
-                {
-                    throw new GSException("No records found in database by profileid.");
-                }
-                _result.ProfileId = result.First();
-            }
-        }
-        private void FrindProfileByCDKeyHash()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from s in db.Subprofiles
-                             join p in db.Profiles on s.ProfileId equals p.ProfileId
-                             where s.Cdkeyenc == _request.KeyHash && p.Nick == _request.Nick
-                             select s.ProfileId;
-                if (result.Count() != 1)
-                {
-                    throw new GSException("No records found in database by cdkey hash.");
-                }
-                _result.ProfileId = result.First();
-            }
-        }
-
 
 
         ////request \authp\\pid\27\resp\16ae1e1f47c8ab646de7a52d615e3b06\lid\0\final\
