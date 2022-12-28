@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Application;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
@@ -57,11 +58,11 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         {
             if (_gameServerInfo.ServerStatus == GameServerStatus.Shutdown)
             {
-                _redisClient.DeleteKeyValue(_gameServerInfo);
+                StorageOperation.Persistance.RemoveGameServer(_gameServerInfo);
             }
             else
             {
-                _redisClient.SetValue(_gameServerInfo);
+                StorageOperation.Persistance.UpdateGameServer(_gameServerInfo);
             }
         }
 
@@ -73,15 +74,6 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         private void CheckSpamGameServer()
         {
             // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
-            // _gameServerInfo = _redisClient.Context.FirstOrDefault(x =>
-            //     x.ServerID == _client.Connection.Server.ServerID &
-            //     x.HostIPAddress == _client.Connection.RemoteIPEndPoint.Address &
-            //     x.QueryReportPort == _client.Connection.RemoteIPEndPoint.Port &
-            //     x.InstantKey == _request.InstantKey &
-            //     x.GameName == _request.GameName);
-
-            // if (_gameServerInfo is null)
-            // {
             _gameServerInfo = new GameServerInfo()
             {
                 ServerID = _client.Connection.Server.ServerID,
@@ -92,7 +84,6 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
                 ServerStatus = GameServerStatus.Normal,
                 LastPacketReceivedTime = DateTime.Now
             };
-            // }
         }
     }
 }

@@ -1,15 +1,14 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Application;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    
+
     public sealed class EchoHandler : CmdHandlerBase
     {
         private new EchoRequest _request => (EchoRequest)base._request;
@@ -22,7 +21,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
-            var servers = _redisClient.Context.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            var servers = StorageOperation.Persistance.GetServerInfos((uint)_request.InstantKey);
             if (servers.Count() != 1)
             {
                 _client.LogInfo("Can not find game server");
@@ -33,7 +32,8 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
             //we get the first key in matchedKeys
             _result.Info = servers.First();
             _result.Info.LastPacketReceivedTime = DateTime.Now;
-            _redisClient.SetValue(_result.Info);
+            // StorageOperation.Persistance.UpdateGameServer(_result.Info);
+            StorageOperation.Persistance.UpdateGameServer(_result.Info);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
@@ -11,17 +12,15 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
-    
+
     public sealed class PartHandler : ChannelHandlerBase
     {
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
         public PartHandler(IClient client, IRequest request) : base(client, request) { }
-        private static RedisClient _redisClient;
         static PartHandler()
         {
-            _redisClient = new RedisClient();
         }
         protected override void RequestCheck()
         {
@@ -98,16 +97,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     // remove serverInfo in Redis
                     if (_user.Info.GameName is not null)
                     {
-                        
-                            // todo check how can we determine the server by existing info
-                            var server = _redisClient.Context.FirstOrDefault(x =>
-                                                    x.HostIPAddress == _user.Connection.RemoteIPEndPoint.Address
-                                                    && x.GameName == _user.Info.GameName);
-                            if (server is not null)
-                            {
-                                _redisClient.DeleteKeyValue(server);
-                            }
-                        
+                        StorageOperation.Persistance.DeleteGameServerInfo(_user.Connection.RemoteIPEndPoint.Address,
+                                                                          _user.Info.GameName);
                     }
                     break;
             }

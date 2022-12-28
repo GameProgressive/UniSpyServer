@@ -6,15 +6,16 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.Chat.Application;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
-    
+
     public sealed class LoginHandler : CmdHandlerBase
     {
 
         private new LoginRequest _request => (LoginRequest)base._request;
-        private new LoginResult _result{ get => (LoginResult)base._result; set => base._result = value; }
+        private new LoginResult _result { get => (LoginResult)base._result; set => base._result = value; }
         public LoginHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new LoginResult();
@@ -34,61 +35,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             switch (_request.ReqeustType)
             {
                 case LoginReqeustType.NickAndEmailLogin:
-                    NickAndEmailLogin();
+                    // the ignored variables _ will used in future
+                    (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.NickAndEmailLogin(_request.NickName, _request.Email, _request.PasswordHash);
                     break;
                 case LoginReqeustType.UniqueNickLogin:
-                    UniqueNickLogin();
+                    (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.UniqueNickLogin(_request.UniqueNick, _request.NamespaceID);
                     break;
-            }
-        }
-        public void NickAndEmailLogin()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from u in db.Users
-                            join p in db.Profiles on u.UserId equals p.Userid
-                            where u.Email == _request.Email
-                            && p.Nick == _request.NickName
-                            && u.Password == _request.PasswordHash
-                            select new
-                            {
-                                userid = u.UserId,
-                                profileid = p.ProfileId,
-                                emailVerified = u.Emailverified,
-                                banned = u.Banned
-                            };
-
-                if (result.Count() != 1)
-                {
-                    throw new ChatException($"Can not find user with nickname:{_request.NickName} in database.");
-                }
-                _result.ProfileId = result.First().profileid;
-                _result.UserID = result.First().userid;
-            }
-        }
-        public void UniqueNickLogin()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from n in db.Subprofiles
-                            join p in db.Profiles on n.ProfileId equals p.ProfileId
-                            join u in db.Users on p.Userid equals u.UserId
-                            where n.Uniquenick == _request.UniqueNick
-                            && n.NamespaceId == _request.NamespaceID
-                            select new
-                            {
-                                userid = u.UserId,
-                                profileid = p.ProfileId,
-                                uniquenick = n.Uniquenick,
-                                emailVerified = u.Emailverified,
-                                banned = u.Banned
-                            };
-                if (result.Count() != 1)
-                {
-                    throw new ChatException($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
-                }
-                _result.ProfileId = result.First().profileid;
-                _result.UserID = result.First().userid;
             }
         }
 

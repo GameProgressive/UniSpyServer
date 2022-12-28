@@ -1,5 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
@@ -10,7 +11,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
-    
+
     public sealed class NewUserHandler : CmdHandlerBase
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;
@@ -30,136 +31,111 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         private void UpdateOtherInfo()
         {
-            using (var db = new UniSpyContext())
+            if (_request.HasPartnerIDFlag)
             {
-
-                if (_request.HasPartnerIDFlag)
-                {
-                    _result.SubProfile.PartnerId = _request.PartnerID;
-                }
-
-                if (_request.HasProductIDFlag)
-                {
-                    _result.SubProfile.ProductId = _request.ProductID;
-                }
-
-                if (_request.HasGameNameFlag)
-                {
-                    _result.SubProfile.Gamename = _request.GameName;
-                }
-
-                if (_request.HasGamePortFlag)
-                {
-                    _result.SubProfile.Port = _request.GamePort;
-                }
-
-                if (_request.HasCDKeyEncFlag)
-                {
-                    _result.SubProfile.Cdkeyenc = _request.CDKey;
-                }
-                db.Subprofiles.Update(_result.SubProfile);
-                db.SaveChanges();
+                _result.SubProfile.PartnerId = _request.PartnerID;
             }
+
+            if (_request.HasProductIDFlag)
+            {
+                _result.SubProfile.ProductId = _request.ProductID;
+            }
+
+            if (_request.HasGameNameFlag)
+            {
+                _result.SubProfile.Gamename = _request.GameName;
+            }
+
+            if (_request.HasGamePortFlag)
+            {
+                _result.SubProfile.Port = _request.GamePort;
+            }
+
+            if (_request.HasCDKeyEncFlag)
+            {
+                _result.SubProfile.Cdkeyenc = _request.CDKey;
+            }
+            StorageOperation.Persistance.UpdateSubProfile(_result.SubProfile);
         }
 
         private void DatabaseOperationByType()
         {
-            using (var db = new UniSpyContext())
+
+            switch (NewUserStatus.CheckAccount)
             {
-                switch (NewUserStatus.CheckAccount)
-                {
-                    case NewUserStatus.CheckAccount:
-                        var users = db.Users.Where(u => u.Email == _request.Email).Select(u => u);
-                        if (users.Count() == 0)
-                        {
-                            goto case NewUserStatus.AccountNotExist;
-                        }
-                        else if (users.Count() == 1)
-                        {
-                            _result.User = users.First();
-                            goto case NewUserStatus.AccountExist;
-                        }
-                        else
-                        {
-                            throw new GPNewUserBadNickException("There are two same records in User table!");
-                        }
+                case NewUserStatus.CheckAccount:
+                    var user = StorageOperation.Persistance.GetUser(_request.Email);
+                    if (user is null)
+                    {
+                        goto case NewUserStatus.AccountNotExist;
+                    }
+                    else
+                    {
+                        _result.User = user;
+                        goto case NewUserStatus.AccountExist;
+                    }
 
-                    case NewUserStatus.AccountNotExist:
-                        _result.User = new User { Email = _request.Email, Password = _request.Password };
-                        db.Users.Add(_result.User);
-                        db.SaveChanges();
+                case NewUserStatus.AccountNotExist:
+                    _result.User = new User { Email = _request.Email, Password = _request.Password };
+                    StorageOperation.Persistance.AddUser(_result.User);
+                    goto case NewUserStatus.CheckProfile;
+
+                case NewUserStatus.AccountExist:
+
+                    if (_result.User.Password != _request.Password)
+                    {
+                        throw new GPNewUserBadPasswordException("password is incorrect when creating new user.");
+                    }
+                    else
+                    {
                         goto case NewUserStatus.CheckProfile;
+                    }
 
-                    case NewUserStatus.AccountExist:
+                case NewUserStatus.CheckProfile:
+                    var profile = StorageOperation.Persistance.GetProfile(_result.User.UserId, _request.Nick);
+                    if (profile is null)
+                    {
+                        goto case NewUserStatus.ProfileNotExist;
+                    }
+                    else
+                    {
+                        _result.Profile = profile;
+                        goto case NewUserStatus.ProfileExist;
+                    }
 
-                        if (_result.User.Password != _request.Password)
-                        {
-                            throw new GPNewUserBadPasswordException("password is incorrect when creating new user.");
-                        }
-                        else
-                        {
-                            goto case NewUserStatus.CheckProfile;
-                        }
+                case NewUserStatus.ProfileNotExist:
+                    _result.Profile = new Profile { Userid = _result.User.UserId, Nick = _request.Nick };
+                    StorageOperation.Persistance.AddProfile(_result.Profile);
+                    goto case NewUserStatus.CheckSubProfile;
 
-                    case NewUserStatus.CheckProfile:
-                        var profiles = db.Profiles.Where(p => p.Userid == _result.User.UserId && p.Nick == _request.Nick);
-                        if (profiles.Count() == 0)
-                        {
-                            goto case NewUserStatus.ProfileNotExist;
-                        }
-                        else if (profiles.Count() == 1)
-                        {
-                            _result.Profile = profiles.First();
-                            goto case NewUserStatus.ProfileExist;
-                        }
-                        else
-                        {
-                            throw new GPNewUserUniquenickInUseException("There are two same records in Profile table.");
-                        }
+                case NewUserStatus.ProfileExist:
+                //we do nothing here
 
-                    case NewUserStatus.ProfileNotExist:
-                        _result.Profile = new Profile { Userid = _result.User.UserId, Nick = _request.Nick };
-                        db.Profiles.Add(_result.Profile);
-                        db.SaveChanges();
-                        goto case NewUserStatus.CheckSubProfile;
+                case NewUserStatus.CheckSubProfile:
+                    var subProfile = StorageOperation.Persistance.GetSubProfile(_result.Profile.ProfileId, _request.NamespaceID, _request.ProductID);
+                    if (subProfile is null)
+                    {
+                        goto case NewUserStatus.SubProfileNotExist;
+                    }
+                    else
+                    {
+                        _result.SubProfile = subProfile;
+                        goto case NewUserStatus.SubProfileExist;
+                    }
 
-                    case NewUserStatus.ProfileExist:
-                    //we do nothing here
+                case NewUserStatus.SubProfileNotExist:
+                    //we create subprofile and return
+                    _result.SubProfile = new Subprofile
+                    {
+                        ProfileId = _result.Profile.ProfileId,
+                        Uniquenick = _request.Uniquenick,
+                        NamespaceId = _request.NamespaceID
+                    };
+                    StorageOperation.Persistance.AddSubProfile(_result.SubProfile);
+                    break;
 
-                    case NewUserStatus.CheckSubProfile:
-                        var subProfiles = db.Subprofiles.Where(s =>
-                        s.ProfileId == _result.Profile.ProfileId &&
-                        s.NamespaceId == _request.NamespaceID &&
-                        s.ProductId == _request.ProductID);
-                        if (subProfiles.Count() == 0)
-                        {
-                            goto case NewUserStatus.SubProfileNotExist;
-                        }
-                        else if (subProfiles.Count() == 1)
-                        {
-                            _result.SubProfile = subProfiles.First();
-                            goto case NewUserStatus.SubProfileExist;
-                        }
-                        else
-                        {
-                            throw new GPNewUserUniquenickInUseException("There are two same records in SubProfile table!");
-                        }
-
-                    case NewUserStatus.SubProfileNotExist:
-                        //we create subprofile and return
-                        _result.SubProfile = new Subprofile
-                        {
-                            ProfileId = _result.Profile.ProfileId,
-                            Uniquenick = _request.Uniquenick,
-                            NamespaceId = _request.NamespaceID
-                        };
-                        db.Subprofiles.Add(_result.SubProfile);
-                        db.SaveChanges();
-                        break;
-
-                    case NewUserStatus.SubProfileExist:
-                        throw new GPNewUserUniquenickInUseException("unique nick is in use.");
-                }
+                case NewUserStatus.SubProfileExist:
+                    throw new GPNewUserUniquenickInUseException("unique nick is in use.");
             }
         }
 

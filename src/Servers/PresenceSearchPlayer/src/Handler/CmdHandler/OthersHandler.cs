@@ -6,6 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -13,12 +14,12 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    
+
     public sealed class OthersHandler : CmdHandlerBase
     {
         private new OthersRequest _request => (OthersRequest)base._request;
 
-        private new OthersResult _result{ get => (OthersResult)base._result; set => base._result = value; }
+        private new OthersResult _result { get => (OthersResult)base._result; set => base._result = value; }
         public OthersHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new OthersResult();
@@ -28,33 +29,8 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    var result = from b in db.Friends
-                                where b.ProfileId == _request.ProfileId && b.Namespaceid == _request.NamespaceID
-                                select b.Targetid;
 
-                    foreach (var info in result)
-                    {
-                        var b = from p in db.Profiles
-                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                join u in db.Users on p.Userid equals u.UserId
-                                where n.NamespaceId == _request.NamespaceID
-                                && n.ProfileId == info && n.Gamename == _request.GameName
-                                select new OthersDatabaseModel
-                                {
-                                    ProfileId = p.ProfileId,
-                                    Nick = p.Nick,
-                                    Uniquenick = n.Uniquenick,
-                                    Lastname = p.Lastname,
-                                    Firstname = p.Firstname,
-                                    Userid = u.UserId,
-                                    Email = u.Email
-                                };
-
-                        _result.DatabaseResults.Add(b.First());
-                    }
-                }
+                _result.DatabaseResults = StorageOperation.Persistance.GetFriendsInfo(_request.ProfileId, _request.NamespaceID, _request.GameName);
             }
             catch (System.Exception e)
             {

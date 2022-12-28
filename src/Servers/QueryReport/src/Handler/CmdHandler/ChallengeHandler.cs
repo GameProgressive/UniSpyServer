@@ -1,5 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Application;
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Exception;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
@@ -9,7 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
-    
+
     public sealed class ChallengeHandler : CmdHandlerBase
     {
         private new ChallengeRequest _request => (ChallengeRequest)base._request;
@@ -22,7 +23,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var servers = _redisClient.Context.Where(x => x.InstantKey == _request.InstantKey).ToList();
+            var servers = StorageOperation.Persistance.GetServerInfos((uint)_request.InstantKey);
             if (servers.Count() == 0)
             {
                 throw new QRException("No server found in redis, please make sure there is only one server.");

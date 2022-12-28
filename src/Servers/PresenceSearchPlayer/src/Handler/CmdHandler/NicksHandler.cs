@@ -6,6 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 
 /////////////////////////Finished?/////////////////////////////////
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
@@ -13,10 +14,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    
+
     public sealed class NicksHandler : CmdHandlerBase
     {
-        private new NicksResult _result{ get => (NicksResult)base._result; set => base._result = value; }
+        private new NicksResult _result { get => (NicksResult)base._result; set => base._result = value; }
         private new NicksRequest _request => (NicksRequest)base._request;
         public NicksHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -27,23 +28,11 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    var result = from u in db.Users
-                                join p in db.Profiles on u.UserId equals p.Userid
-                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                where u.Email == _request.Email
-                                && u.Password == _request.Password
-                                && n.NamespaceId == _request.NamespaceID
-                                select new NicksDataModel
-                                {
-                                    NickName = p.Nick,
-                                    UniqueNick = n.Uniquenick
-                                };
+                _result.DataBaseResults = StorageOperation.Persistance.GetAllNickAndUniqueNick(_request.Email,
+                                                                     _request.Password,
+                                                                     _request.NamespaceID);
 
-                    //we store data in strong type so we can use in next step
-                    _result.DataBaseResults.AddRange(result.ToList());
-                }
+                //we store data in strong type so we can use in next step
             }
             catch (System.Exception e)
             {

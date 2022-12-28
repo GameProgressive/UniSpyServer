@@ -11,11 +11,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
 
     public sealed class NicksResult : ResultBase
     {
-        public List<NicksDataModel> DataBaseResults;
+        public List<NicksDataModel> DataBaseResults { get; set; }
         public bool IsRequireUniqueNicks { get; set; }
         public NicksResult()
         {
-            DataBaseResults = new List<NicksDataModel>();
         }
     }
 }

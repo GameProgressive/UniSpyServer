@@ -3,17 +3,16 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
-    
+
     public sealed class ValidHandler : CmdHandlerBase
     {
         private new ValidRequest _request => (ValidRequest)base._request;
-        private new ValidResult _result{ get => (ValidResult)base._result; set => base._result = value; }
+        private new ValidResult _result { get => (ValidResult)base._result; set => base._result = value; }
 
         public ValidHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -23,22 +22,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    var result = from u in db.Users
-                                //According to FSW partnerid is not nessesary
-                                where u.Email == _request.Email
-                                select u.UserId;
-
-                    if (result.Count() == 0)
-                    {
-                        _result.IsAccountValid = false;
-                    }
-                    else if (result.Count() == 1)
-                    {
-                        _result.IsAccountValid = true;
-                    }
-                }
+                _result.IsAccountValid = StorageOperation.Persistance.IsEmailExist(_request.Email);
             }
             catch (System.Exception e)
             {

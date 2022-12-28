@@ -19,7 +19,6 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
         public List<OthersDatabaseModel> DatabaseResults { get; set; }
         public OthersResult()
         {
-            DatabaseResults = new List<OthersDatabaseModel>();
         }
     }
 }

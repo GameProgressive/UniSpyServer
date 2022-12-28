@@ -6,17 +6,18 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    
+
     public sealed class SearchUniqueHandler : CmdHandlerBase
     {
         private new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
-        private new SearchUniqueResult _result{ get => (SearchUniqueResult)base._result; set => base._result = value; }
+        private new SearchUniqueResult _result { get => (SearchUniqueResult)base._result; set => base._result = value; }
         public SearchUniqueHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new SearchUniqueResult();
@@ -25,28 +26,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    foreach (var id in _request.Namespaces)
-                    {
-                        var result = from p in db.Profiles
-                                    join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                    join u in db.Users on p.Userid equals u.UserId
-                                    where n.Uniquenick == _request.Uniquenick
-                                    && n.NamespaceId == id
-                                    select new SearchUniqueDatabaseModel
-                                    {
-                                        ProfileId = n.ProfileId,
-                                        Nick = p.Nick,
-                                        Uniquenick = n.Uniquenick,
-                                        Email = u.Email,
-                                        Firstname = p.Firstname,
-                                        Lastname = p.Lastname,
-                                        NamespaceID = n.NamespaceId
-                                    };
-                        _result.DatabaseResults.AddRange(result.ToList());
-                    }
-                }
+                _result.DatabaseResults = StorageOperation.Persistance.GetMatchedInfosByNamespaceId(_request.NamespaceIds, _request.Uniquenick);
             }
             catch (System.Exception e)
             {

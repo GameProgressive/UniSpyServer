@@ -6,14 +6,15 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
-    
+
     public sealed class UniqueSearchHandler : CmdHandlerBase
     {
         private new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
-        private new UniqueSearchResult _result{ get => (UniqueSearchResult)base._result; set => base._result = value; }
+        private new UniqueSearchResult _result { get => (UniqueSearchResult)base._result; set => base._result = value; }
         public UniqueSearchHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new UniqueSearchResult();
@@ -22,20 +23,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    var result = from p in db.Profiles
-                                join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                where n.Uniquenick == _request.PreferredNick
-                                && n.NamespaceId == _request.NamespaceID
-                                && n.Gamename == _request.GameName
-                                select p.ProfileId;
-
-                    if (result.Count() != 0)
-                    {
-                        _result.IsUniquenickExist = true;
-                    }
-                }
+                _result.IsUniquenickExist = StorageOperation.Persistance.IsUniqueNickExist(_request.PreferredNick,
+                                                                           _request.NamespaceID,
+                                                                           _request.GameName);
             }
             catch (System.Exception e)
             {

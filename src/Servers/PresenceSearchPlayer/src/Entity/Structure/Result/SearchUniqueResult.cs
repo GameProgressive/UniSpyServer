@@ -16,10 +16,9 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
 
     public sealed class SearchUniqueResult : ResultBase
     {
-        public List<SearchUniqueDatabaseModel> DatabaseResults;
+        public List<SearchUniqueDatabaseModel> DatabaseResults { get; set; }
         public SearchUniqueResult()
         {
-            DatabaseResults = new List<SearchUniqueDatabaseModel>();
         }
     }
 }

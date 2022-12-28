@@ -1,6 +1,7 @@
 using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Application;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response;
@@ -62,36 +63,30 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         private void P2PGroupRoomList()
         {
             // Game name is unique in redis database
-            var groupInfo = _peerGroupRedisClient.Context.FirstOrDefault(x => x.GameName == _request.GameName);
+            var groupInfo = StorageOperation.Persistance.GetPeerGroupInfo(_request.GameName);
             if (groupInfo is null)
             {
                 // search gamename in database
-                using (var db = new UniSpyContext())
+                var result = StorageOperation.Persistance.GetGroupList(_request.GameName);
+                if (result.Count() == 0)
                 {
-                    var result = from g in db.Games
-                                 join gl in db.Grouplists on g.Gameid equals gl.Gameid
-                                 where g.Gamename == _request.GameName
-                                 select gl;
-                    if (result.Count() == 0)
+                    throw new SBException($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
+                }
+                else
+                {
+                    groupInfo = new PeerGroupInfo()
                     {
-                        throw new SBException($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
-                    }
-                    else
-                    {
-                        groupInfo = new PeerGroupInfo()
-                        {
-                            GameName = _request.GameName,
-                            GameID = result.First().Gameid,
-                            PeerRooms = result.Select(x => new PeerRoomInfo(x)).ToList()
-                        };
-                    }
+                        GameName = _request.GameName,
+                        GameID = result.First().Gameid,
+                        PeerRooms = result.Select(x => new PeerRoomInfo(x)).ToList()
+                    };
                 }
             }
-            ((P2PGroupRoomListResult)_result).PeerGroupInfo = groupInfo;
+        ((P2PGroupRoomListResult)_result).PeerGroupInfo = groupInfo;
         }
         private void P2PServerMainList()
         {
-            var serverInfos = _gameServerRedisClient.Context.Where(x => x.GameName == _request.GameName).ToList();
+            var serverInfos = StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
             //TODO do filter
@@ -99,7 +94,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         }
         private void ServerMainList()
         {
-            var serverInfos = _gameServerRedisClient.Context.Where(x => x.GameName == _request.GameName).ToList();
+            var serverInfos = StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
         }

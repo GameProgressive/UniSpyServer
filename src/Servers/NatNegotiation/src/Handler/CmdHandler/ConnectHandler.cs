@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
@@ -42,9 +43,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // detecting nat
-            var initInfos = _redisClient.Context.Where(k =>
-                k.ServerID == _client.Connection.Server.ServerID
-                && k.Cookie == _client.Info.Cookie).ToList();
+            var initInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
             if (initInfos.Count != 2)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");

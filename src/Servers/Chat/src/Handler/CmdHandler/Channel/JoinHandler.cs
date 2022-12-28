@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
@@ -101,7 +102,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             else
             {
                 //create
-                if (IsPeerLobby(_request.ChannelName))
+                if (StorageOperation.Persistance.IsPeerLobby(_request.ChannelName))
                 {
                     _channel.IsPeerServer = true;
                     _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
@@ -120,41 +121,6 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
             _result.JoinerPrefix = _client.Info.IRCPrefix;
-        }
-
-        private bool IsPeerLobby(string name)
-        {
-            // TODO! check the room name by search the name on the official room name in database
-            string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
-            if (buffer.Length != 3)
-            {
-                return false;
-            }
-            using (var db = new UniSpyContext())
-            {
-                var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).FirstOrDefault(x => x.gl.Roomname == buffer[1]);
-                if (officialRoom is null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            // using (var client = new RedisClient())
-            // {
-
-            //     var peerRoom = client.Values.Where(x => x.GameName == buffer[1]).ToList();
-            //     if (buffer[2].Length > 2 && peerRoom.Count > 0)
-            //     {
-            //         return true;
-            //     }
-            //     else
-            //     {
-            //         return false;
-            //     }
-            // }
         }
 
         protected override void ResponseConstruct()

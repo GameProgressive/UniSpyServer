@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
@@ -19,9 +20,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
         /// <summary>
-        /// Local NatInitInfo storage, after init packets are received we send all into redis database
+        /// Local NatInitInfo storage, after all init packets are received we send all into redis database
         /// </summary>
-        public static Dictionary<string, NatInitInfo> InitInfoPool;
+        public static Dictionary<string, NatInitInfo> LocalInitInfoPool;
         private NatAddressInfo _addressInfo;
         /// <summary>
         /// The current init info of the client.
@@ -33,7 +34,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private string _searchKey;
         static InitHandler()
         {
-            InitInfoPool = new Dictionary<string, NatInitInfo>();
+            LocalInitInfoPool = new Dictionary<string, NatInitInfo>();
         }
         public InitHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -52,16 +53,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 ClientIndex = (NatClientIndex)_request.ClientIndex,
                 Version = _request.Version,
             };
-            lock (InitInfoPool)
+            lock (LocalInitInfoPool)
             {
                 // we only have add or get in the lock to reduce performance cost on create object
-                if (!InitInfoPool.Keys.Contains(_searchKey))
+                if (!LocalInitInfoPool.Keys.Contains(_searchKey))
                 {
-                    InitInfoPool.TryAdd(_searchKey, _initInfo);
+                    LocalInitInfoPool.TryAdd(_searchKey, _initInfo);
                 }
                 else
                 {
-                    _initInfo = InitInfoPool[_searchKey];
+                    _initInfo = LocalInitInfoPool[_searchKey];
                 }
             }
         }
@@ -111,7 +112,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _initInfo.isNegotiating = true;
                     // we have use sync code to make sure the data is saved on redis
-                    _redisClient.SetValue(_initInfo);
+                    StorageOperation.Persistance.UpdateInitInfo(_initInfo);
                     Task.Run(() => PrepareForConnecting());
                 }
             }
@@ -128,9 +129,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // we only wait 8 seconds
             while (waitCount <= 4)
             {
-                var initCount = _redisClient.Context.Count(k =>
-                        k.Cookie == _request.Cookie
-                        && k.Version == _request.Version);
+                var initCount = StorageOperation.Persistance.CountInitInfo((uint)_request.Cookie, (byte)_request.Version);
                 if (initCount == 2)
                 {
                     _client.LogInfo("2 neigotiators found, start negotiating.");
@@ -148,11 +147,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             if (waitCount > 4)
             {
                 _client.LogWarn($"cookie: {_initInfo.Cookie} have no negotiator found , we clean init information, please connect again.");
-                lock (InitInfoPool)
+                lock (LocalInitInfoPool)
                 {
-                    if (InitInfoPool.ContainsKey(_searchKey))
+                    if (LocalInitInfoPool.ContainsKey(_searchKey))
                     {
-                        InitInfoPool.Remove(_searchKey);
+                        LocalInitInfoPool.Remove(_searchKey);
                     }
                 }
             }

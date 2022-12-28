@@ -1,5 +1,6 @@
 using System.Linq;
 using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Exception;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
@@ -10,7 +11,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
-    
+
     public sealed class CheckHandler : CmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
@@ -25,38 +26,16 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new UniSpyContext())
+            if (StorageOperation.Persistance.VerifyEmail(_request.Email))
             {
-                if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
-                {
-                    throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadMail);
-                }
-
-                if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.Password).Count() < 1)
-                {
-                    throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
-                }
-
-                // Not every game uses PartnerId; optional
-                var result = from p in db.Profiles
-                            join u in db.Users on p.Userid equals u.UserId
-                            join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
-                            where u.Email.Equals(_request.Email)
-                            && u.Password.Equals(_request.Password)
-                            && p.Nick.Equals(_request.Nick)
-                            || sp.PartnerId.Equals(_request.PartnerId)
-                            select p.ProfileId;
-
-                var results = result.ToList();
-                if (result.Count() == 1)
-                {
-                    _result.ProfileId = result.First();
-                }
-                else
-                {
-                    _result.ProfileId = null;
-                }
+                throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadMail);
             }
+
+            if (StorageOperation.Persistance.VerifyEmailAndPassword(_request.Email, _request.Password))
+            {
+                throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
+            }
+            _result.ProfileId = StorageOperation.Persistance.GetProfileId(_request.Email, _request.Password, _request.Nick, (int)_request.PartnerId);
         }
 
         protected override void ResponseConstruct()

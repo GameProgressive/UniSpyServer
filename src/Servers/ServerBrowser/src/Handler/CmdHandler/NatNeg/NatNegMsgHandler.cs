@@ -2,6 +2,7 @@ using System.Linq;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Application;
 using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -36,9 +37,8 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
                 throw new SBException("There are no server messages in client ServerMessageList.");
             }
 
-            _gameServer = _gameServerRedisClient.Context.FirstOrDefault(x =>
-                x.HostIPAddress == _client.Info.AdHocMessage.TargetIPEndPoint.Address &
-                x.QueryReportPort == (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
+            _gameServer = StorageOperation.Persistance.GetGameServerInfo(_client.Info.AdHocMessage.TargetIPEndPoint.Address, (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
+            
             if (_gameServer is null)
             {
                 throw new SBException("There is no matching game server regesterd.");

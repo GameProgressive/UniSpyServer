@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
@@ -49,9 +50,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // {
             //     throw new NNException("Cookie in request dose not match info in UniSpy");
             // }
-            var initInfos = _redisClient.Context.Where(k =>
-                k.ServerID == _client.Connection.Server.ServerID
-                && k.Cookie == _client.Info.Cookie).ToList();
+            var initInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
             if (initInfos.Count != 2)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");
@@ -110,8 +109,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
 
             // we delete the information on redis
-            // _redisClient.DeleteKeyValue(_myInitInfo);
-            // _redisClient.DeleteKeyValue(_othersInitInfo);
+            // StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);
+            // StorageOperation.Persistance.RemoveInitInfo(_othersInitInfo);
         }
     }
 }
