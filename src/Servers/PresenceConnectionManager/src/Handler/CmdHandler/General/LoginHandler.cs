@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
                     case LoginType.AuthToken:
                         AuthtokenLogin();
                         break;
-                    // loginticket
+                        // loginticket
                 }
                 _result.DatabaseResults = new LogInDataModel
                 {
@@ -86,7 +86,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
             _result.ResponseProof =
                 LoginChallengeProof.GenerateProof(proofData);
 
-            _client.Info.LoginPhase = LoginStatus.Completed;
+            _client.Info.LoginStat = LoginStatus.Completed;
         }
 
         protected override void ResponseConstruct()
@@ -105,76 +105,23 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
         private void NickEmailLogin()
         {
             //Check email existence
-            using (var db = new UniSpyContext())
+            if (!PresenceSearchPlayer.Application.StorageOperation.Persistance.IsEmailExist(_request.Email))
             {
-                var email = from u in db.Users
-                            where u.Email == _request.Email
-                            select u.UserId;
-
-                if (email.Count() == 0)
-                {
-                    throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
-                }
-
-                // Grab user from database via email and nick
-                // Default namespaceID is 0
-                var info = from u in db.Users
-                            join p in db.Profiles on u.UserId equals p.Userid
-                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                            where u.Email == _request.Email
-                            && p.Nick == _request.Nick
-                            select new { u, p, n };
-
-                if (info.Count() != 1)
-                {
-                    throw new GPLoginBadProfileException();
-                }
-                _client.Info.UserInfo = info.First().u;
-                _client.Info.ProfileInfo = info.First().p;
-                _client.Info.SubProfileInfo = info.First().n;
+                throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
             }
+
+            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.Email, _request.Nick);
         }
+
 
         private void UniquenickLogin()
         {
-            using (var db = new UniSpyContext())
-            {
-                var info = from n in db.Subprofiles
-                            join p in db.Profiles on n.ProfileId equals p.ProfileId
-                            join u in db.Users on p.Userid equals u.UserId
-                            where n.Uniquenick == _request.UniqueNick
-                            && n.NamespaceId == _request.NamespaceID
-                            select new { u, p, n };
-                if (info.Count() != 1)
-                {
-                    throw new GPLoginBadUniquenickException($"The uniquenick: {_request.UniqueNick} is invalid.");
-                }
-                _client.Info.UserInfo = info.First().u;
-                _client.Info.ProfileInfo = info.First().p;
-                _client.Info.SubProfileInfo = info.First().n;
-            }
+            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.UniqueNick, (int)_request.NamespaceID);
         }
 
         private void AuthtokenLogin()
         {
-            using (var db = new UniSpyContext())
-            {
-                var info = from u in db.Users
-                            join p in db.Profiles on u.UserId equals p.Userid
-                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                            where n.Authtoken == _request.AuthToken
-                            && n.PartnerId == _request.PartnerID
-                            && n.NamespaceId == _request.NamespaceID
-                            select new { u, p, n };
-
-                if (info.Count() != 1)
-                {
-                    throw new GPLoginBadPreAuthException("The pre-authentication token is invalid.");
-                }
-                _client.Info.UserInfo = info.First().u;
-                _client.Info.ProfileInfo = info.First().p;
-                _client.Info.SubProfileInfo = info.First().n;
-            }
+            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.AuthToken, (int)_request.PartnerID, (int)_request.NamespaceID);
         }
 
         private void IsChallengeCorrect()

@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
         {
             var request = new DelBuddyRequest(BuddyRequests.DelBuddy);
             request.Parse();
-            Assert.Equal((int)0, request.DeleteProfileID);
+            Assert.Equal((int)0, request.TargetId);
         }
 
         [Fact]

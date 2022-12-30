@@ -1,3 +1,4 @@
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
@@ -6,6 +7,14 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
     {
         public LoggedInCmdHandlerBase(IClient client, IRequest request) : base(client, request)
         {
+        }
+        protected override void RequestCheck()
+        {
+            if(_client.Info.LoginStat!=Entity.Enumerate.LoginStatus.Completed)
+            {
+                throw new GPException("This operation requires login, please login first.");
+            }
+            base.RequestCheck();
         }
     }
 }

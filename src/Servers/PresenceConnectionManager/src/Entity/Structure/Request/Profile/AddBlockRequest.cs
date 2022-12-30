@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
     public sealed class AddBlockRequest : RequestBase
     {
-        public int ProfileId;
+        public int TargetId;
         public AddBlockRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 throw new GPParseException("profileid format is incorrect");
             }
 
-            ProfileId = profileID;
+            TargetId = profileID;
 
         }
     }

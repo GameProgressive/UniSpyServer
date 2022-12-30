@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler
                 case "logout":
                     return new LogoutHandler(_client, new LogoutRequest((string)rawRequest));
                 case "newuser":
-                    return new NewUserHandler(_client, new NewUserRequest((string)rawRequest));
+                    return new NewUserHandler(_client, new PresenceSearchPlayer.Entity.Structure.Request.NewUserRequest((string)rawRequest));
                 #endregion
                 # region Profile
                 case "addblock":

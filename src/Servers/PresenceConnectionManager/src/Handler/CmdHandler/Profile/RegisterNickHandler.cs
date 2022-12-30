@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
@@ -15,15 +16,19 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Prof
         public RegisterNickHandler(IClient client, IRequest request) : base(client, request)
         {
         }
+        protected override void RequestCheck()
+        {
+            base.RequestCheck();
+            if (_request.UniqueNick == _client.Info.SubProfileInfo.Uniquenick)
+            {
+                throw new GPException("new uniquenick is identical to old uniquenick, no update needed");
+            }
+        }
         protected override void DataOperation()
         {
             try
             {
-                using (var db = new UniSpyContext())
-                {
-                    db.Subprofiles.FirstOrDefault(s => s.SubProfileId == _client.Info.SubProfileInfo.SubProfileId).Uniquenick = _request.UniqueNick;
-                    db.SaveChanges();
-                }
+                StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.SubProfileId, _request.UniqueNick);
             }
             catch (Exception e)
             {

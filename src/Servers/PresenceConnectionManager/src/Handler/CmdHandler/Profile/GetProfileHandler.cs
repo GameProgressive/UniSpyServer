@@ -1,4 +1,5 @@
 using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
@@ -22,52 +23,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Prof
         }
         protected override void DataOperation()
         {
-            using (var db = new UniSpyContext())
+            var result = StorageOperation.Persistance.GetProfileInfos(_request.ProfileId, _client.Info.SubProfileInfo.NamespaceId);
+
+            if (result is null)
             {
-                //we have to make sure the search target has the same namespaceID
-                var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.ProfileId equals s.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
-                             where p.ProfileId == _request.ProfileId
-                             && s.NamespaceId == _client.Info.SubProfileInfo.NamespaceId
-                             select new GetProfileDataModel
-                             {
-                                 Nick = p.Nick,
-                                 ProfileId = p.ProfileId,
-                                 UniqueNick = s.Uniquenick,
-                                 Email = u.Email,
-                                 Firstname = p.Firstname,
-                                 Lastname = p.Lastname,
-                                 Icquin = p.Icquin,
-                                 Homepage = p.Homepage,
-                                 Zipcode = p.Zipcode,
-                                 Countrycode = p.Countrycode,
-                                 Longitude = p.Longitude,
-                                 Latitude = p.Latitude,
-                                 Location = p.Location,
-                                 Birthday = p.Birthday,
-                                 Birthmonth = p.Birthmonth,
-                                 Birthyear = p.Birthyear,
-                                 Sex = (byte)p.Sex,
-                                 Publicmask = p.Publicmask,
-                                 Aim = p.Aim,
-                                 Picture = p.Picture,
-                                 Occupationid = p.Occupationid,
-                                 Industryid = p.Industryid,
-                                 Incomeid = p.Incomeid,
-                                 Marriedid = p.Marriedid,
-                                 Childcount = p.Childcount,
-                                 Interests1 = p.Interests1,
-                                 Ownership1 = p.Ownership1,
-                                 Connectiontype = p.Connectiontype,
-                             };
-
-                if (result.Count() == 0)
-                {
-                    throw new GPDatabaseException($"No profile of profileid:{_request.ProfileId} found in database.");
-                }
-
-                _result.UserProfile = result.First();
+                throw new GPDatabaseException($"No profile of profileid:{_request.ProfileId} found in database.");
             }
         }
 

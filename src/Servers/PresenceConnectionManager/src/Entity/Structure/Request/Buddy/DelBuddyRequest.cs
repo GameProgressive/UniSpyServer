@@ -10,7 +10,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     public sealed class DelBuddyRequest : RequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
-        public int DeleteProfileID { get; private set; }
+        /// <summary>
+        /// The target friendId needs to delete
+        /// </summary>
+        /// <value></value>
+        public int TargetId { get; private set; }
         public DelBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -30,7 +34,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 throw new GPParseException("delprofileid format is incorrect.");
             }
 
-            DeleteProfileID = deleteProfileID;
+            TargetId = deleteProfileID;
         }
     }
 }

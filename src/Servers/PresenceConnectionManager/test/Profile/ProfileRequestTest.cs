@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Test
         {
             var request = new AddBlockRequest(ProfileRequests.AddBlock);
             request.Parse();
-            Assert.Equal((int)0, request.ProfileId);
+            Assert.Equal((int)0, request.TargetId);
         }
 
         [Fact]

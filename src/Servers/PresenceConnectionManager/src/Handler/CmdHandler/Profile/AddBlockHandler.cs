@@ -1,5 +1,7 @@
 using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
@@ -12,24 +14,19 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Prof
         public AddBlockHandler(IClient client, IRequest request) : base(client, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            base.RequestCheck();
+            if (_client.Info.ProfileInfo.ProfileId == _request.TargetId)
+            {
+                throw new GPException("You can not block your self.");
+            }
+        }
         protected override void DataOperation()
         {
-            using (var db = new UniSpyContext())
-            {
-                if (db.Blockeds.Where(b => b.Targetid == _request.ProfileId
-                && b.Namespaceid == _client.Info.SubProfileInfo.NamespaceId
-                && b.ProfileId == _client.Info.ProfileInfo.ProfileId).Count() == 0)
-                {
-                    Blocked blocked = new Blocked
-                    {
-                        ProfileId = (int)_client.Info.ProfileInfo.ProfileId,
-                        Targetid = _request.ProfileId,
-                        Namespaceid = (int)_client.Info.SubProfileInfo.NamespaceId
-                    };
-                    db.Blockeds.Update(blocked);
-                }
-            }
+            StorageOperation.Persistance.UpdateBlockInfo(_request.TargetId,
+                                                         _client.Info.ProfileInfo.ProfileId,
+                                                         _client.Info.SubProfileInfo.NamespaceId);
         }
     }
 }

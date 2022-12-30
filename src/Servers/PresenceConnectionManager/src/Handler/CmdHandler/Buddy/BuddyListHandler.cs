@@ -1,6 +1,6 @@
-using System.Linq;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
@@ -19,13 +19,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
         protected override void RequestCheck() { }
         protected override void DataOperation()
         {
-            using (var db = new UniSpyContext())
-            {
-                var result = db.Friends
-                    .Where(f => f.ProfileId == _client.Info.ProfileInfo.ProfileId
-                    && f.Namespaceid == _client.Info.SubProfileInfo.NamespaceId)
-                    .Select(f => f.Targetid).ToList();
-            }
+            var result = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,
+                                                                          _client.Info.SubProfileInfo.NamespaceId);
         }
         protected override void ResponseConstruct()
         {

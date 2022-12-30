@@ -12,11 +12,10 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
 
-    public sealed class NewUserHandler : CmdHandlerBase
+    public class NewUserHandler : CmdHandlerBase
     {
-        private new NewUserRequest _request => (NewUserRequest)base._request;
-
-        private new NewUserResult _result { get => (NewUserResult)base._result; set => base._result = value; }
+        protected new NewUserRequest _request => (NewUserRequest)base._request;
+        protected new NewUserResult _result { get => (NewUserResult)base._result; set => base._result = value; }
 
         public NewUserHandler(IClient client, IRequest request) : base(client, request)
         {

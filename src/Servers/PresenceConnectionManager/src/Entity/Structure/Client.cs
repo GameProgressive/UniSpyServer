@@ -1,10 +1,8 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceConnectionManager.Handler;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure;
-using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
 {
@@ -20,14 +18,14 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
         {
             base.OnConnected();
             // Only send the login challenge once
-            if (Info.LoginPhase != LoginStatus.Connected)
+            if (Info.LoginStat != LoginStatus.Connected)
             {
                 Connection.Disconnect();
                 // Throw the error                
                 LogWarn("The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            Info.LoginPhase = LoginStatus.Processing;
+            Info.LoginStat = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
             LogNetworkSending(sendingBuffer);
             Connection.Send(sendingBuffer);
