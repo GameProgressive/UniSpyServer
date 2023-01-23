@@ -8,7 +8,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
 {
     public class StorageOperation : IStorageOperation
     {
+        /// <summary>
+        /// natneg init information redis server.
+        /// </summary>
         private static RedisClient _redisClient = new RedisClient();
+        /// <summary>
+        /// Game relay server information redis server.
+        /// </summary>
+        private static GameTrafficRelay.Entity.Structure.Redis.RedisClient _relayRedisClient = new GameTrafficRelay.Entity.Structure.Redis.RedisClient();
+
         public static IStorageOperation Persistance = new StorageOperation();
         public int CountInitInfo(uint cookie, byte version)
         {
@@ -32,6 +40,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         public void RemoveInitInfo(NatInitInfo info)
         {
             _redisClient.DeleteKeyValue(info);
+        }
+
+        public List<GameTrafficRelay.Entity.Structure.Redis.RelayServerInfo> GetAvaliableRelayServers()
+        {
+            return _relayRedisClient.Context.ToList();
         }
     }
 }

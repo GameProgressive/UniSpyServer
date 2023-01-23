@@ -26,14 +26,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         /// The first layer key is the current client's public ip address, the second layer key is the current clients's private ip address, the third layer key is the other client's natneg server id, and the fourth key is the other client's private ip address
         /// the hash value of the same IPAddress is the same, so it can be used as the dictionary key.
         /// </summary>
-        internal static Dictionary<string, NatPunchStrategy> NatFailRecordInfos;
+        // internal static Dictionary<string, NatPunchStrategy> NatFailRecordInfos;
         private NatInitInfo _myInitInfo;
         private NatInitInfo _othersInitInfo;
-        private NatReportInfo _myReportInfo;
-        private string _searchKey;
+        // private string _searchKey;
         static ReportHandler()
         {
-            NatFailRecordInfos = new Dictionary<string, NatPunchStrategy>();
+            // NatFailRecordInfos = new Dictionary<string, NatPunchStrategy>();
         }
         public ReportHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -42,14 +41,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            // if (_request.ClientIndex != _client.Info.ClientIndex)
-            // {
-            //     throw new NNException("Client index in request dose not match info in UniSpy");
-            // }
-            // if (_request.Cookie != _client.Info.Cookie)
-            // {
-            //     throw new NNException("Cookie in request dose not match info in UniSpy");
-            // }
             var initInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
             if (initInfos.Count != 2)
             {
@@ -59,11 +50,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
             _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
             _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
-            _searchKey = NatReportInfo.CreateKey(_myInitInfo.PrivateIPEndPoint.Address,
-                                                _myInitInfo.PublicIPEndPoint.Address,
-                                                (Guid)_othersInitInfo.ServerID,
-                                                _othersInitInfo.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address,
-                                                (NatClientIndex)_request.ClientIndex);
         }
         protected override void ResponseConstruct()
         {
@@ -78,39 +64,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // when negotiation failed we store the information
             if (!(bool)_request.IsNatSuccess)
             {
-                lock (NatFailRecordInfos)
-                {
-                    if (NatFailRecordInfos.ContainsKey(_searchKey))
-                    {
-                        var strategy = NatFailRecordInfos[_searchKey];
-                        // the final solusion is game relay service
-                        if (strategy == NatPunchStrategy.UsingPrivateIPEndpoint)
-                        {
-                            strategy = NatPunchStrategy.UsingPublicIPEndPoint;
-                        }
-                        else if (strategy == NatPunchStrategy.UsingPublicIPEndPoint)
-                        {
-                            strategy = NatPunchStrategy.UsingGameRelay;
-                        }
-                        else
-                        {
-                            _client.LogWarn("Can not negotiate with game relay server");
-                        }
-
-                        NatFailRecordInfos[_searchKey] = strategy;
-                        _client.LogInfo($"Updated negotiation strategy to {strategy}");
-                    }
-                    else
-                    {
-                        throw new NNException($"Client's info in NatFailRecordInfos did not created by ConnectHandler, please check search key: {_searchKey}");
-                    }
-                }
-
+                //todo we save the fail information some where else.
             }
 
+
+
+#if DEBUG
+            // we do not delete redis data, because we need analysis
+#else
             // we delete the information on redis
-            // StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);
-            // StorageOperation.Persistance.RemoveInitInfo(_othersInitInfo);
+            StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);
+            StorageOperation.Persistance.RemoveInitInfo(_othersInitInfo);
+#endif
+
         }
     }
 }

@@ -8,7 +8,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
         public new byte? Version { get => base.Version; init => base.Version = value; }
         public new uint? Cookie { get => base.Cookie; init => base.Cookie = value; }
         public NatClientIndex? ClientIndex { get; init; }
-        public bool IsUsingRelay { get; init; }
         public ConnectRequest() { }
     }
 }

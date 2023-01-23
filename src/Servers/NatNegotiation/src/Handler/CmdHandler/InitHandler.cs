@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -110,6 +111,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 && _initInfo.AddressInfos.ContainsKey(NatPortType.NN3)
                 && _initInfo.isNegotiating == false)
                 {
+                    DetermineNatType();
                     _initInfo.isNegotiating = true;
                     // we have use sync code to make sure the data is saved on redis
                     StorageOperation.Persistance.UpdateInitInfo(_initInfo);
@@ -119,6 +121,28 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
 
 
+        private void DetermineNatType()
+        {
+            IPEndPoint end;
+            // if initInfo contains GP key which mean it is game server, we need to send this port to negotiator
+            if (_initInfo.AddressInfos.ContainsKey(NatPortType.GP))
+            {
+                end = _initInfo.AddressInfos[NatPortType.GP].PublicIPEndPoint;
+            }
+            else
+            {
+                end = _initInfo.AddressInfos[NatPortType.NN3].PublicIPEndPoint;
+            }
+            var natProp = AddressCheckHandler.DetermineNatType(_initInfo);
+
+            // The success rate of complex NAT negotiation is very low, so we use the forwarding server directly
+            // This is only way to make sure 100% p2p
+            // GameSpy game server have client message spam protect, if natneg fail once, the client message from this client is ignored by game server, so we must ensure 100% connect.
+            if (natProp.NatType < NatType.Symmetric)
+            {
+                _initInfo.IsUsingRelayServer = true;
+            }
+        }
         /// <summary>
         /// Prepare to send connect response
         /// </summary>
@@ -166,8 +190,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 Version = _initInfo.Version,
                 Cookie = _initInfo.Cookie,
-                ClientIndex = _initInfo.ClientIndex,
-                IsUsingRelay = _initInfo.IsUsingRelayServer
+                ClientIndex = _initInfo.ClientIndex
             };
             new ConnectHandler(_client, request).Handle();
         }

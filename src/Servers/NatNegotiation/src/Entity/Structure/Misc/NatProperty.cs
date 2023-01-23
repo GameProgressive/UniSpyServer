@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc

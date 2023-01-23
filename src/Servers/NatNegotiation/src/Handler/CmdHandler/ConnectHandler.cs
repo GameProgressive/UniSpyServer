@@ -27,15 +27,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private NatInitInfo _othersInitInfo;
         private NatInitInfo _myInitInfo;
         private IPEndPoint _guessedOthersIPEndPoint;
-        private NatPunchStrategy _punchStrategy;
-        /// <summary>
-        /// Game relay server information storage server.
-        /// </summary>
-        private static GameTrafficRelay.Entity.Structure.Redis.RedisClient _relayRedisClient;
-        static ConnectHandler()
-        {
-            _relayRedisClient = new GameTrafficRelay.Entity.Structure.Redis.RedisClient();
-        }
         public ConnectHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new ConnectResult();
@@ -55,44 +46,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            var searchKey = NatReportInfo.CreateKey(_myInitInfo.PublicIPEndPoint.Address,
-                                                    _myInitInfo.PrivateIPEndPoint.Address,
-                                                    (Guid)_othersInitInfo.ServerID,
-                                                    _othersInitInfo.PrivateIPEndPoint.Address,
-                                                    (NatClientIndex)_myInitInfo.ClientIndex);
-
-            lock (ReportHandler.NatFailRecordInfos)
+            if (_myInitInfo.IsUsingRelayServer || _othersInitInfo.IsUsingRelayServer)
             {
-                if (ReportHandler.NatFailRecordInfos.ContainsKey(searchKey))
-                {
-                    _punchStrategy = ReportHandler.NatFailRecordInfos[searchKey];
-                }
-                else
-                {
-                    var isInSameLan = AddressCheckHandler.IsInSameLan(_myInitInfo, _othersInitInfo);
-                    if (isInSameLan)
-                    {
-                        _punchStrategy = NatPunchStrategy.UsingPrivateIPEndpoint;
-                        ReportHandler.NatFailRecordInfos[searchKey] = _punchStrategy;
-                    }
-                    else
-                    {
-                        _punchStrategy = NatPunchStrategy.UsingPublicIPEndPoint;
-                        ReportHandler.NatFailRecordInfos[searchKey] = _punchStrategy;
-                    }
-                }
+                UsingGameRelayServerToNatNegotiate();
             }
-            switch (_punchStrategy)
+            else
             {
-                case NatPunchStrategy.UsingPublicIPEndPoint:
-                    UsingPublicAddressToNatNegotiate();
-                    break;
-                case NatPunchStrategy.UsingPrivateIPEndpoint:
-                    UsingLANAddressToNatNegotiate();
-                    break;
-                case NatPunchStrategy.UsingGameRelay:
-                    UsingGameRelayServerToNatNegotiate();
-                    break;
+                UsingPublicAddressToNatNegotiate();
             }
         }
         protected override void ResponseConstruct()
@@ -102,38 +62,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 new ConnectResult { RemoteEndPoint = _guessedOthersIPEndPoint });
         }
 
-        private void UsingLANAddressToNatNegotiate()
-        {
-            _guessedOthersIPEndPoint = _othersInitInfo.PrivateIPEndPoint;
-        }
         private void UsingPublicAddressToNatNegotiate()
         {
-            IPEndPoint clientRemoteIPEnd;
-            // if initInfo contains GP key which mean it is game server, we need to send this port to negotiator
-            if (_othersInitInfo.AddressInfos.ContainsKey(NatPortType.GP))
-            {
-                clientRemoteIPEnd = _othersInitInfo.AddressInfos[NatPortType.GP].PublicIPEndPoint;
-            }
-            else
-            {
-                clientRemoteIPEnd = _othersInitInfo.AddressInfos[NatPortType.NN3].PublicIPEndPoint;
-            }
-            var clientNatProperty = AddressCheckHandler.DetermineNatType(_othersInitInfo);
-            var guessedClientIPEndPoint = AddressCheckHandler.GuessTargetAddress(clientNatProperty, _othersInitInfo);
-            if (clientNatProperty.NatType == NatType.Symmetric || clientNatProperty.NatType == NatType.Unknown)
-            {
-                UsingGameRelayServerToNatNegotiate();
-            }
-            else
-            {
-                _guessedOthersIPEndPoint = guessedClientIPEndPoint;
-                _client.LogInfo($"client real: {clientRemoteIPEnd}, guessed: {guessedClientIPEndPoint}");
-            }
+            var guessedClientIPEndPoint = _othersInitInfo.PublicIPEndPoint;
         }
         private void UsingGameRelayServerToNatNegotiate()
         {
-            _myInitInfo.IsUsingRelayServer = true;
-            var relayServers = _relayRedisClient.Context.ToList();
+            var relayServers = StorageOperation.Persistance.GetAvaliableRelayServers();
+            if (relayServers.Count == 0)
+            {
+                throw new NNException("No GameRelayServer found, you must start a GameRelayServer!");
+            }
+            //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
             _guessedOthersIPEndPoint = relayEndPoint;
         }
