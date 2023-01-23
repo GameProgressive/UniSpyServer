@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
@@ -18,7 +17,7 @@ namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // we do not need to execute request.Parse()
-            _client.LogInfo($"Received client message with cookie: {_request.Coookie}");
+            _client.LogInfo($"Received client message with cookie: {_request.Cookie}");
         }
         protected override void ResponseConstruct()
         {

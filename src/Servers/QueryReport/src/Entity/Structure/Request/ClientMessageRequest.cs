@@ -14,8 +14,12 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
         public byte[] NatNegMessage { get; init; }
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint TargetIPEndPoint { get; init; }
-        public readonly int? MessageKey = 0;
-        public uint Coookie => BitConverter.ToUInt32(NatNegMessage.Skip(6).Take(4).ToArray());
+        /// <summary>
+        /// query report server will check on MessageKey, so this must different than previous ones 
+        /// </summary>
+        /// <returns></returns>
+        public int? MessageKey => new Random().Next(int.MinValue, int.MaxValue);
+        public uint Cookie => BitConverter.ToUInt32(NatNegMessage.Skip(6).Take(4).ToArray());
         public ClientMessageRequest() : base(null)
         {
         }

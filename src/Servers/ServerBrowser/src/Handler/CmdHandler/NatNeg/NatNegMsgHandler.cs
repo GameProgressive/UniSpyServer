@@ -17,16 +17,12 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 
     public sealed class NatNegMsgHandler : CmdHandlerBase
     {
-        private static QueryReport.Entity.Structure.Redis.RedisChannel _redisChannel;
+        private static QueryReport.Entity.Structure.Redis.RedisChannel _redisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
         // private static UdpClient _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 27900));
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IClient client, IRequest request) : base(client, request)
         {
-            if (_redisChannel is null)
-            {
-                _redisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
-            }
         }
 
         protected override void RequestCheck()
@@ -38,12 +34,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
             }
 
             _gameServer = StorageOperation.Persistance.GetGameServerInfo(_client.Info.AdHocMessage.TargetIPEndPoint.Address, (ushort)_client.Info.AdHocMessage.TargetIPEndPoint.Port);
-            
+
             if (_gameServer is null)
             {
                 throw new SBException("There is no matching game server regesterd.");
             }
-
         }
 
         protected override void DataOperation()
