@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
         {
             if(_client.Info.LoginStat!=Entity.Enumerate.LoginStatus.Completed)
             {
-                throw new GPException("This operation requires login, please login first.");
+                throw new GPException("You are not logged in, please login first.");
             }
             base.RequestCheck();
         }

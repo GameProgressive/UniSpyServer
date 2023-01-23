@@ -1,16 +1,15 @@
 using System;
-using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
 
-    public sealed class RegisterNickHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class RegisterNickHandler : LoggedInCmdHandlerBase
     {
         private new RegisterNickRequest _request => (RegisterNickRequest)base._request;
         public RegisterNickHandler(IClient client, IRequest request) : base(client, request)
@@ -28,7 +27,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Prof
         {
             try
             {
-                StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.SubProfileId, _request.UniqueNick);
+                StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.SubProfileId,
+                                                              _request.UniqueNick);
             }
             catch (Exception e)
             {

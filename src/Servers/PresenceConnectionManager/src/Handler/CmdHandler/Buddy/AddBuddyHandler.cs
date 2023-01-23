@@ -1,3 +1,4 @@
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -6,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
 
-    public sealed class AddBuddyHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class AddBuddyHandler : LoggedInCmdHandlerBase
     {
         private new AddBuddyRequest _request => (AddBuddyRequest)base._request;
 

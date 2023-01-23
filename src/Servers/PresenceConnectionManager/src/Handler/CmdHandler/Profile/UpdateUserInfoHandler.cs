@@ -1,3 +1,4 @@
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
@@ -6,7 +7,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Prof
     /// Update user information (email)
     /// </summary>
 
-    public sealed class UpdateUserInfoHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class UpdateUserInfoHandler : LoggedInCmdHandlerBase
     {
         public UpdateUserInfoHandler(IClient client, IRequest request) : base(client, request)
         {

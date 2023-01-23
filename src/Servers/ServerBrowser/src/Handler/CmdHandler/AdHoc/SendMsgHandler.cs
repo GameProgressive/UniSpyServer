@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 

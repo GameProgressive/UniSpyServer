@@ -5,18 +5,16 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
-    public sealed class BuddyListHandler : CmdHandlerBase
+    public sealed class BuddyListHandler : LoggedInCmdHandlerBase
     {
         private new BuddyListResult _result { get => (BuddyListResult)base._result; set => base._result = value; }
         public BuddyListHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new BuddyListResult();
         }
-        protected override void RequestCheck() { }
         protected override void DataOperation()
         {
             var result = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,

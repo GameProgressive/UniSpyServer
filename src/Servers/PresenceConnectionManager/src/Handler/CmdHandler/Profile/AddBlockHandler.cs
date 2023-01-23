@@ -1,14 +1,13 @@
-using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
 
-    public sealed class AddBlockHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class AddBlockHandler : LoggedInCmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;
         public AddBlockHandler(IClient client, IRequest request) : base(client, request)

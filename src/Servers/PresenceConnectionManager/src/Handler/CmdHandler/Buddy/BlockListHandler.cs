@@ -4,11 +4,10 @@ using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
-    public sealed class BlockListHandler : CmdHandlerBase
+    public sealed class BlockListHandler : LoggedInCmdHandlerBase
     {
         private new BlockListResult _result { get => (BlockListResult)base._result; set => base._result = value; }
 

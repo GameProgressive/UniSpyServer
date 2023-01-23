@@ -244,11 +244,19 @@
             ]
         },
         {
-            "name": "QR, SB, NatNeg",
+            "name": "NatNeg,GameRelay",
+            "configurations": [
+                "NatNeg",
+                "GameRelay"
+            ]
+        },
+        {
+            "name": "QR, SB, NatNeg,GameRelay",
             "configurations": [
                 "QR",
                 "SB",
-                "NatNeg"
+                "NatNeg",
+                "GameRelay"
             ]
         },
         {

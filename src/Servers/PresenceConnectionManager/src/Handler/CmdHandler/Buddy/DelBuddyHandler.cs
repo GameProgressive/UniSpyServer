@@ -1,9 +1,7 @@
-using System.Linq;
+using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
@@ -11,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
 
-    public sealed class DelBuddyHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class DelBuddyHandler : LoggedInCmdHandlerBase
     {
         private new DelBuddyRequest _request => (DelBuddyRequest)base._request;
         //delete friend in database then send bm_revoke message to friend

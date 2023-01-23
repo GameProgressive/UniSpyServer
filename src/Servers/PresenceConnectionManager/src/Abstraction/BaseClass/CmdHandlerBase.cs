@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
         {
             if (ex is GPException)
             {
-                _client.Send(((GPException)ex));
+                _client.Send(ex as IResponse);
             }
             else
             {

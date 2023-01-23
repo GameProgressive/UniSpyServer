@@ -3,7 +3,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
-    public sealed class BuddyStatusInfoHandler : CmdHandlerBase
+    public sealed class BuddyStatusInfoHandler : LoggedInCmdHandlerBase
     {
         // This is what the message should look like.  Its broken up for easy viewing.
         //

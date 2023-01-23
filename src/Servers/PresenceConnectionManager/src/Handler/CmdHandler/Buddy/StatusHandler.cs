@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
     /// TODO Status should be stored in redis
     /// </summary>
 
-    public sealed class StatusHandler : CmdHandlerBase
+    public sealed class StatusHandler : LoggedInCmdHandlerBase
     {
         private new StatusRequest _request => (StatusRequest)base._request;
         private new StatusResult _result { get => (StatusResult)base._result; set => base._result = value; }
