@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
@@ -67,8 +64,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 //todo we save the fail information some where else.
             }
 
-
-
 #if DEBUG
             // we do not delete redis data, because we need analysis
 #else
@@ -76,7 +71,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);
             StorageOperation.Persistance.RemoveInitInfo(_othersInitInfo);
 #endif
-
         }
     }
 }

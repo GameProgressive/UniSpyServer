@@ -2,26 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build all",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "-o",
-                "--no-restore",
-                "${workspaceFolder}/build/Debug/net6.0/",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "build_library",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                
                 "--no-restore",
                 "${workspaceFolder}/src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj",
                 "-o",
@@ -37,7 +22,6 @@
             "type": "process",
             "args": [
                 "build",
-                
                 "--no-restore",
                 "${workspaceFolder}/src/Servers/CDKey/src/UniSpyServer.Servers.CDKey.csproj",
                 "-o",
@@ -54,7 +38,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/Chat/src/UniSpyServer.Servers.Chat.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -70,7 +53,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/PresenceConnectionManager/src/UniSpyServer.Servers.PresenceConnectionManager.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -86,7 +68,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/PresenceSearchPlayer/src/UniSpyServer.Servers.PresenceSearchPlayer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -102,14 +83,13 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/GameStatus/src/UniSpyServer.Servers.GameStatus.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
         },
         {
             "label": "build_gametraffic",
@@ -118,14 +98,16 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/GameTrafficRelay/src/UniSpyServer.Servers.GameTrafficRelay.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "build_natneg"
+            ]
         },
         {
             "label": "build_natneg",
@@ -134,7 +116,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -150,7 +131,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/QueryReport/src/UniSpyServer.Servers.QueryReport.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -166,7 +146,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/ServerBrowser/src/UniSpyServer.Servers.ServerBrowser.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
@@ -182,7 +161,6 @@
             "args": [
                 "build",
                 "--no-restore",
-                
                 "${workspaceFolder}/src/Servers/WebServer/src/UniSpyServer.Servers.WebServer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
