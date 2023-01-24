@@ -27,14 +27,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             _result.GameServerInfo = _gameServerRedisClient.Context.FirstOrDefault(x =>
-                x.HostIPAddress == _request.TargetIPEndPoint.Address &&
-                x.QueryReportPort == _request.TargetIPEndPoint.Port);
+                x.HostIPAddress == _request.GameServerPublicIPEndPoint.Address &&
+                x.QueryReportPort == _request.GameServerPublicIPEndPoint.Port);
 
             //TODO if there are no server found, we still send response back to client
             if (_result.GameServerInfo is null)
             {
                 // throw new SBException("No server found in database.");
-                _client.LogInfo($"No server found on IP {_request.TargetIPEndPoint}.");
+                _client.LogInfo($"No server found on IP {_request.GameServerPublicIPEndPoint}.");
                 return;
             }
         }

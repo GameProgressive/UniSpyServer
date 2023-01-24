@@ -4,22 +4,21 @@ using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
 {
     public class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
     {
-        private QueryReport.Entity.Structure.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Entity.Structure.Redis.GameServer.RedisClient();
-        private QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient();
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
-
-        public GameServerInfo GetGameServerInfo(IPAddress address, ushort queryReportPort)
-        {
-            return _gameServerRedisClient.Context.FirstOrDefault(x =>
-                x.HostIPAddress == address &
-                x.QueryReportPort == queryReportPort);
-        }
+        private static QueryReport.Entity.Structure.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Entity.Structure.Redis.GameServer.RedisClient();
+        private static QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient();
+        /// <summary>
+        /// The redis channel use to transfer client message
+        /// </summary>
+        /// <returns></returns>
+        private static QueryReport.Entity.Structure.Redis.RedisChannel _clientMessageRedisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
 
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {
@@ -42,6 +41,17 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
                 return result;
             }
 
+        }
+        public void PublishClientMessage(ClientMessageRequest message)
+        {
+            _clientMessageRedisChannel.PublishMessage(message);
+        }
+
+        public GameServerInfo GetGameServerInfo(IPEndPoint end)
+        {
+            return _gameServerRedisClient.Context.FirstOrDefault(x =>
+                x.HostIPAddress == end.Address &
+                x.QueryReportPort == (ushort)end.Port);
         }
     }
 }

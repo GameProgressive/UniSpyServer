@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
@@ -40,12 +41,14 @@ namespace UniSpyServer.Servers.ServerBrowser.Handler
                 {
                     case RequestType.ServerListRequest:
                         return new ServerListHandler(_client, new ServerListRequest(req));
-                    case RequestType.NatNegMsgRequest:
-                        return new NatNegMsgHandler(_client, new NatNegMsgRequest(req));
                     case RequestType.ServerInfoRequest:
                         return new ServerInfoHandler(_client, new ServerInfoRequest(req));
                     case RequestType.SendMessageRequest:
                         return new SendMsgHandler(_client, new SendMsgRequest(req));
+                    // currently we only support natneg client message
+                    // we need more test to see whether there are other games that sends other client message
+                    case RequestType.NatNegMsgRequest:
+                        goto case RequestType.SendMessageRequest;
                     default:
                         return null;
                 }

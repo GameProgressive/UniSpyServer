@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction
         /// <summary>
         /// The game server client search for
         /// </summary>
-        public IPEndPoint TargetIPEndPoint { get; private set; }
+        public IPEndPoint GameServerPublicIPEndPoint { get; private set; }
 
         public AdHocRequest(byte[] rawRequest) : base(rawRequest)
         {
@@ -20,17 +20,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Abstraction
         public override void Parse()
         {
             base.Parse();
-            //if(recv.Length<length)
-            //{
-            //    return false;
-            //}
-            CommandName = (RequestType)RawRequest[2];
-
             byte[] ip = RawRequest.Skip(3).Take(4).ToArray();
             // raw request is in big endian we need to convert it to little endian
             byte[] port = RawRequest.Skip(7).Take(2).Reverse().ToArray();
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
-            TargetIPEndPoint = new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port));
+            GameServerPublicIPEndPoint = new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port));
         }
     }
 }

@@ -22,8 +22,11 @@ namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure
         public static byte[] HtonQueryReportDefaultPort => BitConverter.GetBytes(QueryReportDefaultPort).Reverse().ToArray();
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
+        /// <summary>
+        /// Incompelete client message, we stored here
+        /// </summary>
         public AdHocRequest AdHocMessage { get; set; }
-        public ClientInfo( )
+        public ClientInfo()
         {
         }
     }
