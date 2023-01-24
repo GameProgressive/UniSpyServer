@@ -69,7 +69,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static string ConvertByteToHexString(byte[] buffer)
+        public static string ConvertByteToHexString(this byte[] buffer)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
@@ -91,7 +91,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         /// </summary>
         /// <param name="buffer">Raw byte array</param>
         /// <returns></returns>
-        public static string ConvertNonprintableCharToHexString(byte[] buffer)
+        public static string ConvertNonprintableCharToHexString(this byte[] buffer)
         {
             StringBuilder temp = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
@@ -109,11 +109,11 @@ namespace UniSpyServer.UniSpyLib.Extensions
         }
 
         /// <summary>
-        /// Only convert printable char to string
+        /// Only convert printable char to string [0x00] [0x01] [0x02]
         /// </summary>
         /// <param name="buffer">raw byte array</param>
         /// <returns></returns>
-        public static string ConvertPrintableCharToString(byte[] buffer)
+        public static string ConvertPrintableCharToString(this byte[] buffer)
         {
             char delimiter = ' ';
             StringBuilder temp = new StringBuilder();
@@ -122,7 +122,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
                 if (buffer[i] < 0x1F || buffer[i] > 0x7E)
                 {
                     // if the last char in temp is not delimiter, we add delemiter 
-                    if (temp.Length !=0 && temp[temp.Length - 1] != delimiter)
+                    if (temp.Length != 0 && temp[temp.Length - 1] != delimiter)
                     {
                         temp.Append(delimiter);
                     }
@@ -134,13 +134,13 @@ namespace UniSpyServer.UniSpyLib.Extensions
             }
             return temp.ToString();
         }
-        public static string ConvertNonprintableCharToHex(string buffer)
+        public static string ConvertNonprintableCharToHex(this string buffer)
         {
             return ConvertNonprintableCharToHexString(UniSpyEncoding.GetBytes(buffer));
         }
         #endregion
 
-        public static Dictionary<string, string> ConvertKVStringToDictionary(string kvStr)
+        public static Dictionary<string, string> ConvertKVStringToDictionary(this string kvStr)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
             List<string> keyValueList =
@@ -160,7 +160,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
 
             return dic;
         }
-        public static string ConvertDictionaryToKVString(Dictionary<string, string> kv)
+        public static string ConvertDictionaryToKVString(this Dictionary<string, string> kv)
         {
             string buffer = @"\";
             foreach (var data in kv)
@@ -173,7 +173,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
             return buffer;
         }
 
-        public static List<string> ConvertKeyStrToList(string keyStr)
+        public static List<string> ConvertKeyStrToList(this string keyStr)
         {
             List<string> data = keyStr.Split(@"\", StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -184,12 +184,12 @@ namespace UniSpyServer.UniSpyLib.Extensions
         /// Check the validation of response string
         /// </summary>
         /// <returns>return true if the string is valid</returns>
-        public static bool CheckResponseValidation(string buffer)
+        public static bool CheckResponseValidation(this string buffer)
         {
             return buffer?.Length > 3;
         }
 
-        public static bool CheckResponseValidation(byte[] buffer)
+        public static bool CheckResponseValidation(this byte[] buffer)
         {
             if (buffer is null)
             {

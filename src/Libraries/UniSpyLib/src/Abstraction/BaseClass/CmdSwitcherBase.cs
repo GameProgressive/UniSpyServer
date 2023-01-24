@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
@@ -35,7 +34,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 {
                     var handler = CreateCmdHandlers(rawRequest.Key, rawRequest.Value);
                     if (handler is null)
+                    {
+                        _client.LogWarn("Request ignored.");
                         continue;
+                    }
                     _handlers.Add(handler);
                 }
                 if (_handlers.Count == 0)
