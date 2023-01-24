@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.QueryReport.Abstraction.Interface;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.V2.Abstraction.Interface;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using System.Linq;
-namespace UniSpyServer.Servers.QueryReport.Application
+namespace UniSpyServer.Servers.QueryReport.V2.Application
 {
-    public class StorageOperation : IStorageOperation
+    public sealed class StorageOperation : IStorageOperation
     {
         private static RedisClient _redisClient = new RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();

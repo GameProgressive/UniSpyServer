@@ -1,7 +1,7 @@
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {

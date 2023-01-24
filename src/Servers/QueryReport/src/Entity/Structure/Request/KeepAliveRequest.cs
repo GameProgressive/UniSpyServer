@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Request
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request
 {
     
     public class KeepAliveRequest : RequestBase

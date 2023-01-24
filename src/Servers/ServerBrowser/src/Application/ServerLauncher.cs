@@ -7,7 +7,7 @@ using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
 {
-    public class ServerLauncher : ServerLauncherBase
+    internal sealed class ServerLauncher : ServerLauncherBase
     {
         public static IServer ServerV1;
         public static IServer ServerV2;

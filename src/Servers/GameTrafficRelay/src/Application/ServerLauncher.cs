@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Application
 {
-    public class ServerLauncher : ServerLauncherBase
+    internal sealed class ServerLauncher : ServerLauncherBase
     {
         private ServerStatusReporter _serverStatusReporter;
 

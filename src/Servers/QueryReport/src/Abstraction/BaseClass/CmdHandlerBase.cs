@@ -1,8 +1,9 @@
-using UniSpyServer.Servers.QueryReport.Entity.Structure;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.Application;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.QueryReport.Entity.Structure;
+using UniSpyServer.Servers.QueryReport.Application;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Application
+namespace UniSpyServer.Servers.QueryReport.V2.Application
 {
     class UdpServer : UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {

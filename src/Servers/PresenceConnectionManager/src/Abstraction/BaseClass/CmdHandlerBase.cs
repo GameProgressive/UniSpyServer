@@ -1,5 +1,5 @@
 using System;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 

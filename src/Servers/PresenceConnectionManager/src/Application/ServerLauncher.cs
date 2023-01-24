@@ -4,7 +4,7 @@ using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
-    public class ServerLauncher : ServerLauncherBase
+    internal sealed class ServerLauncher : ServerLauncherBase
     {
         public ServerLauncher() : base("PresenceConnectionManager")
         {

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using UniSpyServer.Servers.QueryReport.Entity.Exception;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
 
-namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
     {

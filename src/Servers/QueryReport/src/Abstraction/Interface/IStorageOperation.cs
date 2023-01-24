@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 
-namespace UniSpyServer.Servers.QueryReport.Abstraction.Interface
+namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.Interface
 {
     public interface IStorageOperation
     {

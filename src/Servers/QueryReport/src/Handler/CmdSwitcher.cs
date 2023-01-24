@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyServer.Servers.QueryReport.Handler
+namespace UniSpyServer.Servers.QueryReport.V2.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

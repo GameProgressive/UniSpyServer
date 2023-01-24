@@ -1,11 +1,12 @@
-using UniSpyServer.Servers.QueryReport.Entity.Exception;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.Handler.CmdHandler;
+using UniSpyServer.Servers.QueryReport.Application;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Entity.Structure;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis
 {
     public sealed class RedisChannel : UniSpyLib.Abstraction.BaseClass.Redis.RedisChannel<ClientMessageRequest>
     {

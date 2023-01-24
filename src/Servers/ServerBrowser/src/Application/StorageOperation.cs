@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.PeerGroup;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
 {
-    public class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
+    public sealed class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
     {
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
-        private static QueryReport.Entity.Structure.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Entity.Structure.Redis.GameServer.RedisClient();
-        private static QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Entity.Structure.Redis.PeerGroup.RedisClient();
+        private static QueryReport.V2.Entity.Structure.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Entity.Structure.Redis.GameServer.RedisClient();
+        private static QueryReport.V2.Entity.Structure.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.V2.Entity.Structure.Redis.PeerGroup.RedisClient();
         /// <summary>
         /// The redis channel use to transfer client message
         /// </summary>
         /// <returns></returns>
-        private static QueryReport.Entity.Structure.Redis.RedisChannel _clientMessageRedisChannel = new QueryReport.Entity.Structure.Redis.RedisChannel();
+        private static QueryReport.V2.Entity.Structure.Redis.RedisChannel _clientMessageRedisChannel = new QueryReport.V2.Entity.Structure.Redis.RedisChannel();
 
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {

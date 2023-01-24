@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.Application;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
+using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.V2.Application;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
+namespace UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler
 {
 
     public sealed class HeartBeatHandler : CmdHandlerBase

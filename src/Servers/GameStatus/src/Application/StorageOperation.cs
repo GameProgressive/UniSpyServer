@@ -7,7 +7,7 @@ using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.GameStatus.Application
 {
-    public class StorageOperation : IStorageOperation
+    public sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
         public void CreateNewGameData()

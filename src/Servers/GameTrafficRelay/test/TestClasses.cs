@@ -1,5 +1,6 @@
 using System.Net;
 using Moq;
+using UniSpyServer.Servers.GameTrafficRelay.Application;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Test
@@ -8,7 +9,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
     {
         public static IClient Client = CreateClient();
 
-        public static GameTrafficRelay.Entity.Structure.Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
+        public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
         {
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
@@ -19,7 +20,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Test
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
 
-            return new GameTrafficRelay.Entity.Structure.Client(connectionMock.Object);
+            return new Client(connectionMock.Object);
         }
     }
 }

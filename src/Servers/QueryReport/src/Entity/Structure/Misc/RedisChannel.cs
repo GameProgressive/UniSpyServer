@@ -1,13 +1,13 @@
 // using System.Net;
-// using UniSpyServer.Servers.QueryReport.Entity.Exception;
-// using UniSpyServer.Servers.QueryReport.Entity.Structure.NatNeg;
-// using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
-// using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
-// using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
+// using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
+// using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.NatNeg;
+// using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
+// using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response;
+// using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Result;
 // using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 // using UniSpyServer.UniSpyLib.Entity.Structure;
 
-// namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler
+// namespace UniSpyServer.Servers.QueryReport.V2.Handler.SystemHandler
 // {
 //     public class RedisChannel : RedisChannel<NatNegCookie>
 //     {

@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.ServerBrowser.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application

@@ -8,7 +8,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
-    public class StorageOperation : IStorageOperation
+    public sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
 

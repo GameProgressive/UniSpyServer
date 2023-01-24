@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure
 {
     public enum RegionID
     {

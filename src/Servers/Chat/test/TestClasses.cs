@@ -1,6 +1,6 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.Chat.Entity.Structure;
+using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Test

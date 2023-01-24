@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
 using System.Net;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Result
 {
     public sealed class HeartBeatResult : ResultBase
     {

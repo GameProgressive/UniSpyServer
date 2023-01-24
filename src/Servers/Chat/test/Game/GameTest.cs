@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Moq;
+using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Handler;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;

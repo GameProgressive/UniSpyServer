@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.Servers.WebServer.Application;
 using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction

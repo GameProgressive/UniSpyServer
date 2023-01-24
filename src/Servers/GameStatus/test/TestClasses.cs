@@ -1,6 +1,7 @@
 using System.Net;
 using Moq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.Servers.GameStatus.Application;
 
 namespace UniSpyServer.Servers.GameStatus.Test
 {
@@ -8,7 +9,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
     {
         public static IClient Client = CreateClient();
 
-        public static GameStatus.Entity.Structure.Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
+        public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
         {
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
@@ -19,7 +20,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
 
-            return new GameStatus.Entity.Structure.Client(connectionMock.Object);
+            return new Client(connectionMock.Object);
         }
     }
 }

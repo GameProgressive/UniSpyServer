@@ -1,6 +1,6 @@
 using System;
 using System.Numerics;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.Servers.WebServer.Application;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
 using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;

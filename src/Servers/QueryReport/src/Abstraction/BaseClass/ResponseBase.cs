@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Servers.QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
     {

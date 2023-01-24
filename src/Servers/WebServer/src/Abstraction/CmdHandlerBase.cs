@@ -1,4 +1,4 @@
-using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpyServer.Servers.WebServer.Application;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.WebServer.Abstraction

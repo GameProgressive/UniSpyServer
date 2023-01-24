@@ -1,5 +1,6 @@
 using System.Net;
 using Moq;
+using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.NatNegotiation.Test
@@ -8,7 +9,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
     {
         public static IClient Client = CreateClient();
 
-        public static NatNegotiation.Entity.Structure.Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
+        public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
         {
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
@@ -19,7 +20,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
 
-            return new NatNegotiation.Entity.Structure.Client(connectionMock.Object);
+            return new Client(connectionMock.Object);
         }
     }
 }

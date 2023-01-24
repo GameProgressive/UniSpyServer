@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.QueryReport.Entity.Enumerate
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate
 {
     public enum ServerAvailability : byte
     {

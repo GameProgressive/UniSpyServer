@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using UniSpyServer.LinqToRedis;
-using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Application;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer
+namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer
 {
     public record GameServerInfo : LinqToRedis.RedisKeyValueObject
     {

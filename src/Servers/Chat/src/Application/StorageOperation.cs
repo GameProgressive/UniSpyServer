@@ -3,11 +3,11 @@ using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.Interface;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis.GameServer;
+using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.Chat.Application
 {
-    public class StorageOperation : IStorageOperation
+    public sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
         private static RedisClient _redisClient = new RedisClient();
