@@ -8,10 +8,25 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
-    public sealed class StorageOperation : IStorageOperation
+    internal sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
+        public bool IsEmailExist(string email)
+        {
+            using (var db = new UniSpyContext())
+            {
+                var result = from u in db.Users
+                                 //According to FSW partnerid is not nessesary
+                             where u.Email == email
+                             select u.UserId;
 
+                if (result.Count() == 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
         public void DeleteFriendByProfileId(int profileId, int targetId, int namespaceId)
         {
             using (var db = new UniSpyContext())

@@ -20,5 +20,6 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.Interface
         void UpdateNickName(int profileId, string oldNick, string newNick);
         void AddNickName(int userId, int profileId, string newNick);
         void UpdateSubProfileInfo(Subprofile subprofile);
+        bool IsEmailExist(string email);
     }
 }

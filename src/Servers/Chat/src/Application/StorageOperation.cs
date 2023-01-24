@@ -7,7 +7,7 @@ using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.Chat.Application
 {
-    public sealed class StorageOperation : IStorageOperation
+    internal sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
         private static RedisClient _redisClient = new RedisClient();

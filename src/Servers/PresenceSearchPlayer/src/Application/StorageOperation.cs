@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
 {
-    public sealed class StorageOperation : IStorageOperation
+    internal sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
         public bool VerifyEmail(string email)

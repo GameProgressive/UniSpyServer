@@ -9,7 +9,7 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
 {
-    public sealed class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
+    internal sealed class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
     {
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
         private static QueryReport.V2.Entity.Structure.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Entity.Structure.Redis.GameServer.RedisClient();

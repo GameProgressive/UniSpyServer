@@ -4,7 +4,7 @@ using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using System.Linq;
 namespace UniSpyServer.Servers.QueryReport.V2.Application
 {
-    public sealed class StorageOperation : IStorageOperation
+    internal sealed class StorageOperation : IStorageOperation
     {
         private static RedisClient _redisClient = new RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();

@@ -8,7 +8,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Structure;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpyServer.Servers.PresenceConnectionManager.Application;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
 {
@@ -105,7 +105,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
         private void NickEmailLogin()
         {
             //Check email existence
-            if (!PresenceSearchPlayer.Application.StorageOperation.Persistance.IsEmailExist(_request.Email))
+            if (!StorageOperation.Persistance.IsEmailExist(_request.Email))
             {
                 throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
             }

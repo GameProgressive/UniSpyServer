@@ -6,7 +6,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 
 namespace UniSpyServer.Servers.NatNegotiation.Application
 {
-    public sealed class StorageOperation : IStorageOperation
+    internal sealed class StorageOperation : IStorageOperation
     {
         /// <summary>
         /// natneg init information redis server.
