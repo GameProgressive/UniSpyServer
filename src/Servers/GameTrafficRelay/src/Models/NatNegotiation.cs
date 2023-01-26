@@ -1,5 +1,8 @@
 using System;
 using System.Net;
+using System.Text.Json.Serialization;
+using UniSpyServer.UniSpyLib.MiscMethod;
+
 namespace UniSpyServer.Servers.GameTrafficRelay
 {
     public record NatNegotiationRequest
@@ -9,14 +12,9 @@ namespace UniSpyServer.Servers.GameTrafficRelay
     }
     public record NatNegotiationResponse
     {
-        public string IPEndPoint1 { get; set; }
-        public string IPEndPoint2 { get; set; }
-
-        public NatNegotiationResponse(IPEndPoint iPEndPoint1, IPEndPoint iPEndPoint2)
-        {
-            IPEndPoint1 = iPEndPoint1.ToString();
-            IPEndPoint2 = iPEndPoint2.ToString();
-        }
-
+        [JsonConverter(typeof(IPAddresConverter))]
+        public IPEndPoint IPEndPoint1 { get; set; }
+        [JsonConverter(typeof(IPAddresConverter))]
+        public IPEndPoint IPEndPoint2 { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using RestSharp;
+using UniSpyServer.Servers.GameTrafficRelay;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -84,9 +85,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             dict.Add("ServerId", _client.Connection.Server.ServerID);
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation");
             var request = new RestRequest().AddJsonBody(dict);
-            var resp = client.Post<Dictionary<string,string>>(request);
-            var ipEndStr = resp.Values.ToList()[(int)_client.Info.ClientIndex];
-            _guessedOthersIPEndPoint = new IPEndPoint(IPAddress.Parse(ipEndStr.Split(':')[0]), int.Parse(ipEndStr.Split(':')[1]));
+            var resp = client.Post<NatNegotiationResponse>(request);
+            if (_client.Info.ClientIndex == NatClientIndex.GameClient)
+            {
+                _guessedOthersIPEndPoint = resp.IPEndPoint1;
+            }
+            else if (_client.Info.ClientIndex == NatClientIndex.GameServer)
+            {
+                _guessedOthersIPEndPoint = resp.IPEndPoint2;
+            }
+            else
+            {
+                throw new NNException("The client index is not applied");
+            }
         }
     }
 }

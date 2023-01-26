@@ -36,7 +36,11 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
 
             var pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
             ConnectionPairs.TryAdd(request.Cookie, pair);
-            var response = new NatNegotiationResponse(ends[0], ends[1]);
+            var response = new NatNegotiationResponse()
+            {
+                IPEndPoint1 = ends[0],
+                IPEndPoint2 = ends[1]
+            };
             return response;
         }
     }
