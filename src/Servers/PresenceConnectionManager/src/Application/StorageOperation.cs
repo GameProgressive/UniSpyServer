@@ -6,6 +6,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 
+
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
     internal sealed class StorageOperation : IStorageOperation

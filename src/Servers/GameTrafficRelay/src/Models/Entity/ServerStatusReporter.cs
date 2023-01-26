@@ -1,10 +1,9 @@
 using System;
-using System.Linq;
 using System.Timers;
-using UniSpyServer.Servers.GameTrafficRelay.Application;
+using UniSpyServer.Servers.GameTrafficRelay.Controller;
 using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis
+namespace UniSpyServer.Servers.GameTrafficRelay.Entity
 {
     class ServerStatusReporter
     {
@@ -17,7 +16,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis
             _timer = new Timer(60000);
             _expireTimeInterval = new TimeSpan(0, 1, 0);
             _redisClient = new RedisClient();
-            var clientCount = Client.ClientPool.Values.Where(x => ((Client)x).Info.TrafficRelayTarget is not null).Count();
+            var clientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2;
             _info = new RelayServerInfo()
             {
                 ServerID = config.ServerID,

@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
+
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.Servers.QueryReport.Application;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
@@ -42,7 +44,7 @@ namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer
     }
     public class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
     {
-        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.GameServer)
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)DbNumber.GameServer)
         {
         }
     }

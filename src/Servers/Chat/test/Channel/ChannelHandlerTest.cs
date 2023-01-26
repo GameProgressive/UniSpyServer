@@ -21,9 +21,9 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var serverMock = new Mock<IServer>();
             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
             serverMock.Setup(s => s.ServerName).Returns("Chat");
-            serverMock.Setup(s => s.Endpoint).Returns(new IPEndPoint(IPAddress.Any, 99));
+            serverMock.Setup(s => s.ListeningEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
             var connectionMock = new Mock<ITcpConnection>();
-            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.Endpoint);
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.ListeningEndPoint);
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
             _client = new Client(connectionMock.Object);

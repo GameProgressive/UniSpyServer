@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UniSpyServer.LinqToRedis;
-using UniSpyServer.Servers.QueryReport.Application;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.UniSpyLib.Extensions;
 
@@ -57,7 +57,7 @@ namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.PeerGroup
     }
     public class RedisClient : LinqToRedis.RedisClient<PeerGroupInfo>
     {
-        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.PeerGroup)
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)DbNumber.PeerGroup)
         {
         }
     }

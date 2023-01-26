@@ -1,5 +1,4 @@
-using System.Net;
-using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis;
+    using UniSpyServer.Servers.GameTrafficRelay.Entity;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;
@@ -13,7 +12,6 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
         public ServerLauncher() : base("GameTrafficRelay")
         {
         }
-
         protected override IServer LaunchNetworkService(UniSpyServerConfig config)
         {
             _serverStatusReporter = new ServerStatusReporter(config);
@@ -21,9 +19,9 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
             {
                 throw new System.Exception("Game traffic relay server can not listen to loopback endpoint!");
             }
-            return new UdpServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
-        }
 
+            return new WebServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
+        }
         public override void Start()
         {
             base.Start();

@@ -13,8 +13,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
-        public static IConnectionMultiplexer RedisConnection { get; set; }
-        public static IDictionary<IPEndPoint, IClient> ClientPool { get; private set; }
+        public static readonly IDictionary<IPEndPoint, IClient> ClientPool = new Dictionary<IPEndPoint, IClient>();
         public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
@@ -23,16 +22,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         /// <value></value>
         protected TimeSpan _expireTimeInterval { get; set; }
+        protected DateTime LastPacketReceivedTime { get; set; }
+        public TimeSpan ConnectionExistedTime => DateTime.Now - LastPacketReceivedTime;
         /// <summary>
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
         protected bool _isLogRawMessage;
-        static ClientBase()
-        {
-            RedisConnection = ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString);
-            ClientPool = new Dictionary<IPEndPoint, IClient>();
-        }
 
         public ClientBase(IConnection connection)
         {
@@ -66,6 +62,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                         AutoReset = true
                     };//10000
                       // we set expire time to 1 hour
+                    LastPacketReceivedTime = DateTime.Now;
                     _expireTimeInterval = new TimeSpan(1, 0, 0);
                     _timer.Start();
                     _timer.Elapsed += (s, e) => CheckExpiredClient();
@@ -122,12 +119,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 case NetworkConnectionType.Tcp:
                     goto default;
                 case NetworkConnectionType.Udp:
-                    // reset timer for udp connection
-                    lock (_timer)
-                    {
-                        _timer.Stop();
-                        _timer.Start();
-                    }
+                    LastPacketReceivedTime = DateTime.Now;
                     goto default;
                 case NetworkConnectionType.Http:
                     var tempBuffer = ((IHttpRequest)buffer).Body;
@@ -245,7 +237,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         public void LogNetworkSending(byte[] message) => LogNetworkTraffic("Send", message, _isLogRawMessage);
         public void LogNetworkReceiving(string message) => LogNetworkReceiving(UniSpyEncoding.GetBytes(message));
         public void LogNetworkSending(string message) => LogNetworkSending(UniSpyEncoding.GetBytes(message));
-        public void LogNetworkForwarding(IPEndPoint receiver, byte[] message) => LogVerbose($"=> [{receiver}] {StringExtensions.ConvertNonprintableCharToHexString(message)}");
+        public void LogNetworkForwarding(IPEndPoint receiver, byte[] message) => LogNetworkTraffic($"=> [{receiver}]", message, _isLogRawMessage);
         public void LogNetworkForwarding(IPEndPoint receiver, string message) => LogNetworkForwarding(receiver, UniSpyEncoding.GetBytes(message));
         public void LogNetworkMultiCast(byte[] message) => LogNetworkTraffic("Cast", message);
         public void LogNetworkMultiCast(string message) => LogNetworkMultiCast(UniSpyEncoding.GetBytes(message));

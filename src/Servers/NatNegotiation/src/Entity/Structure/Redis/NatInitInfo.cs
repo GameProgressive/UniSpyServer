@@ -7,6 +7,7 @@ using UniSpyServer.LinqToRedis;
 using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
@@ -103,6 +104,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 
     public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatInitInfo>
     {
-        public RedisClient() : base(Client.RedisConnection, (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatNeg) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatNeg) { }
     }
 }

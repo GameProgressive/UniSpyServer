@@ -3,12 +3,12 @@ using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis;
-using UniSpyServer.Servers.NatNegotiation.Application;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure;
+using UniSpyServer.Servers.GameTrafficRelay.Application;
+using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis
+namespace UniSpyServer.Servers.GameTrafficRelay.Entity
 {
     public record RelayServerInfo : RedisKeyValueObject
     {
@@ -26,6 +26,6 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure.Redis
 
     public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<RelayServerInfo>
     {
-        public RedisClient() : base(Client.RedisConnection, (int)DbNumber.GameTrafficRelay) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)DbNumber.GameTrafficRelay) { }
     }
 }

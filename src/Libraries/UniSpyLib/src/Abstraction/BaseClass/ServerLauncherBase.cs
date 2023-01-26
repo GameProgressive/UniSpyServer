@@ -52,7 +52,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             // asp.net web server does not implement a Server interface, therefore this code should not be called
             Server.Start();
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
+            table.AddRow(ServerName, Server.ListeningEndPoint.Address, Server.ListeningEndPoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
             Servers.Add(cfg.ServerName, Server);
             Console.WriteLine("Server successfully started!");

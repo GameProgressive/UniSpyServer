@@ -41,7 +41,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "GameRelay",
+            "name": "GTR",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_gametraffic",

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 using Serilog.Events;
+using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.Database;
 
 namespace UniSpyServer.UniSpyLib.Config
@@ -49,6 +51,8 @@ namespace UniSpyServer.UniSpyLib.Config
         public string Password;
         public bool SSL;
         public string SSLHost;
+        [JsonIgnore]
+        public IConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect(ConnectionString);
     }
     public class UniSpyServerConfig
     {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net.Http;
 using System;
 using System.Linq;
 using System.Net;
@@ -5,12 +7,12 @@ using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Application;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
 using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using RestSharp;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -55,6 +57,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 UsingPublicAddressToNatNegotiate();
             }
         }
+
         protected override void ResponseConstruct()
         {
             _response = new ConnectResponse(
@@ -68,14 +71,22 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         private void UsingGameRelayServerToNatNegotiate()
         {
-            var relayServers = StorageOperation.Persistance.GetAvaliableRelayServers();
+            var relayServers = GameTrafficRelay.Application.StorageOperation.Persistance.GetAvaliableRelayServers();
             if (relayServers.Count == 0)
             {
                 throw new NNException("No GameRelayServer found, you must start a GameRelayServer!");
             }
             //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
-            _guessedOthersIPEndPoint = relayEndPoint;
+
+            var dict = new Dictionary<string, object>();
+            dict.Add("Cookie", _myInitInfo.Cookie);
+            dict.Add("ServerId", _client.Connection.Server.ServerID);
+            var client = new RestClient($"http://{relayEndPoint}/NatNegotiation");
+            var request = new RestRequest().AddJsonBody(dict);
+            var resp = client.Post<Dictionary<string,string>>(request);
+            var ipEndStr = resp.Values.ToList()[(int)_client.Info.ClientIndex];
+            _guessedOthersIPEndPoint = new IPEndPoint(IPAddress.Parse(ipEndStr.Split(':')[0]), int.Parse(ipEndStr.Split(':')[1]));
         }
     }
 }

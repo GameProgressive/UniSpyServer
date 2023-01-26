@@ -1,16 +1,17 @@
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class RedisChannel<T>
+    public abstract class RedisChannelBase<T>
     {
         protected string _redisChannelName;
         /// <summary>
         /// Get all subscriber in Redis
         /// </summary>
-        protected ISubscriber _subscriber => ClientBase.RedisConnection.GetSubscriber();
-        public RedisChannel(string redisChannelName)
+        protected ISubscriber _subscriber => ConfigManager.Config.Redis.RedisConnection.GetSubscriber();
+        public RedisChannelBase(string redisChannelName)
         {
             _redisChannelName = redisChannelName;
         }

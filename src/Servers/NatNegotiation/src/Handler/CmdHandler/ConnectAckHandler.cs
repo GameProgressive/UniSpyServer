@@ -8,7 +8,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
     /// <summary>
     /// The connect ack handler indicate that the client is already received the connect packet and start nat negotiation
     /// </summary>
-    
+
     public class ConnectAckHandler : CmdHandlerBase
     {
         private new ConnectAckRequest _request => (ConnectAckRequest)base._request;
@@ -17,19 +17,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            // var userInfo = _redisClient.Values.FirstOrDefault(
-            //     k => k.ServerID == _client.Connection.Server.ServerID
-            //     && k.PublicIPEndPoint == _client.Connection.RemoteIPEndPoint
-            //     && k.PortType == _request.PortType
-            //     && k.Cookie == _request.Cookie);
-            // if (userInfo is null)
-            // {
-            //     // we do nothing here
-            //     return;
-            // }
-            // // currently we do not know what this for, we just keep this
-            // // userInfo.IsGotConnectPacket = true;
-            // _redisClient.SetValue(userInfo);
+            _client.LogInfo($"client:{_request.ClientIndex} aknowledged connect request.");
         }
     }
 }

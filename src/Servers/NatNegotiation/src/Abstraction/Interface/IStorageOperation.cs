@@ -10,6 +10,5 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.Interface
         int CountInitInfo(uint cookie, byte version);
         List<NatInitInfo> GetInitInfos(Guid serverId, uint cookie);
         void RemoveInitInfo(NatInitInfo info);
-        List<GameTrafficRelay.Entity.Structure.Redis.RelayServerInfo> GetAvaliableRelayServers();
     }
 }

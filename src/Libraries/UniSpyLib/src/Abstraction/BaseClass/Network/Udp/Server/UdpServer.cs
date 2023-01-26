@@ -19,7 +19,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// </summary>
         public string ServerName { get; private set; }
         public static IDictionary<IPEndPoint, UdpConnection> Connections;
-        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
         static UdpServer()
         {
             Connections = new ConcurrentDictionary<IPEndPoint, UdpConnection>();
@@ -29,13 +29,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             ServerID = serverID;
             ServerName = serverName;
         }
-        public override bool Start()
+        public new void Start()
         {
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
-            return base.Start();
+            base.Start();
         }
 
         protected override void OnStarted() => ReceiveAsync();

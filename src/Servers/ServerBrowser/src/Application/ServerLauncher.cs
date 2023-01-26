@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
             ServerV2.Start();
 
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, ServerV1.Endpoint.Address, $"{ServerV1.Endpoint.Port}, {ServerV2.Endpoint.Port}");
+            table.AddRow(ServerName, ServerV1.ListeningEndPoint.Address, $"{ServerV1.ListeningEndPoint.Port}, {ServerV2.ListeningEndPoint.Port}");
             table.Write(ConsoleTables.Format.Alternative);
             Servers.Add(ServerV1.ServerName, ServerV1);
             Servers.Add(ServerV2.ServerName, ServerV2);

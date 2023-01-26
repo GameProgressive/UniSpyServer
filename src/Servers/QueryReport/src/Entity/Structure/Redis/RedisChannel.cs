@@ -8,7 +8,7 @@ using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis
 {
-    public sealed class RedisChannel : UniSpyLib.Abstraction.BaseClass.Redis.RedisChannel<ClientMessageRequest>
+    public sealed class RedisChannel : UniSpyLib.Abstraction.BaseClass.RedisChannelBase<ClientMessageRequest>
     {
         public RedisChannel() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {

@@ -9,7 +9,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
     {
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }
-        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
         public HttpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerName = serverName;
@@ -25,5 +25,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
             base.OnConnecting(connection);
             CreateClient((HttpConnection)connection);
         }
+
+        public new void Start() => base.Start();
+
     }
 }

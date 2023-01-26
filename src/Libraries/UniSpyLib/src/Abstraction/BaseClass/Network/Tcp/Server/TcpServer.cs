@@ -17,7 +17,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <param name="port">Port number</param>
         public string ServerName { get; private set; }
 
-        IPEndPoint IServer.Endpoint => (IPEndPoint)Endpoint;
+        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
 
         public TcpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
@@ -25,13 +25,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             ServerName = serverName;
         }
 
-        public override bool Start()
+        public new void Start()
         {
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {
                 throw new ArgumentException("Buffer size can not big than length of integer!");
             }
-            return base.Start();
+            base.Start();
         }
         protected abstract IClient CreateClient(IConnection connection);
 

@@ -21,18 +21,21 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
         {
+            var req = (byte[])rawRequest;
             switch ((RequestType)name)
             {
                 case RequestType.Init:
-                    return new InitHandler(_client, new InitRequest((byte[])rawRequest));
+                    return new InitHandler(_client, new InitRequest(req));
                 case RequestType.AddressCheck:
-                    return new AddressCheckHandler(_client, new AddressCheckRequest((byte[])rawRequest));
+                    return new AddressCheckHandler(_client, new AddressCheckRequest(req));
                 case RequestType.NatifyRequest:
-                    return new NatifyHandler(_client, new NatifyRequest((byte[])rawRequest));
+                    return new NatifyHandler(_client, new NatifyRequest(req));
                 case RequestType.ErtAck:
-                    return new ErtAckHandler(_client, new ErtAckRequest((byte[])rawRequest));
+                    return new ErtAckHandler(_client, new ErtAckRequest(req));
                 case RequestType.Report:
-                    return new ReportHandler(_client, new ReportRequest((byte[])rawRequest));
+                    return new ReportHandler(_client, new ReportRequest(req));
+                case RequestType.ConnectAck:
+                    return new ConnectAckHandler(_client, new ConnectAckRequest(req));
                 default:
                     return null;
             }
