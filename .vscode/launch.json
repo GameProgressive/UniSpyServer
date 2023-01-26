@@ -50,6 +50,9 @@
             "cwd": "${workspaceRoot}/build/Debug/net6.0/",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
             "stopAtEntry": false
         },
         {

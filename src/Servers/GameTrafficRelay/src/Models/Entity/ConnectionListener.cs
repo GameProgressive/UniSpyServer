@@ -99,8 +99,11 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
 
         void IConnectionListener.Dispose()
         {
-            LogWriter.Debug($"[{ListeningEndPoint}] gamespy client listener stoped");
-            Dispose();
+            if (!IsDisposed)
+            {
+                LogWriter.Debug($"[{ListeningEndPoint}] gamespy client listener stoped");
+                Dispose();
+            }
         }
     }
 }

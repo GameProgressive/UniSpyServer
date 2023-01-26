@@ -32,24 +32,25 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
             {
                 loggerConfiguration.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.Warning);
             });
-//             builder.Host.UseSerilog((ctx, loggerConfiguration) =>
-//                 {
-//                     loggerConfiguration = LogWriter.LogConfig;
-//                     loggerConfiguration.Enrich.FromLogContext()
-//                     .Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
-//                     .Enrich.WithProperty("Environment", ctx.HostingEnvironment)
-//                     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-//                     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information);
-//                     // .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Warning);
-// #if DEBUG
-//                     // Used to filter out potentially bad data due debugging.
-//                     // Very useful when doing Seq dashboards and want to remove logs under debugging session.
-//                     loggerConfiguration.Enrich.WithProperty("DebuggerAttached", Debugger.IsAttached);
-// #endif
-//                 });
+            //             builder.Host.UseSerilog((ctx, loggerConfiguration) =>
+            //                 {
+            //                     loggerConfiguration = LogWriter.LogConfig;
+            //                     loggerConfiguration.Enrich.FromLogContext()
+            //                     .Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
+            //                     .Enrich.WithProperty("Environment", ctx.HostingEnvironment)
+            //                     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            //                     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information);
+            //                     // .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Warning);
+            // #if DEBUG
+            //                     // Used to filter out potentially bad data due debugging.
+            //                     // Very useful when doing Seq dashboards and want to remove logs under debugging session.
+            //                     loggerConfiguration.Enrich.WithProperty("DebuggerAttached", Debugger.IsAttached);
+            // #endif
+            //                 });
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                            .AddNewtonsoftJson();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.GameTrafficRelay
@@ -12,9 +12,9 @@ namespace UniSpyServer.Servers.GameTrafficRelay
     }
     public record NatNegotiationResponse
     {
-        [JsonConverter(typeof(IPAddresConverter))]
+        [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint IPEndPoint1 { get; set; }
-        [JsonConverter(typeof(IPAddresConverter))]
+        [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint IPEndPoint2 { get; set; }
     }
 }
