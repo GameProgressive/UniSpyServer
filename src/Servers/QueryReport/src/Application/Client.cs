@@ -13,11 +13,6 @@ namespace UniSpyServer.Servers.QueryReport.Application
         {
             _isLogRawMessage = true;
             // launch redis channel
-            if (ClientMessageHandler.Channel is null)
-            {
-                ClientMessageHandler.Channel = new RedisChannel();
-                ClientMessageHandler.Channel.StartSubscribe();
-            }
             Info = new ClientInfo();
         }
 

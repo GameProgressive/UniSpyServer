@@ -28,18 +28,25 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
             {
                 throw new Exception("hosting address is null");
             }
-            var ports = NetworkUtils.GetAvailablePorts();
-            var ends = new IPEndPoint[]{
-                new IPEndPoint(address,ports[0]),
-                new IPEndPoint(address,ports[1]),
-            };
 
-            var pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
-            ConnectionPairs.TryAdd(request.Cookie, pair);
+            // natneg connecthandler will send 2 request to game traffic relay
+            ConnectionPair pair;
+            lock (ConnectionPairs)
+            {
+                if (!ConnectionPairs.TryGetValue(request.Cookie, out pair))
+                {
+                    var ports = NetworkUtils.GetAvailablePorts();
+                    var ends = new IPEndPoint[]{new IPEndPoint(address,ports[0]),
+                                        new IPEndPoint(address,ports[1])};
+                    pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
+                    ConnectionPairs.TryAdd(request.Cookie, pair);
+                }
+            }
+
             var response = new NatNegotiationResponse()
             {
-                IPEndPoint1 = ends[0],
-                IPEndPoint2 = ends[1]
+                IPEndPoint1 = pair.Listener1.ListeningEndPoint,
+                IPEndPoint2 = pair.Listener2.ListeningEndPoint
             };
             return response;
         }

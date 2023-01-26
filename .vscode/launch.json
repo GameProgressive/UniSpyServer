@@ -137,19 +137,19 @@
             ]
         },
         {
-            "name": "NatNeg, GameRelay",
+            "name": "NatNeg, GTR",
             "configurations": [
                 "NatNeg",
-                "GameRelay"
+                "GTR"
             ]
         },
         {
-            "name": "QR, SB, NatNeg, GameRelay",
+            "name": "QR, SB, NatNeg, GTR",
             "configurations": [
                 "QR",
                 "SB",
                 "NatNeg",
-                "GameRelay"
+                "GTR"
             ]
         },
         {
@@ -170,7 +170,7 @@
             "name": "NatNeg, GTR",
             "configurations": [
                 "NatNeg",
-                "GameRelay"
+                "GTR"
             ]
         },
         {

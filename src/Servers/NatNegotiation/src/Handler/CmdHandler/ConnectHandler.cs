@@ -14,6 +14,7 @@ using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using RestSharp;
 using UniSpyServer.Servers.GameTrafficRelay;
+using RestSharp.Serializers.NewtonsoftJson;
 
 namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
@@ -84,6 +85,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             dict.Add("Cookie", _myInitInfo.Cookie);
             dict.Add("ServerId", _client.Connection.Server.ServerID);
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation");
+            client.UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(dict);
             var resp = client.Post<NatNegotiationResponse>(request);
             if (_client.Info.ClientIndex == NatClientIndex.GameClient)
