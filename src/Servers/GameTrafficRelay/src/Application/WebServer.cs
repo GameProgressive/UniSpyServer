@@ -4,6 +4,12 @@ using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using System.Diagnostics;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using Microsoft.Extensions.Logging;
+using Serilog.Events;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Application
 {
@@ -22,6 +28,25 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
         public void Start()
         {
             var builder = WebApplication.CreateBuilder();
+            builder.Host.ConfigureLogging((ctx, loggerConfiguration) =>
+            {
+                loggerConfiguration.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.Warning);
+            });
+//             builder.Host.UseSerilog((ctx, loggerConfiguration) =>
+//                 {
+//                     loggerConfiguration = LogWriter.LogConfig;
+//                     loggerConfiguration.Enrich.FromLogContext()
+//                     .Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
+//                     .Enrich.WithProperty("Environment", ctx.HostingEnvironment)
+//                     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+//                     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information);
+//                     // .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Warning);
+// #if DEBUG
+//                     // Used to filter out potentially bad data due debugging.
+//                     // Very useful when doing Seq dashboards and want to remove logs under debugging session.
+//                     loggerConfiguration.Enrich.WithProperty("DebuggerAttached", Debugger.IsAttached);
+// #endif
+//                 });
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -37,6 +62,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
 

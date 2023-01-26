@@ -29,8 +29,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             Cookie = cookie;
             Start();
             LastPacketReceivedTime = DateTime.Now;
-            // we set expire time to 1 hour
-            _expireTimeInterval = new TimeSpan(1, 0, 0);
+            // we set expire time to 2 minutes
+            _expireTimeInterval = new TimeSpan(0, 2, 0);
             _timer = new System.Timers.Timer
             {
                 Enabled = true,
@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             // we calculate the interval between last packe and current time
             if (ConnectionExistedTime > _expireTimeInterval)
             {
-                Dispose();
+                ((IConnectionListener)this).Dispose();
             }
         }
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

@@ -154,7 +154,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             // we calculate the interval between last packe and current time
             if (((IUdpConnection)Connection).ConnectionExistedTime > _expireTimeInterval)
             {
-                ClientPool.Remove(((IUdpConnection)Connection).RemoteIPEndPoint);
+                if (ClientPool.TryGetValue(((IUdpConnection)Connection).RemoteIPEndPoint, out _))
+                {
+                    ClientPool.Remove(((IUdpConnection)Connection).RemoteIPEndPoint);
+                }
                 Dispose();
             }
         }

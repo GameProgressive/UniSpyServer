@@ -16,6 +16,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+        <PackageReference Include="Serilog.Exceptions" Version="5.3.1" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
         <!-- <ProjectReference Include="..\..\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj" /> -->

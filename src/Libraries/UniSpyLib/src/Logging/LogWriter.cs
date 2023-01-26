@@ -15,43 +15,39 @@ namespace UniSpyServer.UniSpyLib.Logging
     /// </summary>
     public class LogWriter
     {
+        public static readonly LoggerConfiguration LogConfig;
         static LogWriter()
         {
-            SettngUpLogger();
-        }
-
-        public static void SettngUpLogger()
-        {
-            var logConfig = new LoggerConfiguration();
+            LogConfig = new LoggerConfiguration();
 
             switch (ConfigManager.Config.MinimumLogLevel)
             {
                 case LogEventLevel.Verbose:
-                    logConfig.MinimumLevel.Verbose();
+                    LogConfig.MinimumLevel.Verbose();
                     break;
                 case LogEventLevel.Information:
-                    logConfig.MinimumLevel.Information();
+                    LogConfig.MinimumLevel.Information();
                     break;
                 case LogEventLevel.Debug:
-                    logConfig.MinimumLevel.Debug();
+                    LogConfig.MinimumLevel.Debug();
                     break;
                 case LogEventLevel.Warning:
-                    logConfig.MinimumLevel.Warning();
+                    LogConfig.MinimumLevel.Warning();
                     break;
                 case LogEventLevel.Error:
-                    logConfig.MinimumLevel.Error();
+                    LogConfig.MinimumLevel.Error();
                     break;
                 case LogEventLevel.Fatal:
-                    logConfig.MinimumLevel.Fatal();
+                    LogConfig.MinimumLevel.Fatal();
                     break;
             }
-            Log.Logger = logConfig
+            LogConfig = LogConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
                 path: $"Logs/[{ServerLauncherBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
-                rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                rollingInterval: RollingInterval.Day);
+            Log.Logger = LogConfig.CreateLogger();
         }
 
         public static void Info(string message) => Log.Information(message);
