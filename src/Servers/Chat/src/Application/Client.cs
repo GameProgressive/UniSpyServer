@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.Chat.Application
                 {
                     completeBuffer = message;
                 }
-                LogNetworkReceiving((byte[])completeBuffer);
+                this.LogNetworkReceiving((byte[])completeBuffer);
                 new CmdSwitcher(this, completeBuffer).Switch();
             }
             else

@@ -92,7 +92,7 @@ namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request
 
                 if (tempKey == "")
                 {
-                    LogWriter.Verbose("Skiping empty key value");
+                    LogWriter.LogVerbose("Skiping empty key value");
                     continue;
                 }
                 // no matter happens we just update the key value

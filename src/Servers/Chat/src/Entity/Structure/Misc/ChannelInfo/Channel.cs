@@ -298,7 +298,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
             if (result.Count() > 1)
             {
-                LogWriter.Error($"Multiple user with same nick name in channel {Name}");
+                LogWriter.LogError($"Multiple user with same nick name in channel {Name}");
             }
         }
 

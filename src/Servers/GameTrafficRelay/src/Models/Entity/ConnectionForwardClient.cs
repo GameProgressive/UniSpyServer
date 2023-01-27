@@ -16,7 +16,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
         }
         public void ForwardMessage(byte[] data)
         {
-            LogWriter.Debug($" [{GameSpyTrafficListener.ListeningEndPoint}] => [{ForwardTargetClient.GameSpyTrafficListener.ListeningEndPoint}] {StringExtensions.ConvertPrintableCharToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
+            LogWriter.LogDebug($" [{GameSpyTrafficListener.ListeningEndPoint}] => [{ForwardTargetClient.GameSpyTrafficListener.ListeningEndPoint}] {StringExtensions.ConvertPrintableBytesToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
             ForwardTargetClient.ForwardMessage(data);
         }
     }

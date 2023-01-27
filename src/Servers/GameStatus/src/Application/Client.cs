@@ -3,6 +3,7 @@ using UniSpyServer.Servers.GameStatus.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.GameStatus.Application
 {
@@ -17,7 +18,7 @@ namespace UniSpyServer.Servers.GameStatus.Application
         protected override void OnConnected()
         {
             base.OnConnected();
-            LogNetworkReceiving(ClientInfo.ChallengeResponse);
+            this.LogNetworkSending(ClientInfo.ChallengeResponse);
             Connection.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
         }
         protected override void OnReceived(object buffer)

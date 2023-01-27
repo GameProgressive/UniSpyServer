@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.Chat.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(e);
+                LogWriter.LogError(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

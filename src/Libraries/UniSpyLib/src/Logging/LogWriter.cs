@@ -1,8 +1,8 @@
 using System;
-using System.Net;
 using Serilog;
 using Serilog.Events;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 
@@ -13,7 +13,7 @@ namespace UniSpyServer.UniSpyLib.Logging
     /// store LogMessage's into. Uses a Multi-Thread safe Queueing
     /// system, and provides full Asynchronous writing and flushing
     /// </summary>
-    public class LogWriter
+    public static class LogWriter
     {
         public static readonly LoggerConfiguration LogConfig;
         static LogWriter()
@@ -49,18 +49,46 @@ namespace UniSpyServer.UniSpyLib.Logging
                 rollingInterval: RollingInterval.Day);
             Log.Logger = LogConfig.CreateLogger();
         }
+        public static void LogVerbose(string message) => Log.Verbose(message);
+        public static void LogDebug(string message) => Log.Debug(message);
+        public static void LogInfo(string message) => Log.Information(message);
+        public static void LogWarn(string message) => Log.Warning(message);
+        public static void LogError(string message) => Log.Error(message);
+        public static void LogError(Exception e) => LogError(e.Message);
+        public static void LogFatal(string message) => Log.Fatal(message);
+        public static void LogCurrentClass(object param) => LogVerbose($"[ => ] [{param.GetType().Name}]");
+        public static void LogCurrentClass(this IClient client, object param) => LogVerbose(FormatLogMessage(client, $"[ => ] [{param.GetType().Name}]"));
 
-        public static void Info(string message) => Log.Information(message);
-        public static void Verbose(string message) => Log.Verbose(message);
-        public static void Debug(string message) => Log.Debug(message);
-        public static void Error(string message) => Log.Error(message);
-        public static void Fatal(string message) => Log.Fatal(message);
-        public static void Warning(string message) => Log.Warning(message);
+        public static string FormatLogMessage(this IClient client, string message) => $"[{client.Connection.RemoteIPEndPoint}] {message}";
+        public static string FormatNetworkLogMessage(string type, string message) => $"[{type}] {message}";
+        public static string FormatNetworkLogMessage(string type, byte[] message, bool isLogRaw)
+        {
+            if (isLogRaw)
+            {
+                // we first show printable bytes, then show all bytes
+                var tempLog = $"{StringExtensions.ConvertPrintableBytesToString(message)} [{StringExtensions.ConvertByteToHexString(message)}]";
+                return $"[{type}] {tempLog}";
+            }
+            else
+            {
+                var tempLog = StringExtensions.ConvertNonprintableBytesToHexString(message);
+                return $"[{type}] {tempLog}";
+            }
+        }
 
-        public static void ToLog(Exception e) => Error(e.Message);
-        public static void ToLog(string message) => Info(message);
-        public static void LogCurrentClass(object param) => Verbose($"[ => ] [{param.GetType().Name}]");
-        public static void LogNetworkMultiCast(string buffer) => Debug($"[Cast] {StringExtensions.ConvertNonprintableCharToHex(buffer)}");
+        public static void LogVerbose(this IClient client, string message) => Log.Verbose(FormatLogMessage(client, message));
+        public static void LogInfo(this IClient client, string message) => Log.Information(FormatLogMessage(client, message));
+        public static void LogDebug(this IClient client, string message) => Log.Debug(FormatLogMessage(client, message));
+        public static void LogWarn(this IClient client, string message) => Log.Warning(FormatLogMessage(client, message));
+        public static void LogError(this IClient client, string message) => Log.Error(FormatLogMessage(client, message));
+        public static void LogError(this IClient client, Exception e) => Log.Error(FormatLogMessage(client, e.Message));
+        public static void LogFatal(this IClient client, string message) => Log.Fatal(FormatLogMessage(client, message));
 
+        public static void LogNetworkReceiving(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Recv", message));
+        public static void LogNetworkSending(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Send", message));
+        public static void LogNetworkReceiving(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Recv", message, isLogRaw));
+        public static void LogNetworkSending(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Send", message, isLogRaw));
+        public static void LogNetworkMultiCast(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Cast", message));
+        public static void LogNetworkMultiCast(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Cast", message, isLogRaw));
     }
 }

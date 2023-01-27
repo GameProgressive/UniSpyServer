@@ -5,6 +5,7 @@ using UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Entity.Structure;
 using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis
 {

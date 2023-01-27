@@ -3,6 +3,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Handler;
 using UniSpyServer.Servers.PresenceConnectionManager.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
@@ -22,12 +23,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Application
             {
                 Connection.Disconnect();
                 // Throw the error                
-                LogWarn("The server challenge has already been sent. Cannot send another login challenge.");
+                this.LogWarn("The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             Info.LoginStat = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
-            LogNetworkSending(sendingBuffer);
+            this.LogNetworkSending(sendingBuffer);
             Connection.Send(sendingBuffer);
         }
 

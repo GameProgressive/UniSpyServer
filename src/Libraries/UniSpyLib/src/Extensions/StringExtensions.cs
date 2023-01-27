@@ -65,7 +65,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         }
         #region Undisplayable char convert
         /// <summary>
-        /// Convert byte array to hex string dispite if byte is printable or non-pritable
+        /// Convert byte array to pure hex string dispite if byte is printable or non-pritable
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
@@ -91,7 +91,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         /// </summary>
         /// <param name="buffer">Raw byte array</param>
         /// <returns></returns>
-        public static string ConvertNonprintableCharToHexString(this byte[] buffer)
+        public static string ConvertNonprintableBytesToHexString(this byte[] buffer)
         {
             StringBuilder temp = new StringBuilder();
             for (int i = 0; i < buffer.Length; i++)
@@ -109,11 +109,11 @@ namespace UniSpyServer.UniSpyLib.Extensions
         }
 
         /// <summary>
-        /// Only convert printable char to string [0x00] [0x01] [0x02]
+        /// Only convert printable bytes to string
         /// </summary>
         /// <param name="buffer">raw byte array</param>
         /// <returns></returns>
-        public static string ConvertPrintableCharToString(this byte[] buffer)
+        public static string ConvertPrintableBytesToString(this byte[] buffer)
         {
             char delimiter = ' ';
             StringBuilder temp = new StringBuilder();
@@ -136,7 +136,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         }
         public static string ConvertNonprintableCharToHex(this string buffer)
         {
-            return ConvertNonprintableCharToHexString(UniSpyEncoding.GetBytes(buffer));
+            return ConvertNonprintableBytesToHexString(UniSpyEncoding.GetBytes(buffer));
         }
         #endregion
 

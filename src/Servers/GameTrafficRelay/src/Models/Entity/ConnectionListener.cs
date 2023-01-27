@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -39,7 +38,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             };//10000
             _timer.Start();
             _timer.Elapsed += (s, e) => CheckExpiredClient();
-            LogWriter.Debug($"[{ListeningEndPoint}] gamespy client listener started.");
+            LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener started.");
         }
         protected override void OnStarted() => ReceiveAsync();
         private void CheckExpiredClient()
@@ -65,7 +64,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             }
 
             ThreadPool.QueueUserWorkItem(o => { try { ReceiveAsync(); } catch { } });
-            LogWriter.Debug($"[{GameSpyClientIPEndPoint}] [recv] {StringExtensions.ConvertPrintableCharToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
+            LogWriter.LogDebug($"[{GameSpyClientIPEndPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
             ForwardTargetListener.ForwardMessage(buffer);
             LastPacketReceivedTime = DateTime.Now;
         }
@@ -77,7 +76,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
             // we wait for clients connect 5 sec
             if (GameSpyClientIPEndPoint is null)
             {
-                LogWriter.Debug($"[{ListeningEndPoint}] is waiting for gamespy client to connect.");
+                LogWriter.LogDebug($"[{ListeningEndPoint}] is waiting for gamespy client to connect.");
                 Thread.Sleep(5000);
                 retryCount++;
             }
@@ -93,7 +92,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
                 ((IConnectionListener)this).Dispose();
                 return;
             }
-            LogWriter.Debug($"[{ListeningEndPoint}] => [{GameSpyClientIPEndPoint}]  {StringExtensions.ConvertPrintableCharToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
+            LogWriter.LogDebug($"[{ListeningEndPoint}] => [{GameSpyClientIPEndPoint}]  {StringExtensions.ConvertPrintableBytesToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
             SendAsync(GameSpyClientIPEndPoint, data);
         }
 
@@ -101,7 +100,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
         {
             if (!IsDisposed)
             {
-                LogWriter.Debug($"[{ListeningEndPoint}] gamespy client listener stoped");
+                LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener stoped");
                 Dispose();
             }
         }

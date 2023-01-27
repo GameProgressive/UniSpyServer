@@ -5,6 +5,7 @@ using UniSpyServer.Servers.ServerBrowser.V2.Entity.Exception;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.Servers.ServerBrowser.Application;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.V2.Handler.CmdHandler
 {

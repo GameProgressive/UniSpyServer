@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,7 +12,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
-        public static readonly IDictionary<IPEndPoint, IClient> ClientPool = new Dictionary<IPEndPoint, IClient>();
+        public static readonly IDictionary<IPEndPoint, IClient> ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
         public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
@@ -121,11 +122,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     goto default;
                 case NetworkConnectionType.Http:
                     var tempBuffer = ((IHttpRequest)buffer).Body;
-                    LogNetworkReceiving(UniSpyEncoding.GetBytes(tempBuffer));
+                    this.LogNetworkReceiving(tempBuffer);
                     break;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
-                    LogNetworkReceiving((byte[])buffer);
+                    this.LogNetworkReceiving((byte[])buffer, _isLogRawMessage);
                     break;
             }
             // we let child class to create swicher for us
@@ -195,8 +196,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = (byte[])response.SendingBuffer;
             }
-            // LogWriter.LogNetworkSending(Session.RemoteIPEndPoint, buffer);
-            LogNetworkSending(buffer);
+            this.LogNetworkSending(buffer, _isLogRawMessage);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {
@@ -209,39 +209,5 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         /// <param name="buffer">Raw byte array</param>
         void ITestClient.TestReceived(byte[] buffer) => OnReceived(buffer);
-        #region Formated Logging
-        public void LogInfo(string message) => LogWriter.Info(FormatLogMessage(message));
-        public void LogVerbose(string message) => LogWriter.Verbose(FormatLogMessage(message));
-        public void LogDebug(string message) => LogWriter.Debug(FormatLogMessage(message));
-        public void LogWarn(string message) => LogWriter.Warning(FormatLogMessage(message));
-        public void LogError(string message) => LogWriter.Error(FormatLogMessage(message));
-        private string FormatLogMessage(string message) => $"[{Connection.RemoteIPEndPoint}] {message}";
-        private string FormatNetworkLogMessage(string type, string message) => FormatLogMessage($"[{type}] {message}");
-        protected void LogNetworkTraffic(string type, byte[] message, bool isLogRaw = false)
-        {
-            // we format bytes to c# byte array format for convient unittest
-            // this method is for printable and nonprintable mixed network traffic such as serverbrowser and queryreport
-            string tempNatLog;
-            if (isLogRaw)
-            {
-                var tempLog = $"{StringExtensions.ConvertPrintableCharToString(message)} [{StringExtensions.ConvertByteToHexString(message)}]";
-                tempNatLog = FormatNetworkLogMessage(type, tempLog);
-            }
-            else
-            {
-                var tempLog = StringExtensions.ConvertNonprintableCharToHexString(message);
-                tempNatLog = FormatNetworkLogMessage(type, tempLog);
-            }
-            LogWriter.Debug(tempNatLog);
-        }
-        public void LogNetworkReceiving(byte[] message) => LogNetworkTraffic("Recv", message, _isLogRawMessage);
-        public void LogNetworkSending(byte[] message) => LogNetworkTraffic("Send", message, _isLogRawMessage);
-        public void LogNetworkReceiving(string message) => LogNetworkReceiving(UniSpyEncoding.GetBytes(message));
-        public void LogNetworkSending(string message) => LogNetworkSending(UniSpyEncoding.GetBytes(message));
-        public void LogNetworkForwarding(IPEndPoint receiver, byte[] message) => LogNetworkTraffic($"=> [{receiver}]", message, _isLogRawMessage);
-        public void LogNetworkForwarding(IPEndPoint receiver, string message) => LogNetworkForwarding(receiver, UniSpyEncoding.GetBytes(message));
-        public void LogNetworkMultiCast(byte[] message) => LogNetworkTraffic("Cast", message);
-        public void LogNetworkMultiCast(string message) => LogNetworkMultiCast(UniSpyEncoding.GetBytes(message));
-        #endregion
     }
 }

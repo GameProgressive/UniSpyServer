@@ -14,7 +14,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         public RequestBase(object rawRequest)
         {
             RawRequest = rawRequest;
-            LogWriter.LogCurrentClass(this);
         }
 
         public abstract void Parse();

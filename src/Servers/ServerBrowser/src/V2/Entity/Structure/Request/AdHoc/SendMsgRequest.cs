@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request
                 }
                 else
                 {
-                    LogWriter.Warning("send message request incomplete.");
+                    LogWriter.LogWarn("send message request incomplete.");
                 }
             }
         }

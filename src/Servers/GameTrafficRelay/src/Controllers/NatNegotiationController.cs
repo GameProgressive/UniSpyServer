@@ -19,11 +19,10 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
         {
             _logger = logger;
         }
-
         [HttpPost]
         public NatNegotiationResponse GetNatNegotiationInfo(NatNegotiationRequest request)
         {
-            var address = this.HttpContext.Connection.LocalIpAddress;
+            var address = this?.HttpContext?.Connection?.LocalIpAddress;
             if (address is null)
             {
                 throw new Exception("hosting address is null");

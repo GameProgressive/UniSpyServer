@@ -15,7 +15,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             _client = client;
             _request = request;
-            LogWriter.LogCurrentClass(this);
+            _client.LogCurrentClass(this);
         }
         public virtual void Handle()
         {
@@ -58,7 +58,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             // we only log exception message when this message is UniSpyException
             if (ex is UniSpyException)
             {
-                _client.LogError(ex.Message);
+                _client.LogError(ex);
             }
             else
             {

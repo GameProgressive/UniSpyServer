@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
             return _peerGroupRedisClient.Context.FirstOrDefault(x => x.GameName == gameName);
         }
 
-        public IQueryable<Grouplist> GetGroupList(string gameName)
+        public List<Grouplist> GetGroupList(string gameName)
         {
             using (var db = new UniSpyContext())
             {
@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
                              join gl in db.Grouplists on g.Gameid equals gl.Gameid
                              where g.Gamename == gameName
                              select gl;
-                return result;
+                return result.ToList();
             }
 
         }

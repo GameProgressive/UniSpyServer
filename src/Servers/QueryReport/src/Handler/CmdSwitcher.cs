@@ -7,6 +7,7 @@ using UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.QueryReport.V2.Handler
 {

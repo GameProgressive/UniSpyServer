@@ -41,7 +41,7 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
             }
             catch (IndexOutOfRangeException e)
             {
-                LogWriter.ToLog(e);
+                LogWriter.LogError(e);
             }
 
             return dict;
@@ -50,7 +50,7 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
-            LogWriter.ToLog(
+            LogWriter.LogDebug(
                 $"Received request {recv.Keys.First()} with content: {string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray())}");
         }
 
@@ -85,12 +85,12 @@ namespace UniSpyServer.UniSpyLib.MiscMethod
             }
             catch (RegexMatchTimeoutException e)
             {
-                LogWriter.ToLog(e);
+                LogWriter.LogError(e);
                 return false;
             }
             catch (ArgumentException e)
             {
-                LogWriter.ToLog(e);
+                LogWriter.LogError(e);
                 return false;
             }
 

@@ -6,7 +6,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
     {
         public ResultBase()
         {
-            LogWriter.LogCurrentClass(this);
         }
     }
 }

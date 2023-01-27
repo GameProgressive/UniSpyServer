@@ -22,7 +22,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         {
             _request = request;
             _result = result;
-            LogWriter.LogCurrentClass(this);
         }
 
         /// <summary>

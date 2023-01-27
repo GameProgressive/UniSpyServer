@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Net.Http;
-using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -84,8 +82,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var dict = new Dictionary<string, object>();
             dict.Add("Cookie", _myInitInfo.Cookie);
             dict.Add("ServerId", _client.Connection.Server.ServerID);
-            var client = new RestClient($"http://{relayEndPoint}/NatNegotiation");
-            client.UseNewtonsoftJson();
+            var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(dict);
             var resp = client.Post<NatNegotiationResponse>(request);
             if (_client.Info.ClientIndex == NatClientIndex.GameClient)
