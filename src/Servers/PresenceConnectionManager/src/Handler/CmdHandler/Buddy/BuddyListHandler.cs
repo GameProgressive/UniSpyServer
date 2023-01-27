@@ -17,8 +17,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
         }
         protected override void DataOperation()
         {
-            var result = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,
+            var friendsId = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,
                                                                           _client.Info.SubProfileInfo.NamespaceId);
+            _result.ProfileIDList = friendsId;
+
         }
         protected override void ResponseConstruct()
         {

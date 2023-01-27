@@ -5,11 +5,10 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class BuddyListResult : ResultBase
     {
-        public List<int> ProfileIDList;
+        public List<int> ProfileIDList { get; set; }
 
         public BuddyListResult()
         {
-            ProfileIDList = new List<int>();
         }
     }
 }
