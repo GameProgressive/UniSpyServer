@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         public Client(IConnection connection) : base(connection)
         {
             Info = new ClientInfo();
-            _isLogRawMessage = true;
+            IsLogRaw = true;
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);

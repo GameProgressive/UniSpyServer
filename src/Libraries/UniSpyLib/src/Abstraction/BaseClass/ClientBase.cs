@@ -5,7 +5,6 @@ using System.Net;
 using System.Timers;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
@@ -27,7 +26,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
-        protected bool _isLogRawMessage;
+        public bool IsLogRaw { get; protected set; }
 
         public ClientBase(IConnection connection)
         {
@@ -126,7 +125,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     break;
                 default:
                     buffer = DecryptMessage((byte[])buffer);
-                    this.LogNetworkReceiving((byte[])buffer, _isLogRawMessage);
+                    this.LogNetworkReceiving((byte[])buffer);
                     break;
             }
             // we let child class to create swicher for us
@@ -196,7 +195,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             {
                 buffer = (byte[])response.SendingBuffer;
             }
-            this.LogNetworkSending(buffer, _isLogRawMessage);
+            this.LogNetworkSending(buffer);
             //Encrypt the response if Crypto is not null
             if (Crypto is not null)
             {

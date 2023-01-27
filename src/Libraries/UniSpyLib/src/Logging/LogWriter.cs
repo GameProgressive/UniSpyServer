@@ -86,9 +86,9 @@ namespace UniSpyServer.UniSpyLib.Logging
 
         public static void LogNetworkReceiving(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Recv", message));
         public static void LogNetworkSending(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Send", message));
-        public static void LogNetworkReceiving(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Recv", message, isLogRaw));
-        public static void LogNetworkSending(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Send", message, isLogRaw));
+        public static void LogNetworkReceiving(this IClient client, byte[] message) => LogDebug(client, FormatNetworkLogMessage("Recv", message, client.IsLogRaw));
+        public static void LogNetworkSending(this IClient client, byte[] message) => LogDebug(client, FormatNetworkLogMessage("Send", message, client.IsLogRaw));
         public static void LogNetworkMultiCast(this IClient client, string message) => LogDebug(client, FormatNetworkLogMessage("Cast", message));
-        public static void LogNetworkMultiCast(this IClient client, byte[] message, bool isLogRaw = false) => LogDebug(client, FormatNetworkLogMessage("Cast", message, isLogRaw));
+        public static void LogNetworkMultiCast(this IClient client, byte[] message) => LogDebug(client, FormatNetworkLogMessage("Cast", message, client.IsLogRaw));
     }
 }

@@ -13,7 +13,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
         public Client(IConnection connection) : base(connection)
         {
-            _isLogRawMessage = true;
+            IsLogRaw = true;
             Info = new ClientInfo();
             // Crypto is init in ServerListHandler
         }

@@ -8,9 +8,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     }
     public interface IClient
     {
-        // we store client info here
+        /// <summary>
+        /// whether log raw request and response message bytes
+        /// </summary>
+        /// <value></value>
+        bool IsLogRaw { get; }
         IConnection Connection { get; }
         ICryptography Crypto { get; }
+        // we store client info here
         ClientInfoBase Info { get; }
         public void Send(IResponse response);
     }

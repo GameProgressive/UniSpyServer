@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.QueryReport.Application
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
         public Client(IConnection connection) : base(connection)
         {
-            _isLogRawMessage = true;
+            IsLogRaw = true;
             // launch redis channel
             Info = new ClientInfo();
         }
