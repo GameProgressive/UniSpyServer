@@ -1,16 +1,15 @@
 using System.Linq;
-using System.Net;
+using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
 using UniSpyServer.Servers.ServerBrowser.V2.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.ServerBrowser.Application
 {
     public sealed class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
+        private byte[] _incompleteBuffer;
         public Client(IConnection connection) : base(connection)
         {
             IsLogRaw = true;
@@ -20,6 +19,43 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
 
+        protected override void OnReceived(object buffer)
+        {
+            var data = buffer as byte[];
+            byte[] compeleteBuffer;
+            if (((RequestType)data[2]) == RequestType.SendMessageRequest)
+            {
+                if (data.Length > 9)
+                {
+                    // complete sendmessage request received
+                    compeleteBuffer = data;
+                }
+                else
+                {
+                    _incompleteBuffer = data;
+                    return;
+                }
+            }
+            else if (data.Take(6).SequenceEqual(NatNegotiation.Abstraction.BaseClass.RequestBase.MagicData))
+            {
+                if (_incompleteBuffer is not null)
+                {
+                    compeleteBuffer = _incompleteBuffer.Concat(data).ToArray();
+                    _incompleteBuffer = null;
+                }
+                else
+                {
+                    // we ignore natneg message when _incompleteBuffer is null
+                    return;
+                }
+            }
+            else
+            {
+                compeleteBuffer = data;
+            }
+
+            base.OnReceived(compeleteBuffer);
+        }
         // protected override void OnReceived(object buffer)
         // {
         //     // base.OnReceived(buffer);

@@ -7,6 +7,25 @@ namespace UniSpyServer.Servers.ServerBrowser.V2.Test
     public class GameTest
     {
         [Fact]
+        public void SplitSendMessageTest()
+        {
+            // Given
+            var splitedRequests = new List<byte[]>()
+            {
+                // send message request
+                new byte[]{0x00,0x13,0x02,0x4F,0xD1,0xE0,0x1D,0x54,0xC5},
+                // natneg message request
+                new byte[]{0xFD,0xFC,0x1E,0x66,0x6A,0xB2,0x00,0x00,0x2C,0xFD}
+            };
+            var compeleteRequest = new byte[] { 0x00, 0x13, 0x02, 0x4F, 0xD1, 0xE0, 0x1D, 0x54, 0xC5, 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x00, 0x00, 0x2C, 0xFD };
+            // When
+            foreach (var req in splitedRequests)
+            {
+                ((ITestClient)TestClasses.SBClient).TestReceived(req);
+            }
+            ((ITestClient)TestClasses.SBClient).TestReceived(compeleteRequest);
+        }
+        [Fact]
         public void Gmtest20220613()
         {
             // Given

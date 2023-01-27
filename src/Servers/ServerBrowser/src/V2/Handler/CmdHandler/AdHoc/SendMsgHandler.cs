@@ -22,38 +22,23 @@ namespace UniSpyServer.Servers.ServerBrowser.V2.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            var gameServer = StorageOperation.Persistance.GetGameServerInfo(_request.GameServerPublicIPEndPoint);
 
-            if (_request.PrefixMessage != null)
+            if (gameServer is null)
             {
-                var req = new SendMsgRequest(_request.PrefixMessage);
-                req.Parse();
-                _client.Info.AdHocMessage = req;
+                throw new SBException($"No match server found by address {_request.GameServerPublicIPEndPoint}, we ignore client request.");
             }
 
-            // when full request is received we publish message to qr
-            if (_client.Info.AdHocMessage != null && _request.PostfixMessage != null)
+            var message = new ClientMessageRequest()
             {
-                var gameServer = StorageOperation.Persistance.GetGameServerInfo(_client.Info.AdHocMessage.GameServerPublicIPEndPoint);
-
-                if (gameServer is null)
-                {
-                    throw new SBException("There is no matching game server regesterd.");
-                }
-
-                var message = new ClientMessageRequest()
-                {
-                    ServerBrowserSenderId = _client.Connection.Server.ServerID,
-                    NatNegMessage = _request.PostfixMessage,
-                    InstantKey = gameServer.InstantKey,
-                    TargetIPEndPoint = gameServer.QueryReportIPEndPoint,
-                    CommandName = QueryReport.V2.Entity.Enumerate.RequestType.ClientMessage
-                };
-                StorageOperation.Persistance.PublishClientMessage(message);
-                _client.LogInfo($"Send client message to QueryReport Server: {gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
-                // set adhoc message to null
-                _client.Info.AdHocMessage = null;
-            }
-
+                ServerBrowserSenderId = _client.Connection.Server.ServerID,
+                NatNegMessage = _request.ClientMessage,
+                InstantKey = gameServer.InstantKey,
+                TargetIPEndPoint = gameServer.QueryReportIPEndPoint,
+                CommandName = QueryReport.V2.Entity.Enumerate.RequestType.ClientMessage
+            };
+            StorageOperation.Persistance.PublishClientMessage(message);
+            _client.LogInfo($"Send client message to QueryReport Server: {gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
         }
     }
 }

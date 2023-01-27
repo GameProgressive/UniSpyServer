@@ -7,8 +7,7 @@ namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate
         SendMessageRequest,
         KeepAliveReply,
         MapLoopRequest,
-        PlayerSearchRequest,
-        NatNegMsgRequest = 30,
+        PlayerSearchRequest
     }
 
     public enum ResponseType
