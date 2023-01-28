@@ -11,10 +11,11 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
     public sealed class BuddyListHandler : LoggedInCmdHandlerBase
     {
         private new BuddyListResult _result { get => (BuddyListResult)base._result; set => base._result = value; }
-        public BuddyListHandler(IClient client, IRequest request) : base(client, request)
+        public BuddyListHandler(IClient client) : base(client, null)
         {
             _result = new BuddyListResult();
         }
+        protected override void RequestCheck() { }
         protected override void DataOperation()
         {
             var friendsId = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,

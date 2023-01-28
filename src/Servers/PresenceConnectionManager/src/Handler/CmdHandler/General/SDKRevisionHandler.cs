@@ -18,8 +18,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Gene
             if (_client.Info.SdkRevision.IsSupportGPINewListRetrevalOnLogin)
             {
                 //send buddy list and block list
-                new BuddyListHandler(_client, null).Handle();
-                new BlockListHandler(_client, null).Handle();
+                new BuddyListHandler(_client).Handle();
+                new BlockListHandler(_client).Handle();
             }
         }
     }

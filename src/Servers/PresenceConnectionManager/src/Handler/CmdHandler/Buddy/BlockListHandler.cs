@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Budd
     {
         private new BlockListResult _result { get => (BlockListResult)base._result; set => base._result = value; }
 
-        public BlockListHandler(IClient client, IRequest request) : base(client, request)
+        public BlockListHandler(IClient client) : base(client, null)
         {
             _result = new BlockListResult();
         }

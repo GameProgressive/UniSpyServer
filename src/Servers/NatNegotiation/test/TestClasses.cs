@@ -19,7 +19,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
-
             return new Client(connectionMock.Object);
         }
     }
