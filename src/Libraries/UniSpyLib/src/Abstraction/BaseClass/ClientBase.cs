@@ -1,45 +1,31 @@
 using System.Collections.Concurrent;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Timers;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
-        public static readonly IDictionary<IPEndPoint, IClient> ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
+        public static readonly ConcurrentDictionary<IPEndPoint, IClient> ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
         public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
         /// <summary>
-        /// The time interval that client remove from ClientPool
-        /// </summary>
-        /// <value></value>
-        protected TimeSpan _expireTimeInterval { get; set; }
-        protected DateTime LastPacketReceivedTime { get; set; }
-        public TimeSpan ConnectionExistedTime => DateTime.Now - LastPacketReceivedTime;
-        /// <summary>
         /// The timer to count and invoke some event
         /// </summary>
-        private Timer _timer;
+        private EasyTimer _timer;
         public bool IsLogRaw { get; protected set; }
 
         public ClientBase(IConnection connection)
         {
             Connection = connection;
             EventBinding();
-            lock (ClientPool)
-            {
-                // we fire this when there are no record in Sessions
-                if (!ClientPool.ContainsKey(connection.RemoteIPEndPoint))
-                {
-                    ClientPool.Add(Connection.RemoteIPEndPoint, this);
-                }
-            }
+            ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         }
         private void EventBinding()
         {
@@ -52,18 +38,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive += OnReceived;
-                    // todo add timer here
-                    _timer = new Timer
-                    {
-                        Enabled = true,
-                        Interval = 60000,
-                        AutoReset = true
-                    };//10000
-                      // we set expire time to 1 hour
-                    LastPacketReceivedTime = DateTime.Now;
-                    _expireTimeInterval = new TimeSpan(1, 0, 0);
-                    _timer.Start();
-                    _timer.Elapsed += (s, e) => CheckExpiredClient();
+                    _timer = new EasyTimer(TimeSpan.FromHours(1), TimeSpan.FromMinutes(1), CheckExpiredClient);
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive += OnReceived;
@@ -80,30 +55,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        protected virtual void OnConnected()
-        {
-            lock (ClientPool)
-            {
-                if (!ClientPool.ContainsKey(Connection.RemoteIPEndPoint))
-                {
-                    ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
-                }
-            }
-        }
+        protected virtual void OnConnected() => ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        protected virtual void OnDisconnected()
-        {
-            lock (ClientPool)
-            {
-                if (ClientPool.ContainsKey(Connection.RemoteIPEndPoint))
-                {
-                    ClientPool.Remove(Connection.RemoteIPEndPoint);
-                }
-            }
-            Dispose();
-        }
+        protected virtual void OnDisconnected() => Dispose();
 
         protected abstract ISwitcher CreateSwitcher(object buffer);
         /// <summary>
@@ -117,7 +73,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
                 case NetworkConnectionType.Tcp:
                     goto default;
                 case NetworkConnectionType.Udp:
-                    LastPacketReceivedTime = DateTime.Now;
+                    // LastPacketReceivedTime = DateTime.Now;
+                    _timer.RefreshLastActiveTime();
                     goto default;
                 case NetworkConnectionType.Http:
                     var tempBuffer = ((IHttpRequest)buffer).Body;
@@ -150,29 +107,27 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         private void CheckExpiredClient()
         {
             // we calculate the interval between last packe and current time
-            if (((IUdpConnection)Connection).ConnectionExistedTime > _expireTimeInterval)
+            if (_timer.IsExpired)
             {
-                if (ClientPool.TryGetValue(((IUdpConnection)Connection).RemoteIPEndPoint, out _))
-                {
-                    ClientPool.Remove(((IUdpConnection)Connection).RemoteIPEndPoint);
-                }
                 Dispose();
             }
         }
 
         public void Dispose()
         {
+            this.LogInfo("client disposed.");
             switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
                     ((ITcpConnection)Connection).OnReceive -= OnReceived;
                     ((ITcpConnection)Connection).OnConnect -= OnConnected;
                     ((ITcpConnection)Connection).OnDisconnect -= OnDisconnected;
+                    ClientPool.TryRemove(Connection.RemoteIPEndPoint, out _);
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive -= OnReceived;
-                    _timer.Elapsed -= (s, e) => CheckExpiredClient();
                     _timer.Dispose();
+                    ClientPool.TryRemove(Connection.RemoteIPEndPoint, out _);
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive -= OnReceived;

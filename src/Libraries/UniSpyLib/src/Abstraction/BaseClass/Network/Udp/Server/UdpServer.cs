@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
@@ -18,16 +16,14 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public string ServerName { get; private set; }
-        public static IDictionary<IPEndPoint, UdpConnection> Connections;
+        // The connections are handled by ClientBase
+        // public ConcurrentDictionary<IPEndPoint, IConnection> Connections { get; private set; }
         IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
-        static UdpServer()
-        {
-            Connections = new ConcurrentDictionary<IPEndPoint, UdpConnection>();
-        }
         public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
             ServerName = serverName;
+            // Connections = new ConcurrentDictionary<IPEndPoint, IConnection>();
         }
         public new void Start()
         {
@@ -48,28 +44,30 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             var connection = CreateConnection((IPEndPoint)endPoint);
-            connection.OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
+            (connection as UdpConnection).OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
         }
         protected abstract IClient CreateClient(IConnection connection);
-        protected virtual UdpConnection CreateConnection(IPEndPoint endPoint)
+        protected virtual IUdpConnection CreateConnection(IPEndPoint endPoint)
         {
             // we have to check if the endPoint is already in the dictionary,
             // which means the client is already in the dictionary, we do not need to create it
             // we just retrieve the connection from the dictionary
-            lock (Connections)
+            // lock (Connections)
+            // {
+            // UdpConnection conn;
+            if (ClientBase.ClientPool.TryGetValue(endPoint, out var client))
             {
-                if (Connections.ContainsKey(endPoint))
-                {
-                    return Connections[endPoint];
-                }
-                else
-                {
-                    var connection = new UdpConnection(this, endPoint);
-                    CreateClient(connection);
-                    Connections.Add(endPoint, connection);
-                    return connection;
-                }
+                return client.Connection as IUdpConnection;
             }
+            else
+            {
+                var connection = new UdpConnection(this, endPoint);
+                client = CreateClient(connection);
+                ClientBase.ClientPool.GetOrAdd(endPoint, client);
+                return client.Connection as IUdpConnection;
+                // return connection;
+            }
+            // }
         }
     }
 }

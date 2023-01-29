@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Events;
@@ -30,7 +31,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.Interface
     /// </summary>
     public interface IUdpConnection : IConnection
     {
-        public TimeSpan ConnectionExistedTime { get; }
+        // public TimeSpan ConnectionExistedTime { get; }
         void Send(IPEndPoint endPoint, byte[] response);
         void Send(IPEndPoint endPoint, string response);
     }

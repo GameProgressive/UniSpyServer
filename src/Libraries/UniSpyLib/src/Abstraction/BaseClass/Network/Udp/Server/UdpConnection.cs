@@ -14,8 +14,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
     {
         public UdpServer Server { get; private set; }
         public IPEndPoint RemoteIPEndPoint { get; private set; }
-        public DateTime LastPacketReceivedTime { get; protected set; }
-        public TimeSpan ConnectionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
         IServer IConnection.Server => Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Udp;
         public event OnReceivedEventHandler OnReceive;
@@ -24,7 +22,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         {
             Server = server;
             RemoteIPEndPoint = endPoint;
-            LastPacketReceivedTime = DateTime.Now;
         }
         public virtual void OnReceived(byte[] message)
         {
@@ -45,13 +42,12 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             }
             else
             {
-                throw new UniSpyException("ITcpConnection.Send: response must be string or byte[]");
+                throw new UniSpyException("IUdpConnection.Send: response must be string or byte[]");
             }
         }
         public void Send(string response) => Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));
         public void Send(byte[] response) => Server.Send(RemoteIPEndPoint, response);
         public void Send(IPEndPoint endPoint, string response) => Send(endPoint, UniSpyEncoding.GetBytes(response));
         public void Send(IPEndPoint endPoint, byte[] response) => Server.Send(endPoint, response);
-
     }
 }

@@ -80,7 +80,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
                 }
                 else
                 {
-                    throw new NNException("All init packets are not ready, check the call of this property, make sure call after init packets are collected.");
+                    throw new NNException("Client is sending wrong initpacket.");
                 }
             }
         }
