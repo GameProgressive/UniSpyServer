@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result
     {
         public byte? GotYourData { get; private set; }
         public ConnectPacketStatus? Finished { get; private set; }
-        public IPEndPoint RemoteEndPoint { private get; set; }
+        public IPEndPoint RemoteEndPoint { get; set; }
         public byte[] RemoteIPAddressBytes => RemoteEndPoint.Address.GetAddressBytes();
         public byte[] RemotePortBytes => BitConverter.GetBytes((ushort)RemoteEndPoint.Port).Reverse().ToArray();
         public byte Version;

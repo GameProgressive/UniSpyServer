@@ -111,6 +111,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             lock (_initInfo)
             {
                 if (_initInfo.IsReceivedAllPackets && _initInfo.isNegotiating == false)
+                // if (_initInfo.IsReceivedAllPackets)
                 {
                     DetermineNatType();
                     _initInfo.isNegotiating = true;
@@ -139,7 +140,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // The success rate of complex NAT negotiation is very low, so we use the forwarding server directly
             // This is only way to make sure 100% p2p
             // GameSpy game server have client message spam protect, if natneg fail once, the client message from this client is ignored by game server, so we must ensure 100% connect.
-            if (natProp.NatType < NatType.Symmetric)
+            if (natProp.NatType >= NatType.Symmetric)
             {
                 _initInfo.IsUsingRelayServer = true;
             }

@@ -65,8 +65,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 //todo we save the fail information some where else.
             }
 
+
+
+            // we delete local data
+            var searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
+            InitHandler.LocalInitInfoPool.TryRemove(searchKey, out _);
 #if DEBUG
             // we do not delete redis data, because we need analysis
+
 #else
             // we delete the information on redis
             StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);

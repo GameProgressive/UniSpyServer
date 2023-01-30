@@ -64,10 +64,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _request,
                 new ConnectResult { RemoteEndPoint = _guessedOthersIPEndPoint });
         }
-
+        // protected override void Response()
+        // {
+        //     base.Response();
+        //     var searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
+        //     InitHandler.LocalInitInfoPool.TryGetValue(searchKey, out var myInitInfo);
+        //     lock (myInitInfo)
+        //     {
+        //         myInitInfo.isNegotiating = false;
+        //     }
+        // }
         private void UsingPublicAddressToNatNegotiate()
         {
-            var guessedClientIPEndPoint = _othersInitInfo.PublicIPEndPoint;
+            _guessedOthersIPEndPoint = _othersInitInfo.PublicIPEndPoint;
         }
         private void UsingGameRelayServerToNatNegotiate()
         {
