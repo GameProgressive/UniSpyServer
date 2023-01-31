@@ -48,7 +48,23 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            if (_myInitInfo.IsUsingRelayServer || _othersInitInfo.IsUsingRelayServer)
+            bool IsBothHaveSamePublicIP = _myInitInfo.PublicIPEndPoint.Address.Equals(_othersInitInfo.PublicIPEndPoint.Address);
+            bool IsHaveNAT = !(_myInitInfo.NatType == NatType.NoNat && _othersInitInfo.NatType == NatType.NoNat);
+            // due to multi NAT situation, we have to check if clients are in same public ip address, and both client are no NAT
+            // if two clients have one public ip like 202.91.34.188, we set the negotiate address for each other such as 
+            // client1 public ip 202.91.34.188:123, private ip: 192.168.1.100
+            // client2 public ip 202.91.34.188:124, private ip: 192.168.1.101
+            // there are situations as follows.
+            // 1. clients are in multi NAT with different router
+            // 2. clients are in one NAT with same router
+            // there are solutions as follows.
+            // 1. we can set public ip as negotiation address, but if situation 1 happen, the router will not transfer data for each clients.
+            // 2. we can set private IP as negotiation address, but if situation 1 happen, two clients can not receive each information, because they are not in same router.
+            // 3. we can set private ip as negotiation address, if clients are in one NAT, small possibility
+            // gamespy sdk need 100% success on nat negotiation, therefore if clients have same public ip and have NAT, to make sure 100% success, we use GameTrafficRelay server.
+            if (_myInitInfo.IsUsingRelayServer
+            || _othersInitInfo.IsUsingRelayServer
+            || (IsBothHaveSamePublicIP && IsHaveNAT))
             {
                 UsingGameRelayServerToNatNegotiate();
             }
@@ -64,16 +80,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 _request,
                 new ConnectResult { RemoteEndPoint = _guessedOthersIPEndPoint });
         }
-        // protected override void Response()
-        // {
-        //     base.Response();
-        //     var searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
-        //     InitHandler.LocalInitInfoPool.TryGetValue(searchKey, out var myInitInfo);
-        //     lock (myInitInfo)
-        //     {
-        //         myInitInfo.isNegotiating = false;
-        //     }
-        // }
+
         private void UsingPublicAddressToNatNegotiate()
         {
             _guessedOthersIPEndPoint = _othersInitInfo.PublicIPEndPoint;

@@ -40,29 +40,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _result = new InitResult();
         }
-        protected override void RequestCheck()
-        {
-            base.RequestCheck();
-            // _searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
-            // note: async socket may cause problem when adding _initInfo to _initInfoPool, requires a lock
-
-            // if (!LocalInitInfoPool.TryGetValue(_searchKey, out _initInfo))
-            // {
-            // _initInfo = new NatInitInfo()
-            // {
-            //     ServerID = _client.Connection.Server.ServerID,
-            //     Cookie = (uint)_request.Cookie,
-            //     UseGamePort = _request.UseGamePort,
-            //     ClientIndex = (NatClientIndex)_request.ClientIndex,
-            //     Version = _request.Version,
-            // };
-            // _initInfo = LocalInitInfoPool.GetOrAdd(_searchKey, _initInfo);
-            // {
-            //     // update the AddressInfos
-            //     _initInfo.AddressInfos.TryAdd()
-            // }
-            // }
-        }
         protected override void DataOperation()
         {
             _initInfo = new NatInitInfo()
@@ -140,6 +117,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // The success rate of complex NAT negotiation is very low, so we use the forwarding server directly
             // This is only way to make sure 100% p2p
             // GameSpy game server have client message spam protect, if natneg fail once, the client message from this client is ignored by game server, so we must ensure 100% connect.
+            _initInfo.NatType = natProp.NatType;
             if (natProp.NatType >= NatType.Symmetric)
             {
                 _initInfo.IsUsingRelayServer = true;

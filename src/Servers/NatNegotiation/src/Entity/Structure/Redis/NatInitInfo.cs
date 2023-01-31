@@ -88,6 +88,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
             }
         }
 
+        public NatType NatType { get; internal set; }
+
         public NatInitInfo() : base(TimeSpan.FromMinutes(3))
         {
             AddressInfos = new ConcurrentDictionary<NatPortType, NatAddressInfo>();
