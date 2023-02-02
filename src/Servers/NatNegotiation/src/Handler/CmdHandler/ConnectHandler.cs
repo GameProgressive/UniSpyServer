@@ -46,6 +46,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
             _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
         }
+
+        // NOTE: If GTR is not used and both clients are on the same LAN, we need to use PrivateIPEndPoint.
         protected override void DataOperation()
         {
             var isUsingRelayServer = WhetherUsingRelayServer(_myInitInfo, _othersInitInfo);
