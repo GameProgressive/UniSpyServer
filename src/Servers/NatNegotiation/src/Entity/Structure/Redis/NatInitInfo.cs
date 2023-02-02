@@ -43,10 +43,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public bool isNegotiating { get; set; }
         public int? RetryNatNegotiationTime { get; set; }
         public byte? UseGamePort { get; init; }
-        /// <summary>
-        /// Is using UniSpyGameRelay to relay game traffic for clients, default value is false
-        /// </summary>
-        public bool IsUsingRelayServer { get; set; }
         public bool IsReceivedAllPackets => AddressInfos.ContainsKey(NatPortType.NN1)
                                             && AddressInfos.ContainsKey(NatPortType.NN2)
                                             && AddressInfos.ContainsKey(NatPortType.NN3);

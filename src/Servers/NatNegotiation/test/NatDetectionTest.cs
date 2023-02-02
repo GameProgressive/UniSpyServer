@@ -1,297 +1,139 @@
-// using System.Collections.Generic;
-// using System.Net;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-// using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
-// using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
-// using Xunit;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.Net;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
+using Xunit;
 
-// namespace UniSpyServer.Servers.NatNegotiation.Test
-// {
-//     public class NatDetectionTest
-//     {
-//         [Fact]
-//         public void PublicIPTest()
-//         {
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>();
-//             initResults.Add(NatPortType.GP, new NatInitInfo()
-//             {
-//                  = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             });
-//             initResults.Add(NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             });
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
+namespace UniSpyServer.Servers.NatNegotiation.Test
+{
+    public class NatDetectionTest
+    {
+        [Fact]
+        public void PublicIPTest()
+        {
+            var initResults = new Dictionary<NatPortType, NatInitInfo>();
 
-//             Assert.Equal(NatType.NoNat, prop.NatType);
-//         }
-//         [Fact]
-//         public void FullConeTest()
-//         {
+            var initInfo = new NatInitInfo();
+            initInfo.AddressInfos.TryAdd(NatPortType.GP, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:1"),
+                PrivateIPEndPoint = IPEndPoint.Parse("10.0.0.1:1")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN1, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("10.0.0.1:2")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN2, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("10.0.0.1:2")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN3, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("10.0.0.1:2")
+            });
 
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>();
-//             initResults.Add(NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
+            var prop = AddressCheckHandler.DetermineNatType(initInfo);
 
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
-//             Assert.Equal(NatType.FullCone, prop.NatType);
+            Assert.Equal(NatType.NoNat, prop.NatType);
+        }
+        [Fact]
+        public void FullConeTest()
+        {
+            var initResults = new Dictionary<NatPortType, NatInitInfo>();
 
-//         }
+            var initInfo = new NatInitInfo();
+            initInfo.AddressInfos.TryAdd(NatPortType.GP, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:1"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:1")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN1, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:0")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN2, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:2")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN3, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:2")
+            });
 
-//         [Fact]
-//         public void SymetricTest()
-//         {
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>();
-//             initResults.Add(NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             });
-//             initResults.Add(NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
-//             });
-//             initResults.Add(NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 83)
-//             });
+            var prop = AddressCheckHandler.DetermineNatType(initInfo);
+            Assert.Equal(NatType.FullCone, prop.NatType);
 
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
-//             Assert.Equal(NatType.Symmetric, prop.NatType);
+        }
 
-//         }
-//         [Fact]
-//         /// <summary>
-//         /// Because GameSpy natneg did not send message to client so we can not tell it is restricted cone
-//         /// </summary>
-//         public void RestrictedConeTest()
-//         {
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>();
-//             initResults.Add(NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
+        [Fact]
+        public void SymetricTest()
+        {
+            var initInfo = new NatInitInfo();
+            initInfo.AddressInfos.TryAdd(NatPortType.GP, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:1"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:1")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN1, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:2"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:2")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN2, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:3"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:2")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN3, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("10.0.0.1:4"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.1.1:2")
+            });
 
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
-//             Assert.Equal(NatType.FullCone, prop.NatType);
-//         }
-//         [Fact]
-//         /// <summary>
-//         /// Because Natneg did not send message to client, so we can not tell if it is a port restricted cone
-//         /// </summary>
-//         public void PortRestrictedConeTest()
-//         {
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>();
-//             initResults.Add(NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             initResults.Add(NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 82),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             });
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
-//             Assert.Equal(NatType.FullCone, prop.NatType);
-//         }
+            var prop = AddressCheckHandler.DetermineNatType(initInfo);
+            Assert.Equal(NatType.Symmetric, prop.NatType);
 
-//         [Fact]
-//         public void LanTest()
-//         {
-//             # region same ip test
-//             var clientPackets = new Dictionary<NatPortType, NatInitInfo>()
-//             {
-//                 { NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             } },
-//                 { NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
-//             } }
-//             };
-//             var serverPackets = new Dictionary<NatPortType, NatInitInfo>()
-//             {
-//                 { NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             } },
-//                 { NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 81),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             } }
-//             };
-//             // Given
-//             bool result = AddressCheckHandler.IsInSameLan(clientPackets, serverPackets);
-//             Assert.True(result);
+        }
+        [Fact]
+        public void NatStrategyTest()
+        {
 
-//             #endregion
-//             clientPackets = new Dictionary<NatPortType, NatInitInfo>()
-//             {
-//                 { NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 81)
-//             } },
-//                 { NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 80),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 82)
-//             } }
-//             };
-//             serverPackets = new Dictionary<NatPortType, NatInitInfo>()
-//             {
-//                 { NatPortType.GP, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.2"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 80)
-//             } },
-//                 { NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 83),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 83)
-//             } },
-//                 { NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 84),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), 84)
-//             } }
-//             };
-//             result = AddressCheckHandler.IsInSameLan(clientPackets, serverPackets);
-//             Assert.True(result);
-//         }
-//         [Fact]
-//         public void JuliusNetworkTest()
-//         {
-//             var initResults = new Dictionary<NatPortType, NatInitInfo>()
-//             {
-//                 { NatPortType.GP, new NatInitInfo()
-//             {
-//                  GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 51520)
-//             } },
-//                 { NatPortType.NN1, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.1"), 0),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 51521)
-//             } },
-//                 { NatPortType.NN2, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 49832)
-//             } },
-//                 { NatPortType.NN3, new NatInitInfo()
-//             {
-//                 GPPrivateIPEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.60"), 49832),
-//                 PublicIPEndPoint = new IPEndPoint(IPAddress.Parse("91.52.105.210"), 49832)
-//             } }
-//             };
-            
-//             var prop = AddressCheckHandler.DetermineNatType(initResults);
-//             Assert.Equal(NatType.Symmetric, prop.NatType);
-//         }
-//     }
-// }
+        }
+        [Fact]
+        public void JuliusNetworkTest()
+        {
+            var initInfo = new NatInitInfo();
+            initInfo.AddressInfos.TryAdd(NatPortType.GP, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("91.52.105.210:51520"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.0.60:0")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN1, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("91.52.105.210:51521"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.0.60:0")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN2, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("91.52.105.210:49832"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.0.60:49832")
+            });
+            initInfo.AddressInfos.TryAdd(NatPortType.NN3, new NatAddressInfo()
+            {
+                PublicIPEndPoint = IPEndPoint.Parse("91.52.105.210:49832"),
+                PrivateIPEndPoint = IPEndPoint.Parse("192.168.0.60:49832")
+            });
+
+            var prop = AddressCheckHandler.DetermineNatType(initInfo);
+            Assert.Equal(NatType.Symmetric, prop.NatType);
+        }
+    }
+}

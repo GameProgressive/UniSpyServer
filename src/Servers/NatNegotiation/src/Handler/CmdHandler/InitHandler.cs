@@ -118,10 +118,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             // This is only way to make sure 100% p2p
             // GameSpy game server have client message spam protect, if natneg fail once, the client message from this client is ignored by game server, so we must ensure 100% connect.
             _initInfo.NatType = natProp.NatType;
-            if (natProp.NatType >= NatType.Symmetric)
-            {
-                _initInfo.IsUsingRelayServer = true;
-            }
         }
         /// <summary>
         /// Prepare to send connect response

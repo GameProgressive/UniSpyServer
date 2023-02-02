@@ -48,23 +48,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            bool IsBothHaveSamePublicIP = _myInitInfo.PublicIPEndPoint.Address.Equals(_othersInitInfo.PublicIPEndPoint.Address);
-            bool IsHaveNAT = !(_myInitInfo.NatType == NatType.NoNat && _othersInitInfo.NatType == NatType.NoNat);
-            // due to multi NAT situation, we have to check if clients are in same public ip address, and both client are no NAT
-            // if two clients have one public ip like 202.91.34.188, we set the negotiate address for each other such as 
-            // client1 public ip 202.91.34.188:123, private ip: 192.168.1.100
-            // client2 public ip 202.91.34.188:124, private ip: 192.168.1.101
-            // there are situations as follows.
-            // 1. clients are in multi NAT with different router
-            // 2. clients are in one NAT with same router
-            // there are solutions as follows.
-            // 1. we can set public ip as negotiation address, but if situation 1 happen, the router will not transfer data for each clients.
-            // 2. we can set private IP as negotiation address, but if situation 1 happen, two clients can not receive each information, because they are not in same router.
-            // 3. we can set private ip as negotiation address, if clients are in one NAT, small possibility
-            // gamespy sdk need 100% success on nat negotiation, therefore if clients have same public ip and have NAT, to make sure 100% success, we use GameTrafficRelay server.
-            if (_myInitInfo.IsUsingRelayServer
-            || _othersInitInfo.IsUsingRelayServer
-            || (IsBothHaveSamePublicIP && IsHaveNAT))
+            var isUsingRelayServer = WhetherUsingRelayServer(_myInitInfo, _othersInitInfo);
+            if (isUsingRelayServer)
             {
                 UsingGameRelayServerToNatNegotiate();
             }
@@ -112,6 +97,31 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             else
             {
                 throw new NNException("The client index is not applied");
+            }
+        }
+
+        public static bool WhetherUsingRelayServer(NatInitInfo info1, NatInitInfo info2)
+        {
+            // due to multi NAT situation, we have to check if clients are in same public ip address, and both client are no NAT
+            // if two clients have one public ip like 202.91.34.188, we set the negotiate address for each other such as 
+            // client1 public ip 202.91.34.188:123, private ip: 192.168.1.100
+            // client2 public ip 202.91.34.188:124, private ip: 192.168.1.101
+            // there are situations as follows.
+            // 1. clients are in multi NAT with different router
+            // 2. clients are in one NAT with same router
+            // there are solutions as follows.
+            // 1. we can set public ip as negotiation address, but if situation 1 happen, the router will not transfer data for each clients.
+            // 2. we can set private IP as negotiation address, but if situation 1 happen, two clients can not receive each information, because they are not in same router.
+            // 3. we can set private ip as negotiation address, if clients are in one NAT, small possibility
+            // gamespy sdk need 100% success on nat negotiation, therefore if clients have same public ip and have NAT, to make sure 100% success, we use GameTrafficRelay server.
+            bool IsBothHaveSamePublicIP = info1.PublicIPEndPoint.Address.Equals(info2.PublicIPEndPoint.Address);
+            if (info1.NatType < NatType.Symmetric && info1.NatType < NatType.Symmetric && !IsBothHaveSamePublicIP)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }
