@@ -44,7 +44,7 @@
             "name": "GTR",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build_gametraffic",
+            "preLaunchTask": "build_gtr",
             "program": "${workspaceRoot}/build/Debug/net6.0/UniSpyServer.Servers.GameTrafficRelay.dll",
             "args": [],
             "cwd": "${workspaceRoot}/build/Debug/net6.0/",
@@ -167,13 +167,6 @@
             ]
         },
         {
-            "name": "NatNeg, GTR",
-            "configurations": [
-                "NatNeg",
-                "GTR"
-            ]
-        },
-        {
             "name": "Legacy servers",
             "configurations": [
                 "PCM",
@@ -205,6 +198,7 @@
                 "PCM",
                 "PSP",
                 "NatNeg",
+                "GTR",
                 "CDKey",
                 "Chat",
                 "QR",

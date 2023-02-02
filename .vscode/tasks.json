@@ -92,7 +92,7 @@
             "problemMatcher": "$msCompile",
         },
         {
-            "label": "build_gametraffic",
+            "label": "build_gtr",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -104,10 +104,7 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile",
-            "dependsOn": [
-                "build_natneg"
-            ]
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "build_natneg",
