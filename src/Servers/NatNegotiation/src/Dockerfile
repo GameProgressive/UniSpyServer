@@ -5,7 +5,6 @@ EXPOSE 27901/udp
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj", "src/Servers/NatNegotiation/src/"]
-COPY ["src/Servers/GameTrafficRelay/src/UniSpyServer.Servers.GameTrafficRelay.csproj", "src/Servers/GameTrafficRelay/src/"]
 COPY ["src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj", "src/Libraries/UniSpyLib/src/"]
 RUN dotnet restore "src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj"
 COPY . .
