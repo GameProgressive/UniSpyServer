@@ -55,7 +55,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             switch (strategy)
             {
                 case NatStrategyType.UsePublicIP:
-                    UsingPublicAddressToNatNegotiate();
+                    UsingPublicAddressToNegotiate();
                     break;
                 // due to multi NAT situation, we have to check if clients are in same public ip address, and both client are no NAT
                 // if two clients have one public ip like 202.91.34.188, we set the negotiate address for each other such as 
@@ -73,7 +73,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     // temprary use GTR
                     goto case NatStrategyType.UseGameTrafficRelay;
                 case NatStrategyType.UseGameTrafficRelay:
-                    UsingGameRelayServerToNatNegotiate();
+                    UsingGameRelayServerToNegotiate();
                     break;
             }
             _client.LogInfo($"My NAT type: {_myInitInfo.NatType}, others NAT type: {_othersInitInfo.NatType} Strategy: {strategy}, Guessing IPEndPoint: {_guessedOthersIPEndPoint}");
@@ -86,11 +86,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 new ConnectResult { RemoteEndPoint = _guessedOthersIPEndPoint });
         }
 
-        private void UsingPublicAddressToNatNegotiate()
+        private void UsingPublicAddressToNegotiate()
         {
             _guessedOthersIPEndPoint = _othersInitInfo.PublicIPEndPoint;
         }
-        private void UsingGameRelayServerToNatNegotiate()
+        private void UsingPrivateAddressToNegotiate()
+        {
+            _guessedOthersIPEndPoint = _othersInitInfo.PrivateIPEndPoint;
+        }
+        private void UsingGameRelayServerToNegotiate()
         {
             var relayServers = GameTrafficRelay.Application.StorageOperation.Persistance.GetAvaliableRelayServers();
             if (relayServers.Count == 0)
@@ -124,13 +128,21 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             bool IsBothHaveSamePublicIP = info1.PublicIPEndPoint.Address.Equals(info2.PublicIPEndPoint.Address);
             // whether first 3 bytes of ip address is same, like 192.168.1.101 and 192.168.1.102
-            bool IsBothInSamePrivateIPRange = info1.PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray()
-                                                .SequenceEqual(info2.PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
+            bool IsBothInSamePrivateIPRange = info1.PrivateIPEndPoint.Address.GetAddressBytes().Take(3)
+                                                .SequenceEqual(info2.PrivateIPEndPoint.Address.GetAddressBytes().Take(3));
             if (info1.NatType < NatType.Symmetric && info1.NatType < NatType.Symmetric)
             {
-                if (IsBothHaveSamePublicIP && IsBothInSamePrivateIPRange)
+                if (IsBothHaveSamePublicIP)
                 {
-                    return NatStrategyType.UsePrivateIP;
+                    if (IsBothInSamePrivateIPRange)
+                    {
+                        return NatStrategyType.UsePrivateIP;
+
+                    }
+                    else
+                    {
+                        return NatStrategyType.UseGameTrafficRelay;
+                    }
                 }
                 else
                 {
