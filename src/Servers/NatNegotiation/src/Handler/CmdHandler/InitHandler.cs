@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
@@ -50,9 +48,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            // we have use sync code to make sure the data is saved on redis
-            Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
-            // StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
+
             lock (_client.Info)
             {
                 if (_client.Info.ClientIndex is null)
@@ -64,8 +60,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                     _client.Info.Cookie = _request.Cookie;
                 }
             }
-            if (_request.PortType == NatPortType.NN3)
+            // we have use sync code to make sure the data is saved on redis
+            // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
+            StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
+            // init packet nn3 is the last one client send, although receiving nn3 does not mean we received other init packets, but we can use this as a flag to prevent start multiple connect handler
+            if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
             {
+                _client.Info.IsNeigotiating = true;
                 Task.Run(() => PrepareForConnecting());
             }
         }
@@ -77,6 +78,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         private void PrepareForConnecting()
         {
             _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_request.Cookie}.");
+            Thread.Sleep(2000);
             int waitCount = 1;
             // we only wait 8 seconds
             while (waitCount <= 4)
@@ -90,7 +92,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 }
                 else
                 {
-                    _client.LogInfo($"Have no negotiator found with cookie: {_request.Cookie}, retry count: {waitCount}.");
+                    _client.LogInfo($"No negotiator found with cookie: {_request.Cookie}, retry count: {waitCount}.");
                 }
                 waitCount++;
                 Thread.Sleep(2000);

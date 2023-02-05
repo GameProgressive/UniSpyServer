@@ -89,7 +89,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public NatInitInfo(List<NatAddressInfo> infos)
         {
             AddressInfos = infos.Select((i) => new { i }).ToDictionary(a => ((NatPortType)a.i.PortType), a => a.i);
-            if (IsReceivedAllPackets)
+            if (!IsReceivedAllPackets)
             {
                 throw new NNException("Incomplete init packets");
             }

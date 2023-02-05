@@ -7,6 +7,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
     {
         public uint? Cookie { get; set; }
         public NatClientIndex? ClientIndex { get; set; }
+        public bool IsNeigotiating { get; set; }
         public ClientInfo() : base()
         {
         }
