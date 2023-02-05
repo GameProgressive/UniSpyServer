@@ -1,11 +1,12 @@
+using System;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class CommonRequestBase : RequestBase
     {
-        public NatClientIndex? ClientIndex { get; protected set; }
-        public byte? UseGamePort { get; protected set; }
+        public NatClientIndex ClientIndex { get; protected set; }
+        public bool UseGamePort { get; protected set; }
         protected CommonRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
@@ -13,7 +14,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
         {
             base.Parse();
             ClientIndex = (NatClientIndex)RawRequest[13];
-            UseGamePort = RawRequest[14];
+            UseGamePort = Convert.ToBoolean(RawRequest[14]);
         }
     }
 }

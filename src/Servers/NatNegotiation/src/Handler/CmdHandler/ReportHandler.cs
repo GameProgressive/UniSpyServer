@@ -39,15 +39,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            var initInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
-            if (initInfos.Count != 2)
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
+            if (addressInfos.Count != 8)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");
             }
 
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
-            _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
-            _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
+            // we need both info to determine nat type
+            _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
+            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).ToList());
         }
         protected override void ResponseConstruct()
         {
@@ -65,11 +66,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 //todo we save the fail information some where else.
             }
 
-
-
-            // we delete local data
-            var searchKey = NatInitInfo.CreateKey((uint)_request.Cookie, (NatClientIndex)_request.ClientIndex, (uint)_request.Version);
-            InitHandler.LocalInitInfoPool.TryRemove(searchKey, out _);
 #if DEBUG
             // we do not delete redis data, because we need analysis
 

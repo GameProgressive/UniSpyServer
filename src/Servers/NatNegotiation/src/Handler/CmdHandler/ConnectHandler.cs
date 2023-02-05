@@ -36,26 +36,29 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // detecting nat
-            var initInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
-            if (initInfos.Count != 2)
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
+            if (addressInfos.Count != 8)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to two.");
             }
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
             // we need both info to determine nat type
-            _othersInitInfo = initInfos.Where(i => i.ClientIndex == otherClientIndex).First();
-            _myInitInfo = initInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).First();
+            _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
+            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).ToList());
         }
         protected override void DataOperation()
         {
-            var isUsingRelayServer = WhetherUsingRelayServer(_myInitInfo, _othersInitInfo);
-            if (isUsingRelayServer)
+            var strategy = DetermineNATStrategy(_myInitInfo, _othersInitInfo);
+            switch (strategy)
             {
-                UsingGameRelayServerToNatNegotiate();
-            }
-            else
-            {
-                UsingPublicAddressToNatNegotiate();
+                case NatStrategyType.UsePublicIP:
+                    UsingPublicAddressToNatNegotiate();
+                    break;
+                case NatStrategyType.UsePrivateIP:
+                    goto case NatStrategyType.UseGameTrafficRelay;
+                case NatStrategyType.UseGameTrafficRelay:
+                    UsingGameRelayServerToNatNegotiate();
+                    break;
             }
         }
 
@@ -122,6 +125,29 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             else
             {
                 return true;
+            }
+        }
+
+        public static NatStrategyType DetermineNATStrategy(NatInitInfo info1, NatInitInfo info2)
+        {
+            bool IsBothHaveSamePublicIP = info1.PublicIPEndPoint.Address.Equals(info2.PublicIPEndPoint.Address);
+            // whether first 3 bytes of ip address is same, like 192.168.1.101 and 192.168.1.102
+            bool IsBothInSamePrivateIPRange = info1.PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray()
+                                                .SequenceEqual(info2.PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
+            if (info1.NatType < NatType.Symmetric && info1.NatType < NatType.Symmetric)
+            {
+                if (IsBothHaveSamePublicIP && IsBothInSamePrivateIPRange)
+                {
+                    return NatStrategyType.UsePrivateIP;
+                }
+                else
+                {
+                    return NatStrategyType.UsePublicIP;
+                }
+            }
+            else
+            {
+                return NatStrategyType.UseGameTrafficRelay;
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
@@ -16,7 +17,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
             data.AddRange(SendingBuffer);
             data.Add((byte)_request.PortType);
             data.Add((byte)_request.ClientIndex);
-            data.Add((byte)_request.UseGamePort);
+            data.Add(Convert.ToByte(_request.UseGamePort));
             data.AddRange(_result.RemoteIPAddressBytes);
             data.AddRange(_result.RemotePortBytes);
             SendingBuffer = data.ToArray();

@@ -20,19 +20,19 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
                          && k.Version == version);
         }
 
-        public List<NatInitInfo> GetInitInfos(Guid serverId, uint cookie)
+        public List<NatAddressInfo> GetInitInfos(Guid serverId, uint cookie)
         {
             return _redisClient.Context.Where(k =>
                  k.ServerID == serverId
                  && k.Cookie == cookie).ToList();
         }
 
-        public void UpdateInitInfo(NatInitInfo info)
+        public void UpdateInitInfo(NatAddressInfo info)
         {
             _redisClient.SetValue(info);
         }
 
-        public void RemoveInitInfo(NatInitInfo info)
+        public void RemoveInitInfo(NatAddressInfo info)
         {
             _redisClient.DeleteKeyValue(info);
         }
