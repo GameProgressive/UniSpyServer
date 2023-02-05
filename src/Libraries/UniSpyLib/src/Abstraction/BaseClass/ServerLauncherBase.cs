@@ -89,6 +89,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected static void ShowUniSpyLogo()
         {
             // the ascii art font name is "small"
+            Console.WriteLine(@"");
             Console.WriteLine(@" _   _      _ ___           ___ ");
             Console.WriteLine(@"| | | |_ _ (_) __|_ __ _  _/ __| ___ _ ___ _____ _ _ ");
             Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
