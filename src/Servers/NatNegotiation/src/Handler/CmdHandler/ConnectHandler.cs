@@ -46,6 +46,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
             _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).ToList());
         }
+
+        // NOTE: If GTR is not used and both clients are on the same LAN, we need to use PrivateIPEndPoint.
         protected override void DataOperation()
         {
             var strategy = DetermineNATStrategy(_myInitInfo, _othersInitInfo);

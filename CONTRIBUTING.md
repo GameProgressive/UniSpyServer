@@ -79,7 +79,7 @@ List of supported scopes:
 |   **chat**    |           UniSpyServer.Servers.Chat            |
 |    **gs**     |        UniSpyServer.Servers.GameStatus         |
 |    **gtr**    |     UniSpyServer.Servers.GameTrafficRelay      |
-|  **natneg**   |      UniSpyServer.Servers.NatNegotiation       |
+|    **nn**     |      UniSpyServer.Servers.NatNegotiation       |
 |    **pcm**    | UniSpyServer.Servers.PresenceConnectionManager |
 |    **psp**    |   UniSpyServer.Servers.PresenceSearchPlayer    |
 |    **qr**     |        UniSpyServer.Servers.QueryReport        |
