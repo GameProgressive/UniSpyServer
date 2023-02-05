@@ -65,15 +65,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 //todo we save the fail information some where else.
             }
-
-#if DEBUG
-            // we do not delete redis data, because we need analysis
-
-#else
-            // we delete the information on redis
-            StorageOperation.Persistance.RemoveInitInfo(_myInitInfo);
-            StorageOperation.Persistance.RemoveInitInfo(_othersInitInfo);
-#endif
         }
     }
 }
