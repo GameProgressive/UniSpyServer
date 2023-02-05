@@ -84,8 +84,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
 
             var dict = new Dictionary<string, object>();
-            dict.Add("Cookie", _myInitInfo.Cookie);
-            dict.Add("ServerId", _client.Connection.Server.ServerID);
+            dict["Cookie"] = _myInitInfo.Cookie;
+            dict["ServerId"] = _client.Connection.Server.ServerID;
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(dict);
             var resp = client.Post<NatNegotiationResponse>(request);
