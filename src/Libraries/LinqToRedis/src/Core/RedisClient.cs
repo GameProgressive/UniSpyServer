@@ -100,28 +100,10 @@ namespace UniSpyServer.LinqToRedis
             }
             return dict;
         }
-        // public bool UpdateValue(TValue value)
-        // {
-        //     var keys = GetMatchedKeys(value);
-        //     if (keys.Count != 1)
-        //     {
-        //         throw new System.Exception("Update value failed, key not found or more than one key found");
-        //     }
-        //     return Db.StringSet(keys.First(), JsonConvert.SerializeObject(value));
-        // }
-        public bool SetValue(TValue value)
+        public void SetValue(TValue value)
         {
-            // var keys = GetMatchedKeys(value);
-            // if (keys.Count != 0)
-            // {
-            //     throw new System.Exception("Set value failed, key already exists");
-            // }
-            var result = Db.StringSet(value.FullKey, JsonConvert.SerializeObject(value));
-            if (value.ExpireTime is not null)
-            {
-                Db.KeyExpire(value.FullKey, value.ExpireTime.Value);
-            }
-            return result;
+            // we use async method to make redis set operation do not block our codes
+            Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
         }
         public TValue GetValue(IRedisKey key)
         {
