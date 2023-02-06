@@ -10,5 +10,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Abstraction.Interface
         int CountInitInfo(uint cookie, byte version);
         List<NatAddressInfo> GetInitInfos(Guid serverId, uint cookie);
         void RemoveInitInfo(NatAddressInfo info);
+        void UpdateNatFailInfo(NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo info);
+        int GetNatFailInfo(NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo info);
     }
 }

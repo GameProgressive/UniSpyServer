@@ -1,3 +1,4 @@
+using System.Net;
 using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
 using UniSpyServer.Servers.NatNegotiation.Application;
@@ -64,6 +65,11 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             if (!(bool)_request.IsNatSuccess)
             {
                 //todo we save the fail information some where else.
+                var info = new NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
+                if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)
+                {
+                    StorageOperation.Persistance.UpdateNatFailInfo(info);
+                }
             }
         }
     }

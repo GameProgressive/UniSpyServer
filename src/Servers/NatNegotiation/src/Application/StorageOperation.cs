@@ -12,6 +12,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         /// natneg init information redis server.
         /// </summary>
         private static RedisClient _redisClient = new RedisClient();
+        private static NatNegotiation.Entity.Structure.Redis.Fail.RedisClient _natFailRedisClient = new NatNegotiation.Entity.Structure.Redis.Fail.RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();
         public int CountInitInfo(uint cookie, byte version)
         {
@@ -35,6 +36,16 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         public void RemoveInitInfo(NatAddressInfo info)
         {
             _redisClient.DeleteKeyValue(info);
+        }
+
+        public void UpdateNatFailInfo(NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo info)
+        {
+            _natFailRedisClient.SetValue(info);
+        }
+
+        public int GetNatFailInfo(Entity.Structure.Redis.Fail.NatFailInfo info)
+        {
+            return _natFailRedisClient.Context.Where(i => i.PublicIPAddress1.Equals(info.PublicIPAddress1) && i.PublicIPAddress2.Equals(info.PublicIPAddress2)).Count();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
         NatNeg = 2,
         GamePresence = 3,
         GameTrafficRelay = 4,
+        NatFailInfo = 5
     }
 
     /// <summary>

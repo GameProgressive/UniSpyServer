@@ -51,7 +51,18 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         // NOTE: If GTR is not used and both clients are on the same LAN, we need to use PrivateIPEndPoint.
         protected override void DataOperation()
         {
-            var strategy = DetermineNATStrategy(_myInitInfo, _othersInitInfo);
+            var info = new NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
+            NatStrategyType strategy;
+            
+            if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)
+            {
+                strategy = DetermineNATStrategy(_myInitInfo, _othersInitInfo);
+            }
+            else
+            {
+                strategy = NatStrategyType.UseGameTrafficRelay;
+            }
+
             switch (strategy)
             {
                 case NatStrategyType.UsePublicIP:
