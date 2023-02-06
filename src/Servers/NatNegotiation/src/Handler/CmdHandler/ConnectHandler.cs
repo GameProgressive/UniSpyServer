@@ -53,13 +53,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             var info = new NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
             NatStrategyType strategy;
-            
+
             if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)
             {
                 strategy = DetermineNATStrategy(_myInitInfo, _othersInitInfo);
             }
             else
             {
+                _client.LogInfo("The public ip is in nat fail record database, we use game traffic relay.");
                 strategy = NatStrategyType.UseGameTrafficRelay;
             }
 
