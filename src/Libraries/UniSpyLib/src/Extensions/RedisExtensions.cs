@@ -4,10 +4,9 @@ namespace UniSpyServer.UniSpyLib.Extensions
     {
         PeerGroup = 0,
         GameServer = 1,
-        NatNeg = 2,
-        GamePresence = 3,
-        GameTrafficRelay = 4,
-        NatFailInfo = 5
+        NatAddressInfo = 2,
+        NatFailInfo = 3,
+        GameTrafficRelay = 4
     }
 
     /// <summary>
