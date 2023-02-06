@@ -59,10 +59,15 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 {
                     _client.Info.Cookie = _request.Cookie;
                 }
+
+                if (!_client.Info.InitInfoStorageState.ContainsKey(_request.PortType))
+                {
+                    // todo make the code do not block and redis do not have thread theaf problem
+                    // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
+                    StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
+                    _client.Info.InitInfoStorageState[_request.PortType] = true;
+                }
             }
-            // we have use sync code to make sure the data is saved on redis
-            // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
-            StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
             // init packet nn3 is the last one client send, although receiving nn3 does not mean we received other init packets, but we can use this as a flag to prevent start multiple connect handler
             if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
             {
