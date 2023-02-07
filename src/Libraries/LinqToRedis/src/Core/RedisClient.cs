@@ -27,10 +27,6 @@ namespace UniSpyServer.LinqToRedis
         public QueryableObject<TValue> Context;
         // public List<TValue> AllValues => Context.ToList();
         // public List<TValue> AllKeys => Context.Select(k => k.Key).ToList();
-        static RedisClient()
-        {
-            ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
-        }
         public RedisClient(string connectionString, int db)
         {
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
