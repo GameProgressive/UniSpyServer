@@ -15,12 +15,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             0x00, 0x00, 0x03, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new InitRequest(rawRequest);
             request.Parse();
-            Assert.Equal(RequestType.Init, request.CommandName);
-            Assert.Equal((uint)151191552, request.Cookie);
-            Assert.Equal(NatClientIndex.GameClient, request.ClientIndex);
-            Assert.Equal(false, request.UseGamePort);
-            Assert.Equal((byte)3, request.Version);
-            Assert.Equal(NatPortType.NN1, request.PortType);
+            Assert.True(RequestType.Init == request.CommandName);
+            Assert.True((uint)151191552 == request.Cookie);
+            Assert.True(NatClientIndex.GameClient == request.ClientIndex);
+            Assert.True(false == request.UseGamePort);
+            Assert.True((byte)3 == request.Version);
+            Assert.True(NatPortType.NN1 == request.PortType);
         }
         [Fact]
         public void AddressTest()
@@ -28,12 +28,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var rawRequest = new byte[] { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03, 0x0a, 0x00, 0x00, 0x03, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new AddressCheckRequest(rawRequest);
             request.Parse();
-            Assert.Equal(RequestType.AddressCheck, request.CommandName);
-            Assert.Equal((uint)151191552, request.Cookie);
+            Assert.True(RequestType.AddressCheck == request.CommandName);
+            Assert.True((uint)151191552 == request.Cookie);
             Assert.True(NatClientIndex.GameClient == request.ClientIndex);
-            Assert.Equal(false, request.UseGamePort);
-            Assert.Equal((byte)3, request.Version);
-            Assert.Equal(NatPortType.NN1, request.PortType);
+            Assert.True(false == request.UseGamePort);
+            Assert.True((byte)3 == request.Version);
+            Assert.True(NatPortType.NN1 == request.PortType);
         }
         [Fact]
         public void ErtAckTest()
@@ -45,12 +45,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new ErtAckRequest(rawRequest);
             request.Parse();
-            Assert.Equal(RequestType.ErtAck, request.CommandName);
-            Assert.Equal((uint)151191552, request.Cookie);
-            Assert.Equal(NatClientIndex.GameClient, request.ClientIndex);
-            Assert.Equal((byte)3, request.Version);
-            Assert.Equal(false, request.UseGamePort);
-            Assert.Equal(NatPortType.NN1, request.PortType);
+            Assert.True(RequestType.ErtAck == request.CommandName);
+            Assert.True((uint)151191552 == request.Cookie);
+            Assert.True(NatClientIndex.GameClient == request.ClientIndex);
+            Assert.True((byte)3 == request.Version);
+            Assert.True(false == request.UseGamePort);
+            Assert.True(NatPortType.NN1 == request.PortType);
         }
         [Fact]
         public void NatifyTest()
@@ -62,12 +62,12 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             var request = new ErtAckRequest(rawRequest);
             request.Parse();
-            Assert.Equal(RequestType.NatifyRequest, request.CommandName);
-            Assert.Equal((uint)151191552, request.Cookie);
-            Assert.Equal(NatClientIndex.GameClient, request.ClientIndex);
-            Assert.Equal((byte)3, request.Version);
-            Assert.Equal(false, request.UseGamePort);
-            Assert.Equal(NatPortType.NN1, request.PortType);
+            Assert.True(RequestType.NatifyRequest == request.CommandName);
+            Assert.True((uint)151191552 == request.Cookie);
+            Assert.True(NatClientIndex.GameClient == request.ClientIndex);
+            Assert.True((byte)3 == request.Version);
+            Assert.True(false == request.UseGamePort);
+            Assert.True(NatPortType.NN1 == request.PortType);
         }
         [Fact(Skip = "Not implemented")]
         public void ReportTest()
@@ -80,8 +80,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
             var raw = new byte[] { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x04, 0x0f, 0xb5, 0xe0, 0x95, 0x2a, 0x00, 0x24, 0x38, 0xb2, 0xb3, 0x5e };
             var request = new PreInitRequest(raw);
             request.Parse();
-            Assert.Equal(RequestType.PreInit, request.CommandName);
-            Assert.Equal(PreInitState.WaitingForClient, request.State);
+            Assert.True(RequestType.PreInit == request.CommandName);
+            Assert.True(PreInitState.WaitingForClient == request.State);
         }
     }
 }
