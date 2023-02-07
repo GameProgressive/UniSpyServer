@@ -23,67 +23,67 @@
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "PresenceConnectionManager",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "29900"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "PresenceSearchPlayer",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "29901"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "CDKey",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "29910"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "ServerBrowserV2",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "28910"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "ServerBrowserV1",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "28900"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "QueryReport",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "27900"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "NatNegotiation",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "27901"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "GameStatus",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "29920"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "Chat",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "6667"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "WebServer",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "80"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "GameTrafficRelay",
-      "ListeningAddress": "0.0.0.0",
+      "PublicAddress": "0.0.0.0",
       "ListeningPort": "10086"
     }
   ],

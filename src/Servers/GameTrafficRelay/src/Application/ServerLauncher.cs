@@ -1,4 +1,5 @@
-    using UniSpyServer.Servers.GameTrafficRelay.Entity;
+using System.Net;
+using UniSpyServer.Servers.GameTrafficRelay.Entity;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;
@@ -14,13 +15,13 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
         }
         protected override IServer LaunchNetworkService(UniSpyServerConfig config)
         {
-            _serverStatusReporter = new ServerStatusReporter(config);
-            if (config.ListeningEndPoint.Address.ToString() == "0.0.0.0" || config.ListeningEndPoint.Address.ToString() == "127.0.0.1")
+            if (config.PublicIPEndPoint.Address.Equals(IPAddress.Any) || config.PublicIPEndPoint.Address.Equals(IPAddress.Loopback))
             {
-                throw new System.Exception("Game traffic relay server can not listen to loopback endpoint!");
+                throw new System.Exception("Game traffic relay server public address can not set to 0.0.0.0 or 127.0.0.1 !");
             }
+            _serverStatusReporter = new ServerStatusReporter(config);
+            return new WebServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
 
-            return new WebServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
         }
         public override void Start()
         {

@@ -10,6 +10,6 @@ namespace UniSpyServer.Servers.WebServer.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new HttpServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new HttpServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
     }
 }

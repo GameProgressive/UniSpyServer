@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Timers;
 using UniSpyServer.Servers.GameTrafficRelay.Controller;
@@ -20,7 +21,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity
             _info = new RelayServerInfo()
             {
                 ServerID = config.ServerID,
-                PublicIPEndPoint = config.ListeningEndPoint,
+                PublicIPEndPoint = config.PublicIPEndPoint,
                 ClientCount = clientCount
             };
         }

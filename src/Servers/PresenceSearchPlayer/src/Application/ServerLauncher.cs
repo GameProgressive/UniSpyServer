@@ -10,6 +10,6 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
     }
 }

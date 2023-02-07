@@ -58,9 +58,9 @@ namespace UniSpyServer.UniSpyLib.Config
     {
         public Guid ServerID;
         public string ServerName;
-        public IPEndPoint ListeningEndPoint => new IPEndPoint(IPAddress.Parse(ListeningAddress), ListeningPort);
-        public string ListeningAddress;
+        public IPEndPoint ListeningIPEndPoint => new IPEndPoint(IPAddress.Any, ListeningPort);
+        public IPEndPoint PublicIPEndPoint => new IPEndPoint(IPAddress.Parse(PublicAddress), ListeningPort);
+        public string PublicAddress;
         public int ListeningPort;
-        public string SocketType;
     }
 }

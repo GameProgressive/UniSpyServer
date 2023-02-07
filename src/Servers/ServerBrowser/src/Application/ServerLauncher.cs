@@ -36,6 +36,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
 
             Console.WriteLine("Server successfully started!");
         }
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config.ServerID, config.ServerName, config.ListeningEndPoint);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
     }
 }
