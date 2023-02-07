@@ -18,9 +18,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
             base.Build();
             var data = new List<byte>();
             data.AddRange(SendingBuffer);
-            // at least 8 bytes more
-            // the rest bytes did not read by natneg client, but you have to make total bytes > 20
-            data.AddRange(Encoding.ASCII.GetBytes("received report packet"));
+            // at least 9 bytes more
+            // the rest bytes did not read by natneg client, but you have to make total bytes length > 21 to pass initpacket check
+            data.AddRange(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
             SendingBuffer = data.ToArray();
         }
     }

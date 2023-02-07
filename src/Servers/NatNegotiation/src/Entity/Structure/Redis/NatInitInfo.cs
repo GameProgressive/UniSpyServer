@@ -42,23 +42,26 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public uint Cookie => (uint)AddressInfos[NatPortType.GP].Cookie;
         public byte Version => (byte)AddressInfos[NatPortType.GP].Version;
         public NatClientIndex ClientIndex => (NatClientIndex)AddressInfos[NatPortType.GP].ClientIndex;
+        /// <summary>
+        /// todo UseGamePort is client side flag, maybe we do not need to care?
+        /// </summary>
         public bool UseGamePort => AddressInfos[NatPortType.GP].UseGamePort;
         public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
-        public IPEndPoint PublicIPEndPoint
-        {
-            get
-            {
-                // if (ClientIndex == NatClientIndex.GameServer && UseGamePort)
-                if (UseGamePort)
-                {
-                    return AddressInfos[NatPortType.GP].PublicIPEndPoint;
-                }
-                else
-                {
-                    return AddressInfos[NatPortType.NN3].PublicIPEndPoint;
-                }
-            }
-        }
+        public IPEndPoint PublicIPEndPoint => AddressInfos[NatPortType.GP].PublicIPEndPoint;
+        // {
+        //     get
+        //     {
+        //         // if (ClientIndex == NatClientIndex.GameServer && UseGamePort)
+        //         if (UseGamePort)
+        //         {
+        //             return AddressInfos[NatPortType.GP].PublicIPEndPoint;
+        //         }
+        //         else
+        //         {
+        //             return AddressInfos[NatPortType.NN3].PublicIPEndPoint;
+        //         }
+        //     }
+        // }
         public IPEndPoint PrivateIPEndPoint => AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
         public NatType NatType => AddressCheckHandler.DetermineNatType(this).NatType;
 
