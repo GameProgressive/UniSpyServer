@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
@@ -16,14 +17,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public string ServerName { get; private set; }
-        // The connections are handled by ClientBase
-        // public ConcurrentDictionary<IPEndPoint, IConnection> Connections { get; private set; }
-        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
-        public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
+        IPEndPoint IServer.ListeningIPEndPoint => (IPEndPoint)Endpoint;
+        public IPEndPoint PublicIPEndPoint { get; private set; }
+        public UdpServer(UniSpyServerConfig config) : base(config.ListeningIPEndPoint)
         {
-            ServerID = serverID;
-            ServerName = serverName;
-            // Connections = new ConcurrentDictionary<IPEndPoint, IConnection>();
+            ServerID = config.ServerID;
+            ServerName = config.ServerName;
+            PublicIPEndPoint = config.PublicIPEndPoint;
         }
         public new void Start()
         {

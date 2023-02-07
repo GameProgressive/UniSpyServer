@@ -10,6 +10,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Application
 {
@@ -17,12 +18,14 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
     {
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }
-        public IPEndPoint ListeningEndPoint { get; private set; }
-        public WebServer(Guid serverID, string serverName, IPEndPoint endPoint)
+        public IPEndPoint ListeningIPEndPoint { get; private set; }
+        public IPEndPoint PublicIPEndPoint { get; private set; }
+        public WebServer(UniSpyServerConfig config)
         {
-            ServerID = serverID;
-            ServerName = serverName;
-            ListeningEndPoint = endPoint;
+            ServerID = config.ServerID;
+            ServerName = config.ServerName;
+            ListeningIPEndPoint = config.ListeningIPEndPoint;
+            PublicIPEndPoint = config.PublicIPEndPoint;
         }
 
         public void Start()
@@ -72,7 +75,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Application
 
             app.MapControllers();
             // asp.net will block here, we do not want to block our codes, so we let them run in background
-            Task.Run(() => app.Run($"http://{ListeningEndPoint}"));
+            Task.Run(() => app.Run($"http://{ListeningIPEndPoint}"));
         }
     }
 }

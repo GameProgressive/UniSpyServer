@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
@@ -17,12 +18,15 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <param name="port">Port number</param>
         public string ServerName { get; private set; }
 
-        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
+        IPEndPoint IServer.ListeningIPEndPoint => (IPEndPoint)Endpoint;
 
-        public TcpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
+        public IPEndPoint PublicIPEndPoint { get; private set; }
+
+        public TcpServer(UniSpyServerConfig config) : base(config.ListeningIPEndPoint)
         {
-            ServerID = serverID;
-            ServerName = serverName;
+            ServerID = config.ServerID;
+            ServerName = config.ServerName;
+            PublicIPEndPoint = config.PublicIPEndPoint;
         }
 
         public new void Start()

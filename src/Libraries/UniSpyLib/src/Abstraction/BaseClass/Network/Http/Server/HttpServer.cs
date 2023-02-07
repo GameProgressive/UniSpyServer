@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
@@ -9,10 +10,13 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
     {
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }
-        IPEndPoint IServer.ListeningEndPoint => (IPEndPoint)Endpoint;
-        public HttpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(endpoint)
+        IPEndPoint IServer.ListeningIPEndPoint => (IPEndPoint)Endpoint;
+        public IPEndPoint PublicIPEndPoint { get; private set; }
+        public HttpServer(UniSpyServerConfig config) : base(config.ListeningIPEndPoint)
         {
-            ServerName = serverName;
+            ServerID = config.ServerID;
+            ServerName = config.ServerName;
+            PublicIPEndPoint = config.PublicIPEndPoint;
         }
         protected abstract IClient CreateClient(IConnection connection);
         protected override NetCoreServer.TcpSession CreateSession()

@@ -1,12 +1,13 @@
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.CDKey.Application
 {
     class UdpServer : UniSpyLib.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {
-        public UdpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(serverID, serverName, endpoint)
+        public UdpServer(UniSpyServerConfig config) : base(config)
         {
         }
 

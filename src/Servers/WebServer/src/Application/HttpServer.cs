@@ -1,12 +1,11 @@
-using System;
-using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.WebServer.Application
 {
     internal sealed class HttpServer : UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpServer
     {
-        public HttpServer(Guid serverID, string serverName, IPEndPoint endpoint) : base(serverID, serverName, endpoint)
+        public HttpServer(UniSpyServerConfig config) : base(config)
         {
         }
 

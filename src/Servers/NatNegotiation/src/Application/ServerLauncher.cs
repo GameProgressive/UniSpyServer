@@ -10,6 +10,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new UdpServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new UdpServer(config);
     }
 }

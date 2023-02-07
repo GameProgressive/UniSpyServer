@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using UniSpyServer.Servers.GameTrafficRelay.Application;
 using UniSpyServer.Servers.GameTrafficRelay.Entity;
 using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
 
@@ -38,8 +38,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
 
             var response = new NatNegotiationResponse()
             {
-                IPEndPoint1 = pair.Listener1.ListeningEndPoint,
-                IPEndPoint2 = pair.Listener2.ListeningEndPoint
+                IPEndPoint1 = new IPEndPoint(ServerLauncher.ServerInstance.PublicIPEndPoint.Address, pair.Listener1.ListeningEndPoint.Port),
+                IPEndPoint2 = new IPEndPoint(ServerLauncher.ServerInstance.PublicIPEndPoint.Address, pair.Listener2.ListeningEndPoint.Port)
             };
             return response;
         }

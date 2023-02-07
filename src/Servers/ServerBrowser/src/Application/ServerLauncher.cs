@@ -9,33 +9,31 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
 {
     internal sealed class ServerLauncher : ServerLauncherBase
     {
-        public static IServer ServerV1;
-        public static IServer ServerV2;
+        public static IServer ServerInstanceV1 => ServerLauncher.ServerInstance;
+        public static IServer ServerInstanceV2;
         public ServerLauncher() : base("ServerBrowser")
         {
         }
         protected override void LaunchServer()
         {
             var cfgs = ConfigManager.Config.Servers.Where(s => s.ServerName.Contains(ServerName)).ToArray();
-            ServerV1 = LaunchNetworkService(cfgs.Where(c => c.ServerName.Contains("V1")).First());
-            ServerV2 = LaunchNetworkService(cfgs.Where(c => c.ServerName.Contains("V2")).First());
+            ServerInstance = LaunchNetworkService(cfgs.Where(c => c.ServerName == $"{ServerName}V1").First());
+            ServerInstanceV2 = LaunchNetworkService(cfgs.Where(c => c.ServerName == $"{ServerName}V2").First());
 
-            if (ServerV1 is null && ServerV2 is null)
+            if (ServerInstanceV1 is null && ServerInstanceV2 is null)
             {
                 throw new Exception("Server created failed");
             }
             // asp.net web server does not implement a Server interface, therefore this code should not be called
-            ServerV1.Start();
-            ServerV2.Start();
+            ServerInstanceV1.Start();
+            ServerInstanceV2.Start();
 
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, ServerV1.ListeningEndPoint.Address, $"{ServerV1.ListeningEndPoint.Port}, {ServerV2.ListeningEndPoint.Port}");
+            table.AddRow($"{ServerName}V1", ServerInstanceV1.ListeningIPEndPoint.Address, ServerInstanceV1.ListeningIPEndPoint.Port);
+            table.AddRow($"{ServerName}V2", ServerInstanceV2.ListeningIPEndPoint.Address, ServerInstanceV2.ListeningIPEndPoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
-            Servers.Add(ServerV1.ServerName, ServerV1);
-            Servers.Add(ServerV2.ServerName, ServerV2);
-
             Console.WriteLine("Server successfully started!");
         }
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config.ServerID, config.ServerName, config.ListeningIPEndPoint);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config);
     }
 }

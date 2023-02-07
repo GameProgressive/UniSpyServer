@@ -8,6 +8,9 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
+    /// <summary>
+    /// Each server launcher only launch an instance of IServer
+    /// </summary>
     public abstract class ServerLauncherBase
     {
         /// <summary>
@@ -19,16 +22,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         /// </summary>
         /// <returns></returns>
         public static string ServerName { get; protected set; }
-        public static Dictionary<string, IServer> Servers { get; protected set; }
-        public static IServer Server;
-        static ServerLauncherBase()
+        public static IServer ServerInstance { get; protected set; }
+        public ServerLauncherBase(string serverName)
         {
-            Servers = new Dictionary<string, IServer>();
-            StackExchange.Redis.ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
-        }
-        public ServerLauncherBase(string serverNames)
-        {
-            ServerName = serverNames;
+            ServerName = serverName;
         }
 
         public virtual void Start()
@@ -43,18 +40,17 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected virtual void LaunchServer()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            Server = LaunchNetworkService(cfg);
-            
-            if (Server is null)
+            ServerInstance = LaunchNetworkService(cfg);
+
+            if (ServerInstance is null)
             {
                 throw new Exception("Server created failed");
             }
             // asp.net web server does not implement a Server interface, therefore this code should not be called
-            Server.Start();
+            ServerInstance.Start();
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, Server.ListeningEndPoint.Address, Server.ListeningEndPoint.Port);
+            table.AddRow(ServerName, ServerInstance.ListeningIPEndPoint.Address, ServerInstance.ListeningIPEndPoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
-            Servers.Add(cfg.ServerName, Server);
             Console.WriteLine("Server successfully started!");
         }
 
