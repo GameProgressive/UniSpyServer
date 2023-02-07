@@ -17,7 +17,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity
         [RedisKey]
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PublicIPEndPoint { get; init; }
-        public int ClientCount { get; init; }
+        public int ClientCount { get; set; }
 
         public RelayServerInfo() : base(TimeSpan.FromMinutes(1))
         {
