@@ -22,12 +22,6 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
         [HttpPost]
         public NatNegotiationResponse GetNatNegotiationInfo(NatNegotiationRequest request)
         {
-            var address = this?.HttpContext?.Connection?.LocalIpAddress;
-            if (address is null)
-            {
-                throw new Exception("hosting address is null");
-            }
-
             // natneg connecthandler will send 2 request to game traffic relay
             ConnectionPair pair;
             lock (ConnectionPairs)
@@ -35,8 +29,8 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Controller
                 if (!ConnectionPairs.TryGetValue(request.Cookie, out pair))
                 {
                     var ports = NetworkUtils.GetAvailablePorts();
-                    var ends = new IPEndPoint[]{new IPEndPoint(address,ports[0]),
-                                        new IPEndPoint(address,ports[1])};
+                    var ends = new IPEndPoint[]{new IPEndPoint(IPAddress.Any,ports[0]),
+                                                new IPEndPoint(IPAddress.Any,ports[1])};
                     pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
                     ConnectionPairs.TryAdd(request.Cookie, pair);
                 }
