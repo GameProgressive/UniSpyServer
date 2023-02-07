@@ -116,12 +116,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             }
             //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
-
-            var dict = new Dictionary<string, object>();
-            dict["Cookie"] = _myInitInfo.Cookie;
-            dict["ServerId"] = _client.Connection.Server.ServerID;
+            var req = new NatNegotiationRequest()
+            {
+                Cookie = _myInitInfo.Cookie,
+                ServerId = _client.Connection.Server.ServerID
+            };
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
-            var request = new RestRequest().AddJsonBody(dict);
+            var request = new RestRequest().AddJsonBody(req);
             var resp = client.Post<NatNegotiationResponse>(request);
             if (_client.Info.ClientIndex == NatClientIndex.GameClient)
             {
