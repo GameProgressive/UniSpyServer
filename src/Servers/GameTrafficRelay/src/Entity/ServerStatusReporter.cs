@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.GameTrafficRelay.Entity
         public ServerStatusReporter(UniSpyServerConfig config)
         {
             _timer = new Timer(60000);
-            _expireTimeInterval = new TimeSpan(0, 1, 0);
+            _expireTimeInterval = new TimeSpan(0, 0, 10);
             _redisClient = new RedisClient();
             var clientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2;
             _info = new RelayServerInfo()
