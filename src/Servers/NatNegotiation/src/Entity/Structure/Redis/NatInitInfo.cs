@@ -53,7 +53,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         {
             get
             {
-                if (ClientIndex == NatClientIndex.GameServer && AddressInfos.ContainsKey(NatPortType.GP))
+                if (ClientIndex == NatClientIndex.GameServer && UseGamePort)
                 {
                     return AddressInfos[NatPortType.GP].PublicIPEndPoint;
                 }
@@ -63,28 +63,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
                 }
             }
         }
-        public IPEndPoint PrivateIPEndPoint
-        {
-            get
-            {
-                if (AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
-                {
-                    return AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
-                }
-                else
-                {
-                    throw new NNException("Client is sending wrong initpacket.");
-                }
-            }
-        }
+        public IPEndPoint PrivateIPEndPoint => AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
+        public NatType NatType => AddressCheckHandler.DetermineNatType(this).NatType;
 
-        public NatType NatType
-        {
-            get
-            {
-                return AddressCheckHandler.DetermineNatType(this).NatType;
-            }
-        }
 
         public NatInitInfo(List<NatAddressInfo> infos)
         {
@@ -117,6 +98,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
                 || AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN3].UseGamePort)
             {
                 throw new NNException("Broken use game port");
+            }
+            if (!AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
+            {
+                throw new NNException("Client is sending wrong initpacket.");
             }
         }
     }

@@ -18,7 +18,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// The timer to count and invoke some event
         /// </summary>
-        private EasyTimer _timer;
+        protected EasyTimer _timer { get; set; }
         public bool IsLogRaw { get; protected set; }
 
         public ClientBase(IConnection connection)
@@ -27,7 +27,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
             EventBinding();
             ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         }
-        private void EventBinding()
+        protected virtual void EventBinding()
         {
             switch (Connection.ConnectionType)
             {
@@ -104,7 +104,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// Check if the udp client is expired,
         /// this method will only be invoked by UdpServer
         /// </summary>
-        private void CheckExpiredClient()
+        protected void CheckExpiredClient()
         {
             // we calculate the interval between last packe and current time
             if (_timer.IsExpired)

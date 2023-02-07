@@ -83,7 +83,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
                 // gamespy sdk need 100% success on nat negotiation, therefore if clients have same public ip and have NAT, to make sure 100% success, we use GameTrafficRelay server.
                 case NatStrategyType.UsePrivateIP:
                     // temprary use GTR
-                    goto case NatStrategyType.UseGameTrafficRelay;
+                    UsingPrivateAddressToNegotiate();
+                    break;
                 case NatStrategyType.UseGameTrafficRelay:
                     UsingGameRelayServerToNegotiate();
                     break;

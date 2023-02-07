@@ -51,9 +51,9 @@ namespace UniSpyServer.LinqToRedis
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
         }
-        public bool DeleteKeyValue(TValue key)
+        public void DeleteKeyValue(TValue key)
         {
-            return Db.KeyDelete(key.FullKey);
+            Db.KeyDeleteAsync(key.FullKey);
         }
         public List<TValue> GetValues(TValue key)
         {
@@ -123,6 +123,5 @@ namespace UniSpyServer.LinqToRedis
         {
             Multiplexer.Dispose();
         }
-
     }
 }
