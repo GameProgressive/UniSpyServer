@@ -44,16 +44,13 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public byte Version => (byte)AddressInfos[NatPortType.GP].Version;
         public NatClientIndex ClientIndex => (NatClientIndex)AddressInfos[NatPortType.GP].ClientIndex;
         public bool UseGamePort => AddressInfos[NatPortType.GP].UseGamePort;
-        public bool IsReceivedAllPackets => AddressInfos.ContainsKey(NatPortType.GP)
-                                            && AddressInfos.ContainsKey(NatPortType.NN1)
-                                            && AddressInfos.ContainsKey(NatPortType.NN2)
-                                            && AddressInfos.ContainsKey(NatPortType.NN3);
         public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
         public IPEndPoint PublicIPEndPoint
         {
             get
             {
-                if (ClientIndex == NatClientIndex.GameServer && UseGamePort)
+                // if (ClientIndex == NatClientIndex.GameServer && UseGamePort)
+                if (UseGamePort)
                 {
                     return AddressInfos[NatPortType.GP].PublicIPEndPoint;
                 }
@@ -70,7 +67,10 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         public NatInitInfo(List<NatAddressInfo> infos)
         {
             AddressInfos = infos.Select((i) => new { i }).ToDictionary(a => ((NatPortType)a.i.PortType), a => a.i);
-            if (!IsReceivedAllPackets)
+            if (!(AddressInfos.ContainsKey(NatPortType.GP)
+                && AddressInfos.ContainsKey(NatPortType.NN1)
+                && AddressInfos.ContainsKey(NatPortType.NN2)
+                && AddressInfos.ContainsKey(NatPortType.NN3)))
             {
                 throw new NNException("Incomplete init packets");
             }
