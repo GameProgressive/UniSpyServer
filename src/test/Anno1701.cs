@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Net;
 using System.Threading;
-using Moq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using Xunit;
 

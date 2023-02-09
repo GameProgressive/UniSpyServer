@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Encryption;
 
 namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request
 {
-    
+
     public sealed class PlayerSearchRequest : RequestBase
     {
         public int SearchOption { get; private set; }

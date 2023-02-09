@@ -4,12 +4,7 @@ using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
-using System.Diagnostics;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using Microsoft.Extensions.Logging;
-using Serilog.Events;
-using UniSpyServer.UniSpyLib.Logging;
 using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.GameTrafficRelay.Application

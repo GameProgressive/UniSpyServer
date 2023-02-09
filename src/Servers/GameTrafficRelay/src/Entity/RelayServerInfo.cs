@@ -3,7 +3,6 @@ using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis;
-using UniSpyServer.Servers.GameTrafficRelay.Application;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.MiscMethod;

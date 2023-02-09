@@ -1,6 +1,3 @@
-using System;
-using System.Net;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Config;
 

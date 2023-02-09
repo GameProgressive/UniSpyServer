@@ -1,10 +1,9 @@
 using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
 
 namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request
 {
-    
+
     public sealed class AvaliableRequest : RequestBase
     {
         public static readonly byte[] Prefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };

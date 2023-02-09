@@ -1,7 +1,6 @@
 using System.Net;
 using Moq;
 using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;

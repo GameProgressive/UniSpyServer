@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.LinqToRedis;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.MiscMethod;
-using System.Linq;
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis.Fail

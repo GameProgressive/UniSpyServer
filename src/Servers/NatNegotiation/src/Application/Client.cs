@@ -1,10 +1,8 @@
 using System;
-using System.Net;
 using UniSpyServer.Servers.NatNegotiation.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.UniSpyLib.Logging;
 
 namespace UniSpyServer.Servers.NatNegotiation.Application
 {

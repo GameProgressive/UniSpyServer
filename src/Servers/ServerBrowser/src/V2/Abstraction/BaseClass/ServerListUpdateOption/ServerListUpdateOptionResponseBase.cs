@@ -5,7 +5,6 @@ using System.Net;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using UniSpyServer.Servers.ServerBrowser.Application;
 using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure;
 using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc;
 using UniSpyServer.UniSpyLib.Encryption;
 

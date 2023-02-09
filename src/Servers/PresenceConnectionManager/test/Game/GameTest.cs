@@ -1,8 +1,4 @@
 using System.Collections.Generic;
-using System.Net;
-using Moq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using Xunit;

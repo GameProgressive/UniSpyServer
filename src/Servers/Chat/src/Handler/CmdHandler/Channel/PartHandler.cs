@@ -1,4 +1,3 @@
-using System.Linq;
 using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
@@ -7,7 +6,6 @@ using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel

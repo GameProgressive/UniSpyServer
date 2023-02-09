@@ -2,7 +2,6 @@ using System.Net;
 using Moq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.Servers.GameStatus.Application;
-using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.Servers.GameStatus.Test
 {

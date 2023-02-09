@@ -1,5 +1,4 @@
 using System;
-using Newtonsoft.Json;
 using UniSpyServer.LinqToRedis;
 
 namespace UniSpy.Redis.Test

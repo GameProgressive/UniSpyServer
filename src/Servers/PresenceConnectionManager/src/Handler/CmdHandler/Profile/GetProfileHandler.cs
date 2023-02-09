@@ -1,4 +1,3 @@
-using System.Linq;
 using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;

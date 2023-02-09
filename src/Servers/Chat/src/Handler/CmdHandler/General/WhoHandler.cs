@@ -3,7 +3,6 @@ using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure;
 using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
@@ -17,7 +16,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     /// Get a channel user's basic information
     /// same as WHOIS
     /// </summary>
-    
+
     public sealed class WhoHandler : LogedInHandlerBase
     {
         private new WhoRequest _request => (WhoRequest)base._request;

@@ -1,11 +1,8 @@
 using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
 using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
 using UniSpyServer.Servers.GameStatus.Application;
 
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler

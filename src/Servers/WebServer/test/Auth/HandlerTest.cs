@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Net;
 using Moq;
 using UniSpyServer.Servers.WebServer.Application;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
 using UniSpyServer.Servers.WebServer.Handler;
 using UniSpyServer.Servers.WebServer.Test.Auth;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

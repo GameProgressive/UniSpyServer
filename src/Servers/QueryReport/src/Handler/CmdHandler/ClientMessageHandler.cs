@@ -1,5 +1,4 @@
 using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
 using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;

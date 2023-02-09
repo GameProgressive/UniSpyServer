@@ -1,5 +1,4 @@
 using System.Net;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
 
 namespace UniSpyServer.Servers.Chat.Abstraction.Interface
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.GameStatus.Entity.Structure;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Encryption;
 using Xunit;
