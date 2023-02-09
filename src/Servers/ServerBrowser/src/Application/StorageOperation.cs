@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
         /// The redis channel use to transfer client message
         /// </summary>
         /// <returns></returns>
-        private static QueryReport.V2.Entity.Structure.Redis.RedisChannel _clientMessageRedisChannel = new QueryReport.V2.Entity.Structure.Redis.RedisChannel();
+        public static QueryReport.V2.Entity.Structure.Redis.RedisChannel Channel = new QueryReport.V2.Entity.Structure.Redis.RedisChannel();
 
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {
@@ -44,7 +44,7 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
         }
         public void PublishClientMessage(ClientMessageRequest message)
         {
-            _clientMessageRedisChannel.PublishMessage(message);
+            Channel.PublishMessage(message);
         }
 
         public GameServerInfo GetGameServerInfo(IPEndPoint end)

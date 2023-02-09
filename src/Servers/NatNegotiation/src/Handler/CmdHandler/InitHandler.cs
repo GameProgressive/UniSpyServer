@@ -15,6 +15,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 
     public sealed class InitHandler : CmdHandlerBase
     {
+        public static readonly int InitPacketCount = 7;
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
         /// <summary>
@@ -86,7 +87,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 var initCount = StorageOperation.Persistance.CountInitInfo(_request.Cookie, _request.Version);
                 // some client do not send GP init packet, we can only receive 7 packets
-                if (initCount >= 7)
+                if (initCount >= InitPacketCount)
                 {
                     _client.LogInfo("2 neigotiators found, start negotiating.");
                     StartConnecting();

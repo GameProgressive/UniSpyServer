@@ -29,7 +29,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             PublicIPEndPoint = config.PublicIPEndPoint;
         }
 
-        public new void Start()
+        public new virtual void Start()
         {
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {

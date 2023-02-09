@@ -11,7 +11,6 @@ namespace UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler
     public sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
-        public static RedisChannel Channel;
         public ClientMessageHandler(IClient client, IRequest request) : base(client, request)
         {
         }

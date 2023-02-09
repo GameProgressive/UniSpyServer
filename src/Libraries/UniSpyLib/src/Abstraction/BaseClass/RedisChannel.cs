@@ -11,6 +11,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// Get all subscriber in Redis
         /// </summary>
         protected ISubscriber _subscriber => ConfigManager.Config.Redis.RedisConnection.GetSubscriber();
+        public bool IsStarted { get; private set; }
         public RedisChannelBase(string redisChannelName)
         {
             _redisChannelName = redisChannelName;
@@ -23,12 +24,16 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         /// </summary>
         public void StartSubscribe()
         {
-            _subscriber.Subscribe(_redisChannelName, (channel, message)
-                =>
+            if (IsStarted == false)
             {
-                T msg = DeserializeMessage(message);
-                ReceivedMessage(msg);
-            });
+                _subscriber.Subscribe(_redisChannelName, (channel, message)
+                    =>
+                {
+                    T msg = DeserializeMessage(message);
+                    ReceivedMessage(msg);
+                });
+                IsStarted = true;
+            }
         }
 
         public virtual void ReceivedMessage(T message)

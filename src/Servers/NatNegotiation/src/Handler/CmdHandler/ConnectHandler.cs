@@ -38,9 +38,9 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             // detecting nat
             var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
-            if (addressInfos.Count != 8)
+            if (addressInfos.Count < InitHandler.InitPacketCount)
             {
-                throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to 8.");
+                throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
             }
             var otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
             // we need both info to determine nat type

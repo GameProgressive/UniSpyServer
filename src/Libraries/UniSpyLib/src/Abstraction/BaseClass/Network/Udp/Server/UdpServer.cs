@@ -25,7 +25,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             ServerName = config.ServerName;
             PublicIPEndPoint = config.PublicIPEndPoint;
         }
-        public new void Start()
+        public new virtual void Start()
         {
             if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
             {
