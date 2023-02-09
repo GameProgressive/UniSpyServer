@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not equal to 8.");
             }
-            NatClientIndex otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
+            var otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
             // we need both info to determine nat type
             _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
             _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _request.ClientIndex).ToList());

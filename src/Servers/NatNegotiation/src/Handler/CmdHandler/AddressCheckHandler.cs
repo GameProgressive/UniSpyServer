@@ -30,27 +30,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-        /// <summary>
-        /// Determine whether 2 clients are in same LAN, but due to the existence of multiple NATs, the detection of the same LAN may be inaccurate, and it needs to be analyzed according to the report packet.
-        /// </summary>
-        public static bool IsInSameLan(NatInitInfo client1, NatInitInfo client2)
-        {
-            // todo private address should compare only xxx.xxx.xxx no need for last byte compare
-            return client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
-            && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
-
-            && client1.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN1].PublicIPEndPoint.Address)
-            && client1.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray())
-
-            && client1.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PublicIPEndPoint.Address)
-            && client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray().SequenceEqual(
-                client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.GetAddressBytes().Take(3).ToArray());
-
-            // todo check whether two clients' private ip can not be the same if they are in same LAN????
-            // && !client1.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address.Equals(client2.AddressInfos[NatPortType.NN3].PrivateIPEndPoint.Address);
-        }
         public static NatProperty DetermineNatType(NatInitInfo iniInfo)
         {
             NatProperty natProperty = new NatProperty();
@@ -100,41 +79,6 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             {
                 natProperty.NatType = NatType.Unknown;
                 throw new NNException("Unknow nat type.");
-            }
-        }
-
-        public static IPEndPoint GuessTargetAddress(NatProperty property, NatInitInfo initInfo, IPEndPoint natFailedEd = null)
-        {
-            IPEndPoint guessedIPEndPoint;
-            // if is gameserver we return the GP IPEndPoint else we return NN3 IPEndPoint
-            if (initInfo.AddressInfos.ContainsKey(NatPortType.GP))
-            {
-                guessedIPEndPoint = initInfo.AddressInfos[NatPortType.GP].PublicIPEndPoint;
-            }
-            else
-            {
-                guessedIPEndPoint = initInfo.AddressInfos[NatPortType.NN3].PublicIPEndPoint;
-            }
-            switch (property.NatType)
-            {
-                case NatType.NoNat:
-                case NatType.FirewallOnly:
-                    // private is public
-                    return guessedIPEndPoint;
-                case NatType.FullCone:
-                    return guessedIPEndPoint;
-                case NatType.Symmetric:
-                    //todo add GameTrafficRelay alternative plan
-                    switch (property.PortMapping)
-                    {
-                        case NatPortMappingScheme.Incremental:
-                            return new IPEndPoint(guessedIPEndPoint.Address,
-                                                  guessedIPEndPoint.Port + property.PortIncrement);
-                        default:
-                            return null;
-                    }
-                default:
-                    return null;
             }
         }
     }

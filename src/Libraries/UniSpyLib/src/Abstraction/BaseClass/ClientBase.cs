@@ -115,7 +115,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 
         public void Dispose()
         {
-            this.LogInfo("client disposed.");
+            this.LogDebug("client disposed.");
             switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:

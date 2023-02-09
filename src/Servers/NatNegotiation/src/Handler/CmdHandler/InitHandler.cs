@@ -85,7 +85,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
             while (waitCount <= 4)
             {
                 var initCount = StorageOperation.Persistance.CountInitInfo(_request.Cookie, _request.Version);
-                if (initCount == 8)
+                // some client do not send GP init packet, we can only receive 7 packets
+                if (initCount >= 7)
                 {
                     _client.LogInfo("2 neigotiators found, start negotiating.");
                     StartConnecting();
