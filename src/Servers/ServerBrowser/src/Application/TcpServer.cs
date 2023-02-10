@@ -8,11 +8,6 @@ namespace UniSpyServer.Servers.ServerBrowser.Application
         public TcpServer(UniSpyServerConfig config) : base(config)
         {
         }
-        public override void Start()
-        {
-            base.Start();
-            StorageOperation.Channel.StartSubscribe();
-        }
         protected override IClient CreateClient(IConnection connection) => new Client(connection);
     }
 }

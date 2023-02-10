@@ -8,9 +8,4 @@ namespace UniSpyServer.UniSpyLib.Extensions
         NatFailInfo = 3,
         GameTrafficRelay = 4
     }
-
-    /// <summary>
-    /// This class wraps functions that allow us to access
-    /// the string representation of keys and values in Redis database
-    /// </summary>
 }

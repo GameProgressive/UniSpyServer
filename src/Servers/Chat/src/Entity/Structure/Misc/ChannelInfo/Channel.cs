@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyServer.Servers.Chat.Abstraction.Interface;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
@@ -27,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         Normal
     }
-    public sealed class Channel
+    public sealed class Channel : IChannel
     {
         /// <summary>
         /// When game connects to the server, the player will enter the default channel for communicating with other players.

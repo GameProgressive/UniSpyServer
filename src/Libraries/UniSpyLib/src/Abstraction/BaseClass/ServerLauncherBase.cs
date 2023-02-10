@@ -58,7 +58,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
+                var r = StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
+                r.Dispose();
             }
             catch (Exception e)
             {
@@ -70,13 +71,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         {
             //Determine which database is used and establish the database connection.
             var dbConfig = ConfigManager.Config.Database;
-            try
+            if (!new UniSpyContext().Database.CanConnect())
             {
-                new UniSpyContext().Database.CanConnect();
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Can not connect to {dbConfig.Type}!", e);
+                throw new Exception($"Can not connect to {dbConfig.Type}!");
             }
 
             Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.Server}:{dbConfig.Port}");
