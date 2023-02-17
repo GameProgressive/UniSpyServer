@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
-
 using UniSpy.LinqToRedis;
 using UniSpy.Server.QueryReport.V2.Enumerate;
 using UniSpy.Server.Core.Config;
