@@ -1,8 +1,8 @@
 // using Newtonsoft.Json;
 // using System;
-// using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
+// using UniSpy.Server.Core.Abstraction.BaseClass.Redis;
 
-// namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.SystemHandler.Redis
+// namespace UniSpy.Server.PresenceConnectionManager.Handler.SystemHandler.Redis
 // {
 //     public sealed class UserInfoRedisKey : RedisKey
 //     {
@@ -11,7 +11,7 @@
 //         public string SessionHashValue { get; set; }
 //         public UserInfoRedisKey()
 //         {
-//             Db = UniSpyServer.UniSpyLib.Extensions.DbNumber.GamePresence;
+//             Db = UniSpy.Server.Core.Extensions.DbNumber.GamePresence;
 //         }
 //     }
 // }

@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request
 {
 
     public sealed class KeepAliveRequest : RequestBase

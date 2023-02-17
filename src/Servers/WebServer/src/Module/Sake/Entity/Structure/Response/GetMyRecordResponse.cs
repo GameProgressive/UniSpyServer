@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Response
+namespace UniSpy.Server.WebServer.Module.Sake.Structure.Response
 {
     public class GetMyRecordResponse : ResponseBase
     {

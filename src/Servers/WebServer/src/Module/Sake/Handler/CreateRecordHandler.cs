@@ -1,10 +1,10 @@
 using System.IO;
 using Newtonsoft.Json;
-using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Module.Sake.Abstraction;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
+namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
     
     public class CreateRecordHandler : CmdHandlerBase

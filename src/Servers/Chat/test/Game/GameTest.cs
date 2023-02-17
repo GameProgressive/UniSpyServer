@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.Servers.Chat.Handler;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Handler;
+using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test
+namespace UniSpy.Server.Chat.Test
 {
     public class GameTest
     {

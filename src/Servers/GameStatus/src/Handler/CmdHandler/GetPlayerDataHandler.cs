@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Application;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Application;
+using UniSpy.Server.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Entity.Structure.Response;
+using UniSpy.Server.GameStatus.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
+namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
 
     public sealed class GetPlayerDataHandler : CmdHandlerBase

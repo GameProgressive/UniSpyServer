@@ -1,8 +1,8 @@
 
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;
+using UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
+using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Response
 {
     public class GetPurchaseHistoryResponse : ResponseBase
     {

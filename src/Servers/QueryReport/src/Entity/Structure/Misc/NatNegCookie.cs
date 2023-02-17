@@ -1,8 +1,8 @@
 using System.Net;
 using Newtonsoft.Json;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.NatNeg
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.NatNeg
 {
     public record NatNegCookie
     {

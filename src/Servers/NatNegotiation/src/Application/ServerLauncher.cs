@@ -1,8 +1,8 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.NatNegotiation.Application
+namespace UniSpy.Server.NatNegotiation.Application
 {
     internal sealed class ServerLauncher : ServerLauncherBase
     {

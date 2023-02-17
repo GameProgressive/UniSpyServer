@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
+namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// The connect ack handler indicate that the client is already received the connect packet and start nat negotiation

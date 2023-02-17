@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.WebServer.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Application
+namespace UniSpy.Server.WebServer.Application
 {
     public sealed class Client : ClientBase
     {

@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.Chat.Test.Message
+namespace UniSpy.Server.Chat.Test.Message
 {
     public class MessageRequests
     {

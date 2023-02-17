@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.WebServer.Test.Auth
+namespace UniSpy.Server.WebServer.Test.Auth
 {
     public class RawRequests
     {

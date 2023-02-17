@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler
+namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
 
     public sealed class ClientMessageAckHandler : CmdHandlerBase

@@ -1,11 +1,11 @@
 using System.Linq;
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass.Message;
-using UniSpyServer.Servers.Chat.Entity.Exception;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass.Message;
+using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class MsgHandlerBase : ChannelHandlerBase
     {

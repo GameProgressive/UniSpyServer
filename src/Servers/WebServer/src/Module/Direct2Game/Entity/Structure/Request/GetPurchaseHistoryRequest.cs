@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
+using UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Request
 {
     
     public class GetPurchaseHistoryRequest : RequestBase

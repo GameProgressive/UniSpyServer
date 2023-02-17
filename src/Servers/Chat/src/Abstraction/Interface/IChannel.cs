@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.Interface
+namespace UniSpy.Server.Chat.Abstraction.Interface
 {
     public interface IChannel
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using UniSpyServer.Servers.GameTrafficRelay.Application;
-using UniSpyServer.Servers.GameTrafficRelay.Entity;
-using UniSpyServer.Servers.GameTrafficRelay.Entity.Structure;
+using UniSpy.Server.GameTrafficRelay.Application;
+using UniSpy.Server.GameTrafficRelay.Entity;
+using UniSpy.Server.GameTrafficRelay.Entity.Structure;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Controller
+namespace UniSpy.Server.GameTrafficRelay.Controller
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.NatNegotiation.Application
+namespace UniSpy.Server.NatNegotiation.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

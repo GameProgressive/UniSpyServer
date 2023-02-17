@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy;
+using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General;
+using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler
+namespace UniSpy.Server.PresenceConnectionManager.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

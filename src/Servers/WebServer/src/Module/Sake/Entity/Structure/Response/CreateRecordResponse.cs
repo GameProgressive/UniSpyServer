@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result;
+using UniSpy.Server.WebServer.Module.Sake.Abstraction;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Result;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Response
+namespace UniSpy.Server.WebServer.Module.Sake.Structure.Response
 {
     public sealed class CreateRecordResponse : ResponseBase
     {

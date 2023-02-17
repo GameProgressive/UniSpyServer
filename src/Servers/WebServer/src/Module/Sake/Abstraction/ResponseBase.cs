@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Module.Sake.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Sake.Entity.Structure;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Abstraction
+namespace UniSpy.Server.WebServer.Module.Sake.Abstraction
 {
     public abstract class ResponseBase : WebServer.Abstraction.ResponseBase
     {

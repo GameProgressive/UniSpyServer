@@ -1,9 +1,8 @@
-using System;
-using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     /// <summary>
     /// error code condition is complicated
@@ -15,15 +14,15 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     /// if error code bigger than noerror we need to process it in ConstructResponse()
     ///we also need to check the error code != noerror in ConstructResponse()
     /// </summary>
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
         protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-        public CmdHandlerBase(IClient client, IRequest request) : base(client, request){ }
+        public CmdHandlerBase(IClient client, IRequest request) : base(client, request) { }
         //if we use this structure the error response should also write to _sendingBuffer
-        protected override void HandleException(Exception ex)
+        protected override void HandleException(System.Exception ex)
         {
             if (ex is IRCException)
             {

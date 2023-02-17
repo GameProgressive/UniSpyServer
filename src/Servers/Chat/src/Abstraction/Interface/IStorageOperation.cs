@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.Interface
+namespace UniSpy.Server.Chat.Abstraction.Interface
 {
     public interface IStorageOperation
     {

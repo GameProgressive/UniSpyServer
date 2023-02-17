@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request
 {
     
     public sealed class SearchUniqueRequest : RequestBase

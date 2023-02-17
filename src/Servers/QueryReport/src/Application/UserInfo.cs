@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.QueryReport.Application
+namespace UniSpy.Server.QueryReport.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

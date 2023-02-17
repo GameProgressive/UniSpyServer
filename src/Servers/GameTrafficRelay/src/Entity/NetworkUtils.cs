@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net.NetworkInformation;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity
+namespace UniSpy.Server.GameTrafficRelay.Entity
 {
     public sealed class NetworkUtils
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
+using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result
+namespace UniSpy.Server.WebServer.Module.Sake.Structure.Result
 {
     public sealed class CreateRecordResult : ResultBase
     {

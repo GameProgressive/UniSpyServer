@@ -8,7 +8,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj",
+                "${workspaceFolder}/src/Libraries/Core/src/UniSpy.Server.Core.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -23,7 +23,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/CDKey/src/UniSpyServer.Servers.CDKey.csproj",
+                "${workspaceFolder}/src/Servers/CDKey/src/UniSpy.Server.CDKey.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -38,7 +38,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/Chat/src/UniSpyServer.Servers.Chat.csproj",
+                "${workspaceFolder}/src/Servers/Chat/src/UniSpy.Server.Chat.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -53,7 +53,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/PresenceConnectionManager/src/UniSpyServer.Servers.PresenceConnectionManager.csproj",
+                "${workspaceFolder}/src/Servers/PresenceConnectionManager/src/UniSpy.Server.PresenceConnectionManager.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -68,7 +68,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/PresenceSearchPlayer/src/UniSpyServer.Servers.PresenceSearchPlayer.csproj",
+                "${workspaceFolder}/src/Servers/PresenceSearchPlayer/src/UniSpy.Server.PresenceSearchPlayer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -83,7 +83,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/GameStatus/src/UniSpyServer.Servers.GameStatus.csproj",
+                "${workspaceFolder}/src/Servers/GameStatus/src/UniSpy.Server.GameStatus.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -98,7 +98,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/GameTrafficRelay/src/UniSpyServer.Servers.GameTrafficRelay.csproj",
+                "${workspaceFolder}/src/Servers/GameTrafficRelay/src/UniSpy.Server.GameTrafficRelay.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -113,7 +113,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj",
+                "${workspaceFolder}/src/Servers/NatNegotiation/src/UniSpy.Server.NatNegotiation.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -128,7 +128,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/QueryReport/src/UniSpyServer.Servers.QueryReport.csproj",
+                "${workspaceFolder}/src/Servers/QueryReport/src/UniSpy.Server.QueryReport.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -143,7 +143,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/ServerBrowser/src/UniSpyServer.Servers.ServerBrowser.csproj",
+                "${workspaceFolder}/src/Servers/ServerBrowser/src/UniSpy.Server.ServerBrowser.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",
@@ -158,7 +158,7 @@
             "args": [
                 "build",
                 "--no-restore",
-                "${workspaceFolder}/src/Servers/WebServer/src/UniSpyServer.Servers.WebServer.csproj",
+                "${workspaceFolder}/src/Servers/WebServer/src/UniSpy.Server.WebServer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net6.0/",
                 "/property:GenerateFullPaths=true",

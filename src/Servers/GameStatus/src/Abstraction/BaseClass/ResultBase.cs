@@ -1,6 +1,6 @@
-namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
+namespace UniSpy.Server.GameStatus.Abstraction.BaseClass
 {
-    public abstract class ResultBase : UniSpyLib.Abstraction.BaseClass.ResultBase
+    public abstract class ResultBase : UniSpy.Server.Core.Abstraction.BaseClass.ResultBase
     {
         public ResultBase()
         {

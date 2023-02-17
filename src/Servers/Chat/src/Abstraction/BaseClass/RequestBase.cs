@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpy.Server.Chat.Exception;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
-    public class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         /// <summary>
         /// True means there are no errors
@@ -31,7 +32,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                throw new Entity.Exception.ChatException($"IRC request is invalid {RawRequest}");
+                throw new ChatException($"IRC request is invalid {RawRequest}");
             }
 
             int indexOfColon = RawRequest.IndexOf(':');

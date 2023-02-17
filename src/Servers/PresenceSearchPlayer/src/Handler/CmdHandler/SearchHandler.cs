@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceSearchPlayer.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Application;
 
 
 //last one we search with email this may get few profile so we can not return GPErrorCode
@@ -18,7 +18,7 @@ using UniSpyServer.Servers.PresenceSearchPlayer.Application;
 //\more\<number of items>\final\
 //\search\sesskey\0\profileid\0\namespaceid\0\nick\gbr359_jordips\gamename\gbrome\final\
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
+namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
 {
 
     public sealed class SearchHandler : CmdHandlerBase

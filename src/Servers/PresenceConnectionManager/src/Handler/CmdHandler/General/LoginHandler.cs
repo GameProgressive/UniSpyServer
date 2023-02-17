@@ -1,15 +1,15 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.Servers.PresenceConnectionManager.Structure;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Response;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.PresenceConnectionManager.Structure;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.Login;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Application;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
+namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
 {
 
     public sealed class LoginHandler : CmdHandlerBase

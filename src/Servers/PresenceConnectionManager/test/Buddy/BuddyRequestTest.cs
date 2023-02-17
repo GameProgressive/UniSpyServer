@@ -1,7 +1,7 @@
 using Xunit;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test
+namespace UniSpy.Server.PresenceConnectionManager.Test
 {
     public class BuddyRequestTest
     {

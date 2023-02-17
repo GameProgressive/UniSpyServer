@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpy.Server.NatNegotiation.Test
 {
     public class RequestTest
     {

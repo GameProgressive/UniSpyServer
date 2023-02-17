@@ -1,6 +1,6 @@
 using System;
 
-namespace UniSpyServer.LinqToRedis
+namespace UniSpy.LinqToRedis
 {
     /// <summary>
     /// Mark property as redis key attribute, so you can search by this key

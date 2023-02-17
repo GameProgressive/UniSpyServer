@@ -1,10 +1,10 @@
 using System.Linq;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.ServerBrowser.Application
+namespace UniSpy.Server.ServerBrowser.Application
 {
     public sealed class Client : ClientBase
     {

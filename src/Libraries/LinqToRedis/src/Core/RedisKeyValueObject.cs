@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace UniSpyServer.LinqToRedis
+namespace UniSpy.LinqToRedis
 {
     public abstract record RedisKeyValueObject : IRedisKey
     {

@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.CDKey.Application
+namespace UniSpy.Server.CDKey.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

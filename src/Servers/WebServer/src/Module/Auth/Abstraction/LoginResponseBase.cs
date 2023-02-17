@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Application;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Application;
+using UniSpy.Server.Core.Extensions;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
+namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {
 
     public abstract class LoginResponseBase : ResponseBase

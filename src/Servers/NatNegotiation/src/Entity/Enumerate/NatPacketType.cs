@@ -1,5 +1,5 @@
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Enumerate
+namespace UniSpy.Server.NatNegotiation.Entity.Enumerate
 {
     public enum RequestType : byte
     {

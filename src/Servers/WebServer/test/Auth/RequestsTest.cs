@@ -1,13 +1,13 @@
 using System;
 using System.Numerics;
-using UniSpyServer.Servers.WebServer.Application;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.Server.WebServer.Application;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Response;
+using UniSpy.Server.Core.Extensions;
 using Xunit;
 
-namespace UniSpyServer.Servers.WebServer.Test.Auth
+namespace UniSpy.Server.WebServer.Test.Auth
 {
     public class RequestsTest
     {

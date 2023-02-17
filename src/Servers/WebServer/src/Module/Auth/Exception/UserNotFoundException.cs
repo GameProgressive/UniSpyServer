@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth.Exception
 {
     public class UserNotFoundException : AuthException
     {

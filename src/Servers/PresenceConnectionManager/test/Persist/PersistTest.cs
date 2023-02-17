@@ -1,5 +1,5 @@
 using Xunit;
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Persist
+namespace UniSpy.Server.PresenceConnectionManager.Test.Persist
 {
     public class PersistTest
     {

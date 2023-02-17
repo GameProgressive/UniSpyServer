@@ -1,9 +1,9 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Test
+namespace UniSpy.Server.Chat.Test
 {
     public class TestClasses
     {

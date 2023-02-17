@@ -1,8 +1,8 @@
 using System;
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
+namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
 
     public sealed class RemoveBlockHandler : LoggedInCmdHandlerBase

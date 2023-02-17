@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.V2.Entity.Exception;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Request
 {
 
     public sealed class AvaliableRequest : RequestBase

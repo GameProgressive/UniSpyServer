@@ -1,15 +1,15 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Entity.Structure.Response;
+using UniSpy.Server.GameStatus.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
+namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
     
     public sealed class AuthGameHandler : CmdHandlerBase
     {
-        //UniSpyServer.UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyServer.UniSpyLib.Encryption.Crc16(UniSpyServer.UniSpyLib.Encryption.Crc16Mode.Standard);
+        //UniSpy.Server.Core.Encryption.Crc16 _crc16 = new UniSpy.Server.Core.Encryption.Crc16(UniSpy.Server.Core.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthGameResult _result { get => (AuthGameResult)base._result; set => base._result = value; }
         public AuthGameHandler(IClient client, IRequest request) : base(client, request)

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
+namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {

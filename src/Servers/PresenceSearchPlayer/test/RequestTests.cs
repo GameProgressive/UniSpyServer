@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Test
+namespace UniSpy.Server.PresenceSearchPlayer.Test
 {
     public class RequestTests
     {

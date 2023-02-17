@@ -1,9 +1,9 @@
 using System;
 using System.Net;
 using Newtonsoft.Json;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.GameTrafficRelay
+namespace UniSpy.Server.GameTrafficRelay
 {
     public record NatNegotiationRequest
     {

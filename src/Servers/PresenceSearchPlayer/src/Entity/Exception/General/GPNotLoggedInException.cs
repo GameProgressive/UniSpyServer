@@ -1,5 +1,5 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
+using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerate;
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPNotLoggedInException : GPException
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.Interface;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Abstraction.Interface;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Application
+namespace UniSpy.Server.QueryReport.V2.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {

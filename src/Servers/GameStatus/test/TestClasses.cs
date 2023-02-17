@@ -1,9 +1,9 @@
 using System.Net;
 using Moq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.GameStatus.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Application;
 
-namespace UniSpyServer.Servers.GameStatus.Test
+namespace UniSpy.Server.GameStatus.Test
 {
     public static class TestClasses
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction
 {
     public abstract class AdHocRequest : ServerListUpdateOptionRequestBase
     {

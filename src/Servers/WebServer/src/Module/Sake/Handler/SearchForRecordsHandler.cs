@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Sake.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Sake.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
+namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
     
     internal class SearchForRecordsHandler : CmdHandlerBase

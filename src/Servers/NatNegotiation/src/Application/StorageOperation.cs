@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.NatNegotiation.Abstraction.Interface;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
 
-namespace UniSpyServer.Servers.NatNegotiation.Application
+namespace UniSpy.Server.NatNegotiation.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {

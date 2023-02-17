@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.V2.Entity.Enumerate;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Response
 {
     public sealed class AvaliableResponse : ResponseBase
     {

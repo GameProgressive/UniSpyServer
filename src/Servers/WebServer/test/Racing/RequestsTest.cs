@@ -1,7 +1,7 @@
 using Xunit;
-using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing;
+using UniSpy.Server.WebServer.Entity.Structure.Request.Racing;
 
-namespace UniSpyServer.Servers.WebServer.Test.Racing
+namespace UniSpy.Server.WebServer.Test.Racing
 {
     public class RequestsTest
     {

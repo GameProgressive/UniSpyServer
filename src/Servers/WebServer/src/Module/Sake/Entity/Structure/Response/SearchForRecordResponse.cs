@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Entity.Structure.Response
+namespace UniSpy.Server.WebServer.Module.Sake.Entity.Structure.Response
 {
     internal class SearchForRecordResponse : ResponseBase
     {

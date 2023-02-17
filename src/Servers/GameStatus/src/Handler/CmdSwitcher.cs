@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Handler.CmdHandler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Handler.CmdHandler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.GameStatus.Handler
+namespace UniSpy.Server.GameStatus.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

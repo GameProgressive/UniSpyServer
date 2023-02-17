@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Application
+namespace UniSpy.Server.GameTrafficRelay.Application
 {
-    public class WebServer : UniSpyLib.Abstraction.Interface.IServer
+    public class WebServer : UniSpy.Server.Core.Abstraction.Interface.IServer
     {
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }

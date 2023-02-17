@@ -1,11 +1,11 @@
 using System.Net;
 using System.Linq;
-using UniSpyServer.Servers.Chat.Abstraction.Interface;
-using UniSpyServer.Servers.Chat.Entity.Exception;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
 
-namespace UniSpyServer.Servers.Chat.Application
+namespace UniSpy.Server.Chat.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {

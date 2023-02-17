@@ -1,10 +1,10 @@
 using System.Net;
-using UniSpyServer.Servers.GameTrafficRelay.Entity;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.GameTrafficRelay.Entity;
+using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Application
+namespace UniSpy.Server.GameTrafficRelay.Application
 {
     internal sealed class ServerLauncher : ServerLauncherBase
     {

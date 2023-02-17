@@ -1,13 +1,13 @@
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Application;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.V2.Application;
+using UniSpy.Server.QueryReport.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Response;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler
+namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
 
     public sealed class ChallengeHandler : CmdHandlerBase

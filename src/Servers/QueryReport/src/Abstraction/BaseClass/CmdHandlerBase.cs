@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.QueryReport.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass
+namespace UniSpy.Server.QueryReport.V2.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
         protected new Client _client => (Client)base._client;
         protected new RequestBase _request => (RequestBase)base._request;

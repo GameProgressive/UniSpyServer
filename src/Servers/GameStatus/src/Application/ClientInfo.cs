@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.GameStatus.Application
+namespace UniSpy.Server.GameStatus.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

@@ -1,6 +1,6 @@
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
 
-public class RequestBase : UniSpyServer.Servers.WebServer.Abstraction.RequestBase
+public class RequestBase : UniSpy.Server.WebServer.Abstraction.RequestBase
 {
     public RequestBase(string rawRequest) : base(rawRequest)
     {

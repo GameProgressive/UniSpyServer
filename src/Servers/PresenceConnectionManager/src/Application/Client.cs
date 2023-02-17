@@ -1,11 +1,11 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler;
-using UniSpyServer.Servers.PresenceConnectionManager.Structure;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Handler;
+using UniSpy.Server.PresenceConnectionManager.Structure;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Application
+namespace UniSpy.Server.PresenceConnectionManager.Application
 {
     public sealed class Client : ClientBase
     {

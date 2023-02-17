@@ -1,7 +1,7 @@
 using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure
 {
     public sealed class Direct2GameSoapEnvelope : SoapEnvelopBase
     {

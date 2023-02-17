@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.Interface
+namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.Interface
 {
     public interface IStorageOperation
     {

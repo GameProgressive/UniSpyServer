@@ -1,6 +1,6 @@
-namespace UniSpyServer.Servers.WebServer.Abstraction
+namespace UniSpy.Server.WebServer.Abstraction
 {
-    public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
+    public abstract class ResponseBase : UniSpy.Server.Core.Abstraction.BaseClass.ResponseBase
     {
         protected SoapEnvelopBase _content { get; set; }
         public new string SendingBuffer { get => (string)base.SendingBuffer; set => base.SendingBuffer = value; }

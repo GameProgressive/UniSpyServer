@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-using UniSpyServer.LinqToRedis.Linq;
+using UniSpy.LinqToRedis.Linq;
 
-namespace UniSpyServer.LinqToRedis
+namespace UniSpy.LinqToRedis
 {
     /// <summary>
     /// TODO we need to implement get AllKeys, AllValues

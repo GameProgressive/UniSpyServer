@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Application
+namespace UniSpy.Server.PresenceConnectionManager.Application
 {
     public class Program
     {

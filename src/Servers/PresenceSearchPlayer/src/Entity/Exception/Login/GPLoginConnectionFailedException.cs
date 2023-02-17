@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Exception.Login
 {
     public class GPLoginConnectionFailedException : GPLoginException
     {

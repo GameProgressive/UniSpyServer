@@ -1,11 +1,11 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.NatNegotiation.Application;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Application;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpy.Server.NatNegotiation.Test
 {
 
     public class HandlerTest
@@ -70,14 +70,14 @@ namespace UniSpyServer.Servers.NatNegotiation.Test
         [Fact]
         public void ReportTest()
         {
-            var r1 = new UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
+            var r1 = new UniSpy.Server.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
             {
                 ServerId = System.Guid.Empty,
                 PublicIPAddress = IPAddress.Parse("202.91.34.186"),
                 PrivateIPAddress = IPAddress.Parse("192.168.1.1")
             };
 
-            var r2 = new UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
+            var r2 = new UniSpy.Server.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
             {
                 ServerId = System.Guid.Empty,
                 PublicIPAddress = IPAddress.Parse("202.91.34.186"),

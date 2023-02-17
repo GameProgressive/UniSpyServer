@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request
 {
     
     public sealed class NicksRequest : RequestBase

@@ -1,8 +1,8 @@
 using Xunit;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Contract.Request.Message;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.Chat.Test.Message
+namespace UniSpy.Server.Chat.Test.Message
 {
     public class MessageRequestTest
     {

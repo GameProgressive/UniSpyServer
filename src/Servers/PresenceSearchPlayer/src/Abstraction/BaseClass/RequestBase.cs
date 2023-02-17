@@ -1,11 +1,11 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
+namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
         public new string RawRequest{ get => (string)base.RawRequest;

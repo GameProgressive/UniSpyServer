@@ -1,9 +1,9 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.QueryReport.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Test
+namespace UniSpy.Server.QueryReport.V2.Test
 {
     public class TestClasses
     {

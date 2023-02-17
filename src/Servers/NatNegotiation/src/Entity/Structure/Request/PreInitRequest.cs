@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Request
 {
     
     public sealed class PreInitRequest : RequestBase

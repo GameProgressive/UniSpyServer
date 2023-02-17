@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.BM
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Exception.BM
 {
     public class GPBuddyMsgNotBuddyException : GPException
     {

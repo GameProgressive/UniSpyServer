@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Exception;
 using System;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
+namespace UniSpy.Server.GameStatus.Entity.Structure.Request
 {
     
     public sealed class GetPlayerDataRequest : RequestBase

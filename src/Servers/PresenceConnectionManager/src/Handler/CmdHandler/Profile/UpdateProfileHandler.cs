@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Profile
+namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
 {
 
     public sealed class UpdateProfileHandler : Abstraction.BaseClass.CmdHandlerBase

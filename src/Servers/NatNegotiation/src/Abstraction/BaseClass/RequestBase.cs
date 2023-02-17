@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
+namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// NatNeg request base
     /// </summary>
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public new byte[] RawRequest => (byte[])base.RawRequest;

@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Message;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Chat.Contract.Request.Message;
+using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
+using UniSpy.Server.Chat.Handler.CmdHandler.General;
+using UniSpy.Server.Chat.Handler.CmdHandler.Message;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.Chat.Handler
+namespace UniSpy.Server.Chat.Handler
 {
     /// <summary>
     /// Process request to Commands

@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
+using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Response
 {
     public sealed class InitResponse : CommonResponseBase
     {

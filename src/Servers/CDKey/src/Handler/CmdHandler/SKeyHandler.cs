@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.CDKey.Handler.CmdHandler
+namespace UniSpy.Server.CDKey.Handler.CmdHandler
 {
     /// <summary>
     /// This class contians gamespy cdkey check functions  which help cdkeyserver to finish the cdkey check. 

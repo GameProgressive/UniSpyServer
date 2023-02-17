@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test
+namespace UniSpy.Server.PresenceConnectionManager.Test
 {
     public static class BuddyRequests
     {

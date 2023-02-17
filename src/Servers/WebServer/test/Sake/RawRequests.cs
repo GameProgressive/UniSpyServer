@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.WebServer.Test.Sake
+namespace UniSpy.Server.WebServer.Test.Sake
 {
     public class RawRequests
     {

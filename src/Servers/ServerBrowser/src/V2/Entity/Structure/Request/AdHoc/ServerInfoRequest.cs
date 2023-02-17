@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.ServerBrowser.V2.Abstraction;
+using UniSpy.Server.ServerBrowser.V2.Abstraction;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request
+namespace UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request
 {
 
     public class ServerInfoRequest : AdHocRequest

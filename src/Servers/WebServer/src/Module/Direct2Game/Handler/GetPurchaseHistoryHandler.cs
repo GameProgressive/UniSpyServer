@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Handler
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler
 {
     
     internal class GetPurchaseHistoryHandler : CmdHandlerBase

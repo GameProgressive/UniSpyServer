@@ -1,11 +1,11 @@
-// using UniSpyServer.Servers.CDkey.Abstraction.BaseClass;
-// using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+// using UniSpy.Server.CDkey.Abstraction.BaseClass;
+// using UniSpy.Server.Core.Abstraction.BaseClass;
 
-// namespace UniSpyServer.Servers.CDkey.Entity.Structure.Response
+// namespace UniSpy.Server.CDkey.Entity.Structure.Response
 // {
 //     public sealed class CDKeyDefaultResponse : ResponseBase
 //     {
-//         public CDKeyDefaultResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+//         public CDKeyDefaultResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
 //         {
 //         }
 

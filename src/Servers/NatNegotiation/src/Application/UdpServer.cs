@@ -1,9 +1,9 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.NatNegotiation.Application
+namespace UniSpy.Server.NatNegotiation.Application
 {
-    internal sealed class UdpServer : UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server.UdpServer
+    internal sealed class UdpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {
         public UdpServer(UniSpyServerConfig config) : base(config)
         {

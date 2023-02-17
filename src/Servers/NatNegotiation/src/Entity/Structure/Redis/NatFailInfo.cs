@@ -2,12 +2,12 @@ using System;
 using System.Net;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-using UniSpyServer.LinqToRedis;
-using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.UniSpyLib.MiscMethod;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.LinqToRedis;
+using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis.Fail
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Redis.Fail
 {
     /// <summary>
     /// The information pair using to switch strategy
@@ -37,8 +37,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis.Fail
         }
     }
 
-    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatFailInfo>
+    public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatFailInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatFailInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpy.Server.Core.Extensions.DbNumber.NatFailInfo) { }
     }
 }

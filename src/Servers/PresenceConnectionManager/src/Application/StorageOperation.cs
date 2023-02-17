@@ -1,13 +1,13 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.Interface;
+using UniSpy.Server.Core.Database.DatabaseModel;
 using System.Linq;
 using System.Collections.Generic;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Login;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.Login;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
 
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Application
+namespace UniSpy.Server.PresenceConnectionManager.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {
@@ -215,7 +215,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Application
             using (var db = new UniSpyContext())
             {
 
-                var profiles = new UniSpyLib.Database.DatabaseModel.Profile
+                var profiles = new UniSpy.Server.Core.Database.DatabaseModel.Profile
                 {
                     ProfileId = profileId,
                     Nick = newNick,

@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response.Message;
-using UniSpyServer.Servers.Chat.Entity.Structure.Result.Message;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Contract.Request.Message;
+using UniSpy.Server.Chat.Contract.Response.Message;
+using UniSpy.Server.Chat.Contract.Result.Message;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
+namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
 {
     
     public sealed class UnderTheTableMsgHandler : MsgHandlerBase

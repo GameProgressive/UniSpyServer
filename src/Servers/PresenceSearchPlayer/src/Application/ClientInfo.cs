@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
+namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

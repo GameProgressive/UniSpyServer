@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
+using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Request
 {
 
     public sealed class InitRequest : CommonRequestBase

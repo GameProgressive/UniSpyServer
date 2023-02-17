@@ -1,8 +1,8 @@
 using System;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Misc
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Misc
 {
     public class NatReportRecord
     {

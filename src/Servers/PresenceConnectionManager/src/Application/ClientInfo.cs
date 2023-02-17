@@ -1,10 +1,10 @@
 using System;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Misc;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Application
+namespace UniSpy.Server.PresenceConnectionManager.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

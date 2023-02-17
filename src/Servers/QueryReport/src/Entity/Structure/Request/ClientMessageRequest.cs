@@ -1,11 +1,11 @@
 using System;
 using System.Net;
 using Newtonsoft.Json;
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.Core.MiscMethod;
 using System.Linq;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Request
 {
     public sealed class ClientMessageRequest : RequestBase
     {

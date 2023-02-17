@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.NatNegotiation.Handler
+namespace UniSpy.Server.NatNegotiation.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

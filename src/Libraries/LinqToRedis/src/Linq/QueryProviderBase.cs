@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace UniSpyServer.LinqToRedis.Linq
+namespace UniSpy.LinqToRedis.Linq
 {
     public abstract class QueryProviderBase : IQueryProvider
     {

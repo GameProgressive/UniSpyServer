@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth.Exception
 {
     public enum AuthErrorCode
     {

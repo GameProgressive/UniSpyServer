@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace UniSpyServer.Servers.WebServer.Entity.Constant
+namespace UniSpy.Server.WebServer.Entity.Constant
 {
     public class WebEndpoints
     {

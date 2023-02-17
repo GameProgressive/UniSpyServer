@@ -1,14 +1,14 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.Servers.GameStatus.Application;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Entity.Structure.Response;
+using UniSpy.Server.GameStatus.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.GameStatus.Application;
 
-namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
+namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
     /// <summary>
     /// Authenticate with partnerid or profileid

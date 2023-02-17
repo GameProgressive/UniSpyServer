@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.WebServer.Test.Sake
+namespace UniSpy.Server.WebServer.Test.Sake
 {
     public class RequestsTest
     {

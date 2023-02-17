@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Entity.Structure;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Abstraction
+namespace UniSpy.Server.WebServer.Module.Sake.Abstraction
 {
     public abstract class CmdHandlerBase : WebServer.Abstraction.CmdHandlerBase
     {

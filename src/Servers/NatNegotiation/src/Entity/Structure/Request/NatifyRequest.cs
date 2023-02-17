@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Request
 {
 
     public sealed class NatifyRequest : CommonRequestBase

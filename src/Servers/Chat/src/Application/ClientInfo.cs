@@ -1,10 +1,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Aggregate.Misc;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.Chat.Application
+namespace UniSpy.Server.Chat.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

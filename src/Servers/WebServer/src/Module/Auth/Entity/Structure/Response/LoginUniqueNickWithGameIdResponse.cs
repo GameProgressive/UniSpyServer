@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response
+namespace UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Response
 {
     public class LoginUniqueNickWithGameIdResponse : LoginResponseBase
     {

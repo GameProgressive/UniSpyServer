@@ -1,11 +1,11 @@
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Misc;
-using UniSpyServer.Servers.GameStatus.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.GameStatus.Entity.Structure.Misc;
+using UniSpy.Server.GameStatus.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.GameStatus.Application
+namespace UniSpy.Server.GameStatus.Application
 {
     public sealed class Client : ClientBase
     {

@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc
+namespace UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc
 {
     public class StringFlag
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace UniSpyServer.LinqToRedis.Linq
+namespace UniSpy.LinqToRedis.Linq
 {
     public static class QueryEvaluator
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpyServer.Servers.Test
+namespace UniSpy.Server.Test
 {
     public class Anno1701
     {

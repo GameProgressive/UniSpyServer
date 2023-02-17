@@ -1,7 +1,7 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class LogedInHandlerBase : CmdHandlerBase
     {

@@ -1,9 +1,9 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.ServerBrowser.Application
+namespace UniSpy.Server.ServerBrowser.Application
 {
-    class TcpServer : UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    class TcpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
     {
         public TcpServer(UniSpyServerConfig config) : base(config)
         {

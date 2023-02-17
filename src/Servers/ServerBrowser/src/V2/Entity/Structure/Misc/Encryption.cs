@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.ServerBrowser.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc
+using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
+namespace UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc
 {
     public class EncryptionParameters
     {

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Test
+namespace UniSpy.Server.ServerBrowser.V2.Test
 {
     public class Person
     {

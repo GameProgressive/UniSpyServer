@@ -1,9 +1,9 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.ServerBrowser.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Test
+namespace UniSpy.Server.ServerBrowser.V2.Test
 {
     public static class TestClasses
     {

@@ -1,13 +1,13 @@
-using UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Exception;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.Servers.ServerBrowser.Application;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.ServerBrowser.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Handler.CmdHandler
+namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
     /// <summary>
     /// Natneg message maybe incompelete

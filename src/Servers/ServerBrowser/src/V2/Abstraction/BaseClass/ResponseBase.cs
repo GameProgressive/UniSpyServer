@@ -1,10 +1,10 @@
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
 {
 
     /// <summary>
     /// SB always need to response to client even there are no server or error occured
     /// </summary>
-    public abstract class ResponseBase : UniSpyLib.Abstraction.BaseClass.ResponseBase
+    public abstract class ResponseBase : UniSpy.Server.Core.Abstraction.BaseClass.ResponseBase
     {
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result => (ResultBase)base._result;

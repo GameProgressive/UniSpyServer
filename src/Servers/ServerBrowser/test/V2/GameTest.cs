@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Test
+namespace UniSpy.Server.ServerBrowser.V2.Test
 {
     public class GameTest
     {

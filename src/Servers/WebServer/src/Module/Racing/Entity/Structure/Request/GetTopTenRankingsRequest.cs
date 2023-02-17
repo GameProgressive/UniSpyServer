@@ -1,8 +1,8 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
 
-namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Racing
+namespace UniSpy.Server.WebServer.Entity.Structure.Request.Racing
 {
 
     public class GetTopTenRankingsRequest : RequestBase

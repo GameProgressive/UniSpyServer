@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class AddBuddyResult : ResultBase
     {

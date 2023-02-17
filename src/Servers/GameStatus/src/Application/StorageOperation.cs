@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.GameStatus.Abstraction.Interface;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.GameStatus.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Entity.Exception;
+using UniSpy.Server.Core.Database.DatabaseModel;
 using System.Linq;
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.GameStatus.Application
+namespace UniSpy.Server.GameStatus.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {

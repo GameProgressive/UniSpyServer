@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public enum MessageType
     {

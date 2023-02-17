@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Exception;
 using System;
 using System.Linq;
 
-namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Request
+namespace UniSpy.Server.GameStatus.Entity.Structure.Request
 {
     /// <summary>
     /// "\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"

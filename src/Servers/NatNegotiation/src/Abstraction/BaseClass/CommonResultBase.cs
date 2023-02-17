@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
+namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class CommonResultBase : ResultBase
     {

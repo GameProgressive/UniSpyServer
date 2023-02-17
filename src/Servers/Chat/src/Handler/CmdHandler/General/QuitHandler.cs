@@ -1,11 +1,11 @@
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
+namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
 
     public sealed class QuitHandler : LogedInHandlerBase

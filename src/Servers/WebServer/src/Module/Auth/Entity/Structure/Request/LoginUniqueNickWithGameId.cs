@@ -1,7 +1,7 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
+using UniSpy.Server.WebServer.Module.Auth.Exception;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request
+namespace UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request
 {
     
     public class LoginUniqueNickWithGameIdRequest : LoginUniqueNickRequest

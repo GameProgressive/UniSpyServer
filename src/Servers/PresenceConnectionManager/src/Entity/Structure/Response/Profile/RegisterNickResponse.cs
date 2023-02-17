@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class RegisterNickResponse : ResponseBase
     {
-        public RegisterNickResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public RegisterNickResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

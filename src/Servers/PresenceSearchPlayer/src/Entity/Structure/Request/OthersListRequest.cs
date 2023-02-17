@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request
 {
 
     //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>

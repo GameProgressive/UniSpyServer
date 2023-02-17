@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionResultBase : ResultBase
     {

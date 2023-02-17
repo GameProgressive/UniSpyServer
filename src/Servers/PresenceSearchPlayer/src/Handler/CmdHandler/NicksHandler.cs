@@ -1,13 +1,13 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.Servers.PresenceSearchPlayer.Application;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Application;
 
 /////////////////////////Finished?/////////////////////////////////
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
+namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
 {
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account

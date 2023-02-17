@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
+namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {
-    public class ResultBase : UniSpyLib.Abstraction.BaseClass.ResultBase
+    public class ResultBase : UniSpy.Server.Core.Abstraction.BaseClass.ResultBase
     {
         public ResponseType? PacketType { get; set; }
         public ResultBase()

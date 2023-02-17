@@ -1,10 +1,10 @@
 using System.Linq;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
     {

@@ -1,13 +1,13 @@
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Exception;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Contract.Response.Channel;
+using UniSpy.Server.Chat.Contract.Result.Channel;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
+namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
     // Sets channel key/values.
     // If user is NULL or "", the keys will be set on the channel.

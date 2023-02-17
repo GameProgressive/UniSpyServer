@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using Xunit;
 
-namespace UniSpyServer.Servers.GameStatus.Test
+namespace UniSpy.Server.GameStatus.Test
 {
     public class GameTest
     {

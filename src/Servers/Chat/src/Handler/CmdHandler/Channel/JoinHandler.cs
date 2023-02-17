@@ -1,19 +1,19 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.Servers.Chat.Entity.Exception;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Chat.Exception.IRC.Channel;
+using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Aggregate.Misc;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Chat.Contract.Response.Channel;
+using UniSpy.Server.Chat.Contract.Result.Channel;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
+namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time
@@ -21,15 +21,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
     public sealed class JoinHandler : LogedInHandlerBase
     {
-        public static IDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel> Channels { get; private set; }
+        public static IDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel> Channels { get; private set; }
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
-        Entity.Structure.Misc.ChannelInfo.Channel _channel;
+        Aggregate.Misc.ChannelInfo.Channel _channel;
         ChannelUser _user;
         static JoinHandler()
         {
-            Channels = new ConcurrentDictionary<string, Chat.Entity.Structure.Misc.ChannelInfo.Channel>();
+            Channels = new ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel>();
         }
         public JoinHandler(IClient client, IRequest request) : base(client, request)
         {
@@ -103,12 +103,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 if (StorageOperation.Persistance.IsPeerLobby(_request.ChannelName))
                 {
                     _channel.IsPeerServer = true;
-                    _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
+                    _channel = new Aggregate.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
                     _user.SetDefaultProperties(false, false);
                 }
                 else
                 {
-                    _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName);
+                    _channel = new Aggregate.Misc.ChannelInfo.Channel(_request.ChannelName);
                     _user.SetDefaultProperties(true, true);
                 }
                 _channel.AddBindOnUserAndChannel(_user);

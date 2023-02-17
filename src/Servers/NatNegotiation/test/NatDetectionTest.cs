@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Net;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using Xunit;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpy.Server.NatNegotiation.Test
 {
     public class NatDetectionTest
     {

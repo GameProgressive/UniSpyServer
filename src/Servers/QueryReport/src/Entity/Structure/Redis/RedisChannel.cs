@@ -1,15 +1,15 @@
-using UniSpyServer.Servers.QueryReport.Application;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Entity.Structure;
-using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.QueryReport.Application;
+using UniSpy.Server.QueryReport.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Handler.CmdHandler;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Entity.Structure;
+using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Redis
 {
-    public sealed class RedisChannel : UniSpyLib.Abstraction.BaseClass.RedisChannelBase<ClientMessageRequest>
+    public sealed class RedisChannel : UniSpy.Server.Core.Abstraction.BaseClass.RedisChannelBase<ClientMessageRequest>
     {
         public RedisChannel() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
-using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
+using UniSpy.Server.WebServer.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request
+namespace UniSpy.Server.WebServer.Module.Sake.Structure.Request
 {
     
     public class GetRandomRecordsRequest : RequestBase

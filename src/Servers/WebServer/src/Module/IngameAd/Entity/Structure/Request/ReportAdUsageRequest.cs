@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
 
-namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.IngameAd
+namespace UniSpy.Server.WebServer.Entity.Structure.Request.IngameAd
 {
     
     public class ReportAdUsageRequest : RequestBase

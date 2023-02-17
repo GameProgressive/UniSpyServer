@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPParseException : GPException
     {

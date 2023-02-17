@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.GameTrafficRelay.Entity;
-using UniSpyServer.Servers.GameTrafficRelay.Interface;
+using UniSpy.Server.GameTrafficRelay.Entity;
+using UniSpy.Server.GameTrafficRelay.Interface;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Application
+namespace UniSpy.Server.GameTrafficRelay.Application
 {
     public sealed class StorageOperation : IStorageOperation
     {

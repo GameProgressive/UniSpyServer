@@ -1,10 +1,10 @@
-using UniSpyServer.Servers.QueryReport.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.QueryReport.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Application
+namespace UniSpy.Server.QueryReport.V2.Application
 {
-    internal sealed class UdpServer : UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server.UdpServer
+    internal sealed class UdpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {
         public UdpServer(UniSpyServerConfig config) : base(config)
         {

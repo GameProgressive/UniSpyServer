@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Entity.Structure;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Entity.Structure;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result
+namespace UniSpy.Server.WebServer.Module.Sake.Structure.Result
 {
     public class GetMyRecordsResult : ResultBase
     {

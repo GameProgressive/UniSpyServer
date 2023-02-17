@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.NatNegotiation
+namespace UniSpy.Server.NatNegotiation
 {
 
     public enum NatPunchStrategy

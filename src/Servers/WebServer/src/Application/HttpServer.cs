@@ -1,9 +1,9 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.WebServer.Application
+namespace UniSpy.Server.WebServer.Application
 {
-    internal sealed class HttpServer : UniSpyLib.Abstraction.BaseClass.Network.Http.Server.HttpServer
+    internal sealed class HttpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Http.Server.HttpServer
     {
         public HttpServer(UniSpyServerConfig config) : base(config)
         {

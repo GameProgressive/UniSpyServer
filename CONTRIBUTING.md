@@ -72,19 +72,19 @@ The scope should be the name of the UniSpy server/service/lib that is affected.
 
 List of supported scopes:
 
-|     Scope     |                    Project                     |
-| :-----------: | :--------------------------------------------: |
-| **unispylib** |        UniSpyServer.Libraries.UniSpyLib        |
-|   **cdkey**   |           UniSpyServer.Servers.CDKey           |
-|   **chat**    |           UniSpyServer.Servers.Chat            |
-|    **gs**     |        UniSpyServer.Servers.GameStatus         |
-|    **gtr**    |     UniSpyServer.Servers.GameTrafficRelay      |
-|    **nn**     |      UniSpyServer.Servers.NatNegotiation       |
-|    **pcm**    | UniSpyServer.Servers.PresenceConnectionManager |
-|    **psp**    |   UniSpyServer.Servers.PresenceSearchPlayer    |
-|    **qr**     |        UniSpyServer.Servers.QueryReport        |
-|    **sb**     |       UniSpyServer.Servers.ServerBrowser       |
-|    **ws**     |         UniSpyServer.Servers.WebServer         |
+|     Scope     |                  Project                |
+| :-----------: | :-------------------------------------: |
+|   **core**    |       UniSpy.Server.Libraries.Core      |
+|   **cdkey**   |           UniSpy.Server.CDKey           |
+|   **chat**    |           UniSpy.Server.Chat            |
+|    **gs**     |        UniSpy.Server.GameStatus         |
+|    **gtr**    |     UniSpy.Server.GameTrafficRelay      |
+|    **nn**     |      UniSpy.Server.NatNegotiation       |
+|    **pcm**    | UniSpy.Server.PresenceConnectionManager |
+|    **psp**    |   UniSpy.Server.PresenceSearchPlayer    |
+|    **qr**     |        UniSpy.Server.QueryReport        |
+|    **sb**     |       UniSpy.Server.ServerBrowser       |
+|    **ws**     |         UniSpy.Server.WebServer         |
 
 Exceptions to the rule are:
 

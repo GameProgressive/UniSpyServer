@@ -1,8 +1,8 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Exception;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
+namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {
     public abstract class LoginRequestBase : RequestBase
     {

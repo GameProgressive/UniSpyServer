@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.GameStatus.Abstraction.Interface
+namespace UniSpy.Server.GameStatus.Abstraction.Interface
 {
     public interface IStorageOperation
     {

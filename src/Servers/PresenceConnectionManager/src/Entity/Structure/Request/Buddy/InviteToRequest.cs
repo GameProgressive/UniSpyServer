@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request
 {
     /// <summary>
     /// Invite a user to a room or a game

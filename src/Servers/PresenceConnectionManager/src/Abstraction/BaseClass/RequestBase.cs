@@ -1,12 +1,12 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public new string CommandName{ get => (string)base.CommandName;
             protected set => base.CommandName = value; }

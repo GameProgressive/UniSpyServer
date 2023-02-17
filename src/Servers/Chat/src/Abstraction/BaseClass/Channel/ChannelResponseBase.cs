@@ -1,8 +1,8 @@
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class ChannelResponseBase : ResponseBase
     {
         protected new ChannelRequestBase _request => (ChannelRequestBase)base._request;
-        protected ChannelResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        protected ChannelResponseBase(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
     }
 }

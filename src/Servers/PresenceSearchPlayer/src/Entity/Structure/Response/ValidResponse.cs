@@ -1,13 +1,13 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response
 {
     public sealed class ValidResponse : ResponseBase
     {
         private new ValidResult _result => (ValidResult)base._result;
 
-        public ValidResponse(RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ValidResponse(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

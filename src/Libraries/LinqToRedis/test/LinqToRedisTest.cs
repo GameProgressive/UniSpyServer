@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using UniSpyServer.LinqToRedis;
+using UniSpy.LinqToRedis;
 using Xunit;
 
 namespace UniSpy.Redis.Test

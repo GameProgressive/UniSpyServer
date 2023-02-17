@@ -1,4 +1,4 @@
-namespace UniSpyServer.LinqToRedis
+namespace UniSpy.LinqToRedis
 {
     public interface IRedisKey
     {

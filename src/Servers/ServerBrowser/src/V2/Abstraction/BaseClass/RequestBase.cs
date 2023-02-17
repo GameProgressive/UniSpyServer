@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;

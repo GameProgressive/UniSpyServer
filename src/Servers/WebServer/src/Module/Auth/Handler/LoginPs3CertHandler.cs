@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
+namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
     
     public class LoginPs3CertHandler : CmdHandlerBase

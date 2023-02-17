@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Structure.Misc
 {
     /// <summary>
     /// This status class is for old SDK version

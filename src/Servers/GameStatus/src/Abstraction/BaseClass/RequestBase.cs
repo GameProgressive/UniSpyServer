@@ -1,11 +1,11 @@
-using UniSpyServer.Servers.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.UniSpyLib.MiscMethod;
+using UniSpy.Server.Core.MiscMethod;
 
-namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
+namespace UniSpy.Server.GameStatus.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public int OperationID { get; protected set; }
         public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }

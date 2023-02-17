@@ -1,9 +1,9 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Config;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Config;
 
-namespace UniSpyServer.Servers.GameStatus.Application
+namespace UniSpy.Server.GameStatus.Application
 {
-    internal sealed class TcpServer : UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    internal sealed class TcpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
     {
         public TcpServer(UniSpyServerConfig config) : base(config)
         {

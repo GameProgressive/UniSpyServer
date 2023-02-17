@@ -1,14 +1,14 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
+namespace UniSpy.Server.GameStatus.Entity.Structure.Response
 {
     public sealed class AuthPlayerResponse : ResponseBase
     {
         private new AuthPlayerResult _result => (AuthPlayerResult)base._result;
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
-        public AuthPlayerResponse(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public AuthPlayerResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
 

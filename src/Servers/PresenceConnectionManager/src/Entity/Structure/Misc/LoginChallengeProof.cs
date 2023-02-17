@@ -1,8 +1,8 @@
 using System.Text;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.Core.Extensions;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Structure
+namespace UniSpy.Server.PresenceConnectionManager.Structure
 {
     public sealed class LoginChallengeProof
     {

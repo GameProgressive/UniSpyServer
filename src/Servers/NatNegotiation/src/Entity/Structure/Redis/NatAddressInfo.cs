@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
-using UniSpyServer.LinqToRedis;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
-using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.UniSpyLib.MiscMethod;
-using UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler;
+using UniSpy.LinqToRedis;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Exception;
+using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using System.Linq;
 
-namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
+namespace UniSpy.Server.NatNegotiation.Entity.Structure.Redis
 {
     public record NatAddressInfo : RedisKeyValueObject
     {
@@ -111,8 +111,8 @@ namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
         }
     }
 
-    public class RedisClient : UniSpyServer.LinqToRedis.RedisClient<NatAddressInfo>
+    public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatAddressInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpyServer.UniSpyLib.Extensions.DbNumber.NatAddressInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpy.Server.Core.Extensions.DbNumber.NatAddressInfo) { }
     }
 }

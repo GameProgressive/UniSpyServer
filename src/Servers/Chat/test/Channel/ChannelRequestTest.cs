@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using UniSpy.Server.Chat.Contract.Request.Channel;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test.Channel
+namespace UniSpy.Server.Chat.Test.Channel
 {
     public class ChannelRequestTest
     {

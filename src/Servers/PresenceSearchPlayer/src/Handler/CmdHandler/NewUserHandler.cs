@@ -1,14 +1,14 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Application;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewUser;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Application;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerator;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.NewUser;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
+namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
 {
 
     public class NewUserHandler : CmdHandlerBase

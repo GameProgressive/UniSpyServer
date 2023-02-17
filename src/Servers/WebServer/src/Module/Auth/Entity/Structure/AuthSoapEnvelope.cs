@@ -1,7 +1,7 @@
 using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure
+namespace UniSpy.Server.WebServer.Module.Auth.Entity.Structure
 {
     public sealed class AuthSoapEnvelope : SoapEnvelopBase
     {

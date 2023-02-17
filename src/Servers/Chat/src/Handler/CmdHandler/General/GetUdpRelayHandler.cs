@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
+namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// currently we do not know how this work

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.Interface
+namespace UniSpy.Server.NatNegotiation.Abstraction.Interface
 {
     public interface IStorageOperation
     {

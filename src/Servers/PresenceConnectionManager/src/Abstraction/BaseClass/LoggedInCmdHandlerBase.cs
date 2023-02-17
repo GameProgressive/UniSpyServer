@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class LoggedInCmdHandlerBase : CmdHandlerBase
     {

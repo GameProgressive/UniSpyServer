@@ -1,9 +1,9 @@
 using System;
-using UniSpyServer.Servers.GameTrafficRelay.Controller;
-using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.Server.GameTrafficRelay.Controller;
+using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Extensions;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity
+namespace UniSpy.Server.GameTrafficRelay.Entity
 {
     internal class ServerStatusReporter
     {

@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.CDKey.Entity.Structure.Misc
+namespace UniSpy.Server.CDKey.Entity.Structure.Misc
 {
     public sealed class RequestName
     {

@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Application
+namespace UniSpy.Server.GameTrafficRelay.Application
 {
     public class Program
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Test
+namespace UniSpy.Server.Test
 {
     public static class TestClasses
     {

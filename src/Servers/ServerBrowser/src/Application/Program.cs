@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.ServerBrowser.Application
+namespace UniSpy.Server.ServerBrowser.Application
 {
     public sealed class Program
     {

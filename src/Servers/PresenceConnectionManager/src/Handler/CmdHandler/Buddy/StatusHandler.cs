@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy
+namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
     /// <summary>
     /// TODO Status should be stored in redis

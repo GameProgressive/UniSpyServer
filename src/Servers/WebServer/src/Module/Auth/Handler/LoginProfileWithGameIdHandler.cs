@@ -1,10 +1,10 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Auth.Exception;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Auth.Exception;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Database.DatabaseModel;
+namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
     
     public sealed class LoginProfileWithGameIdHandler : LoginProfileHandler

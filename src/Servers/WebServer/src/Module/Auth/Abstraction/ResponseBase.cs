@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
+namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {
     public abstract class ResponseBase : WebServer.Abstraction.ResponseBase
     {

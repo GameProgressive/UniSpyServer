@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UniSpyServer.LinqToRedis;
-using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.LinqToRedis;
+using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.Core.Extensions;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.PeerGroup
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.PeerGroup
 {
     public record PeerGroupInfo : RedisKeyValueObject
     {

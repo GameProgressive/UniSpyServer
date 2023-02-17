@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using UniSpyServer.Servers.GameTrafficRelay.Controller;
-using UniSpyServer.Servers.GameTrafficRelay.Interface;
-using UniSpyServer.UniSpyLib.Extensions;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.GameTrafficRelay.Controller;
+using UniSpy.Server.GameTrafficRelay.Interface;
+using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
+namespace UniSpy.Server.GameTrafficRelay.Entity.Structure
 {
     public class ConnectionListener : NetCoreServer.UdpServer, IConnectionListener
     {

@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-namespace UniSpyServer.Servers.QueryReport.V2.Handler.CmdHandler
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Response;
+using UniSpy.Server.Core.Abstraction.Interface;
+namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
     /// <summary>
     /// AvailableCheckHandler

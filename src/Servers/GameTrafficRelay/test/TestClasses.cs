@@ -1,9 +1,9 @@
 // using System.Net;
 // using Moq;
-// using UniSpyServer.Servers.GameTrafficRelay.Application;
-// using UniSpyServer.UniSpyLib.Abstraction.Interface;
+// using UniSpy.Server.GameTrafficRelay.Application;
+// using UniSpy.Server.Core.Abstraction.Interface;
 
-// namespace UniSpyServer.Servers.GameTrafficRelay.Test
+// namespace UniSpy.Server.GameTrafficRelay.Test
 // {
 //     public static class TestClasses
 //     {

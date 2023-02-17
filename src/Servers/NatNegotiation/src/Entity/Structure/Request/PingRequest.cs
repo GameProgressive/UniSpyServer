@@ -1,11 +1,11 @@
 // using System;
 // using System.Linq;
 // using System.Net;
-// using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+// using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 // 
-// using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+// using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-// namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
+// namespace UniSpy.Server.NatNegotiation.Entity.Structure.Request
 // {
 //     /// <summary>
 //     /// When client can not start p2p game, it will use our server to redirect his game traffic

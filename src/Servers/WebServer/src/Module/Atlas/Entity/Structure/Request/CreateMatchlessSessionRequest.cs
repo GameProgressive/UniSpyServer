@@ -1,8 +1,8 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
 
-namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas
+namespace UniSpy.Server.WebServer.Entity.Structure.Request.Atlas
 {
     
     public class CreateMatchlessSessionRequest : RequestBase

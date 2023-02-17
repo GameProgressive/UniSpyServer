@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate
+namespace UniSpy.Server.QueryReport.V2.Entity.Enumerate
 {
     public enum HeartBeatReportType
     {

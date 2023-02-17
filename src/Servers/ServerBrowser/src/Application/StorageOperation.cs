@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.ServerBrowser.Application
+namespace UniSpy.Server.ServerBrowser.Application
 {
     internal sealed class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
     {

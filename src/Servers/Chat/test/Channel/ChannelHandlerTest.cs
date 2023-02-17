@@ -1,16 +1,16 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.Chat.Application;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.Message;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Chat.Contract.Request.Message;
+using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
+using UniSpy.Server.Chat.Handler.CmdHandler.General;
+using UniSpy.Server.Chat.Handler.CmdHandler.Message;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test.Channel
+namespace UniSpy.Server.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {

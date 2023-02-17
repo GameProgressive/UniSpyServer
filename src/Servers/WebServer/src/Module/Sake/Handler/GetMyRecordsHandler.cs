@@ -1,10 +1,10 @@
 using System.Linq;
-using UniSpyServer.Servers.WebServer.Module.Sake.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Sake.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Module.Sake.Abstraction;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.WebServer.Module.Sake.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Handler
+namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
     
     public class GetMyRecordsHandler : CmdHandlerBase

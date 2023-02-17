@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.ServerBrowser.V2.Handler.CmdHandler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request;
+using UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Handler
+namespace UniSpy.Server.ServerBrowser.V2.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {

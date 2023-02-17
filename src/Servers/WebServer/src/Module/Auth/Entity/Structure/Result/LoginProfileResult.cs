@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result
+namespace UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Result
 {
     public sealed class LoginProfileResult : LoginResultBase
     {

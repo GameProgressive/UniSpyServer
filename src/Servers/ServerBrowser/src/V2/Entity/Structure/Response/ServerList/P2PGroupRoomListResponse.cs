@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Result;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Response.ServerList
+namespace UniSpy.Server.ServerBrowser.V2.Entity.Structure.Response.ServerList
 {
     public sealed class P2PGroupRoomListResponse : ServerListUpdateOptionResponseBase
     {

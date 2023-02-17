@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Xunit;
-using UniSpyServer.Servers.GameTrafficRelay.Controller;
+using UniSpy.Server.GameTrafficRelay.Controller;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Test
+namespace UniSpy.Server.GameTrafficRelay.Test
 {
     public class GameTest
     {

@@ -1,7 +1,7 @@
 using Xunit;
-using UniSpyServer.Servers.WebServer.Entity.Structure.Request.Atlas;
+using UniSpy.Server.WebServer.Entity.Structure.Request.Atlas;
 
-namespace UniSpyServer.Servers.WebServer.Test.Atlas
+namespace UniSpy.Server.WebServer.Test.Atlas
 {
     public class RequestsTest
     {

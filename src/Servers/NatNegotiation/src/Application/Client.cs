@@ -1,10 +1,10 @@
 using System;
-using UniSpyServer.Servers.NatNegotiation.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Extensions;
+using UniSpy.Server.NatNegotiation.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Extensions;
 
-namespace UniSpyServer.Servers.NatNegotiation.Application
+namespace UniSpy.Server.NatNegotiation.Application
 {
     public class Client : ClientBase
     {

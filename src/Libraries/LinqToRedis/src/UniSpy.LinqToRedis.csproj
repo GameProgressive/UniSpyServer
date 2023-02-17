@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageId>UniSpy.LinqToRedis</PackageId>
+    <Version>1.0.4</Version>
+    <Authors>xiaojiuwo</Authors>
+    <Company>GameProgressive</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ApplicationIcon>..\..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
+  </ItemGroup>
+</Project>

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
+namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class CommonResponseBase : ResponseBase
     {
         private new CommonResultBase _result => (CommonResultBase)base._result;
         private new CommonRequestBase _request => (CommonRequestBase)base._request;
-        public CommonResponseBase(UniSpyLib.Abstraction.BaseClass.RequestBase request, UniSpyLib.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public CommonResponseBase(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
         {
         }
         public override void Build()

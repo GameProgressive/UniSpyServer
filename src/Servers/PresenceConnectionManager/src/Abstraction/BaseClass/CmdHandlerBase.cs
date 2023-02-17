@@ -1,11 +1,11 @@
 using System;
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
         /// <summary>
         /// Because all errors are sent by SendGPError()

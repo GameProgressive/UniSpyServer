@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.GameServer;
-using UniSpyServer.Servers.ServerBrowser.Application;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Misc;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass
+namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionResponseBase : ResponseBase
     {

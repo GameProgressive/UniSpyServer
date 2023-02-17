@@ -1,7 +1,7 @@
 using System.Net;
-using UniSpyServer.Servers.GameTrafficRelay.Interface;
+using UniSpy.Server.GameTrafficRelay.Interface;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Entity.Structure
+namespace UniSpy.Server.GameTrafficRelay.Entity.Structure
 {
     public class ConnectionForwardBridge
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UniSpyServer.Servers.GameTrafficRelay.Entity;
+using UniSpy.Server.GameTrafficRelay.Entity;
 
-namespace UniSpyServer.Servers.GameTrafficRelay.Interface
+namespace UniSpy.Server.GameTrafficRelay.Interface
 {
     public interface IStorageOperation
     {

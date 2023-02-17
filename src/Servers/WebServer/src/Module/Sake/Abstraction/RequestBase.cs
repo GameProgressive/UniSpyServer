@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Abstraction
+namespace UniSpy.Server.WebServer.Module.Sake.Abstraction
 {
     public abstract class RequestBase : WebServer.Abstraction.RequestBase
     {

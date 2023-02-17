@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate
+namespace UniSpy.Server.ServerBrowser.V2.Entity.Enumerate
 {
     public enum PlayerSearchOptions
     {

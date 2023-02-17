@@ -1,9 +1,9 @@
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.NatNegotiation.Application;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Application;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpy.Server.NatNegotiation.Test
 {
     public static class TestClasses
     {

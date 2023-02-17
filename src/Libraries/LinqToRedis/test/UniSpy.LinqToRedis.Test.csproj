@@ -19,6 +19,6 @@
     </PackageReference>
   </ItemGroup>
 <ItemGroup>
-  <ProjectReference Include="..\src\UniSpyServer.LinqToRedis.csproj" />
+  <ProjectReference Include="..\src\UniSpy.LinqToRedis.csproj" />
 </ItemGroup>
 </Project>

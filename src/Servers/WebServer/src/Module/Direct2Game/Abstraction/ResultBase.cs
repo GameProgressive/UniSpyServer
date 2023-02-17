@@ -1,5 +1,5 @@
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
-public class ResultBase : UniSpyServer.Servers.WebServer.Abstraction.ResultBase
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
+public class ResultBase : UniSpy.Server.WebServer.Abstraction.ResultBase
 {
     public ResultBase()
     {

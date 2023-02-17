@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response
 {
     public class NewUserResponse : ResponseBase
     {

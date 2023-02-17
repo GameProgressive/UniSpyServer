@@ -1,6 +1,6 @@
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.WebServer.Application
+namespace UniSpy.Server.WebServer.Application
 {
     /// <summary>
     /// Note!! the public exponent on SDK must set to 000001

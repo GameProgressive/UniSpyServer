@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.CDKey.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.CDKey.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.CDKey.Application
+namespace UniSpy.Server.CDKey.Application
 {
     public sealed class Client : ClientBase
     {

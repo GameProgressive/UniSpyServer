@@ -1,5 +1,5 @@
 using System;
-using UniSpyServer.LinqToRedis;
+using UniSpy.LinqToRedis;
 
 namespace UniSpy.Redis.Test
 {

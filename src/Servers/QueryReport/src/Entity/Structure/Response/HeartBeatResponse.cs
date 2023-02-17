@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Request;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Result;
+using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Result;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Response
+namespace UniSpy.Server.QueryReport.V2.Entity.Structure.Response
 {
     public sealed class HeartBeatResponse : ResponseBase
     {

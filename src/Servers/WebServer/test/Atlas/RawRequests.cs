@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.WebServer.Test.Atlas
+namespace UniSpy.Server.WebServer.Test.Atlas
 {
     public class RawRequests
     {

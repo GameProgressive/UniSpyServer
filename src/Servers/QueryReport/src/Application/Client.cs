@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.QueryReport.V2.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.QueryReport.V2.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.QueryReport.Application
+namespace UniSpy.Server.QueryReport.Application
 {
     public sealed class Client : ClientBase
     {

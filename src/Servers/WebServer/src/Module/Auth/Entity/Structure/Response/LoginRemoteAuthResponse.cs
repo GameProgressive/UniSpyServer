@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+namespace UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Response
 {
     public class LoginRemoteAuthResponse : LoginResponseBase
     {

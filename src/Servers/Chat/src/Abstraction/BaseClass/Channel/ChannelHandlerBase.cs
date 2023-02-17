@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.Channel;
-using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Chat.Exception.IRC.Channel;
+using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
+namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class ChannelHandlerBase : LogedInHandlerBase
     {

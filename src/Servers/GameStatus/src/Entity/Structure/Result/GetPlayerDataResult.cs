@@ -1,7 +1,7 @@
-using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
+using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
+namespace UniSpy.Server.GameStatus.Entity.Structure.Result
 {
     public sealed class GetPlayerDataResult : ResultBase
     {

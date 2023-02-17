@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.WebServer.Application;
-using UniSpyServer.Servers.WebServer.Handler;
-using UniSpyServer.Servers.WebServer.Test.Auth;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.WebServer.Application;
+using UniSpy.Server.WebServer.Handler;
+using UniSpy.Server.WebServer.Test.Auth;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpyServer.Servers.WebServer.Test
+namespace UniSpy.Server.WebServer.Test
 {
     public class HandlerTest
     {

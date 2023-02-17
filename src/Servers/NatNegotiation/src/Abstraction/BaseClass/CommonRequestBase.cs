@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
+namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class CommonRequestBase : RequestBase
     {

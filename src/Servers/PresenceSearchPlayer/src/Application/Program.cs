@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
+namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
     public class Program
     {

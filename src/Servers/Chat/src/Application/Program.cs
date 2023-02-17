@@ -1,7 +1,7 @@
 using System;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.Chat.Application
+namespace UniSpy.Server.Chat.Application
 {
     public class Program
     {
@@ -11,7 +11,7 @@ namespace UniSpyServer.Servers.Chat.Application
             {
                 new ServerLauncher().Start();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 LogWriter.LogError(e);
             }

@@ -1,15 +1,15 @@
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
-using UniSpyServer.Servers.ServerBrowser.Application;
-using UniSpyServer.Servers.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Enumerate;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Exception;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Packet.Response;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Response.ServerList;
-using UniSpyServer.Servers.ServerBrowser.V2.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
+using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Entity.Exception;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Packet.Response;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Response.ServerList;
+using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.ServerBrowser.V2.Handler.CmdHandler
+namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
 
     public class ServerListHandler : ServerListUpdateOptionHandlerBase

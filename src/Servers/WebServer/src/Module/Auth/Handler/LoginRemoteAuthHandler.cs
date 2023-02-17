@@ -1,12 +1,12 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Abstraction;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Response;
-using UniSpyServer.Servers.WebServer.Module.Auth.Entity.Structure.Result;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Database.DatabaseModel;
+using UniSpy.Server.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Abstraction;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Result;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Database.DatabaseModel;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Handler
+namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
     
     public class LoginRemoteAuthHandler : CmdHandlerBase

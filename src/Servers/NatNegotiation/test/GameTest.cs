@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpy.Server.NatNegotiation.Test
 {
     public class GameTest
     {

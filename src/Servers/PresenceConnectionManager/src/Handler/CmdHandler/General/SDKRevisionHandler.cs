@@ -1,9 +1,9 @@
-using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.Buddy;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler.General
+namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
 {
 
     public sealed class SdkRevisionHandler : CmdHandlerBase

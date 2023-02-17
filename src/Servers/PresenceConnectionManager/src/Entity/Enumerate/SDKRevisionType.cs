@@ -1,5 +1,5 @@
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate
+namespace UniSpy.Server.PresenceConnectionManager.Entity.Enumerate
 {
     public enum SdkRevisionType : int
     {

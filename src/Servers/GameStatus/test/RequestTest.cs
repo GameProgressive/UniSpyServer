@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.GameStatus.Entity.Enumerate;
-using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Entity.Structure.Request;
 using Xunit;
 
-namespace UniSpyServer.Servers.GameStatus.Test
+namespace UniSpy.Server.GameStatus.Test
 {
     public class RequestTest
     {

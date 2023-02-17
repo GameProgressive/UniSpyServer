@@ -1,12 +1,12 @@
 using System.Linq;
-using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Handler;
-using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Logging;
+using UniSpy.Server.Chat.Contract.Request.General;
+using UniSpy.Server.Chat.Handler;
+using UniSpy.Server.Chat.Handler.CmdHandler.General;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
-namespace UniSpyServer.Servers.Chat.Application
+namespace UniSpy.Server.Chat.Application
 {
     public sealed class Client : ClientBase
     {

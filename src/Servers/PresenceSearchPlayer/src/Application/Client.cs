@@ -1,8 +1,8 @@
-using UniSpyServer.Servers.PresenceSearchPlayer.Handler;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Handler;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
+namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
     public sealed class Client : ClientBase
     {

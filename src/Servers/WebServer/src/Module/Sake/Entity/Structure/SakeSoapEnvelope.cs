@@ -1,7 +1,7 @@
 using System.Xml.Linq;
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Sake.Entity.Structure
+namespace UniSpy.Server.WebServer.Module.Sake.Entity.Structure
 {
     public sealed class SakeSoapEnvelope : SoapEnvelopBase
     {

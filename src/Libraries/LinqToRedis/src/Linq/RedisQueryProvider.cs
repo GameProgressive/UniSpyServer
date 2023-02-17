@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace UniSpyServer.LinqToRedis.Linq
+namespace UniSpy.LinqToRedis.Linq
 {
     public class RedisQueryProvider<TValue> : QueryProviderBase where TValue : RedisKeyValueObject
     {

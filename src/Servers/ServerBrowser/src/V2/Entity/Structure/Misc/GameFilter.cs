@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.ServerBrowser.V2.Entity
+namespace UniSpy.Server.ServerBrowser.V2.Entity
 {
     class GameFilter
     {

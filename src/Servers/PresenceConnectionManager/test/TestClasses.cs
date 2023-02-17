@@ -1,9 +1,9 @@
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 using System.Net;
 using Moq;
-using UniSpyServer.Servers.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceConnectionManager.Application;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test
+namespace UniSpy.Server.PresenceConnectionManager.Test
 {
     public class TestClasses
     {

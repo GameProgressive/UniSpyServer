@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Enumerate;
-using UniSpyServer.Servers.QueryReport.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Entity.Enumerate;
+using UniSpy.Server.QueryReport.V2.Entity.Exception;
 
-namespace UniSpyServer.Servers.QueryReport.V2.Abstraction.BaseClass
+namespace UniSpy.Server.QueryReport.V2.Abstraction.BaseClass
 {
-    public abstract class RequestBase : UniSpyLib.Abstraction.BaseClass.RequestBase
+    public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public uint? InstantKey { get; protected set; }

@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpy.Server.WebServer.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Auth.Abstraction
+namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {
     public abstract class LoginResultBase : ResultBase
     {

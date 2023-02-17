@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace UniSpyServer.Servers.WebServer.Abstraction
+namespace UniSpy.Server.WebServer.Abstraction
 {
     public abstract class SoapEnvelopBase
     {

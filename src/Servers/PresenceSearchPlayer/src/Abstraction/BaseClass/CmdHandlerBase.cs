@@ -1,10 +1,10 @@
 using System;
-using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass
+namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.CmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
         /// <summary>
         /// Be careful the return of query function should be List type,

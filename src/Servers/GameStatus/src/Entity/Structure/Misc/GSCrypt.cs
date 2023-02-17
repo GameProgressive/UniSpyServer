@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.UniSpyLib.Encryption;
+using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
-namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Misc
+namespace UniSpy.Server.GameStatus.Entity.Structure.Misc
 {
     public class GSCrypt : ICryptography
     {

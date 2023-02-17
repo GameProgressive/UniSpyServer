@@ -1,6 +1,6 @@
-using UniSpyServer.Servers.WebServer.Module.Direct2Game.Abstraction;
+using UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
 
-namespace UniSpyServer.Servers.WebServer.Module.Direct2Game.Entity.Structure.Result
+namespace UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Result
 {
     public class GetStoreAvailabilityResult : ResultBase
     {

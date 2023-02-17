@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 
-namespace UniSpyServer.Servers.ServerBrowser.Application
+namespace UniSpy.Server.ServerBrowser.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {

@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Test
+namespace UniSpy.Server.PresenceSearchPlayer.Test
 {
     public class RawRequests
     {

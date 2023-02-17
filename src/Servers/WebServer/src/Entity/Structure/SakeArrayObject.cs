@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.WebServer.Entity.Structure
+namespace UniSpy.Server.WebServer.Entity.Structure
 {
     public record RecordFieldObject : FieldObject
     {

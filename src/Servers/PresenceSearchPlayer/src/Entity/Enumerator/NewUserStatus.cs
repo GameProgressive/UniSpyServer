@@ -1,4 +1,4 @@
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerator
+namespace UniSpy.Server.PresenceSearchPlayer.Entity.Enumerator
 {
     public enum NewUserStatus
     {
