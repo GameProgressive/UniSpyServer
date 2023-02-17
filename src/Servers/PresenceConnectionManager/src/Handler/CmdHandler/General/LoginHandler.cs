@@ -1,11 +1,11 @@
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Response;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.PresenceConnectionManager.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
+using UniSpy.Server.PresenceConnectionManager.Contract.Response;
+using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 using UniSpy.Server.PresenceConnectionManager.Structure;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.Login;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.Login;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceConnectionManager.Application;
 

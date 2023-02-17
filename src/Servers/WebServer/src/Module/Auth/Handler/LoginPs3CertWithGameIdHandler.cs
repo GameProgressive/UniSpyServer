@@ -1,5 +1,5 @@
 
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Handler

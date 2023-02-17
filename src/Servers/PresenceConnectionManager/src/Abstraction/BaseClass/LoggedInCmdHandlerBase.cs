@@ -1,4 +1,4 @@
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
@@ -10,7 +10,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
         }
         protected override void RequestCheck()
         {
-            if(_client.Info.LoginStat!=Entity.Enumerate.LoginStatus.Completed)
+            if(_client.Info.LoginStat!=Enumerate.LoginStatus.Completed)
             {
                 throw new GPException("You are not logged in, please login first.");
             }

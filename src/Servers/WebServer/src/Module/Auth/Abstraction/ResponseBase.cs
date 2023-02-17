@@ -1,5 +1,5 @@
 using UniSpy.Server.WebServer.Abstraction;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Auth.Contract;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {

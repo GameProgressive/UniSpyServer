@@ -1,4 +1,4 @@
-using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Enumerate;
 using UniSpy.Server.PresenceConnectionManager.Handler;
 using UniSpy.Server.PresenceConnectionManager.Structure;
 using UniSpy.Server.Core.Abstraction.BaseClass;

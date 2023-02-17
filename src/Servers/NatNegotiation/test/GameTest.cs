@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 

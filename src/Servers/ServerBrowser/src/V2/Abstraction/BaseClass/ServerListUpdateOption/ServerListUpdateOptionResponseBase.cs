@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 using UniSpy.Server.ServerBrowser.Application;
-using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Misc;
+using UniSpy.Server.ServerBrowser.V2.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Aggregate.Misc;
 using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass

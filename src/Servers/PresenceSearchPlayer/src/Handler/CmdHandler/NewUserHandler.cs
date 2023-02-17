@@ -1,10 +1,10 @@
 using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpy.Server.PresenceSearchPlayer.Application;
 using UniSpy.Server.PresenceSearchPlayer.Entity.Enumerator;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.NewUser;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Exception.NewUser;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Response;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 

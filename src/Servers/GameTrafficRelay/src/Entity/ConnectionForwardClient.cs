@@ -1,7 +1,7 @@
 using UniSpy.Server.GameTrafficRelay.Interface;
 using UniSpy.Server.Core.Extensions;
 using UniSpy.Server.Core.Logging;
-namespace UniSpy.Server.GameTrafficRelay.Entity.Structure
+namespace UniSpy.Server.GameTrafficRelay.Aggregate
 {
     public sealed class ConnectionForwardClient : IConnectionForwardClient
     {

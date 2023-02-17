@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Enumerate;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using Xunit;
 

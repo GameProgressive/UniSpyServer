@@ -1,7 +1,7 @@
 using System.Net;
 using Moq;
 using UniSpy.Server.NatNegotiation.Application;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
@@ -70,14 +70,14 @@ namespace UniSpy.Server.NatNegotiation.Test
         [Fact]
         public void ReportTest()
         {
-            var r1 = new UniSpy.Server.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
+            var r1 = new UniSpy.Server.NatNegotiation.Aggregate.Misc.NatReportRecord()
             {
                 ServerId = System.Guid.Empty,
                 PublicIPAddress = IPAddress.Parse("202.91.34.186"),
                 PrivateIPAddress = IPAddress.Parse("192.168.1.1")
             };
 
-            var r2 = new UniSpy.Server.NatNegotiation.Entity.Structure.Misc.NatReportRecord()
+            var r2 = new UniSpy.Server.NatNegotiation.Aggregate.Misc.NatReportRecord()
             {
                 ServerId = System.Guid.Empty,
                 PublicIPAddress = IPAddress.Parse("202.91.34.186"),

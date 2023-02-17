@@ -1,5 +1,5 @@
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 

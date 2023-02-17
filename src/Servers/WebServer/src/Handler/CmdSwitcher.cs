@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.WebServer.Module.Sake.Handler;
 using UniSpy.Server.WebServer.Module.Auth.Handler;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Request;
+using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Handler;
 using UniSpy.Server.Core.Logging;
 

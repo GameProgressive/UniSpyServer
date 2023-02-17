@@ -1,4 +1,4 @@
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Core.Extensions;

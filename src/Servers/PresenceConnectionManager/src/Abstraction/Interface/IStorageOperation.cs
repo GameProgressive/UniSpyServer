@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 using UniSpy.Server.Core.Database.DatabaseModel;
 
 namespace UniSpy.Server.PresenceConnectionManager.Abstraction.Interface

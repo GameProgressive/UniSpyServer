@@ -1,7 +1,7 @@
 using System.Linq;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
-using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
-using UniSpy.Server.WebServer.Module.Sake.Structure.Result;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler

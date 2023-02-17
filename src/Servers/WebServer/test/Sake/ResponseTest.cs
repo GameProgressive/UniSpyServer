@@ -1,6 +1,6 @@
-using UniSpy.Server.WebServer.Module.Sake.Structure.Request;
-using UniSpy.Server.WebServer.Module.Sake.Structure.Response;
-using UniSpy.Server.WebServer.Module.Sake.Structure.Result;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Response;
+using UniSpy.Server.WebServer.Module.Sake.Contract.Result;
 using Xunit;
 
 namespace UniSpy.Server.WebServer.Test.Sake

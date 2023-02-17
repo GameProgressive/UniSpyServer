@@ -1,6 +1,6 @@
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Application;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile

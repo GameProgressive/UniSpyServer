@@ -1,4 +1,4 @@
-using UniSpy.Server.WebServer.Module.Sake.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Sake.Contract;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Abstraction
 {

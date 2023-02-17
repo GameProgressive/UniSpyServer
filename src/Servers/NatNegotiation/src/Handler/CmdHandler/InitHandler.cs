@@ -2,11 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Response;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Result;
+using UniSpy.Server.NatNegotiation.Enumerate;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
+using UniSpy.Server.NatNegotiation.Contract.Request;
+using UniSpy.Server.NatNegotiation.Contract.Response;
+using UniSpy.Server.NatNegotiation.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 

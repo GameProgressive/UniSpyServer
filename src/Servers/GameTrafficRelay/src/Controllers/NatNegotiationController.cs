@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UniSpy.Server.GameTrafficRelay.Application;
 using UniSpy.Server.GameTrafficRelay.Entity;
-using UniSpy.Server.GameTrafficRelay.Entity.Structure;
+using UniSpy.Server.GameTrafficRelay.Aggregate;
 
 namespace UniSpy.Server.GameTrafficRelay.Controller
 {

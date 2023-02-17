@@ -1,8 +1,8 @@
 using System;
-using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Misc;
+using UniSpy.Server.PresenceConnectionManager.Enumerate;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.PresenceConnectionManager.Aggregate.Misc;
 
 namespace UniSpy.Server.PresenceConnectionManager.Application
 {
@@ -19,7 +19,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         public User UserInfo { get; set; }
         public Subprofile SubProfileInfo { get; set; }
         public Profile ProfileInfo { get; set; }
-        public ClientInfo( )
+        public ClientInfo()
         {
             SdkRevision = new SdkRevision();
             Status = new UserStatus();

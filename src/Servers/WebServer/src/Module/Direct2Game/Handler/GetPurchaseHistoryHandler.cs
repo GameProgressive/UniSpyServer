@@ -1,7 +1,7 @@
 using UniSpy.Server.WebServer.Abstraction;
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Request;
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Response;
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Result;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler

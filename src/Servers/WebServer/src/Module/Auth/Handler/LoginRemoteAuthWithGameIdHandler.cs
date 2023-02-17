@@ -1,6 +1,6 @@
 using System.Linq;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
+using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 

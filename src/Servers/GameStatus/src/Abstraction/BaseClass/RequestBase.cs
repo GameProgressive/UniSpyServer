@@ -1,4 +1,4 @@
-using UniSpy.Server.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Exception;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Core.MiscMethod;

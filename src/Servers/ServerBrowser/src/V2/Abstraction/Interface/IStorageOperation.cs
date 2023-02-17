@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Net;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
 using UniSpy.Server.Core.Database.DatabaseModel;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
+using UniSpy.Server.QueryReport.V2.Contract.Request;
 
 namespace UniSpy.Server.ServerBrowser.Abstraction.Interface
 {

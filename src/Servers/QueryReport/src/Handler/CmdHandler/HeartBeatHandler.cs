@@ -1,11 +1,11 @@
 using System;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
-using UniSpy.Server.QueryReport.V2.Entity.Enumerate;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Response;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Result;
+using UniSpy.Server.QueryReport.V2.Enumerate;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.V2.Contract.Response;
+using UniSpy.Server.QueryReport.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler

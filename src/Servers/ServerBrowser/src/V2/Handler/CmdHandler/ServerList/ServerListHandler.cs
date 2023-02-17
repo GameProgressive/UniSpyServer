@@ -1,12 +1,12 @@
 using System.Linq;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.PeerGroup;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Entity.Exception;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Packet.Response;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Response.ServerList;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Result;
+using UniSpy.Server.ServerBrowser.V2.Enumerate;
+using UniSpy.Server.ServerBrowser.Exception;
+using UniSpy.Server.ServerBrowser.V2.Aggregate.Packet.Response;
+using UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList;
+using UniSpy.Server.ServerBrowser.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler

@@ -1,6 +1,6 @@
 using System;
 using UniSpy.Server.PresenceConnectionManager.Application;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
+using UniSpy.Server.NatNegotiation.Enumerate;
+using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;

@@ -1,4 +1,4 @@
-using UniSpy.Server.GameStatus.Entity.Structure.Misc;
+using UniSpy.Server.GameStatus.Aggregate.Misc;
 using UniSpy.Server.GameStatus.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Enumerate;
 
 namespace UniSpy.Server.GameStatus.Abstraction.Interface
 {

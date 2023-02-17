@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UniSpy.Server.QueryReport.V2.Abstraction.Interface;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 using System.Linq;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Redis;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis;
 
 namespace UniSpy.Server.QueryReport.V2.Application
 {

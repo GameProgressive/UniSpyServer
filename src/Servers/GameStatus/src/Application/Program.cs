@@ -11,7 +11,7 @@ namespace UniSpy.Server.GameStatus.Application
             {
                 new ServerLauncher().Start();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 LogWriter.LogError(e);
             }

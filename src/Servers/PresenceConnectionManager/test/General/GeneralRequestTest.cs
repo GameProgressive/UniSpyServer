@@ -1,5 +1,5 @@
-using UniSpy.Server.PresenceConnectionManager.Entity.Enumerate;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Enumerate;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using Xunit;
 
 namespace UniSpy.Server.PresenceConnectionManager.Test

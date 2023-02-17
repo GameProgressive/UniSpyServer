@@ -1,5 +1,5 @@
-using UniSpy.Server.GameStatus.Entity.Enumerate;
-using UniSpy.Server.GameStatus.Entity.Structure.Request;
+using UniSpy.Server.GameStatus.Enumerate;
+using UniSpy.Server.GameStatus.Contract.Request;
 using Xunit;
 
 namespace UniSpy.Server.GameStatus.Test

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 using UniSpy.Server.Core.Database.DatabaseModel;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.Interface

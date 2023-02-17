@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
-using UniSpy.Server.QueryReport.V2.Entity.Exception;
+using UniSpy.Server.QueryReport.V2.Exception;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler

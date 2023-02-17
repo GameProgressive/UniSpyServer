@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy;
 using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General;
 using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler
 {
@@ -45,7 +46,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler
                 case "logout":
                     return new LogoutHandler(_client, new LogoutRequest((string)rawRequest));
                 case "newuser":
-                    return new NewUserHandler(_client, new PresenceSearchPlayer.Entity.Structure.Request.NewUserRequest((string)rawRequest));
+                    return new NewUserHandler(_client, new NewUserRequest((string)rawRequest));
                 #endregion
                 # region Profile
                 case "addblock":

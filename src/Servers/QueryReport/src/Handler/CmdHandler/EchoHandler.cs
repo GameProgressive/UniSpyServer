@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Result;
+using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 

@@ -1,4 +1,4 @@
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
+using UniSpy.Server.NatNegotiation.Enumerate;
 
 namespace UniSpy.Server.NatNegotiation.Abstraction.BaseClass
 {

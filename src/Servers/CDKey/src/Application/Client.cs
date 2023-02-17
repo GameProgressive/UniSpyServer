@@ -5,7 +5,7 @@ using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.CDKey.Application
 {
-    public sealed class Client : ClientBase
+    internal sealed class Client : ClientBase
     {
         public Client(IConnection connection) : base(connection)
         {

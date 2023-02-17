@@ -2,9 +2,9 @@ using UniSpy.Server.PresenceConnectionManager.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using System.Linq;
 using System.Collections.Generic;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.Login;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
+using UniSpy.Server.PresenceSearchPlayer.Exception.Login;
+using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 
 
 namespace UniSpy.Server.PresenceConnectionManager.Application

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.NatNegotiation.Abstraction.Interface;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 
 namespace UniSpy.Server.NatNegotiation.Application
 {
@@ -12,7 +12,7 @@ namespace UniSpy.Server.NatNegotiation.Application
         /// natneg init information redis server.
         /// </summary>
         private static RedisClient _redisClient = new RedisClient();
-        private static NatNegotiation.Entity.Structure.Redis.Fail.RedisClient _natFailRedisClient = new NatNegotiation.Entity.Structure.Redis.Fail.RedisClient();
+        private static NatNegotiation.Aggregate.Redis.Fail.RedisClient _natFailRedisClient = new NatNegotiation.Aggregate.Redis.Fail.RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();
         public int CountInitInfo(uint cookie, byte version)
         {
@@ -38,12 +38,12 @@ namespace UniSpy.Server.NatNegotiation.Application
             _redisClient.DeleteKeyValue(info);
         }
 
-        public void UpdateNatFailInfo(NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo info)
+        public void UpdateNatFailInfo(Aggregate.Redis.Fail.NatFailInfo info)
         {
             _natFailRedisClient.SetValue(info);
         }
 
-        public int GetNatFailInfo(Entity.Structure.Redis.Fail.NatFailInfo info)
+        public int GetNatFailInfo(Aggregate.Redis.Fail.NatFailInfo info)
         {
             return _natFailRedisClient.Context.Where(i => i.PublicIPAddress1.Equals(info.PublicIPAddress1) && i.PublicIPAddress2.Equals(info.PublicIPAddress2)).Count();
         }

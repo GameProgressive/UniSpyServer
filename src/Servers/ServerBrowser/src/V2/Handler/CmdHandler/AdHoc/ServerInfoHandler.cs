@@ -1,8 +1,8 @@
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Response;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Result;
+using UniSpy.Server.ServerBrowser.V2.Contract.Request;
+using UniSpy.Server.ServerBrowser.V2.Contract.Response;
+using UniSpy.Server.ServerBrowser.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 

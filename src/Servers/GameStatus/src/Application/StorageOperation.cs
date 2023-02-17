@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UniSpy.Server.GameStatus.Abstraction.Interface;
-using UniSpy.Server.GameStatus.Entity.Exception;
+using UniSpy.Server.GameStatus.Exception;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using System.Linq;
-using UniSpy.Server.GameStatus.Entity.Enumerate;
+using UniSpy.Server.GameStatus.Enumerate;
 
 namespace UniSpy.Server.GameStatus.Application
 {

@@ -2,12 +2,12 @@ using System.Linq;
 using System.Net;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
-using UniSpy.Server.NatNegotiation.Entity.Exception;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Response;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Result;
+using UniSpy.Server.NatNegotiation.Enumerate;
+using UniSpy.Server.NatNegotiation.Exception;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
+using UniSpy.Server.NatNegotiation.Contract.Request;
+using UniSpy.Server.NatNegotiation.Contract.Response;
+using UniSpy.Server.NatNegotiation.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.GameTrafficRelay;
 using RestSharp;
@@ -50,7 +50,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         // NOTE: If GTR is not used and both clients are on the same LAN, we need to use PrivateIPEndPoint.
         protected override void DataOperation()
         {
-            var info = new NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
+            var info = new NatNegotiation.Aggregate.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
             NatStrategyType strategy;
 
             if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)

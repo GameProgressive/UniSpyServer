@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Response;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 using System.Linq;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceSearchPlayer.Application;

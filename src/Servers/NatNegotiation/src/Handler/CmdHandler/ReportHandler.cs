@@ -1,12 +1,12 @@
 using System.Linq;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
-using UniSpy.Server.NatNegotiation.Entity.Enumerate;
-using UniSpy.Server.NatNegotiation.Entity.Exception;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Redis;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Request;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Response;
-using UniSpy.Server.NatNegotiation.Entity.Structure.Result;
+using UniSpy.Server.NatNegotiation.Enumerate;
+using UniSpy.Server.NatNegotiation.Exception;
+using UniSpy.Server.NatNegotiation.Aggregate.Redis;
+using UniSpy.Server.NatNegotiation.Contract.Request;
+using UniSpy.Server.NatNegotiation.Contract.Response;
+using UniSpy.Server.NatNegotiation.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 
@@ -64,7 +64,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             if (!(bool)_request.IsNatSuccess)
             {
                 //todo we save the fail information some where else.
-                var info = new NatNegotiation.Entity.Structure.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
+                var info = new NatNegotiation.Aggregate.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
                 if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)
                 {
                     StorageOperation.Persistance.UpdateNatFailInfo(info);

@@ -1,4 +1,4 @@
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract;
 
 namespace UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
 public class ResponseBase : UniSpy.Server.WebServer.Abstraction.ResponseBase

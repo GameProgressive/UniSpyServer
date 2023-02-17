@@ -1,6 +1,6 @@
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Request;
-using UniSpy.Server.QueryReport.V2.Entity.Structure.Response;
+using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.V2.Contract.Response;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 

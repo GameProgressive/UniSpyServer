@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.ServerBrowser.V2.Entity.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Entity.Structure.Request;
+using UniSpy.Server.ServerBrowser.V2.Enumerate;
+using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;

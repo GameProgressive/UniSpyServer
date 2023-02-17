@@ -1,9 +1,9 @@
 using System;
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Application;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpy.Server.PresenceConnectionManager.Entity.Structure.Response;
-using UniSpy.Server.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
+using UniSpy.Server.PresenceConnectionManager.Contract.Response;
+using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile

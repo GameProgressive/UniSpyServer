@@ -1,9 +1,9 @@
 using System;
 using System.Numerics;
 using UniSpy.Server.WebServer.Application;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure;
-using UniSpy.Server.WebServer.Module.Auth.Entity.Structure.Request;
-using UniSpy.Server.WebServer.Module.Direct2Game.Entity.Structure.Response;
+using UniSpy.Server.WebServer.Module.Auth.Contract;
+using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
+using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response;
 using UniSpy.Server.Core.Extensions;
 using Xunit;
 

@@ -22,7 +22,7 @@ namespace UniSpy.Server.ServerBrowser.Application
 
             if (ServerInstanceV1 is null && ServerInstanceV2 is null)
             {
-                throw new Exception("Server created failed");
+                throw new System.Exception("Server created failed");
             }
             // asp.net web server does not implement a Server interface, therefore this code should not be called
             ServerInstanceV1.Start();

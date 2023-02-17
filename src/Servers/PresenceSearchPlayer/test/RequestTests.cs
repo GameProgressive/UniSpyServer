@@ -1,4 +1,4 @@
-using UniSpy.Server.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using Xunit;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Test
