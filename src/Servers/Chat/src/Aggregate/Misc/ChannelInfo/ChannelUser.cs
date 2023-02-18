@@ -1,20 +1,69 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.MiscMethod;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
     public sealed class ChannelUser
     {
+        /// <summary>
+        /// Indicate whether this client is shared from redis channel
+        /// </summary>
+        [JsonIgnore]
+        public bool IsRemoteUser => Info.IsRemoteClient;
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
+        /// <summary>
+        /// The remote ip end point of this user
+        /// </summary>
+        /// <value></value>
+        [JsonIgnore]
+        public IPEndPoint RemoteIPEndPoint
+        {
+            get
+            {
+                if (IsRemoteUser)
+                {
+                    return _remoteIPEndPoint;
+                }
+                else
+                {
+                    return ClientRef.Connection.RemoteIPEndPoint;
+                }
+            }
+        }
+        [JsonProperty]
+        [JsonConverter(typeof(IPEndPointConverter))]
+        private IPEndPoint _remoteIPEndPoint;
+        [JsonIgnore]
         public Client ClientRef { get; private set; }
-        public ClientInfo Info => ClientRef.Info;
+        [JsonIgnore]
+        public ClientInfo Info
+        {
+            get
+            {
+                if (IsRemoteUser)
+                {
+                    return _info;
+                }
+                else
+                {
+                    return ClientRef.Info;
+                }
+            }
+        }
+        [JsonProperty]
+        private ClientInfo _info;
+        [JsonIgnore]
         public IConnection Connection => ClientRef.Connection;
         public Dictionary<string, string> UserKeyValue { get; private set; }
-        public string BFlags => @"\" + Info.UserName + @"\" + UserKeyValue["b_flags"];
+        [JsonIgnore]
+        public string BFlags => $@"\{Info.UserName}\{UserKeyValue["b_flags"]}";
         public string Modes
         {
             get
@@ -37,6 +86,9 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public ChannelUser(Client client)
         {
             ClientRef = client;
+            _remoteIPEndPoint = client?.Connection.RemoteIPEndPoint;
+            // RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;
+            _info = client?.Info;
             UserKeyValue = new Dictionary<string, string>();
         }
 

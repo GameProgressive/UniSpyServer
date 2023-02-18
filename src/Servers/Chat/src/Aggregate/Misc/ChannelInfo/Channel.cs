@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
@@ -111,6 +112,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public PeerRoomType RoomType => GetRoomType(Name);
         public string Password { get; private set; }
         public string Topic { get; set; }
+        public Redis.RedisChannel MessageBroker { get; private set; }
         public Channel(string name, ChannelUser creator = null)
         {
             Name = name;
@@ -122,6 +124,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             ChannelKeyValue = new ConcurrentDictionary<string, string>();
             MaxNumberUser = 200;
             Mode.SetDefaultModes();
+            MessageBroker = new Redis.RedisChannel(Name);
         }
 
         /// <summary>
@@ -133,18 +136,26 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             foreach (var user in Users.Values)
             {
-                user.ClientRef.Send(message);
+                if (!user.IsRemoteUser)
+                {
+                    user.ClientRef.Send(message);
+                    sender.LogNetworkMultiCast((string)message.SendingBuffer);
+                }
             }
-            sender.LogNetworkMultiCast((string)message.SendingBuffer);
         }
         public void MultiCastExceptSender(ChannelUser sender, IResponse message)
         {
             foreach (var user in Users.Values)
             {
-                if (user.ClientRef.Connection.RemoteIPEndPoint == sender.ClientRef.Connection.RemoteIPEndPoint)
+                if (user.IsRemoteUser)
                 {
                     continue;
                 }
+                if (user.RemoteIPEndPoint == sender.RemoteIPEndPoint)
+                {
+                    continue;
+                }
+                // we send message to local client
                 user.ClientRef.Send(message);
             }
         }
