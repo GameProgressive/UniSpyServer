@@ -1,4 +1,5 @@
 using System.Linq;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;
@@ -9,7 +10,7 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Application
 {
-    public class Client : ClientBase
+    public class Client : ClientBase, IChatClient
     {
         public new ClientInfo Info => (ClientInfo)base.Info;
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
