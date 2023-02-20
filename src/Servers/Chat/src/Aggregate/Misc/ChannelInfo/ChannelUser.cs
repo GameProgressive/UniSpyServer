@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.MiscMethod;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
@@ -23,42 +23,11 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// </summary>
         /// <value></value>
         [JsonIgnore]
-        public IPEndPoint RemoteIPEndPoint
-        {
-            get
-            {
-                if (IsRemoteUser)
-                {
-                    return _remoteIPEndPoint;
-                }
-                else
-                {
-                    return ClientRef.Connection.RemoteIPEndPoint;
-                }
-            }
-        }
-        [JsonProperty]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        private IPEndPoint _remoteIPEndPoint;
+        public IPEndPoint RemoteIPEndPoint => ClientRef.Connection.RemoteIPEndPoint;
         [JsonIgnore]
-        public Client ClientRef { get; private set; }
+        public IChatClient ClientRef { get; private set; }
         [JsonIgnore]
-        public ClientInfo Info
-        {
-            get
-            {
-                if (IsRemoteUser)
-                {
-                    return _info;
-                }
-                else
-                {
-                    return ClientRef.Info;
-                }
-            }
-        }
-        [JsonProperty]
-        private ClientInfo _info;
+        public ClientInfo Info => ClientRef.Info;
         [JsonIgnore]
         public IConnection Connection => ClientRef.Connection;
         public Dictionary<string, string> UserKeyValue { get; private set; }
@@ -83,12 +52,9 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 return buffer.ToString();
             }
         }
-        public ChannelUser(Client client)
+        public ChannelUser(IChatClient client)
         {
             ClientRef = client;
-            _remoteIPEndPoint = client?.Connection.RemoteIPEndPoint;
-            // RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;
-            _info = client?.Info;
             UserKeyValue = new Dictionary<string, string>();
         }
 

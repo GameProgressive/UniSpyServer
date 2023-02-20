@@ -65,7 +65,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             };
                             new KickHandler(_client, kickRequest).Handle();
                         }
-                        JoinHandler.Channels.Remove(_channel.Name);
+                        JoinHandler.Channels.TryRemove(_channel.Name, out _);
 
                     }
                     goto default;

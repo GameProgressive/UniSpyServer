@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
@@ -11,10 +12,15 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         /// True means there are no errors
         /// False means there are errors
         /// </summary>
+        [JsonProperty]
         public new string RawRequest => (string)base.RawRequest;
+        [JsonProperty]
         public new string CommandName { get => (string)base.CommandName; protected set => base.CommandName = value; }
+        [JsonProperty]
         protected string _prefix;
+        [JsonProperty]
         protected List<string> _cmdParams;
+        [JsonProperty]
         protected string _longParam;
         public RequestBase() { }
         /// <summary>

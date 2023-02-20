@@ -1,3 +1,4 @@
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -16,7 +17,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
     /// </summary>
     public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
-        protected new Client _client => (Client)base._client;
+        protected new IChatClient _client => (IChatClient)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }

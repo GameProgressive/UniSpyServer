@@ -2,6 +2,7 @@ using UniSpy.Server.Chat.Exception.IRC.Channel;
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {

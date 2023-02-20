@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Exception;
@@ -12,6 +11,8 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Redis.Contract;
+using UniSpy.Server.Chat.Aggregate.Redis;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -21,16 +22,13 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
     public sealed class JoinHandler : LogedInHandlerBase
     {
-        public static IDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel> Channels { get; private set; }
+        public static readonly ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel> Channels = new ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel>();
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
-        Aggregate.Misc.ChannelInfo.Channel _channel;
-        ChannelUser _user;
-        static JoinHandler()
-        {
-            Channels = new ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel>();
-        }
+        private static readonly GeneralMessageChannel GeneralMessageChannel = new GeneralMessageChannel();
+        private Aggregate.Misc.ChannelInfo.Channel _channel;
+        private ChannelUser _user;
         public JoinHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new JoinResult();
@@ -63,7 +61,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             //     // this is for not making game crash
             //     // if user is in this channel and we send the channel info back
             // }
-            if (Channels.ContainsKey(_request.ChannelName))
+            bool isChannelExist = Channels.ContainsKey(_request.ChannelName);
+            if (isChannelExist)
             {
                 _channel = Channels[_request.ChannelName];
                 //join
@@ -112,13 +111,34 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     _user.SetDefaultProperties(true, true);
                 }
                 _channel.AddBindOnUserAndChannel(_user);
-                Channels.Add(_request.ChannelName, _channel);
+                Channels.TryAdd(_request.ChannelName, _channel);
             }
 
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
             _result.JoinerPrefix = _client.Info.IRCPrefix;
+
+
+            var msg = new ChannelMessage(_request, _client.GetRemoteClient());
+            if (isChannelExist)
+            {
+                if (_client.Info.IsRemoteClient)
+                {
+                    // if the client is a remote client, the join message already published by the chat server that client connected to.
+                    return;
+                }
+                else
+                {
+                    // if the client is a local client, we publish this message to all chat servers. the other chat servers will create this channel and set this user as channel creator.
+                    _channel.MessageBroker.PublishMessage(msg);
+                }
+            }
+            else
+            {
+                // the first join message is send through GeneralMessageChannel
+                GeneralMessageChannel.PublishMessage(msg);
+            }
         }
 
         protected override void ResponseConstruct()

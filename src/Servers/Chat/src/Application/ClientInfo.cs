@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.BaseClass;
@@ -8,7 +9,11 @@ namespace UniSpy.Server.Chat.Application
 {
     public sealed class ClientInfo : ClientInfoBase
     {
-        //indicates which channel this user is in
+        /// <summary>
+        /// indicates which channel this user is in
+        /// (We do not send this information to our public channel)
+        /// </summary>
+        [JsonIgnore]
         public IDictionary<string, Channel> JoinedChannels { get; private set; }
         // secure connection
         public string GameName { get; set; }
@@ -23,8 +28,8 @@ namespace UniSpy.Server.Chat.Application
         public bool IsUsingEncryption { get; set; }
         public bool IsQuietMode { get; set; }
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
-
-        public ClientInfo( )
+        public bool IsRemoteClient { get; set; }
+        public ClientInfo()
         {
             JoinedChannels = new ConcurrentDictionary<string, Channel>();
             NameSpaceID = 0;
@@ -45,6 +50,11 @@ namespace UniSpy.Server.Chat.Application
             {
                 return null;
             }
+        }
+        public ClientInfo DeepCopy()
+        {
+            var infoCopy = (ClientInfo)this.MemberwiseClone();
+            return infoCopy;
         }
     }
 }

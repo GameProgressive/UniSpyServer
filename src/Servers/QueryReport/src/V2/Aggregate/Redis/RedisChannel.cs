@@ -11,7 +11,7 @@ namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis
 {
     public sealed class RedisChannel : UniSpy.Server.Core.Abstraction.BaseClass.RedisChannelBase<ClientMessageRequest>
     {
-        public RedisChannel() : base(UniSpyRedisChannelName.NatNegCookieChannel)
+        public RedisChannel() : base(RedisChannelName.NatNegCookieChannel)
         {
         }
         public override void ReceivedMessage(ClientMessageRequest message)

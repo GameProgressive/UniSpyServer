@@ -112,7 +112,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public PeerRoomType RoomType => GetRoomType(Name);
         public string Password { get; private set; }
         public string Topic { get; set; }
-        public Redis.RedisChannel MessageBroker { get; private set; }
+        public Redis.ChatMessageChannel MessageBroker { get; private set; }
         public Channel(string name, ChannelUser creator = null)
         {
             Name = name;
@@ -124,7 +124,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             ChannelKeyValue = new ConcurrentDictionary<string, string>();
             MaxNumberUser = 200;
             Mode.SetDefaultModes();
-            MessageBroker = new Redis.RedisChannel(Name);
+            MessageBroker = new Redis.ChatMessageChannel(Name);
         }
 
         /// <summary>

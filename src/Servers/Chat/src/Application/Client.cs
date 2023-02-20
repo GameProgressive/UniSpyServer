@@ -1,4 +1,5 @@
 using System.Linq;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
@@ -8,11 +9,12 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Application
 {
-    public sealed class Client : ClientBase
+    public class Client : ClientBase
     {
         public new ClientInfo Info => (ClientInfo)base.Info;
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         private byte[] _incompleteBuffer;
+        public Client() { }
         public Client(IConnection connection) : base(connection)
         {
             base.Info = new ClientInfo();
@@ -65,6 +67,12 @@ namespace UniSpy.Server.Chat.Application
             base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
-
+        public RemoteClient GetRemoteClient()
+        {
+            var server = new RemoteTcpServer(Connection.Server);
+            var conn = new RemoteTcpConnection(Connection, server);
+            var client = new RemoteClient(conn, Info);
+            return client;
+        }
     }
 }

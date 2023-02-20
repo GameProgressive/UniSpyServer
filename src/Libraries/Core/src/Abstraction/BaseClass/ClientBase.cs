@@ -5,6 +5,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Extensions;
+using Newtonsoft.Json;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
@@ -19,7 +20,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// </summary>
         protected EasyTimer _timer { get; set; }
         public bool IsLogRaw { get; protected set; }
-
+        public ClientBase() { }
         public ClientBase(IConnection connection)
         {
             Connection = connection;
@@ -28,6 +29,13 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         }
         protected virtual void EventBinding()
         {
+            // // for supporting chat distribution we use redis channel as our message broker
+            // // we need to check if connection is null
+            // // if connection is null means we are deserializing this object, we do not bind any event
+            // if (Connection is null)
+            // {
+            //     return;
+            // }
             switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
