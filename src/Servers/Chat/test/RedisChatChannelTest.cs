@@ -26,9 +26,9 @@ namespace UniSpy.Server.Chat.Test
             request.Parse();
             var clientStr = JsonConvert.SerializeObject(remoteClient);
             var clientObj = JsonConvert.DeserializeObject<RemoteClient>(clientStr);
-            var message = new ChannelMessage(request, remoteClient);
+            var message = new RemoteMessage(request, remoteClient);
             var msgStr = JsonConvert.SerializeObject(message);
-            var msgObj = JsonConvert.DeserializeObject<ChannelMessage>(msgStr);
+            var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
             Assert.True(msgObj.Type == "JOIN");
             // When
             var req = new JoinRequest(UniSpyEncoding.GetString(msgObj.RawRequest));
@@ -47,10 +47,10 @@ namespace UniSpy.Server.Chat.Test
             var remoteClient = client.GetRemoteClient();
             var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
-            var message = new ChannelMessage(request, remoteClient);
+            var message = new RemoteMessage(request, remoteClient);
             // Given
             var msgStr = JsonConvert.SerializeObject(message);
-            var msgObj = JsonConvert.DeserializeObject<ChannelMessage>(msgStr);
+            var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
             var chan = new GeneralMessageChannel();
             chan.ReceivedMessage(msgObj);
             // When

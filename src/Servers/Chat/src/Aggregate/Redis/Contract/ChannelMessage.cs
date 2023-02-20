@@ -6,7 +6,7 @@ using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis.Contract
 {
-    public class ChannelMessage
+    public class RemoteMessage
     {
         [JsonProperty]
         public string Type { get; private set; }
@@ -17,8 +17,8 @@ namespace UniSpy.Server.Chat.Aggregate.Redis.Contract
         /// <summary>
         /// Constructor for json deserialization
         /// </summary>
-        public ChannelMessage(){}
-        public ChannelMessage(ChannelRequestBase request, RemoteClient client)
+        public RemoteMessage(){}
+        public RemoteMessage(RequestBase request, RemoteClient client)
         {
             RawRequest = UniSpyEncoding.GetBytes(request.RawRequest);
             Type = request.CommandName;

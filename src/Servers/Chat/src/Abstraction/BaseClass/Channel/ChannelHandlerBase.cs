@@ -3,6 +3,7 @@ using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -29,6 +30,11 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
             }
+        }
+        protected override void PublishMessage()
+        {
+            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
+            _channel.MessageBroker.PublishMessage(msg);
         }
     }
 }

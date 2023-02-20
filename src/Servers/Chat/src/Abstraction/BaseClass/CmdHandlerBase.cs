@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -38,6 +39,16 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                 return;
             }
             base.Response();
+        }
+        protected virtual void PublishMessage()
+        {
+            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
+            TcpServer.GeneralChannel.PublishMessage(msg);
+        }
+        public override void Handle()
+        {
+            base.Handle();
+            PublishMessage();
         }
     }
 }

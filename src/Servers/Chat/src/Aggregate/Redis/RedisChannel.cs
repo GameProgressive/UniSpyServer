@@ -12,13 +12,13 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
     /// <summary>
     /// The general chat message will process here
     /// </summary>
-    public class GeneralMessageChannel : RedisChannelBase<ChannelMessage>
+    public class GeneralMessageChannel : RedisChannelBase<RemoteMessage>
     {
         public static readonly ConcurrentDictionary<IPEndPoint, IClient> RemoteClients = new ConcurrentDictionary<IPEndPoint, IClient>();
         public GeneralMessageChannel() : base(RedisChannelName.ChatChannelPrefix)
         {
         }
-        public override void ReceivedMessage(ChannelMessage message)
+        public override void ReceivedMessage(RemoteMessage message)
         {
             IClient client;
             if (!RemoteClients.TryGetValue(message.Client.Connection.RemoteIPEndPoint, out client))
@@ -36,11 +36,11 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
     /// redis channel is like a broadcast platform which will broadcast the message to all the user
     /// when user is connected to unispy chat server
     /// </summary>
-    public class ChatMessageChannel : RedisChannelBase<ChannelMessage>
+    public class ChatMessageChannel : RedisChannelBase<RemoteMessage>
     {
         public ChatMessageChannel(string chatChannelName) : base($"{RedisChannelName.ChatChannelPrefix}:{chatChannelName}") { }
 
-        public override void ReceivedMessage(ChannelMessage message)
+        public override void ReceivedMessage(RemoteMessage message)
         {
             // base.ReceivedMessage(message);
             IClient client;
