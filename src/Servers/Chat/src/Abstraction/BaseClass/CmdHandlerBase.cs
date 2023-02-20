@@ -48,6 +48,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         public override void Handle()
         {
             base.Handle();
+            // we have to make sure there are no error so we can publish this message
             PublishMessage();
         }
     }
