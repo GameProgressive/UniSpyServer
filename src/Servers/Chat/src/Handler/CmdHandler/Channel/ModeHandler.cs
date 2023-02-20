@@ -11,7 +11,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     /// <summary>
     /// Get or set channel or user mode
     /// </summary>
-    
+
     public sealed class ModeHandler : ChannelHandlerBase
     {
         private new ModeRequest _request => (ModeRequest)base._request;

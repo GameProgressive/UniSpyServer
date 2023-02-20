@@ -8,7 +8,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
-    
+
     public sealed class NamesHandler : ChannelHandlerBase
     {
         private new NamesRequest _request => (NamesRequest)base._request;
