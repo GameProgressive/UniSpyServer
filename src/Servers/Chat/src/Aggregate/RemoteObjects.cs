@@ -81,8 +81,11 @@ namespace UniSpy.Server.Chat.Aggregate
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         public NetworkConnectionType ConnectionType { get; set; }
+        #pragma warning disable CS0067
         public event OnConnectedEventHandler OnConnect;
+        #pragma warning disable CS0067
         public event OnDisconnectedEventHandler OnDisconnect;
+        #pragma warning disable CS0067
         public event OnReceivedEventHandler OnReceive;
         public RemoteTcpConnection() { }
         public RemoteTcpConnection(ITcpConnection conn, RemoteTcpServer server)
