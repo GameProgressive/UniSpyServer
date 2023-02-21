@@ -5,7 +5,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Extensions;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
@@ -94,7 +94,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             }
             // we let child class to create swicher for us
             var switcher = CreateSwitcher(buffer);
-            switcher.Switch();
+            Task.Run(() => switcher.Switch());
         }
         protected virtual byte[] DecryptMessage(byte[] buffer)
         {

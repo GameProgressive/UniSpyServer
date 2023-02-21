@@ -69,7 +69,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
             {
                 _client.Info.IsNeigotiating = true;
-                Task.Run(() => PrepareForConnecting());
+                PrepareForConnectingAsync();
             }
         }
 
@@ -77,10 +77,10 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         /// <summary>
         /// Prepare to send connect response
         /// </summary>
-        private void PrepareForConnecting()
+        private async void PrepareForConnectingAsync()
         {
             _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_request.Cookie}.");
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             int waitCount = 1;
             // we only wait 8 seconds
             while (waitCount <= 4)
@@ -98,7 +98,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                     _client.LogInfo($"No negotiator found with cookie: {_request.Cookie}, retry count: {waitCount}.");
                 }
                 waitCount++;
-                Thread.Sleep(2000);
+                await Task.Delay(2000);
             }
             // if server can not find the client2 within 8 retry, then we log the error. 
             if (waitCount > 4)
