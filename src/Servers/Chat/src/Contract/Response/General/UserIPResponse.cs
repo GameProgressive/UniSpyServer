@@ -7,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class UserIPResponse : ResponseBase
     {
         private new UserIPResult _result => (UserIPResult)base._result;
-        public UserIPResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public UserIPResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = BuildUserIPReply(_result.RemoteIPAddress);

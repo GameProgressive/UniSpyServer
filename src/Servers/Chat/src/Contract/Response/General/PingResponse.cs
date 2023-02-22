@@ -7,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class PingResponse : ResponseBase
     {
         private new PingResult _result => (PingResult)base._result;
-        public PingResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public PingResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

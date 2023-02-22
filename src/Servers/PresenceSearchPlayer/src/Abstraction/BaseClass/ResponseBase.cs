@@ -5,7 +5,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass
         protected new ResultBase _result => (ResultBase)base._result;
         protected new RequestBase _request => (RequestBase)base._request;
         public new string SendingBuffer { get => (string)base.SendingBuffer; protected set => base.SendingBuffer = value; }
-        protected ResponseBase(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
         }
     }

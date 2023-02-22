@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
     {
         private new StatusInfoResult _result => (StatusInfoResult)base._result;
 
-        public StatusInfoResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public StatusInfoResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
         /// <summary>

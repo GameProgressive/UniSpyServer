@@ -5,7 +5,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
 {
     public sealed class CDKeyResponse : ResponseBase
     {
-        public CDKeyResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public CDKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

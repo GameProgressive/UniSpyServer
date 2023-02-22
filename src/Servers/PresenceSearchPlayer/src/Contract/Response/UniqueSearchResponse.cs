@@ -8,7 +8,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
     {
         private new UniqueSearchResult _result => (UniqueSearchResult)base._result;
         private new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
-        public UniqueSearchResponse(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public UniqueSearchResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

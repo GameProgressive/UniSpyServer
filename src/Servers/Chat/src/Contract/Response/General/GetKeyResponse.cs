@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     {
         private new GetKeyResult _result => (GetKeyResult)base._result;
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
-        public GetKeyResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public GetKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

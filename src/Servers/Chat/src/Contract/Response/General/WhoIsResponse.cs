@@ -8,7 +8,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class WhoIsResponse : ResponseBase
     {
         private new WhoIsResult _result => (WhoIsResult)base._result;
-        public WhoIsResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public WhoIsResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = IRCReplyBuilder.Build(

@@ -4,7 +4,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class KeepAliveResponse : ResponseBase
     {
-        public KeepAliveResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public KeepAliveResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

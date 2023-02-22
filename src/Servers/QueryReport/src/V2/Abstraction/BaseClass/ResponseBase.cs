@@ -12,7 +12,7 @@ namespace UniSpy.Server.QueryReport.V2.Abstraction.BaseClass
             get => (byte[])base.SendingBuffer;
             protected set => base.SendingBuffer = value;
         }
-        protected ResponseBase(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Message
     {
         private new UnderTheTableMsgResult _result => (UnderTheTableMsgResult)base._result;
         private new UnderTheTableMsgRequest _request => (UnderTheTableMsgRequest)base._request;
-        public UnderTheTableMsgResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public UnderTheTableMsgResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

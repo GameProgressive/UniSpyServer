@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result => (WhoResult)base._result;
-        public WhoResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public WhoResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = "";

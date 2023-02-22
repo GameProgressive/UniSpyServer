@@ -7,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class ListResponse : ResponseBase
     {
         private new ListResult _result => (ListResult)base._result;
-        public ListResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public ListResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = "";

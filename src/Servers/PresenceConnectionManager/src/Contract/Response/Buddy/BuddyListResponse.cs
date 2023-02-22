@@ -6,7 +6,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class BuddyListResponse : ResponseBase
     {
-        public BuddyListResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public BuddyListResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

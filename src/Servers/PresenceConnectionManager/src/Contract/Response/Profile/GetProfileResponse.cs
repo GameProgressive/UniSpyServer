@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
     public sealed class GetProfileResponse : ResponseBase
     {
         private new GetProfileResult _result => (GetProfileResult)base._result;
-        public GetProfileResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public GetProfileResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
     {
         private new ValidResult _result => (ValidResult)base._result;
 
-        public ValidResponse(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ValidResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

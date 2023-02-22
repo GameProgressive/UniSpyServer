@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
     {
         private new CheckResult _result => (CheckResult)base._result;
 
-        public CheckResponse(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public CheckResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
         public new string SendingBuffer{ get => (string)base.SendingBuffer;
             protected set => base.SendingBuffer = value; }
 
-        protected ResponseBase(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public ResponseBase(RequestBase request, ResultBase result) : base(request, result)
         {
         }
     }

@@ -4,7 +4,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class NewProfileResponse : ResponseBase
     {
-        public NewProfileResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public NewProfileResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

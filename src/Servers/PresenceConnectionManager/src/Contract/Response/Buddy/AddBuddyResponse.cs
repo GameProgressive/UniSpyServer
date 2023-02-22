@@ -7,7 +7,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
     public sealed class AddBuddyResponse : ResponseBase
     {
         private new AddBuddyResult _result => (AddBuddyResult)base._result;
-        public AddBuddyResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public AddBuddyResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         private new GetCKeyResult _result => (GetCKeyResult)base._result;
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
 
-        public GetCKeyResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public GetCKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
         {
             var cmdParams = $"* {channelName} {nickname} {cookie} {flags}";

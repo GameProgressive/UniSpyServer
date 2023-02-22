@@ -9,7 +9,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
         private new NicksResult _result => (NicksResult)base._result;
         private new NicksRequest _request => (NicksRequest)base._request;
 
-        public NicksResponse(RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public NicksResponse(RequestBase request, ResultBase result) : base(request, result)
         {
         }
 

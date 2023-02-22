@@ -1,6 +1,6 @@
-using UniSpy.Server.QueryReport.V2.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Handler;
 
 namespace UniSpy.Server.QueryReport.Application
 {

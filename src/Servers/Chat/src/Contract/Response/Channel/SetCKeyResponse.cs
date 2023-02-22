@@ -8,7 +8,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private new SetCKeyResult _result => (SetCKeyResult)base._result;
-        public SetCKeyResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public SetCKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             //we only broadcast the b_flags

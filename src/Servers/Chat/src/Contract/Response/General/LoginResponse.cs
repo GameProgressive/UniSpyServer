@@ -7,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class LoginResponse : ResponseBase
     {
         private new LoginResult _result => (LoginResult)base._result;
-        public LoginResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public LoginResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

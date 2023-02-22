@@ -7,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
 {
     public sealed class KickResponse : ResponseBase
     {
-        public KickResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public KickResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         private new KickResult _result => (KickResult)base._result;
         private new KickRequest _request => (KickRequest)base._request;

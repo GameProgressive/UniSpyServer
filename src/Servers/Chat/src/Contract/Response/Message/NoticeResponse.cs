@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Message
     {
         private new NoticeResult _result => (NoticeResult)base._result;
         private new NoticeRequest _request => (NoticeRequest)base._request;
-        public NoticeResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result){ }
+        public NoticeResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
             SendingBuffer = IRCReplyBuilder.Build(_result.UserIRCPrefix, _result.TargetName, _request.Message);
