@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using ConsoleTables;
+using Figgle;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Database.DatabaseModel;
@@ -80,13 +81,8 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         }
         protected static void ShowUniSpyLogo()
         {
-            // the ascii art font name is "small"
-            Console.WriteLine(@"");
-            Console.WriteLine(@" _   _      _ ___           ___ ");
-            Console.WriteLine(@"| | | |_ _ (_) __|_ __ _  _/ __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
-            Console.WriteLine(@"                 |_|   |__/ ");
+            Console.WriteLine("");
+            Console.WriteLine(FiggleFonts.Small.Render("UniSpy.Server"));
             Console.WriteLine(@"Version: " + Version);
         }
     }
