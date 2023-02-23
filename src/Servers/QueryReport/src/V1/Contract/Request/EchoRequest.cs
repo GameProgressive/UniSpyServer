@@ -3,7 +3,7 @@ using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Request
 {
-    public class EchoRequest : RequestBase
+    public sealed class EchoRequest : RequestBase
     {
         public string Validate { get; private set; }
         public string GameName { get; private set; }

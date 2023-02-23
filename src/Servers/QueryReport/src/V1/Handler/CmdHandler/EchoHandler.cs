@@ -8,7 +8,7 @@ namespace UniSpy.Server.QueryReport.V1.Handler.CmdHandler
     /// <summary>
     /// Keep alive request
     /// </summary>
-    public class EchoHandler : CmdHandlerBase
+    public sealed class EchoHandler : CmdHandlerBase
     {
         private new EchoResult _result { get => (EchoResult)base._result; set => base._result = value; }
         public EchoHandler(IClient client, IRequest request) : base(client, request)

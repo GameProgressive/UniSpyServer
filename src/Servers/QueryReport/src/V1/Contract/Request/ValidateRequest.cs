@@ -3,7 +3,7 @@ using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Request
 {
-    public class ValidateRequest : RequestBase
+    public sealed class ValidateRequest : RequestBase
     {
         public string ValidateKey { get; private set; }
         public ValidateRequest(string rawRequest) : base(rawRequest)

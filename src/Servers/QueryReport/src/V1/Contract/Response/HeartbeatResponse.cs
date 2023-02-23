@@ -4,7 +4,7 @@ using UniSpy.Server.QueryReport.V1.Contract.Result;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Response
 {
-    public class HeartbeatResponse : ResponseBase
+    public sealed class HeartbeatResponse : ResponseBase
     {
         private new HeartbeatResult _result => (HeartbeatResult)base._result;
         public HeartbeatResponse(HeartbeatRequest request, HeartbeatResult result) : base(request, result)

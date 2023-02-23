@@ -9,7 +9,7 @@ using UniSpy.Server.QueryReport.V1.Contract.Result;
 
 namespace UniSpy.Server.QueryReport.V1.Handler.CmdHandler
 {
-    public class HeartbeatHandler : CmdHandlerBase
+    public sealed class HeartbeatHandler : CmdHandlerBase
     {
         /// <summary>
         /// Hard coded challenge, we are not gamespy we do not care about the challenge randomness

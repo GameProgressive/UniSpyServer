@@ -3,7 +3,7 @@ using UniSpy.Server.QueryReport.Exception;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Request
 {
-    public class HeartbeatRequest : RequestBase
+    public sealed class HeartbeatRequest : RequestBase
     {
         public int QueryReportPort { get; private set; }
         public string GameName { get; private set; }
