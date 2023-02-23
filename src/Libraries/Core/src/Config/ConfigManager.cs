@@ -8,12 +8,12 @@ namespace UniSpy.Server.Core.Config
     {
 
         public static UniSpyConfig Config = LoadConfigFile();
-        public static readonly string ConfigPath = @"UniSpyServerConfig.json";
+        public const string ConfigPath = @"UniSpyServerConfig.json";
         private static UniSpyConfig LoadConfigFile()
         {
             if (!File.Exists(ConfigPath))
             {
-                throw new UniSpyException("Config file not found");
+                throw new UniSpyException("UniSpy server config file not found");
             }
             using (StreamReader fstream = File.OpenText(ConfigPath))
             {

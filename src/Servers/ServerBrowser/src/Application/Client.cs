@@ -1,6 +1,6 @@
 using System.Linq;
-using UniSpy.Server.ServerBrowser.V2.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Handler;
+using UniSpy.Server.ServerBrowser.Enumerate;
+using UniSpy.Server.ServerBrowser.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 
