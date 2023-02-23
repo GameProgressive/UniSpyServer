@@ -5,7 +5,8 @@ namespace UniSpy.Server.QueryReport.Application
     public sealed class ClientInfo : ClientInfoBase
     {
         public uint? InstantKey { get; set; }
-        public ClientInfo( )
+        public string GameSecretKey { get; set; }
+        public ClientInfo()
         {
         }
     }

@@ -1,10 +1,10 @@
 using UniSpy.Server.QueryReport.Application;
-using UniSpy.Server.QueryReport.V2.Exception;
+using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Aggregate;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension.Redis;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Enumerate;
-using UniSpy.Server.QueryReport.V2.Exception;
+using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 

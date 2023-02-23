@@ -3,7 +3,7 @@ using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.ServerBrowser.Exception;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.Core.Logging;
 

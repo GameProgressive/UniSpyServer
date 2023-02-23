@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.MiscMethod;
 
 namespace UniSpy.Server.GameTrafficRelay.Entity
@@ -25,6 +25,6 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
 
     public class RedisClient : UniSpy.LinqToRedis.RedisClient<RelayServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)DbNumber.GameTrafficRelay) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameTrafficRelay) { }
     }
 }

@@ -1,9 +1,9 @@
 using System;
 using System.Net;
 using Newtonsoft.Json;
-using StackExchange.Redis;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.NatNegotiation.Enumerate;
 
@@ -39,6 +39,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
 
     public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatFailInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpy.Server.Core.Extensions.DbNumber.NatFailInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.NatFailInfo) { }
     }
 }

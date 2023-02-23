@@ -1,7 +1,7 @@
 using System;
 using System.Timers;
 
-namespace UniSpy.Server.Core.Extensions
+namespace UniSpy.Server.Core.Extension
 {
     public class EasyTimer
     {

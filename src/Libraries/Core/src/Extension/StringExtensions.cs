@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UniSpy.Server.Core.Encryption;
 
-namespace UniSpy.Server.Core.Extensions
+namespace UniSpy.Server.Core.Extension
 {
     public static class StringExtensions
     {

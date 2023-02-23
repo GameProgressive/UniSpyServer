@@ -1,7 +1,7 @@
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
-using UniSpy.Server.QueryReport.V2.Exception;
+using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Response;
 using UniSpy.Server.QueryReport.V2.Contract.Result;

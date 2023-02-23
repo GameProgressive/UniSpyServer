@@ -1,5 +1,5 @@
+using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.V2.Exception;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Request
 {
@@ -23,7 +23,6 @@ namespace UniSpy.Server.QueryReport.V1.Contract.Request
             }
 
             throw new System.NotImplementedException();
-
         }
     }
 }

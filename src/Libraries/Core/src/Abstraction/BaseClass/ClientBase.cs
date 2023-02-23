@@ -4,7 +4,7 @@ using System.Net;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using System.Threading.Tasks;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass

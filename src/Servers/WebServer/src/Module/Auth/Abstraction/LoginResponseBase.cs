@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UniSpy.Server.WebServer.Abstraction;
 using UniSpy.Server.WebServer.Application;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {

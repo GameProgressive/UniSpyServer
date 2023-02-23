@@ -4,7 +4,7 @@ using UniSpy.Server.WebServer.Application;
 using UniSpy.Server.WebServer.Module.Auth.Contract;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using Xunit;
 
 namespace UniSpy.Server.WebServer.Test.Auth

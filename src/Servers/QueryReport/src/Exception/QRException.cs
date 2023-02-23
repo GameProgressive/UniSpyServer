@@ -1,8 +1,9 @@
 using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpy.Server.QueryReport.V2.Exception
+namespace UniSpy.Server.QueryReport.Exception
 {
-    public sealed class QRException : UniSpyException
+    public sealed class QRException : UniSpyException, IResponse
     {
         public QRException()
         {
@@ -14,6 +15,13 @@ namespace UniSpy.Server.QueryReport.V2.Exception
 
         public QRException(string message, System.Exception innerException) : base(message, innerException)
         {
+        }
+
+        object IResponse.SendingBuffer => SendingBuffer;
+        public string SendingBuffer { get; private set; }
+        public void Build()
+        {
+            SendingBuffer = @$"\error\{Message}\final\";
         }
     }
 }

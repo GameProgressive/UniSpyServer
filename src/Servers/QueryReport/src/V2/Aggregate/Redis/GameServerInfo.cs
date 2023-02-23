@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.QueryReport.V2.Enumerate;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Extensions;
 using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer
 {
@@ -42,7 +42,7 @@ namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer
     }
     public class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)DbNumber.GameServer)
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameServerV2)
         {
         }
     }

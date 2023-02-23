@@ -1,5 +1,5 @@
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.V2.Exception;
+using UniSpy.Server.QueryReport.Exception;
 
 namespace UniSpy.Server.QueryReport.V2.Contract.Request
 {

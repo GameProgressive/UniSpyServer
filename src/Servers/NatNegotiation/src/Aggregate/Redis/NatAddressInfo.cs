@@ -9,6 +9,7 @@ using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using System.Linq;
+using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
 {
@@ -113,6 +114,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
 
     public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatAddressInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)UniSpy.Server.Core.Extensions.DbNumber.NatAddressInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.NatAddressInfo) { }
     }
 }

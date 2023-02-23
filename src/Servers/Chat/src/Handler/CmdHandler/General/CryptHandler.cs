@@ -5,16 +5,15 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Chat.Application;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
-    
+
     public sealed class CryptHandler : CmdHandlerBase
     {
-        private new Client _client =>(Client)base._client;
         private new CryptRequest _request => (CryptRequest)base._request;
         private new CryptResult _result { get => (CryptResult)base._result; set => base._result = value; }
         // CRYPT des 1 gamename
@@ -25,16 +24,22 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
+            // we do not use crypto for remote client
+            if (_client.Info.IsRemoteClient)
+            {
+                return;
+            }
+            var client = (Client)_client;
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
             if (secretKey is null)
             {
-                _client.Connection.Disconnect();
+                client.Connection.Disconnect();
                 throw new ChatException("secret key not found.");
             }
-            _client.Info.GameSecretKey = secretKey;
-            _client.Info.GameName = _request.GameName;
+            client.Info.GameSecretKey = secretKey;
+            client.Info.GameName = _request.GameName;
             // 2. Prepare two keys
-            _client.Crypto = new ChatCrypt(_client.Info.GameSecretKey);
+            client.Crypto = new ChatCrypt(_client.Info.GameSecretKey);
         }
         protected override void ResponseConstruct()
         {

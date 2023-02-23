@@ -4,7 +4,7 @@ using Serilog.Events;
 using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.Core.Logging
 {

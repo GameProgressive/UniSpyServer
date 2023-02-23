@@ -5,7 +5,7 @@ using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Aggregate;
+using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis
 {

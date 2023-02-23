@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.Core.MiscMethod
 {

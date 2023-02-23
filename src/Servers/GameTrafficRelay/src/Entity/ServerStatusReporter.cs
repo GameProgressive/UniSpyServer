@@ -1,7 +1,7 @@
 using System;
 using UniSpy.Server.GameTrafficRelay.Controller;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.GameTrafficRelay.Entity
 {

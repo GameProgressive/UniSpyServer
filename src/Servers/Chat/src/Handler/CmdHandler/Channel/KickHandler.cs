@@ -5,7 +5,7 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {

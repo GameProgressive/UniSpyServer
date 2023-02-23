@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpy.Server.Core.Database.DatabaseModel;
-namespace UniSpy.Server.Core.Extensions
+namespace UniSpy.Server.Core.Extension
 {
     public class DataOperationExtensions
     {

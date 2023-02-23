@@ -1,5 +1,5 @@
 using UniSpy.Server.GameTrafficRelay.Interface;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 namespace UniSpy.Server.GameTrafficRelay.Aggregate
 {

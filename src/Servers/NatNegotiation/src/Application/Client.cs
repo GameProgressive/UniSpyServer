@@ -2,7 +2,7 @@ using System;
 using UniSpy.Server.NatNegotiation.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.NatNegotiation.Application
 {

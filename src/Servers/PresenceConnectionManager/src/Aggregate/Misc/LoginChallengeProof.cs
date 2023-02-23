@@ -1,6 +1,6 @@
 using System.Text;
 using UniSpy.Server.PresenceConnectionManager.Enumerate;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.PresenceConnectionManager.Structure
 {

@@ -1,7 +1,7 @@
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.MiscMethod;
 
 namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass

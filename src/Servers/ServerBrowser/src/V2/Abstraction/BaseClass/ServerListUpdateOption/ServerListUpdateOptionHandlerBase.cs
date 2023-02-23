@@ -1,7 +1,7 @@
 using System.Linq;
 using UniSpy.Server.ServerBrowser.V2.Aggregate.Misc;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass

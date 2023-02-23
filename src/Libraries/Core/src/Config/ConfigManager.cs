@@ -7,7 +7,7 @@ namespace UniSpy.Server.Core.Config
     public class ConfigManager
     {
 
-        public static UniSpyConfig Config => LoadConfigFile();
+        public static UniSpyConfig Config = LoadConfigFile();
         public static readonly string ConfigPath = @"UniSpyServerConfig.json";
         private static UniSpyConfig LoadConfigFile()
         {

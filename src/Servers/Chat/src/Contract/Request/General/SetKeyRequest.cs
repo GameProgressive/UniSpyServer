@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Core.Extensions;
+using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.Chat.Contract.Request.General
 {

@@ -1,4 +1,4 @@
-namespace UniSpy.Server.Core.Aggregate
+namespace UniSpy.Server.Core.Extension.Redis
 {
     public class RedisChannelName
     {
