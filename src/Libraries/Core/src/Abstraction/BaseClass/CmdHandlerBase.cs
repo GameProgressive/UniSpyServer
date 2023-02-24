@@ -6,7 +6,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : IHandler, ITestHandler
     {
-        public IClient _client { get; }
+        protected IClient _client { get; }
         protected IRequest _request { get; }
         protected ResultBase _result { get; set; }
         protected IResponse _response { get; set; }
