@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Events;
@@ -32,7 +33,7 @@ namespace UniSpy.Server.Chat.Aggregate
             serializer.Serialize(writer, value);
         }
     }
-    public class RemoteClient : IChatClient
+    public class RemoteClient : IChatClient, Core.Abstraction.Interface.ITestClient
     {
         public bool IsLogRaw { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnection>))]
@@ -49,8 +50,15 @@ namespace UniSpy.Server.Chat.Aggregate
             Info = info.DeepCopy();
             (Info as ClientInfo).IsRemoteClient = true;
         }
-        public void Send(IResponse response) => this.LogDebug("Remote client did not have method Send()");
+        public void Send(IResponse response) => this.LogDebug("Ignore remote client Send() operation");
         public RemoteClient GetRemoteClient() => this;
+
+        public void TestReceived(byte[] buffer)
+        {
+            this.LogNetworkReceiving(buffer);
+            var switcher = new CmdSwitcher(this, buffer);
+            switcher.Switch();
+        }
     }
     public class RemoteTcpServer : IServer
     {
@@ -81,11 +89,11 @@ namespace UniSpy.Server.Chat.Aggregate
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         public NetworkConnectionType ConnectionType { get; set; }
-        #pragma warning disable CS0067
+#pragma warning disable CS0067
         public event OnConnectedEventHandler OnConnect;
-        #pragma warning disable CS0067
+#pragma warning disable CS0067
         public event OnDisconnectedEventHandler OnDisconnect;
-        #pragma warning disable CS0067
+#pragma warning disable CS0067
         public event OnReceivedEventHandler OnReceive;
         public RemoteTcpConnection() { }
         public RemoteTcpConnection(ITcpConnection conn, RemoteTcpServer server)

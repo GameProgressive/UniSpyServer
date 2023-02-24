@@ -7,6 +7,7 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -16,7 +17,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
         private new WhoIsResult _result { get => (WhoIsResult)base._result; set => base._result = value; }
         private ClientInfo _clientInfo;
-        public WhoIsHandler(IClient client, IRequest request) : base(client, request){ }
+        public WhoIsHandler(IClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {
@@ -24,7 +25,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
             // there only existed one nick name
             base.RequestCheck();
-            var clients = (ICollection<Client>)Client.ClientPool.Values;
+            var clients = (ICollection<IChatClient>)Client.ClientPool.Values;
             var client = clients.FirstOrDefault(x => x.Info.NickName == _request.NickName);
 
             if (client is null)

@@ -29,13 +29,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         }
         protected virtual void EventBinding()
         {
-            // // for supporting chat distribution we use redis channel as our message broker
-            // // we need to check if connection is null
-            // // if connection is null means we are deserializing this object, we do not bind any event
-            // if (Connection is null)
-            // {
-            //     return;
-            // }
             switch (Connection.ConnectionType)
             {
                 case NetworkConnectionType.Tcp:
@@ -94,7 +87,14 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             }
             // we let child class to create swicher for us
             var switcher = CreateSwitcher(buffer);
-            Task.Run(() => switcher.Switch());
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                switcher.Switch();
+            }
+            else
+            {
+                Task.Run(() => switcher.Switch());
+            }
         }
         protected virtual byte[] DecryptMessage(byte[] buffer)
         {

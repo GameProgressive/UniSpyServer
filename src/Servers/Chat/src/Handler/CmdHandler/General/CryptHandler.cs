@@ -21,14 +21,18 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         {
             _result = new CryptResult();
         }
-
+        public override void Handle()
+        {
+            if (_client.Info.IsRemoteClient)
+            {
+                _client.LogDebug("Ignore remote client Crypt request");
+                return;
+            }
+            base.Handle();
+        }
         protected override void DataOperation()
         {
             // we do not use crypto for remote client
-            if (_client.Info.IsRemoteClient)
-            {
-                return;
-            }
             var client = (Client)_client;
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
             if (secretKey is null)

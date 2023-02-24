@@ -6,6 +6,7 @@ using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
+using System.Threading.Tasks;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis
 {
@@ -28,7 +29,14 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             }
 
             var switcher = new CmdSwitcher(client, message.RawRequest);
-            switcher.Switch();
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                switcher.Switch();
+            }
+            else
+            {
+                Task.Run(() => switcher.Switch());
+            }
         }
     }
     /// <summary>
@@ -50,8 +58,14 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             }
 
             var switcher = new CmdSwitcher(client, message.RawRequest);
-            switcher.Switch();
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                switcher.Switch();
+            }
+            else
+            {
+                Task.Run(() => switcher.Switch());
+            }
         }
-
     }
 }
