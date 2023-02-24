@@ -9,6 +9,9 @@ using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate;
+using UniSpy.Server.Chat.Aggregate.Redis;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -21,7 +24,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result { get => (WhoResult)base._result; set => base._result = value; }
-        public WhoHandler(IClient client, IRequest request) : base(client, request){ }
+        public WhoHandler(IClient client, IRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {
@@ -63,12 +66,25 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var client = (Client)Client.ClientPool.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
-            if (client is null)
+            var localClient = (Client)Client.ClientPool.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
+            var remoteClient = (RemoteClient)GeneralMessageChannel.RemoteClients.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
+            IChatClient client;
+
+
+            if (localClient is not null)
+            {
+                client = localClient;
+            }
+            else if (remoteClient is not null)
+            {
+                client = remoteClient;
+            }
+            else
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
-
             }
+
+
             foreach (var channel in ((ClientInfo)(client.Info)).JoinedChannels.Values)
             {
                 var user = channel.GetChannelUser(client);

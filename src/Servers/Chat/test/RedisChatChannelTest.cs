@@ -8,13 +8,11 @@ using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.Core.Database.DatabaseModel;
-using System.Linq;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Test.General;
-using System.Reflection;
 using UniSpy.Server.Core.Abstraction.Interface;
 using System.Collections.Generic;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Test
 {
@@ -108,11 +106,44 @@ namespace UniSpy.Server.Chat.Test
                 @"UTM #GSP!worms3!MJ0NJ4c3aM :ATS \nick\worms10\msg\2046\|name|Human Team 1|w0|Dave|w1|Patrick|w2|The Morriss|w3|Mike|w4|Tony|w5|Gluckman|skill|0|grave|0|SWeapon|0|flag|71|speech|Classic|InGame|0|player|worms10|alliance|1|wormCount|77111416"+"\r\n",
                 @"UTM #GSP!worms3!MJ0NJ4c3aM :RTS \team\Human Team 1\nick\worms10\msg\2174"+"\r\n"
             };
-            var client = TestClasses.CreateClient() as Client;
-            var remoteClient = client.GetRemoteClient() as ITestClient;
+            var client1 = TestClasses.CreateClient(port: 1234) as Client;
+            Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
+            var remoteClient = client1.GetRemoteClient() as ITestClient;
+            GeneralMessageChannel.RemoteClients.TryAdd(((RemoteClient)remoteClient).Connection.RemoteIPEndPoint, (IClient)remoteClient);
             foreach (var r in request1)
             {
+                var count = GeneralMessageChannel.RemoteClients.Count;
                 remoteClient.TestReceived(UniSpyEncoding.GetBytes(r));
+                count = GeneralMessageChannel.RemoteClients.Count;
+            }
+            // IChatClient
+            var request2 = new List<string>()
+            {
+                // "CRYPT des 1 worms3\r\n",
+                "USRIP\r\n",
+                "USER X419pGl4sX|6 127.0.0.1 peerchat.gamespy.com :dd6283e1e349806c20991020e0d6897a\r\n",
+                "NICK xiaojiuwo\r\n",
+                "JOIN #GPG!622\r\n" ,
+                "MODE #GPG!622\r\n",
+                @"GETCKEY #GPG!622 * 000 0 :\username\b_flags"+"\r\n",
+                "PING\r\n",
+                "PRIVMSG #GPG!622 :hello from the other side\r\n",
+                "JOIN #GSP!worms3!MJ0NJ4c3aM\r\n",
+                "MODE #GSP!worms3!MJ0NJ4c3aM\r\n",
+                @"SETCKEY #GPG!622 xiaojiuwo :\b_flags\s"+"\r\n",
+                @"SETCKEY #GSP!worms3!MJ0NJ4c3aM xiaojiuwo :\b_flags\s"+"\r\n",
+                @"GETCKEY #GSP!worms3!MJ0NJ4c3aM * 001 0 :\username\b_flags"+"\r\n",
+                // "PART #GPG!622 :Joined staging room\r\n",
+                "UTM #GSP!worms3!MJ0NJ4c3aM :APE [01]privateip[02]192.168.0.109[01]publicip[02]255.255.255.255\r\n",
+                "WHO xiaojiuwo\r\n",
+                // "PART #GSP!worms3!MJ0NJ4c3aM :Left Game\r\n"
+            };
+            var client2 = TestClasses.CreateClient(port: 1235) as ITestClient;
+            foreach (var r in request2)
+            {
+                var count = Client.ClientPool.Count;
+                client2.TestReceived(UniSpyEncoding.GetBytes(r));
+                count = Client.ClientPool.Count;
             }
         }
     }

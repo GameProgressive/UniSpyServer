@@ -7,14 +7,8 @@ namespace UniSpy.Server.Chat.Test
 {
     public class TestClasses
     {
-        public static IClient Client1;
-        public static IClient Client2;
-
-        static TestClasses()
-        {
-            Client1 = CreateClient("79.209.235.252", 50558);
-            Client2 = CreateClient("211.83.127.54", 39503);
-        }
+        public static IClient Client1 = CreateClient("79.209.235.252", 50558);
+        public static IClient Client2 = CreateClient("211.83.127.54", 39503);
 
         public static IClient CreateClient(string ipAddress = "79.209.235.252", int port = 50558)
         {

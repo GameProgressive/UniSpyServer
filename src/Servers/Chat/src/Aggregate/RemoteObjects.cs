@@ -38,7 +38,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public bool IsLogRaw { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnection>))]
         public IConnection Connection { get; set; }
-        public ICryptography Crypto { get; set; }
+        public ICryptography Crypto => null;
         [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
         public ClientInfoBase Info { get; set; }
         ClientInfo IChatClient.Info => (ClientInfo)Info;
@@ -46,7 +46,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public RemoteClient(RemoteTcpConnection conn, ClientInfo info)
         {
             Connection = conn;
-            // we need to copy the client info because it is reference type
+            // we need to copy the client info because it is a reference type
             Info = info.DeepCopy();
             (Info as ClientInfo).IsRemoteClient = true;
         }
