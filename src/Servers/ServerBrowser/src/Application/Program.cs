@@ -10,13 +10,14 @@ namespace UniSpy.Server.ServerBrowser.Application
             try
             {
                 new ServerLauncher().Start();
+                Console.WriteLine("Press < Q > to exit. ");
+                while (Console.ReadKey().Key != ConsoleKey.Q) { }
             }
             catch (System.Exception e)
             {
                 LogWriter.LogError(e);
             }
-            Console.WriteLine("Press < Q > to exit. ");
-            while (Console.ReadKey().Key != ConsoleKey.Q) { }
+
         }
     }
 }

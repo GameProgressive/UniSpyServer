@@ -19,28 +19,32 @@ namespace UniSpy.Server.Core.Logging
         static LogWriter()
         {
             LogConfig = new LoggerConfiguration();
-
-            switch (ConfigManager.Config.MinimumLogLevel)
+            if (ConfigManager.IsConfigFileExist)
             {
-                case LogEventLevel.Verbose:
-                    LogConfig.MinimumLevel.Verbose();
-                    break;
-                case LogEventLevel.Information:
-                    LogConfig.MinimumLevel.Information();
-                    break;
-                case LogEventLevel.Debug:
-                    LogConfig.MinimumLevel.Debug();
-                    break;
-                case LogEventLevel.Warning:
-                    LogConfig.MinimumLevel.Warning();
-                    break;
-                case LogEventLevel.Error:
-                    LogConfig.MinimumLevel.Error();
-                    break;
-                case LogEventLevel.Fatal:
-                    LogConfig.MinimumLevel.Fatal();
-                    break;
+                switch (ConfigManager.Config.MinimumLogLevel)
+                {
+                    case LogEventLevel.Verbose:
+                        LogConfig.MinimumLevel.Verbose();
+                        break;
+                    case LogEventLevel.Information:
+                        LogConfig.MinimumLevel.Information();
+                        break;
+                    case LogEventLevel.Debug:
+                        LogConfig.MinimumLevel.Debug();
+                        break;
+                    case LogEventLevel.Warning:
+                        LogConfig.MinimumLevel.Warning();
+                        break;
+                    case LogEventLevel.Error:
+                        LogConfig.MinimumLevel.Error();
+                        break;
+                    case LogEventLevel.Fatal:
+                        LogConfig.MinimumLevel.Fatal();
+                        break;
+                }
             }
+
+
             LogConfig = LogConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
@@ -54,7 +58,7 @@ namespace UniSpy.Server.Core.Logging
         public static void LogInfo(string message) => Log.Information(message);
         public static void LogWarn(string message) => Log.Warning(message);
         public static void LogError(string message) => Log.Error(message);
-        public static void LogError(Exception e) => LogError(e.Message);
+        public static void LogError(Exception e) => LogError(e.ToString());
         public static void LogFatal(string message) => Log.Fatal(message);
         public static void LogCurrentClass(object param) => LogVerbose($"[ => ] [{param.GetType().Name}]");
         public static void LogCurrentClass(this IClient client, object param) => LogVerbose(FormatLogMessage(client, $"[ => ] [{param.GetType().Name}]"));

@@ -10,14 +10,15 @@ namespace UniSpy.Server.CDKey.Application
             try
             {
                 new ServerLauncher().Start();
+                Console.WriteLine("Press < Q > to exit. ");
+                while (Console.ReadKey().Key != ConsoleKey.Q) { }
             }
             catch (Exception e)
             {
                 LogWriter.LogError(e);
             }
 
-            Console.WriteLine("Press < Q > to exit. ");
-            while (Console.ReadKey().Key != ConsoleKey.Q) { }
+
         }
     }
 }
