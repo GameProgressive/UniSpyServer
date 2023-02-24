@@ -5,6 +5,7 @@ using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Aggregate.Misc;
 using UniSpy.Server.ServerBrowser.Contract.Result;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.ServerBrowser.Contract.Request;
 
 namespace UniSpy.Server.ServerBrowser.Contract.Response
 {
@@ -14,7 +15,7 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response
     public sealed class ServerInfoResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;
-        public ServerInfoResponse(RequestBase request, ResultBase result) : base(request, result)
+        public ServerInfoResponse(ServerInfoRequest request, ServerInfoResult result) : base(request, result)
         {
         }
 

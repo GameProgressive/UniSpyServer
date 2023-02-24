@@ -6,7 +6,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
     public sealed class OthersResponse : ResponseBase
     {
         private new OthersResult _result => (OthersResult)base._result;
-        public OthersResponse(RequestBase request, ResultBase result) : base(request, result)
+        public OthersResponse(RequestBase request, OthersResult result) : base(request, result)
         {
         }
 

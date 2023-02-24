@@ -1,13 +1,15 @@
 using System;
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 
 namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class AddBuddyResponse : ResponseBase
     {
+        private new AddBuddyRequest _request => (AddBuddyRequest)base._request;
         private new AddBuddyResult _result => (AddBuddyResult)base._result;
-        public AddBuddyResponse(RequestBase request, ResultBase result) : base(request, result)
+        public AddBuddyResponse(AddBuddyRequest request, AddBuddyResult result) : base(request, result)
         {
         }
 

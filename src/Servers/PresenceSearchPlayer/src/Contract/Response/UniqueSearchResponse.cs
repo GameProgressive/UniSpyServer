@@ -6,9 +6,9 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
 {
     public sealed class UniqueSearchResponse : ResponseBase
     {
-        private new UniqueSearchResult _result => (UniqueSearchResult)base._result;
         private new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
-        public UniqueSearchResponse(RequestBase request, ResultBase result) : base(request, result)
+        private new UniqueSearchResult _result => (UniqueSearchResult)base._result;
+        public UniqueSearchResponse(UniqueSearchRequest request, UniqueSearchResult result) : base(request, result)
         {
         }
 

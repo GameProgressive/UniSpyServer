@@ -10,7 +10,7 @@ namespace UniSpy.Server.ServerBrowser.Aggregate.Packet.Response
     {
         private new ServerListRequest _request => (ServerListRequest)base._request;
         private new ServerMainListResult _result => (ServerMainListResult)base._result;
-        public ServerMainListResponse(RequestBase request, ResultBase result) : base(request, result)
+        public ServerMainListResponse(ServerListUpdateOptionRequestBase request, ServerListUpdateOptionResultBase result) : base(request, result)
         {
         }
 

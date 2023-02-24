@@ -11,9 +11,9 @@ namespace UniSpy.Server.WebServer.Application
             Info = new ClientInfo();
         }
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, (IHttpRequest)buffer);
 
-        protected override void OnReceived(object buffer) 
+        protected override void OnReceived(object buffer)
         {
             base.OnReceived(buffer);
             var rq = (IHttpRequest)buffer;

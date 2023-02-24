@@ -16,7 +16,7 @@ namespace UniSpy.Server.WebServer.Handler
     public class CmdSwitcher : CmdSwitcherBase
     {
         private new IHttpRequest _rawRequest => (IHttpRequest)base._rawRequest;
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(IClient client, IHttpRequest rawRequest) : base(client, rawRequest)
         {
         }
 

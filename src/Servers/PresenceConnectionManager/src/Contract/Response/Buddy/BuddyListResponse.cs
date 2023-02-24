@@ -6,12 +6,10 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class BuddyListResponse : ResponseBase
     {
-        public BuddyListResponse(RequestBase request, ResultBase result) : base(request, result)
+        private new BuddyListResult _result => (BuddyListResult)base._result;
+        public BuddyListResponse(RequestBase request, BuddyListResult result) : base(request, result)
         {
         }
-
-        private new BuddyListResult _result => (BuddyListResult)base._result;
-
         public override void Build()
         {
             // \bdy\< num in list >\list\< profileid list - comma delimited >\final\

@@ -14,7 +14,7 @@ namespace UniSpy.Server.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {
-        private Client _client;
+        private Client _client => (Client)TestClasses.CreateClient();
         public ChannelHandlerTest()
         {
             var serverMock = new Mock<IServer>();
@@ -25,59 +25,60 @@ namespace UniSpy.Server.Chat.Test.Channel
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.ListeningIPEndPoint);
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-            _client = new Client(connectionMock.Object);
         }
         [Fact]
         public void JoinHandleTest()
         {
-            var connection1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
-            var connection2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
+            var client1 = (Client)TestClasses.CreateClient(port: 1234);
+            var client2 = (Client)TestClasses.CreateClient(port: 1235);
+            SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test");
+            SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test");
         }
         [Fact]
         public void ChannelMsgTest()
         {
-            var connection1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
-            var connection2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
+            var client1 = (Client)TestClasses.CreateClient(port: 1234);
+            var client2 = (Client)TestClasses.CreateClient(port: 1235);
+            SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test");
+            SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test");
             var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test :hello this is a test.");
-            var privMsgHandler = new PrivateMsgHandler(connection1, privMsgReq);
+            var privMsgHandler = new PrivateMsgHandler(client1, privMsgReq);
             privMsgHandler.Handle();
         }
-        public IClient SingleLoginTest(string userName = "unispy", string nickName = "unispy")
+        private void SingleLoginTest(Client client, string userName = "unispy", string nickName = "unispy")
         {
             var userReq = new UserRequest($"USER {userName} 127.0.0.1 peerchat.unispy.org :{userName}");
             var nickReq = new NickRequest($"NICK {nickName}");
-            var userHandler = new UserHandler(_client, userReq);
-            var nickHandler = new NickHandler(_client, nickReq);
+            var userHandler = new UserHandler(client, userReq);
+            var nickHandler = new NickHandler(client, nickReq);
             userHandler.Handle();
             nickHandler.Handle();
-            return _client;
         }
-        public IClient SingleJoinTest(string userName = "unispy", string nickName = "unispy", string channelName = "#GSP!room!test")
+        private void SingleJoinTest(Client client, string userName = "unispy", string nickName = "unispy", string channelName = "#GSP!room!test")
         {
-            var connection = SingleLoginTest(userName, nickName);
+            SingleLoginTest(client, userName, nickName);
             var joinReq = new JoinRequest($"JOIN {channelName}");
-            var joinHandler = new JoinHandler(connection, joinReq);
+            var joinHandler = new JoinHandler(client, joinReq);
             // we know the endpoint object is not set, so System.NullReferenceException will be thrown
             joinHandler.Handle();
-            Assert.Single(_client.Info.JoinedChannels);
-            Assert.True(_client.Info.JoinedChannels.ContainsKey(channelName));
-            Assert.True(_client.Info.IsJoinedChannel(channelName));
-            return connection;
+            Assert.Single(client.Info.JoinedChannels);
+            Assert.True(client.Info.JoinedChannels.ContainsKey(channelName));
+            Assert.True(client.Info.IsJoinedChannel(channelName));
         }
         [Fact]
         public void SetCKeyTest()
         {
-            var connection = SingleJoinTest("spyguy", "spyguy");
+            SingleJoinTest(_client, "spyguy", "spyguy");
             var request = new SetCKeyRequest(ChannelRequests.SetCKey);
-            var handler = new SetCKeyHandler(connection, request);
+            var handler = new SetCKeyHandler(_client, request);
             handler.Handle();
         }
         [Fact]
         public void ModeTest()
         {
-            var connection = SingleJoinTest("spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
+            SingleJoinTest(_client, "spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
             var request = new ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2");
-            var handler = new ModeHandler(connection, request);
+            var handler = new ModeHandler(_client, request);
             handler.Handle();
         }
     }

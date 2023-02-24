@@ -8,8 +8,8 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Response
 {
     public sealed class HeartBeatResponse : ResponseBase
     {
-        private new HeartBeatResult _result => (HeartBeatResult)base._result;
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
+        private new HeartBeatResult _result => (HeartBeatResult)base._result;
         private static readonly byte[] Challenge = { 0x54, 0x54, 0x54, 0x00, 0x00 };
         private static readonly byte[] Spliter = { 0x00, 0x00, 0x00, 0x00 };
         public HeartBeatResponse(HeartBeatRequest request, HeartBeatResult result) : base(request, result)

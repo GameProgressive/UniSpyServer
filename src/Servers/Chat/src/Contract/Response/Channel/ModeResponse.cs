@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result => (ModeResult)base._result;
-        public ModeResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public ModeResponse(ModeRequest request, ModeResult result) : base(request, result){ }
         public override void Build()
         {
             if (_request.RequestType == ModeRequestType.GetChannelModes)

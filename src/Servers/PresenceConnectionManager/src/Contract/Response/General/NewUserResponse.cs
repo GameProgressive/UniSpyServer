@@ -1,11 +1,13 @@
 
 using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 
 namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class NewUserResponse : PresenceSearchPlayer.Contract.Response.NewUserResponse
     {
-        public NewUserResponse(RequestBase request, ResultBase result) : base(request, result)
+        public NewUserResponse(NewUserRequest request, NewUserResult result) : base(request, result)
         {
         }
 

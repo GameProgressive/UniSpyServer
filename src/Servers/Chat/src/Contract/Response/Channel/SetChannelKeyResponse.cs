@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result => (SetChannelKeyResult)base._result;
-        public SetChannelKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public SetChannelKeyResponse(SetChannelKeyRequest request, SetChannelKeyResult result) : base(request, result){ }
 
         public override void Build()
         {

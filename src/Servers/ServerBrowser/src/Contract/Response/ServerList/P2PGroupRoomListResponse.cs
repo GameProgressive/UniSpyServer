@@ -11,9 +11,9 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response.ServerList
 {
     public sealed class P2PGroupRoomListResponse : ServerListUpdateOptionResponseBase
     {
-        private new P2PGroupRoomListResult _result => (P2PGroupRoomListResult)base._result;
         private new ServerListRequest _request => (ServerListRequest)base._request;
-        public P2PGroupRoomListResponse(RequestBase request, ResultBase result) : base(request, result)
+        private new P2PGroupRoomListResult _result => (P2PGroupRoomListResult)base._result;
+        public P2PGroupRoomListResponse(ServerListUpdateOptionRequestBase request, ServerListUpdateOptionResultBase result) : base(request, result)
         {
         }
         public override void Build()

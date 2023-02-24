@@ -7,10 +7,10 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
 {
     public sealed class JoinResponse : ResponseBase
     {
-        private new JoinResult _result => (JoinResult)base._result;
         private new JoinRequest _request => (JoinRequest)base._request;
+        private new JoinResult _result => (JoinResult)base._result;
         // public string SendingBufferOfChannelUsers { get; private set; }
-        public JoinResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public JoinResponse(JoinRequest request, JoinResult result) : base(request, result){ }
 
         public override void Build()
         {

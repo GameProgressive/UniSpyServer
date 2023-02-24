@@ -8,7 +8,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
     {
         private new BlockListResult _result => (BlockListResult)base._result;
 
-        public BlockListResponse(RequestBase request, ResultBase result) : base(request, result)
+        public BlockListResponse(RequestBase request, BlockListResult result) : base(request, result)
         {
         }
 

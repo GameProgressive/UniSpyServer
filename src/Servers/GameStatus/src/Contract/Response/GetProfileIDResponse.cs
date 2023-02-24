@@ -8,7 +8,7 @@ namespace UniSpy.Server.GameStatus.Contract.Response
     {
         private new GetProfileIDResult _result => (GetProfileIDResult)base._result;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
-        public GetProfileIDResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public GetProfileIDResponse(GetProfileIDRequest request, GetProfileIDResult result) : base(request, result)
         {
         }
 

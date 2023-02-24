@@ -4,12 +4,16 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : IHandler
+    public abstract class CmdHandlerBase : IHandler, ITestHandler
     {
-        protected IClient _client { get; }
+        public IClient _client { get; }
         protected IRequest _request { get; }
-        protected IResponse _response { get; set; }
         protected ResultBase _result { get; set; }
+        protected IResponse _response { get; set; }
+
+        RequestBase ITestHandler.Request => (RequestBase)_request;
+        ResultBase ITestHandler.Result => (ResultBase)_result;
+        ResponseBase ITestHandler.Response => (ResponseBase)_response;
 
         public CmdHandlerBase(IClient client, IRequest request)
         {

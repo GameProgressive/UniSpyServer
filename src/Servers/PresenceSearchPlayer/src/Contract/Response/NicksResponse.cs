@@ -6,10 +6,10 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
 {
     public sealed class NicksResponse : ResponseBase
     {
-        private new NicksResult _result => (NicksResult)base._result;
         private new NicksRequest _request => (NicksRequest)base._request;
+        private new NicksResult _result => (NicksResult)base._result;
 
-        public NicksResponse(RequestBase request, ResultBase result) : base(request, result)
+        public NicksResponse(NicksRequest request, NicksResult result) : base(request, result)
         {
         }
 

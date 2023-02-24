@@ -8,6 +8,8 @@ using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.Database.DatabaseModel;
+using System.Linq;
 
 namespace UniSpy.Server.Chat.Test
 {

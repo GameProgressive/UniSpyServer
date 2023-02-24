@@ -4,7 +4,6 @@ using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
-using System.Collections.Generic;
 
 namespace UniSpy.Server.Chat.Application
 {
@@ -12,8 +11,6 @@ namespace UniSpy.Server.Chat.Application
     {
         public static IStorageOperation Persistance = new StorageOperation();
         private static RedisClient _redisClient = new RedisClient();
-        // todo we store the lobby name on memory for convient use
-        private static List<string> _peerLobbyNames;
         public bool IsPeerLobby(string channelName)
         {
             // TODO! check the room name by search the name on the official room name in database

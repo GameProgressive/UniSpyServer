@@ -1,4 +1,5 @@
 using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
@@ -6,8 +7,8 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
     public sealed class ValidResponse : ResponseBase
     {
         private new ValidResult _result => (ValidResult)base._result;
-
-        public ValidResponse(RequestBase request, ResultBase result) : base(request, result)
+        private new ValidRequest _request => (ValidRequest)base._request;
+        public ValidResponse(RequestBase request, ValidResult result) : base(request, result)
         {
         }
 

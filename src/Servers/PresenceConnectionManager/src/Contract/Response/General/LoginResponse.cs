@@ -8,9 +8,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class LoginResponse : ResponseBase
     {
-        private new LoginResult _result => (LoginResult)base._result;
         private new LoginRequest _request => (LoginRequest)base._request;
-        public LoginResponse(RequestBase request, ResultBase result) : base(request, result)
+        private new LoginResult _result => (LoginResult)base._result;
+        public LoginResponse(LoginRequest request, LoginResult result) : base(request, result)
         {
         }
 

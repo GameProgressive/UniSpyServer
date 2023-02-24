@@ -8,7 +8,7 @@ namespace UniSpy.Server.GameStatus.Contract.Response
     {
         private new GetPlayerDataResult _result => (GetPlayerDataResult)base._result;
         private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
-        public GetPlayerDataResponse(UniSpy.Server.Core.Abstraction.BaseClass.RequestBase request, UniSpy.Server.Core.Abstraction.BaseClass.ResultBase result) : base(request, result)
+        public GetPlayerDataResponse(GetPlayerDataRequest request, GetPlayerDataResult result) : base(request, result)
         {
         }
 

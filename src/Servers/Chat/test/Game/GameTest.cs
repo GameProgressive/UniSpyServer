@@ -192,20 +192,22 @@ namespace UniSpy.Server.Chat.Test
                 "WHO xiaojiuwo\r\n",
                 // "PART #GSP!worms3!MJ0NJ4c3aM :Left Game\r\n"
             };
+            var client1 = TestClasses.CreateClient();
+            var client2 = TestClasses.CreateClient();
 
             foreach (var raw in request1)
             {
-                ((ITestClient)TestClasses.Client1).TestReceived(UniSpyEncoding.GetBytes(raw));
+                ((ITestClient)client1).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
             foreach (var raw in request2)
             {
-                ((ITestClient)TestClasses.Client2).TestReceived(UniSpyEncoding.GetBytes(raw));
+                ((ITestClient)client2).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
             var userCount = JoinHandler.Channels.First().Value.Users.Count;
             Assert.Equal(2, userCount);
-            int count1 = ((Client)TestClasses.Client1).Info.JoinedChannels.Count();
+            int count1 = ((Client)client1).Info.JoinedChannels.Count();
             Assert.Equal(2, count1);
-            int count2 = ((Client)TestClasses.Client1).Info.JoinedChannels.Count();
+            int count2 = ((Client)client2).Info.JoinedChannels.Count();
             Assert.Equal(2, count2);
 
         }

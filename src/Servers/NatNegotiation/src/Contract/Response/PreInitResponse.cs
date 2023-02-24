@@ -8,7 +8,7 @@ namespace UniSpy.Server.NatNegotiation.Contract.Response
     {
         private new PreInitRequest _request => (PreInitRequest)base._request;
         private new PreInitResult _result => (PreInitResult)base._result;
-        public PreInitResponse(RequestBase request, ResultBase result) : base(request, result)
+        public PreInitResponse(PreInitRequest request, PreInitResult result) : base(request, result)
         {
         }
         public override void Build()

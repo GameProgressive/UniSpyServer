@@ -1,13 +1,14 @@
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 
 namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 {
     public sealed class GetProfileResponse : ResponseBase
     {
         private new GetProfileResult _result => (GetProfileResult)base._result;
-        public GetProfileResponse(RequestBase request, ResultBase result) : base(request, result)
+        public GetProfileResponse(GetProfileRequest request, GetProfileResult result) : base(request, result)
         {
         }
         public override void Build()
