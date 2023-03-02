@@ -6,7 +6,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Abstraction.Interface
 {
     public interface IStorageOperation
     {
-        int? GetProfileId(string email, string password, string nickName, int partnerId);
+        int? GetProfileId(string email, string password, string nickName, int? partnerId);
         bool VerifyEmail(string email);
         bool VerifyEmailAndPassword(string email, string password);
         void AddUser(User user);

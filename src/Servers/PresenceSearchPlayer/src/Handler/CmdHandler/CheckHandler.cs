@@ -33,7 +33,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
             {
                 throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
             }
-            _result.ProfileId = StorageOperation.Persistance.GetProfileId(_request.Email, _request.Password, _request.Nick, (int)_request.PartnerId);
+            _result.ProfileId = StorageOperation.Persistance.GetProfileId(_request.Email, _request.Password, _request.Nick, _request.PartnerId);
         }
 
         protected override void ResponseConstruct()

@@ -23,7 +23,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
                 return db.Users.Where(u => u.Email == email && u.Password == password).Count() < 1;
             }
         }
-        public int? GetProfileId(string email, string password, string nickName, int partnerId)
+        public int? GetProfileId(string email, string password, string nickName, int? partnerId)
         {
             using (var db = new UniSpyContext())
             {
