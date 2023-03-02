@@ -1,4 +1,4 @@
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
 using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.Contract.Result

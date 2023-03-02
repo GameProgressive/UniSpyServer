@@ -1,7 +1,7 @@
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
-namespace UniSpy.Server.QueryReport.V2.Test
+namespace UniSpy.Server.QueryReport.Test
 {
     public class GameTest
     {

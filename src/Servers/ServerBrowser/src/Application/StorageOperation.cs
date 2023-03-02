@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
-using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.Aggregate.Redis.PeerGroup;
+using UniSpy.Server.QueryReport.Contract.Request;
 using UniSpy.Server.Core.Database.DatabaseModel;
 
 namespace UniSpy.Server.ServerBrowser.Application
@@ -12,13 +12,13 @@ namespace UniSpy.Server.ServerBrowser.Application
     internal sealed class StorageOperation : ServerBrowser.Abstraction.Interface.IStorageOperation
     {
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
-        private static QueryReport.V2.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Aggregate.Redis.GameServer.RedisClient();
-        private static QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient();
+        private static QueryReport.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Aggregate.Redis.GameServer.RedisClient();
+        private static QueryReport.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Aggregate.Redis.PeerGroup.RedisClient();
         /// <summary>
         /// The redis channel use to transfer client message
         /// </summary>
         /// <returns></returns>
-        public static QueryReport.V2.Aggregate.Redis.RedisChannel Channel = new QueryReport.V2.Aggregate.Redis.RedisChannel();
+        public static QueryReport.Aggregate.Redis.RedisChannel Channel = new QueryReport.Aggregate.Redis.RedisChannel();
 
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {

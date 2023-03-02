@@ -12,13 +12,13 @@ namespace UniSpy.Server.Chat.Application
 {
     public class Client : ClientBase, IChatClient
     {
-        public new ClientInfo Info => (ClientInfo)base.Info;
+        public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         private byte[] _incompleteBuffer;
         public Client() { }
         public Client(IConnection connection) : base(connection)
         {
-            base.Info = new ClientInfo();
+            Info = new ClientInfo();
         }
         protected override void OnReceived(object buffer)
         {

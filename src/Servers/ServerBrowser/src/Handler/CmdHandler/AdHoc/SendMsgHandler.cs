@@ -2,7 +2,7 @@ using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.ServerBrowser.Exception;
-using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.Contract.Request;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.Core.Logging;
@@ -35,7 +35,7 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler
                 NatNegMessage = _request.ClientMessage,
                 InstantKey = gameServer.InstantKey,
                 TargetIPEndPoint = gameServer.QueryReportIPEndPoint,
-                CommandName = QueryReport.V2.Enumerate.RequestType.ClientMessage
+                CommandName = QueryReport.Enumerate.RequestType.ClientMessage
             };
             StorageOperation.Persistance.PublishClientMessage(message);
             _client.LogInfo($"Send client message to QueryReport Server: {gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");

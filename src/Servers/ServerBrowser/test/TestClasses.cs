@@ -7,7 +7,7 @@ namespace UniSpy.Server.ServerBrowser.Test
 {
     public static class TestClasses
     {
-        public static IClient QRClient = QueryReport.V2.Test.TestClasses.CreateClient();
+        public static IClient QRClient = QueryReport.Test.TestClasses.CreateClient();
         public static IClient SBClient = CreateClient();
 
         public static Client CreateClient(string ipAddress = "192.168.1.2", int port = 9999)

@@ -1,5 +1,5 @@
 using System.Linq;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
+using UniSpy.Server.QueryReport.Aggregate.Redis.PeerGroup;
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.Enumerate;

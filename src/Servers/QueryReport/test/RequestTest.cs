@@ -1,7 +1,7 @@
-using UniSpy.Server.QueryReport.V2.Enumerate;
-using UniSpy.Server.QueryReport.V2.Contract.Request;
+using UniSpy.Server.QueryReport.Enumerate;
+using UniSpy.Server.QueryReport.Contract.Request;
 using Xunit;
-namespace UniSpy.Server.QueryReport.V2.Test
+namespace UniSpy.Server.QueryReport.Test
 {
     public class RequestTest
     {

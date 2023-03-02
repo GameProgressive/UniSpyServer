@@ -1,6 +1,6 @@
 using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 using System.Collections.Generic;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
 
 namespace UniSpy.Server.ServerBrowser.Contract.Result
 {

@@ -66,7 +66,7 @@ namespace UniSpy.Server.ServerBrowser.Test
             // because when search on redis, redis require the server ip and port as key words,
             // the ip and port in qr should match when sb execute ServerInfoRequest
             // therefore, we create client based on IP 91.43.50.186:21701 to test qr and sb
-            var qrClient = QueryReport.V2.Test.TestClasses.CreateClient("91.43.50.186", 21701);
+            var qrClient = QueryReport.Test.TestClasses.CreateClient("91.43.50.186", 21701);
             var qrRequests = new List<byte[]>()
             {   
                 // avaliable check
@@ -110,8 +110,8 @@ namespace UniSpy.Server.ServerBrowser.Test
         [Fact]
         public void Anno1701Date20221104()
         {
-            var qrClient1 = QueryReport.V2.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var qrClient2 = QueryReport.V2.Test.TestClasses.CreateClient("31.18.120.193", 21701);
+            var qrClient1 = QueryReport.Test.TestClasses.CreateClient("79.209.224.29", 21701);
+            var qrClient2 = QueryReport.Test.TestClasses.CreateClient("31.18.120.193", 21701);
             var sbClient1 = ServerBrowser.Test.TestClasses.CreateClient("79.209.224.29", 45340);
             var sbclient2 = ServerBrowser.Test.TestClasses.CreateClient("31.18.120.193", 50587);
             var requests = new List<KeyValuePair<string, byte[]>>(){

@@ -3,7 +3,7 @@ using Moq;
 using UniSpy.Server.QueryReport.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpy.Server.QueryReport.V2.Test
+namespace UniSpy.Server.QueryReport.Test
 {
     public class TestClasses
     {
