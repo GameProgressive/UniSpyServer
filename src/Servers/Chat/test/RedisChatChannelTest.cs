@@ -65,6 +65,7 @@ namespace UniSpy.Server.Chat.Test
         [Fact]
         public void Crypt()
         {
+            var request1 = new DisconnectRequest();
             var client = TestClasses.CreateClient() as Client;
 
             client.Info.IsLoggedIn = true;

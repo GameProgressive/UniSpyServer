@@ -7,6 +7,7 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
 using System.Threading.Tasks;
+using UniSpy.Server.Chat.Application;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis
 {
@@ -21,6 +22,15 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         }
         public override void ReceivedMessage(RemoteMessage message)
         {
+            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance.ServerID)
+            {
+                return;
+            }
+            if (message.Type == "DISCONNECT")
+            {
+                RemoteClients.TryRemove(message.Client.Connection.RemoteIPEndPoint, out _);
+                return;
+            }
             IClient client;
             if (!RemoteClients.TryGetValue(message.Client.Connection.RemoteIPEndPoint, out client))
             {

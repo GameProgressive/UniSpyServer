@@ -42,7 +42,7 @@
       "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "ServerBrowser",
       "PublicAddress": "0.0.0.0",
-      "ListeningPort": "28900"
+      "ListeningPort": "28910"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
