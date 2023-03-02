@@ -19,6 +19,8 @@ namespace UniSpy.Server.Chat.Test
             var connectionMock = new Mock<ITcpConnection>();
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+            
             return new Client(connectionMock.Object);
         }
     }

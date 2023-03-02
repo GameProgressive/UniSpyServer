@@ -6,7 +6,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
-    
+
     public class CreateRecordHandler : CmdHandlerBase
     {
         protected new CreateRecordRequest _request => (CreateRecordRequest)base._request;
@@ -17,7 +17,8 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
         {
             base.DataOperation();
             var jsonStr = JsonConvert.SerializeObject(_request.Values);
-            File.WriteAllText(_sakeFilePath, jsonStr);
+            // File.WriteAllText(_sakeFilePath, jsonStr);
+            throw new System.NotImplementedException();
         }
     }
 }

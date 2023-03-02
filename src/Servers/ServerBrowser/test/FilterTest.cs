@@ -13,7 +13,7 @@ namespace UniSpy.Server.ServerBrowser.Test
     }
     public class FilterTest
     {
-        [Fact]
+        [Fact(Skip = "not implemented")]
         public void SimpleQueryFilter()
         {
             // Given

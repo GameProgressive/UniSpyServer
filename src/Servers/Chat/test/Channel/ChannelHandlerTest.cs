@@ -7,7 +7,6 @@ using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Message;
-using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
 namespace UniSpy.Server.Chat.Test.Channel
@@ -15,17 +14,6 @@ namespace UniSpy.Server.Chat.Test.Channel
     public class ChannelHandlerTest
     {
         private Client _client => (Client)TestClasses.CreateClient();
-        public ChannelHandlerTest()
-        {
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("Chat");
-            serverMock.Setup(s => s.ListeningIPEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var connectionMock = new Mock<ITcpConnection>();
-            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(serverMock.Object.ListeningIPEndPoint);
-            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-        }
         [Fact]
         public void JoinHandleTest()
         {

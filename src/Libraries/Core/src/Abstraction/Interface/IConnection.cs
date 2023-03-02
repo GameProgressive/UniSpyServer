@@ -10,7 +10,7 @@ namespace UniSpy.Server.Core.Abstraction.Interface
         Udp,
         Http,
         Https,
-        // Test,
+        Test,
     }
     /// <summary>
     /// Represent a remote connection, tcp, udp, http etc.

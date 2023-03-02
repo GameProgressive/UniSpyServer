@@ -45,9 +45,9 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     ((IHttpConnection)Connection).OnConnect += OnConnected;
                     ((IHttpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
-                // case NetworkConnectionType.Test:
-                //     LogInfo("Using unit-test mock connection.");
-                //     break;
+                case NetworkConnectionType.Test:
+                    this.LogVerbose("Using unit-test mock connection.");
+                    break;
                 default:
                     throw new Exception("Unsupported connection type.");
             }

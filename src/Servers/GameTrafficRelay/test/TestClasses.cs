@@ -1,26 +1,23 @@
-// using System.Net;
-// using Moq;
-// using UniSpy.Server.GameTrafficRelay.Application;
-// using UniSpy.Server.Core.Abstraction.Interface;
+using System.Net;
+using Moq;
+using UniSpy.Server.Core.Abstraction.Interface;
 
-// namespace UniSpy.Server.GameTrafficRelay.Test
-// {
-//     public static class TestClasses
-//     {
-//         public static IClient Client = CreateClient();
+namespace UniSpy.Server.GameTrafficRelay.Test
+{
+    public static class TestClasses
+    {
+        public static IServer Server = CreateServer();
 
-//         public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)
-//         {
-//             var serverMock = new Mock<IServer>();
-//             serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-//             serverMock.Setup(s => s.ServerName).Returns("GameTrafficRelay");
-//             serverMock.Setup(s => s.ListeningEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-//             var connectionMock = new Mock<IUdpConnection>();
-//             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
-//             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-//             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
+        public static IServer CreateServer(string ipAddress = "192.168.1.1", int port = 9999)
+        {
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
+            serverMock.Setup(s => s.ServerName).Returns("GameTrafficRelay");
+            serverMock.Setup(s => s.ListeningIPEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
+            serverMock.Setup(s => s.PublicIPEndPoint).Returns(IPEndPoint.Parse("101.34.77.11"));
 
-//             return new Client(connectionMock.Object);
-//         }
-//     }
-// }
+
+            return (IServer)serverMock;
+        }
+    }
+}
