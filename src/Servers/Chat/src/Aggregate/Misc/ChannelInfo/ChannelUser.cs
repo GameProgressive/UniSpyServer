@@ -32,6 +32,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public IConnection Connection => ClientRef.Connection;
         public Dictionary<string, string> UserKeyValue { get; private set; }
         [JsonIgnore]
+        public Channel JoinedChannel { get; private set; }
+        [JsonIgnore]
         public string BFlags => $@"\{Info.UserName}\{UserKeyValue["b_flags"]}";
         public string Modes
         {
@@ -52,10 +54,11 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 return buffer.ToString();
             }
         }
-        public ChannelUser(IChatClient client)
+        public ChannelUser(IChatClient client, Channel channel)
         {
             ClientRef = client;
             UserKeyValue = new Dictionary<string, string>();
+            JoinedChannel = channel;
         }
 
         public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)

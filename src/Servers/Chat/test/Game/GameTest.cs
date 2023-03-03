@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Moq;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
@@ -203,7 +204,7 @@ namespace UniSpy.Server.Chat.Test
             {
                 ((ITestClient)client2).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
-            var userCount = JoinHandler.Channels.First().Value.Users.Count;
+            var userCount = ChannelManager.Channels.First().Value.Users.Count;
             Assert.Equal(2, userCount);
             int count1 = ((Client)client1).Info.JoinedChannels.Count();
             Assert.Equal(2, count1);

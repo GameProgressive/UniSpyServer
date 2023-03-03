@@ -61,6 +61,10 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         public override void ReceivedMessage(RemoteMessage message)
         {
             // base.ReceivedMessage(message);
+            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance.ServerID)
+            {
+                return;
+            }
             IClient client;
             if (!GeneralMessageChannel.RemoteClients.TryGetValue(message.Client.Connection.RemoteIPEndPoint, out client))
             {

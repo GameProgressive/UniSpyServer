@@ -1,10 +1,5 @@
-using System.Collections.Concurrent;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Application;
-using UniSpy.Server.Chat.Exception;
-using UniSpy.Server.Chat.Exception.IRC.Channel;
 using UniSpy.Server.Chat.Exception.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
@@ -21,7 +16,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
     public sealed class JoinHandler : LogedInHandlerBase
     {
-        public static readonly ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel> Channels = new ConcurrentDictionary<string, Chat.Aggregate.Misc.ChannelInfo.Channel>();
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
@@ -54,65 +48,18 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _user = new ChannelUser(_client);
-            // if (_connection.UserInfo.IsJoinedChannel(_request.ChannelName))
-            // {
-            //     // this is for not making game crash
-            //     // if user is in this channel and we send the channel info back
-            // }
-            bool isChannelExist = Channels.ContainsKey(_request.ChannelName);
+            bool isChannelExist = ChannelManager.IsChannelExist(_request.ChannelName);
             if (isChannelExist)
             {
-                _channel = Channels[_request.ChannelName];
-                //join
-                if (_client.Info.IsJoinedChannel(_request.ChannelName))
-                {
-                    // we do not send anything to this user and users in this channel
-                    throw new ChatException($"User: {_user.Info.NickName} is already joined the channel: {_request.ChannelName}");
-                }
-                else
-                {
-                    if (_channel.Mode.IsInviteOnly)
-                    {
-                        //invited only
-                        throw new IRCChannelException("This is an invited only channel.", IRCErrorCode.InviteOnlyChan, _request.ChannelName);
-                    }
-                    if (_channel.IsUserBanned(_user))
-                    {
-                        throw new IRCBannedFromChanException($"You are banned from this channel:{_request.ChannelName}.", _request.ChannelName);
-                    }
-                    if (_channel.Users.Count >= _channel.MaxNumberUser)
-                    {
-                        throw new IRCChannelIsFullException($"The channel:{_request.ChannelName} you are join is full.", _request.ChannelName);
-                    }
-                    //if all pass, it mean  we excute join channel
-                    _user.SetDefaultProperties(false);
-                    //simple check for avoiding program crash
-                    if (_channel.IsUserExisted(_user))
-                    {
-                        throw new ChatException($"{_client.Info.NickName} is already in channel {_request.ChannelName}");
-                    }
-                    _channel.AddBindOnUserAndChannel(_user);
-                }
+                _channel = ChannelManager.GetChannel(_request.ChannelName);
+                _channel.AddUser(_client, _request.Password ?? null);
             }
             else
             {
-                //create
-                if (StorageOperation.Persistance.IsPeerLobby(_request.ChannelName))
-                {
-                    _channel.IsPeerServer = true;
-                    _channel = new Aggregate.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
-                    _user.SetDefaultProperties(false, false);
-                }
-                else
-                {
-                    _channel = new Aggregate.Misc.ChannelInfo.Channel(_request.ChannelName);
-                    _user.SetDefaultProperties(true, true);
-                }
-                _channel.AddBindOnUserAndChannel(_user);
-                Channels.TryAdd(_request.ChannelName, _channel);
+                // create channel
+                _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
             }
-
+            _user = _channel.GetChannelUser(_client);
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
@@ -147,7 +94,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 ChannelName = _request.ChannelName,
                 NickName = _user.Info.NickName,
                 UserName = _user.Info.UserName,
-                Password = _request.Password
+                Password = _request.Password is null ? null : _request.Password
             };
             new ModeHandler(_client, userModeRequest).Handle();
         }

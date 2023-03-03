@@ -12,6 +12,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -43,11 +44,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         private void GetChannelUsersInfo()
         {
-            if (!JoinHandler.Channels.ContainsKey(_request.ChannelName))
+            if (!ChannelManager.IsChannelExist(_request.ChannelName))
             {
                 throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
-            var channel = JoinHandler.Channels[_request.ChannelName];
+            var channel = ChannelManager.GetChannel(_request.ChannelName);
             foreach (var user in channel.Users.Values)
             {
                 var data = new WhoDataModel

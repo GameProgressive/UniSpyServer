@@ -65,13 +65,13 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             };
                             new KickHandler(_client, kickRequest).Handle();
                         }
-                        JoinHandler.Channels.TryRemove(_channel.Name, out _);
+                        ChannelManager.RemoveChannel(_channel.Name);
 
                     }
                     goto default;
                 default:
                     // we need always remove the connection in leaver and channel
-                    _channel.RemoveBindOnUserAndChannel(_user);
+                    _channel.RemoveUser(_user);
                     break;
             }
         }
@@ -92,12 +92,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 default:
                     //broadcast to all user in channel
                     _channel.MultiCast(_user.ClientRef, _response, true);
-                    // remove serverInfo in Redis
-                    if (_user.Info.GameName is not null)
-                    {
-                        StorageOperation.Persistance.DeleteGameServerInfo(_user.Connection.RemoteIPEndPoint.Address,
-                                                                          _user.Info.GameName);
-                    }
                     break;
             }
         }

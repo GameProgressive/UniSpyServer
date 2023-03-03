@@ -5,6 +5,8 @@ using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Exception;
+using UniSpy.Server.Chat.Exception.IRC.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 
@@ -29,7 +31,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// </summary>
         Normal
     }
-    public sealed class Channel : IChannel
+    public sealed class Channel
     {
         /// <summary>
         /// When game connects to the server, the player will enter the default channel for communicating with other players.
@@ -113,10 +115,9 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public string Password { get; private set; }
         public string Topic { get; set; }
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
-        public Channel(string name, ChannelUser creator = null)
+        public Channel(string name, IChatClient client, string password = null, bool isPeerServer = false, bool isChannelCreator = false, bool isChannelOperator = false)
         {
             Name = name;
-            Creator = creator;
             CreateTime = DateTime.Now;
             Mode = new ChannelMode();
             BanList = new ConcurrentDictionary<string, ChannelUser>();
@@ -125,6 +126,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             MaxNumberUser = 200;
             Mode.SetDefaultModes();
             MessageBroker = new Redis.ChatMessageChannel(Name);
+            Creator = AddUser(client, password, isChannelCreator, isChannelOperator);
+            IsPeerServer = isPeerServer;
         }
 
         /// <summary>
@@ -169,7 +172,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             nicks = nicks.Substring(0, nicks.Length - 1);
             return nicks;
         }
-        public void AddBindOnUserAndChannel(ChannelUser joiner)
+        private void AddBindOnUserAndChannel(ChannelUser joiner)
         {
             // !! we can not directly use the Contains() method that ConcurrentDictionary or 
             // !! ConcurrentBag provide because it will not work properly.
@@ -184,7 +187,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             }
 
         }
-        public void RemoveBindOnUserAndChannel(ChannelUser leaver)
+        private void RemoveBindOnUserAndChannel(ChannelUser leaver)
         {
             //!! we should use ConcurrentDictionary here
             //!! FIXME: when removing user from channel, 
@@ -212,17 +215,82 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         }
         public bool IsUserBanned(ChannelUser user)
         {
-            if (!BanList.ContainsKey(user.Info.NickName))
+            return IsUserBanned(user.ClientRef);
+        }
+        private bool IsUserBanned(IChatClient client)
+        {
+            if (!BanList.ContainsKey(client.Info.NickName))
             {
                 return false;
             }
-            if (BanList[user.Info.NickName].Connection.RemoteIPEndPoint != user.Connection.RemoteIPEndPoint)
+            if (BanList[client.Info.NickName].Connection.RemoteIPEndPoint != client.Connection.RemoteIPEndPoint)
             {
                 return false;
             }
             return true;
         }
-        public bool IsUserExisted(ChannelUser user) => Users.ContainsKey(user.Info.NickName);
+        public bool IsUserExisted(ChannelUser user) => IsUserExisted(user.ClientRef);
+        public bool IsUserExisted(IChatClient client) => Users.ContainsKey(client.Info.NickName);
+        private void Validation(IChatClient client, string password)
+        {
+            if (Mode.IsInviteOnly)
+            {
+                //invited only
+                throw new IRCChannelException("This is an invited only channel.", IRCErrorCode.InviteOnlyChan, Name);
+            }
+            if (IsUserBanned(client))
+            {
+                throw new IRCBannedFromChanException($"You are banned from this channel:{Name}.", Name);
+            }
+            if (IsUserExisted(client))
+            {
+                throw new ChatException($"{client.Info.NickName} is already in channel {Name}");
+            }
+            if (client.Info.IsJoinedChannel(Name))
+            {
+                // we do not send anything to this user and users in this channel
+                throw new ChatException($"User: {client.Info.NickName} is already joined the channel: {Name}");
+            }
+            if (Password is not null)
+            {
+                if (password is null)
+                {
+                    throw new ChatException("You must input password to join this channel.");
+                }
+                if (Password != password)
+                {
+                    throw new ChatException("Password is not correct");
+                }
+            }
+        }
+        public ChannelUser AddUser(IChatClient client, string password = null, bool IsChannelCreator = false, bool IsChannelOperator = false)
+        {
+            Validation(client, password);
+            var user = new ChannelUser(client, this);
+            user.SetDefaultProperties(IsChannelCreator, IsChannelOperator);
+            AddBindOnUserAndChannel(user);
+            return user;
+        }
+        public void VerifyPassword(string pass)
+        {
+            if (Password != pass)
+            {
+                throw new ChatException("Password is not correct");
+            }
+        }
+        public void RemoveUser(IChatClient client)
+        {
+            var user = GetChannelUser(client);
+
+            if (user is not null)
+            {
+                RemoveUser(user);
+            }
+        }
+        public void RemoveUser(ChannelUser user)
+        {
+            RemoveBindOnUserAndChannel(user);
+        }
         public ChannelUser GetChannelUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 
         /// <summary>

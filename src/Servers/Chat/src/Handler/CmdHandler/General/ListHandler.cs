@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
@@ -8,7 +9,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
     //todo unfinished
-    
+
     public sealed class ListHandler : LogedInHandlerBase
     {
         private new ListRequest _request => (ListRequest)base._request;
@@ -21,7 +22,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             //add list response header
-            foreach (var channel in JoinHandler.Channels.Values)
+            foreach (var channel in ChannelManager.Channels.Values)
             {
                 //TODO
                 //add channel information here
