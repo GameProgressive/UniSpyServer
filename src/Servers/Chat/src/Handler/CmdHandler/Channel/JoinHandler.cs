@@ -118,27 +118,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
             _result.JoinerPrefix = _client.Info.IRCPrefix;
-
-
-            // var msg = new RemoteMessage(_request, _client.GetRemoteClient());
-            // if (isChannelExist)
-            // {
-            //     if (_client.Info.IsRemoteClient)
-            //     {
-            //         // if the client is a remote client, the join message already published by the chat server that client connected to.
-            //         return;
-            //     }
-            //     else
-            //     {
-            //         // if the client is a local client, we publish this message to all chat servers. the other chat servers will create this channel and set this user as channel creator.
-            //         _channel.MessageBroker.PublishMessage(msg);
-            //     }
-            // }
-            // else
-            // {
-            //     // the first join message is send through GeneralMessageChannel
-            //     GeneralMessageChannel.PublishMessage(msg);
-            // }
         }
 
         protected override void ResponseConstruct()

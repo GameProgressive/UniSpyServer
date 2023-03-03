@@ -3,10 +3,10 @@ using UniSpy.Server.Chat.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Chat.Contract.Request.General
 {
-    
+
     public sealed class ListRequest : RequestBase
     {
-        public ListRequest(string rawRequest) : base(rawRequest){ }
+        public ListRequest(string rawRequest) : base(rawRequest) { }
 
         public bool IsSearchingChannel { get; private set; }
         public bool IsSearchingUser { get; private set; }
@@ -16,7 +16,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
         {
             base.Parse();
 
-            if (_cmdParams.Count == 0)
+            if (_cmdParams is null || _cmdParams?.Count == 0)
             {
                 throw new Exception.ChatException("The Search filter is missing.");
             }

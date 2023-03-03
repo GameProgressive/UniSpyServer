@@ -2,8 +2,6 @@ using UniSpy.Server.Chat.Exception.IRC.Channel;
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Chat.Application;
-using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -33,8 +31,11 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         }
         protected override void PublishMessage()
         {
-            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
-            _channel.MessageBroker.PublishMessage(msg);
+            if (_channel is null)
+            {
+                return;
+            }
+            base.PublishMessage();
         }
     }
 }

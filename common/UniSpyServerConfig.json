@@ -46,6 +46,12 @@
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
+      "ServerName": "Master",
+      "PublicAddress": "0.0.0.0",
+      "ListeningPort": "28900"
+    },
+    {
+      "ServerID": "00000000-0000-0000-0000-000000000000",
       "ServerName": "QueryReport",
       "PublicAddress": "0.0.0.0",
       "ListeningPort": "27900"

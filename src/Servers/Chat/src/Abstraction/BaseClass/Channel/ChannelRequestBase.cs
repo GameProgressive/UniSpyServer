@@ -6,12 +6,12 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
     {
         public string ChannelName { get; set; }
         public ChannelRequestBase() { }
-        public ChannelRequestBase(string rawRequest) : base(rawRequest){ }
+        public ChannelRequestBase(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
             base.Parse();
 
-            if (_cmdParams.Count < 1)
+            if (_cmdParams is null || _cmdParams?.Count < 1)
             {
                 throw new ChatException("Channel name is missing.");
             }

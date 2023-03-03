@@ -136,11 +136,12 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             foreach (var user in Users.Values)
             {
-                if (!user.IsRemoteUser)
+                if (user.IsRemoteUser)
                 {
-                    user.ClientRef.Send(message);
-                    sender.LogNetworkMultiCast((string)message.SendingBuffer);
+                    continue;
                 }
+                user.ClientRef.Send(message);
+                sender.LogNetworkMultiCast((string)message.SendingBuffer);
             }
         }
         public void MultiCastExceptSender(ChannelUser sender, IResponse message)

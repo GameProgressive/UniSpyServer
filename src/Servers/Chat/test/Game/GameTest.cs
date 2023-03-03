@@ -211,7 +211,6 @@ namespace UniSpy.Server.Chat.Test
             Assert.Equal(2, count2);
 
         }
-
         [Fact]
         public void ConflictGlobalStorm()
         {
