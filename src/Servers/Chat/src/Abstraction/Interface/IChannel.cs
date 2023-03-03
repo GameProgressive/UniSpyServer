@@ -7,8 +7,8 @@ namespace UniSpy.Server.Chat.Abstraction.Interface
 {
     public interface IChannel
     {
-        void MultiCast(IClient sender, IResponse message);
-        void MultiCastExceptSender(ChannelUser sender, IResponse message);
+        void MultiCast(IClient sender, IResponse message, bool isSkipSender);
+        // void MultiCastExceptSender(ChannelUser sender, IResponse message);
         string GetAllUsersNickString();
         void AddBindOnUserAndChannel(ChannelUser joiner);
         void RemoveBindOnUserAndChannel(ChannelUser leaver);

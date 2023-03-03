@@ -132,32 +132,23 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public void MultiCast(IClient sender, IResponse message)
+        public void MultiCast(IClient sender, IResponse message, bool isSkipSender = false)
         {
             foreach (var user in Users.Values)
             {
                 if (user.IsRemoteUser)
                 {
                     continue;
+                }
+                if (isSkipSender)
+                {
+                    if (user.RemoteIPEndPoint.Equals(sender.Connection.RemoteIPEndPoint))
+                    {
+                        continue;
+                    }
                 }
                 user.ClientRef.Send(message);
                 sender.LogNetworkMultiCast((string)message.SendingBuffer);
-            }
-        }
-        public void MultiCastExceptSender(ChannelUser sender, IResponse message)
-        {
-            foreach (var user in Users.Values)
-            {
-                if (user.IsRemoteUser)
-                {
-                    continue;
-                }
-                if (user.RemoteIPEndPoint == sender.RemoteIPEndPoint)
-                {
-                    continue;
-                }
-                // we send message to local client
-                user.ClientRef.Send(message);
             }
         }
         public string GetAllUsersNickString()

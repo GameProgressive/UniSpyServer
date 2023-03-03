@@ -24,7 +24,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
         protected override void UserMessageDataOperation()
         {
             base.UserMessageDataOperation();
-            _result.UserIRCPrefix = _reciever.Info.IRCPrefix;
+            _result.UserIRCPrefix = _receiver.Info.IRCPrefix;
         }
         protected override void ResponseConstruct()
         {

@@ -22,8 +22,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
         }
         protected override void UserMessageDataOperation()
         {
-            _result.Name = _reciever.Info.NickName;
-            _result.UserIRCPrefix = _reciever.Info.IRCPrefix;
+            _result.Name = _receiver.Info.NickName;
+            _result.UserIRCPrefix = _receiver.Info.IRCPrefix;
         }
         protected override void ResponseConstruct()
         {

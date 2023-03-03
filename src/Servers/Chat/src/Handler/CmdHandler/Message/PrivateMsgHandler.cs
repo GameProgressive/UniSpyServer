@@ -22,7 +22,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
         }
         protected override void UserMessageDataOperation()
         {
-            _result.TargetName = _reciever.Info.NickName;
+            _result.TargetName = _receiver.Info.NickName;
         }
         protected override void ChannelMessageDataOpration()
         {

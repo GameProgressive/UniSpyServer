@@ -11,8 +11,8 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
     {
         protected new MsgRequestBase _request => (MsgRequestBase)base._request;
         protected new MsgResultBase _result { get => (MsgResultBase)base._result; set => base._result = value; }
-        protected ChannelUser _reciever;
-        public MsgHandlerBase(IClient client, IRequest request) : base(client, request){ }
+        protected ChannelUser _receiver;
+        public MsgHandlerBase(IClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {
@@ -28,8 +28,8 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                     {
                         // todo check if we only allow user join one channel
                         _channel = _client.Info.JoinedChannels.Values.First();
-                        _reciever = _channel.GetChannelUser(_request.NickName);
-                        if (_reciever is null)
+                        _receiver = _channel.GetChannelUser(_request.NickName);
+                        if (_receiver is null)
                         {
                             throw new ChatIRCNoSuchNickException(
                                 $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");
@@ -67,10 +67,10 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
-                    _channel.MultiCastExceptSender(_user, _response);
+                    _channel.MultiCast(_user.ClientRef, _response, true);
                     break;
                 case MessageType.UserMessage:
-                    _reciever.ClientRef.Send(_response);
+                    _receiver.ClientRef.Send(_response);
                     break;
             }
         }

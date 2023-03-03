@@ -91,7 +91,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     break;
                 default:
                     //broadcast to all user in channel
-                    _channel.MultiCastExceptSender(_user, _response);
+                    _channel.MultiCast(_user.ClientRef, _response, true);
                     // remove serverInfo in Redis
                     if (_user.Info.GameName is not null)
                     {
