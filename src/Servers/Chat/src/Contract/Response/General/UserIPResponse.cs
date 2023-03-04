@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
         public UserIPResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
-            SendingBuffer = BuildUserIPReply(_result.RemoteIPAddress);
+            SendingBuffer = BuildUserIPReply(_result.RemoteIPAddress.ToString());
         }
         public static string BuildUserIPReply(string ip)
         {

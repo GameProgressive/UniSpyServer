@@ -17,7 +17,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             _result = new UserIPResult();
-            _result.RemoteIPAddress = _client.Connection.RemoteIPEndPoint.ToString();
+            _result.RemoteIPAddress = _client.Connection.RemoteIPEndPoint.Address;
 
         }
         protected override void ResponseConstruct()
