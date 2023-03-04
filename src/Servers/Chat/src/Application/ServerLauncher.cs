@@ -10,6 +10,6 @@ namespace UniSpy.Server.Chat.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new Server(config);
     }
 }

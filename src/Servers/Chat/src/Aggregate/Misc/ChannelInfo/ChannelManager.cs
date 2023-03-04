@@ -39,14 +39,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public static Channel CreateChannel(string name, string password = null, IChatClient creator = null)
         {
             Channel channel = null;
-            if (StorageOperation.Persistance.IsPeerLobby(name))
-            {
-                channel = new Aggregate.Misc.ChannelInfo.Channel(name, creator, password, true);
-            }
-            else
-            {
-                channel = new Aggregate.Misc.ChannelInfo.Channel(name, creator, password, false, true, true);
-            }
+            channel = new Aggregate.Misc.ChannelInfo.Channel(name, creator, password);
+
             lock (Channels)
             {
                 Channels.Add(channel.Name, channel);

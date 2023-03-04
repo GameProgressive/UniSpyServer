@@ -10,6 +10,6 @@ namespace UniSpy.Server.CDKey.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new UdpServer(config);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new Server(config);
     }
 }

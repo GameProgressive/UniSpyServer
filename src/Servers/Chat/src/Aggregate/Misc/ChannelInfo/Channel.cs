@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
+using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Exception.IRC.Channel;
@@ -110,12 +111,12 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public IDictionary<string, ChannelUser> Users { get; private set; }
         public IDictionary<string, string> ChannelKeyValue { get; private set; }
         public ChannelUser Creator { get; private set; }
-        public bool IsPeerServer { get; set; }
+        public bool IsPeerServer { get; private set; }
         public PeerRoomType RoomType => GetRoomType(Name);
         public string Password { get; private set; }
         public string Topic { get; set; }
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
-        public Channel(string name, IChatClient client, string password = null, bool isPeerServer = false, bool isChannelCreator = false, bool isChannelOperator = false)
+        public Channel(string name, IChatClient client, string password = null)
         {
             Name = name;
             CreateTime = DateTime.Now;
@@ -126,8 +127,16 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             MaxNumberUser = 200;
             Mode.SetDefaultModes();
             MessageBroker = new Redis.ChatMessageChannel(Name);
-            Creator = AddUser(client, password, isChannelCreator, isChannelOperator);
-            IsPeerServer = isPeerServer;
+            IsPeerServer = StorageOperation.Persistance.IsPeerLobby(name);
+            if (IsPeerServer)
+            {
+                Creator = AddUser(client, password);
+            }
+            else
+            {
+                Creator = AddUser(client, password, true, true);
+            }
+
         }
 
         /// <summary>

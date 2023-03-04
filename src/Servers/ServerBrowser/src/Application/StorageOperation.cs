@@ -42,6 +42,19 @@ namespace UniSpy.Server.ServerBrowser.Application
             }
 
         }
+        public Dictionary<string, List<Grouplist>> GetAllGroupList()
+        {
+            using (var db = new UniSpyContext())
+            {
+                var result = from g in db.Games
+                             join gl in db.Grouplists on g.Gameid equals gl.Gameid
+                             group gl by g.Gamename into dd
+                             select new KeyValuePair<string, List<Grouplist>>(dd.Key, dd.ToList());
+
+                var data = result.ToDictionary(x => x.Key, x => x.Value);
+                return data;
+            }
+        }
         public void PublishClientMessage(ClientMessageRequest message)
         {
             Channel.PublishMessage(message);

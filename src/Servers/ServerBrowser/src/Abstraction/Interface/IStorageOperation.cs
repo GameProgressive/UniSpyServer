@@ -13,6 +13,7 @@ namespace UniSpy.Server.ServerBrowser.Abstraction.Interface
         List<GameServerInfo> GetGameServerInfos(string gameName);
         PeerGroupInfo GetPeerGroupInfo(string gameName);
         List<Grouplist> GetGroupList(string gameName);
+        Dictionary<string, List<Grouplist>> GetAllGroupList();
         public void PublishClientMessage(ClientMessageRequest message);
     }
 }

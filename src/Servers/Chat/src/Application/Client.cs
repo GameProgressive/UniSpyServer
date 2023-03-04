@@ -68,7 +68,7 @@ namespace UniSpy.Server.Chat.Application
                 Info.IsLoggedIn = false;
             }
             var message = new RemoteMessage(new DisconnectRequest(), GetRemoteClient());
-            TcpServer.GeneralChannel.PublishMessage(message);
+            Server.GeneralChannel.PublishMessage(message);
             base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);

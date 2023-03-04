@@ -3,9 +3,9 @@ using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.CDKey.Application
 {
-    class UdpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
+    class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {
-        public UdpServer(UniSpyServerConfig config) : base(config)
+        public Server(UniSpyServerConfig config) : base(config)
         {
         }
 

@@ -3,9 +3,9 @@ using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.WebServer.Application
 {
-    internal sealed class HttpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Http.Server.HttpServer
+    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Http.Server.HttpServer
     {
-        public HttpServer(UniSpyServerConfig config) : base(config)
+        public Server(UniSpyServerConfig config) : base(config)
         {
         }
 

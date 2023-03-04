@@ -43,7 +43,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         protected virtual void PublishMessage()
         {
             var msg = new RemoteMessage(_request, _client.GetRemoteClient());
-            TcpServer.GeneralChannel.PublishMessage(msg);
+            Application.Server.GeneralChannel.PublishMessage(msg);
         }
         public override void Handle()
         {

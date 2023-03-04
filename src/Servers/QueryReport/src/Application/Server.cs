@@ -4,9 +4,9 @@ using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.QueryReport.Application
 {
-    internal sealed class UdpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
+    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
     {
-        public UdpServer(UniSpyServerConfig config) : base(config)
+        public Server(UniSpyServerConfig config) : base(config)
         {
         }
         public override void Start()

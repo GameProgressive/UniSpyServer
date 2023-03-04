@@ -4,10 +4,10 @@ using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.Chat.Application
 {
-    class TcpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
     {
         public static GeneralMessageChannel GeneralChannel = new GeneralMessageChannel();
-        public TcpServer(UniSpyServerConfig config) : base(config)
+        public Server(UniSpyServerConfig config) : base(config)
         {
         }
         public override void Start()

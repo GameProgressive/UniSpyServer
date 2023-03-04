@@ -10,6 +10,6 @@ namespace UniSpy.Server.WebServer.Application
         {
         }
 
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new HttpServer(config);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new Server(config);
     }
 }

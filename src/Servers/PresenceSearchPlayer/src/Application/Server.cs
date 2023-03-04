@@ -3,9 +3,9 @@ using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
-    internal sealed class TcpServer : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
     {
-        public TcpServer(UniSpyServerConfig config) : base(config)
+        public Server(UniSpyServerConfig config) : base(config)
         {
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection);

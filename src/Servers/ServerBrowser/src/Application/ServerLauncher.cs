@@ -9,6 +9,6 @@ namespace UniSpy.Server.ServerBrowser.Application
         public ServerLauncher() : base("ServerBrowser")
         {
         }
-        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new TcpServer(config);
+        protected override IServer LaunchNetworkService(UniSpyServerConfig config) => new Server(config);
     }
 }
