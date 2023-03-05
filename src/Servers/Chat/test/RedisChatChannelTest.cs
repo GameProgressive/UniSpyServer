@@ -22,10 +22,10 @@ namespace UniSpy.Server.Chat.Test
         public void JsonSerialization()
         {
 
-            var client = TestClasses.CreateClient() as Client;
+            var client = MockObject.CreateClient() as Client;
 
             client.Info.IsLoggedIn = true;
-            client.Info.NickName = "xiaojiuwo";
+            client.Info.NickName = "xiaojiuwo1";
             var remoteClient = client.GetRemoteClient();
             var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
@@ -45,10 +45,10 @@ namespace UniSpy.Server.Chat.Test
         [Fact]
         public void RedisChannel()
         {
-            var client = TestClasses.CreateClient() as Client;
+            var client = MockObject.CreateClient() as Client;
 
             client.Info.IsLoggedIn = true;
-            client.Info.NickName = "xiaojiuwo";
+            client.Info.NickName = "xiaojiuwo2";
             var remoteClient = client.GetRemoteClient();
             var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
@@ -66,10 +66,10 @@ namespace UniSpy.Server.Chat.Test
         public void Crypt()
         {
             var request1 = new DisconnectRequest();
-            var client = TestClasses.CreateClient() as Client;
+            var client = MockObject.CreateClient() as Client;
 
             client.Info.IsLoggedIn = true;
-            client.Info.NickName = "xiaojiuwo";
+            client.Info.NickName = "xiaojiuwo3";
             var remoteClient = client.GetRemoteClient();
             var request = new CryptRequest(GeneralRequests.Crypt);
             request.Parse();
@@ -107,7 +107,7 @@ namespace UniSpy.Server.Chat.Test
                 @"UTM #GSP!worms3!MJ0NJ4c3aM :ATS \nick\worms10\msg\2046\|name|Human Team 1|w0|Dave|w1|Patrick|w2|The Morriss|w3|Mike|w4|Tony|w5|Gluckman|skill|0|grave|0|SWeapon|0|flag|71|speech|Classic|InGame|0|player|worms10|alliance|1|wormCount|77111416"+"\r\n",
                 @"UTM #GSP!worms3!MJ0NJ4c3aM :RTS \team\Human Team 1\nick\worms10\msg\2174"+"\r\n"
             };
-            var client1 = TestClasses.CreateClient(port: 1234) as Client;
+            var client1 = MockObject.CreateClient(port: 1234) as Client;
             Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
             var remoteClient = client1.GetRemoteClient() as ITestClient;
             GeneralMessageChannel.RemoteClients.TryAdd(((RemoteClient)remoteClient).Connection.RemoteIPEndPoint, (IClient)remoteClient);
@@ -123,7 +123,7 @@ namespace UniSpy.Server.Chat.Test
                 // "CRYPT des 1 worms3\r\n",
                 "USRIP\r\n",
                 "USER X419pGl4sX|6 127.0.0.1 peerchat.gamespy.com :dd6283e1e349806c20991020e0d6897a\r\n",
-                "NICK xiaojiuwo\r\n",
+                "NICK xiaojiuwo4\r\n",
                 "JOIN #GPG!622\r\n" ,
                 "MODE #GPG!622\r\n",
                 @"GETCKEY #GPG!622 * 000 0 :\username\b_flags"+"\r\n",
@@ -131,15 +131,15 @@ namespace UniSpy.Server.Chat.Test
                 "PRIVMSG #GPG!622 :hello from the other side\r\n",
                 "JOIN #GSP!worms3!MJ0NJ4c3aM\r\n",
                 "MODE #GSP!worms3!MJ0NJ4c3aM\r\n",
-                @"SETCKEY #GPG!622 xiaojiuwo :\b_flags\s"+"\r\n",
-                @"SETCKEY #GSP!worms3!MJ0NJ4c3aM xiaojiuwo :\b_flags\s"+"\r\n",
+                @"SETCKEY #GPG!622 xiaojiuwo4 :\b_flags\s"+"\r\n",
+                @"SETCKEY #GSP!worms3!MJ0NJ4c3aM xiaojiuwo4 :\b_flags\s"+"\r\n",
                 @"GETCKEY #GSP!worms3!MJ0NJ4c3aM * 001 0 :\username\b_flags"+"\r\n",
                 // "PART #GPG!622 :Joined staging room\r\n",
                 "UTM #GSP!worms3!MJ0NJ4c3aM :APE [01]privateip[02]192.168.0.109[01]publicip[02]255.255.255.255\r\n",
-                "WHO xiaojiuwo\r\n",
+                "WHO xiaojiuwo4\r\n",
                 // "PART #GSP!worms3!MJ0NJ4c3aM :Left Game\r\n"
             };
-            var client2 = TestClasses.CreateClient(port: 1235) as ITestClient;
+            var client2 = MockObject.CreateClient(port: 1235) as ITestClient;
             foreach (var r in request2)
             {
                 var count = Client.ClientPool.Count;

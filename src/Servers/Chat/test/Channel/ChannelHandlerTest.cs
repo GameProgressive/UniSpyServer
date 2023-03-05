@@ -13,23 +13,22 @@ namespace UniSpy.Server.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {
-        private Client _client => (Client)TestClasses.CreateClient();
         [Fact]
         public void JoinHandleTest()
         {
-            var client1 = (Client)TestClasses.CreateClient(port: 1234);
-            var client2 = (Client)TestClasses.CreateClient(port: 1235);
-            SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test");
-            SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test");
+            var client1 = (Client)MockObject.CreateClient(port: 1234);
+            var client2 = (Client)MockObject.CreateClient(port: 1235);
+            SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test1");
+            SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test1");
         }
         [Fact]
         public void ChannelMsgTest()
         {
-            var client1 = (Client)TestClasses.CreateClient(port: 1234);
-            var client2 = (Client)TestClasses.CreateClient(port: 1235);
-            SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test");
-            SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test");
-            var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test :hello this is a test.");
+            var client1 = (Client)MockObject.CreateClient(port: 1236);
+            var client2 = (Client)MockObject.CreateClient(port: 1237);
+            SingleJoinTest(client1, "unispy3", "unispy3", "#GSP!room!test2");
+            SingleJoinTest(client2, "unispy4", "unispy4", "#GSP!room!test2");
+            var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test2 :hello this is a test.");
             var privMsgHandler = new PrivateMsgHandler(client1, privMsgReq);
             privMsgHandler.Handle();
         }
@@ -56,17 +55,21 @@ namespace UniSpy.Server.Chat.Test.Channel
         [Fact]
         public void SetCKeyTest()
         {
-            SingleJoinTest(_client, "spyguy", "spyguy");
+            var client = (Client)MockObject.CreateClient(port: 1238);
+
+            SingleJoinTest(client, "spyguy6", "spyguy6","#GSP!room!test14");
             var request = new SetCKeyRequest(ChannelRequests.SetCKey);
-            var handler = new SetCKeyHandler(_client, request);
+            var handler = new SetCKeyHandler(client, request);
             handler.Handle();
         }
         [Fact]
         public void ModeTest()
         {
-            SingleJoinTest(_client, "spyguy", "spyguy", "#GSP!gmtest!MlNK4q4l1M");
+            var client = (Client)MockObject.CreateClient(port: 1239);
+
+            SingleJoinTest(client, "spyguy7", "spyguy7", "#GSP!gmtest!MlNK4q4l1M");
             var request = new ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2");
-            var handler = new ModeHandler(_client, request);
+            var handler = new ModeHandler(client, request);
             handler.Handle();
         }
     }

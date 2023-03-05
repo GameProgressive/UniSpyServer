@@ -5,11 +5,8 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Test
 {
-    public class TestClasses
+    public class MockObject
     {
-        public static IClient Client1 = CreateClient("79.209.235.252", 50558);
-        public static IClient Client2 = CreateClient("211.83.127.54", 39503);
-
         public static IClient CreateClient(string ipAddress = "79.209.235.252", int port = 50558)
         {
             var serverMock = new Mock<IServer>();
@@ -20,7 +17,7 @@ namespace UniSpy.Server.Chat.Test
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
-            
+
             return new Client(connectionMock.Object);
         }
     }

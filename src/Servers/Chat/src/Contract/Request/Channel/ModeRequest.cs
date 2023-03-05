@@ -60,7 +60,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
         SetChannelModes
 
     }
-    
+
     public sealed class ModeRequest : ChannelRequestBase
     {
         public ModeRequestType RequestType { get; set; }
@@ -78,6 +78,11 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
         public override void Parse()
         {
+            // we skip parsing when this request is created manmually
+            if (RawRequest is null)
+            {
+                return;
+            }
             base.Parse();
             if (_cmdParams.Count == 1)
             {

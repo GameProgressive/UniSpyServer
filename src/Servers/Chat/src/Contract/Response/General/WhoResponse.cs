@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result => (WhoResult)base._result;
-        public WhoResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public WhoResponse(RequestBase request, ResultBase result) : base(request, result) { }
         public override void Build()
         {
             SendingBuffer = "";
@@ -20,10 +20,16 @@ namespace UniSpy.Server.Chat.Contract.Response.General
             switch (_request.RequestType)
             {
                 case WhoRequestType.GetChannelUsersInfo:
-                    SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].ChannelName);
+                    if (_result.DataModels.Count > 0)
+                    {
+                        SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].ChannelName);
+                    }
                     break;
                 case WhoRequestType.GetUserInfo:
-                    SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].NickName);
+                    if (_result.DataModels.Count > 0)
+                    {
+                        SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].NickName);
+                    }
                     break;
             }
         }

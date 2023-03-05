@@ -22,7 +22,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         }
         public override void ReceivedMessage(RemoteMessage message)
         {
-            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance.ServerID)
+            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance?.ServerID)
             {
                 return;
             }
