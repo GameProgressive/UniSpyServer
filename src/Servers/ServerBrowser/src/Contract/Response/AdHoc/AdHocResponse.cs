@@ -1,26 +1,30 @@
 using System;
-using System.Collections.Generic;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.QueryReport.Contract.Request;
 
 namespace UniSpy.Server.ServerBrowser.Aggregate.Packet.Response
 {
-    public class AdHocResponse
+    public class AdHocResponse : ResponseBase
     {
-        byte[] _keyValueData;
-
-        public AdHocResponse(byte[] keyValue)
+        public new HeartBeatRequest _request => (HeartBeatRequest)base._request;
+        public AdHocResponse(HeartBeatRequest request) : base(request, null)
         {
-            _keyValueData = keyValue;
         }
 
-        public byte[] GenerateByteArray()
+        public override void Build()
         {
-            //the 2 bytes are length of this request
-            byte[] byteLength = BitConverter.GetBytes((ushort)(_keyValueData.Length + 2));
-            List<byte> data = new List<byte>();
-            data.AddRange(byteLength);
-            data.AddRange(_keyValueData);
-
-            return data.ToArray();
+            throw new NotImplementedException();
         }
+
+        // public byte[] GenerateByteArray()
+        // {
+        //     //the 2 bytes are length of this request
+        //     byte[] byteLength = BitConverter.GetBytes((ushort)(_keyValueData.Length + 2));
+        //     List<byte> data = new List<byte>();
+        //     data.AddRange(byteLength);
+        //     data.AddRange(_keyValueData);
+
+        //     return data.ToArray();
+        // }
     }
 }

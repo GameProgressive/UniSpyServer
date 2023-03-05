@@ -12,6 +12,11 @@ namespace UniSpy.Server.ServerBrowser.Application
         public Server(UniSpyServerConfig config) : base(config)
         {
         }
+        public override void Start()
+        {
+            StorageOperation.HeartbeatChannel.StartSubscribe();
+            base.Start();
+        }
         protected override IClient CreateClient(IConnection connection) => new Client(connection);
     }
 }

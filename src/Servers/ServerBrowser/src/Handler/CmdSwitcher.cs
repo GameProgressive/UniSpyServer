@@ -7,6 +7,7 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc;
 
 namespace UniSpy.Server.ServerBrowser.Handler
 {
@@ -25,29 +26,17 @@ namespace UniSpy.Server.ServerBrowser.Handler
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
         {
-            // first we need to determine whether the first two char is \\, if yes, then it is protocol v1
-            if (((byte[])rawRequest).Take(2).SequenceEqual(UniSpyEncoding.GetBytes("\\")))
+            var req = (byte[])rawRequest;
+            switch ((RequestType)name)
             {
-                var req = UniSpyEncoding.GetString((byte[])rawRequest);
-                //todo add v1 support
-                _client.LogError("todo add v1 support");
-                return null;
-            }
-            // else it is protocol v2
-            else
-            {
-                var req = (byte[])rawRequest;
-                switch ((RequestType)name)
-                {
-                    case RequestType.ServerListRequest:
-                        return new ServerListHandler(_client, new ServerListRequest(req));
-                    case RequestType.ServerInfoRequest:
-                        return new ServerInfoHandler(_client, new ServerInfoRequest(req));
-                    case RequestType.SendMessageRequest:
-                        return new SendMsgHandler(_client, new SendMsgRequest(req));
-                    default:
-                        return null;
-                }
+                case RequestType.ServerListRequest:
+                    return new ServerListHandler(_client, new ServerListRequest(req));
+                case RequestType.ServerInfoRequest:
+                    return new ServerInfoHandler(_client, new ServerInfoRequest(req));
+                case RequestType.SendMessageRequest:
+                    return new SendMsgHandler(_client, new SendMsgRequest(req));                
+                default:
+                    return null;
             }
         }
     }

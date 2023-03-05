@@ -21,6 +21,10 @@ namespace UniSpy.Server.ServerBrowser.Application
         public static byte[] HtonQueryReportDefaultPort => BitConverter.GetBytes(QueryReportDefaultPort).Reverse().ToArray();
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
+        /// <summary>
+        /// The game name that this client is searching for
+        /// </summary>
+        public string GameName { get; set; }
         public ClientInfo()
         {
         }

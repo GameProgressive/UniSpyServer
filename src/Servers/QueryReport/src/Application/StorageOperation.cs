@@ -11,7 +11,8 @@ namespace UniSpy.Server.QueryReport.Application
         private static RedisClient _redisClient = new RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();
         // the launch of this channel is in UdpServer
-        public static RedisChannel Channel = new RedisChannel();
+        public static NatNegChannel NatNegChannel = new NatNegChannel();
+        public static HeartbeatChannel HeartbeatChannel = new HeartbeatChannel();
         public List<GameServerInfo> GetServerInfos(uint instantKey)
         {
             return _redisClient.Context.Where(x => x.InstantKey == instantKey).ToList();

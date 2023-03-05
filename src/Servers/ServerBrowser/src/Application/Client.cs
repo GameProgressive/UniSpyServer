@@ -56,23 +56,5 @@ namespace UniSpy.Server.ServerBrowser.Application
 
             base.OnReceived(compeleteBuffer);
         }
-        // protected override void OnReceived(object buffer)
-        // {
-        //     // base.OnReceived(buffer);
-        //     object rawRequest;
-        //     if (((byte[])buffer).Take(2).SequenceEqual(UniSpyEncoding.GetBytes("\\")))
-        //     {
-        //         rawRequest = UniSpyEncoding.GetString((byte[])buffer);
-        //         LogNetworkReceiving((string)rawRequest);
-        //     }
-        //     else
-        //     {
-        //         rawRequest = (byte[])buffer;
-        //         LogNetworkReceiving((byte[])rawRequest);
-
-        //     }
-        //     var switcher = CreateSwitcher(rawRequest);
-        //     switcher.Switch();
-        // }
     }
 }

@@ -40,6 +40,7 @@ namespace UniSpy.Server.ServerBrowser.Abstraction.BaseClass
                     _client.Info.GameSecretKey,
                     _client.Info.ClientChallenge);
             }
+            _client.Info.GameName = _request.GameName;
         }
 
         protected override void Response()

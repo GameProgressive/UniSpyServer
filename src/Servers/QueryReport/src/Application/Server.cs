@@ -11,8 +11,8 @@ namespace UniSpy.Server.QueryReport.Application
         }
         public override void Start()
         {
+            StorageOperation.NatNegChannel.StartSubscribe();
             base.Start();
-            StorageOperation.Channel.StartSubscribe();
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection);
     }

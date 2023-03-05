@@ -14,11 +14,12 @@ namespace UniSpy.Server.ServerBrowser.Application
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
         private static QueryReport.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Aggregate.Redis.GameServer.RedisClient();
         private static QueryReport.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Aggregate.Redis.PeerGroup.RedisClient();
+        public static QueryReport.Aggregate.Redis.HeartbeatChannel HeartbeatChannel = new QueryReport.Aggregate.Redis.HeartbeatChannel();
         /// <summary>
         /// The redis channel use to transfer client message
         /// </summary>
         /// <returns></returns>
-        public static QueryReport.Aggregate.Redis.RedisChannel Channel = new QueryReport.Aggregate.Redis.RedisChannel();
+        public static QueryReport.Aggregate.Redis.NatNegChannel NatNegChannel = new QueryReport.Aggregate.Redis.NatNegChannel();
 
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {
@@ -57,7 +58,7 @@ namespace UniSpy.Server.ServerBrowser.Application
         }
         public void PublishClientMessage(ClientMessageRequest message)
         {
-            Channel.PublishMessage(message);
+            NatNegChannel.PublishMessage(message);
         }
 
         public GameServerInfo GetGameServerInfo(IPEndPoint end)

@@ -6,12 +6,20 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using System.Threading.Tasks;
 
 namespace UniSpy.Server.QueryReport.Aggregate.Redis
 {
-    public sealed class RedisChannel : UniSpy.Server.Core.Abstraction.BaseClass.RedisChannelBase<ClientMessageRequest>
+    public class HeartbeatChannel : RedisChannelBase<HeartBeatRequest>
     {
-        public RedisChannel() : base(RedisChannelName.NatNegCookieChannel)
+        public HeartbeatChannel() : base(RedisChannelName.HeartbeatChannel)
+        {
+        }
+    }
+    public sealed class NatNegChannel : RedisChannelBase<ClientMessageRequest>
+    {
+        public NatNegChannel() : base(RedisChannelName.NatNegCookieChannel)
         {
         }
         public override void ReceivedMessage(ClientMessageRequest message)
