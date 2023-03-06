@@ -11,7 +11,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
         GetChannelSpecificUserKeyValue
     }
 
-    
+
     public sealed class GetCKeyRequest : ChannelRequestBase
     {
         public GetKeyReqeustType RequestType { get; private set; }

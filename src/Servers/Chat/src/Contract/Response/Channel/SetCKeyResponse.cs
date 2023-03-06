@@ -8,33 +8,16 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private new SetCKeyResult _result => (SetCKeyResult)base._result;
-        public SetCKeyResponse(SetCKeyRequest request, SetCKeyResult result) : base(request, result){ }
+        public SetCKeyResponse(SetCKeyRequest request, SetCKeyResult result) : base(request, result) { }
         public override void Build()
         {
-            //we only broadcast the b_flags
-            string flags = "";
-            if (_request.KeyValues.ContainsKey("b_flags"))
-            {
-                flags += @"\" + "b_flags" + @"\" + _request.KeyValues["b_flags"];
-            }
-
-            //todo check the paramemter
-            if (_result.IsSetOthersKeyValue)
-            {
-                SendingBuffer =
-                    GetCKeyResponse.BuildGetCKeyReply(
-                        _result.NickName,
-                        _result.ChannelName,
-                        "BCAST", flags);
-            }
-            else
-            {
-                SendingBuffer =
-                    GetCKeyResponse.BuildGetCKeyReply(
-                        _result.NickName,
-                        _result.ChannelName,
-                        "BCAST", flags); ;
-            }
+            //we only broadcast the key value string which contains b_*
+            string flags = _request.KeyValueString;
+            SendingBuffer = GetCKeyResponse.BuildGetCKeyReply(
+                                    _result.NickName,
+                                    _result.ChannelName,
+                                    _request.Cookie,
+                                     flags);
         }
     }
 }

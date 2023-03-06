@@ -16,10 +16,10 @@ namespace UniSpy.Server.Chat.Contract.Response.General
             SendingBuffer = "";
             foreach (var flag in _result.Flags)
             {
-                string cmdParams1 = $"param1 {_result.NickName} {_request.Cookie} {flag}";
+                string cmdParams1 = $"* {_result.NickName} {_request.Cookie} {flag}";
                 SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetKey, cmdParams1);
             }
-            string cmdParams2 = $"param1 param2 {_request.Cookie} param4";
+            string cmdParams2 = $"* {_request.Cookie} *";
             string tailing = "End of GETKEY.";
             SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetKey, cmdParams2, tailing);
         }

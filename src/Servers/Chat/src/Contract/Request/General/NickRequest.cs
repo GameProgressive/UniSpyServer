@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Exception.IRC.General;
 
 namespace UniSpy.Server.Chat.Contract.Request.General
@@ -8,7 +7,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
     public sealed class NickRequest : RequestBase
     {
-        private static List<char> _invalidChars = new List<char>() { '#', '@', '$', '%', '^', '&', '*', '!', '~' };
+        private static List<char> _invalidChars = new List<char>() { '#', '@', '$', '%', '^', '&', '!', '~' };
         public NickRequest(string rawRequest) : base(rawRequest) { }
 
         public string NickName { get; private set; }

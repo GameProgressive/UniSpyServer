@@ -6,6 +6,7 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -14,7 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     // Otherwise, they will be set on the user,
     // Only ops can set channel keys on other users.
     // Set a value to NULL or "" to clear that key.
-    
+
     public sealed class SetCKeyHandler : ChannelHandlerBase
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
@@ -60,12 +61,16 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new SetCKeyResponse(_request, _result);
+            if (_request.IsBroadCast)
+            {
+                _client.LogDebug("The setckey request do not contains broadcast key value, we do not broadcast it.");
+                _response = new SetCKeyResponse(_request, _result);
+            }
         }
 
         protected override void Response()
         {
-            _channel.MultiCast(_client,_response);
+            _channel.MultiCast(_client, _response);
         }
     }
 }
