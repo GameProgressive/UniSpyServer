@@ -7,13 +7,13 @@ namespace UniSpy.Server.Chat.Exception.IRC.General
     public class IRCException : UniSpyException, IResponse
     {
         public string ErrorCode { get; private set; }
-        public virtual string ErrorResponse => IRCReplyBuilder.Build(ErrorCode);
+        // public virtual string ErrorResponse => IRCReplyBuilder.Build(ErrorCode);
 
         object IResponse.SendingBuffer => this.SendingBuffer;
 
-        public object SendingBuffer { get; private set; }
+        public virtual string SendingBuffer { get; protected set; }
 
-        public IRCException(){ }
+        public IRCException() { }
 
         public IRCException(string message, string errorCode) : base(message)
         {
@@ -25,7 +25,7 @@ namespace UniSpy.Server.Chat.Exception.IRC.General
             ErrorCode = errorCode;
         }
 
-        public void Build()
+        public virtual void Build()
         {
             SendingBuffer = IRCReplyBuilder.Build(ErrorCode);
         }

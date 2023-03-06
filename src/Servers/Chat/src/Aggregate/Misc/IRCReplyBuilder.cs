@@ -8,7 +8,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc
 
         public static string BuildChannelError(string ircError, string channelName, string message)
         {
-            return Build(ircError, $"* {channelName} param2", message);
+            return Build(ircError, $"* {channelName}", message);
         }
 
         public static string BuildBadChanMaskError(string channelName)

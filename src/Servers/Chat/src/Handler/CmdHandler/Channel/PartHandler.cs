@@ -83,17 +83,9 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            switch (_channel.RoomType)
-            {
-                case PeerRoomType.Normal:
-                case PeerRoomType.Staging:
-                    // we already kicked all user and remove the channel
-                    break;
-                default:
-                    //broadcast to all user in channel
-                    _channel.MultiCast(_user.ClientRef, _response, true);
-                    break;
-            }
+            // when user leave channel we must broadcast leave message, whatever the room type is.
+            // otherwise the other client will not delete this user in his client list
+            _channel.MultiCast(_user.ClientRef, _response, true);
         }
     }
 }

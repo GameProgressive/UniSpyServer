@@ -35,6 +35,13 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 throw new ChatException($"Can not find kickee:{_request.KickeeNickName} in channel.");
             }
         }
+        protected override void DataOperation()
+        {
+            _result.ChannelName = _channel.Name;
+            _result.KickerNickName = _client.Info.NickName;
+            _result.KickerIRCPrefix = _client.Info.IRCPrefix;
+            _result.KickeeNickName = _kickee.Info.NickName;
+        }
         protected override void ResponseConstruct()
         {
             _response = new KickResponse(_request, _result);
@@ -42,15 +49,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            if (!StringExtensions.CheckResponseValidation(_response.SendingBuffer))
-            {
-                return;
-            }
             _channel.MultiCast(_client, _response);
             _channel.RemoveUser(_kickee);
-            _result.KickeeNickName = _client.Info.NickName;
-            _result.KickerIRCPrefix = _client.Info.IRCPrefix;
-            _result.KickeeNickName = _kickee.Info.NickName;
         }
     }
 }

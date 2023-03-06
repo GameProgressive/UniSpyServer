@@ -18,14 +18,25 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            string newNickName = _request.NickName;
-            if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 1
-            || GeneralMessageChannel.RemoteClients.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 1)
+            int number = 0;
+            string validNickName;
+            if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == _request.NickName).Count() == 1
+            || GeneralMessageChannel.RemoteClients.Values.Where(x => ((ClientInfo)x.Info).NickName == _request.NickName).Count() == 1)
             {
+                while (true)
+                {
+                    string newNickName = _request.NickName + number;
+                    if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 0
+                        && GeneralMessageChannel.RemoteClients.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 0)
+                    {
+                        validNickName = newNickName;
+                        break;
+                    }
+                }
                 throw new ChatIRCNickNameInUseException(
                     $"The nick name: {_request.NickName} is already in use",
                     _request.NickName,
-                    newNickName);
+                    validNickName);
             }
             _client.Info.NickName = _request.NickName;
         }

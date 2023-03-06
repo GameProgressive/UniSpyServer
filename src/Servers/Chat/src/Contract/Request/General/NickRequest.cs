@@ -1,12 +1,15 @@
+using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-
+using UniSpy.Server.Chat.Aggregate.Misc;
+using UniSpy.Server.Chat.Exception.IRC.General;
 
 namespace UniSpy.Server.Chat.Contract.Request.General
 {
-    
+
     public sealed class NickRequest : RequestBase
     {
-        public NickRequest(string rawRequest) : base(rawRequest){ }
+        private static List<char> _invalidChars = new List<char>() { '#', '@', '$', '%', '^', '&', '*', '!', '~' };
+        public NickRequest(string rawRequest) : base(rawRequest) { }
 
         public string NickName { get; private set; }
 
@@ -14,19 +17,30 @@ namespace UniSpy.Server.Chat.Contract.Request.General
         {
             base.Parse();
 
-            if (_cmdParams is not null)
+            if (_cmdParams?.Count == 1)
             {
                 NickName = _cmdParams[0];
-                return;
             }
-
-            if (_longParam is not null)
+            else if (_longParam is not null)
             {
                 NickName = _longParam;
-                return;
             }
-            
-            throw new Exception.ChatException("NICK request is invalid.");
+            else
+            {
+                throw new Exception.ChatException("NICK request is invalid.");
+            }
+
+            foreach (var c in _invalidChars)
+            {
+                if (NickName.Contains(c))
+                {
+                    var validNickName = NickName.Replace(c, '0');
+                    throw new ChatIRCNickNameInUseException(
+                    $"The nick name: {NickName} contains invalid character",
+                    NickName,
+                    validNickName);
+                }
+            }
         }
     }
 }
