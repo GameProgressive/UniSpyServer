@@ -53,24 +53,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         private void GetUserKeyValue(ChannelUser user)
         {
-            //we do not have key value so we do not construct getckey response
-            // if (user.UserKeyValue.Count == 0)
-            // {
-            //     throw new ChatException("User's key value are empty.");
-            // }
-
-            // if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))
-            // {
-            //     var model = new GETCKEYDataModel
-            //     {
-            //         NickName = user.Info.NickName,
-            //         UserValues = user.BFlags
-            //     };
-            //     // we get user's BFlag
-            //     _result.DataResults.Add(model);
-            // }
-            // else
-            // {
             // we get user's values
             string userValues = user.GetUserValues(_request.Keys);
             if (userValues == "")
@@ -83,7 +65,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 UserValues = userValues
             };
             _result.DataResults.Add(model);
-            // }
         }
 
         protected override void ResponseConstruct()

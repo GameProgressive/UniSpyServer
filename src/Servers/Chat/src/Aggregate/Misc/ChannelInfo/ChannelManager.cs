@@ -38,8 +38,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         }
         public static Channel CreateChannel(string name, string password = null, IChatClient creator = null)
         {
-            Channel channel = null;
-            channel = new Aggregate.Misc.ChannelInfo.Channel(name, creator, password);
+            
+            var channel = new Channel(name, creator, password);
 
             lock (Channels)
             {

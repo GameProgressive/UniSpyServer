@@ -28,8 +28,8 @@ namespace UniSpy.Server.Chat.Test.Channel
             var client2 = (Client)MockObject.CreateClient(port: 1237);
             SingleJoinTest(client1, "unispy3", "unispy3", "#GSP!room!test2");
             SingleJoinTest(client2, "unispy4", "unispy4", "#GSP!room!test2");
-            var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test2 :hello this is a test.");
-            var privMsgHandler = new PrivateMsgHandler(client1, privMsgReq);
+            var privMsgReq = new PrivateRequest("PRIVMSG #GSP!room!test2 :hello this is a test.");
+            var privMsgHandler = new PrivateHandler(client1, privMsgReq);
             privMsgHandler.Handle();
         }
         private void SingleLoginTest(Client client, string userName = "unispy", string nickName = "unispy")

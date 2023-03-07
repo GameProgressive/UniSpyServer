@@ -66,7 +66,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             new KickHandler(_client, kickRequest).Handle();
                         }
                         ChannelManager.RemoveChannel(_channel.Name);
-
                     }
                     goto default;
                 default:

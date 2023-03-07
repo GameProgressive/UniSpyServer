@@ -5,11 +5,11 @@ using UniSpy.Server.Chat.Contract.Result.Message;
 
 namespace UniSpy.Server.Chat.Contract.Response.Message
 {
-    public sealed class PrivateMsgResponse : ResponseBase
+    public sealed class PrivateResponse : ResponseBase
     {
-        private new PrivateMsgResult _result => (PrivateMsgResult)base._result;
-        private new PrivateMsgRequest _request => (PrivateMsgRequest)base._request;
-        public PrivateMsgResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        private new PrivateResult _result => (PrivateResult)base._result;
+        private new PrivateRequest _request => (PrivateRequest)base._request;
+        public PrivateResponse(RequestBase request, ResultBase result) : base(request, result){ }
 
         public override void Build()
         {

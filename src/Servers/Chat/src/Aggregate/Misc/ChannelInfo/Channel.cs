@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Exception;
@@ -13,6 +12,65 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
+    public static class PeerRoom
+    {
+        /// <summary>
+        /// When game connects to the server, the player will enter the default channel for communicating with other players.
+        /// </summary>
+        public const string TitleRoomPrefix = "#GSP";
+        /// <summary>
+        /// When a player creates their own game and is waiting for others to join they are placed in a separate chat room called the "staging room"
+        /// Staging rooms have two title seperator like #GSP!xxxx!xxxx
+        /// </summary>
+        public const string StagingRoomPrefix = "#GSP";
+        /// <summary>
+        /// group rooms is used split the list of games into categories (by gametype, skill, region, etc.). In this case, when entering the title room, the user would get a list of group rooms instead of a list of games
+        /// Group room have one title seperator like #GPG!xxxxxx
+        /// </summary>
+        public const string GroupRoomPrefix = "#GPG";
+        public const char TitleSeperator = '!';
+
+        public static PeerRoomType GetRoomType(string channelName)
+        {
+            var c = StorageOperation.Persistance.IsPeerLobby(channelName);
+
+            if (IsGroupRoom(channelName) || c)
+            {
+                return PeerRoomType.Group;
+            }
+            else if (IsStagingRoom(channelName) || c)
+            {
+                return PeerRoomType.Staging;
+            }
+            else if (IsTitleRoom(channelName) || c)
+            {
+                return PeerRoomType.Title;
+            }
+            else
+            {
+                return PeerRoomType.Normal;
+            }
+        }
+        private static bool IsStagingRoom(string channelName)
+        {
+            var a = channelName.Count(c => c == TitleSeperator) == 2 ? true : false;
+            var b = channelName.StartsWith(StagingRoomPrefix) ? true : false;
+            return a && b;
+        }
+        private static bool IsTitleRoom(string channelName)
+        {
+            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
+            var b = channelName.StartsWith(TitleRoomPrefix) ? true : false;
+            return a && b;
+        }
+        private static bool IsGroupRoom(string channelName)
+        {
+
+            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
+            var b = channelName.StartsWith(GroupRoomPrefix) ? true : false;
+            return a && b;
+        }
+    }
     public enum PeerRoomType
     {
         /// <summary>
@@ -34,59 +92,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
     }
     public sealed class Channel
     {
-        /// <summary>
-        /// When game connects to the server, the player will enter the default channel for communicating with other players.
-        /// </summary>
-        public const string TitleRoomPrefix = "#GSP";
-        /// <summary>
-        /// When a player creates their own game and is waiting for others to join they are placed in a separate chat room called the "staging room"
-        /// Staging rooms have two title seperator like #GSP!xxxx!xxxx
-        /// </summary>
-        public const string StagingRoomPrefix = "#GSP";
-        /// <summary>
-        /// group rooms is used split the list of games into categories (by gametype, skill, region, etc.). In this case, when entering the title room, the user would get a list of group rooms instead of a list of games
-        /// Group room have one title seperator like #GPG!xxxxxx
-        /// </summary>
-        public const string GroupRoomPrefix = "#GPG";
-        public const char TitleSeperator = '!';
-
-        public static Func<string, PeerRoomType> GetRoomType = (channelName) =>
-        {
-            if (IsStagingRoom(channelName))
-            {
-                return PeerRoomType.Staging;
-            }
-            else if (IsTitleRoom(channelName))
-            {
-                return PeerRoomType.Title;
-            }
-            else if (IsGroupRoom(channelName))
-            {
-                return PeerRoomType.Group;
-            }
-            else
-            {
-                return PeerRoomType.Normal;
-            }
-        };
-        private static Func<string, bool> IsStagingRoom = (channelName) =>
-        {
-            var a = channelName.Count(c => c == TitleSeperator) == 2 ? true : false;
-            var b = channelName.StartsWith(StagingRoomPrefix) ? true : false;
-            return a && b;
-        };
-        private static Func<string, bool> IsTitleRoom = (channelName) =>
-        {
-            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(TitleRoomPrefix) ? true : false;
-            return a && b;
-        };
-        private static Func<string, bool> IsGroupRoom = (channelName) =>
-        {
-            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(GroupRoomPrefix) ? true : false;
-            return a && b;
-        };
         /// <summary>
         /// Channel name
         /// </summary>
@@ -111,8 +116,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public IDictionary<string, ChannelUser> Users { get; private set; }
         public IDictionary<string, string> ChannelKeyValue { get; private set; }
         public ChannelUser Creator { get; private set; }
-        public bool IsPeerServer { get; private set; }
-        public PeerRoomType RoomType => GetRoomType(Name);
+        public PeerRoomType RoomType { get; private set; }
         public string Password { get; private set; }
         public string Topic { get; set; }
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
@@ -127,16 +131,18 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             MaxNumberUser = 200;
             Mode.SetDefaultModes();
             MessageBroker = new Redis.ChatMessageChannel(Name);
-            IsPeerServer = StorageOperation.Persistance.IsPeerLobby(name);
-            if (IsPeerServer)
+            RoomType = PeerRoom.GetRoomType(Name);
+            switch (RoomType)
             {
-                Creator = AddUser(client, password);
+                case PeerRoomType.Normal:
+                case PeerRoomType.Staging:
+                    Creator = AddUser(client, password, true, true);
+                    break;
+                case PeerRoomType.Title:
+                case PeerRoomType.Group:
+                    AddUser(client, password);
+                    break;
             }
-            else
-            {
-                Creator = AddUser(client, password, true, true);
-            }
-
         }
 
         /// <summary>
@@ -160,7 +166,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                     }
                 }
                 user.ClientRef.Send(message);
-                sender.LogNetworkMultiCast((string)message.SendingBuffer);
             }
         }
         public string GetAllUsersNickString()

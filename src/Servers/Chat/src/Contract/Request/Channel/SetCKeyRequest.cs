@@ -1,6 +1,7 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using System.Collections.Generic;
 using UniSpy.Server.Core.Extension;
+using System.Linq;
 
 namespace UniSpy.Server.Chat.Contract.Request.Channel
 {
@@ -49,9 +50,9 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             NickName = _cmdParams[1];
             _longParam = _longParam.Substring(1);
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
+            
             // todo check whether there exists other b_* key value
-            //KeyValues.Keys.Select(x=>x.Contains("b_"))
-            if (KeyValues.ContainsKey("b_flags"))
+            if (KeyValues.Keys.Where(x => x.Contains("b_")).Count() > 0)
             {
                 Cookie = "BCAST";
                 IsBroadCast = true;

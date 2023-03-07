@@ -7,7 +7,6 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
     public sealed class JoinRequest : ChannelRequestBase
     {
         public string Password { get; private set; }
-        public PeerRoomType? RoomType { get; private set; }
         public JoinRequest(string rawRequest) : base(rawRequest) { }
         public override void Parse()
         {
@@ -22,8 +21,6 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             {
                 Password = _cmdParams[1];
             }
-
-            RoomType = Aggregate.Misc.ChannelInfo.Channel.GetRoomType(ChannelName);
         }
     }
 }

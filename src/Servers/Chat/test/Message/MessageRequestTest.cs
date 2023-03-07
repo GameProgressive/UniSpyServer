@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Test.Message
         [Fact]
         public void AboveTheTableMsg()
         {
-            var request = new AboveTheTableMsgRequest(MessageRequests.AboveTheTableMsg);
+            var request = new AtmRequest(MessageRequests.AboveTheTableMsg);
             request.Parse();
             Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
@@ -30,7 +30,7 @@ namespace UniSpy.Server.Chat.Test.Message
         [Fact]
         public void PrivateMsg()
         {
-            var request = new PrivateMsgRequest(MessageRequests.PrivateMsg);
+            var request = new PrivateRequest(MessageRequests.PrivateMsg);
             request.Parse();
             Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);
@@ -40,7 +40,7 @@ namespace UniSpy.Server.Chat.Test.Message
         [Fact]
         public void UnderTheTableMsg()
         {
-            var request = new UnderTheTableMsgRequest(MessageRequests.UnderTheTableMsg);
+            var request = new UtmRequest(MessageRequests.UnderTheTableMsg);
             request.Parse();
             Assert.Equal(MessageType.ChannelMessage, request.Type);
             Assert.Null(request.NickName);

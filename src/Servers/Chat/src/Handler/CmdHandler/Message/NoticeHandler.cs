@@ -7,19 +7,13 @@ using UniSpy.Server.Core.Abstraction.Interface;
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
 {
     
-    public sealed class NoticeHandler : MsgHandlerBase
+    public sealed class NoticeHandler : MessageHandlerBase
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
         private new NoticeResult _result{ get => (NoticeResult)base._result; set => base._result = value; }
         public NoticeHandler(IClient client, IRequest request) : base(client, request)
         {
             _result = new NoticeResult();
-        }
-
-        protected override void DataOperation()
-        {
-            _result.UserIRCPrefix = _user.Info.IRCPrefix;
-            base.DataOperation();
         }
 
         protected override void ResponseConstruct()

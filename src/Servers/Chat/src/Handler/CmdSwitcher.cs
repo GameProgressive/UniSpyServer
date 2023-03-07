@@ -90,13 +90,13 @@ namespace UniSpy.Server.Chat.Handler
                 #endregion
                 #region  Message
                 case "ATM":
-                    return new AboveTheTableMsgHandler(_client, new AboveTheTableMsgRequest(request));
+                    return new AtmHandler(_client, new AtmRequest(request));
                 case "NOTICE":
                     return new NoticeHandler(_client, new NoticeRequest(request));
                 case "PRIVMSG":
-                    return new PrivateMsgHandler(_client, new PrivateMsgRequest(request));
+                    return new PrivateHandler(_client, new PrivateRequest(request));
                 case "UTM":
-                    return new UnderTheTableMsgHandler(_client, new UnderTheTableMsgRequest(request));
+                    return new UtmHandler(_client, new UtmRequest(request));
                 default:
                     return null;
                     #endregion

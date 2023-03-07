@@ -6,10 +6,9 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         UserMessage
     }
 
-    public class MsgRequestBase : ChannelRequestBase
+    public abstract class MessageRequestBase : ChannelRequestBase
     {
-        public MsgRequestBase(string rawRequest) : base(rawRequest){ }
-
+        public MessageRequestBase(string rawRequest) : base(rawRequest){ }
         public MessageType? Type { get; protected set; }
         public string NickName { get; protected set; }
         public string Message { get; protected set; }

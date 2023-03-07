@@ -4,40 +4,49 @@ using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
-    public abstract class MsgHandlerBase : ChannelHandlerBase
+    public abstract class MessageHandlerBase : ChannelHandlerBase
     {
-        protected new MsgRequestBase _request => (MsgRequestBase)base._request;
-        protected new MsgResultBase _result { get => (MsgResultBase)base._result; set => base._result = value; }
+        protected new MessageRequestBase _request => (MessageRequestBase)base._request;
+        protected new MessageResultBase _result { get => (MessageResultBase)base._result; set => base._result = value; }
         protected ChannelUser _receiver;
-        public MsgHandlerBase(IClient client, IRequest request) : base(client, request) { }
+        public MessageHandlerBase(IClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {
-            // base.RequestCheck();
             _request.Parse();
             switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
-                    base.RequestCheck();
+                    ChannelMessageRequestCheck();
                     break;
                 case MessageType.UserMessage:
-                    if (_request.Type == MessageType.UserMessage)
-                    {
-                        // todo check if we only allow user join one channel
-                        _channel = _client.Info.JoinedChannels.Values.First();
-                        _receiver = _channel.GetChannelUser(_request.NickName);
-                        if (_receiver is null)
-                        {
-                            throw new ChatIRCNoSuchNickException(
-                                $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");
-                        }
-                    }
+                    UserMessageRequestCheck();
                     break;
                 default:
                     throw new ChatException("Unknown chat message request type.");
+            }
+        }
+        protected virtual void ChannelMessageRequestCheck()
+        {
+            base.RequestCheck();
+        }
+        protected virtual void UserMessageRequestCheck()
+        {
+            // todo check if we only allow user join one channel
+            // fist we find this user in our local client pool, beacuse nick name is unique, this search is safe
+            var client = (Client)Client.ClientPool.Values.Where(c => ((ClientInfo)(c.Info)).NickName == _request.NickName).First();
+            // we get a first channel in his joined list
+            _channel = client.Info.JoinedChannels.Values.First();
+            // we find this user in this channel
+            _receiver = _channel.GetChannelUser(_request.NickName);
+            if (_receiver is null)
+            {
+                throw new ChatIRCNoSuchNickException(
+                    $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");
             }
         }
         protected override void DataOperation()
@@ -56,10 +65,12 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         protected virtual void ChannelMessageDataOpration()
         {
             _result.TargetName = _request.ChannelName;
+            _result.UserIRCPrefix = _user.Info.IRCPrefix;
         }
         protected virtual void UserMessageDataOperation()
         {
             _result.TargetName = _request.NickName;
+            _result.UserIRCPrefix = _receiver.Info.IRCPrefix;
         }
         protected override void Response()
         {

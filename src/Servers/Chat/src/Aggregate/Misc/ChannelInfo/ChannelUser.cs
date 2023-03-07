@@ -67,16 +67,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             IsChannelCreator = isCreator;
             IsChannelOperator = isOperator;
             UserKeyValue.Add("username", Info.UserName);
-            // UserKeyValue.Add("b_flags", "");
-
-            // if (isCreator)
-            // {
-            //     UserKeyValue.Add("b_flags", "sh");
-            // }
-            // else
-            // {
-            //     UserKeyValue.Add("b_flags", "s");
-            // }
         }
 
         public void UpdateUserKeyValues(Dictionary<string, string> data)

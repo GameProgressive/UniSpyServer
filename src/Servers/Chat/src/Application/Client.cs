@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Redis;
@@ -67,9 +68,13 @@ namespace UniSpy.Server.Chat.Application
                 new QuitHandler(this, req).Handle();
                 Info.IsLoggedIn = false;
             }
+            Task.Run(() => PublishDisconnectMessage());
+            base.OnDisconnected();
+        }
+        private void PublishDisconnectMessage()
+        {
             var message = new RemoteMessage(new DisconnectRequest(), GetRemoteClient());
             Server.GeneralChannel.PublishMessage(message);
-            base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
         public RemoteClient GetRemoteClient()

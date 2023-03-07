@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Application;
@@ -59,7 +60,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                 return;
             }
             // we have to make sure there are no error so we can publish this message
-            PublishMessage();
+            Task.Run(() => PublishMessage());
         }
     }
 }
