@@ -13,6 +13,10 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc
         public AdHocHandler(IRequest request) : base(null, request)
         {
         }
+        protected override void RequestCheck()
+        {
+            // base.RequestCheck();
+        }
         protected override void ResponseConstruct()
         {
             _response = new AdHocResponse(_request);

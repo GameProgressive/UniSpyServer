@@ -12,7 +12,7 @@ namespace UniSpy.Server.QueryReport.Abstraction.BaseClass
         public new RequestType CommandName { get => (RequestType)base.CommandName; set => base.CommandName = value; }
         public new byte[] RawRequest { get => (byte[])base.RawRequest; protected set => base.RawRequest = value; }
 
-        public RequestBase(object rawRequest) : base(rawRequest)
+        public RequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 

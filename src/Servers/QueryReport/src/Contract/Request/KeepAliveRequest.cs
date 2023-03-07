@@ -5,7 +5,7 @@ namespace UniSpy.Server.QueryReport.Contract.Request
 
     public class KeepAliveRequest : RequestBase
     {
-        public KeepAliveRequest(object rawRequest) : base(rawRequest)
+        public KeepAliveRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
     }

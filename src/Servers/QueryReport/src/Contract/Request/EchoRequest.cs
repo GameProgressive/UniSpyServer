@@ -5,7 +5,7 @@ namespace UniSpy.Server.QueryReport.Contract.Request
 
     public class EchoRequest : RequestBase
     {
-        public EchoRequest(object rawRequest) : base(rawRequest)
+        public EchoRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
     }

@@ -29,7 +29,7 @@ namespace UniSpy.Server.QueryReport.Contract.Request
         public string DataPartition { get; private set; }
         public HeartBeatReportType ReportType { get; set; }
 
-        public HeartBeatRequest(object rawRequest) : base(rawRequest)
+        public HeartBeatRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
 
@@ -110,9 +110,12 @@ namespace UniSpy.Server.QueryReport.Contract.Request
             }
             if (!ServerData.ContainsKey("statechanged"))
             {
-                throw new QRException("Heartbeat request must contain server status");
+                ServerStatus = GameServerStatus.Normal;
             }
-            ServerStatus = (GameServerStatus)Enum.Parse(typeof(GameServerStatus), ServerData?["statechanged"]);
+            else
+            {
+                ServerStatus = (GameServerStatus)Enum.Parse(typeof(GameServerStatus), ServerData?["statechanged"]);
+            }
         }
         private void ParsePlayerData(string playerDataStr)
         {
