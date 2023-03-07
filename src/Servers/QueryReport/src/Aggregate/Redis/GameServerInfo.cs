@@ -32,7 +32,7 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.GameServer
         public IPEndPoint QueryReportIPEndPoint => new IPEndPoint(HostIPAddress, (int)QueryReportPort);
         public DateTime LastPacketReceivedTime { get; set; }
         // public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
-        public GameServerStatus ServerStatus;
+        public GameServerStatus ServerStatus { get; set; }
         public Dictionary<string, string> ServerData { get; set; }
         public List<Dictionary<string, string>> PlayerData { get; set; }
         public List<Dictionary<string, string>> TeamData { get; set; }

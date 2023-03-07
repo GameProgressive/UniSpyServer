@@ -9,12 +9,14 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.QueryReport.Contract.Request
 {
-    
+
     public sealed class HeartBeatRequest : RequestBase
     {
         public Dictionary<string, string> ServerData { get; private set; }
         public List<Dictionary<string, string>> PlayerData { get; private set; }
         public List<Dictionary<string, string>> TeamData { get; private set; }
+        public GameServerStatus ServerStatus { get; private set; }
+
         public string GameName
         {
             get
@@ -74,6 +76,7 @@ namespace UniSpy.Server.QueryReport.Contract.Request
             {
                 throw new QRException("HeartBeat request is invalid.");
             }
+
         }
         private void ParseServerData(string serverDataStr)
         {
@@ -105,6 +108,11 @@ namespace UniSpy.Server.QueryReport.Contract.Request
                     ServerData.Add(tempKey, tempValue);
                 }
             }
+            if (!ServerData.ContainsKey("statechanged"))
+            {
+                throw new QRException("Heartbeat request must contain server status");
+            }
+            ServerStatus = (GameServerStatus)Enum.Parse(typeof(GameServerStatus), ServerData?["statechanged"]);
         }
         private void ParsePlayerData(string playerDataStr)
         {

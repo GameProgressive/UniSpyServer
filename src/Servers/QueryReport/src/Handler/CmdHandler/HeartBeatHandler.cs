@@ -80,7 +80,7 @@ namespace UniSpy.Server.QueryReport.Handler.CmdHandler
                 QueryReportPort = (ushort)_client.Connection.RemoteIPEndPoint.Port,
                 GameName = _request.GameName,
                 InstantKey = _request.InstantKey,
-                ServerStatus = GameServerStatus.Normal,
+                ServerStatus = _request.ServerStatus,
                 LastPacketReceivedTime = DateTime.Now
             };
         }
