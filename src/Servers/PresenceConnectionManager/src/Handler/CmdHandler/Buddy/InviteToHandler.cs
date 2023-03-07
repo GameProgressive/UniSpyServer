@@ -19,12 +19,10 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
 
         protected override void DataOperation()
         {
-            var connection = Client.ClientPool.Values.FirstOrDefault(
-                c => ((ClientInfo)c.Info).SubProfileInfo.ProductId == _request.ProductID
-                && ((ClientInfo)c.Info).SubProfileInfo.ProfileId == _request.ProfileId);
+            var client = ClientManager.GetClient(_request.ProfileId, _request.ProductId);
 
             //user is offline
-            if (connection is null)
+            if (client is null)
             {
                 return;
             }

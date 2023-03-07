@@ -13,19 +13,19 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc
         public AdHocHandler(IRequest request) : base(null, request)
         {
         }
-        protected override void RequestCheck()
-        {
-            // base.RequestCheck();
-        }
+        /// <summary>
+        /// We do not need to parse the request, the request we get is already parsed by other qr server
+        /// </summary>
+        protected override void RequestCheck() { }
         protected override void ResponseConstruct()
         {
-            _response = new AdHocResponse(_request);
+            // todo add response
+            // _response = new AdHocResponse(_request);
         }
         protected override void Response()
         {
-            throw new System.NotImplementedException();
-            // base.Response();
-            Parallel.ForEach(Client.ClientPool.Values, client =>
+            var clients = ClientManager.GetClient(_request.GameName);
+            Parallel.ForEach(clients, client =>
             {
                 if (((Client)client).Info.GameName == _request.GameName)
                 {

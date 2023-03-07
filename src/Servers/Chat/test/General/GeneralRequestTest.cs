@@ -8,9 +8,9 @@ namespace UniSpy.Server.Chat.Test.General
         [Fact]
         public void CDKey()
         {
-            var request = new CDKeyRequest(GeneralRequests.CDKey);
+            var request = new CdKeyRequest(GeneralRequests.CDKey);
             request.Parse();
-            Assert.Equal("XXXX-XXXX-XXXX-XXXX", request.CDKey);
+            Assert.Equal("XXXX-XXXX-XXXX-XXXX", request.CdKey);
         }
 
         [Fact]

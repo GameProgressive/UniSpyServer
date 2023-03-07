@@ -11,7 +11,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
-        public static readonly ConcurrentDictionary<IPEndPoint, IClient> ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
         public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
@@ -25,7 +24,8 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         {
             Connection = connection;
             EventBinding();
-            ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
+            ClientManagerBase.AddClient(this);
+            // ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         }
         protected virtual void EventBinding()
         {
@@ -55,7 +55,9 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        protected virtual void OnConnected() => ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
+        // protected virtual void OnConnected() => ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
+        protected virtual void OnConnected() => ClientManagerBase.AddClient(this);
+
         /// <summary>
         /// Only work for tcp
         /// </summary>
@@ -129,12 +131,12 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     ((ITcpConnection)Connection).OnReceive -= OnReceived;
                     ((ITcpConnection)Connection).OnConnect -= OnConnected;
                     ((ITcpConnection)Connection).OnDisconnect -= OnDisconnected;
-                    ClientPool.TryRemove(Connection.RemoteIPEndPoint, out _);
+                    ClientManagerBase.RemoveClient(this);
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive -= OnReceived;
                     _timer.Dispose();
-                    ClientPool.TryRemove(Connection.RemoteIPEndPoint, out _);
+                    ClientManagerBase.RemoveClient(this);
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive -= OnReceived;

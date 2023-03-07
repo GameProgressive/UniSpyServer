@@ -67,26 +67,9 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var localClient = (Client)Client.ClientPool.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
-            var remoteClient = (RemoteClient)GeneralMessageChannel.RemoteClients.Values.FirstOrDefault(c => ((ClientInfo)(c.Info)).NickName == _request.NickName);
-            IChatClient client;
+            var client = ClientManager.GetClientByNickName(_request.NickName);
 
-
-            if (localClient is not null)
-            {
-                client = localClient;
-            }
-            else if (remoteClient is not null)
-            {
-                client = remoteClient;
-            }
-            else
-            {
-                throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
-            }
-
-
-            foreach (var channel in ((ClientInfo)(client.Info)).JoinedChannels.Values)
+            foreach (var channel in client.Info.JoinedChannels.Values)
             {
                 var user = channel.GetChannelUser(client);
                 var data = new WhoDataModel

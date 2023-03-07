@@ -20,25 +20,43 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             base.RequestCheck();
             int number = 0;
             string validNickName;
-            if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == _request.NickName).Count() == 1
-            || GeneralMessageChannel.RemoteClients.Values.Where(x => ((ClientInfo)x.Info).NickName == _request.NickName).Count() == 1)
+            var clientInfos = ClientManager.GetAllClientInfo();
+            // if (clientInfos.Where(i => i.NickName == _request.NickName).Count() == 1)
+            // {
+            // while (true)
+            // {
+            //     string newNickName = _request.NickName + number;
+            //     if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
+            //     {
+            //         validNickName = newNickName;
+            //         break;
+            //     }
+            // }
+            // throw new ChatIRCNickNameInUseException(
+            //     $"The nick name: {_request.NickName} is already in use",
+            //     _request.NickName,
+            //     validNickName);
+            // // }
+            if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
+            {
+                _client.Info.NickName = _request.NickName;
+            }
+            else
             {
                 while (true)
                 {
                     string newNickName = _request.NickName + number;
-                    if (Client.ClientPool.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 0
-                        && GeneralMessageChannel.RemoteClients.Values.Where(x => ((ClientInfo)x.Info).NickName == newNickName).Count() == 0)
+                    if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
                     {
                         validNickName = newNickName;
                         break;
                     }
                 }
                 throw new ChatIRCNickNameInUseException(
-                    $"The nick name: {_request.NickName} is already in use",
-                    _request.NickName,
-                    validNickName);
+                $"The nick name: {_request.NickName} is already in use",
+                _request.NickName,
+                validNickName);
             }
-            _client.Info.NickName = _request.NickName;
         }
 
         protected override void DataOperation()

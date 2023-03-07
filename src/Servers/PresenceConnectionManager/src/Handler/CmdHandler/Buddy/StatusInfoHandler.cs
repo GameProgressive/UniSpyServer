@@ -26,8 +26,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
         {
             if (_request.IsGetStatusInfo)
             {
-                var result = (Client)Client.ClientPool.Values.FirstOrDefault(s => ((ClientInfo)s.Info).SubProfileInfo.ProfileId == _request.ProfileId
-                && ((ClientInfo)s.Info).SubProfileInfo.NamespaceId == ((ClientInfo)s.Info).SubProfileInfo.NamespaceId);
+                var result = ClientManager.GetClient(_request.ProfileId, null, _request.NamespaceID);
 
                 if (result is not null)
                 {

@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
@@ -33,8 +34,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public Dictionary<string, string> UserKeyValue { get; private set; }
         [JsonIgnore]
         public Channel JoinedChannel { get; private set; }
-        [JsonIgnore]
-        public string BFlags => $@"\{Info.UserName}\{UserKeyValue["b_flags"]}";
         public string Modes
         {
             get
@@ -75,15 +74,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             // TODO only updated key send through the request
             foreach (var key in data.Keys)
             {
-                if (UserKeyValue.ContainsKey(key))
-                {
-                    //we update the key value
-                    UserKeyValue[key] = data[key];
-                }
-                else
-                {
-                    UserKeyValue.Add(key, data[key]);
-                }
+                //we update the key value
+                UserKeyValue[key] = data[key];
             }
         }
 
@@ -95,6 +87,10 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 if (UserKeyValue.ContainsKey(key))
                 {
                     values += @"\" + UserKeyValue[key];
+                }
+                else
+                {
+                    throw new ChatException($"Can not find key: {key}");
                 }
             }
             return values;

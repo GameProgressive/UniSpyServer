@@ -25,13 +25,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
             // there only existed one nick name
             base.RequestCheck();
-            var clients = (ICollection<IChatClient>)Client.ClientPool.Values;
-            var client = clients.FirstOrDefault(x => x.Info.NickName == _request.NickName);
-
-            if (client is null)
-            {
-                throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
-            }
+            var client = ClientManager.GetClientByNickName(_request.NickName);
             _clientInfo = client.Info;
         }
         protected override void DataOperation()

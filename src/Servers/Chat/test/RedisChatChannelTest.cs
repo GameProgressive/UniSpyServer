@@ -12,7 +12,6 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Test.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 using System.Collections.Generic;
-using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Test
 {
@@ -108,14 +107,15 @@ namespace UniSpy.Server.Chat.Test
                 @"UTM #GSP!worms3!MJ0NJ4c3aM :RTS \team\Human Team 1\nick\worms10\msg\2174"+"\r\n"
             };
             var client1 = MockObject.CreateClient(port: 1234) as Client;
-            Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
+            // Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
+            ClientManager.RemoveClient(client1);
             var remoteClient = client1.GetRemoteClient() as ITestClient;
-            GeneralMessageChannel.RemoteClients.TryAdd(((RemoteClient)remoteClient).Connection.RemoteIPEndPoint, (IClient)remoteClient);
+            ClientManager.AddClient((IClient)remoteClient);
             foreach (var r in request1)
             {
-                var count = GeneralMessageChannel.RemoteClients.Count;
+                var count = ClientManager.ClientPool.Count;
                 remoteClient.TestReceived(UniSpyEncoding.GetBytes(r));
-                count = GeneralMessageChannel.RemoteClients.Count;
+                count = ClientManager.ClientPool.Count;
             }
             // IChatClient
             var request2 = new List<string>()
@@ -142,9 +142,9 @@ namespace UniSpy.Server.Chat.Test
             var client2 = MockObject.CreateClient(port: 1235) as ITestClient;
             foreach (var r in request2)
             {
-                var count = Client.ClientPool.Count;
+                var count = ClientManager.ClientPool.Count;
                 client2.TestReceived(UniSpyEncoding.GetBytes(r));
-                count = Client.ClientPool.Count;
+                count = ClientManager.ClientPool.Count;
             }
         }
     }

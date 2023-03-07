@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo

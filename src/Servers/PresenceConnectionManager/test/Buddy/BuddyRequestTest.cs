@@ -27,7 +27,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
         {
             var request = new InviteToRequest(BuddyRequests.InviteTo);
             request.Parse();
-            Assert.Equal((int)0, request.ProductID);
+            Assert.Equal((int)0, request.ProductId);
             Assert.Equal((int)0, request.ProfileId);
         }
 

@@ -13,7 +13,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Request
         public bool IsGetStatusInfo { get; set; }
 
         #region Get buddy status info
-        public int? ProfileId { get; set; }
+        public int ProfileId { get; set; }
         public int? NamespaceID { get; set; }
         #endregion
         public UserStatusInfo StatusInfo { get; private set; }

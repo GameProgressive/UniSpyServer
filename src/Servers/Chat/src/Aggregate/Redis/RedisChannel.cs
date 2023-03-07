@@ -16,7 +16,6 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
     /// </summary>
     public class GeneralMessageChannel : RedisChannelBase<RemoteMessage>
     {
-        public static readonly ConcurrentDictionary<IPEndPoint, IClient> RemoteClients = new ConcurrentDictionary<IPEndPoint, IClient>();
         public GeneralMessageChannel() : base(RedisChannelName.ChatChannelPrefix)
         {
         }
@@ -28,13 +27,13 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             }
             if (message.Type == "DISCONNECT")
             {
-                RemoteClients.TryRemove(message.Client.Connection.RemoteIPEndPoint, out _);
+                ClientManager.RemoveClient(message.Client);
                 return;
             }
-            IClient client;
-            if (!RemoteClients.TryGetValue(message.Client.Connection.RemoteIPEndPoint, out client))
+            IClient client = ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
+            if (client is null)
             {
-                RemoteClients.TryAdd(message.Client.Connection.RemoteIPEndPoint, message.Client);
+                ClientManager.AddClient(message.Client);
                 client = message.Client;
             }
 
@@ -65,8 +64,8 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             {
                 return;
             }
-            IClient client;
-            if (!GeneralMessageChannel.RemoteClients.TryGetValue(message.Client.Connection.RemoteIPEndPoint, out client))
+            IClient client = ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
+            if (client is null)
             {
                 throw new ChatException($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");
             }

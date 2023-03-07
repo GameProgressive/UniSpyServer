@@ -41,7 +41,7 @@ namespace UniSpy.Server.Chat.Handler
                 case "CRYPT":
                     return new CryptHandler(_client, new CryptRequest(request));
                 case "CDKEY":
-                    return new CDKeyHandler(_client, new CDKeyRequest(request));
+                    return new CdKeyHandler(_client, new CdKeyRequest(request));
                 case "GETKEY":
                     return new GetKeyHandler(_client, new GetKeyRequest(request));
                 case "LIST":

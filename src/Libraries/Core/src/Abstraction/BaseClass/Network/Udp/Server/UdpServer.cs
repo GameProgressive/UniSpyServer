@@ -52,22 +52,15 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server
             // we have to check if the endPoint is already in the dictionary,
             // which means the client is already in the dictionary, we do not need to create it
             // we just retrieve the connection from the dictionary
-            // lock (Connections)
-            // {
-            // UdpConnection conn;
-            if (ClientBase.ClientPool.TryGetValue(endPoint, out var client))
-            {
-                return client.Connection as IUdpConnection;
-            }
-            else
+            var client = ClientManagerBase.GetClient(endPoint);
+            if (client is null)
             {
                 var connection = new UdpConnection(this, endPoint);
                 client = CreateClient(connection);
-                ClientBase.ClientPool.GetOrAdd(endPoint, client);
-                return client.Connection as IUdpConnection;
-                // return connection;
+                ClientManagerBase.AddClient(client);
             }
-            // }
+
+            return client.Connection as IUdpConnection;
         }
     }
 }

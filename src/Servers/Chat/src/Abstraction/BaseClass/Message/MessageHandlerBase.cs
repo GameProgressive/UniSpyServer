@@ -38,7 +38,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         {
             // todo check if we only allow user join one channel
             // fist we find this user in our local client pool, beacuse nick name is unique, this search is safe
-            var client = (Client)Client.ClientPool.Values.Where(c => ((ClientInfo)(c.Info)).NickName == _request.NickName).First();
+            var client = ClientManager.GetClientByNickName(_request.NickName);
             // we get a first channel in his joined list
             _channel = client.Info.JoinedChannels.Values.First();
             // we find this user in this channel

@@ -9,7 +9,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Request
 
     public sealed class InviteToRequest : RequestBase
     {
-        public int ProductID { get; private set; }
+        public int ProductId { get; private set; }
         public int ProfileId { get; private set; }
         public InviteToRequest(string rawRequest) : base(rawRequest)
         {
@@ -36,7 +36,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Request
                 throw new GPParseException("productid format is incorrect.");
             }
 
-            ProductID = productID;
+            ProductId = productID;
 
             int profileID;
             if (!int.TryParse(RequestKeyValues["profileid"], out profileID))
