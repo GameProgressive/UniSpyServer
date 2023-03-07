@@ -22,6 +22,8 @@ namespace UniSpy.Server.QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            // we publish message to notice all sb server to send adhoc message to their clients.
+            StorageOperation.HeartbeatChannel.PublishMessage(_request);
             //Parse the endpoint information into result class
             _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
 

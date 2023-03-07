@@ -19,6 +19,7 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc
         }
         protected override void Response()
         {
+            throw new System.NotImplementedException();
             // base.Response();
             Parallel.ForEach(Client.ClientPool.Values, client =>
             {

@@ -14,7 +14,7 @@ namespace UniSpy.Server.ServerBrowser.Application
         public static ServerBrowser.Abstraction.Interface.IStorageOperation Persistance = new StorageOperation();
         private static QueryReport.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.Aggregate.Redis.GameServer.RedisClient();
         private static QueryReport.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.Aggregate.Redis.PeerGroup.RedisClient();
-        public static QueryReport.Aggregate.Redis.HeartbeatChannel HeartbeatChannel = new QueryReport.Aggregate.Redis.HeartbeatChannel();
+        public static ServerBrowser.Aggregate.HeartbeatChannel HeartbeatChannel = new ServerBrowser.Aggregate.HeartbeatChannel();
         /// <summary>
         /// The redis channel use to transfer client message
         /// </summary>
