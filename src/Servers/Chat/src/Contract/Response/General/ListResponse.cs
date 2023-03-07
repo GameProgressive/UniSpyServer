@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
             SendingBuffer = "";
             foreach (var info in _result.ChannelInfoList)
             {
-                var cmdParams = $"param1 {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
+                var cmdParams = $"* {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
                 SendingBuffer += IRCReplyBuilder.Build(
                     _result.UserIRCPrefix,
                     ResponseName.ListStart,

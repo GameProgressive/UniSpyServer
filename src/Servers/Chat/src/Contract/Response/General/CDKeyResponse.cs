@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Contract.Response.General
         public override void Build()
         {
             //CDKey is always true
-            var cmdParams = $"param1 1 :Authenticated";
+            var cmdParams = $"* 1 :Authenticated";
             SendingBuffer = IRCReplyBuilder.Build(
                 ResponseName.CDKey, cmdParams);
         }

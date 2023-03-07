@@ -14,9 +14,9 @@ namespace UniSpy.Server.Chat.Contract.Response.General
         public override void Build()
         {
             SendingBuffer = "";
-            foreach (var flag in _result.Flags)
+            foreach (var value in _result.Values)
             {
-                string cmdParams1 = $"* {_result.NickName} {_request.Cookie} {flag}";
+                string cmdParams1 = $"* {_result.NickName} {_request.Cookie} {value}";
                 SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetKey, cmdParams1);
             }
             string cmdParams2 = $"* {_request.Cookie} *";

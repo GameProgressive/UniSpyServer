@@ -6,25 +6,25 @@ using UniSpy.Server.Core.Abstraction.Interface;
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
     /// <summary>
-    /// set every channel key value on this user
+    /// set global key value on this client
     /// </summary>
-    
     public sealed class SetKeyHandler : LogedInHandlerBase
     {
         private new SetKeyRequest _request => (SetKeyRequest)base._request;
-        public SetKeyHandler(IClient client, IRequest request) : base(client, request){ }
+        public SetKeyHandler(IClient client, IRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {
-            foreach (var channel in _client.Info.JoinedChannels.Values)
-            {
-                ChannelUser user = channel.GetChannelUser(_client);
-                //if (user==null)
-                //{
-                //    continue;
-                //}
-                user.UpdateUserKeyValues(_request.KeyValues);
-            }
+            _client.Info.UpdateUserKeyValues(_request.KeyValues);
+            // foreach (var channel in _client.Info.JoinedChannels.Values)
+            // {
+            //     ChannelUser user = channel.GetChannelUser(_client);
+            //     //if (user==null)
+            //     //{
+            //     //    continue;
+            //     //}
+            //     user.UpdateUserKeyValues(_request.KeyValues);
+            // }
         }
     }
 }

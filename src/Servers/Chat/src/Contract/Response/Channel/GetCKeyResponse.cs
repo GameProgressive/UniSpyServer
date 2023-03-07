@@ -19,7 +19,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
 
         public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
         {
-            var cmdParams = $"param1 {channelName} {cookie}";
+            var cmdParams = $"* {channelName} {cookie}";
             var tailing = "End Of /GETCKEY.";
             return IRCReplyBuilder.Build(
                 ResponseName.EndGetCKey,

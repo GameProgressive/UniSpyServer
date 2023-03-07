@@ -29,15 +29,46 @@ namespace UniSpy.Server.Chat.Application
         public bool IsQuietMode { get; set; }
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
         public bool IsRemoteClient { get; set; }
+        public Dictionary<string, string> GlobalKeyValue { get; private set; }
         public ClientInfo()
         {
             JoinedChannels = new ConcurrentDictionary<string, Channel>();
+            GlobalKeyValue = new Dictionary<string, string>();
             NameSpaceID = 0;
             IsUsingEncryption = false;
             IsQuietMode = false;
             IsLoggedIn = false;
         }
+        public void UpdateUserKeyValues(Dictionary<string, string> data)
+        {
+            // TODO check if all key is send through the request or
+            // TODO only updated key send through the request
+            foreach (var key in data.Keys)
+            {
+                if (GlobalKeyValue.ContainsKey(key))
+                {
+                    //we update the key value
+                    GlobalKeyValue[key] = data[key];
+                }
+                else
+                {
+                    GlobalKeyValue.Add(key, data[key]);
+                }
+            }
+        }
 
+        public string GetUserValues(List<string> keys)
+        {
+            string values = "";
+            foreach (var key in keys)
+            {
+                if (GlobalKeyValue.ContainsKey(key))
+                {
+                    values += @"\" + GlobalKeyValue[key];
+                }
+            }
+            return values;
+        }
         public bool IsJoinedChannel(string channelName) => JoinedChannels.ContainsKey(channelName);
 
         public Channel GetJoinedChannel(string channelName)

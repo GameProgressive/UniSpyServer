@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
 
         public override void Build()
         {
-            var cmdParams = $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}";
+            var cmdParams = $"* {_result.ChannelName} {_request.Cookie} {_result.Values}";
             SendingBuffer = IRCReplyBuilder.Build(
                 _result.ChannelUserIRCPrefix,
                 ResponseName.GetChanKey,

@@ -7,9 +7,10 @@ namespace UniSpy.Server.Chat.Contract.Request.General
     /// <summary>
     /// Retrieves a list of global key/value for a single user, or all users.
     /// </summary>
-    
+
     public sealed class GetKeyRequest : RequestBase
     {
+        public bool IsGetAllUser { get; private set; }
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
         public string UnkownCmdParam { get; private set; }
@@ -38,7 +39,10 @@ namespace UniSpy.Server.Chat.Contract.Request.General
             UnkownCmdParam = _cmdParams[2];
 
             _longParam = _longParam.Substring(0, _longParam.Length);
-
+            if (NickName == "*")
+            {
+                IsGetAllUser = true;
+            }
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
         }
     }

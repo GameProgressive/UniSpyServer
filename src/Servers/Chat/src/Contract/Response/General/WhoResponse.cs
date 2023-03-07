@@ -36,22 +36,20 @@ namespace UniSpy.Server.Chat.Contract.Response.General
         public static string BuildWhoReply(WhoDataModel data)
         {
             var cmdParams =
-                $"param1 {data.ChannelName} {data.UserName} " +
-                $"{data.PublicIPAddress} param5 {data.NickName} {data.Modes} param8";
+                $"* {data.ChannelName} {data.UserName} " +
+                $"{data.PublicIPAddress} * {data.NickName} {data.Modes} *";
             return IRCReplyBuilder.Build(ResponseName.WhoReply, cmdParams);
         }
 
         public static string BuildEndOfWhoReply(string name)
         {
-            var cmdParams = $"param1 {name} param3";
+            var cmdParams = $"* {name} *";
             var tailing = "End of WHO.";
             return IRCReplyBuilder.Build(
                ResponseName.EndOfWho,
                cmdParams,
                tailing);
         }
-
-
     }
 }
 

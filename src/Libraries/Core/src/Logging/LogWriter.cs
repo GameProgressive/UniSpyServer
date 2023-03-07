@@ -63,7 +63,7 @@ namespace UniSpy.Server.Core.Logging
         public static void LogCurrentClass(object param) => LogVerbose($"[ => ] [{param.GetType().Name}]");
         public static void LogCurrentClass(this IClient client, object param) => LogVerbose(FormatLogMessage(client, $"[ => ] [{param.GetType().Name}]"));
 
-        public static string FormatLogMessage(this IClient client, string message) => $"[{client.Connection.RemoteIPEndPoint}] {message}";
+        public static string FormatLogMessage(this IClient client, string message) => $"[{client?.Connection.RemoteIPEndPoint}] {message}";
         public static string FormatNetworkLogMessage(string type, string message) => $"[{type}] {message}";
         public static string FormatNetworkLogMessage(string type, byte[] message, bool isLogRaw)
         {

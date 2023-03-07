@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
             {
                 flags += $@"\{kv.Key}\{kv.Value}";
             }
-            var cmdParams = $"param1 {_request.ChannelName} BCAST {flags}";
+            var cmdParams = $"* {_request.ChannelName} BCAST {flags}";
             SendingBuffer =
                 IRCReplyBuilder.Build(
                     _result.ChannelUserIRCPrefix,

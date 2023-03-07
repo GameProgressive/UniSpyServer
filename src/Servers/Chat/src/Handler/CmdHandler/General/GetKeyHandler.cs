@@ -1,16 +1,17 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
+using System.Linq;
+using UniSpy.Server.Chat.Aggregate.Redis;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
     /// <summary>
-    /// Get value of the channel user's key value of all channels
+    /// Get key value of the one user or all user
     /// </summary>
-    
     public sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
@@ -22,19 +23,21 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            _result.NickName = _client.Info.NickName;
-            foreach (var channel in _client.Info.JoinedChannels.Values)
+            if (_request.IsGetAllUser)
             {
-                var user = channel.GetChannelUser(_request.NickName);
-                if (user is null)
+                var matchedClients = Client.ClientPool.Values.Select(c => c.Info).ToList();
+                matchedClients.AddRange(GeneralMessageChannel.RemoteClients.Values.Select(c => c.Info).ToList());
+                foreach (ClientInfo info in matchedClients)
                 {
-                    throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName}");
+                    var values = info.GetUserValues(_request.Keys);
+                    _result.Values.Add(values);
                 }
-                else
-                {
-                    var values = user.GetUserValues(_request.Keys);
-                    _result.Flags.Add(values);
-                }
+            }
+            else
+            {
+                _result.NickName = _request.NickName;
+                var target = Client.ClientPool.Values.Where(c => ((ClientInfo)(c.Info)).NickName == _request.NickName).First();
+                _result.Values.Add(_client.Info.GetUserValues(_request.Keys));
             }
         }
 

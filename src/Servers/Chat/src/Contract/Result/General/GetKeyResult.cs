@@ -5,14 +5,14 @@ namespace UniSpy.Server.Chat.Contract.Result.General
 {
     public sealed class GetKeyResult : ResultBase
     {
-        public List<string> Flags { get; }
+        public List<string> Values { get; }
         /// <summary>
         /// The reciever's nick name
         /// </summary>
         public string NickName { get; set; }
         public GetKeyResult()
         {
-            Flags = new List<string>();
+            Values = new List<string>();
         }
     }
 }
