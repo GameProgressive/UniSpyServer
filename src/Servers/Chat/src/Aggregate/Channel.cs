@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Exception.IRC.Channel;
@@ -12,84 +11,7 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
-    public static class PeerRoom
-    {
-        /// <summary>
-        /// When game connects to the server, the player will enter the default channel for communicating with other players.
-        /// </summary>
-        public const string TitleRoomPrefix = "#GSP";
-        /// <summary>
-        /// When a player creates their own game and is waiting for others to join they are placed in a separate chat room called the "staging room"
-        /// Staging rooms have two title seperator like #GSP!xxxx!xxxx
-        /// </summary>
-        public const string StagingRoomPrefix = "#GSP";
-        /// <summary>
-        /// group rooms is used split the list of games into categories (by gametype, skill, region, etc.). In this case, when entering the title room, the user would get a list of group rooms instead of a list of games
-        /// Group room have one title seperator like #GPG!xxxxxx
-        /// </summary>
-        public const string GroupRoomPrefix = "#GPG";
-        public const char TitleSeperator = '!';
 
-        public static PeerRoomType GetRoomType(string channelName)
-        {
-            var c = StorageOperation.Persistance.IsPeerLobby(channelName);
-
-            if (IsGroupRoom(channelName) || c)
-            {
-                return PeerRoomType.Group;
-            }
-            else if (IsStagingRoom(channelName) || c)
-            {
-                return PeerRoomType.Staging;
-            }
-            else if (IsTitleRoom(channelName) || c)
-            {
-                return PeerRoomType.Title;
-            }
-            else
-            {
-                return PeerRoomType.Normal;
-            }
-        }
-        private static bool IsStagingRoom(string channelName)
-        {
-            var a = channelName.Count(c => c == TitleSeperator) == 2 ? true : false;
-            var b = channelName.StartsWith(StagingRoomPrefix) ? true : false;
-            return a && b;
-        }
-        private static bool IsTitleRoom(string channelName)
-        {
-            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(TitleRoomPrefix) ? true : false;
-            return a && b;
-        }
-        private static bool IsGroupRoom(string channelName)
-        {
-
-            var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(GroupRoomPrefix) ? true : false;
-            return a && b;
-        }
-    }
-    public enum PeerRoomType
-    {
-        /// <summary>
-        /// the first channel that a connected user joined at first time
-        /// </summary>
-        Title,
-        /// <summary>
-        /// User created room for gaming
-        /// </summary>
-        Staging,
-        /// <summary>
-        /// User created room which can be seperated by categories
-        /// </summary>
-        Group,
-        /// <summary>
-        /// Testing room
-        /// </summary>
-        Normal
-    }
     public sealed class Channel
     {
         /// <summary>
@@ -101,20 +23,21 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// The maximum number of users that can be in the channel
         /// </summary>
         /// <value></value>
-        public int MaxNumberUser { get; private set; }
-        public ChannelMode Mode { get; private set; }
-        public DateTime CreateTime { get; private set; }
+        public int MaxNumberUser { get; private set; } = 200;
+        public ChannelMode Mode { get; private set; } = new ChannelMode();
+        public DateTime CreateTime { get; private set; } = DateTime.Now;
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
-        /// <value></value>
-        public IDictionary<string, ChannelUser> BanList { get; private set; }
+        public IDictionary<string, ChannelUser> BanList { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
-        /// <value></value>
-        public IDictionary<string, ChannelUser> Users { get; private set; }
-        public IDictionary<string, string> ChannelKeyValue { get; private set; }
+        public ConcurrentDictionary<string, ChannelUser> Users { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        /// <summary>
+        /// Channel key values
+        /// </summary>
+        public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
         public ChannelUser Creator { get; private set; }
         public PeerRoomType RoomType { get; private set; }
         public string Password { get; private set; }
@@ -123,26 +46,22 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public Channel(string name, IChatClient client, string password = null)
         {
             Name = name;
-            CreateTime = DateTime.Now;
-            Mode = new ChannelMode();
-            BanList = new ConcurrentDictionary<string, ChannelUser>();
-            Users = new ConcurrentDictionary<string, ChannelUser>();
-            ChannelKeyValue = new ConcurrentDictionary<string, string>();
-            MaxNumberUser = 200;
-            Mode.SetDefaultModes();
-            MessageBroker = new Redis.ChatMessageChannel(Name);
+            Password = password;
             RoomType = PeerRoom.GetRoomType(Name);
             switch (RoomType)
             {
                 case PeerRoomType.Normal:
                 case PeerRoomType.Staging:
+                    // user created room
                     Creator = AddUser(client, password, true, true);
                     break;
                 case PeerRoomType.Title:
                 case PeerRoomType.Group:
+                    // official room can not create by user
                     AddUser(client, password);
                     break;
             }
+            MessageBroker = new Redis.ChatMessageChannel(Name);
         }
 
         /// <summary>
@@ -175,62 +94,32 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             {
                 if (user.IsChannelCreator)
                 {
-                    nicks += "@" + user.ClientRef.Info.NickName + " ";
+                    nicks += $"@{user.ClientRef.Info.NickName}";
                 }
                 else
                 {
-                    nicks += user.ClientRef.Info.NickName + " ";
+                    nicks += user.ClientRef.Info.NickName;
+                }
+                if (!user.Equals(Users.Values.Last()))
+                {
+                    nicks += " ";
                 }
             }
-            //if user equals last user in channel we do not add space after it
-            nicks = nicks.Substring(0, nicks.Length - 1);
             return nicks;
         }
         private void AddBindOnUserAndChannel(ChannelUser joiner)
         {
-            // !! we can not directly use the Contains() method that ConcurrentDictionary or 
-            // !! ConcurrentBag provide because it will not work properly.
-            if (!Users.ContainsKey(joiner.Info.NickName))
-            {
-                Users.TryAdd(joiner.Info.NickName, joiner);
-            }
-
-            if (!joiner.Info.JoinedChannels.ContainsKey(this.Name))
-            {
-                joiner.Info.JoinedChannels.TryAdd(this.Name, this);
-            }
-
+            Users.TryAdd(joiner.Info.NickName, joiner);
+            joiner.Info.JoinedChannels.TryAdd(this.Name, this);
         }
         private void RemoveBindOnUserAndChannel(ChannelUser leaver)
         {
-            //!! we should use ConcurrentDictionary here
-            //!! FIXME: when removing user from channel, 
-            //!! we should do more checks on user not only just TryTake()
-            if (Users.ContainsKey(leaver.Info.NickName))
-            // !! we takeout wrong user from channel
-            {
-                var kv = new KeyValuePair<string, ChannelUser>(
-                    leaver.Info.NickName,
-                    Users[leaver.Info.NickName]);
-                Users.Remove(kv);
-            }
-
-            if (leaver.Info.JoinedChannels.ContainsKey(this.Name))
-            {
-                var kv = new KeyValuePair<string, Channel>(this.Name, this);
-                leaver.Info.JoinedChannels.Remove(kv);
-            }
-
+            Users.TryRemove(leaver.Info.NickName, out _);
+            leaver.Info.JoinedChannels.TryRemove(Name, out _);
         }
 
-        public ChannelUser GetChannelUser(IClient client)
-        {
-            return Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
-        }
-        public bool IsUserBanned(ChannelUser user)
-        {
-            return IsUserBanned(user.ClientRef);
-        }
+        public ChannelUser GetChannelUser(IChatClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
+        public bool IsUserBanned(ChannelUser user) => IsUserBanned(user.ClientRef);
         private bool IsUserBanned(IChatClient client)
         {
             if (!BanList.ContainsKey(client.Info.NickName))
@@ -328,10 +217,10 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                         MaxNumberUser = 200;
                         break;
                     case ModeOperationType.AddBanOnUser:
-                        AddBanOnUser(request);
+                        BanUser(request);
                         break;
                     case ModeOperationType.RemoveBanOnUser:
-                        RemoveBanOnUser(request);
+                        UnBanUser(request);
                         break;
                     case ModeOperationType.AddChannelPassword:
                         Password = request.Password;
@@ -357,7 +246,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 }
             }
         }
-        private void AddBanOnUser(ModeRequest request)
+        private void BanUser(ModeRequest request)
         {
             var result = Users.Values.Where(u => u.Info.NickName == request.NickName);
             if (result.Count() != 1)
@@ -373,7 +262,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 
             BanList.TryAdd(user.Info.NickName, user);
         }
-        private void RemoveBanOnUser(ModeRequest request)
+        private void UnBanUser(ModeRequest request)
         {
             var result = BanList.Where(u => u.Value.Info.NickName == request.NickName);
             if (result.Count() == 1)
@@ -450,34 +339,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             {
                 kv.Value.IsVoiceable = false;
             }
-        }
-
-        public void SetChannelKeyValue(Dictionary<string, string> keyValue)
-        {
-            foreach (var kv in keyValue)
-            {
-                if (ChannelKeyValue.ContainsKey(kv.Key))
-                {
-                    ChannelKeyValue[kv.Key] = kv.Value;
-                }
-                else
-                {
-                    ChannelKeyValue.Add(kv.Key, kv.Value);
-                }
-            }
-        }
-
-        public string GetChannelValueString(List<string> keys)
-        {
-            string values = "";
-            foreach (var key in keys)
-            {
-                if (ChannelKeyValue.ContainsKey(key))
-                {
-                    values += @"\" + ChannelKeyValue[key];
-                }
-            }
-            return values;
         }
     }
 }

@@ -49,12 +49,12 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.ChannelName = _channel.Name;
             if (_result.IsSetOthersKeyValue)
             {
-                _otherUser.UpdateUserKeyValues(_request.KeyValues);
+                _otherUser.KeyValues.Update(_request.KeyValues);
                 _result.NickName = _otherUser.Info.NickName;
             }
             else
             {
-                _user.UpdateUserKeyValues(_request.KeyValues);
+                _user.KeyValues.Update(_request.KeyValues);
                 _result.NickName = _user.Info.NickName;
             }
         }

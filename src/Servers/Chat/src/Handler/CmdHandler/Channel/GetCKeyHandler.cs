@@ -54,7 +54,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private void GetUserKeyValue(ChannelUser user)
         {
             // we get user's values
-            string userValues = user.GetUserValues(_request.Keys);
+            string userValues = user.KeyValues.GetValueString(_request.Keys);
             if (userValues == "")
             {
                 return;

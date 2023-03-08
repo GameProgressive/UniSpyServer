@@ -4,7 +4,6 @@ using System.Text;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
@@ -31,7 +30,10 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public ClientInfo Info => ClientRef.Info;
         [JsonIgnore]
         public IConnection Connection => ClientRef.Connection;
-        public Dictionary<string, string> UserKeyValue { get; private set; }
+        /// <summary>
+        /// The user key values storage
+        /// </summary>
+        public KeyValueManager KeyValues { get; private set; }
         [JsonIgnore]
         public Channel JoinedChannel { get; private set; }
         public string Modes
@@ -56,7 +58,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public ChannelUser(IChatClient client, Channel channel)
         {
             ClientRef = client;
-            UserKeyValue = new Dictionary<string, string>();
+            KeyValues = new KeyValueManager();
             JoinedChannel = channel;
         }
 
@@ -65,35 +67,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             IsVoiceable = true;
             IsChannelCreator = isCreator;
             IsChannelOperator = isOperator;
-            UserKeyValue.Add("username", Info.UserName);
-        }
-
-        public void UpdateUserKeyValues(Dictionary<string, string> data)
-        {
-            // TODO check if all key is send through the request or
-            // TODO only updated key send through the request
-            foreach (var key in data.Keys)
-            {
-                //we update the key value
-                UserKeyValue[key] = data[key];
-            }
-        }
-
-        public string GetUserValues(List<string> keys)
-        {
-            string values = "";
-            foreach (var key in keys)
-            {
-                if (UserKeyValue.ContainsKey(key))
-                {
-                    values += @"\" + UserKeyValue[key];
-                }
-                else
-                {
-                    throw new ChatException($"Can not find key: {key}");
-                }
-            }
-            return values;
+            KeyValues.Update(new KeyValuePair<string, string>("username", Info.UserName));
+            KeyValues.Update(new KeyValuePair<string, string>("b_flags", "sh"));
         }
     }
 }

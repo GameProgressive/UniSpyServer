@@ -28,7 +28,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 var matchedClients = ClientManager.GetAllClientInfo();
                 foreach (ClientInfo info in matchedClients)
                 {
-                    var values = info.GetUserValues(_request.Keys);
+                    var values = info.KeyValues.GetValueString(_request.Keys);
                     _result.Values.Add(values);
                 }
             }
@@ -36,7 +36,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             {
                 _result.NickName = _request.NickName;
                 var target = ClientManager.GetClientByNickName(_request.NickName);
-                _result.Values.Add(_client.Info.GetUserValues(_request.Keys));
+                _result.Values.Add(_client.Info.KeyValues.GetValueString(_request.Keys));
             }
         }
 

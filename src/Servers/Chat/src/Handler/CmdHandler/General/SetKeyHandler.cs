@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            _client.Info.UpdateUserKeyValues(_request.KeyValues);
+            _client.Info.KeyValues.Update(_request.KeyValues);
             // foreach (var channel in _client.Info.JoinedChannels.Values)
             // {
             //     ChannelUser user = channel.GetChannelUser(_client);
