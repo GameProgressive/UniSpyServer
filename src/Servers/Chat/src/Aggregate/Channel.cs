@@ -73,16 +73,11 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             foreach (var user in Users.Values)
             {
-                if (user.IsRemoteUser)
+                if (user.IsRemoteUser
+                || (isSkipSender
+                && user.RemoteIPEndPoint.Equals(sender.Connection.RemoteIPEndPoint)))
                 {
                     continue;
-                }
-                if (isSkipSender)
-                {
-                    if (user.RemoteIPEndPoint.Equals(sender.Connection.RemoteIPEndPoint))
-                    {
-                        continue;
-                    }
                 }
                 user.ClientRef.Send(message);
             }
@@ -100,7 +95,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 {
                     nicks += user.ClientRef.Info.NickName;
                 }
-                
+
                 if (!user.Equals(Users.Values.Last()))
                 {
                     nicks += " ";
