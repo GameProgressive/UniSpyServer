@@ -5,7 +5,6 @@ using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Chat.Aggregate.Redis;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -21,22 +20,16 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             int number = 0;
             string validNickName;
             var clientInfos = ClientManager.GetAllClientInfo();
-            // if (clientInfos.Where(i => i.NickName == _request.NickName).Count() == 1)
-            // {
-            // while (true)
-            // {
-            //     string newNickName = _request.NickName + number;
-            //     if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
-            //     {
-            //         validNickName = newNickName;
-            //         break;
-            //     }
-            // }
-            // throw new ChatIRCNickNameInUseException(
-            //     $"The nick name: {_request.NickName} is already in use",
-            //     _request.NickName,
-            //     validNickName);
-            // // }
+
+
+            if(_request.NickName == "*")
+            {
+                validNickName = System.Guid.NewGuid().ToString();
+                throw new ChatIRCNickNameInUseException(
+                $"The nick name: {_request.NickName} is already in use",
+                _request.NickName,
+                validNickName);
+            }
             if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
             {
                 _client.Info.NickName = _request.NickName;

@@ -33,7 +33,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// <summary>
         /// The user key values storage
         /// </summary>
-        public KeyValueManager KeyValues { get; private set; }
+        public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
         [JsonIgnore]
         public Channel JoinedChannel { get; private set; }
         public string Modes
@@ -58,7 +58,6 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public ChannelUser(IChatClient client, Channel channel)
         {
             ClientRef = client;
-            KeyValues = new KeyValueManager();
             JoinedChannel = channel;
         }
 

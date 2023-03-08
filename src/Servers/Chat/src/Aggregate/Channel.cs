@@ -100,6 +100,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 {
                     nicks += user.ClientRef.Info.NickName;
                 }
+                
                 if (!user.Equals(Users.Values.Last()))
                 {
                     nicks += " ";
