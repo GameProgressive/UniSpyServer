@@ -19,7 +19,14 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         {
             _client = client;
             _request = request;
-            _client?.LogCurrentClass(this);
+            if (client is null)
+            {
+                LogWriter.LogCurrentClass(this);
+            }
+            else
+            {
+                _client.LogCurrentClass(this);
+            }
         }
         public virtual void Handle()
         {
