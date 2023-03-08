@@ -63,7 +63,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             if (_request.IsBroadCast)
             {
-                _client.LogDebug("The setckey request do not contains broadcast key value, we do not broadcast it.");
                 _response = new SetCKeyResponse(_request, _result);
             }
         }
