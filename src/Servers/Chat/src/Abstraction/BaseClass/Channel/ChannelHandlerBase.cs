@@ -7,7 +7,13 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class ChannelHandlerBase : LogedInHandlerBase
     {
+        /// <summary>
+        /// The matched channel of chat request
+        /// </summary>
         protected Channel _channel;
+        /// <summary>
+        /// The channel user of current IClient
+        /// </summary>
         protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
         public ChannelHandlerBase(IClient client, IRequest request) : base(client, request) { }
