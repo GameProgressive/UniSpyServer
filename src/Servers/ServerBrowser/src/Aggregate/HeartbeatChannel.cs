@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-using UniSpy.Server.QueryReport.Contract.Request;
-using UniSpy.Server.ServerBrowser.Application;
+using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
 using UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc;
 
 namespace UniSpy.Server.ServerBrowser.Aggregate
@@ -11,7 +9,7 @@ namespace UniSpy.Server.ServerBrowser.Aggregate
         /// we do not run subscribe() in QR because QR only need to push
         /// We run subscribe() in SB, because SB need to receive message
         /// </summary>
-        public override void ReceivedMessage(HeartBeatRequest message)
+        public override void ReceivedMessage(GameServerInfo message)
         {
             var handler = new AdHocHandler(message);
             handler.Handle();

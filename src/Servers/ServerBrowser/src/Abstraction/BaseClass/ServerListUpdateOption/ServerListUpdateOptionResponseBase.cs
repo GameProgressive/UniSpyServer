@@ -102,7 +102,7 @@ namespace UniSpy.Server.ServerBrowser.Abstraction.BaseClass
         /// </summary>
         protected void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
         {
-            if (Application.Server.PeerGroupList.ContainsKey(_request.GameName))
+            if (Application.Server.PeerGroupList.ContainsKey(serverInfo.GameName))
             {
                 // We already have the localip. Bytes are worng.
                 if (serverInfo.ServerData.ContainsKey("localip0"))

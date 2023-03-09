@@ -9,7 +9,8 @@ namespace UniSpy.Server.ServerBrowser.Abstraction.BaseClass
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;
         public new RequestType CommandName { get => (RequestType)base.CommandName; protected set => base.CommandName = value; }
-        public RequestBase(byte[] rawRequest) : base(rawRequest)
+        public RequestBase() { }
+        protected RequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 

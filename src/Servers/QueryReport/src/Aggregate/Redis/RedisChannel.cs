@@ -1,4 +1,3 @@
-using UniSpy.Server.QueryReport.Application;
 using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.QueryReport.Contract.Request;
 using UniSpy.Server.QueryReport.Handler.CmdHandler;
@@ -7,16 +6,9 @@ using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Abstraction.BaseClass;
-using System.Threading.Tasks;
 
 namespace UniSpy.Server.QueryReport.Aggregate.Redis
 {
-    public class HeartbeatChannel : RedisChannelBase<HeartBeatRequest>
-    {
-        public HeartbeatChannel() : base(RedisChannelName.HeartbeatChannel)
-        {
-        }
-    }
     public sealed class NatNegChannel : RedisChannelBase<ClientMessageRequest>
     {
         public NatNegChannel() : base(RedisChannelName.NatNegCookieChannel)
