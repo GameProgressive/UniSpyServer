@@ -15,40 +15,23 @@ namespace UniSpy.Server.Chat.Contract.Response.General
             SendingBuffer = "";
             foreach (var data in _result.DataModels)
             {
-                SendingBuffer += BuildWhoReply(data);
+                SendingBuffer += $":{ServerDomain} {ResponseName.WhoReply} * {data.ChannelName} {data.UserName} {data.PublicIPAddress} * {data.NickName} {data.Modes} *\r\n";
             }
             switch (_request.RequestType)
             {
                 case WhoRequestType.GetChannelUsersInfo:
                     if (_result.DataModels.Count > 0)
                     {
-                        SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].ChannelName);
+                        SendingBuffer += $":{ServerDomain} {ResponseName.EndOfWho} * {_request.ChannelName} * :End of WHO.\r\n";
                     }
                     break;
                 case WhoRequestType.GetUserInfo:
                     if (_result.DataModels.Count > 0)
                     {
-                        SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].NickName);
+                        SendingBuffer += $":{ServerDomain} {ResponseName.EndOfWho} * {_request.NickName} * :End of WHO.\r\n";
                     }
                     break;
             }
-        }
-        public static string BuildWhoReply(WhoDataModel data)
-        {
-            var cmdParams =
-                $"* {data.ChannelName} {data.UserName} " +
-                $"{data.PublicIPAddress} * {data.NickName} {data.Modes} *";
-            return IRCReplyBuilder.Build(ResponseName.WhoReply, cmdParams);
-        }
-
-        public static string BuildEndOfWhoReply(string name)
-        {
-            var cmdParams = $"* {name} *";
-            var tailing = "End of WHO.";
-            return IRCReplyBuilder.Build(
-               ResponseName.EndOfWho,
-               cmdParams,
-               tailing);
         }
     }
 }

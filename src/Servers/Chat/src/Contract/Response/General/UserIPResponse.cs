@@ -9,13 +9,9 @@ namespace UniSpy.Server.Chat.Contract.Response.General
         private new UserIPResult _result => (UserIPResult)base._result;
         public UserIPResponse(RequestBase request, ResultBase result) : base(request, result) { }
 
-        public static string BuildUserIPReply(string ip)
-        {
-            return IRCReplyBuilder.Build(ResponseName.UserIP, null, $"@{ip}");
-        }
         public override void Build()
         {
-            SendingBuffer = BuildUserIPReply(_result.RemoteIPAddress.ToString());
+            SendingBuffer = $":{ServerDomain} {ResponseName.UserIP} :@{_result.RemoteIPAddress}\r\n";
         }
     }
 }

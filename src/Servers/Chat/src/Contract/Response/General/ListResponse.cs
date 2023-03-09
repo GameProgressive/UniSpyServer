@@ -7,20 +7,15 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class ListResponse : ResponseBase
     {
         private new ListResult _result => (ListResult)base._result;
-        public ListResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public ListResponse(RequestBase request, ResultBase result) : base(request, result) { }
         public override void Build()
         {
             SendingBuffer = "";
             foreach (var info in _result.ChannelInfoList)
             {
-                var cmdParams = $"* {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
-                SendingBuffer += IRCReplyBuilder.Build(
-                    _result.UserIRCPrefix,
-                    ResponseName.ListStart,
-                    cmdParams,
-                    null);
+                SendingBuffer += $":{_result.UserIRCPrefix} {ResponseName.ListStart} * {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}\r\n";
             }
-            SendingBuffer += IRCReplyBuilder.Build(_result.UserIRCPrefix, ResponseName.ListEnd, null, null);
+            SendingBuffer += $":{_result.UserIRCPrefix} {ResponseName.ListEnd}\r\n";
         }
     }
 }

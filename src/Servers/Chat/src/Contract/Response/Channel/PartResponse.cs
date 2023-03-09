@@ -13,19 +13,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
 
         public override void Build()
         {
-            SendingBuffer = BuildPartReply(
-                _result.LeaverIRCPrefix,
-                _result.ChannelName,
-                _request.Reason);
-        }
-
-        public static string BuildPartReply(string userIRCPrefix, string channelName, string message)
-        {
-            return IRCReplyBuilder.Build(
-                userIRCPrefix,
-                ResponseName.Part,
-                channelName,
-                message);
+            SendingBuffer = $":{_result.LeaverIRCPrefix} {ResponseName.Part} {_result.ChannelName} :{_request.Reason ?? "Unknown reason"}\r\n";
         }
     }
 }

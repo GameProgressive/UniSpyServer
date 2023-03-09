@@ -1,3 +1,4 @@
+using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Aggregate.Misc;
 
 namespace UniSpy.Server.Chat.Exception.IRC.General
@@ -21,7 +22,7 @@ namespace UniSpy.Server.Chat.Exception.IRC.General
         }
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(IRCErrorCode.NickNameInUse, $"{_oldNickName} {_newNickName} *");
+            SendingBuffer = $":{ResponseBase.ServerDomain} {IRCErrorCode.NickNameInUse} {_oldNickName} {_newNickName} *\r\n";
         }
     }
 }

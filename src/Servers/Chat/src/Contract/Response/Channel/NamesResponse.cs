@@ -12,28 +12,10 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         public NamesResponse(NamesRequest request, NamesResult result) : base(request, result) { }
         public override void Build()
         {
-            SendingBuffer = BuildNameReply(
-                _result.RequesterNickName,
-                _result.ChannelName,
-                _result.AllChannelUserNick);
-            SendingBuffer += BuildEndOfNameReply(
-                _result.RequesterNickName,
-                _result.ChannelName);
-        }
-        public static string BuildNameReply(string nickName, string channelName, string nicksString)
-        {
-            return IRCReplyBuilder.Build(
-                ResponseName.NameReply,
-                $"{nickName} = {channelName}", nicksString);
-        }
-        public static string BuildEndOfNameReply(string nickName, string channelName)
-        {
-            string cmdParams = $"{nickName} {channelName}";
-            string tailing = @"End of /NAMES list.";
-            return IRCReplyBuilder.Build(
-                ResponseName.EndOfNames,
-                cmdParams,
-                tailing);
+            SendingBuffer = $":{ServerDomain} {ResponseName.NameReply} {_result.RequesterNickName} = {_result.ChannelName} :{_result.AllChannelUserNicks}\r\n";
+
+            SendingBuffer += $":{ServerDomain} {ResponseName.EndOfNames} {_result.RequesterNickName} {_result.ChannelName} :End of NAMES list.\r\n";
+
         }
     }
 }

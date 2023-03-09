@@ -7,13 +7,11 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class LoginResponse : ResponseBase
     {
         private new LoginResult _result => (LoginResult)base._result;
-        public LoginResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public LoginResponse(RequestBase request, ResultBase result) : base(request, result) { }
 
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(
-                ResponseName.Login,
-                cmdParams: $"* {_result.UserID} {_result.ProfileId}");
+            SendingBuffer = $":{ServerDomain} {ResponseName.Login} * {_result.UserID} {_result.ProfileId}\r\n";
         }
     }
 }

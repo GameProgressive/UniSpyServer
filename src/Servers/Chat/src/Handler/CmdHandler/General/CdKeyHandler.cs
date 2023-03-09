@@ -14,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         protected override void ResponseConstruct()
         {
-            _response = new CDKeyResponse(_request, _result);
+            _response = new CdKeyResponse(_request, _result);
         }
     }
 }

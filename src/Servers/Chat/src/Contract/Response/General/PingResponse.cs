@@ -7,11 +7,11 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class PingResponse : ResponseBase
     {
         private new PingResult _result => (PingResult)base._result;
-        public PingResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public PingResponse(RequestBase request, ResultBase result) : base(request, result) { }
 
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(_result.RequesterIRCPrefix, ResponseName.Pong, null, null);
+            SendingBuffer = $":{_result.RequesterIRCPrefix} {ResponseName.Pong}\r\n";
         }
     }
 }

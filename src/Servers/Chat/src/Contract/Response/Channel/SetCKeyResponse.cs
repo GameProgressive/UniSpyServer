@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 
@@ -11,13 +12,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         public SetCKeyResponse(SetCKeyRequest request, SetCKeyResult result) : base(request, result) { }
         public override void Build()
         {
-            //we only broadcast the key value string which contains b_*
-            string flags = _request.KeyValueString;
-            SendingBuffer = GetCKeyResponse.BuildGetCKeyReply(
-                                    _result.NickName,
-                                    _result.ChannelName,
-                                    _request.Cookie,
-                                     flags);
+            SendingBuffer = $":{ServerDomain} {ResponseName.GetCKey} * {_result.ChannelName} {_result.NickName} {_request.Cookie} {_request.KeyValueString}\r\n";
         }
     }
 }

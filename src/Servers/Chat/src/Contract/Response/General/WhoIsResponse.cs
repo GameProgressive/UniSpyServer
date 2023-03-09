@@ -8,13 +8,10 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     public sealed class WhoIsResponse : ResponseBase
     {
         private new WhoIsResult _result => (WhoIsResult)base._result;
-        public WhoIsResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public WhoIsResponse(RequestBase request, ResultBase result) : base(request, result) { }
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(
-                ResponseName.WhoIsUser,
-                cmdParams: $"{_result.NickName} {_result.Name} {_result.UserName} {_result.PublicIPAddress} *",
-                _result.UserName);
+            SendingBuffer = $":{ServerDomain} {ResponseName.WhoIsUser} {_result.NickName} {_result.Name} {_result.UserName} {_result.PublicIPAddress} * :{_result.UserName}\r\n";
 
             if (_result.JoinedChannelName.Count() != 0)
             {
@@ -25,17 +22,9 @@ namespace UniSpy.Server.Chat.Contract.Response.General
                     channelNames += $"@{name} ";
                 }
 
-                SendingBuffer += IRCReplyBuilder.Build(
-                    ResponseName.WhoIsChannels,
-                    $"{_result.NickName} {_result.Name}",
-                    channelNames
-                    );
+                SendingBuffer += $":{ServerDomain} {ResponseName.WhoIsChannels} {_result.NickName} {_result.Name} :{channelNames}\r\n";
 
-                SendingBuffer += IRCReplyBuilder.Build(
-                    ResponseName.EndOfWhoIs,
-                    $"{_result.NickName} {_result.Name}",
-                    "End of /WHOIS list."
-                    );
+                SendingBuffer += $":{ServerDomain} {ResponseName.EndOfWhoIs} {_result.NickName} {_result.Name} :End of WHOIS list.\r\n";
             }
         }
     }

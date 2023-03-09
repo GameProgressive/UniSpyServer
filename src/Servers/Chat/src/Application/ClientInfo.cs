@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Aggregate;
-using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 
@@ -28,7 +26,7 @@ namespace UniSpy.Server.Chat.Application
         public bool IsLoggedIn { get; set; } = false;
         public bool IsUsingEncryption { get; set; } = false;
         public bool IsQuietMode { get; set; } = false;
-        public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
+        public string IRCPrefix => $"{NickName}!{UserName}@{Chat.Abstraction.BaseClass.ResponseBase.ServerDomain}";
         public bool IsRemoteClient { get; set; }
         /// <summary>
         /// Global user key values

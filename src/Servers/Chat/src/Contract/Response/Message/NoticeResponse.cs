@@ -12,7 +12,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Message
         public NoticeResponse(RequestBase request, ResultBase result) : base(request, result){ }
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(_result.UserIRCPrefix, _result.TargetName, _request.Message);
+            SendingBuffer = $":{_result.UserIRCPrefix} {ResponseName.Notice} {_result.TargetName} :{_request.Message}\r\n";
         }
     }
 }

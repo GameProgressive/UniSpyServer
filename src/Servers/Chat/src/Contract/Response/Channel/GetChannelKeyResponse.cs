@@ -9,16 +9,11 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new GetChannelKeyRequest _request => (GetChannelKeyRequest)base._request;
         private new GetChannelKeyResult _result => (GetChannelKeyResult)base._result;
-        public GetChannelKeyResponse(GetChannelKeyRequest request, GetChannelKeyResult result) : base(request, result){ }
+        public GetChannelKeyResponse(GetChannelKeyRequest request, GetChannelKeyResult result) : base(request, result) { }
 
         public override void Build()
         {
-            var cmdParams = $"* {_result.ChannelName} {_request.Cookie} {_result.Values}";
-            SendingBuffer = IRCReplyBuilder.Build(
-                _result.ChannelUserIRCPrefix,
-                ResponseName.GetChanKey,
-                cmdParams,
-                null);
+            SendingBuffer = $":{_result.ChannelUserIRCPrefix} {ResponseName.GetChanKey} * {_result.ChannelName} {_request.Cookie} {_result.Values}\r\n";
         }
     }
 }

@@ -10,28 +10,11 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result => (JoinResult)base._result;
         // public string SendingBufferOfChannelUsers { get; private set; }
-        public JoinResponse(JoinRequest request, JoinResult result) : base(request, result){ }
+        public JoinResponse(JoinRequest request, JoinResult result) : base(request, result) { }
 
         public override void Build()
         {
-            // string modeReply = MODEResponse.BuildChannelModeReply(
-            //           _request.ChannelName, _result.ChannelModes);
-
-            // if (!_result.IsAlreadyJoinedChannel)
-            // {
-            //     SendingBufferOfChannelUsers = ChatIRCReplyBuilder.Build(
-            //         _result.JoinerPrefix,
-            //         ChatReplyName.JOIN,
-            //         _request.ChannelName,
-            //         null);
-            //     SendingBufferOfChannelUsers += modeReply;
-            // }
-
-            SendingBuffer = IRCReplyBuilder.Build(
-                _result.JoinerPrefix,
-                ResponseName.Join,
-                _request.ChannelName,
-                null);
+            SendingBuffer = $":{_result.JoinerPrefix} {ResponseName.Join} {_request.ChannelName}\r\n";
         }
     }
 }

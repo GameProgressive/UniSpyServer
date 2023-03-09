@@ -9,19 +9,16 @@ namespace UniSpy.Server.Chat.Contract.Response.General
     {
         private new GetKeyResult _result => (GetKeyResult)base._result;
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
-        public GetKeyResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public GetKeyResponse(RequestBase request, ResultBase result) : base(request, result) { }
 
         public override void Build()
         {
             SendingBuffer = "";
             foreach (var value in _result.Values)
             {
-                string cmdParams1 = $"* {_result.NickName} {_request.Cookie} {value}";
-                SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetKey, cmdParams1);
+                SendingBuffer += $":{ServerDomain} {ResponseName.GetKey} * {_result.NickName} {_request.Cookie} {value}\r\n";
             }
-            string cmdParams2 = $"* {_request.Cookie} *";
-            string tailing = "End of GETKEY.";
-            SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetKey, cmdParams2, tailing);
+            SendingBuffer += $":{ServerDomain} {ResponseName.EndGetKey} * {_request.Cookie} * :End of GETKEY.\r\n";
         }
     }
 }

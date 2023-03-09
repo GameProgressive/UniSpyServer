@@ -10,20 +10,19 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result => (ModeResult)base._result;
-        public ModeResponse(ModeRequest request, ModeResult result) : base(request, result){ }
+        public ModeResponse(ModeRequest request, ModeResult result) : base(request, result) { }
         public override void Build()
         {
             if (_request.RequestType == ModeRequestType.GetChannelModes)
             {
                 //channel modes reply
-                string cmdParams = $"{_result.ChannelName} {_result.ChannelModes}";
-                SendingBuffer = IRCReplyBuilder.Build(ResponseName.Mode, cmdParams);
+                SendingBuffer = $":{ServerDomain} {ResponseName.ChannelModels} * {_result.ChannelName} {_result.ChannelModes}\r\n";
             }
-            else if (_request.RequestType == ModeRequestType.GetChannelUserModes)
+            else
             {
                 //channel user mode reply
-                string cmdParams = $"{_result.JoinerNickName} {_result.ChannelName} {_result.ChannelModes}";
-                SendingBuffer = IRCReplyBuilder.Build(ResponseName.ChannelModels, cmdParams);
+                // the client will know which mode its ask for
+                SendingBuffer = $":{ServerDomain} {ResponseName.Mode} * {_result.ChannelName} {_result.ChannelModes}\r\n";
             }
         }
     }

@@ -9,7 +9,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result => (SetChannelKeyResult)base._result;
-        public SetChannelKeyResponse(SetChannelKeyRequest request, SetChannelKeyResult result) : base(request, result){ }
+        public SetChannelKeyResponse(SetChannelKeyRequest request, SetChannelKeyResult result) : base(request, result) { }
 
         public override void Build()
         {
@@ -18,13 +18,8 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
             {
                 flags += $@"\{kv.Key}\{kv.Value}";
             }
-            var cmdParams = $"* {_request.ChannelName} BCAST {flags}";
-            SendingBuffer =
-                IRCReplyBuilder.Build(
-                    _result.ChannelUserIRCPrefix,
-                    ResponseName.GetChanKey,
-                    cmdParams,
-                    null);
+            
+            SendingBuffer = $":{_result.ChannelUserIRCPrefix} {ResponseName.GetChanKey} * {_request.ChannelName} BCAST {flags}\r\n";
         }
     }
 }

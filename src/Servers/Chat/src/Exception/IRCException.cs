@@ -1,4 +1,3 @@
-using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -27,7 +26,7 @@ namespace UniSpy.Server.Chat.Exception.IRC.General
 
         public virtual void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(ErrorCode);
+            SendingBuffer = $":{Abstraction.BaseClass.ResponseBase.ServerDomain} {ErrorCode}\r\n";
         }
     }
 }

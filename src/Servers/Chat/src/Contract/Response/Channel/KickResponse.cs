@@ -12,9 +12,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         public KickResponse(KickRequest request, KickResult result) : base(request, result) { }
         public override void Build()
         {
-            var cmdParams = $"{_result.ChannelName} {_result.KickeeNickName}";
-
-            SendingBuffer = IRCReplyBuilder.Build(_result.KickerIRCPrefix, ResponseName.Kick, cmdParams, _request.Reason ?? null);
+            SendingBuffer = $":{_result.KickerIRCPrefix} {ResponseName.Kick} {_result.ChannelName} {_result.KickeeNickName} :{_request.Reason}\r\n";
         }
     }
 }

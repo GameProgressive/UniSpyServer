@@ -1,12 +1,13 @@
 using UniSpy.Server.Chat.Exception.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc;
+using UniSpy.Server.Chat.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Chat.Exception
 {
     public class IRCChannelException : IRCException
     {
         public string ChannelName { get; private set; }
-        public IRCChannelException(){ }
+        public IRCChannelException() { }
         public IRCChannelException(string message, string errorCode, string channelName) : base(message, errorCode)
         {
             ChannelName = channelName;
@@ -17,7 +18,7 @@ namespace UniSpy.Server.Chat.Exception
         }
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.BuildChannelError(ErrorCode, ChannelName, Message);
+            SendingBuffer = $":{ResponseBase.ServerDomain} {ErrorCode} * {ChannelName} :{Message}\r\n";
         }
     }
 }

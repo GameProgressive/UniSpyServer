@@ -9,11 +9,11 @@ namespace UniSpy.Server.Chat.Contract.Response.Message
     {
         private new UtmResult _result => (UtmResult)base._result;
         private new UtmRequest _request => (UtmRequest)base._request;
-        public UtmResponse(RequestBase request, ResultBase result) : base(request, result){ }
+        public UtmResponse(RequestBase request, ResultBase result) : base(request, result) { }
 
         public override void Build()
         {
-            SendingBuffer = IRCReplyBuilder.Build(_result.UserIRCPrefix, ResponseName.UnderTheTableMsg, _result.TargetName, _request.Message);
+            SendingBuffer = $":{_result.UserIRCPrefix} {ResponseName.UnderTheTableMsg} {_result.TargetName} :{_request.Message}\r\n";
         }
     }
 }

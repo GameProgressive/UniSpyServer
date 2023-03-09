@@ -10,34 +10,17 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
         private new GetCKeyResult _result => (GetCKeyResult)base._result;
 
-        public GetCKeyResponse(GetCKeyRequest request, GetCKeyResult result) : base(request, result){ }
-        public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
-        {
-            var cmdParams = $"* {channelName} {nickname} {cookie} {flags}";
-            return IRCReplyBuilder.Build(ResponseName.GetCKey, cmdParams);
-        }
-
-        public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
-        {
-            var cmdParams = $"* {channelName} {cookie}";
-            var tailing = "End Of /GETCKEY.";
-            return IRCReplyBuilder.Build(
-                ResponseName.EndGetCKey,
-                cmdParams,
-                tailing);
-        }
+        public GetCKeyResponse(GetCKeyRequest request, GetCKeyResult result) : base(request, result) { }
+        
         public override void Build()
         {
             SendingBuffer = "";
             foreach (var data in _result.DataResults)
             {
-                SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetCKey,
-                $"* {data.NickName} {_request.ChannelName} {_request.Cookie} {data.UserValues}");
+                SendingBuffer += $":{ServerDomain} {ResponseName.GetCKey} * {data.NickName} {_request.ChannelName} {_request.Cookie} {data.UserValues}\r\n";
             }
 
-            SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetCKey,
-                 $"* {_request.ChannelName} {_request.Cookie}",
-                 "End Of /GETCKEY.");
+            SendingBuffer += $":{ServerDomain} {ResponseName.EndGetCKey} * {_request.ChannelName} {_request.Cookie} :End Of GETCKEY.\r\n";
         }
     }
 }
