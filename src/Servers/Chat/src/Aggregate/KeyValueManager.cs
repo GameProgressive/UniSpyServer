@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Aggregate
@@ -7,6 +8,7 @@ namespace UniSpy.Server.Chat.Aggregate
     public class KeyValueManager
     {
         public ConcurrentDictionary<string, string> Dict { get; private set; }
+
         public KeyValueManager()
         {
             Dict = new ConcurrentDictionary<string, string>();
@@ -37,11 +39,22 @@ namespace UniSpy.Server.Chat.Aggregate
                 }
                 else
                 {
-                    // todo check whether we need add empty value "\\"
                     throw new ChatException($"Can not find key: {key}");
                 }
             }
             return values;
+        }
+
+        public bool IsContainAllKey(List<string> keys)
+        {
+            foreach (var key in keys)
+            {
+                if (!Dict.ContainsKey(key))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

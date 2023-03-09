@@ -35,7 +35,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// </summary>
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
         [JsonIgnore]
-        public Channel JoinedChannel { get; private set; }
+        public Channel BelongedChannel { get; private set; }
         public string Modes
         {
             get
@@ -58,7 +58,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public ChannelUser(IChatClient client, Channel channel)
         {
             ClientRef = client;
-            JoinedChannel = channel;
+            BelongedChannel = channel;
         }
 
         public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)

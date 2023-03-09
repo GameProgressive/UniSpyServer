@@ -211,5 +211,55 @@ namespace UniSpy.Server.Chat.Test
                 ((ITestClient)client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
+
+        [Fact]
+        public void Worm3d20230309()
+        {
+            var client1 = MockObject.CreateClient("91.52.107.144", 42292);
+            var client2 = MockObject.CreateClient("91.52.107.144", 50187);
+
+            // Given
+            var requests = new List<KeyValuePair<IClient, string>>()
+            {
+                new KeyValuePair<IClient, string>(client1,"USRIP"+"\r\n"),
+                new KeyValuePair<IClient, string>(client1,"USER XO4Gqlff1X|1 127.0.0.1 peerchat.gamespy.com :e60465b8fb4bc71d36812797f498fc5b" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"NICK spyguy" + "\r\n"),
+
+                new KeyValuePair<IClient, string>(client1,"JOIN #GSP!worms3!Mllz4DcahM" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"MODE #GSP!worms3!Mllz4DcahM" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"SETCKEY #GSP!worms3!Mllz4DcahM spyguy :\b_flags\sh" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"GETCKEY #GSP!worms3!Mllz4DcahM * 001 0 :\username\b_flags" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"TOPIC #GSP!worms3!Mllz4DcahM :test" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"MODE #GSP!worms3!Mllz4DcahM +l 2" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"SETCKEY #GSP!worms3!Mllz4DcahM spyguy :\b_firewall\1\b_profileid\1\b_ipaddress\\b_publicip\91.52.107.144\b_privateip\192.168.0.50\b_authresponse\\b_gamever\1073\b_val\0" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"WHO spyguy" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"SETCHANKEY #GSP!worms3!Mllz4DcahM :\b_hostname\\b_hostport\\b_MaxPlayers\4\b_NumPlayers\0\b_SchemeChanging\0\b_gamever\1073\b_gametype\\b_mapname\Random\b_firewall\1\b_publicip\91.52.107.144\b_privateip\192.168.0.50\b_gamemode\openstaging\b_val\0\b_password\1" + "\r\n"),
+
+
+
+                new KeyValuePair<IClient, string>(client2,"USRIP" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"USER XO4Gqlff1X|31 127.0.0.1 peerchat.gamespy.com :a54aaa669bd5cd97e7799659de33ed22" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"NICK unispy" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"JOIN #GSP!worms3!Mllz4DcahM" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"MODE #GSP!worms3!Mllz4DcahM" + "\r\n"),
+
+                new KeyValuePair<IClient, string>(client1,@"GETKEY unispy 002 0 :\b_firewall\b_profileid\b_ipaddress\b_publicip\b_privateip\b_authresponse\b_gamever\b_val" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"GETCKEY #GSP!worms3!Mllz4DcahM unispy 003 0 :\b_firewall\b_profileid\b_ipaddress\b_publicip\b_privateip\b_authresponse\b_gamever\b_val" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"SETCHANKEY #GSP!worms3!Mllz4DcahM :\b_hostname\\b_hostport\\b_MaxPlayers\4\b_NumPlayers\0\b_SchemeChanging\0\b_gamever\1073\b_gametype\\b_mapname\Random\b_firewall\1\b_publicip\91.52.107.144\b_privateip\192.168.0.50\b_gamemode\openstaging\b_val\0\b_password\1" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,@"SETCHANKEY #GSP!worms3!Mllz4DcahM :\b_hostname\\b_hostport\\b_MaxPlayers\4\b_NumPlayers\0\b_SchemeChanging\0\b_gamever\1073\b_gametype\\b_mapname\Random\b_firewall\1\b_publicip\91.52.107.144\b_privateip\192.168.0.50\b_gamemode\openstaging\b_val\0\b_password\1" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"UTM #GSP!worms3!Mllz4DcahM :MDM |Obj|3|Land.Time|0|LogicalSeed|237235259|GraphicalSeed|4280690287|Land.RealSeed|2147483642|Land.Theme|Pirate.Lumps|LevelToUse|FE.Level.RandomLand|Land.Ind|0|Wormpot.Reel1|17|Wormpot.Reel2|17|Wormpot.Reel3|17|TimeStamp|98044" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"UTM #GSP!worms3!Mllz4DcahM :TDM aA" + "\r\n"),
+                new KeyValuePair<IClient, string>(client1,"UTM #GSP!worms3!Mllz4DcahM :SDM ASFE.Scheme.StandardCUnAACADCBBCACBBFFBKBB8C/C3C!A!A*C*C<D*B*B*B*B*B*B3C*B<A*C3CEC!A-C5C-C3C<C*A*B*B*C*B<CEC*B*C<B<D!A*B*B3B3C<D!A<D/C<C<D*C*A" + "\r\n"),
+
+                new KeyValuePair<IClient, string>(client2,@"GETCKEY #GSP!worms3!Mllz4DcahM * 008 0 :\username\b_flags" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"UTM #GSP!worms3!Mllz4DcahM :APE [01]privateip[02]192.168.0.113[01]publicip[02]91.52.107.144" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,"WHO unispy" + "\r\n"),
+                new KeyValuePair<IClient, string>(client2,@"GETCKEY #GSP!worms3!Mllz4DcahM spyguy 009 0 :\b_firewall\b_profileid\b_ipaddress\b_publicip\b_privateip\b_authresponse\b_gamever\b_val")
+            };
+            foreach (var item in requests)
+            {
+                ((ITestClient)(item.Key)).TestReceived(UniSpyEncoding.GetBytes(item.Value));
+            }
+        }
     }
 }
