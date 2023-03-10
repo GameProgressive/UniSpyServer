@@ -55,10 +55,10 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         private void GetUserKeyValue(ChannelUser user)
         {
-            if (user.BelongedChannel.RoomType == Aggregate.PeerRoomType.Staging)
-            {
-                WaittingForKey(user);
-            }
+            // if (user.BelongedChannel.RoomType == Aggregate.PeerRoomType.Staging)
+            // {
+            //     WaittingForKey(user);
+            // }
             // we get user's values
             string userValues = user.KeyValues.GetValueString(_request.Keys);
             var model = new GetCKeyDataModel

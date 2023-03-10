@@ -66,8 +66,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             IsVoiceable = true;
             IsChannelCreator = isCreator;
             IsChannelOperator = isOperator;
-            KeyValues.Update(new KeyValuePair<string, string>("username", Info.UserName));
-            KeyValues.Update(new KeyValuePair<string, string>("b_flags", "sh"));
+            // KeyValues.Update(new KeyValuePair<string, string>("username", Info.UserName));
+            // KeyValues.Update(new KeyValuePair<string, string>("b_flags", "sh"));
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UniSpy.Server.Chat.Exception;
+
 
 namespace UniSpy.Server.Chat.Aggregate
 {
@@ -39,7 +38,8 @@ namespace UniSpy.Server.Chat.Aggregate
                 }
                 else
                 {
-                    throw new ChatException($"Can not find key: {key}");
+                    values += @"\";
+                    // throw new ChatException($"Can not find key: {key}");
                 }
             }
             return values;
