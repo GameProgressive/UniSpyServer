@@ -43,14 +43,12 @@ namespace UniSpy.LinqToRedis
         {
             ExpireTime = expireTime;
         }
+       
         private string BuildFullKey()
         {
             string fullKey = null;
             var properties = GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(RedisKeyAttribute), true).Select(a => a is RedisKeyAttribute).Any()).ToList();
-            if (properties.Count() == 0)
-            {
-                throw new ArgumentNullException($"The RedisKeyValueObject:{this.GetType().Name} must have a key");
-            }
+
             foreach (var property in properties)
             {
                 // if (!_supportedTypes.Contains(property.PropertyType))

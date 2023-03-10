@@ -29,12 +29,31 @@ namespace UniSpy.LinqToRedis
         // public List<TValue> AllKeys => Context.Select(k => k.Key).ToList();
         public RedisClient(string connectionString, int db)
         {
+            CheckValidation();
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
         }
-
+        private void CheckValidation()
+        {
+            var properties = typeof(TValue).GetProperties().Where(p => p.GetCustomAttributes(typeof(RedisKeyAttribute), true).Select(a => a is RedisKeyAttribute).Any()).ToList();
+            if (properties.Count() == 0)
+            {
+                throw new ArgumentNullException($"The RedisKeyValueObject:{this.GetType().Name} must have a key");
+            }
+            // we need to check whether 
+            var valueProperties = properties.Where(p => p.PropertyType.IsValueType == true && p.PropertyType.IsGenericType == false).ToList();
+            if (valueProperties.Count >= 1)
+            {
+                var propNames = "";
+                foreach (var prop in valueProperties)
+                {
+                    propNames += $" {typeof(TValue).Name}.{prop.Name}";
+                }
+                throw new ArgumentException($"The RedisKey object must be reference type, please convert the following properties to reference type:{propNames}");
+            }
+        }
         /// <summary>
         /// Use existing multiplexer for performance
         /// </summary>
@@ -42,6 +61,7 @@ namespace UniSpy.LinqToRedis
         /// <param name="db"></param>
         public RedisClient(IConnectionMultiplexer multiplexer, int db)
         {
+            CheckValidation();
             Multiplexer = multiplexer;
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
