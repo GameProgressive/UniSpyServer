@@ -3,10 +3,10 @@ using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.Contract.Result
 {
-    public sealed class ServerInfoResult : ServerListUpdateOptionResultBase
+    public sealed class AdHocResult : ResultBase
     {
         public GameServerInfo GameServerInfo { get; set; }
-        public ServerInfoResult()
+        public AdHocResult()
         {
         }
     }

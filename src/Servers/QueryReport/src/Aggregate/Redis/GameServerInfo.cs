@@ -7,6 +7,7 @@ using UniSpy.Server.QueryReport.Enumerate;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.Core.Extension.Redis;
+using System.Linq;
 
 namespace UniSpy.Server.QueryReport.Aggregate.Redis.GameServer
 {
@@ -24,12 +25,17 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.GameServer
         /// <summary>
         /// The port for send heartbeat to query report server.
         /// When a client want to connect to this game server, Server browser will send natneg message to this port.👌
+        /// Must set this as nullable object, otherwise it will have default value
         /// </summary>
-        /// <value></value>
         [RedisKey]
         public ushort? QueryReportPort { get; set; }
         [JsonIgnore]
         public IPEndPoint QueryReportIPEndPoint => new IPEndPoint(HostIPAddress, (int)QueryReportPort);
+        [JsonIgnore]
+        /// <summary>
+        /// Get the hton bytes of query report port, easy for access
+        /// </summary>
+        public byte[] QueryReportPortBytes => BitConverter.GetBytes((ushort)QueryReportPort).Reverse().ToArray();
         public DateTime LastPacketReceivedTime { get; set; }
         // public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
         public GameServerStatus ServerStatus { get; set; }

@@ -5,13 +5,13 @@ using UniSpy.Server.ServerBrowser.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.Abstraction
 {
-    public abstract class AdHocRequest : RequestBase
+    public abstract class AdHocRequestBase : RequestBase
     {
         /// <summary>
         /// The game server client search for
         /// </summary>
         public IPEndPoint GameServerPublicIPEndPoint { get; private set; }
-        public AdHocRequest(byte[] rawRequest) : base(rawRequest)
+        public AdHocRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 

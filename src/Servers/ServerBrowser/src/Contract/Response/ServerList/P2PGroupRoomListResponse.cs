@@ -24,16 +24,16 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response.ServerList
             //we use NTS string so total unique value list is 0
             BuildUniqueValue();
             //add server infomation such as public ip etc.
-            BuildServerFullInfo();
-            SendingBuffer = _serverListData.ToArray();
+            BuildServersFullInfo();
+            SendingBuffer = _serversInfoBuffer.ToArray();
         }
 
-        protected override void BuildServerFullInfo()
+        protected override void BuildServersFullInfo()
         {
             foreach (var room in _result.PeerGroupInfo.PeerRooms)
             {
                 //add has key flag
-                _serverListData.Add((byte)GameServerFlags.HasKeysFlag);
+                _serversInfoBuffer.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
                 // group id = 0 means the end flag of group list
                 var groupId = 0;
@@ -42,15 +42,15 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response.ServerList
                     groupId = room.GroupId;
                 }
                 var groupIdBytes = BitConverter.GetBytes(groupId).Reverse().ToArray();
-                _serverListData.AddRange(groupIdBytes);
+                _serversInfoBuffer.AddRange(groupIdBytes);
 
                 foreach (var key in _request.Keys)
                 {
-                    _serverListData.Add(StringFlag.NTSStringFlag);
+                    _serversInfoBuffer.Add(StringFlag.NTSStringFlag);
                     var value = room.KeyValues.ContainsKey(key) ? room.KeyValues[key] : "";
                     // if key is uint or int, we need first convert to ASCII string then get bytes
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(value.ToString()));
-                    _serverListData.Add(StringFlag.StringSpliter);
+                    _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(value.ToString()));
+                    _serversInfoBuffer.Add(StringFlag.StringSpliter);
                 }
             }
         }

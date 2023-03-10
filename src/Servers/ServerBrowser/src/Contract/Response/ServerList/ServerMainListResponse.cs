@@ -23,30 +23,31 @@ namespace UniSpy.Server.ServerBrowser.Aggregate.Packet.Response
             //we use NTS string so total unique value list is 0
             BuildUniqueValue();
             //add server infomation such as public ip etc.
-            BuildServerFullInfo();
+            BuildServersFullInfo();
 
-            SendingBuffer = _serverListData.ToArray();
+            SendingBuffer = _serversInfoBuffer.ToArray();
         }
 
-        protected override void BuildServerFullInfo()
+        protected override void BuildServersFullInfo()
         {
             foreach (var serverInfo in _result.GameServerInfos)
             {
-                BuildServerInfoHeader(_result.Flag, serverInfo);
+                var header = ServerInfoBuilder.BuildServerInfoHeader(_result.Flag, serverInfo);
+                _serversInfoBuffer.AddRange(header);
                 foreach (var key in _request.Keys)
                 {
-                    _serverListData.Add(StringFlag.NTSStringFlag);
+                    _serversInfoBuffer.Add(StringFlag.NTSStringFlag);
                     // if the key is in our database, we just add it
                     // otherwise we leave it empty, game will set default value
                     if (serverInfo.ServerData.ContainsKey(key))
                     {
-                        _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData[key]));
+                        _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData[key]));
                     }
-                    _serverListData.Add(StringFlag.StringSpliter);
+                    _serversInfoBuffer.Add(StringFlag.StringSpliter);
                 }
             }
             //after all server information is added we add the end flag
-            _serverListData.AddRange(StringFlag.AllServerEndFlag);
+            _serversInfoBuffer.AddRange(StringFlag.AllServerEndFlag);
         }
     }
 }

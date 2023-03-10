@@ -16,11 +16,11 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler
     public sealed class ServerInfoHandler : CmdHandlerBase
     {
         private new ServerInfoRequest _request => (ServerInfoRequest)base._request;
-        private new ServerInfoResult _result { get => (ServerInfoResult)base._result; set => base._result = value; }
+        private new AdHocResult _result { get => (AdHocResult)base._result; set => base._result = value; }
 
         public ServerInfoHandler(IClient client, IRequest request) : base(client, request)
         {
-            _result = new ServerInfoResult();
+            _result = new AdHocResult();
         }
 
         protected override void DataOperation()
@@ -42,7 +42,7 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler
             {
                 return;
             }
-            _response = new ServerInfoResponse(_request, _result);
+            _response = new UpdateServerInfoResponse(_result);
         }
     }
 }

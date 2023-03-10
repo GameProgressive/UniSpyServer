@@ -19,18 +19,10 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis
             IClient client = ClientManagerBase.GetClient(message.TargetIPEndPoint);
             if (client is null)
             {
-                throw new QRException($"Client:{message.TargetIPEndPoint} not found.");
+                LogWriter.LogWarn($"Client:{message.TargetIPEndPoint} not found, we ignore natneg message from SB: {message.ServerBrowserSenderId}");
+                return;
             }
 
-            // LogWriter.LogNetworkReceiving(message.TargetIPEndPoint,  message.NatNegMessage, true);
-            // if (Client.ClientPool.TryGetValue(message.TargetIPEndPoint, out client))
-            // {
-            //     client = Client.ClientPool[message.TargetIPEndPoint];
-            // }
-            // else
-            // {
-            //     throw new QRException($"Client:{message.TargetIPEndPoint} not found.");
-            // }
             client.LogInfo($"Get client message from server browser: {message.ServerBrowserSenderId} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
             new ClientMessageHandler(client, message).Handle();
         }

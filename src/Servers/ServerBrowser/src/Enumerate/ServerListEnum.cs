@@ -13,11 +13,11 @@ namespace UniSpy.Server.ServerBrowser.Enumerate
     public enum ResponseType
     {
         PushKeysMessage = 1,
-        PushServerMessage,
-        KeepAliveMessage,
-        DeleteServerMessage,
-        MapLoopMessage,
-        PlayerSearchMessage
+        PushServerMessage = 2,
+        KeepAliveMessage = 3,
+        DeleteServerMessage = 4,
+        MapLoopMessage = 5,
+        PlayerSearchMessage = 6
     }
 
     public enum ProtocolVersion

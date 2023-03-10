@@ -1,3 +1,4 @@
+using UniSpy.Server.Core.Logging;
 using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
 using UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc;
 
@@ -11,6 +12,7 @@ namespace UniSpy.Server.ServerBrowser.Aggregate
         /// </summary>
         public override void ReceivedMessage(GameServerInfo message)
         {
+            LogWriter.LogInfo($"Received game server message from QR:{message.ServerID}");
             var handler = new AdHocHandler(message);
             handler.Handle();
         }

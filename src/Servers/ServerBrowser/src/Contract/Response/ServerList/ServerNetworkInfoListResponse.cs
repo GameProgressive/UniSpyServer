@@ -3,7 +3,7 @@ using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Aggregate.Misc;
 using UniSpy.Server.ServerBrowser.Contract.Result.ServerList;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.ServerBrowser.Contract.Request;
+using UniSpy.Server.ServerBrowser.Aggregate;
 
 namespace UniSpy.Server.ServerBrowser.Contract.Response.ServerList
 {
@@ -19,46 +19,45 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response.ServerList
         public override void Build()
         {
             base.Build();
-            SendingBuffer = _serverListData.ToArray();
+            SendingBuffer = _serversInfoBuffer.ToArray();
         }
-        protected override void BuildServerFullInfo()
+        protected override void BuildServersFullInfo()
         {
             foreach (var server in _result.ServersInfo)
             {
-                BuildServerInfoHeader(
-                                GameServerFlags.HasFullRulesFlag,
-                                server);
+                var header = ServerInfoBuilder.BuildServerInfoHeader(
+                                 GameServerFlags.HasFullRulesFlag,
+                                 server);
+                _serversInfoBuffer.AddRange(header);
 
                 foreach (var kv in server.ServerData)
                 {
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                    _serverListData.Add(StringFlag.StringSpliter);
-                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                    _serverListData.Add(StringFlag.StringSpliter);
+                    _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                    _serversInfoBuffer.Add(StringFlag.StringSpliter);
+                    _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                    _serversInfoBuffer.Add(StringFlag.StringSpliter);
                 }
                 foreach (var player in server.PlayerData)
                 {
                     foreach (var kv in player)
                     {
-                        _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                        _serverListData.Add(StringFlag.StringSpliter);
-                        _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                        _serverListData.Add(StringFlag.StringSpliter);
+                        _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                        _serversInfoBuffer.Add(StringFlag.StringSpliter);
+                        _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                        _serversInfoBuffer.Add(StringFlag.StringSpliter);
                     }
                 }
                 foreach (var team in server.TeamData)
                 {
                     foreach (var kv in team)
                     {
-                        _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                        _serverListData.Add(StringFlag.StringSpliter);
-                        _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                        _serverListData.Add(StringFlag.StringSpliter);
+                        _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                        _serversInfoBuffer.Add(StringFlag.StringSpliter);
+                        _serversInfoBuffer.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                        _serversInfoBuffer.Add(StringFlag.StringSpliter);
                     }
                 }
             }
-
         }
-
     }
 }

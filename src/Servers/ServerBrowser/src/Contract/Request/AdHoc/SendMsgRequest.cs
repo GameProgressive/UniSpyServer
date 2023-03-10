@@ -5,7 +5,7 @@ namespace UniSpy.Server.ServerBrowser.Contract.Request
 {
 
 
-    public class SendMsgRequest : AdHocRequest
+    public class SendMsgRequest : AdHocRequestBase
     {
         public byte[] PrefixMessage { get; private set; }
         public byte[] ClientMessage { get; private set; }
