@@ -13,5 +13,11 @@ namespace UniSpy.Server.Master.Application
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+
+        protected override void OnConnected()
+        {
+            // todo send the challenge key
+            base.OnConnected();
+        }
     }
 }
