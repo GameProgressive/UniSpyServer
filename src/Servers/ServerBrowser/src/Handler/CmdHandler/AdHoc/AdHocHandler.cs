@@ -39,6 +39,7 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc
             {
                 if (((Client)client).Info.GameName == _message.GameName && client.Crypto is not null)
                 {
+                    client.LogInfo($"Sending AdHoc message {_message.ServerStatus} to client");
                     client.Send(response);
                 }
             });
