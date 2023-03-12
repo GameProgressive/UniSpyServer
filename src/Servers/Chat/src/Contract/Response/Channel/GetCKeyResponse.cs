@@ -17,7 +17,7 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
             SendingBuffer = "";
             foreach (var data in _result.DataResults)
             {
-                SendingBuffer += $":{ServerDomain} {ResponseName.GetCKey} * {data.NickName} {_request.ChannelName} {_request.Cookie} {data.UserValues}\r\n";
+                SendingBuffer += $":{ServerDomain} {ResponseName.GetCKey} * {_request.ChannelName} {data.NickName} {_request.Cookie} {data.UserValues}\r\n";
             }
 
             SendingBuffer += $":{ServerDomain} {ResponseName.EndGetCKey} * {_request.ChannelName} {_request.Cookie} :End Of GETCKEY.\r\n";

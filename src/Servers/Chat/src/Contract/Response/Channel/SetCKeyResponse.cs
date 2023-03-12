@@ -13,6 +13,8 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         public override void Build()
         {
             SendingBuffer = $":{ServerDomain} {ResponseName.GetCKey} * {_result.ChannelName} {_result.NickName} {_request.Cookie} {_request.KeyValueString}\r\n";
+
+            SendingBuffer += $":{ServerDomain} {ResponseName.EndGetCKey} * {_request.ChannelName} {_request.Cookie} :End Of SETCKEY.\r\n";
         }
     }
 }
