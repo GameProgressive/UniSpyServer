@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using UniSpy.Server.ServerBrowser.Application;
 using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Aggregate.Misc;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
 
 namespace UniSpy.Server.ServerBrowser.Abstraction.BaseClass
 {
