@@ -4,12 +4,13 @@ using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.Chat.Contract.Request.Channel
 {
-    
+
     public sealed class SetChannelKeyRequest : ChannelRequestBase
     {
-        public Dictionary<string, string> KeyValue { get; private set; }
+        public string KeyValueString { get; private set; }
+        public Dictionary<string, string> KeyValues { get; private set; }
 
-        public SetChannelKeyRequest(string rawRequest) : base(rawRequest){ }
+        public SetChannelKeyRequest(string rawRequest) : base(rawRequest) { }
 
         public override void Parse()
         {
@@ -21,7 +22,8 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             }
             _longParam = _longParam.Substring(1);
 
-            KeyValue = StringExtensions.ConvertKVStringToDictionary(_longParam);
+            KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
+            KeyValueString = _longParam;
         }
     }
 }

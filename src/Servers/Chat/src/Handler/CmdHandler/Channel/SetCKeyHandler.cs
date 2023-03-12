@@ -65,7 +65,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 _response = new SetCKeyResponse(_request, _result);
             }
         }
-
+        //! if there are key start with b_ we must broadcast to everyone
         protected override void Response()
         {
             _channel.MultiCast(_client, _response);

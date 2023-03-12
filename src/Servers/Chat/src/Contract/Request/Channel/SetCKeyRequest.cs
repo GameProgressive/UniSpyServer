@@ -12,20 +12,8 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
         public bool IsBroadCast { get; private set; }
-
+        public string KeyValueString { get; private set; }
         public Dictionary<string, string> KeyValues { get; private set; }
-        public string KeyValueString
-        {
-            get
-            {
-                string buffer = "";
-                foreach (var kv in KeyValues)
-                {
-                    buffer += $@"\{kv.Key}\{kv.Value}";
-                }
-                return buffer;
-            }
-        }
 
         public SetCKeyRequest(string rawRequest) : base(rawRequest)
         {
@@ -50,7 +38,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             NickName = _cmdParams[1];
             _longParam = _longParam.Substring(1);
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
-            
+            KeyValueString = _longParam;
             // todo check whether there exists other b_* key value
             if (KeyValues.Keys.Where(x => x.Contains("b_")).Count() > 0)
             {

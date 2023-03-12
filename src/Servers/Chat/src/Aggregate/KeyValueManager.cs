@@ -6,12 +6,12 @@ namespace UniSpy.Server.Chat.Aggregate
 {
     public class KeyValueManager
     {
-        public ConcurrentDictionary<string, string> Dict { get; private set; }
+        public ConcurrentDictionary<string, string> Dict { get; private set; } = new ConcurrentDictionary<string, string>();
 
         public KeyValueManager()
         {
-            Dict = new ConcurrentDictionary<string, string>();
         }
+        
         public void Update(Dictionary<string, string> data)
         {
             // TODO check if all key is send through the request or
@@ -26,7 +26,15 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             Dict[data.Key] = data.Value;
         }
-
+        public static string BuildKeyValueString(Dictionary<string, string> keyValues)
+        {
+            string flags = "";
+            foreach (var kv in keyValues)
+            {
+                flags += $@"\{kv.Key}\{kv.Value}";
+            }
+            return flags;
+        }
         public string GetValueString(List<string> keys)
         {
             string values = "";

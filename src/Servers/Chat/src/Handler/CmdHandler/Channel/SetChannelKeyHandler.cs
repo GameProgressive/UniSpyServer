@@ -12,7 +12,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     // Otherwise, they will be set on the user,
     // Only ops can set channel keys on other users.
     // Set a value to NULL or "" to clear that key.
-
     public sealed class SetChannelKeyHandler : ChannelHandlerBase
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
@@ -28,8 +27,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 throw new ChatException("SETCHANKEY failed because you are not channel operator.");
             }
-            _channel.KeyValues.Update(_request.KeyValue);
-            // _user.KeyValues.Update(_request.KeyValue);
+            _channel.KeyValues.Update(_request.KeyValues);
 
             _result.ChannelName = _result.ChannelName;
             _result.ChannelUserIRCPrefix = _user.Info.IRCPrefix;
@@ -37,6 +35,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         protected override void ResponseConstruct()
         {
             _response = new SetChannelKeyResponse(_request, _result);
+        }
+        //! setchankey must be broadcast to every one in this channel except sender
+        protected override void Response()
+        {
+            _channel.MultiCast(_client, _response, true);
         }
     }
 }
