@@ -37,7 +37,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
             //     return;
             // }
             _result.IsBroadcastMessage = true;
-            base.ChannelMessageDataOpration();
         }
         protected override void ResponseConstruct()
         {

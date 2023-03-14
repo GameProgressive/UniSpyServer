@@ -30,10 +30,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                     throw new ChatException("Unknown chat message request type.");
             }
         }
-        protected virtual void ChannelMessageRequestCheck()
-        {
-            base.RequestCheck();
-        }
+        protected virtual void ChannelMessageRequestCheck() => base.RequestCheck();
         protected virtual void UserMessageRequestCheck()
         {
             // todo check if we only allow user join one channel
@@ -51,27 +48,22 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         }
         protected override void DataOperation()
         {
+            _result.UserIRCPrefix = _client.Info.IRCPrefix;
             switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
+                    _result.TargetName = _request.ChannelName;
                     ChannelMessageDataOpration();
                     break;
                 case MessageType.UserMessage:
+                    _result.TargetName = _request.NickName;
                     UserMessageDataOperation();
                     break;
             }
         }
 
-        protected virtual void ChannelMessageDataOpration()
-        {
-            _result.TargetName = _request.ChannelName;
-            _result.UserIRCPrefix = _user.Info.IRCPrefix;
-        }
-        protected virtual void UserMessageDataOperation()
-        {
-            _result.TargetName = _request.NickName;
-            _result.UserIRCPrefix = _receiver.Info.IRCPrefix;
-        }
+        protected virtual void ChannelMessageDataOpration() { }
+        protected virtual void UserMessageDataOperation() { }
         protected override void Response()
         {
             // response can not be null!
