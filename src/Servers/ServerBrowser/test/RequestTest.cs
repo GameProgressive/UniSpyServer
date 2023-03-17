@@ -1,9 +1,6 @@
 using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Contract.Request;
 using Xunit;
-using UniSpy.Server.Core.Database.DatabaseModel;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace UniSpy.Server.ServerBrowser.Test
 {

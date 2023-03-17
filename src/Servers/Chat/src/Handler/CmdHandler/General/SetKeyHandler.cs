@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 

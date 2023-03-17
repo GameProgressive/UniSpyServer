@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Database.DatabaseModel;

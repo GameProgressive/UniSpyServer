@@ -1,5 +1,3 @@
-
-using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 

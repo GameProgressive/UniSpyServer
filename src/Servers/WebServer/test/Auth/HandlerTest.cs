@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-using System.Net;
 using Moq;
-using UniSpy.Server.WebServer.Application;
 using UniSpy.Server.WebServer.Handler;
 using UniSpy.Server.WebServer.Test.Auth;
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
-using System.Linq;
 
 namespace UniSpy.Server.WebServer.Test
 {

@@ -1,4 +1,3 @@
-using System.IO;
 using Newtonsoft.Json;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;

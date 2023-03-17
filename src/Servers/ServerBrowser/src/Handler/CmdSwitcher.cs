@@ -1,13 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Contract.Request;
 using UniSpy.Server.ServerBrowser.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.Core.Logging;
-using UniSpy.Server.ServerBrowser.Handler.CmdHandler.AdHoc;
 
 namespace UniSpy.Server.ServerBrowser.Handler
 {

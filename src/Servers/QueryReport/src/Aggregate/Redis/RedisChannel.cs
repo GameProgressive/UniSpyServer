@@ -1,4 +1,3 @@
-using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.QueryReport.Contract.Request;
 using UniSpy.Server.QueryReport.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.Interface;

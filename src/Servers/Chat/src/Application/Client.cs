@@ -2,7 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
-using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;

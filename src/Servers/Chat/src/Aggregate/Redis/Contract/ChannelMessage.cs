@@ -1,7 +1,5 @@
-using System.Net;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis.Contract

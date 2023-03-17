@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.Enumerate;

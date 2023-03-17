@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Exception.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Chat.Exception

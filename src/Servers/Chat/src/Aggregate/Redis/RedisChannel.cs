@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.Net;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Handler;

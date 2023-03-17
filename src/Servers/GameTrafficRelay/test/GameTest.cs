@@ -1,12 +1,9 @@
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Xunit;
 using UniSpy.Server.GameTrafficRelay.Controller;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using UniSpy.Server.GameTrafficRelay.Application;
 
 namespace UniSpy.Server.GameTrafficRelay.Test
 {

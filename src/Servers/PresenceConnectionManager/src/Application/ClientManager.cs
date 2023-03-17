@@ -1,6 +1,5 @@
 using System.Linq;
 using UniSpy.Server.Core.Abstraction.BaseClass;
-using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Application
 {

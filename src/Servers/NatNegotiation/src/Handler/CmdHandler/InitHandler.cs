@@ -1,4 +1,3 @@
-using System.Threading;
 using System.Threading.Tasks;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
