@@ -6,11 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using UniSpy.Server.Core.Config;
+using UniSpy.Server.GameTrafficRelay.Entity;
 
 namespace UniSpy.Server.GameTrafficRelay.Application
 {
     public class WebServer : UniSpy.Server.Core.Abstraction.Interface.IServer
     {
+        private ServerStatusReporter _reporter;
         public Guid ServerID { get; private set; }
         public string ServerName { get; private set; }
         public IPEndPoint ListeningIPEndPoint { get; private set; }
@@ -21,10 +23,12 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             ServerName = config.ServerName;
             ListeningIPEndPoint = config.ListeningIPEndPoint;
             PublicIPEndPoint = config.PublicIPEndPoint;
+            _reporter = new ServerStatusReporter(this);
         }
 
         public void Start()
         {
+            _reporter.Start();
             var builder = WebApplication.CreateBuilder();
             builder.Host.ConfigureLogging((ctx, loggerConfiguration) =>
             {

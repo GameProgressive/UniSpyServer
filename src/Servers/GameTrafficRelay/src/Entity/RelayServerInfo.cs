@@ -12,7 +12,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
     public record RelayServerInfo : RedisKeyValueObject
     {
         [RedisKey]
-        public Guid ServerID { get; init; }
+        public Guid? ServerID { get; init; }
         [RedisKey]
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PublicIPEndPoint { get; init; }

@@ -8,13 +8,11 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
     internal class ServerStatusReporter
     {
         private EasyTimer _myTimer;
-        private RedisClient _redisClient;
-        private UniSpyServerConfig _config;
-        public ServerStatusReporter(UniSpyServerConfig config)
+        private RedisClient _redisClient = new RedisClient();
+        private Core.Abstraction.Interface.IServer _server;
+        public ServerStatusReporter(Core.Abstraction.Interface.IServer server)
         {
-            _redisClient = new RedisClient();
-            _config = config;
-
+            _server = server;
             UpdateServerInfo();
         }
         public void Start()
@@ -25,8 +23,8 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
         {
             var info = new RelayServerInfo()
             {
-                ServerID = _config.ServerID,
-                PublicIPEndPoint = _config.PublicIPEndPoint,
+                ServerID = _server.ServerID,
+                PublicIPEndPoint = _server.PublicIPEndPoint,
                 ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
             };
             _redisClient.SetValue(info);

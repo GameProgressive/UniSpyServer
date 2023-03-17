@@ -32,7 +32,7 @@ namespace UniSpy.Server.GameTrafficRelay.Test
             };
 
 
-            Assert.Throws<System.NullReferenceException>(() => controller.GetNatNegotiationInfo(request));
+            Assert.ThrowsAsync<System.NullReferenceException>(() => controller.GetNatNegotiationInfo(request));
             // var resp = controller.GetNatNegotiationInfo(request);
 
             // Assert.True(IsPortUsing(resp.IPEndPoint1.Port));

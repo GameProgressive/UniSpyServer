@@ -15,11 +15,11 @@ namespace UniSpy.Server.Chat.Contract.Response.Channel
         {
             if (_result.ChannelTopic == "" || _result.ChannelTopic is null)
             {
-                SendingBuffer = $":{ServerDomain} {ResponseName.NoTopic} {_result.ChannelName}\r\n";
+                SendingBuffer = $":{ServerDomain} {ResponseName.NoTopic} * {_result.ChannelName}\r\n";
             }
             else
             {
-                SendingBuffer = $":{ServerDomain} {ResponseName.NoTopic} {_result.ChannelName} :{_result.ChannelTopic}\r\n";
+                SendingBuffer = $":{ServerDomain} {ResponseName.Topic} * {_result.ChannelName} :{_result.ChannelTopic}\r\n";
             }
         }
     }

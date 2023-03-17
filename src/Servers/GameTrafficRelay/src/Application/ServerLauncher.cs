@@ -8,7 +8,6 @@ namespace UniSpy.Server.GameTrafficRelay.Application
 {
     internal sealed class ServerLauncher : ServerLauncherBase
     {
-        private ServerStatusReporter _serverStatusReporter;
 
         public ServerLauncher() : base("GameTrafficRelay")
         {
@@ -19,14 +18,8 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             {
                 throw new System.Exception("Game traffic relay server public address can not set to 0.0.0.0 or 127.0.0.1 !");
             }
-            _serverStatusReporter = new ServerStatusReporter(config);
             return new WebServer(config);
 
-        }
-        public override void Start()
-        {
-            base.Start();
-            _serverStatusReporter.Start();
         }
     }
 }

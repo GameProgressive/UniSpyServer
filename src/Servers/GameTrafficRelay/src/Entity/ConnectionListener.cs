@@ -87,7 +87,7 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
                 ForwardTargetListener?.Dispose();
                 if (NatNegotiationController.ConnectionPairs.TryGetValue(Cookie, out _))
                 {
-                    NatNegotiationController.ConnectionPairs.Remove(Cookie);
+                    NatNegotiationController.ConnectionPairs.TryRemove(Cookie, out _);
                 }
                 ((IConnectionListener)this).Dispose();
                 return;
