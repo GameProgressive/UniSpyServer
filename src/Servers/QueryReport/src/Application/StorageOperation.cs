@@ -18,14 +18,7 @@ namespace UniSpy.Server.QueryReport.Application
             return _redisClient.Context.Where(x => x.InstantKey == instantKey).ToList();
         }
 
-        public void RemoveGameServer(GameServerInfo info)
-        {
-            _redisClient.DeleteKeyValue(info);
-        }
-
-        public void UpdateGameServer(GameServerInfo info)
-        {
-            _redisClient.SetValue(info);
-        }
+        public void RemoveGameServer(GameServerInfo info) => _redisClient.DeleteKeyValue(info);
+        public void UpdateGameServer(GameServerInfo info) => _ = _redisClient.SetValueAsync(info);
     }
 }

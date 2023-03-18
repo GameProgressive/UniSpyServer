@@ -27,7 +27,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
                 PublicIPEndPoint = _server.PublicIPEndPoint,
                 ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
             };
-            _redisClient.SetValue(info);
+            _ = _redisClient.SetValueAsync(info);
         }
     }
 }

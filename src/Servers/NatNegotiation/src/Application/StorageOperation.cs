@@ -30,7 +30,7 @@ namespace UniSpy.Server.NatNegotiation.Application
 
         public void UpdateInitInfo(NatAddressInfo info)
         {
-            _redisClient.SetValue(info);
+            _ = _redisClient.SetValueAsync(info);
         }
 
         public void RemoveInitInfo(NatAddressInfo info)
@@ -40,7 +40,7 @@ namespace UniSpy.Server.NatNegotiation.Application
 
         public void UpdateNatFailInfo(Aggregate.Redis.Fail.NatFailInfo info)
         {
-            _natFailRedisClient.SetValue(info);
+            _ = _natFailRedisClient.SetValueAsync(info);
         }
 
         public int GetNatFailInfo(Aggregate.Redis.Fail.NatFailInfo info)
