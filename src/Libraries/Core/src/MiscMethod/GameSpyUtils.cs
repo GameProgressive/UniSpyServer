@@ -11,13 +11,20 @@ namespace UniSpy.Server.Core.MiscMethod
     public static class GameSpyUtils
     {
         /// <summary>
+        /// Get the string type request command name from rawrequest
+        /// </summary>
+        public static string GetRequestName(string request)
+        {
+            return request.Substring(1, request.IndexOf(@"\", 2) - 1);
+        }
+        /// <summary>
         /// Split command to key value array then convert it to dictionary
         /// </summary>
         /// <param name="request">a string like request</param>
         /// <returns></returns>
         public static Dictionary<string, string> ConvertToKeyValue(string request)
         {
-            string[] commandParts = request.Replace(@"\final\", "").TrimStart('\\').Split('\\');
+            string[] commandParts = request.Replace(@"\final\", "").TrimStart('\\').TrimEnd('\\').Split('\\');
             return ConvertToKeyValue(commandParts);
         }
 
@@ -36,13 +43,13 @@ namespace UniSpy.Server.Core.MiscMethod
                 for (int i = 0; i < parts.Length; i += 2)
                 {
                     if (!dict.ContainsKey(parts[i]))
-                        dict.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
+                    {
+                        dict.Add(parts[i].ToLower(), parts[i + 1]);
+                    }
+                    //Some game send uppercase key to us, so we have to deal with it
                 }
             }
-            catch (IndexOutOfRangeException e)
-            {
-                LogWriter.LogError(e);
-            }
+            catch (IndexOutOfRangeException) { }
 
             return dict;
         }

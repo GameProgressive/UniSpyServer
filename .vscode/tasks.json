@@ -17,21 +17,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build_cdkey",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "--no-restore",
-                "${workspaceFolder}/src/Servers/CDKey/src/UniSpy.Server.CDKey.csproj",
-                "-o",
-                "${workspaceFolder}/build/Debug/net6.0/",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "build_chat",
             "command": "dotnet",
             "type": "process",

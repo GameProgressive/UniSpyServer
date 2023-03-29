@@ -20,12 +20,15 @@ namespace UniSpy.Server.ServerBrowser.Contract.Response
 
         public override void Build()
         {
-            _buffer.Add((byte)ResponseType.PushServerMessage);
-            BuildSingleServerFullInfo();
-            // add message length here
-            var msgLength = BitConverter.GetBytes((ushort)(_buffer.Count + 2)).Reverse().ToArray();
-            // we add the message length at the start
-            _buffer.InsertRange(0, msgLength);
+            lock (_buffer)
+            {
+                _buffer.Add((byte)ResponseType.PushServerMessage);
+                BuildSingleServerFullInfo();
+                // add message length here
+                var msgLength = BitConverter.GetBytes((ushort)(_buffer.Count + 2)).Reverse().ToArray();
+                // we add the message length at the start
+                _buffer.InsertRange(0, msgLength);
+            }
             SendingBuffer = _buffer.ToArray();
         }
 

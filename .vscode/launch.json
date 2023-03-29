@@ -52,17 +52,6 @@
             "stopAtEntry": false
         },
         {
-            "name": "CDKey",
-            "type": "coreclr",
-            "request": "launch",
-            "program": "${workspaceRoot}/build/Debug/net6.0/UniSpy.Server.CDKey.dll",
-            "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/net6.0/",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "stopAtEntry": false
-        },
-        {
             "name": "Chat",
             "type": "coreclr",
             "request": "launch",
@@ -170,7 +159,6 @@
                 "PCM",
                 "PSP",
                 "NatNeg",
-                "CDKey",
                 "Chat",
                 "QR",
                 "SB",
@@ -183,7 +171,6 @@
                 "PCM",
                 "PSP",
                 "NatNeg",
-                "CDKey",
                 "Chat",
                 "QR",
                 "SB",
@@ -197,7 +184,6 @@
                 "PSP",
                 "NatNeg",
                 "GTR",
-                "CDKey",
                 "Chat",
                 "QR",
                 "SB",
