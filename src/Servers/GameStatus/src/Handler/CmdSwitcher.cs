@@ -1,18 +1,19 @@
 using System.Collections.Generic;
-using System.Linq;
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.MiscMethod;
+using System.Linq;
+using System;
+using System.Text.RegularExpressions;
 
 namespace UniSpy.Server.GameStatus.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-
         public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
         {
         }
@@ -22,9 +23,13 @@ namespace UniSpy.Server.GameStatus.Handler
             {
                 throw new UniSpyException("Invalid request");
             }
+            var rawRequests = _rawRequest.Split(@"\final\", StringSplitOptions.RemoveEmptyEntries);
 
-            var name = GameSpyUtils.ConvertToKeyValue(_rawRequest).Keys.First();
-            _requests.Add(new KeyValuePair<object, object>(name, _rawRequest));
+            foreach (var rawRequest in rawRequests)
+            {
+                var name = rawRequest.TrimStart('\\').Split('\\').First();
+                _requests.Add(new KeyValuePair<object, object>(name, rawRequest));
+            }
         }
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
@@ -36,7 +41,7 @@ namespace UniSpy.Server.GameStatus.Handler
                 case "authp":
                     return new AuthPlayerHandler(_client, new AuthPlayerRequest((string)rawRequest));
                 case "newgame":
-                    return new CreateNewGameHandler(_client, new CreateNewGameRequest((string)rawRequest));
+                    return new NewGameHandler(_client, new NewGameRequest((string)rawRequest));
                 case "getpd":
                     return new GetPlayerDataHandler(_client, new GetPlayerDataRequest((string)rawRequest));
                 case "setpd":

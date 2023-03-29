@@ -27,28 +27,28 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
 
 
-            if (!PlayerData.ContainsKey("pid"))
+            if (!KeyValues.ContainsKey("pid"))
                 throw new GSException("length is missing.");
 
-            if (!PlayerData.ContainsKey("ptype"))
+            if (!KeyValues.ContainsKey("ptype"))
                 throw new GSException("length is missing.");
 
-            if (!PlayerData.ContainsKey("dindex"))
+            if (!KeyValues.ContainsKey("dindex"))
                 throw new GSException("length is missing.");
 
-            if (!PlayerData.ContainsKey("length"))
+            if (!KeyValues.ContainsKey("length"))
                 throw new GSException("length is missing.");
 
 
             int profileID;
-            if (!int.TryParse(PlayerData["pid"], out profileID))
+            if (!int.TryParse(KeyValues["pid"], out profileID))
             {
                 throw new GSException("pid format is incorrect.");
             }
             ProfileId = profileID;
 
             int storageType;
-            if (!int.TryParse(PlayerData["ptype"], out storageType))
+            if (!int.TryParse(KeyValues["ptype"], out storageType))
             {
                 throw new GSException("ptype is missing.");
             }
@@ -61,21 +61,21 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             StorageType = (PersistStorageType)storageType;
 
             int dindex;
-            if (!int.TryParse(PlayerData["dindex"], out dindex))
+            if (!int.TryParse(KeyValues["dindex"], out dindex))
             {
                 throw new GSException("dindex format is incorrect.");
             }
             DataIndex = dindex;
 
             int length;
-            if (!int.TryParse(PlayerData["length"], out length))
+            if (!int.TryParse(KeyValues["length"], out length))
             {
                 throw new GSException("length format is incorrect.");
             }
             Length = length;
 
             //we extract the key value data
-            foreach (var d in PlayerData.Skip(5))
+            foreach (var d in KeyValues.Skip(5))
             {
                 if (d.Key == "lid")
                     break;

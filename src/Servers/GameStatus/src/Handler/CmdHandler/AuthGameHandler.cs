@@ -6,7 +6,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
-    
+
     public sealed class AuthGameHandler : CmdHandlerBase
     {
         //UniSpy.Server.Core.Encryption.Crc16 _crc16 = new UniSpy.Server.Core.Encryption.Crc16(UniSpy.Server.Core.Encryption.Crc16Mode.Standard);
@@ -21,6 +21,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
             // for now we do not check this challenge correction
             _client.Info.SessionKey = 2020;
             _client.Info.GameName = _request.GameName;
+            _client.Info.IsGameAuthenticated = true;
         }
 
         protected override void ResponseConstruct()

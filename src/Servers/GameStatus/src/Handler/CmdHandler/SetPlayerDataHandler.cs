@@ -18,7 +18,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            StorageOperation.Persistance.UpdatePlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex, _request.PlayerData);
+            StorageOperation.Persistance.UpdatePlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex, _request.KeyValues);
         }
     }
 }

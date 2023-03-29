@@ -1,41 +1,47 @@
+using System.Linq;
+using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Exception;
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
-    
+
     public sealed class UpdateGameRequest : RequestBase
     {
         public int? ConnectionID { get; private set; }
-        public bool? IsDone { get; private set; }
-        public bool? IsClientLocalStorageAvailable { get; private set; }
+        public bool IsDone { get; private set; }
+        public bool IsClientLocalStorageAvailable { get; private set; }
         public string GameData { get; private set; }
         public int? SessionKey { get; private set; }
         public UpdateGameRequest(string rawRequest) : base(rawRequest)
         {
-            IsClientLocalStorageAvailable = false;
-            IsDone = false;
         }
         public override void Parse()
         {
-            base.Parse();
+            CommandName = GameSpyUtils.GetRequestName(RawRequest);
+            var index = RawRequest.IndexOf(@"gamedata\");
+            GameData = RawRequest.Substring(index + @"gamedata\".Length).Replace(@"\final\", "");
 
-            if (PlayerData.ContainsKey("dl"))
+            var defaultData = RawRequest.Substring(0, index);
+            KeyValues = GameSpyUtils.ConvertToKeyValue(defaultData);
+            KeyValues["gamedata"] = GameData;
+
+            if (KeyValues.ContainsKey("dl"))
             {
                 IsClientLocalStorageAvailable = true;
             }
 
-            if (!PlayerData.ContainsKey("done"))
+            if (!KeyValues.ContainsKey("done"))
             {
                 throw new GSException("done is missing.");
             }
 
 
-            if (PlayerData["done"] == "1")
+            if (KeyValues["done"] == "1")
             {
                 IsDone = true;
             }
-            else if (PlayerData["done"] == "0")
+            else if (KeyValues["done"] == "0")
             {
                 IsDone = false;
             }
@@ -46,21 +52,17 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
 
             int sessKey;
-            if (!int.TryParse(PlayerData["sesskey"], out sessKey))
+            if (!int.TryParse(KeyValues["sesskey"], out sessKey))
             {
                 throw new GSException("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
 
-            if (!PlayerData.ContainsKey("gamedata"))
-            {
-                throw new GSException("gamedata is missing.");
-            }
-            GameData = PlayerData["gamedata"];
-            if (PlayerData.ContainsKey("connid"))
+
+            if (KeyValues.ContainsKey("connid"))
             {
                 int connID;
-                if (!int.TryParse(PlayerData["connid"], out connID))
+                if (!int.TryParse(KeyValues["connid"], out connID))
                 {
                     throw new GSException("connid is not a valid int.");
                 }

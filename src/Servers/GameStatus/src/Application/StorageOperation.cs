@@ -12,12 +12,12 @@ namespace UniSpy.Server.GameStatus.Application
         public static IStorageOperation Persistance = new StorageOperation();
         public void CreateNewGameData()
         {
-            throw new System.NotImplementedException();
+            throw new GSException("Implement create storage for game data");
         }
 
         public void CreateNewPlayerData(Dictionary<string, string> playerData)
         {
-            throw new System.NotImplementedException();
+            throw new GSException("Implement create storage for player data");
         }
         public void UpdatePlayerData(int profileId, PersistStorageType storageType, int dataIndex, Dictionary<string, string> data)
         {

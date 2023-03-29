@@ -1,47 +1,53 @@
+using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Exception;
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
-    
-
-    public sealed class CreateNewGameRequest : RequestBase
+    // "\newgame\\sesskey\%d\challenge\%d";
+    //"\newgame\\connid\%d\sesskey\%d"
+    // worm3d \newgame\\connid\0\sesskey\87563063\final\
+    public sealed class NewGameRequest : RequestBase
     {
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string Challenge { get; private set; }
         public int? ConnectionID { get; private set; }
+        /// <summary>
+        /// new game data storage session key, this is different from authgame session key
+        /// </summary>
         public int? SessionKey { get; private set; }
-        public CreateNewGameRequest(string rawRequest) : base(rawRequest)
+        public NewGameRequest(string rawRequest) : base(rawRequest)
         {
         }
         public override void Parse()
         {
-            base.Parse();
-            if (!PlayerData.ContainsKey("sesskey"))
+            CommandName = GameSpyUtils.GetRequestName(RawRequest);
+            KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
+
+            if (!KeyValues.ContainsKey("sesskey"))
             {
                 throw new GSException("sesskey is missing.");
             }
-            int sessKey;
-            if (!int.TryParse(PlayerData["sesskey"], out sessKey))
+            if (!int.TryParse(KeyValues["sesskey"], out var sessKey))
             {
                 throw new GSException("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
-            if (!PlayerData.ContainsKey("connid"))
+
+            if (!KeyValues.ContainsKey("connid"))
             {
                 throw new GSException("connid is missing.");
             }
-            int connectionID;
-            if (!int.TryParse(PlayerData["connid"], out connectionID))
+            if (!int.TryParse(KeyValues["connid"], out var connectionID))
             {
                 throw new GSException("connid format is incorrect.");
             }
             ConnectionID = connectionID;
 
-            if (PlayerData.ContainsKey("challenge"))
+            if (KeyValues.ContainsKey("challenge"))
             {
                 IsClientLocalStorageAvailable = true;
-                Challenge = PlayerData["challenge"];
+                Challenge = KeyValues["challenge"];
             }
         }
     }

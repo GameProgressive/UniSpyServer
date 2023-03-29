@@ -1,6 +1,5 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Application;
-using UniSpy.Server.GameStatus.Exception;
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -11,21 +10,16 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
     /// for further game snap shot storage
     /// </summary>
 
-    public sealed class CreateNewGameHandler : CmdHandlerBase
+    public sealed class NewGameHandler : CmdHandlerBase
     {
-        // "\newgame\\sesskey\%d\challenge\%d";
-        //"\newgame\\connid\%d\sesskey\%d"
-        private new CreateNewGameRequest _request => (CreateNewGameRequest)base._request;
-        public CreateNewGameHandler(IClient client, IRequest request) : base(client, request)
+        private new NewGameRequest _request => (NewGameRequest)base._request;
+        public NewGameHandler(IClient client, IRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_request.SessionKey != _client.Info.SessionKey)
-            {
-                throw new GSException("Session key is not match");
-            }
+            _client.Info.GameSessionKey = _request.SessionKey;
         }
         protected override void DataOperation()
         {

@@ -4,6 +4,7 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.Core.MiscMethod;
 
 namespace UniSpy.Server.GameStatus.Application
 {
@@ -19,39 +20,26 @@ namespace UniSpy.Server.GameStatus.Application
         {
             base.OnConnected();
             this.LogNetworkSending(ClientInfo.ChallengeResponse);
-            Connection.Send(Crypto.Encrypt(UniSpyEncoding.GetBytes(ClientInfo.ChallengeResponse)));
-        }
-        protected override void OnReceived(object buffer)
-        {
-            var data = UniSpyEncoding.GetString((byte[])buffer);
-            // gamestatus client will send plaintext message 
-            // we do not need to decrypt it
-            // if (data.StartsWith("\u001b\0"))
-            // if (data[0] == '\u001b' && data[1] == '\0')
-            // {
-            base.OnReceived(buffer);
-            // }
-            // else
-            // {
-            //     // we ignore unencrypted message
-            //     return;
-            // }
+            Connection.Send(Crypto.Encrypt(ClientInfo.ChallengeResponseBytes));
         }
         protected override byte[] DecryptMessage(byte[] buffer)
         {
-            var data = UniSpyEncoding.GetString(buffer);
-            // gamestatus client will send plaintext message 
-            // we do not need to decrypt it
-            // if (data.StartsWith("\u001b\0"))
-            if (data[0] == '\u001b' && data[1] == '\0')
+            // multiple request;
+            var buffers = UniSpyEncoding.GetString(buffer).Split(@"\final\", System.StringSplitOptions.RemoveEmptyEntries);
+            if (buffers.Length > 1)
             {
-                return Crypto.Decrypt(buffer);
+                string message = "";
+                foreach (var buf in buffers)
+                {
+                    var completeBuf = UniSpyEncoding.GetBytes(buf + @"\final\");
+                    message += UniSpyEncoding.GetString(Crypto.Decrypt(completeBuf));
+                }
+                return UniSpyEncoding.GetBytes(message);
             }
-            else
-            {
-                return buffer;
-            }
+            return Crypto.Decrypt(buffer);
         }
+
+
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
     }
 }

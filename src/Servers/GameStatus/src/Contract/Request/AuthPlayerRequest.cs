@@ -4,7 +4,7 @@ using UniSpy.Server.GameStatus.Exception;
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
-    
+    // worm3d \authp\\pid\1\resp\7b6658e99f448388fbeddc93654e6dd4\lid\295[19][17]R([1B]zm}BKy[16]+sOhT[07][7F]{/[04]sz;j[00][15]<r[12]:j<[02][1B]:rOeDilR@0yA6[12]i>RG=[16][1B]jBP9\final\
     public sealed class AuthPlayerRequest : RequestBase
     {
         public AuthMethod RequestType { get; private set; }
@@ -22,28 +22,28 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         {
             base.Parse();
 
-            if (PlayerData.ContainsKey("pid") && PlayerData.ContainsKey("resp"))
+            if (KeyValues.ContainsKey("pid") && KeyValues.ContainsKey("resp"))
             {
                 //we parse profileid here
                 int profileID;
-                if (!int.TryParse(PlayerData["pid"], out profileID))
+                if (!int.TryParse(KeyValues["pid"], out profileID))
                 {
                     throw new GSException("pid format is incorrect.");
                 }
                 ProfileId = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
             }
-            else if (PlayerData.ContainsKey("authtoken") && PlayerData.ContainsKey("response"))
+            else if (KeyValues.ContainsKey("authtoken") && KeyValues.ContainsKey("response"))
             {
-                AuthToken = PlayerData["authtoken"];
-                Response = PlayerData["response"];
+                AuthToken = KeyValues["authtoken"];
+                Response = KeyValues["response"];
                 RequestType = AuthMethod.PartnerIDAuth;
             }
-            else if (PlayerData.ContainsKey("keyhash") && PlayerData.ContainsKey("nick"))
+            else if (KeyValues.ContainsKey("keyhash") && KeyValues.ContainsKey("nick"))
             {
                 RequestType = AuthMethod.CDkeyAuth;
-                CdKeyHash = PlayerData["keyhash"];
-                NickName = PlayerData["nick"];
+                CdKeyHash = KeyValues["keyhash"];
+                NickName = KeyValues["nick"];
             }
             else
             {
