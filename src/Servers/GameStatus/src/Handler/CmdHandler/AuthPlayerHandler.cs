@@ -30,10 +30,10 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 
             switch (_request.RequestType)
             {
-                case AuthMethod.PartnerIDAuth:
+                case AuthMethod.PartnerIdAuth:
                     _client.Info.ProfileId = StorageOperation.Persistance.GetProfileId(_request.AuthToken);
                     break;
-                case AuthMethod.ProfileIDAuth:
+                case AuthMethod.ProfileIdAuth:
                     //even if we do not check response challenge
                     //we have to check the pid is in our databse
                     _client.Info.ProfileId = StorageOperation.Persistance.GetProfileId(_request.ProfileId);
@@ -44,6 +44,11 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
                 default:
                     throw new GSException("Unknown AuthP request type.");
             }
+            if (_client.Info.ProfileId is null)
+            {
+                throw new GSException("Can not find profileID");
+            }
+            _result.ProfileId = _client.Info.ProfileId;
             _client.Info.IsPlayerAuthenticated = true;
         }
 

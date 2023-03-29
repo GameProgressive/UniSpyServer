@@ -31,13 +31,13 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                     throw new GSException("pid format is incorrect.");
                 }
                 ProfileId = profileID;
-                RequestType = AuthMethod.ProfileIDAuth;
+                RequestType = AuthMethod.ProfileIdAuth;
             }
             else if (KeyValues.ContainsKey("authtoken") && KeyValues.ContainsKey("response"))
             {
                 AuthToken = KeyValues["authtoken"];
                 Response = KeyValues["response"];
-                RequestType = AuthMethod.PartnerIDAuth;
+                RequestType = AuthMethod.PartnerIdAuth;
             }
             else if (KeyValues.ContainsKey("keyhash") && KeyValues.ContainsKey("nick"))
             {

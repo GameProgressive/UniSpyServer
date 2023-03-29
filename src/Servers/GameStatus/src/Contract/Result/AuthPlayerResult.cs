@@ -4,7 +4,7 @@ namespace UniSpy.Server.GameStatus.Contract.Result
 {
     public sealed class AuthPlayerResult : ResultBase
     {
-        public int ProfileId { get; set; }
+        public int? ProfileId { get; set; }
         public AuthPlayerResult()
         {
         }
