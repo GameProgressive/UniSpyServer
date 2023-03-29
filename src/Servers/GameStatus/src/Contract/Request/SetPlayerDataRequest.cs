@@ -9,8 +9,8 @@ namespace UniSpy.Server.GameStatus.Contract.Request
     /// <summary>
     /// "\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
     /// </summary>
-    
-    
+
+
     public sealed class SetPlayerDataRequest : RequestBase
     {
         public SetPlayerDataRequest(string request) : base(request)
@@ -20,8 +20,8 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         public PersistStorageType StorageType { get; private set; }
         public int DataIndex { get; private set; }
         public int Length { get; private set; }
-        public string KeyValueString { get; private set; }
-
+        public string Report { get; private set; }
+        public string Data { get; private set; }
         public override void Parse()
         {
             base.Parse();
@@ -74,13 +74,10 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             }
             Length = length;
 
+
             //we extract the key value data
-            foreach (var d in KeyValues.Skip(5))
-            {
-                if (d.Key == "lid")
-                    break;
-                KeyValueString += @"\" + d.Key + @"\" + d.Value;
-            }
+            Report = KeyValues["report"];
+            Data = KeyValues["data"];
         }
     }
 }
