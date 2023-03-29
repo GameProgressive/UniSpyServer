@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpy.LinqToRedis.Linq;
@@ -12,7 +13,7 @@ namespace UniSpy.LinqToRedis
     /// TODO we need to implement get AllKeys, AllValues
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    public class RedisClient<TValue> : IDisposable where TValue : RedisKeyValueObject
+    public class RedisClient<TValue> where TValue : RedisKeyValueObject
     {
         public TimeSpan? ExpireTime { get; private set; }
         public IConnectionMultiplexer Multiplexer { get; private set; }
@@ -67,6 +68,10 @@ namespace UniSpy.LinqToRedis
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
         }
+        public async Task DeleteKeyValueAsync(TValue key)
+        {
+            await Db.KeyDeleteAsync(key.FullKey);
+        }
         public void DeleteKeyValue(TValue key)
         {
             Db.KeyDeleteAsync(key.FullKey);
@@ -74,6 +79,11 @@ namespace UniSpy.LinqToRedis
         public List<TValue> GetValues(TValue key)
         {
             return GetKeyValues(key).Values.ToList();
+        }
+        public async Task<List<TValue>> GetValuesAsync(TValue key)
+        {
+            var dict = await GetKeyValuesAsync(key);
+            return dict.Values.ToList();
         }
         public List<string> GetMatchedKeys(IRedisKey key = null)
         {
@@ -100,6 +110,22 @@ namespace UniSpy.LinqToRedis
             }
             return matchedKeys;
         }
+        public async Task<List<string>> GetMatchedKeysAsync(IRedisKey key = null)
+        {
+            var matchedKeys = new List<string>();
+            foreach (var end in _endPoints)
+            {
+                var server = Multiplexer.GetServer(end);
+
+                // we get specific key from database
+                var keyStr = key is null ? "*" : key.SearchKey;
+                await foreach (var k in server.KeysAsync(pattern: keyStr, database: Db.Database))
+                {
+                    matchedKeys.Add(k);
+                }
+            }
+            return matchedKeys;
+        }
         /// <summary>
         /// Get matched key value by key from database.
         /// if key is null this will get all key value from database
@@ -112,14 +138,32 @@ namespace UniSpy.LinqToRedis
             var keys = GetMatchedKeys(key);
             foreach (var k in keys)
             {
-                dict.Add(k, JsonConvert.DeserializeObject<TValue>(Db.StringGet(k.ToString())));
+                var value = Db.StringGet(k.ToString());
+                dict.Add(k, JsonConvert.DeserializeObject<TValue>(value));
             }
             return dict;
         }
+
+        public async Task<Dictionary<string, TValue>> GetKeyValuesAsync(IRedisKey key = null)
+        {
+            var dict = new Dictionary<string, TValue>();
+            var keys = await GetMatchedKeysAsync(key);
+            foreach (var k in keys)
+            {
+                var value = await Db.StringGetAsync(k.ToString());
+                dict.Add(k, JsonConvert.DeserializeObject<TValue>(value));
+            }
+            return dict;
+        }
+
         public void SetValue(TValue value)
         {
             // we use async method to make redis set operation do not block our codes
             Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+        }
+        public async Task SetValueAsync(TValue value)
+        {
+            await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
         }
         public TValue GetValue(IRedisKey key)
         {
@@ -130,14 +174,22 @@ namespace UniSpy.LinqToRedis
             }
             return JsonConvert.DeserializeObject<TValue>(value);
         }
+        public async Task<TValue> GetValueAsync(IRedisKey key)
+        {
+            var value = await Db.StringGetAsync(key.FullKey);
+            if (value.IsNull)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<TValue>(value);
+        }
+        /// <summary>
+        /// The index access of redis key value object is always sync
+        /// </summary>
         public TValue this[IRedisKey key]
         {
             get => GetValue(key);
             set => SetValue(value);
-        }
-        public void Dispose()
-        {
-            Multiplexer.Dispose();
         }
     }
 }

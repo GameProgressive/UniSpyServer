@@ -37,7 +37,7 @@ namespace UniSpy.Server.Master.Application
         }
         public void UpdateServerInfo(GameServerInfo info)
         {
-            _redisClient.SetValue(info);
+            _ = _redisClient.SetValueAsync(info);
         }
         public void RemoveServerInfo(IPEndPoint endPoint)
         {
