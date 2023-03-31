@@ -27,6 +27,11 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            if (_request.GameData is null)
+            {
+                // the gamedata is null, we do not need to process this request
+                return;
+            }
             // replace game data with new data
             throw new GSException("Implement update game handler.");
         }

@@ -6,7 +6,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
-    
+
     public sealed class AuthGameRequest : RequestBase
     {
         public string GameName { get; private set; }
@@ -17,6 +17,11 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
         public override void Parse()
         {
+            base.Parse();
+            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
+            {
+                throw new GSException("localid is missing.");
+            }
             base.Parse();
             if (!KeyValues.ContainsKey("gamename"))
             {

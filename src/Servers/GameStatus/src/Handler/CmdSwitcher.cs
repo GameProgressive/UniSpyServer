@@ -1,13 +1,12 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.Core.MiscMethod;
-using System.Linq;
-using System;
-using System.Text.RegularExpressions;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.GameStatus.Handler
 {
@@ -19,14 +18,17 @@ namespace UniSpy.Server.GameStatus.Handler
         }
         protected override void ProcessRawRequest()
         {
-            if (_rawRequest[0] != '\\')
-            {
-                throw new UniSpyException("Invalid request");
-            }
             var rawRequests = _rawRequest.Split(@"\final\", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var rawRequest in rawRequests)
             {
+                if (_rawRequest[0] != '\\')
+                {
+                    // throw new UniSpyException("Invalid request");
+                    _client.LogError($"Invaid request: {rawRequest}");
+                    continue;
+                }
+
                 var name = rawRequest.TrimStart('\\').Split('\\').First();
                 _requests.Add(new KeyValuePair<object, object>(name, rawRequest));
             }

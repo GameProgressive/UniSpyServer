@@ -7,48 +7,45 @@ namespace UniSpy.Server.GameStatus.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpy.Server.Core.Abstraction.BaseClass.RequestBase
     {
+        public new string CommandName { get => (string)base.CommandName; protected set => base.CommandName = value; }
+        public new string RawRequest => (string)base.RawRequest;
         /// <summary>
         /// LocalId is used to indicate the request sequence in gamespy clients
         /// </summary>
         public int? LocalId { get; protected set; }
-        public new string CommandName { get => (string)base.CommandName; set => base.CommandName = value; }
-        public new string RawRequest { get => (string)base.RawRequest; set => base.RawRequest = value; }
         public Dictionary<string, string> KeyValues { get; protected set; }
 
         public RequestBase(string rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
         }
-
+        public static Dictionary<string, string> ConvertGameDataToKeyValues(string gameData)
+        {
+            var parts = gameData.Split("\u0001", System.StringSplitOptions.RemoveEmptyEntries);
+            return GameSpyUtils.ConvertToKeyValue(parts);
+        }
         public override void Parse()
         {
-            CommandName = GameSpyUtils.GetRequestName(RawRequest);
             // the localid lid is used to indicate the request sequence on the client side
             // we just respond it with same lid to client
             KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
-            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
-            {
-                throw new GSException("localid is missing.");
-            }
+            CommandName = KeyValues.Keys.First();
 
             if (KeyValues.ContainsKey("lid"))
             {
-                int operationID;
-                if (!int.TryParse(KeyValues["lid"], out operationID))
+                if (!int.TryParse(KeyValues["lid"], out var localId))
                 {
                     throw new GSException("localid format is incorrect.");
                 }
-                LocalId = operationID;
+                LocalId = localId;
             }
             //worms 3d use id not lid so we added an condition here
-            else
+            if (KeyValues.ContainsKey("id"))
             {
-                int operationID;
-                if (!int.TryParse(KeyValues["id"], out operationID))
+                if (!int.TryParse(KeyValues["id"], out var localId))
                 {
                     throw new GSException("localid format is incorrect.");
                 }
-                LocalId = operationID;
+                LocalId = localId;
             }
         }
     }

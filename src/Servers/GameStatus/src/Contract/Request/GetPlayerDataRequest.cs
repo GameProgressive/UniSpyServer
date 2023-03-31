@@ -22,7 +22,10 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         public override void Parse()
         {
             base.Parse();
-
+            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
+            {
+                throw new GSException("localid is missing.");
+            }
 
             if (KeyValues.ContainsKey("pid"))
             {

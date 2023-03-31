@@ -26,15 +26,14 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         {
             base.Parse();
 
-
             if (!KeyValues.ContainsKey("pid"))
-                throw new GSException("length is missing.");
+                throw new GSException("pid is missing.");
 
             if (!KeyValues.ContainsKey("ptype"))
-                throw new GSException("length is missing.");
+                throw new GSException("ptype is missing.");
 
             if (!KeyValues.ContainsKey("dindex"))
-                throw new GSException("length is missing.");
+                throw new GSException("dindex is missing.");
 
             if (!KeyValues.ContainsKey("length"))
                 throw new GSException("length is missing.");

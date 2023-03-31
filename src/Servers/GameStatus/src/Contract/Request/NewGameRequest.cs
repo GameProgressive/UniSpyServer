@@ -21,8 +21,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         }
         public override void Parse()
         {
-            CommandName = GameSpyUtils.GetRequestName(RawRequest);
-            KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
+            base.Parse();
 
             if (!KeyValues.ContainsKey("sesskey"))
             {

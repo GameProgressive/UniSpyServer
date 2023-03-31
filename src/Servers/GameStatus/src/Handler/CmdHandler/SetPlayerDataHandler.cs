@@ -20,7 +20,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
         protected override void DataOperation()
         {
             throw new GSException("implement set player data");
-            StorageOperation.Persistance.UpdatePlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex, _request.KeyValues);
+            // StorageOperation.Persistance.UpdatePlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex, _request.KeyValues);
         }
     }
 }

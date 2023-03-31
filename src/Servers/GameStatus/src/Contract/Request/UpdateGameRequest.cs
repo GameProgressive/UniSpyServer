@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Core.MiscMethod;
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
@@ -12,19 +13,20 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         public bool IsDone { get; private set; }
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string GameData { get; private set; }
+        public Dictionary<string, string> GameDataKeyValues { get; private set; }
         public int? SessionKey { get; private set; }
         public UpdateGameRequest(string rawRequest) : base(rawRequest)
         {
         }
         public override void Parse()
         {
-            CommandName = GameSpyUtils.GetRequestName(RawRequest);
-            var index = RawRequest.IndexOf(@"gamedata\");
-            GameData = RawRequest.Substring(index + @"gamedata\".Length).Replace(@"\final\", "");
-
-            var defaultData = RawRequest.Substring(0, index);
-            KeyValues = GameSpyUtils.ConvertToKeyValue(defaultData);
-            KeyValues["gamedata"] = GameData;
+            base.Parse();
+            if (!KeyValues.ContainsKey("gamedata"))
+            {
+                throw new GSException("request must contians gamedata");
+            }
+            GameData = KeyValues["gamedata"];
+            GameDataKeyValues = ConvertGameDataToKeyValues(GameData);
 
             if (KeyValues.ContainsKey("dl"))
             {
@@ -51,8 +53,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             }
 
 
-            int sessKey;
-            if (!int.TryParse(KeyValues["sesskey"], out sessKey))
+            if (!int.TryParse(KeyValues["sesskey"], out var sessKey))
             {
                 throw new GSException("sesskey is not a valid int.");
             }
@@ -61,8 +62,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
             if (KeyValues.ContainsKey("connid"))
             {
-                int connID;
-                if (!int.TryParse(KeyValues["connid"], out connID))
+                if (!int.TryParse(KeyValues["connid"], out var connID))
                 {
                     throw new GSException("connid is not a valid int.");
                 }

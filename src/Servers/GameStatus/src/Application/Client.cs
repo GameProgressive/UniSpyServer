@@ -5,6 +5,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.MiscMethod;
+using System;
 
 namespace UniSpy.Server.GameStatus.Application
 {
@@ -25,7 +26,7 @@ namespace UniSpy.Server.GameStatus.Application
         protected override byte[] DecryptMessage(byte[] buffer)
         {
             // multiple request;
-            var buffers = UniSpyEncoding.GetString(buffer).Split(@"\final\", System.StringSplitOptions.RemoveEmptyEntries);
+            var buffers = UniSpyEncoding.GetString(buffer).Split(@"\final\", StringSplitOptions.RemoveEmptyEntries);
             if (buffers.Length > 1)
             {
                 string message = "";

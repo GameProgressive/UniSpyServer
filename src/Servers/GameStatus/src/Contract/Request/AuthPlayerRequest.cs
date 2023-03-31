@@ -22,6 +22,11 @@ namespace UniSpy.Server.GameStatus.Contract.Request
         {
             base.Parse();
 
+            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
+            {
+                throw new GSException("localid is missing.");
+            }
+
             if (KeyValues.ContainsKey("pid") && KeyValues.ContainsKey("resp"))
             {
                 //we parse profileid here

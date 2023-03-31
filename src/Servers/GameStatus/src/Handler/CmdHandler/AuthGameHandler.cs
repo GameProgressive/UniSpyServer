@@ -9,7 +9,6 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 
     public sealed class AuthGameHandler : CmdHandlerBase
     {
-        //UniSpy.Server.Core.Encryption.Crc16 _crc16 = new UniSpy.Server.Core.Encryption.Crc16(UniSpy.Server.Core.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthGameResult _result { get => (AuthGameResult)base._result; set => base._result = value; }
         public AuthGameHandler(IClient client, IRequest request) : base(client, request)
