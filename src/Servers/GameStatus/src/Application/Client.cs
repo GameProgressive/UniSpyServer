@@ -14,16 +14,22 @@ namespace UniSpy.Server.GameStatus.Application
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
-            Crypto = new GSCrypt();
         }
         protected override void OnConnected()
         {
-            base.OnConnected();
+            Crypto = new GSCrypt();
             this.LogNetworkSending(ClientInfo.ChallengeResponse);
             Connection.Send(Crypto.Encrypt(ClientInfo.ChallengeResponseBytes));
+            base.OnConnected();
         }
         protected override byte[] DecryptMessage(byte[] buffer)
         {
+            // unit test
+            if (Crypto is null)
+            {
+                return buffer;
+            }
+
             // multiple request;
             var buffers = UniSpyEncoding.GetString(buffer).Split(@"\final\", StringSplitOptions.RemoveEmptyEntries);
             if (buffers.Length > 1)

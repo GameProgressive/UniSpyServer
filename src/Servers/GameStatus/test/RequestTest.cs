@@ -110,7 +110,6 @@ namespace UniSpy.Server.GameStatus.Test
             Assert.Equal(PersistStorageType.PrivateRO, request.StorageType);
             Assert.Equal((int)1, request.DataIndex);
             Assert.Equal((int)5, request.Length);
-
         }
         [Fact]
         public void UpdateGameTest()

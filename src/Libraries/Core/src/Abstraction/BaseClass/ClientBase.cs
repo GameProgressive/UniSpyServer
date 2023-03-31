@@ -56,7 +56,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        // protected virtual void OnConnected() => ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         protected virtual void OnConnected() => ClientManagerBase.AddClient(this);
 
         /// <summary>

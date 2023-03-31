@@ -72,8 +72,6 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             }
             Length = length;
 
-
-            //we extract the key value data
             Report = KeyValues["report"];
             Data = KeyValues["data"];
         }

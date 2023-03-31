@@ -39,16 +39,16 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_request.Cookie);
             if (addressInfos.Count < InitHandler.InitPacketCount)
             {
-                throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
+                throw new NNException($"The number of init info in redis with cookie: {_request.Cookie} is not bigger than 7.");
             }
 
-            NatClientIndex otherClientIndex = (NatClientIndex)(1 - _client.Info.ClientIndex);
+            NatClientIndex otherClientIndex = (NatClientIndex)(1 - _request.ClientIndex);
             // we need both info to determine nat type
             _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
-            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _client.Info.ClientIndex).ToList());
+            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _request.ClientIndex).ToList());
         }
         protected override void ResponseConstruct()
         {

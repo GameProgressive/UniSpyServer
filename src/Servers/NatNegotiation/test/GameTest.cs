@@ -227,7 +227,7 @@ namespace UniSpy.Server.NatNegotiation.Test
                 ((ITestClient)server).TestReceived(request);
             }
             // because the process is running in background we need to wait it finish, so we can debug
-            Thread.Sleep(10000);
+            // Thread.Sleep(10000);
             // Console.Read();
         }
 
@@ -261,7 +261,7 @@ namespace UniSpy.Server.NatNegotiation.Test
                 ((ITestClient)server).TestReceived(request);
             }
             // because the process is running in background we need to wait it finish, so we can debug
-            Thread.Sleep(10000);
+            // Thread.Sleep(10000);
         }
 
         [Fact]
@@ -314,7 +314,7 @@ namespace UniSpy.Server.NatNegotiation.Test
                 ((ITestClient)clients[req.Key]).TestReceived(req.Value);
             }
             // because the process is running in background we need to wait it finish, so we can debug
-            Thread.Sleep(10000);
+            // Thread.Sleep(10000);
         }
     }
 }

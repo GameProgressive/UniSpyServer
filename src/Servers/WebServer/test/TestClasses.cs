@@ -12,7 +12,7 @@ namespace UniSpy.Server.WebServer.Test
         public static Client CreateClient(string ipAddress = "192.168.1.2", int port = 9999)
         {
             var managerMock = new Mock<IConnectionManager>();
-            var connectionMock = new Mock<ITcpConnection>();
+            var connectionMock = new Mock<IHttpConnection>();
             connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
             connectionMock.Setup(s => s.Manager).Returns(managerMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Http);
