@@ -5,7 +5,6 @@ using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Contract.Response;
 using UniSpy.Server.GameStatus.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler

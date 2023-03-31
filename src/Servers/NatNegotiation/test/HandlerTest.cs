@@ -1,9 +1,7 @@
 using System.Net;
-using Moq;
 using UniSpy.Server.NatNegotiation.Application;
 using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
-using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 namespace UniSpy.Server.NatNegotiation.Test
 {
@@ -13,15 +11,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         Client _client;
         public HandlerTest()
         {
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("NatNegotiation");
-            serverMock.Setup(s => s.ListeningIPEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            var connectionMock = new Mock<IUdpConnection>();
-            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
-            connectionMock.Setup(s => s.Server).Returns(serverMock.Object);
-            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Udp);
-            _client = new Client(connectionMock.Object);
+            _client = TestClasses.CreateClient();
         }
         [Fact]
         public void InitTest()

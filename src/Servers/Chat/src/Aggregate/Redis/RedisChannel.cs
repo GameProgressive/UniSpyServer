@@ -19,7 +19,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         }
         public override void ReceivedMessage(RemoteMessage message)
         {
-            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance?.ServerID)
+            if (message.Client.Server.Id == ServerLauncher.ServerInstance?.Id)
             {
                 return;
             }
@@ -28,11 +28,16 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
                 ClientManager.RemoveClient(message.Client);
                 return;
             }
-            IClient client = ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
+            IClient client = ClientManager.GetClient(message.Client);
             if (client is null)
             {
                 ClientManager.AddClient(message.Client);
                 client = message.Client;
+            }
+            else
+            {
+                // we update the remote client info
+                ((RemoteClient)client).Info = message.Client.Info;
             }
 
             var switcher = new CmdSwitcher(client, message.RawRequest);
@@ -58,11 +63,11 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         public override void ReceivedMessage(RemoteMessage message)
         {
             // base.ReceivedMessage(message);
-            if (message.Client.Connection.Server.ServerID == ServerLauncher.ServerInstance.ServerID)
+            if (message.Client.Server.Id == ServerLauncher.ServerInstance.Id)
             {
                 return;
             }
-            IClient client = ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
+            IClient client = ClientManager.GetClient(message.Client);
             if (client is null)
             {
                 throw new ChatException($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");

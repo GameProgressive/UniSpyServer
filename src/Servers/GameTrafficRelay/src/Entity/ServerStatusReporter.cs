@@ -1,6 +1,5 @@
 using System;
 using UniSpy.Server.GameTrafficRelay.Controller;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Extension;
 
 namespace UniSpy.Server.GameTrafficRelay.Entity
@@ -23,7 +22,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
         {
             var info = new RelayServerInfo()
             {
-                ServerID = _server.ServerID,
+                ServerID = _server.Id,
                 PublicIPEndPoint = _server.PublicIPEndPoint,
                 ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
             };

@@ -6,7 +6,7 @@ namespace UniSpy.Server.WebServer.Application
 {
     public sealed class Client : ClientBase
     {
-        public Client(IConnection connection) : base(connection)
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
         }

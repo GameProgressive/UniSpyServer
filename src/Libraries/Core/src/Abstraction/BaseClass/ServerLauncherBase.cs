@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using ConsoleTables;
 using Figgle;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -16,31 +15,23 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         /// <summary>
         /// UniSpy server version
         /// </summary>
-        public static readonly string Version = "0.7.5";
-        /// <summary>
-        /// UniSpy server name
-        /// </summary>
-        /// <returns></returns>
-        public static string ServerName { get; protected set; }
-        public static IServer ServerInstance { get; protected set; }
-        public ServerLauncherBase(string serverName)
-        {
-            ServerName = serverName;
-        }
+        public static readonly string Version = "0.8.1";
 
+        public static IServer ServerInstance { get; protected set; }
+        public ServerLauncherBase()
+        {
+        }
         public virtual void Start()
         {
-            Console.Title = $"UniSpyServer  {Version} - {ServerName}";
             ShowUniSpyLogo();
             ConnectMySql();
             ConnectRedis();
             LaunchServer();
         }
-        protected abstract IServer LaunchNetworkService(UniSpyServerConfig config);
+        protected abstract IServer LaunchNetworkService();
         protected virtual void LaunchServer()
         {
-            var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            ServerInstance = LaunchNetworkService(cfg);
+            ServerInstance = LaunchNetworkService();
 
             if (ServerInstance is null)
             {
@@ -49,7 +40,8 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
             // asp.net web server does not implement a Server interface, therefore this code should not be called
             ServerInstance.Start();
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, ServerInstance.ListeningIPEndPoint.Address, ServerInstance.ListeningIPEndPoint.Port);
+            table.AddRow(ServerInstance.Name, ServerInstance.ListeningIPEndPoint.Address, ServerInstance.ListeningIPEndPoint.Port);
+            Console.Title = $"UniSpyServer  {Version} - {ServerInstance.Name}";
             table.Write(ConsoleTables.Format.Alternative);
             Console.WriteLine("Server successfully started!");
         }

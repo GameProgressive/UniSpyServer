@@ -1,6 +1,6 @@
-namespace UniSpy.Server.Core.MiscMethod
+namespace UniSpy.Server.Core.Misc
 {
-    public class RequestCheck
+    public class RequestChecker
     {
         public static bool IsUniqueNickLegal(string uniquenick)
         {

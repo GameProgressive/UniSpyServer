@@ -2,7 +2,7 @@ using System;
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Enumerate;
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.PresenceConnectionManager.Contract.Request
 {

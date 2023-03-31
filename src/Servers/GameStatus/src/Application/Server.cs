@@ -1,14 +1,26 @@
+using System.Net;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Network.Tcp.Server;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.GameStatus.Application
 {
-    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    public sealed class Server : ServerBase
     {
-        public Server(UniSpyServerConfig config) : base(config)
+        static Server()
+        {
+            _name = "GameStatus";
+        }
+
+        public Server()
         {
         }
-        
-        protected override IClient CreateClient(IConnection connection) => new Client(connection);
+
+        public Server(IConnectionManager manager) : base(manager)
+        {
+        }
+
+        protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endpoint) => new TcpConnectionManager(endpoint);
     }
 }

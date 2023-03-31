@@ -20,9 +20,7 @@ namespace UniSpy.Server.Chat.Test
         [Fact]
         public void JsonSerialization()
         {
-
             var client = MockObject.CreateClient() as Client;
-
             client.Info.IsLoggedIn = true;
             client.Info.NickName = "xiaojiuwo1";
             var remoteClient = client.GetRemoteClient();
@@ -34,12 +32,10 @@ namespace UniSpy.Server.Chat.Test
             var msgStr = JsonConvert.SerializeObject(message);
             var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
             Assert.True(msgObj.Type == "JOIN");
-            // When
             var req = new JoinRequest(UniSpyEncoding.GetString(msgObj.RawRequest));
             var handler = new JoinHandler(msgObj.Client, req);
             handler.Handle();
             Assert.True(((ClientInfo)(msgObj.Client.Info)).JoinedChannels.Count == 1);
-            // Then
         }
         [Fact]
         public void RedisChannel()

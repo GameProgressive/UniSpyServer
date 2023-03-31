@@ -6,7 +6,7 @@ using UniSpy.LinqToRedis;
 using UniSpy.Server.NatNegotiation.Enumerate;
 using UniSpy.Server.NatNegotiation.Exception;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using System.Linq;
 using UniSpy.Server.Core.Extension.Redis;

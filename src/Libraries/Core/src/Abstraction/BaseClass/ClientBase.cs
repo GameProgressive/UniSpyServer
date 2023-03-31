@@ -17,13 +17,16 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// </summary>
         protected EasyTimer _timer { get; set; }
         public bool IsLogRaw { get; protected set; }
+
+        public IServer Server { get; private set; }
+
         public ClientBase() { }
-        public ClientBase(IConnection connection)
+        public ClientBase(IConnection connection, IServer server)
         {
             Connection = connection;
+            Server = server;
             EventBinding();
             ClientManagerBase.AddClient(this);
-            // ClientPool.TryAdd(Connection.RemoteIPEndPoint, this);
         }
         protected virtual void EventBinding()
         {

@@ -10,14 +10,13 @@ namespace UniSpy.Server.GameTrafficRelay.Test
 
         public static IServer CreateServer(string ipAddress = "192.168.1.1", int port = 9999)
         {
-            var serverMock = new Mock<IServer>();
-            serverMock.Setup(s => s.ServerID).Returns(new System.Guid());
-            serverMock.Setup(s => s.ServerName).Returns("GameTrafficRelay");
-            serverMock.Setup(s => s.ListeningIPEndPoint).Returns(new IPEndPoint(IPAddress.Any, 99));
-            serverMock.Setup(s => s.PublicIPEndPoint).Returns(IPEndPoint.Parse("101.34.77.11"));
-
-
-            return (IServer)serverMock;
+            var managerMock = new Mock<IConnectionManager>();
+            var connectionMock = new Mock<ITcpConnection>();
+            connectionMock.Setup(s => s.RemoteIPEndPoint).Returns(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+            connectionMock.Setup(s => s.Manager).Returns(managerMock.Object);
+            connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
+            var serverMock = new GameTrafficRelay.Application.Server();
+            return serverMock;
         }
     }
 }

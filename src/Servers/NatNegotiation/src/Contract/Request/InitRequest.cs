@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.NatNegotiation.Contract.Request
 {

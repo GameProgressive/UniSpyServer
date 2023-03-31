@@ -1,32 +1,29 @@
-using System.Threading.Tasks;
-using System;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.GameTrafficRelay.Entity;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.GameTrafficRelay.Application
 {
-    public class WebServer : UniSpy.Server.Core.Abstraction.Interface.IServer
+    public class Server : ServerBase
     {
         private ServerStatusReporter _reporter;
-        public Guid ServerID { get; private set; }
-        public string ServerName { get; private set; }
-        public IPEndPoint ListeningIPEndPoint { get; private set; }
-        public IPEndPoint PublicIPEndPoint { get; private set; }
-        public WebServer(UniSpyServerConfig config)
+        static Server()
         {
-            ServerID = config.ServerID;
-            ServerName = config.ServerName;
-            ListeningIPEndPoint = config.ListeningIPEndPoint;
-            PublicIPEndPoint = config.PublicIPEndPoint;
+            _name = "GameTrafficRelay";
+        }
+
+        public Server() : base(null)
+        {
             _reporter = new ServerStatusReporter(this);
         }
 
-        public void Start()
+        public override void Start()
         {
             _reporter.Start();
             var builder = WebApplication.CreateBuilder();
@@ -76,5 +73,9 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             // asp.net will block here, we do not want to block our codes, so we let them run in background
             Task.Run(() => app.Run($"http://{ListeningIPEndPoint}"));
         }
+
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) { return null; }
+
+        protected override IClient CreateClient(IConnection connection) { return null; }
     }
 }

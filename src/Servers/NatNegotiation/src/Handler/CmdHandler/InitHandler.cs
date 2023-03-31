@@ -29,7 +29,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         {
             _addressInfo = new NatAddressInfo()
             {
-                ServerID = _client.Connection.Server.ServerID,
+                ServerID = _client.Server.Id,
                 Cookie = (uint)_request.Cookie,
                 UseGamePort = _request.UseGamePort,
                 ClientIndex = (NatClientIndex)_request.ClientIndex,

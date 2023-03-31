@@ -2,17 +2,18 @@ using System.Net;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Events;
 
-namespace UniSpy.Server.Core.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpy.Server.Core.Network.Http.Server
 {
     public class HttpConnection : NetCoreServer.HttpSession, IHttpConnection
     {
         public IPEndPoint RemoteIPEndPoint { get; private set; }
-        IServer IConnection.Server => (HttpServer)Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Http;
+        public IConnectionManager Manager => (IConnectionManager)Server;
+
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        public HttpConnection(HttpServer server) : base(server)
+        public HttpConnection(HttpConnectionManager server) : base(server)
         {
         }
         protected override void OnConnecting()

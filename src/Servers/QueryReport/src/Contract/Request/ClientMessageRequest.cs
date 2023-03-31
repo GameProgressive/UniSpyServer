@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using Newtonsoft.Json;
 using UniSpy.Server.QueryReport.Abstraction.BaseClass;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 using System.Linq;
 
 namespace UniSpy.Server.QueryReport.Contract.Request

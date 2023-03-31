@@ -9,6 +9,11 @@ namespace UniSpy.Server.GameTrafficRelay.Test
 {
     public class GameTest
     {
+        public GameTest()
+        {
+            TestClasses.CreateServer();
+        }
+
         [Fact]
         public void GetNagNegotiationInfo()
         {
@@ -33,6 +38,7 @@ namespace UniSpy.Server.GameTrafficRelay.Test
 
 
             Assert.ThrowsAsync<System.NullReferenceException>(() => controller.GetNatNegotiationInfo(request));
+            
             // var resp = controller.GetNatNegotiationInfo(request);
 
             // Assert.True(IsPortUsing(resp.IPEndPoint1.Port));

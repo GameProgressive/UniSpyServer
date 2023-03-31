@@ -36,7 +36,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // detecting nat
-            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
             if (addressInfos.Count < InitHandler.InitPacketCount)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
@@ -118,7 +118,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             var req = new NatNegotiationRequest()
             {
                 Cookie = _myInitInfo.Cookie,
-                ServerId = _client.Connection.Server.ServerID
+                ServerId = _client.Server.Id
             };
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(req);

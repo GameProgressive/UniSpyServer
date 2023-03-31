@@ -1,6 +1,6 @@
 using UniSpy.Server.PresenceSearchPlayer.Abstraction.BaseClass;
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Contract.Request
 {

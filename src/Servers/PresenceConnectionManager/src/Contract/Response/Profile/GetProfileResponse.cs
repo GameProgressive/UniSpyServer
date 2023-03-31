@@ -1,6 +1,6 @@
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Contract.Result;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 
 namespace UniSpy.Server.PresenceConnectionManager.Contract.Response

@@ -7,7 +7,7 @@ namespace UniSpy.Server.Master.Application
     public sealed class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public Client(IConnection connection) : base(connection)
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
         }

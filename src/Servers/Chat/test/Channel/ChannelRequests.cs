@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Test.Channel
 
         public const string JoinWithPass = "JOIN #GSP!room!test pass123";
 
-        public const string Kick = "KICK spyguy :Spam";
+        public const string Kick = ":KICK #Finnish spyguy :Spam";
 
         public const string ModeChannel = "MODE #GSP!room!test +l 2";
         public const string ModeUser = "MODE spyguy +s";

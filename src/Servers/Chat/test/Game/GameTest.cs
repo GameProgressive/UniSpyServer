@@ -11,7 +11,6 @@ namespace UniSpy.Server.Chat.Test
 {
     public class GameTest
     {
-        private Client _client => (Client)MockObject.CreateClient();
         public GameTest()
         {
         }
@@ -37,10 +36,10 @@ namespace UniSpy.Server.Chat.Test
                 "MODE #GSP!anno1701!M9zK0KJaKM -i-p-s+m+n+t+l+e 4",
                 "PART #GSP!anno1701 :"
             };
-
+            var client = (Client)MockObject.CreateClient();
             foreach (var raw in rawRequests)
             {
-                new CmdSwitcher(_client, UniSpyEncoding.GetBytes(raw)).Switch();
+                new CmdSwitcher(client, UniSpyEncoding.GetBytes(raw)).Switch();
             }
         }
         [Fact]
@@ -51,9 +50,10 @@ namespace UniSpy.Server.Chat.Test
                 UniSpyEncoding.GetBytes(" world"),
                 UniSpyEncoding.GetBytes(" hi").Concat(new byte[]{0x0D,0x0A}).ToArray(),
             };
+            var client = MockObject.CreateClient();
             foreach (var raw in raws)
             {
-                ((ITestClient)_client).TestReceived(raw);
+                ((ITestClient)client).TestReceived(raw);
             }
             // Given
 

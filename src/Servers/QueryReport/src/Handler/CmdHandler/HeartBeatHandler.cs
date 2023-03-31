@@ -77,7 +77,7 @@ namespace UniSpy.Server.QueryReport.Handler.CmdHandler
             // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
             _gameServerInfo = new GameServerInfo()
             {
-                ServerID = _client.Connection.Server.ServerID,
+                ServerID = _client.Server.Id,
                 HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,
                 QueryReportPort = (ushort)_client.Connection.RemoteIPEndPoint.Port,
                 GameName = _request.GameName,

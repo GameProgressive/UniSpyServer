@@ -6,17 +6,14 @@ using System.Net;
 using System.Text.RegularExpressions;
 using UniSpy.Server.Core.Logging;
 
-namespace UniSpy.Server.Core.MiscMethod
+namespace UniSpy.Server.Core.Misc
 {
     public static class GameSpyUtils
     {
         /// <summary>
         /// Get the string type request command name from rawrequest
         /// </summary>
-        public static string GetRequestName(string request)
-        {
-            return request.Substring(1, request.IndexOf(@"\", 2) - 1);
-        }
+        public static string GetRequestName(string request) => request.Substring(1, request.IndexOf(@"\", 2) - 1);
         /// <summary>
         /// Split command to key value array then convert it to dictionary
         /// </summary>

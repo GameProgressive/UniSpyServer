@@ -1,18 +1,32 @@
+using System.Net;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Network.Udp.Server;
 
 namespace UniSpy.Server.QueryReport.Application
 {
-    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Udp.Server.UdpServer
+    public sealed class Server : ServerBase
     {
-        public Server(UniSpyServerConfig config) : base(config)
+        static Server()
+        {
+            _name = "QueryReport";
+        }
+        public Server()
         {
         }
+
+        public Server(IConnectionManager manager) : base(manager)
+        {
+        }
+
         public override void Start()
         {
-            StorageOperation.NatNegChannel.StartSubscribe();
             base.Start();
+            StorageOperation.NatNegChannel.StartSubscribe();
         }
-        protected override IClient CreateClient(IConnection connection) => new Client(connection);
+        protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
+
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new UdpConnectionManager(endPoint);
+
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpy.Server.Core.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpy.Server.Core.Network.Http.Server
 {
     public class HttpRequest : IHttpRequest
     {

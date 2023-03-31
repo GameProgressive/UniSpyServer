@@ -14,6 +14,7 @@ namespace UniSpy.Server.Core.Abstraction.Interface
         /// <value></value>
         bool IsLogRaw { get; }
         IConnection Connection { get; }
+        IServer Server { get; }
         ICryptography Crypto { get; }
         // we store client info here
         ClientInfoBase Info { get; }

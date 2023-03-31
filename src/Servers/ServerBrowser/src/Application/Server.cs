@@ -1,21 +1,34 @@
 using System.Collections.Generic;
+using System.Net;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.Core.Network.Tcp.Server;
 
 namespace UniSpy.Server.ServerBrowser.Application
 {
-    internal sealed class Server : UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server.TcpServer
+    public sealed class Server : ServerBase
     {
         public static readonly Dictionary<string, List<Grouplist>> PeerGroupList = StorageOperation.Persistance.GetAllGroupList();
-        public Server(UniSpyServerConfig config) : base(config)
+        static Server()
+        {
+            _name = "ServerBrowser";
+        }
+        public Server()
         {
         }
+
+        public Server(IConnectionManager manager) : base(manager)
+        {
+        }
+
         public override void Start()
         {
-            StorageOperation.HeartbeatChannel.StartSubscribe();
             base.Start();
+            StorageOperation.HeartbeatChannel.StartSubscribe();
         }
-        protected override IClient CreateClient(IConnection connection) => new Client(connection);
+        protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
+
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(endPoint);
     }
 }

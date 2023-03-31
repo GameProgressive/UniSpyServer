@@ -1,6 +1,6 @@
 using System.Net;
 using Newtonsoft.Json;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.QueryReport.Aggregate.NatNeg
 {

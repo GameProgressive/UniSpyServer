@@ -9,7 +9,7 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Events;
 using UniSpy.Server.Core.Logging;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
@@ -33,6 +33,26 @@ namespace UniSpy.Server.Chat.Aggregate
             serializer.Serialize(writer, value);
         }
     }
+    public class RemoteServer : IServer
+    {
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint ListeningIPEndPoint { get; private set; }
+        [JsonConverter(typeof(IPEndPointConverter))]
+        public IPEndPoint PublicIPEndPoint { get; private set; }
+        public RemoteServer()
+        {
+        }
+        public RemoteServer(IServer server)
+        {
+            Id = server.Id;
+            Name = server.Name;
+            ListeningIPEndPoint = server.ListeningIPEndPoint;
+            PublicIPEndPoint = server.PublicIPEndPoint;
+        }
+        public void Start() { }
+    }
     public class RemoteClient : IChatClient, Core.Abstraction.Interface.ITestClient
     {
         public bool IsLogRaw { get; set; }
@@ -42,12 +62,16 @@ namespace UniSpy.Server.Chat.Aggregate
         [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
         public ClientInfoBase Info { get; set; }
         ClientInfo IChatClient.Info => (ClientInfo)Info;
-        public RemoteClient() { }
-        public RemoteClient(RemoteTcpConnection conn, ClientInfo info)
+        [JsonConverter(typeof(ConcreteTypeConverter<RemoteServer>))]
+        public IServer Server { get; set; }
+
+        // public RemoteClient() { }
+        public RemoteClient(RemoteTcpConnection conn, ClientInfo info, IServer server)
         {
             Connection = conn;
             // we need to copy the client info because it is a reference type
             Info = info.DeepCopy();
+            Server = server;
             (Info as ClientInfo).IsRemoteClient = true;
         }
         public void Send(IResponse response) => this.LogDebug("Ignore remote client Send() operation");
@@ -60,32 +84,19 @@ namespace UniSpy.Server.Chat.Aggregate
             switcher.Switch();
         }
     }
-    public class RemoteTcpServer : IServer
+    public class RemoteTcpConnectionManager : IConnectionManager
     {
-        public Guid ServerID { get; set; }
-        public string ServerName { get; set; }
-        [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint ListeningIPEndPoint { get; set; }
-        [JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint PublicIPEndPoint { get; set; }
+#pragma warning disable CS0067
+        public event OnConnectingEventHandler OnInitialization;
         public void Start() => throw new ChatException("Remote tcp connection do not have this method.");
-        public RemoteTcpServer() { }
-        public RemoteTcpServer(IServer server)
-        {
-            ServerID = server.ServerID;
-            ServerName = server.ServerName;
-            ListeningIPEndPoint = server.ListeningIPEndPoint;
-            PublicIPEndPoint = server.PublicIPEndPoint;
-        }
+        public RemoteTcpConnectionManager() { }
     }
 
     public class RemoteTcpConnection : ITcpConnection
     {
 
-        [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpServer>))]
-        public IServer Server { get; set; }
+        [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnectionManager>))]
+        public IConnectionManager Manager { get; set; }
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         public NetworkConnectionType ConnectionType { get; set; }
@@ -96,9 +107,9 @@ namespace UniSpy.Server.Chat.Aggregate
 #pragma warning disable CS0067
         public event OnReceivedEventHandler OnReceive;
         public RemoteTcpConnection() { }
-        public RemoteTcpConnection(ITcpConnection conn, RemoteTcpServer server)
+        public RemoteTcpConnection(ITcpConnection conn, IConnectionManager manager)
         {
-            Server = server;
+            Manager = manager;
             RemoteIPEndPoint = conn.RemoteIPEndPoint;
             ConnectionType = conn.ConnectionType;
         }

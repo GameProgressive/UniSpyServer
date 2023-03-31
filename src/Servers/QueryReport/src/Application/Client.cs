@@ -6,13 +6,15 @@ namespace UniSpy.Server.QueryReport.Application
 {
     public sealed class Client : ClientBase
     {
-        public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public Client(IConnection connection) : base(connection)
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             IsLogRaw = true;
             // launch redis channel
             Info = new ClientInfo();
         }
+
+        public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
+
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
     }

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Extension.Redis;
-using UniSpy.Server.Core.MiscMethod;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.Master.Aggregation.Redis
 {

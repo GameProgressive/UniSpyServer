@@ -10,12 +10,11 @@ namespace UniSpy.Server.NatNegotiation.Application
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new IUdpConnection Connection => (IUdpConnection)base.Connection;
-        public Client(IConnection connection) : base(connection)
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
             IsLogRaw = true;
         }
-
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
         protected override void EventBinding()
         {

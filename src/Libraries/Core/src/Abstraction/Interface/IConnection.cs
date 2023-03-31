@@ -18,7 +18,7 @@ namespace UniSpy.Server.Core.Abstraction.Interface
     public interface IConnection
     {
         event OnReceivedEventHandler OnReceive;
-        IServer Server { get; }
+        IConnectionManager Manager { get; }
         IPEndPoint RemoteIPEndPoint { get; }
         void Send(string response);
         void Send(byte[] response);
@@ -44,5 +44,11 @@ namespace UniSpy.Server.Core.Abstraction.Interface
     }
     public interface IHttpConnection : ITcpConnection
     {
+    }
+
+    public interface IConnectionManager
+    {
+        event OnConnectingEventHandler OnInitialization;
+        void Start();
     }
 }

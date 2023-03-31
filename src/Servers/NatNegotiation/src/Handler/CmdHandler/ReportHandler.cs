@@ -39,7 +39,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Connection.Server.ServerID, (uint)_client.Info.Cookie);
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
             if (addressInfos.Count < InitHandler.InitPacketCount)
             {
                 throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");

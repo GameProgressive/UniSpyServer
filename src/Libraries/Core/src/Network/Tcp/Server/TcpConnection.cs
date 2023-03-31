@@ -4,7 +4,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
 
-namespace UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server
+namespace UniSpy.Server.Core.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
@@ -18,13 +18,12 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Network.Tcp.Server
         /// </summary>
         /// <value></value>
         public IPEndPoint RemoteIPEndPoint { get; private set; }
-        public new TcpServer Server => (TcpServer)base.Server;
-        IServer IConnection.Server => Server;
+        IConnectionManager IConnection.Manager => (IConnectionManager)base.Server;
         public NetworkConnectionType ConnectionType => NetworkConnectionType.Tcp;
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
-        public TcpConnection(TcpServer server) : base(server)
+        public TcpConnection(TcpConnectionManager server) : base(server)
         {
         }
         protected override void OnConnecting()

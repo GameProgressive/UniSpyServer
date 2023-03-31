@@ -10,11 +10,12 @@ namespace UniSpy.Server.ServerBrowser.Application
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
         private byte[] _incompleteBuffer;
-        public Client(IConnection connection) : base(connection)
+
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
-            IsLogRaw = true;
-            Info = new ClientInfo();
             // Crypto is init in ServerListHandler
+            Info = new ClientInfo();
+            IsLogRaw = true;
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);

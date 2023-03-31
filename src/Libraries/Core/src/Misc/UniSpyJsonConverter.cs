@@ -3,7 +3,7 @@ using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UniSpy.Server.Core.MiscMethod
+namespace UniSpy.Server.Core.Misc
 {
 
     public class IPAddressConverter : JsonConverter

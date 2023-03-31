@@ -18,10 +18,12 @@ namespace UniSpy.Server.Chat.Application
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         private byte[] _incompleteBuffer;
         public Client() { }
-        public Client(IConnection connection) : base(connection)
+
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
         }
+
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);
@@ -73,14 +75,15 @@ namespace UniSpy.Server.Chat.Application
         private void PublishDisconnectMessage()
         {
             var message = new RemoteMessage(new DisconnectRequest(), GetRemoteClient());
-            Server.GeneralChannel.PublishMessage(message);
+            Chat.Application.Server.GeneralChannel.PublishMessage(message);
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
         public RemoteClient GetRemoteClient()
         {
-            var server = new RemoteTcpServer(Connection.Server);
-            var conn = new RemoteTcpConnection(Connection, server);
-            var client = new RemoteClient(conn, Info);
+            var manager = new RemoteTcpConnectionManager();
+            var conn = new RemoteTcpConnection(Connection, manager);
+            var server = new RemoteServer(Server);
+            var client = new RemoteClient(conn, Info, server);
             return client;
         }
     }

@@ -1,7 +1,7 @@
 using System;
 using Serilog;
 using Serilog.Events;
-using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
+using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Extension;
@@ -48,7 +48,7 @@ namespace UniSpy.Server.Core.Logging
             LogConfig = LogConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
-                path: $"Logs/[{ServerLauncherBase.ServerName}]-.log",
+                path: $"Logs/[{ServerBase.Name}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
                 rollingInterval: RollingInterval.Day);
             Log.Logger = LogConfig.CreateLogger();

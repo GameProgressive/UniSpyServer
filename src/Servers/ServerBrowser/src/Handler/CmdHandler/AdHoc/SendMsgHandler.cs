@@ -31,7 +31,7 @@ namespace UniSpy.Server.ServerBrowser.Handler.CmdHandler
 
             var message = new ClientMessageRequest()
             {
-                ServerBrowserSenderId = _client.Connection.Server.ServerID,
+                ServerBrowserSenderId = _client.Server.Id,
                 NatNegMessage = _request.ClientMessage,
                 InstantKey = gameServer.InstantKey,
                 TargetIPEndPoint = gameServer.QueryReportIPEndPoint,

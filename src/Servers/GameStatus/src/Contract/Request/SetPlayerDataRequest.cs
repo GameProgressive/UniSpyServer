@@ -2,7 +2,6 @@ using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
 using UniSpy.Server.GameStatus.Exception;
 using System;
-using System.Linq;
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {

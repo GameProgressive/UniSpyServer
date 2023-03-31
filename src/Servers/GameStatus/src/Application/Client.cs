@@ -4,7 +4,6 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
-using UniSpy.Server.Core.MiscMethod;
 using System;
 
 namespace UniSpy.Server.GameStatus.Application
@@ -12,7 +11,7 @@ namespace UniSpy.Server.GameStatus.Application
     public sealed class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
-        public Client(IConnection connection) : base(connection)
+        public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
             Crypto = new GSCrypt();

@@ -29,7 +29,7 @@ namespace UniSpy.Server.Master.Handler.CmdHandler
             _result.Challenge = Challenge;
             var info = new GameServerInfo()
             {
-                ServerID = _client.Connection.Server.ServerID,
+                ServerID = _client.Server.Id,
                 HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,
                 // check whether this indicate game port
                 QueryReportPort = _request.QueryReportPort,

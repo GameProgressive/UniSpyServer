@@ -102,6 +102,9 @@ namespace UniSpy.Server.GameStatus.Test
         {
             var raw = @"\setpd\\pid\123\ptype\0\dindex\1\kv\%d\lid\1\length\5\data\11\lid\1";
             var request = new SetPlayerDataRequest(raw);
+            Assert.Throws<System.Collections.Generic.KeyNotFoundException>(() => request.Parse());
+            raw = @"\setpd\\pid\123\ptype\0\dindex\1\kv\%d\lid\1\report\hello\length\5\data\11\lid\1";
+            request = new SetPlayerDataRequest(raw);
             request.Parse();
             Assert.Equal((int)123, request.ProfileId);
             Assert.Equal(PersistStorageType.PrivateRO, request.StorageType);
