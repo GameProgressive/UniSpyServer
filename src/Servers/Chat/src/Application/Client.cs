@@ -29,7 +29,7 @@ namespace UniSpy.Server.Chat.Application
             if (_bufferCache.ProcessBuffer(message, out var completeBuffer))
             {
                 this.LogNetworkReceiving(completeBuffer);
-                var switcher = CreateSwitcher(buffer);
+                var switcher = CreateSwitcher(completeBuffer);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     switcher.Switch();
