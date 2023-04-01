@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
+using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;
@@ -16,9 +17,7 @@ namespace UniSpy.Server.Chat.Application
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
-        private byte[] _incompleteBuffer;
-        public Client() { }
-
+        private BufferCache _bufferCache = new BufferCache();
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
@@ -27,37 +26,20 @@ namespace UniSpy.Server.Chat.Application
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);
-            if (message[message.Length - 1] == 0x0A)
+            if (_bufferCache.ProcessBuffer(message, out var completeBuffer))
             {
-                // check last _incomplteBuffer if it has incomplete message, then combine them
-                byte[] completeBuffer;
-                if (_incompleteBuffer is not null)
+                this.LogNetworkReceiving(completeBuffer);
+                var switcher = CreateSwitcher(buffer);
+                if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    completeBuffer = _incompleteBuffer.Concat(message).ToArray();
-                    _incompleteBuffer = null;
+                    switcher.Switch();
                 }
                 else
                 {
-                    completeBuffer = message;
-                }
-                this.LogNetworkReceiving((byte[])completeBuffer);
-                new CmdSwitcher(this, completeBuffer).Switch();
-            }
-            else
-            {
-                // message is not finished, we add it in _completeBuffer
-                if (_incompleteBuffer is null)
-                {
-                    _incompleteBuffer = message;
-                }
-                else
-                {
-                    _incompleteBuffer = _incompleteBuffer.Concat(message).ToArray();
+                    Task.Run(() => switcher.Switch());
                 }
             }
-
         }
-        //todo add ondisconnect event process
         protected override void OnDisconnected()
         {
             if (Info.IsLoggedIn)

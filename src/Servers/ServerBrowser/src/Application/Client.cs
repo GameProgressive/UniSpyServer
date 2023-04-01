@@ -1,16 +1,14 @@
-using System.Linq;
-using UniSpy.Server.ServerBrowser.Enumerate;
 using UniSpy.Server.ServerBrowser.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.ServerBrowser.Aggregate.Misc;
 
 namespace UniSpy.Server.ServerBrowser.Application
 {
     public sealed class Client : ClientBase
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
-        private byte[] _incompleteBuffer;
-
+        private BufferCache _bufferCache = new BufferCache();
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             // Crypto is init in ServerListHandler
@@ -22,40 +20,10 @@ namespace UniSpy.Server.ServerBrowser.Application
 
         protected override void OnReceived(object buffer)
         {
-            var data = buffer as byte[];
-            byte[] compeleteBuffer;
-            if (((RequestType)data[2]) == RequestType.SendMessageRequest)
+            if (_bufferCache.ProcessBuffer((byte[])buffer, out var completeBuffer))
             {
-                if (data.Length > 9)
-                {
-                    // complete sendmessage request received
-                    compeleteBuffer = data;
-                }
-                else
-                {
-                    _incompleteBuffer = data;
-                    return;
-                }
+                base.OnReceived(completeBuffer);
             }
-            else if (data.Take(6).SequenceEqual(NatNegotiation.Abstraction.BaseClass.RequestBase.MagicData))
-            {
-                if (_incompleteBuffer is not null)
-                {
-                    compeleteBuffer = _incompleteBuffer.Concat(data).ToArray();
-                    _incompleteBuffer = null;
-                }
-                else
-                {
-                    // we ignore natneg message when _incompleteBuffer is null
-                    return;
-                }
-            }
-            else
-            {
-                compeleteBuffer = data;
-            }
-
-            base.OnReceived(compeleteBuffer);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
     public abstract class ClientBase : IClient, ITestClient, IDisposable
     {
+        public IServer Server { get; private set; }
         public IConnection Connection { get; private set; }
         public ICryptography Crypto { get; set; }
         public ClientInfoBase Info { get; protected set; }
@@ -16,11 +17,10 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// The timer to count and invoke some event
         /// </summary>
         protected EasyTimer _timer { get; set; }
+        /// <summary>
+        /// Is logging the raw byte[] requests
+        /// </summary>
         public bool IsLogRaw { get; protected set; }
-
-        public IServer Server { get; private set; }
-
-        public ClientBase() { }
         public ClientBase(IConnection connection, IServer server)
         {
             Connection = connection;
@@ -75,7 +75,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                 case NetworkConnectionType.Tcp:
                     goto default;
                 case NetworkConnectionType.Udp:
-                    // LastPacketReceivedTime = DateTime.Now;
                     _timer.RefreshLastActiveTime();
                     goto default;
                 case NetworkConnectionType.Http:
