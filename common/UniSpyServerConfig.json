@@ -40,15 +40,15 @@
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
-      "ServerName": "ServerBrowser",
+      "ServerName": "ServerBrowserV1",
       "PublicAddress": "0.0.0.0",
-      "ListeningPort": "28910"
+      "ListeningPort": "28900"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",
-      "ServerName": "Master",
+      "ServerName": "ServerBrowserV2",
       "PublicAddress": "0.0.0.0",
-      "ListeningPort": "28900"
+      "ListeningPort": "28910"
     },
     {
       "ServerID": "00000000-0000-0000-0000-000000000000",

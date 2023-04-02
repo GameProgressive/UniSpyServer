@@ -26,7 +26,7 @@ namespace UniSpy.Server.WebServer.Test
                 var requestMock = new Mock<IHttpRequest>();
                 requestMock.Setup(r => r.Body).Returns(req);
                 var sw = new CmdSwitcher(_client, requestMock.Object);
-                sw.Switch();
+                sw.Handle();
             }
         }
     }

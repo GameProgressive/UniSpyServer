@@ -29,6 +29,6 @@ namespace UniSpy.Server.Chat.Application
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 
-        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(ListeningIPEndPoint);
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(endPoint);
     }
 }

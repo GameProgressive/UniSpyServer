@@ -17,29 +17,16 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         public IPEndPoint PublicIPEndPoint { get; private set; }
         [JsonIgnore]
         public IConnectionManager ConnectionManager;
-        string IServer.Name => _name;
-        public static string Name
-        {
-            get
-            {
-                if (_name is null)
-                {
-                    throw new UniSpyException("Server Name must set in child class.");
-                }
-                else
-                {
-                    return _name;
-                }
-            }
-        }
+        protected UniSpyServerConfig _cfg;
+        public string Name { get; } = _name;
+        /// <summary>
+        /// This name is for reading from child class, indicating the server name
+        /// </summary>
         protected static string _name;
 
         public ServerBase()
         {
-            var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == Name).First();
-            Id = cfg.ServerID;
-            ListeningIPEndPoint = cfg.ListeningIPEndPoint;
-            PublicIPEndPoint = cfg.PublicIPEndPoint;
+            SetServerInfo();
             ConnectionManager = CreateConnectionManager(ListeningIPEndPoint);
             ConnectionManager.OnInitialization += HandleConnectionInitialization;
         }
@@ -48,13 +35,16 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// </summary>
         public ServerBase(IConnectionManager manager)
         {
+            SetServerInfo();
             ConnectionManager = manager;
-            var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == Name).First();
-            Id = cfg.ServerID;
-            ListeningIPEndPoint = cfg.ListeningIPEndPoint;
-            PublicIPEndPoint = cfg.PublicIPEndPoint;
         }
-
+        public void SetServerInfo()
+        {
+            _cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == _name).First();
+            Id = _cfg.ServerID;
+            ListeningIPEndPoint = _cfg.ListeningIPEndPoint;
+            PublicIPEndPoint = _cfg.PublicIPEndPoint;
+        }
         protected abstract IConnectionManager CreateConnectionManager(IPEndPoint endPoint);
         private IClient HandleConnectionInitialization(IConnection connection)
         {

@@ -20,6 +20,6 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 
-        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(endPoint);
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(IPEndPoint.Parse("0.0.0.0:29901"));
     }
 }

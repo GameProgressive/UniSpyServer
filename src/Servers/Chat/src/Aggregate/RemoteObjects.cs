@@ -81,7 +81,7 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             this.LogNetworkReceiving(buffer);
             var switcher = new CmdSwitcher(this, buffer);
-            switcher.Switch();
+            switcher.Handle();
         }
     }
     public class RemoteTcpConnectionManager : IConnectionManager

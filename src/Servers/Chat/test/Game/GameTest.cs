@@ -39,7 +39,7 @@ namespace UniSpy.Server.Chat.Test
             var client = (Client)MockObject.CreateClient();
             foreach (var raw in rawRequests)
             {
-                new CmdSwitcher(client, UniSpyEncoding.GetBytes(raw)).Switch();
+                new CmdSwitcher(client, UniSpyEncoding.GetBytes(raw)).Handle();
             }
         }
         [Fact]

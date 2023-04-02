@@ -52,7 +52,7 @@ namespace UniSpy.Server.Chat.Test
             var msgStr = JsonConvert.SerializeObject(message);
             var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
             var chan = new GeneralMessageChannel();
-            chan.ReceivedMessage(msgObj);
+            Assert.Throws<System.NullReferenceException>(() => chan.ReceivedMessage(msgObj));
             // When
 
             // Then
@@ -70,7 +70,7 @@ namespace UniSpy.Server.Chat.Test
             request.Parse();
             var message = new RemoteMessage(request, remoteClient);
             var chan = new GeneralMessageChannel();
-            chan.ReceivedMessage(message);
+            Assert.Throws<System.NullReferenceException>(() => chan.ReceivedMessage(message));
         }
         [Fact]
         public void GeneralTest()

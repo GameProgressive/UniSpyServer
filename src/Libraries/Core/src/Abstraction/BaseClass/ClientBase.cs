@@ -90,11 +90,11 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             var switcher = CreateSwitcher(buffer);
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                switcher.Switch();
+                switcher.Handle();
             }
             else
             {
-                Task.Run(() => switcher.Switch());
+                Task.Run(() => switcher.Handle());
             }
         }
         protected virtual byte[] DecryptMessage(byte[] buffer)

@@ -19,7 +19,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         }
         public override void ReceivedMessage(RemoteMessage message)
         {
-            if (message.Client.Server.Id == ServerLauncher.ServerInstance?.Id)
+            if (message.Client.Server.Id == ServerLauncher.Server.Id)
             {
                 return;
             }
@@ -43,11 +43,11 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             var switcher = new CmdSwitcher(client, message.RawRequest);
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                switcher.Switch();
+                switcher.Handle();
             }
             else
             {
-                Task.Run(() => switcher.Switch());
+                Task.Run(() => switcher.Handle());
             }
         }
     }
@@ -63,7 +63,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         public override void ReceivedMessage(RemoteMessage message)
         {
             // base.ReceivedMessage(message);
-            if (message.Client.Server.Id == ServerLauncher.ServerInstance.Id)
+            if (message.Client.Server.Id == ServerLauncher.Server.Id)
             {
                 return;
             }
@@ -76,11 +76,11 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             var switcher = new CmdSwitcher(client, message.RawRequest);
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                switcher.Switch();
+                switcher.Handle();
             }
             else
             {
-                Task.Run(() => switcher.Switch());
+                Task.Run(() => switcher.Handle());
             }
         }
     }

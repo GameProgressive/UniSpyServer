@@ -74,8 +74,8 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             Task.Run(() => app.Run($"http://{ListeningIPEndPoint}"));
         }
 
-        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) { return null; }
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => null;
 
-        protected override IClient CreateClient(IConnection connection) { return null; }
+        protected override IClient CreateClient(IConnection connection) => null;
     }
 }

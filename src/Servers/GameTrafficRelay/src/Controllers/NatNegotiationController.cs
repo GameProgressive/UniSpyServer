@@ -36,8 +36,8 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
 
             var response = new NatNegotiationResponse()
             {
-                IPEndPoint1 = new IPEndPoint(ServerLauncher.ServerInstance.PublicIPEndPoint.Address, pair.Listener1.ListeningEndPoint.Port),
-                IPEndPoint2 = new IPEndPoint(ServerLauncher.ServerInstance.PublicIPEndPoint.Address, pair.Listener2.ListeningEndPoint.Port)
+                IPEndPoint1 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener1.ListeningEndPoint.Port),
+                IPEndPoint2 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener2.ListeningEndPoint.Port)
             };
             return Task.FromResult(response);
         }

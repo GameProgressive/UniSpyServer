@@ -32,11 +32,11 @@ namespace UniSpy.Server.Chat.Application
                 var switcher = CreateSwitcher(completeBuffer);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    switcher.Switch();
+                    switcher.Handle();
                 }
                 else
                 {
-                    Task.Run(() => switcher.Switch());
+                    Task.Run(() => switcher.Handle());
                 }
             }
         }

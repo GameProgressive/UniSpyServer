@@ -19,7 +19,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             _requests = new List<KeyValuePair<object, object>>();
         }
 
-        public virtual void Switch()
+        public virtual void Handle()
         {
             try
             {

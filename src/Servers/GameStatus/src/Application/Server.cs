@@ -21,6 +21,6 @@ namespace UniSpy.Server.GameStatus.Application
         }
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
-        protected override IConnectionManager CreateConnectionManager(IPEndPoint endpoint) => new TcpConnectionManager(endpoint);
+        protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(endPoint);
     }
 }

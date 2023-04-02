@@ -22,7 +22,7 @@ namespace UniSpy.Server.QueryReport.Application
         public override void Start()
         {
             base.Start();
-            StorageOperation.NatNegChannel.StartSubscribe();
+            V2.Application.StorageOperation.NatNegChannel.StartSubscribe();
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 

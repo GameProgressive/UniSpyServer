@@ -3,7 +3,7 @@ using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Database.DatabaseModel;
-using UniSpy.Server.QueryReport.Aggregate.Redis.GameServer;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 
 namespace UniSpy.Server.Chat.Application
 {

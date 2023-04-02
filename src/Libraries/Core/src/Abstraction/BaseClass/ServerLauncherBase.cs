@@ -4,6 +4,7 @@ using Figgle;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using System.Collections.Generic;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
 {
@@ -17,7 +18,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         /// </summary>
         public static readonly string Version = "0.8.1";
 
-        public static IServer ServerInstance { get; protected set; }
+        public static List<IServer> ServerInstances { get; protected set; }
         public ServerLauncherBase()
         {
         }
@@ -28,20 +29,22 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
             ConnectRedis();
             LaunchServer();
         }
-        protected abstract IServer LaunchNetworkService();
+        protected abstract List<IServer> LaunchNetworkService();
         protected virtual void LaunchServer()
         {
-            ServerInstance = LaunchNetworkService();
-
-            if (ServerInstance is null)
+            ServerInstances = LaunchNetworkService();
+            if (ServerInstances.Count == 0)
             {
                 throw new Exception("Server created failed");
             }
-            // asp.net web server does not implement a Server interface, therefore this code should not be called
-            ServerInstance.Start();
             var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerInstance.Name, ServerInstance.ListeningIPEndPoint.Address, ServerInstance.ListeningIPEndPoint.Port);
-            Console.Title = $"UniSpyServer  {Version} - {ServerInstance.Name}";
+            Console.Title = $"UniSpyServer  {Version} - {ServerInstances[0].Name}";
+
+            foreach (var server in ServerInstances)
+            {
+                server.Start();
+                table.AddRow(server.Name, server.ListeningIPEndPoint.Address, server.ListeningIPEndPoint.Port);
+            }
             table.Write(ConsoleTables.Format.Alternative);
             Console.WriteLine("Server successfully started!");
         }

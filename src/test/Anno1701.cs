@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading;
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
 
@@ -10,8 +9,8 @@ namespace UniSpy.Server.Test
         [Fact]
         public void Test20221106()
         {
-            var qrClient = QueryReport.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var sbClient = ServerBrowser.Test.TestClasses.CreateClient("79.209.224.29", 51104);
+            var qrClient = QueryReport.V2.Test.TestClasses.CreateClient("79.209.224.29", 21701);
+            var sbClient = ServerBrowser.V2.Test.TestClasses.CreateClient("79.209.224.29", 51104);
 
             var clients = new Dictionary<string, IClient>(){
                 {"qr",qrClient},
@@ -38,10 +37,10 @@ namespace UniSpy.Server.Test
         [Fact]
         public void Test20221104()
         {
-            var qrClient1 = QueryReport.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var qrClient2 = QueryReport.Test.TestClasses.CreateClient("31.18.120.193", 21701);
-            var sbClient1 = ServerBrowser.Test.TestClasses.CreateClient("79.209.224.29", 45340);
-            var sbClient2 = ServerBrowser.Test.TestClasses.CreateClient("31.18.120.193", 50587);
+            var qrClient1 = QueryReport.V2.Test.TestClasses.CreateClient("79.209.224.29", 21701);
+            var qrClient2 = QueryReport.V2.Test.TestClasses.CreateClient("31.18.120.193", 21701);
+            var sbClient1 = ServerBrowser.V2.Test.TestClasses.CreateClient("79.209.224.29", 45340);
+            var sbClient2 = ServerBrowser.V2.Test.TestClasses.CreateClient("31.18.120.193", 50587);
             var natClient1 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 123);
             var natClient2 = NatNegotiation.Test.TestClasses.CreateClient("31.18.120.193", 123);
 
