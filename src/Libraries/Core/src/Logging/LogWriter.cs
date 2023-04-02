@@ -1,7 +1,6 @@
 using System;
 using Serilog;
 using Serilog.Events;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Config;

@@ -13,13 +13,9 @@ namespace UniSpy.Server.Chat.Application
         {
             _name = "Chat";
         }
-        public Server()
-        {
-        }
+        public Server(){ }
 
-        public Server(IConnectionManager manager) : base(manager)
-        {
-        }
+        public Server(IConnectionManager manager) : base(manager){}
 
         public override void Start()
         {

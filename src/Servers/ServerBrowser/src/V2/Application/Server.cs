@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.Core.Network.Tcp.Server;
 
@@ -16,13 +14,9 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
         {
             _name = "ServerBrowserV2";
         }
-        public Server()
-        {
-        }
+        public Server() { }
 
-        public Server(IConnectionManager manager) : base(manager)
-        {
-        }
+        public Server(IConnectionManager manager) : base(manager) { }
         public override void Start()
         {
             StorageOperation.HeartbeatChannel.StartSubscribe();

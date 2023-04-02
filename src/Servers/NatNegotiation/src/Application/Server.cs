@@ -12,13 +12,9 @@ namespace UniSpy.Server.NatNegotiation.Application
             _name = "NatNegotiation";
         }
 
-        public Server()
-        {
-        }
+        public Server() { }
 
-        public Server(IConnectionManager manager) : base(manager)
-        {
-        }
+        public Server(IConnectionManager manager) : base(manager) { }
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 

@@ -1,6 +1,5 @@
 using System.Net;
 using Moq;
-using UniSpy.Server.QueryReport.V2.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.Application;
 

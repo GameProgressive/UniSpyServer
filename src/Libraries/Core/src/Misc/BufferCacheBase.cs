@@ -1,5 +1,3 @@
-using System;
-
 namespace UniSpy.Server.Core.Misc
 {
     public abstract class BufferCacheBase<T>

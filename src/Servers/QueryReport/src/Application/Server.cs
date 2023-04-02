@@ -11,13 +11,9 @@ namespace UniSpy.Server.QueryReport.Application
         {
             _name = "QueryReport";
         }
-        public Server()
-        {
-        }
+        public Server() { }
 
-        public Server(IConnectionManager manager) : base(manager)
-        {
-        }
+        public Server(IConnectionManager manager) : base(manager) { }
 
         public override void Start()
         {

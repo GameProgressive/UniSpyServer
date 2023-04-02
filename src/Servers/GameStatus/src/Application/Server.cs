@@ -12,13 +12,9 @@ namespace UniSpy.Server.GameStatus.Application
             _name = "GameStatus";
         }
 
-        public Server()
-        {
-        }
+        public Server(){ }
 
-        public Server(IConnectionManager manager) : base(manager)
-        {
-        }
+        public Server(IConnectionManager manager) : base(manager){}
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
         protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new TcpConnectionManager(endPoint);

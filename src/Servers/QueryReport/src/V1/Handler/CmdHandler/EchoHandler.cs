@@ -1,4 +1,3 @@
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.Application;
 using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V1.Contract.Request;
