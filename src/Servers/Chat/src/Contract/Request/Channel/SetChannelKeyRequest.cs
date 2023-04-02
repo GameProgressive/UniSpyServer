@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("Channel keys and values are missing.");
+                throw new Chat.Exception("Channel keys and values are missing.");
             }
             _longParam = _longParam.Substring(1);
 

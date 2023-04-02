@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_cmdParams is null || _cmdParams?.Count == 0)
             {
-                throw new Exception.ChatException("The Search filter is missing.");
+                throw new Chat.Exception("The Search filter is missing.");
             }
 
             IsSearchingChannel = true;

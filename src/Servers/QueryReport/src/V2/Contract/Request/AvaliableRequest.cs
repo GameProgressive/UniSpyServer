@@ -1,5 +1,5 @@
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.Exception;
+
 
 namespace UniSpy.Server.QueryReport.V2.Contract.Request
 {
@@ -20,14 +20,14 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
             {
                 if (RawRequest[i] != AvaliableRequest.Prefix[i])
                 {
-                    throw new QRException("Avaliable request prefix is invalid.");
+                    throw new QueryReport.Exception("Avaliable request prefix is invalid.");
                 }
             }
 
             //postfix check
             if (RawRequest[RawRequest.Length - 1] != AvaliableRequest.Postfix)
             {
-                throw new QRException("Avaliable request postfix is invalid.");
+                throw new QueryReport.Exception("Avaliable request postfix is invalid.");
             }
         }
     }

@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             base.Parse();
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The reason of living channel is missing.");
+                throw new Chat.Exception("The reason of living channel is missing.");
             }
             Reason = _longParam;
         }

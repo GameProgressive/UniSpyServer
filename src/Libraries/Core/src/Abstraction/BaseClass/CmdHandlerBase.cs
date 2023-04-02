@@ -1,4 +1,3 @@
-using System;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 
@@ -41,7 +40,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                 }
                 Response();
             }
-            catch (Exception ex)
+            catch (UniSpy.Exception ex)
             {
                 HandleException(ex);
             }
@@ -64,12 +63,12 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             _client.Send(_response);
         }
 
-        protected virtual void HandleException(Exception ex)
+        protected virtual void HandleException(System.Exception ex)
         {
-            // we only log exception message when this message is UniSpyException
-            if (ex is UniSpyException)
+            // we only log exception message when this message is UniSpy.Exception
+            if (ex is UniSpy.Exception)
             {
-                _client.LogError(ex);
+                _client.LogError(ex.Message);
             }
             else
             {

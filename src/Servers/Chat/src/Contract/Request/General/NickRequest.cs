@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 
 namespace UniSpy.Server.Chat.Contract.Request.General
 {
@@ -26,7 +26,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
             }
             else
             {
-                throw new Exception.ChatException("NICK request is invalid.");
+                throw new Chat.Exception("NICK request is invalid.");
             }
 
             foreach (var c in _invalidChars)

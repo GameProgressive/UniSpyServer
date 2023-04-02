@@ -16,7 +16,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("Echo message is missing.");
+                throw new Chat.Exception("Echo message is missing.");
             }
             EchoMessage = _longParam;
         }

@@ -27,7 +27,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
             int namespaceid;
             if (!int.TryParse(_cmdParams[0], out namespaceid))
             {
-                throw new Exception.ChatException("The namespaceid format is incorrect.");
+                throw new Chat.Exception("The namespaceid format is incorrect.");
             }
             NamespaceID = namespaceid;
 
@@ -38,7 +38,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                    throw new Exception.ChatException("The profile nick format is incorrect.");
+                    throw new Chat.Exception("The profile nick format is incorrect.");
                 }
 
                 int profilenickIndex = _longParam.IndexOf("@");

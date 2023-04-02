@@ -17,7 +17,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The keys and values are missing.");
+                throw new Chat.Exception("The keys and values are missing.");
             }
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }

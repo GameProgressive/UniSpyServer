@@ -1,6 +1,5 @@
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Enumerate;
-using UniSpy.Server.NatNegotiation.Exception;
 using UniSpy.Server.NatNegotiation.Aggregate.Misc;
 using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Contract.Request;
@@ -31,7 +30,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             NatProperty natProperty = new NatProperty();
             if (iniInfo.AddressInfos.Count < 3)
             {
-                throw new NNException("We need 3 init records to determine the nat type.");
+                throw new NatNegotiation.Exception("We need 3 init records to determine the nat type.");
             }
             var nn1 = iniInfo.AddressInfos[NatPortType.NN1];
             var nn2 = iniInfo.AddressInfos[NatPortType.NN2];
@@ -74,7 +73,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             else
             {
                 natProperty.NatType = NatType.Unknown;
-                throw new NNException("Unknow nat type.");
+                throw new NatNegotiation.Exception("Unknow nat type.");
             }
         }
     }

@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class InvalidProfileException : AuthException
+    public class InvalidProfileException : Auth.Exception
     {
         public InvalidProfileException() : base("Profile is invalid!", AuthErrorCode.InvalidProfile)
         {

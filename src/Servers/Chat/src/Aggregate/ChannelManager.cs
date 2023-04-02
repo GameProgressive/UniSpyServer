@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
@@ -20,7 +19,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             if (!Channels.TryGetValue(name, out var channel))
             {
-                throw new ChatException("Channel do not exist!");
+                throw new Chat.Exception("Channel do not exist!");
             }
             return channel;
         }

@@ -1,6 +1,5 @@
 using System.Net;
 using System.Threading;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
@@ -42,7 +41,7 @@ namespace UniSpy.Server.Core.Network.Udp.Server
             }
             else
             {
-                throw new UniSpyException("IUdpConnection.Send: response must be string or byte[]");
+                throw new UniSpy.Exception("IUdpConnection.Send: response must be string or byte[]");
             }
         }
         public void Send(string response) => Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes(response));

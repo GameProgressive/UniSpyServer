@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_cmdParams.Count != 1)
             {
-                throw new Exception.ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Chat.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             GroupName = _cmdParams[0];

@@ -203,7 +203,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
                             ModeOperations.Add(ModeOperationType.DisableUserVoicePermission);
                             break;
                         default:
-                            throw new Exception.ChatException("Unknown mode request type.");
+                            throw new Chat.Exception("Unknown mode request type.");
                     }
 
                 }
@@ -212,7 +212,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
             }
             else
             {
-                throw new Exception.ChatException("number of IRC parameters are incorrect.");
+                throw new Chat.Exception("number of IRC parameters are incorrect.");
             }
         }
     }

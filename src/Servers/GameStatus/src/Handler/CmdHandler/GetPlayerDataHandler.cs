@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Application;
-using UniSpy.Server.GameStatus.Exception;
+
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Contract.Response;
 using UniSpy.Server.GameStatus.Contract.Result;
@@ -42,7 +42,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
                     }
                     else
                     {
-                        throw new GSException($"can not find key:{key} in GetPD request.");
+                        throw new GameStatus.Exception($"can not find key:{key} in GetPD request.");
                     }
                 }
             }

@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
@@ -38,7 +37,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             if (secretKey is null)
             {
                 client.Connection.Disconnect();
-                throw new ChatException("secret key not found.");
+                throw new Chat.Exception("secret key not found.");
             }
             client.Info.GameSecretKey = secretKey;
             client.Info.GameName = _request.GameName;

@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpy.Server.WebServer.Abstraction;
-using UniSpy.Server.WebServer.Module.Auth.Exception;
+
 
 namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 {
@@ -18,21 +18,21 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
             base.Parse();
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "version"))
             {
-                throw new AuthException("version is missing from the request");
+                throw new Auth.Exception("version is missing from the request");
             }
             var version = _contentElement.Descendants().First(p => p.Name.LocalName == "version").Value;
             Version = int.Parse(version);
 
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "partnercode"))
             {
-                throw new AuthException("partnercode is missing from the request");
+                throw new Auth.Exception("partnercode is missing from the request");
             }
             var partnercode = _contentElement.Descendants().First(p => p.Name.LocalName == "partnercode").Value;
             PartnerCode = int.Parse(partnercode);
 
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "namespaceid"))
             {
-                throw new AuthException("namespaceid is missing from the request");
+                throw new Auth.Exception("namespaceid is missing from the request");
             }
             var namespaceid = _contentElement.Descendants().First(p => p.Name.LocalName == "namespaceid").Value;
             NamespaceId = int.Parse(namespaceid);

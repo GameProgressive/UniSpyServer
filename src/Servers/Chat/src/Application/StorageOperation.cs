@@ -1,7 +1,6 @@
 using System.Net;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 
@@ -64,7 +63,7 @@ namespace UniSpy.Server.Chat.Application
 
                 if (result.Count() != 1)
                 {
-                    throw new ChatException($"Can not find user with nickname:{nickName} in database.");
+                    throw new Chat.Exception($"Can not find user with nickname:{nickName} in database.");
                 }
                 return (userId: result.First().userId,
                         profileId: result.First().profileId,
@@ -91,7 +90,7 @@ namespace UniSpy.Server.Chat.Application
                              };
                 if (result.Count() != 1)
                 {
-                    throw new ChatException($"Can not find user with uniquenick:{uniqueNick} in database.");
+                    throw new Chat.Exception($"Can not find user with uniquenick:{uniqueNick} in database.");
                 }
                 // _result.ProfileId = result.First().profileid;
                 // _result.UserID = result.First().userid;

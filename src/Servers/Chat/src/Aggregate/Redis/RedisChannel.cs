@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -70,7 +69,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             IClient client = ClientManager.GetClient(message.Client);
             if (client is null)
             {
-                throw new ChatException($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");
+                throw new Chat.Exception($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");
             }
 
             var switcher = new CmdSwitcher(client, message.RawRequest);

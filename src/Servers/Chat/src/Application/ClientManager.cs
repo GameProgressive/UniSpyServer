@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -76,7 +75,7 @@ namespace UniSpy.Server.Chat.Application
             }
             if (client is null)
             {
-                throw new ChatException($"No client named {nickName} found.");
+                throw new Chat.Exception($"No client named {nickName} found.");
             }
             return client;
         }

@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class InvalidPasswordException : AuthException
+    public class InvalidPasswordException : Auth.Exception
     {
         public InvalidPasswordException() : base("Password is invalid!", AuthErrorCode.InvalidPassword)
         {

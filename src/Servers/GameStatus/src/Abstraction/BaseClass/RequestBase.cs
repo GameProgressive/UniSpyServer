@@ -1,4 +1,4 @@
-using UniSpy.Server.GameStatus.Exception;
+
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Core.Misc;
@@ -34,7 +34,7 @@ namespace UniSpy.Server.GameStatus.Abstraction.BaseClass
             {
                 if (!int.TryParse(KeyValues["lid"], out var localId))
                 {
-                    throw new GSException("localid format is incorrect.");
+                    throw new GameStatus.Exception("localid format is incorrect.");
                 }
                 LocalId = localId;
             }
@@ -43,7 +43,7 @@ namespace UniSpy.Server.GameStatus.Abstraction.BaseClass
             {
                 if (!int.TryParse(KeyValues["id"], out var localId))
                 {
-                    throw new GSException("localid format is incorrect.");
+                    throw new GameStatus.Exception("localid format is incorrect.");
                 }
                 LocalId = localId;
             }

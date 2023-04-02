@@ -1,12 +1,11 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using System;
-using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -94,7 +93,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             }
             if (elapsed > _waitingTime)
             {
-                throw new ChatException($"No key value presents after waitting for user:{_request.NickName} channel:{_request.ChannelName}");
+                throw new Chat.Exception($"No key value presents after waitting for user:{_request.NickName} channel:{_request.ChannelName}");
             }
         }
     }

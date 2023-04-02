@@ -1,18 +1,16 @@
-using UniSpy.Server.Core.Abstraction.BaseClass;
-
-namespace UniSpy.Server.GameStatus.Exception
+namespace UniSpy.Server.GameStatus
 {
-    public class GSException : UniSpyException
+    public class Exception : UniSpy.Exception
     {
-        public GSException()
+        public Exception()
         {
         }
 
-        public GSException(string message) : base(message)
+        public Exception(string message) : base(message)
         {
         }
 
-        public GSException(string message, System.Exception innerException) : base(message, innerException)
+        public Exception(string message, System.Exception innerException) : base(message, innerException)
         {
         }
     }

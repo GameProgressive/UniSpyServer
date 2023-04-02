@@ -1,6 +1,6 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
-using UniSpy.Server.GameStatus.Exception;
+
 using System;
 
 namespace UniSpy.Server.GameStatus.Contract.Request
@@ -26,34 +26,34 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
 
             if (!KeyValues.ContainsKey("pid"))
-                throw new GSException("pid is missing.");
+                throw new GameStatus.Exception("pid is missing.");
 
             if (!KeyValues.ContainsKey("ptype"))
-                throw new GSException("ptype is missing.");
+                throw new GameStatus.Exception("ptype is missing.");
 
             if (!KeyValues.ContainsKey("dindex"))
-                throw new GSException("dindex is missing.");
+                throw new GameStatus.Exception("dindex is missing.");
 
             if (!KeyValues.ContainsKey("length"))
-                throw new GSException("length is missing.");
+                throw new GameStatus.Exception("length is missing.");
 
 
             int profileID;
             if (!int.TryParse(KeyValues["pid"], out profileID))
             {
-                throw new GSException("pid format is incorrect.");
+                throw new GameStatus.Exception("pid format is incorrect.");
             }
             ProfileId = profileID;
 
             int storageType;
             if (!int.TryParse(KeyValues["ptype"], out storageType))
             {
-                throw new GSException("ptype is missing.");
+                throw new GameStatus.Exception("ptype is missing.");
             }
 
             if (!Enum.IsDefined(typeof(PersistStorageType), storageType))
             {
-                throw new GSException("storage type is incorrect.");
+                throw new GameStatus.Exception("storage type is incorrect.");
             }
 
             StorageType = (PersistStorageType)storageType;
@@ -61,14 +61,14 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             int dindex;
             if (!int.TryParse(KeyValues["dindex"], out dindex))
             {
-                throw new GSException("dindex format is incorrect.");
+                throw new GameStatus.Exception("dindex format is incorrect.");
             }
             DataIndex = dindex;
 
             int length;
             if (!int.TryParse(KeyValues["length"], out length))
             {
-                throw new GSException("length format is incorrect.");
+                throw new GameStatus.Exception("length format is incorrect.");
             }
             Length = length;
 

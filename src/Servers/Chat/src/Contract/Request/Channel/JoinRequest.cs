@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_cmdParams.Count > 2)
             {
-                throw new Exception.ChatException("number of IRC parameters are incorrect.");
+                throw new Chat.Exception("number of IRC parameters are incorrect.");
             }
 
             if (_cmdParams.Count == 2)

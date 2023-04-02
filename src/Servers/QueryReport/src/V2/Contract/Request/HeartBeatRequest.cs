@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Enumerate;
-using UniSpy.Server.QueryReport.Exception;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 
@@ -74,7 +73,7 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
             }
             else
             {
-                throw new QRException("HeartBeat request is invalid.");
+                throw new QueryReport.Exception("HeartBeat request is invalid.");
             }
 
         }

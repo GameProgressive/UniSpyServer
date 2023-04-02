@@ -29,12 +29,12 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_cmdParams.Count != 4)
             {
-                throw new Exception.ChatException("The number of IRC parameters are incorrect.");
+                throw new Chat.Exception("The number of IRC parameters are incorrect.");
             }
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The IRC long parameter is incorrect.");
+                throw new Chat.Exception("The IRC long parameter is incorrect.");
             }
 
             NickName = _cmdParams[1];
@@ -51,7 +51,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (!_longParam.Contains("\0") && !_longParam.Contains("\\"))
             {
-                throw new Exception.ChatException("The key provide is incorrect.");
+                throw new Chat.Exception("The key provide is incorrect.");
             }
 
             Keys = _longParam.TrimStart('\\').TrimEnd('\0').Split("\\").ToList();

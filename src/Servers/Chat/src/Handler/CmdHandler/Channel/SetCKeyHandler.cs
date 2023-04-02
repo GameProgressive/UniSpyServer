@@ -1,6 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
@@ -32,7 +31,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 if (!_user.IsChannelOperator)
                 {
-                    throw new ChatException("SETCKEY failed because you are not channel operator.");
+                    throw new Chat.Exception("SETCKEY failed because you are not channel operator.");
                 }
                 _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetChannelUser(_request.NickName);

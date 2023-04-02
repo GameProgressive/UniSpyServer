@@ -17,7 +17,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("Quit reason is missing.");
+                throw new Chat.Exception("Quit reason is missing.");
             }
 
             Reason = _longParam;

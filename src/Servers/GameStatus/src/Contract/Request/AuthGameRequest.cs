@@ -1,5 +1,5 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
@@ -20,17 +20,17 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
             if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
             {
-                throw new GSException("localid is missing.");
+                throw new GameStatus.Exception("localid is missing.");
             }
             base.Parse();
             if (!KeyValues.ContainsKey("gamename"))
             {
-                throw new GSException("gamename is missing.");
+                throw new GameStatus.Exception("gamename is missing.");
             }
 
             if (!KeyValues.ContainsKey("response"))
             {
-                throw new GSException("response is missing.");
+                throw new GameStatus.Exception("response is missing.");
             }
 
             if (KeyValues.ContainsKey("port"))
@@ -38,7 +38,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                 int port;
                 if (!int.TryParse(KeyValues["port"], out port))
                 {
-                    throw new GSException("port format is incorrect.");
+                    throw new GameStatus.Exception("port format is incorrect.");
                 }
                 Port = port;
             }

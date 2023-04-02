@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Misc
@@ -19,7 +18,7 @@ namespace UniSpy.Server.Core.Misc
             var frags = request.Split('\\');
             if (frags.Length < 4)
             {
-                throw new UniSpyException("Request is not valid.");
+                throw new UniSpy.Exception("Request is not valid.");
             }
             return frags[0];
         }

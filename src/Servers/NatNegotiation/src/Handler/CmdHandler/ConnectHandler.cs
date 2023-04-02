@@ -3,7 +3,6 @@ using System.Net;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
 using UniSpy.Server.NatNegotiation.Enumerate;
-using UniSpy.Server.NatNegotiation.Exception;
 using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
@@ -39,7 +38,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
             if (addressInfos.Count < InitHandler.InitPacketCount)
             {
-                throw new NNException($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
+                throw new NatNegotiation.Exception($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
             }
             var otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
             // we need both info to determine nat type
@@ -111,7 +110,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             var relayServers = GameTrafficRelay.Application.StorageOperation.Persistance.GetAvaliableRelayServers();
             if (relayServers.Count == 0)
             {
-                throw new NNException("No GameRelayServer found, you must start a GameRelayServer!");
+                throw new NatNegotiation.Exception("No GameRelayServer found, you must start a GameRelayServer!");
             }
             //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
@@ -133,7 +132,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             }
             else
             {
-                throw new NNException("The client index is not applied");
+                throw new NatNegotiation.Exception("The client index is not applied");
             }
         }
 

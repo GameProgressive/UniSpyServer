@@ -1,4 +1,3 @@
-using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -13,7 +12,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
 
             if (_cmdParams is null || _cmdParams?.Count < 1)
             {
-                throw new ChatException("Channel name is missing.");
+                throw new Chat.Exception("Channel name is missing.");
             }
             ChannelName = _cmdParams[0];
         }

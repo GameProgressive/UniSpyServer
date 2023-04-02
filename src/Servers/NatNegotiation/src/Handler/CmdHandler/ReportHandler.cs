@@ -2,7 +2,6 @@ using System.Linq;
 using UniSpy.Server.NatNegotiation.Abstraction.BaseClass;
 using UniSpy.Server.NatNegotiation.Application;
 using UniSpy.Server.NatNegotiation.Enumerate;
-using UniSpy.Server.NatNegotiation.Exception;
 using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
@@ -42,7 +41,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_request.Cookie);
             if (addressInfos.Count < InitHandler.InitPacketCount)
             {
-                throw new NNException($"The number of init info in redis with cookie: {_request.Cookie} is not bigger than 7.");
+                throw new NatNegotiation.Exception($"The number of init info in redis with cookie: {_request.Cookie} is not bigger than 7.");
             }
 
             NatClientIndex otherClientIndex = (NatClientIndex)(1 - _request.ClientIndex);

@@ -3,7 +3,7 @@ using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
 using UniSpy.Server.ServerBrowser.V2.Application;
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Exception;
+
 using UniSpy.Server.ServerBrowser.V2.Aggregate.Packet.Response;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList;
 using UniSpy.Server.ServerBrowser.V2.Contract.Result;
@@ -32,7 +32,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                     _result = new P2PGroupRoomListResult();
                     break;
                 default:
-                    throw new SBException("unknown serverlist update option type");
+                    throw new ServerBrowser.V2.Exception("unknown serverlist update option type");
             }
         }
         protected override void DataOperation()
@@ -56,7 +56,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                     // do nothing here
                     break;
                 default:
-                    throw new SBException("unknown serverlist update option type");
+                    throw new ServerBrowser.V2.Exception("unknown serverlist update option type");
             }
         }
         private void P2PGroupRoomList()
@@ -69,7 +69,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                 var result = StorageOperation.Persistance.GetGroupList(_request.GameName);
                 if (result.Count() == 0)
                 {
-                    throw new SBException($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
+                    throw new ServerBrowser.V2.Exception($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                     _response = new ServerNetworkInfoListResponse(_request, _result);
                     break;
                 default:
-                    throw new SBException("unknown serverlist update option type");
+                    throw new ServerBrowser.V2.Exception("unknown serverlist update option type");
             }
         }
     }

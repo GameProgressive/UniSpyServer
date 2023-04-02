@@ -1,18 +1,16 @@
-using System;
-
-namespace UniSpy.Server.Core.Abstraction.BaseClass
+namespace UniSpy
 {
-    public class UniSpyException : Exception
+    public class Exception : System.Exception
     {
-        public UniSpyException()
+        public Exception()
         {
         }
 
-        public UniSpyException(string message) : base(message)
+        public Exception(string message) : base(message)
         {
         }
 
-        public UniSpyException(string message, System.Exception innerException) : base(message, innerException)
+        public Exception(string message, System.Exception innerException) : base(message, innerException)
         {
         }
     }

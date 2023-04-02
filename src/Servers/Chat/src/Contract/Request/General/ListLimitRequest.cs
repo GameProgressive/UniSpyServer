@@ -15,13 +15,13 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_cmdParams.Count != 2)
             {
-                throw new Exception.ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Chat.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             int max;
             if (!int.TryParse(_cmdParams[0], out max))
             {
-                throw new Exception.ChatException("The max number format is incorrect.");
+                throw new Chat.Exception("The max number format is incorrect.");
             }
 
             MaxNumberOfChannels = max;

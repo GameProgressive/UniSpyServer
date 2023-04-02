@@ -1,4 +1,3 @@
-using System;
 using UniSpy.Server.PresenceConnectionManager.Application;
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -18,7 +17,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
         {
         }
 
-        protected override void HandleException(Exception ex)
+        protected override void HandleException(System.Exception ex)
         {
             if (ex is GPException)
             {

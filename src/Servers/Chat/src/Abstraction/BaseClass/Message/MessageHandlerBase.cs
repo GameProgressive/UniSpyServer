@@ -1,7 +1,6 @@
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.BaseClass.Message;
-using UniSpy.Server.Chat.Exception;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
@@ -27,7 +26,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                     UserMessageRequestCheck();
                     break;
                 default:
-                    throw new ChatException("Unknown chat message request type.");
+                    throw new Chat.Exception("Unknown chat message request type.");
             }
         }
         protected virtual void ChannelMessageRequestCheck() => base.RequestCheck();

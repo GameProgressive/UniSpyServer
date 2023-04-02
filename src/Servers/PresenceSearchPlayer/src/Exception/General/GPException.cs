@@ -1,10 +1,9 @@
 using UniSpy.Server.PresenceSearchPlayer.Enumerate;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Exception.General
 {
-    public class GPException : UniSpyException, IResponse
+    public class GPException : UniSpy.Exception, IResponse
     {
         public GPErrorCode ErrorCode { get; private set; }
         public string SendingBuffer { get; protected set; }

@@ -1,6 +1,6 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
-using UniSpy.Server.GameStatus.Exception;
+
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +24,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
             if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
             {
-                throw new GSException("localid is missing.");
+                throw new GameStatus.Exception("localid is missing.");
             }
 
             if (KeyValues.ContainsKey("pid"))
@@ -32,7 +32,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                 int profileID;
                 if (!int.TryParse(KeyValues["pid"], out profileID))
                 {
-                    throw new GSException("pid format is incorrect.");
+                    throw new GameStatus.Exception("pid format is incorrect.");
                 }
                 ProfileId = profileID;
             }
@@ -42,7 +42,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                 PersistStorageType storageType;
                 if (!Enum.TryParse(KeyValues["ptype"], out storageType))
                 {
-                    throw new GSException("ptype format is incorrect.");
+                    throw new GameStatus.Exception("ptype format is incorrect.");
                 }
                 StorageType = storageType;
             }
@@ -53,14 +53,14 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                 int dataIndex;
                 if (!int.TryParse(KeyValues["dindex"], out dataIndex))
                 {
-                    throw new GSException("dindex format is incorrect.");
+                    throw new GameStatus.Exception("dindex format is incorrect.");
                 }
                 DataIndex = dataIndex;
             }
 
             if (!KeyValues.ContainsKey("keys"))
             {
-                throw new GSException("keys is missing.");
+                throw new GameStatus.Exception("keys is missing.");
             }
 
             string keys = KeyValues["keys"];

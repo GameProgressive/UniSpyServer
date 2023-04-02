@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Enumerate;
-using UniSpy.Server.ServerBrowser.V2.Exception;
+
 using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.ServerBrowser.V2.Contract.Request
@@ -23,7 +23,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Request
             CommandName = RequestType.ServerListRequest;
             // if (RequestLength != RawRequest.Length)
             // {
-            //     throw new SBException("Server list request length is not correct.");
+            //     throw new ServerBrowser.V2.Exception("Server list request length is not correct.");
             // }
 
             RequestVersion = RawRequest[2];
@@ -67,7 +67,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Request
             {
                 if (remainData.Count != 4)
                 {
-                    throw new SBException("The max number of server is incorrect.");
+                    throw new ServerBrowser.V2.Exception("The max number of server is incorrect.");
                 }
                 MaxServers = BitConverter.ToInt32(remainData.Take(4).Reverse().ToArray());
             }

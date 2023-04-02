@@ -26,12 +26,12 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_cmdParams.Count < 2)
             {
-                throw new Exception.ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Chat.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The number of IRC long params in GETKEY request is incorrect.");
+                throw new Chat.Exception("The number of IRC long params in GETKEY request is incorrect.");
             }
 
             NickName = _cmdParams[0];

@@ -1,4 +1,3 @@
-using System;
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Application;
 using UniSpy.Server.PresenceConnectionManager.Contract.Request;
@@ -30,7 +29,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
                 StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.SubProfileId,
                                                               _request.UniqueNick);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 throw new GPDatabaseException(e.Message);
             }

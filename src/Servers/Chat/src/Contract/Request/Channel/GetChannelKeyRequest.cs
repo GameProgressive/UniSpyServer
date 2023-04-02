@@ -17,12 +17,12 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_cmdParams.Count != 3)
             {
-                throw new Exception.ChatException("The cmdParams number is invalid.");
+                throw new Chat.Exception("The cmdParams number is invalid.");
             }
 
             if (_longParam is null || _longParam.Last() != '\0')
             {
-                throw new Exception.ChatException("The longParam number is invalid.");
+                throw new Chat.Exception("The longParam number is invalid.");
             }
 
             Cookie = _cmdParams[1];

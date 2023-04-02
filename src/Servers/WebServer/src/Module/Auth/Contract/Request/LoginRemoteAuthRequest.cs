@@ -1,6 +1,6 @@
 using System.Linq;
 using UniSpy.Server.WebServer.Module.Auth.Abstraction;
-using UniSpy.Server.WebServer.Module.Auth.Exception;
+
 
 namespace UniSpy.Server.WebServer.Module.Auth.Contract.Request
 {
@@ -18,12 +18,12 @@ namespace UniSpy.Server.WebServer.Module.Auth.Contract.Request
             base.Parse();
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "authtoken"))
             {
-                throw new AuthException("authtoken is missing from the request");
+                throw new Auth.Exception("authtoken is missing from the request");
             }
             AuthToken = _contentElement.Descendants().First(p => p.Name.LocalName == "authtoken").Value;
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "challenge"))
             {
-                throw new AuthException("challenge is missing from the request");
+                throw new Auth.Exception("challenge is missing from the request");
             }
             Challenge = _contentElement.Descendants().First(p => p.Name.LocalName == "challenge").Value;
         }

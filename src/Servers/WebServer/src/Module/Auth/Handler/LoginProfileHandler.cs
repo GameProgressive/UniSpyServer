@@ -4,7 +4,7 @@ using UniSpy.Server.WebServer.Module.Auth.Abstraction;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Result;
-using UniSpy.Server.WebServer.Module.Auth.Exception;
+
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 namespace UniSpy.Server.WebServer.Module.Auth.Handler
@@ -33,7 +33,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
                              select new { u, p, sp };
                 if (result.Count() != 1)
                 {
-                    throw new AuthException("No account exists with the provided email address.");
+                    throw new Auth.Exception("No account exists with the provided email address.");
                 }
                 var data = result.First();
                 _result.UserId = data.u.UserId;

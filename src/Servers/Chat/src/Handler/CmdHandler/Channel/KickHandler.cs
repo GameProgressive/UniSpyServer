@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
@@ -26,12 +25,12 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
             if (!_user.IsChannelOperator)
             {
-                throw new ChatException("The Kick operation failed, because you are not channel operator.");
+                throw new Chat.Exception("The Kick operation failed, because you are not channel operator.");
             }
             _kickee = _channel.GetChannelUser(_request.KickeeNickName);
             if (_kickee is null)
             {
-                throw new ChatException($"Can not find kickee:{_request.KickeeNickName} in channel.");
+                throw new Chat.Exception($"Can not find kickee:{_request.KickeeNickName} in channel.");
             }
         }
         protected override void DataOperation()

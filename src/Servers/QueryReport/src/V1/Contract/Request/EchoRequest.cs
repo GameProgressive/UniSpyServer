@@ -1,5 +1,4 @@
 using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.Exception;
 
 namespace UniSpy.Server.QueryReport.V1.Contract.Request
 {
@@ -15,11 +14,11 @@ namespace UniSpy.Server.QueryReport.V1.Contract.Request
         {
             if (!KeyValues.ContainsKey("validate"))
             {
-                throw new QRException("validate missing from request.");
+                throw new QueryReport.Exception("validate missing from request.");
             }
             if (!KeyValues.ContainsKey("gamename"))
             {
-                throw new QRException("gamename missing from request.");
+                throw new QueryReport.Exception("gamename missing from request.");
             }
 
             throw new System.NotImplementedException();

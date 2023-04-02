@@ -1,7 +1,7 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Aggregate.Misc;
 
-namespace UniSpy.Server.Chat.Exception.IRC.General
+namespace UniSpy.Server.Chat.Error.IRC.General
 {
     public sealed class ChatIRCNickNameInUseException : IRCException
     {

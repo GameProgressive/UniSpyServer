@@ -13,7 +13,7 @@ namespace UniSpy.Server.WebServer.Application
                 Console.WriteLine("Press < Q > to exit. ");
                 while (Console.ReadKey().Key != ConsoleKey.Q) { }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 LogWriter.LogError(e);
             }

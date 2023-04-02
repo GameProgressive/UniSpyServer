@@ -18,14 +18,14 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_cmdParams.Count != 2)
             {
-                throw new Exception.ChatException("The number of IRC parameters are incorrect.");
+                throw new Chat.Exception("The number of IRC parameters are incorrect.");
             }
 
             KickeeNickName = _cmdParams[1];
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The IRC long parameters is missing.");
+                throw new Chat.Exception("The IRC long parameters is missing.");
             }
 
             Reason = _longParam;

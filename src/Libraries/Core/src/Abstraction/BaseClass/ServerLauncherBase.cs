@@ -57,7 +57,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
                 var r = StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
                 r.Dispose();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 throw new Exception("Can not connect to Redis", e);
             }

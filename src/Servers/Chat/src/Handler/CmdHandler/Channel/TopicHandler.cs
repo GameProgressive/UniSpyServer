@@ -1,5 +1,4 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -21,7 +20,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                throw new ChatException("Edit topic failed because you are not channel operator.");
+                throw new Chat.Exception("Edit topic failed because you are not channel operator.");
             }
             switch (_request.RequestType)
             {

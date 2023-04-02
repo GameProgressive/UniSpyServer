@@ -1,7 +1,7 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
@@ -18,7 +18,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            throw new GSException("implement set player data");
+            throw new GameStatus.Exception("implement set player data");
             // StorageOperation.Persistance.UpdatePlayerData(_request.ProfileId, _request.StorageType, _request.DataIndex, _request.KeyValues);
         }
     }

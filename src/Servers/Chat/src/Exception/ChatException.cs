@@ -1,13 +1,11 @@
-using UniSpy.Server.Core.Abstraction.BaseClass;
-
-namespace UniSpy.Server.Chat.Exception
+namespace UniSpy.Server.Chat
 {
-    public sealed class ChatException : UniSpyException
+    public sealed class Exception : UniSpy.Exception
     {
-        public ChatException(){ }
+        public Exception() { }
 
-        public ChatException(string message) : base(message){ }
+        public Exception(string message) : base(message) { }
 
-        public ChatException(string message, System.Exception innerException) : base(message, innerException){ }
+        public Exception(string message, System.Exception innerException) : base(message, innerException) { }
     }
 }

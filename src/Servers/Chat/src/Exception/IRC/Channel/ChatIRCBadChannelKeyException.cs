@@ -1,6 +1,6 @@
 using UniSpy.Server.Chat.Aggregate.Misc;
 
-namespace UniSpy.Server.Chat.Exception.IRC.Channel
+namespace UniSpy.Server.Chat.Error.IRC.Channel
 {
     public sealed class ChatIRCBadChannelKeyException : IRCChannelException
     {

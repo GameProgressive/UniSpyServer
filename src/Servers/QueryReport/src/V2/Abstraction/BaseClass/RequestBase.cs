@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Enumerate;
-using UniSpy.Server.QueryReport.Exception;
+
 
 namespace UniSpy.Server.QueryReport.V2.Abstraction.BaseClass
 {
@@ -24,7 +24,7 @@ namespace UniSpy.Server.QueryReport.V2.Abstraction.BaseClass
         {
             if (RawRequest.Length < 3)
             {
-                throw new QRException("Query report request is invalid.");
+                throw new QueryReport.Exception("Query report request is invalid.");
             }
             CommandName = (RequestType)RawRequest[0];
             var instantKeyBytes = RawRequest.Skip(1).Take(4).ToArray();

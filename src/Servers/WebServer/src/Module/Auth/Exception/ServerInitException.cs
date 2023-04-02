@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class ServerInitException : AuthException
+    public class ServerInitException : Auth.Exception
     {
         public ServerInitException() : base("An unknown error occur when initializing server!", AuthErrorCode.ServerError)
         {

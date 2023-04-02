@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
@@ -21,7 +21,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
             if (!KeyValues.ContainsKey("gamedata"))
             {
-                throw new GSException("request must contians gamedata");
+                throw new GameStatus.Exception("request must contians gamedata");
             }
             GameData = KeyValues["gamedata"];
             GameDataKeyValues = ConvertGameDataToKeyValues(GameData);
@@ -33,7 +33,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
             if (!KeyValues.ContainsKey("done"))
             {
-                throw new GSException("done is missing.");
+                throw new GameStatus.Exception("done is missing.");
             }
 
 
@@ -47,13 +47,13 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             }
             else
             {
-                throw new GSException("done format is incorrect.");
+                throw new GameStatus.Exception("done format is incorrect.");
             }
 
 
             if (!int.TryParse(KeyValues["sesskey"], out var sessKey))
             {
-                throw new GSException("sesskey is not a valid int.");
+                throw new GameStatus.Exception("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
 
@@ -62,7 +62,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             {
                 if (!int.TryParse(KeyValues["connid"], out var connID))
                 {
-                    throw new GSException("connid is not a valid int.");
+                    throw new GameStatus.Exception("connid is not a valid int.");
                 }
                 ConnectionID = connID;
             }

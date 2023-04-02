@@ -1,7 +1,7 @@
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.ServerBrowser.V2.Exception;
+
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.ServerBrowser.V2.Application;
@@ -26,7 +26,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 
             if (gameServer is null)
             {
-                throw new SBException($"No match server found by address {_request.GameServerPublicIPEndPoint}, we ignore client request.");
+                throw new ServerBrowser.V2.Exception($"No match server found by address {_request.GameServerPublicIPEndPoint}, we ignore client request.");
             }
 
             var message = new ClientMessageRequest()

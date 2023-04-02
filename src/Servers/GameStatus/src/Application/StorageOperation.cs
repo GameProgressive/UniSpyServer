@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.GameStatus.Abstraction.Interface;
-using UniSpy.Server.GameStatus.Exception;
+
 using UniSpy.Server.Core.Database.DatabaseModel;
 using System.Linq;
 using UniSpy.Server.GameStatus.Enumerate;
@@ -12,12 +12,12 @@ namespace UniSpy.Server.GameStatus.Application
         public static IStorageOperation Persistance = new StorageOperation();
         public void CreateNewGameData()
         {
-            throw new GSException("Implement create storage for game data");
+            throw new GameStatus.Exception("Implement create storage for game data");
         }
 
         public void CreateNewPlayerData(Dictionary<string, string> playerData)
         {
-            throw new GSException("Implement create storage for player data");
+            throw new GameStatus.Exception("Implement create storage for player data");
         }
         public void UpdatePlayerData(int profileId, PersistStorageType storageType, int dataIndex, Dictionary<string, string> data)
         {
@@ -61,7 +61,7 @@ namespace UniSpy.Server.GameStatus.Application
                              select s.ProfileId;
                 if (result.Count() != 1)
                 {
-                    throw new GSException("No records found in database by authtoken.");
+                    throw new GameStatus.Exception("No records found in database by authtoken.");
                 }
                 return result.First();
             }
@@ -77,7 +77,7 @@ namespace UniSpy.Server.GameStatus.Application
                              select s.ProfileId;
                 if (result.Count() != 1)
                 {
-                    throw new GSException("No records found in database by cdkey hash.");
+                    throw new GameStatus.Exception("No records found in database by cdkey hash.");
                 }
                 return result.First();
             }
@@ -92,7 +92,7 @@ namespace UniSpy.Server.GameStatus.Application
                              select p.ProfileId;
                 if (result.Count() != 1)
                 {
-                    throw new GSException("No records found in database by profileid.");
+                    throw new GameStatus.Exception("No records found in database by profileid.");
                 }
                 return result.First();
             }
@@ -110,7 +110,7 @@ namespace UniSpy.Server.GameStatus.Application
 
                 if (result.Count() != 1)
                 {
-                    throw new GSException("No records found in database.");
+                    throw new GameStatus.Exception("No records found in database.");
                 }
                 return result.FirstOrDefault();
             }

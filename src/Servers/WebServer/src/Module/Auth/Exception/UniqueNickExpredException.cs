@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class UniqueNickExpredException : AuthException
+    public class UniqueNickExpredException : Auth.Exception
     {
         public UniqueNickExpredException() : base("Nickname is invalid at creating new profile!", AuthErrorCode.UniqueNickExpired)
         {

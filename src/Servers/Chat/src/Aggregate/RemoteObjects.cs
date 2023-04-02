@@ -3,7 +3,6 @@ using System.Net;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
-using UniSpy.Server.Chat.Exception;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -88,7 +87,7 @@ namespace UniSpy.Server.Chat.Aggregate
     {
 #pragma warning disable CS0067
         public event OnConnectingEventHandler OnInitialization;
-        public void Start() => throw new ChatException("Remote tcp connection do not have this method.");
+        public void Start() => throw new Chat.Exception("Remote tcp connection do not have this method.");
         public RemoteTcpConnectionManager() { }
     }
 

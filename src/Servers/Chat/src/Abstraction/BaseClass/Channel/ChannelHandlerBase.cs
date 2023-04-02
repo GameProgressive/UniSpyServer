@@ -1,5 +1,5 @@
-using UniSpy.Server.Chat.Exception.IRC.Channel;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.Channel;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.Interface;
 

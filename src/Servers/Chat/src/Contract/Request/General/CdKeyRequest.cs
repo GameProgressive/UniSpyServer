@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
 
             if (_cmdParams.Count < 1)
             {
-                throw new Exception.ChatException("The number of IRC cmdParams are incorrect.");
+                throw new Chat.Exception("The number of IRC cmdParams are incorrect.");
             }
 
             CdKey = _cmdParams[0];

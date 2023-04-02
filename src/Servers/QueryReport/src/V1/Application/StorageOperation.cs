@@ -3,7 +3,6 @@ using UniSpy.Server.QueryReport.V1.Abstraction.Interface;
 using System.Linq;
 using UniSpy.Server.QueryReport.V1.Aggregation.Redis;
 using System.Net;
-using UniSpy.Server.QueryReport.Exception;
 
 namespace UniSpy.Server.QueryReport.V1.Application
 {
@@ -21,7 +20,7 @@ namespace UniSpy.Server.QueryReport.V1.Application
 
                 if (result.Count() != 1)
                 {
-                    throw new QRException($"No secret key found for game:{gameName}");
+                    throw new QueryReport.Exception($"No secret key found for game:{gameName}");
                 }
                 return result.First().Secretkey;
             }
@@ -32,7 +31,7 @@ namespace UniSpy.Server.QueryReport.V1.Application
             var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.QueryReportPort == endPoint.Port);
             if (result.Count() != 1)
             {
-                throw new QRException("Multiple server found in redis.");
+                throw new QueryReport.Exception("Multiple server found in redis.");
             }
             return result.First();
         }

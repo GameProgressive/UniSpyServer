@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Extension;
 
@@ -36,7 +35,7 @@ namespace UniSpy.Server.Core.Misc
             }
             else
             {
-                throw new UniSpyException("Can not find password field in request");
+                throw new UniSpy.Exception("Can not find password field in request");
             }
             return md5Password;
         }

@@ -47,7 +47,7 @@ namespace UniSpy.Server.Chat.Aggregate
                 else
                 {
                     values += @"\";
-                    // throw new ChatException($"Can not find key: {key}");
+                    // throw new Chat.Exception($"Can not find key: {key}");
                 }
             }
             return values;

@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System.IO;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Core.Config
 {
@@ -13,7 +12,7 @@ namespace UniSpy.Server.Core.Config
         {
             if (!IsConfigFileExist)
             {
-                throw new UniSpyException("UniSpy server config file not found");
+                throw new UniSpy.Exception("UniSpy server config file not found");
             }
             using (StreamReader fstream = File.OpenText(ConfigPath))
             {

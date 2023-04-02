@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class ParseException : AuthException
+    public class ParseException : Auth.Exception
     {
         public ParseException() : base("Parse error!", AuthErrorCode.ParseError)
         {

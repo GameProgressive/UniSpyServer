@@ -1,7 +1,7 @@
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 
-namespace UniSpy.Server.Chat.Exception
+namespace UniSpy.Server.Chat
 {
     public class IRCChannelException : IRCException
     {

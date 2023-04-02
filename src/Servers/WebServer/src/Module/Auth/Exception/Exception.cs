@@ -1,6 +1,4 @@
-using UniSpy.Server.Core.Abstraction.BaseClass;
-
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
     public enum AuthErrorCode
     {
@@ -33,21 +31,21 @@ namespace UniSpy.Server.WebServer.Module.Auth.Exception
         // login results dealing with errors in response headers
         InvalidGameCredentials // check the parameters passed to wsSetGameCredentials
     }
-    public class AuthException : UniSpyException
+    public class Exception : UniSpy.Exception
     {
         public AuthErrorCode ErrorCode { get; private set; }
-        public AuthException() : this("Unkown Error!", AuthErrorCode.UnknownError)
+        public Exception() : this("Unkown Error!", AuthErrorCode.UnknownError)
         {
         }
 
-        public AuthException(string message) : this(message, AuthErrorCode.UnknownError)
+        public Exception(string message) : this(message, AuthErrorCode.UnknownError)
         {
         }
-        public AuthException(string message, AuthErrorCode code)
+        public Exception(string message, AuthErrorCode code)
         {
             ErrorCode = code;
         }
-        public AuthException(string message, AuthErrorCode code, System.Exception innerException) : base(message, innerException)
+        public Exception(string message, AuthErrorCode code, System.Exception innerException) : base(message, innerException)
         {
             ErrorCode = code;
         }

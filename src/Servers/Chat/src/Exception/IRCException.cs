@@ -1,9 +1,8 @@
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpy.Server.Chat.Exception.IRC.General
+namespace UniSpy.Server.Chat.Error.IRC.General
 {
-    public class IRCException : UniSpyException, IResponse
+    public class IRCException : UniSpy.Exception, IResponse
     {
         public string ErrorCode { get; private set; }
         // public virtual string ErrorResponse => IRCReplyBuilder.Build(ErrorCode);

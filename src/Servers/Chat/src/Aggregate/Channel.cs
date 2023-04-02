@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
-using UniSpy.Server.Chat.Exception;
-using UniSpy.Server.Chat.Exception.IRC.Channel;
+using UniSpy.Server.Chat.Error.IRC.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 
@@ -143,22 +142,22 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             }
             if (IsUserExisted(client))
             {
-                throw new ChatException($"{client.Info.NickName} is already in channel {Name}");
+                throw new Chat.Exception($"{client.Info.NickName} is already in channel {Name}");
             }
             if (client.Info.IsJoinedChannel(Name))
             {
                 // we do not send anything to this user and users in this channel
-                throw new ChatException($"User: {client.Info.NickName} is already joined the channel: {Name}");
+                throw new Chat.Exception($"User: {client.Info.NickName} is already joined the channel: {Name}");
             }
             if (Password is not null)
             {
                 if (password is null)
                 {
-                    throw new ChatException("You must input password to join this channel.");
+                    throw new Chat.Exception("You must input password to join this channel.");
                 }
                 if (Password != password)
                 {
-                    throw new ChatException("Password is not correct");
+                    throw new Chat.Exception("Password is not correct");
                 }
             }
         }
@@ -174,7 +173,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             if (Password != pass)
             {
-                throw new ChatException("Password is not correct");
+                throw new Chat.Exception("Password is not correct");
             }
         }
         public void RemoveUser(IChatClient client)

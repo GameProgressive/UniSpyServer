@@ -1,5 +1,5 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
@@ -24,21 +24,21 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
             if (!KeyValues.ContainsKey("sesskey"))
             {
-                throw new GSException("sesskey is missing.");
+                throw new GameStatus.Exception("sesskey is missing.");
             }
             if (!int.TryParse(KeyValues["sesskey"], out var sessKey))
             {
-                throw new GSException("sesskey is not a valid int.");
+                throw new GameStatus.Exception("sesskey is not a valid int.");
             }
             SessionKey = sessKey;
 
             if (!KeyValues.ContainsKey("connid"))
             {
-                throw new GSException("connid is missing.");
+                throw new GameStatus.Exception("connid is missing.");
             }
             if (!int.TryParse(KeyValues["connid"], out var connectionID))
             {
-                throw new GSException("connid format is incorrect.");
+                throw new GameStatus.Exception("connid format is incorrect.");
             }
             ConnectionID = connectionID;
 

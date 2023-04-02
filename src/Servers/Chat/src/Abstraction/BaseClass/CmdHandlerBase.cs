@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
-using UniSpy.Server.Chat.Exception.IRC.General;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass

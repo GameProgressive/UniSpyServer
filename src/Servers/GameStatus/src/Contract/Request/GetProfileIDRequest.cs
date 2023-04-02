@@ -1,5 +1,5 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
@@ -18,12 +18,12 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             base.Parse();
             if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
             {
-                throw new GSException("localid is missing.");
+                throw new GameStatus.Exception("localid is missing.");
             }
 
             if (!KeyValues.ContainsKey("nick") || !KeyValues.ContainsKey("keyhash"))
             {
-                throw new GSException("nick or keyhash is missing.");
+                throw new GameStatus.Exception("nick or keyhash is missing.");
             }
 
             if (KeyValues.ContainsKey("nick"))

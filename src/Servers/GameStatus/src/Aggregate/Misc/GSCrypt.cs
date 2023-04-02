@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Aggregate.Misc
 {
@@ -16,7 +16,7 @@ namespace UniSpy.Server.GameStatus.Aggregate.Misc
         {
             if (!UniSpyEncoding.GetString(buffer).Contains(@"\final\"))
             {
-                throw new GSException("Ciphertext must contains delimeter \\final\\");
+                throw new GameStatus.Exception("Ciphertext must contains delimeter \\final\\");
             }
             //remove \final\, later we add final back
             byte[] cipher = buffer.Take(buffer.Length - 7).ToArray();
@@ -31,7 +31,7 @@ namespace UniSpy.Server.GameStatus.Aggregate.Misc
         {
             if (!UniSpyEncoding.GetString(buffer).Contains(@"\final\"))
             {
-                throw new GSException("Plaintext must contains delimeter \\final\\");
+                throw new GameStatus.Exception("Plaintext must contains delimeter \\final\\");
             }
             byte[] plain = buffer.Take(buffer.Length - 7).ToArray();
             byte[] cipher = XOREncoding.Encode(plain, XorType.Type1);

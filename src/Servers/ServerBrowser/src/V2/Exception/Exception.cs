@@ -1,4 +1,4 @@
-namespace UniSpy.Server.NatNegotiation
+namespace UniSpy.Server.ServerBrowser.V2
 {
     public class Exception : UniSpy.Exception
     {

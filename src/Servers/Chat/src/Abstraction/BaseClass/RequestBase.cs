@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using UniSpy.Server.Chat.Exception;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -38,7 +37,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                throw new ChatException($"IRC request is invalid {RawRequest}");
+                throw new Chat.Exception($"IRC request is invalid {RawRequest}");
             }
 
             int indexOfColon = RawRequest.IndexOf(':');

@@ -1,5 +1,5 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
-using UniSpy.Server.GameStatus.Exception;
+
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -22,7 +22,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
             base.RequestCheck();
             if (_request.SessionKey != _client.Info.GameSessionKey)
             {
-                throw new GSException("Game session key is not match");
+                throw new GameStatus.Exception("Game session key is not match");
             }
         }
         protected override void DataOperation()
@@ -33,7 +33,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
                 return;
             }
             // replace game data with new data
-            throw new GSException("Implement update game handler.");
+            throw new GameStatus.Exception("Implement update game handler.");
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Serilog;
 using Serilog.Events;
 using UniSpy.Server.Core.Abstraction.BaseClass.Factory;
@@ -58,7 +57,7 @@ namespace UniSpy.Server.Core.Logging
         public static void LogInfo(string message) => Log.Information(message);
         public static void LogWarn(string message) => Log.Warning(message);
         public static void LogError(string message) => Log.Error(message);
-        public static void LogError(Exception e) => LogError(e.ToString());
+        public static void LogError(System.Exception e) => LogError(e.ToString());
         public static void LogFatal(string message) => Log.Fatal(message);
         public static void LogCurrentClass(object param) => LogVerbose($"[ => ] [{param.GetType().Name}]");
         public static void LogCurrentClass(this IClient client, object param) => LogVerbose(FormatLogMessage(client, $"[ => ] [{param.GetType().Name}]"));

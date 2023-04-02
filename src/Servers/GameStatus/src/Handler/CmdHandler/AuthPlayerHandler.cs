@@ -1,6 +1,6 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
-using UniSpy.Server.GameStatus.Exception;
+
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Contract.Response;
 using UniSpy.Server.GameStatus.Contract.Result;
@@ -41,11 +41,11 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
                     _client.Info.ProfileId = StorageOperation.Persistance.GetProfileId(_request.CdKeyHash, _request.NickName);
                     break;
                 default:
-                    throw new GSException("Unknown AuthP request type.");
+                    throw new GameStatus.Exception("Unknown AuthP request type.");
             }
             if (_client.Info.ProfileId is null)
             {
-                throw new GSException("Can not find profileID");
+                throw new GameStatus.Exception("Can not find profileID");
             }
             _result.ProfileId = _client.Info.ProfileId;
             _client.Info.IsPlayerAuthenticated = true;

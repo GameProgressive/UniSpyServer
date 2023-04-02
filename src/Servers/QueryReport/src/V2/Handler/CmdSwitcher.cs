@@ -17,7 +17,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler
             // var rawRequest = base._rawRequest as byte[];
             if (_rawRequest.Length < 4)
             {
-                throw new UniSpyException("Invalid request");
+                throw new UniSpy.Exception("Invalid request");
             }
 
             // qr v2 protocol

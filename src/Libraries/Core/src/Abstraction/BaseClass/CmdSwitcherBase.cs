@@ -52,7 +52,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     handler.Handle();
                 }
             }
-            catch (UniSpyException e)
+            catch (UniSpy.Exception e)
             {
                 _client.LogError(e.Message);
             }

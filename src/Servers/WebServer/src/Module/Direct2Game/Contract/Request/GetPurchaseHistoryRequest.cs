@@ -1,10 +1,9 @@
-using System;
 using System.Linq;
 using UniSpy.Server.WebServer.Module.Direct2Game.Abstraction;
 
 namespace UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request
 {
-    
+
     public class GetPurchaseHistoryRequest : RequestBase
     {
         public int GameId { get; private set; }

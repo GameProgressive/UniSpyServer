@@ -1,5 +1,5 @@
 using System.Linq;
-using UniSpy.Server.WebServer.Module.Auth.Exception;
+
 
 namespace UniSpy.Server.WebServer.Module.Auth.Contract.Request
 {
@@ -16,7 +16,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Contract.Request
             base.Parse();
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "gameid"))
             {
-                throw new AuthException("gameid is missing from the request");
+                throw new Auth.Exception("gameid is missing from the request");
             }
             var gameid = _contentElement.Descendants().FirstOrDefault(p => p.Name.LocalName == "gameid").Value;
             GameId = int.Parse(gameid);

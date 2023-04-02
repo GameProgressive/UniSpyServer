@@ -24,7 +24,7 @@ namespace UniSpy.Server.GameStatus.Handler
             {
                 if (_rawRequest[0] != '\\')
                 {
-                    // throw new UniSpyException("Invalid request");
+                    // throw new UniSpy.Exception("Invalid request");
                     _client.LogError($"Invaid request: {rawRequest}");
                     continue;
                 }

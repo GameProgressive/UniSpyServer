@@ -1,6 +1,6 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
-using UniSpy.Server.GameStatus.Exception;
+
 
 namespace UniSpy.Server.GameStatus.Contract.Request
 {
@@ -24,7 +24,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
 
             if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
             {
-                throw new GSException("localid is missing.");
+                throw new GameStatus.Exception("localid is missing.");
             }
 
             if (KeyValues.ContainsKey("pid") && KeyValues.ContainsKey("resp"))
@@ -33,7 +33,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
                 int profileID;
                 if (!int.TryParse(KeyValues["pid"], out profileID))
                 {
-                    throw new GSException("pid format is incorrect.");
+                    throw new GameStatus.Exception("pid format is incorrect.");
                 }
                 ProfileId = profileID;
                 RequestType = AuthMethod.ProfileIdAuth;
@@ -52,7 +52,7 @@ namespace UniSpy.Server.GameStatus.Contract.Request
             }
             else
             {
-                throw new GSException("Unknown authp request method.");
+                throw new GameStatus.Exception("Unknown authp request method.");
             }
         }
     }

@@ -4,7 +4,6 @@ using System.Net;
 using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.NatNegotiation.Enumerate;
-using UniSpy.Server.NatNegotiation.Exception;
 using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Misc;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
@@ -71,33 +70,33 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                 && AddressInfos.ContainsKey(NatPortType.NN2)
                 && AddressInfos.ContainsKey(NatPortType.NN3)))
             {
-                throw new NNException("Incomplete init packets");
+                throw new NatNegotiation.Exception("Incomplete init packets");
             }
 
             if (AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN2].Cookie
                 || AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN3].Cookie)
             {
-                throw new NNException("Broken cookie");
+                throw new NatNegotiation.Exception("Broken cookie");
             }
             if (AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN2].Version
                 || AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN3].Version)
             {
-                throw new NNException("Broken version");
+                throw new NatNegotiation.Exception("Broken version");
             }
 
             if (AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN2].ClientIndex
                || AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN3].ClientIndex)
             {
-                throw new NNException("Broken client index");
+                throw new NatNegotiation.Exception("Broken client index");
             }
             if (AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN2].UseGamePort
                 || AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN3].UseGamePort)
             {
-                throw new NNException("Broken use game port");
+                throw new NatNegotiation.Exception("Broken use game port");
             }
             if (!AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
             {
-                throw new NNException("Client is sending wrong initpacket.");
+                throw new NatNegotiation.Exception("Client is sending wrong initpacket.");
             }
             if (AddressInfos.ContainsKey(NatPortType.GP))
             {
@@ -106,7 +105,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                 AddressInfos[NatPortType.GP].ClientIndex != AddressInfos[NatPortType.NN1].ClientIndex ||
                 AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN1].UseGamePort)
                 {
-                    throw new NNException("GP packet info is not correct");
+                    throw new NatNegotiation.Exception("GP packet info is not correct");
                 }
             }
         }

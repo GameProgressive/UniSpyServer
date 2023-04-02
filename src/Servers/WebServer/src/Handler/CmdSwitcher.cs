@@ -25,7 +25,7 @@ namespace UniSpy.Server.WebServer.Handler
             // var uri = new Uri(_rawRequest.Url);
             // if (WebEndpoints.AvailableEndpoints.Contains(uri.LocalPath))
             // {
-            //     throw new UniSpyException($"Invalid http path access:{_rawRequest.Url}");
+            //     throw new UniSpy.Exception($"Invalid http path access:{_rawRequest.Url}");
             // }
             if (_rawRequest.Body == "")
             {

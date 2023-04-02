@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class ServerException : AuthException
+    public class ServerException : Auth.Exception
     {
         public ServerException() : base("Server error!", AuthErrorCode.ServerError)
         {

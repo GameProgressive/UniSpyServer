@@ -1,6 +1,6 @@
-namespace UniSpy.Server.WebServer.Module.Auth.Exception
+namespace UniSpy.Server.WebServer.Module.Auth
 {
-    public class DatabaseException:AuthException
+    public class DatabaseException : Auth.Exception
     {
         public DatabaseException() : base("Database error!", AuthErrorCode.DatabaseError)
         {

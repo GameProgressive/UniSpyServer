@@ -26,12 +26,12 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
 
             if (_cmdParams is null)
             {
-                throw new Exception.ChatException("The cmdParams from SETCKEY request are missing.");
+                throw new Chat.Exception("The cmdParams from SETCKEY request are missing.");
             }
 
             if (_longParam is null)
             {
-                throw new Exception.ChatException("The longParam from SETCKEY request is missing.");
+                throw new Chat.Exception("The longParam from SETCKEY request is missing.");
             }
 
             Channel = _cmdParams[0];
