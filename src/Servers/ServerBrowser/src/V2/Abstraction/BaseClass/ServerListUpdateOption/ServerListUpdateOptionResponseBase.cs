@@ -20,11 +20,12 @@ namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
         {
             //todo check protocol version to build response data
             //Add crypt header
-            BuildCryptHeader();
+            var cryptHeader = BuildCryptHeader();
+            _serversInfoBuffer.AddRange(cryptHeader);
             _serversInfoBuffer.AddRange(_result.ClientRemoteIP);
             _serversInfoBuffer.AddRange(ClientInfo.HtonQueryReportDefaultPort);
         }
-        protected void BuildCryptHeader()
+        public byte[] BuildCryptHeader()
         {
             // cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
             var cryptHeader = new List<byte>();
@@ -34,7 +35,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
             #endregion
             cryptHeader.Add((byte)(ClientInfo.ServerChallenge.Length ^ 0xEA));
             cryptHeader.AddRange(UniSpyEncoding.GetBytes(ClientInfo.ServerChallenge));
-            _serversInfoBuffer.AddRange(cryptHeader);
+            return cryptHeader.ToArray();
         }
         protected abstract void BuildServersFullInfo();
 

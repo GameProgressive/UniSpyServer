@@ -18,10 +18,14 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)
         {
             //todo add v1 support
-            _client.LogError("todo add v1 support");
+            var request = (string)rawRequest;
             switch ((string)name)
             {
+                case "basic":
+                case "gamename":
+                    throw new System.NotImplementedException();
                 case "list":
+                    throw new System.NotImplementedException();
                 default:
                     return null;
             }
