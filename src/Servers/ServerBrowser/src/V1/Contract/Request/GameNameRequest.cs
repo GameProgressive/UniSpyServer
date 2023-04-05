@@ -32,14 +32,14 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
             {
                 if (!System.Enum.TryParse<EncryptionType>(KeyValues["enctype"], out var type))
                 {
-                    throw new ServerBrowser.V2.Exception("Encryption type format is not correct.");
+                    throw new ServerBrowser.Exception("Encryption type format is not correct.");
                 }
                 EncType = type;
             }
 
             if (!KeyValues.ContainsKey("gamever"))
             {
-                throw new ServerBrowser.V2.Exception("Game engine version is not presented in request.");
+                throw new ServerBrowser.Exception("Game engine version is not presented in request.");
             }
             if (int.TryParse(KeyValues["gamever"], out var version))
             {
@@ -48,7 +48,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
             //process secure
             if (!KeyValues.ContainsKey("secure"))
             {
-                throw new ServerBrowser.V2.Exception("No encryption key found");
+                throw new ServerBrowser.Exception("No encryption key found");
             }
             EncKey = KeyValues["secure"];
         }

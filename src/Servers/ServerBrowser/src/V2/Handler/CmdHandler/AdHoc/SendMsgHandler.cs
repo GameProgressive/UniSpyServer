@@ -26,7 +26,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 
             if (gameServer is null)
             {
-                throw new ServerBrowser.V2.Exception($"No match server found by address {_request.GameServerPublicIPEndPoint}, we ignore client request.");
+                throw new ServerBrowser.Exception($"No match server found by address {_request.GameServerPublicIPEndPoint}, we ignore client request.");
             }
 
             var message = new ClientMessageRequest()

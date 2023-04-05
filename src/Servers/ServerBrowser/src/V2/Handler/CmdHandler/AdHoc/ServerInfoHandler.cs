@@ -30,7 +30,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
             //TODO if there are no server found, we still send response back to client
             if (_result.GameServerInfo is null)
             {
-                // throw new ServerBrowser.V2.Exception("No server found in database.");
+                // throw new ServerBrowser.Exception("No server found in database.");
                 _client.LogInfo($"No server found on IP {_request.GameServerPublicIPEndPoint}.");
                 return;
             }

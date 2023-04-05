@@ -1,4 +1,4 @@
-namespace UniSpy.Server.ServerBrowser.V2
+namespace UniSpy.Server.ServerBrowser
 {
     public class Exception : UniSpy.Exception
     {

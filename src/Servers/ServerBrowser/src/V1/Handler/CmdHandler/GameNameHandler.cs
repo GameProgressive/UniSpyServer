@@ -21,7 +21,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler.CmdHandler
             // todo  we need to decode the EncKey here, which is sended when client connect to us
             // if (_request.EncKey != ClientInfo.EncKey)
             // {
-            //     throw new ServerBrowser.V2.Exception("Game encryption key is not valid");
+            //     throw new ServerBrowser.Exception("Game encryption key is not valid");
             // }
         }
         protected override void DataOperation()

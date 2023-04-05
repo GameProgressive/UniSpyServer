@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
@@ -22,14 +23,17 @@ namespace UniSpy.Server.QueryReport.V1.Aggregation.Redis
         [RedisKey]
         public string GameName { get; set; }
         public bool IsValidated { get; set; }
-        public string GameData { get; set; }
+        /// <summary>
+        /// The key values that contians all the information about this game server
+        /// </summary>
+        public Dictionary<string, string> KeyValues { get; set; }
         public GameServerInfo() : base(TimeSpan.FromSeconds(30))
         {
         }
     }
-    public class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
+    public class RedisClient : RedisClient<GameServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameServerV2)
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameServerV1)
         {
         }
     }

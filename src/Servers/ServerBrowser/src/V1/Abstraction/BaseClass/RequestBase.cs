@@ -24,7 +24,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             }
             if (!KeyValues.ContainsKey("gamename"))
             {
-                throw new ServerBrowser.V2.Exception("No game name present in request.");
+                throw new ServerBrowser.Exception("No game name present in request.");
             }
             GameName = KeyValues["gamename"];
         }
