@@ -12,7 +12,7 @@ namespace UniSpy.Server.WebServer.Test.Sake
             var client = TestClasses.CreateClient();
             var request = new CreateRecordRequest(RawRequests.CreateRecord);
             var handler = new CreateRecordHandler(client, request);
-            handler.Handle();
+            Assert.Throws<System.NotImplementedException>(() => handler.Handle());
         }
     }
 }

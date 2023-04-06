@@ -79,6 +79,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Test
             // the ip and port in qr should match when sb execute ServerInfoRequest
             // therefore, we create client based on IP 91.43.50.186:21701 to test qr and sb
             var qrClient = QueryReport.V2.Test.TestClasses.CreateClient("91.43.50.186", 21701);
+            var sbClient = TestClasses.CreateClient();
             var qrRequests = new List<byte[]>()
             {   
                 // avaliable check
@@ -116,7 +117,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Test
 
             foreach (var sbReq in sbRequests)
             {
-                ((ITestClient)TestClasses.SBClient).TestReceived(sbReq);
+                ((ITestClient)sbClient).TestReceived(sbReq);
             }
         }
         [Fact]
