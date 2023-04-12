@@ -25,31 +25,13 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
             //Parse the endpoint information into result class
             _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
 
-            // if (_request.PlayerData?.Count == 0 || _request.PlayerData is null)
-            // {
-            //     _client.LogInfo("Ignore incorrect implementation of heartbeat");
-            //     return;
-            // }
             CheckSpamGameServer();
-
-            switch (_request.ReportType)
-            {
-                case HeartBeatReportType.ServerTeamPlayerData:
-                    //normal heart beat
-                    _gameServerInfo.ServerData = _request.ServerData;
-                    _gameServerInfo.PlayerData = _request.PlayerData;
-                    _gameServerInfo.TeamData = _request.TeamData;
-                    break;
-                case HeartBeatReportType.ServerPlayerData:
-                    _gameServerInfo.ServerData = _request.ServerData;
-                    _gameServerInfo.PlayerData = _request.PlayerData;
-                    _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
-                    break;
-                case HeartBeatReportType.ServerData:
-                    _gameServerInfo.ServerData = _request.ServerData;
-                    _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
-                    break;
-            }
+            // todo check if server data is null
+            //normal heart beat
+            _gameServerInfo.ServerData = _request.ServerData;
+            _gameServerInfo.PlayerData = _request.PlayerData;
+            _gameServerInfo.TeamData = _request.TeamData;
+            _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
             UpdateGameServerByState();
             // we publish message to notice all sb server to send adhoc message to their clients.
             StorageOperation.HeartbeatChannel.PublishMessage(_gameServerInfo);

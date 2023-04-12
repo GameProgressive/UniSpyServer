@@ -15,7 +15,7 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
         public List<Dictionary<string, string>> PlayerData { get; private set; }
         public List<Dictionary<string, string>> TeamData { get; private set; }
         public GameServerStatus ServerStatus { get; private set; }
-
+        public uint? GroupId { get; private set; }
         public string GameName
         {
             get
@@ -26,7 +26,7 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
             }
         }
         public string DataPartition { get; private set; }
-        public HeartBeatReportType ReportType { get; set; }
+        // public HeartBeatReportType ReportType { get; set; }
 
         public HeartBeatRequest(byte[] rawRequest) : base(rawRequest)
         {
@@ -41,10 +41,10 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
 
             playerPos = DataPartition.IndexOf("player_\0", StringComparison.Ordinal);
             teamPos = DataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
-
+            // todo if there is no server data, we whether need to throw exception?
             if (playerPos != -1 && teamPos != -1)
             {
-                ReportType = HeartBeatReportType.ServerTeamPlayerData;
+                // ReportType = HeartBeatReportType.ServerTeamPlayerData;
                 playerLenth = teamPos - playerPos;
                 teamLength = DataPartition.Length - teamPos;
 
@@ -58,7 +58,7 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
             else if (playerPos != -1)
             {
                 //normal heart beat
-                ReportType = HeartBeatReportType.ServerPlayerData;
+                // ReportType = HeartBeatReportType.ServerPlayerData;
                 playerLenth = DataPartition.Length - playerPos;
                 var serverDataStr = DataPartition.Substring(0, playerPos - 4);
                 ParseServerData(serverDataStr);
@@ -67,7 +67,7 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
             }
             else if (playerPos == -1 && teamPos == -1)
             {
-                ReportType = HeartBeatReportType.ServerData;
+                // ReportType = HeartBeatReportType.ServerData;
                 var serverDataStr = DataPartition;
                 ParseServerData(serverDataStr);
             }
@@ -76,6 +76,15 @@ namespace UniSpy.Server.QueryReport.V2.Contract.Request
                 throw new QueryReport.Exception("HeartBeat request is invalid.");
             }
 
+            if (ServerData.ContainsKey("groupid"))
+            {
+                if (!uint.TryParse(ServerData["groupid"], out var groupId))
+                {
+                    throw new QueryReport.Exception("GroupId is invalid.");
+
+                }
+                GroupId = groupId;
+            }
         }
         private void ParseServerData(string serverDataStr)
         {
