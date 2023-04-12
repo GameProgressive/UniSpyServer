@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V2.Enumerate;
 
 namespace UniSpy.Server.ServerBrowser.V2.Application
 {
@@ -21,6 +22,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
         public static byte[] HtonQueryReportDefaultPort => BitConverter.GetBytes(QueryReportDefaultPort).Reverse().ToArray();
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
+        public ServerListUpdateOption? SearchType { get; set; }
         /// <summary>
         /// The game name that this client is searching for
         /// </summary>

@@ -6,6 +6,7 @@ using UniSpy.Server.ServerBrowser.V2.Application;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response.AdHoc;
 using UniSpy.Server.ServerBrowser.V2.Contract.Result;
+using UniSpy.Server.ServerBrowser.V2.Enumerate;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler.AdHoc
 {
@@ -37,7 +38,10 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler.AdHoc
             var clients = ClientManager.GetClient(_message.GameName);
             Parallel.ForEach(clients, client =>
             {
-                if (((Client)client).Info.GameName == _message.GameName && client.Crypto is not null)
+                if (client.Info.GameName == _message.GameName
+                && client.Crypto is not null
+                && (client.Info.SearchType == ServerListUpdateOption.ServerMainList
+                || client.Info.SearchType == ServerListUpdateOption.P2PServerMainList))
                 {
                     client.LogInfo($"Sending AdHoc message {_message.ServerStatus} to client");
                     client.Send(response);

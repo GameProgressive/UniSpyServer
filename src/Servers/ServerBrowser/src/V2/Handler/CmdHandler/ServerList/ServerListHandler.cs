@@ -8,6 +8,8 @@ using UniSpy.Server.ServerBrowser.V2.Aggregate.Packet.Response;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList;
 using UniSpy.Server.ServerBrowser.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using System.Collections.Generic;
+using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
@@ -58,6 +60,8 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                 default:
                     throw new ServerBrowser.Exception("unknown serverlist update option type");
             }
+            _client.Info.SearchType = _request.UpdateOption;
+
         }
         private void P2PGroupRoomList()
         {
@@ -86,10 +90,20 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         private void P2PServerMainList()
         {
             var serverInfos = StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
-            ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
+
             //TODO do filter
-            //**************Currently we do not handle filter**********************
+            if (_request.Filter.Contains("groupid="))
+            {
+                var groupId = _request.Filter.Replace("groupid=", "");
+                var filteredGameServerInfos = serverInfos.Where(s => s.ServerData.ContainsKey("groupid=")).Where(s => s.ServerData["groupid"] == groupId).ToList();
+                ((ServerMainListResult)_result).GameServerInfos = filteredGameServerInfos;
+            }
+            else
+            {
+                ((ServerMainListResult)_result).GameServerInfos = serverInfos;
+            }
+
         }
         private void ServerMainList()
         {
