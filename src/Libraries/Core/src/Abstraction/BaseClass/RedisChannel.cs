@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
@@ -48,7 +49,21 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                 return;
             }
             string jsonStr = SerializeMessage(message);
-            _subscriber.Publish(_redisChannelName, jsonStr);
+            try
+            {
+                _subscriber.Publish(_redisChannelName, jsonStr);
+            }
+            catch (StackExchange.Redis.RedisTimeoutException ex)
+            {
+                if (!System.Diagnostics.Debugger.IsAttached)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    LogWriter.LogWarn("Redis channel timeout because of break point.");
+                }
+            }
         }
 
         protected virtual string SerializeMessage(T message)
