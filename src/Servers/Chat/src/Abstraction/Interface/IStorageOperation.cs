@@ -7,6 +7,6 @@ namespace UniSpy.Server.Chat.Abstraction.Interface
         (int userId, int profileId, bool emailVerified, bool banned) NickAndEmailLogin(string nickName, string email, string passwordHash);
         (int userId, int profileId, bool emailVerified, bool banned) UniqueNickLogin(string uniqueNick, int namespaceId);
         bool IsPeerLobby(string channelName);
-        void DeleteGameServerInfo(IPAddress address, string gameName);
+        // void DeleteGameServerInfo(IPAddress address, string gameName);
     }
 }

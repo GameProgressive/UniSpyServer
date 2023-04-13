@@ -66,30 +66,19 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         private void P2PGroupRoomList()
         {
             // Game name is unique in redis database
-            var groupInfo = StorageOperation.Persistance.GetPeerGroupInfo(_request.GameName);
-            if (groupInfo is null)
+            var peerRooms = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(_request.GameName);
+            var grouplist = QueryReport.V2.Application.StorageOperation.Persistance.GetGroupList(_request.GameName);
+            var addInfos = grouplist.Where(g => peerRooms.All(r => r.GroupId != g.Groupid)).ToList();
+            foreach (var room in addInfos)
             {
-                // search gamename in database
-                var result = StorageOperation.Persistance.GetGroupList(_request.GameName);
-                if (result.Count() == 0)
-                {
-                    throw new ServerBrowser.Exception($"can not find peer group info in redis and database, please check game name:{_request.GameName}");
-                }
-                else
-                {
-                    groupInfo = new PeerGroupInfo()
-                    {
-                        GameName = _request.GameName,
-                        GameID = result.First().Gameid,
-                        PeerRooms = result.Select(x => new PeerRoomInfo(x)).ToList()
-                    };
-                }
+                var roomInfo = new PeerRoomInfo(room.Game.Gamename, room.Groupid, room.Roomname);
+                QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo);
             }
-        ((P2PGroupRoomListResult)_result).PeerGroupInfo = groupInfo;
+            ((P2PGroupRoomListResult)_result).PeerRoomsInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(_request.GameName);
         }
         private void P2PServerMainList()
         {
-            var serverInfos = StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
+            var serverInfos = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
 
             //TODO do filter
@@ -107,7 +96,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         }
         private void ServerMainList()
         {
-            var serverInfos = StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
+            var serverInfos = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).GameServerInfos = serverInfos;
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
         }

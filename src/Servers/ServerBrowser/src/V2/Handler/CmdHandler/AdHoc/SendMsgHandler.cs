@@ -1,10 +1,8 @@
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
-
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.Core.Extension;
-using UniSpy.Server.ServerBrowser.V2.Application;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
@@ -22,7 +20,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            var gameServer = StorageOperation.Persistance.GetGameServerInfo(_request.GameServerPublicIPEndPoint);
+            var gameServer = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfo(_request.GameServerPublicIPEndPoint);
 
             if (gameServer is null)
             {
@@ -37,7 +35,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                 TargetIPEndPoint = gameServer.QueryReportIPEndPoint,
                 CommandName = QueryReport.V2.Enumerate.RequestType.ClientMessage
             };
-            StorageOperation.Persistance.PublishClientMessage(message);
+            QueryReport.V2.Application.StorageOperation.Persistance.PublishClientMessage(message);
             _client.LogInfo($"Send client message to QueryReport Server: {gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
         }
     }

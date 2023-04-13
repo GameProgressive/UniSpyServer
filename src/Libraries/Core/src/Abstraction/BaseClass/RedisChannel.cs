@@ -5,8 +5,11 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
+
     public abstract class RedisChannelBase<T>
     {
+        public delegate void OnReceivedMessageEventHandler(T message);
+        public event OnReceivedMessageEventHandler OnReceived;
         protected string _redisChannelName;
         /// <summary>
         /// Get all subscriber in Redis
@@ -16,6 +19,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         public RedisChannelBase(string redisChannelName)
         {
             _redisChannelName = redisChannelName;
+            OnReceived += ReceivedMessage;
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     =>
                 {
                     T msg = DeserializeMessage(message);
-                    ReceivedMessage(msg);
+                    OnReceived(msg);
                 });
                 IsStarted = true;
             }

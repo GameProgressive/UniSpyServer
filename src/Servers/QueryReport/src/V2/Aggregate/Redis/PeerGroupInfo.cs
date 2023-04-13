@@ -1,61 +1,91 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.Core.Extension.Redis;
 
+//!fix move this to root namespace 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup
 {
-    public record PeerGroupInfo : RedisKeyValueObject
+    public record PeerRoomInfo : RedisKeyValueObject
     {
         [RedisKey]
-        public string GameName { get; init; }
-        public int GameID { get; init; }
-        public List<PeerRoomInfo> PeerRooms { get; init; }
-
-        public PeerGroupInfo() : base(expireTime: null)
+        [JsonProperty]
+        public string GameName { get; private set; }
+        [RedisKey]
+        [JsonProperty]
+        public int? GroupId { get; private set; }
+        [RedisKey]
+        [JsonProperty]
+        public string RoomName { get; private set; }
+        [JsonIgnore]
+        public int NumberOfWaitingPlayers
         {
+            get => int.Parse(KeyValues["numwaiting"]);
+            set => KeyValues["numwaiting"] = value.ToString();
         }
-    }
-    public class PeerRoomInfo
-    {
-        public int GroupId => (int)KeyValues["groupid"];
-        public string HostName => (string)KeyValues["hostname"];
-        public int NumberOfWaitingPlayers => (int)KeyValues["numwaiting"];
-        public int MaxNumberOfWaitingPlayers => (int)KeyValues["maxwaiting"];
-        public int NumberOfServers => (int)KeyValues["numservers"];
-        public int NumberOfPlayers => (int)KeyValues["numplayers"];
-        public int MaxNumberOfPlayers => (int)KeyValues["maxplayers"];
+        [JsonIgnore]
+        public int MaxNumberOfWaitingPlayers
+        {
+            get => int.Parse(KeyValues["maxwaiting"]);
+            set => KeyValues["maxwaiting"] = value.ToString();
+        }
+        [JsonIgnore]
+        public int NumberOfServers
+        {
+            get => int.Parse(KeyValues["numservers"]);
+            set => KeyValues["numservers"] = value.ToString();
+        }
+        [JsonIgnore]
+        public int NumberOfPlayers
+        {
+            get => int.Parse(KeyValues["numplayers"]);
+            set => KeyValues["numplayers"] = value.ToString();
+        }
+        [JsonIgnore]
+        public int MaxNumberOfPlayers
+        {
+            get => int.Parse(KeyValues["maxplayers"]);
+            set => KeyValues["maxplayers"] = value.ToString();
+        }
+        [JsonIgnore]
         public string Password => (string)KeyValues["password"];
-        public int NumberOfGames => (int)KeyValues["numgames"];
-        public int NumberOfPlayingPlayers => (int)KeyValues["numplaying"];
-        public Dictionary<string, object> KeyValues { get; private set; }
+        [JsonIgnore]
+        public int NumberOfGames
+        {
+            get => int.Parse(KeyValues["numgames"]);
+            set => KeyValues["numgames"] = value.ToString();
+        }
+        [JsonIgnore]
+        public int NumberOfPlayingPlayers
+        {
+            get => int.Parse(KeyValues["numplaying"]);
+            set => KeyValues["numplaying"] = value.ToString();
+        }
+        public Dictionary<string, string> KeyValues { get; private set; } = new Dictionary<string, string>();
         public DateTime UpdateTime;
-
-        public PeerRoomInfo(Grouplist groupList)
+        public PeerRoomInfo() : base(expireTime: null) { }
+        public PeerRoomInfo(string gameName, int groupId, string roomName) : base(expireTime: null)
         {
             UpdateTime = DateTime.Now;
-
-            KeyValues = new Dictionary<string, object>();
             // this is the default value that every game needed
-            KeyValues.Add("groupid", groupList.Groupid);
-            KeyValues.Add("hostname", groupList.Roomname);
-            KeyValues.Add("numwaiting", 0);
-            KeyValues.Add("maxwaiting", 200);
-            KeyValues.Add("numservers", 0);
-            KeyValues.Add("numplayers", 0);
-            KeyValues.Add("maxplayers", 200);
+            GameName = gameName;
+            GroupId = groupId;
+            RoomName = roomName;
+            KeyValues.Add("groupid", groupId.ToString());
+            KeyValues.Add("hostname", roomName);
+            KeyValues.Add("numwaiting", "0");
+            KeyValues.Add("maxwaiting", "200");
+            KeyValues.Add("numservers", "0");
+            KeyValues.Add("numplayers", "0");
+            KeyValues.Add("maxplayers", "200");
             KeyValues.Add("password", "");
-            KeyValues.Add("numgames", 0);
-            KeyValues.Add("numplaying", 0);
-        }
-
-        public PeerRoomInfo()
-        {
+            KeyValues.Add("numgames", "0");
+            KeyValues.Add("numplaying", "0");
         }
     }
-    public class RedisClient : LinqToRedis.RedisClient<PeerGroupInfo>
+    internal class RedisClient : LinqToRedis.RedisClient<PeerRoomInfo>
     {
         public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.PeerGroup)
         {

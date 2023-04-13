@@ -2,6 +2,7 @@ using System.Net;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Network.Udp.Server;
+using UniSpy.Server.QueryReport.V2.Application;
 
 namespace UniSpy.Server.QueryReport.Application
 {
@@ -19,6 +20,7 @@ namespace UniSpy.Server.QueryReport.Application
         {
             base.Start();
             V2.Application.StorageOperation.NatNegChannel.StartSubscribe();
+            // V2.Application.StorageOperation.Persistance.InitPeerRoomsInfo();
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 

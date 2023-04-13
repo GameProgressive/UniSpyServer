@@ -1,3 +1,4 @@
+using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.ServerBrowser.V1.Contract.Request;
 using Xunit;
 

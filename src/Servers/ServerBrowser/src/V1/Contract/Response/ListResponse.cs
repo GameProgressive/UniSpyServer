@@ -16,19 +16,26 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Response
         public override void Build()
         {
             SendingBuffer = $@"\fieldcount\{_result.ServersInfo.Count}";
-            if (_request.IsSendAllInfo)
+            switch (_request.Type)
             {
-                BuildServerAllInfo();
-            }
-            else
-            {
-                BuildServerGeneralInfo();
+                case ListRequestType.Basic:
+                    BuildServerGeneralInfo();
+                    break;
+                case ListRequestType.Info:
+                    BuildServerAllInfo();
+                    break;
+                case ListRequestType.Group:
+                    BuildGroupInfo();
+                    break;
             }
 
             SendingBuffer += @"\final\";
         }
 
+        public void BuildGroupInfo()
+        {
 
+        }
         public void BuildServerAllInfo()
         {
 

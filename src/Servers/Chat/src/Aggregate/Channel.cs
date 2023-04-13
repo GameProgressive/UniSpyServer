@@ -13,6 +13,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 
     public sealed class Channel
     {
+        public string GameName { get; private set; }
         /// <summary>
         /// Channel name
         /// </summary>
@@ -47,6 +48,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             Name = name;
             Password = password;
             RoomType = PeerRoom.GetRoomType(Name);
+            GameName = client.Info.GameName;
             switch (RoomType)
             {
                 case PeerRoomType.Normal:
@@ -57,10 +59,20 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 case PeerRoomType.Title:
                 case PeerRoomType.Group:
                     // official room can not create by user
+                    //#GPG!622
+                    var groupIdStr = name.Split("!", StringSplitOptions.RemoveEmptyEntries)[1];
+                    if (!int.TryParse(groupIdStr, out var groupId))
+                    {
+                        throw new Chat.Exception("Peer room name is incorrect");
+                    }
                     AddUser(client, password);
+
+                    var roomInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(GameName, groupId).First();
+                    QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo);
                     break;
             }
             MessageBroker = new Redis.ChatMessageChannel(Name);
+            MessageBroker.StartSubscribe();
         }
 
         /// <summary>

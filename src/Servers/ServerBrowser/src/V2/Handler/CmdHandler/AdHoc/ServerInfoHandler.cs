@@ -25,8 +25,8 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _result.GameServerInfo = StorageOperation.Persistance.GetGameServerInfo(_request.GameServerPublicIPEndPoint);
-    
+            _result.GameServerInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfo(_request.GameServerPublicIPEndPoint);
+
             //TODO if there are no server found, we still send response back to client
             if (_result.GameServerInfo is null)
             {

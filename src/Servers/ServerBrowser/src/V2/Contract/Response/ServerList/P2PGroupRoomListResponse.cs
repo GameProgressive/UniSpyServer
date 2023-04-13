@@ -30,16 +30,16 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList
 
         protected override void BuildServersFullInfo()
         {
-            foreach (var room in _result.PeerGroupInfo.PeerRooms)
+            foreach (var room in _result.PeerRoomsInfo)
             {
                 //add has key flag
                 _serversInfoBuffer.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
                 // group id = 0 means the end flag of group list
                 var groupId = 0;
-                if (room != _result.PeerGroupInfo.PeerRooms.Last())
+                if (room != _result.PeerRoomsInfo.Last())
                 {
-                    groupId = room.GroupId;
+                    groupId = (int)room.GroupId;
                 }
                 var groupIdBytes = BitConverter.GetBytes(groupId).Reverse().ToArray();
                 _serversInfoBuffer.AddRange(groupIdBytes);

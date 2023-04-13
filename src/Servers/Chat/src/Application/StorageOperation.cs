@@ -2,14 +2,16 @@ using System.Net;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using System.Collections.Generic;
 
 namespace UniSpy.Server.Chat.Application
 {
     internal sealed class StorageOperation : IStorageOperation
     {
         public static IStorageOperation Persistance = new StorageOperation();
-        private static RedisClient _redisClient = new RedisClient();
+        // private static QueryReport.V2.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Aggregate.Redis.GameServer.RedisClient();
+        // private static QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient();
+
         public bool IsPeerLobby(string channelName)
         {
             // TODO! check the room name by search the name on the official room name in database
@@ -102,15 +104,15 @@ namespace UniSpy.Server.Chat.Application
             }
         }
 
-        public void DeleteGameServerInfo(IPAddress address, string gameName)
-        {
-            var info = _redisClient.Context.FirstOrDefault(x =>
-                                                    x.HostIPAddress == address
-                                                    && x.GameName == gameName);
-            if (info is not null)
-            {
-                _redisClient.DeleteKeyValue(info);
-            }
-        }
+        // public void DeleteGameServerInfo(IPAddress address, string gameName)
+        // {
+        //     var info = _gameServerRedisClient.Context.FirstOrDefault(x =>
+        //                                             x.HostIPAddress == address
+        //                                             && x.GameName == gameName);
+        //     if (info is not null)
+        //     {
+        //         _gameServerRedisClient.DeleteKeyValue(info);
+        //     }
+        // }
     }
 }

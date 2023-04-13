@@ -25,6 +25,8 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler.CmdHandler
                     _result.ServersInfo = QueryReport.V1.Application.StorageOperation.Persistance.GetServersInfo(_request.GameName);
                     break;
                 case ListRequestType.Group:
+                    _result.PeerRoomsInfo =
+                    QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(_request.GameName);
                     // todo
                     break;
             }
