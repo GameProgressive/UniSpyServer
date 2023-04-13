@@ -19,7 +19,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
     public sealed class GameNameRequest : RequestBase
     {
         public EncryptionType EncType { get; private set; }
-        public int? Version { get; private set; }
+        public string Version { get; private set; }
         public string EncKey { get; private set; }
         public GameNameRequest(string rawRequest) : base(rawRequest)
         {
@@ -41,16 +41,14 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
             {
                 throw new ServerBrowser.Exception("Game engine version is not presented in request.");
             }
-            if (int.TryParse(KeyValues["gamever"], out var version))
-            {
-                Version = version;
-            }
+
+            Version = KeyValues["gamever"];
             //process secure
-            if (!KeyValues.ContainsKey("secure"))
+            // star trek armada 2 do not use encryption
+            if (KeyValues.ContainsKey("secure"))
             {
-                throw new ServerBrowser.Exception("No encryption key found");
+                EncKey = KeyValues["secure"];
             }
-            EncKey = KeyValues["secure"];
         }
     }
 }

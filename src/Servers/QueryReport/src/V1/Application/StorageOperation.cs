@@ -3,6 +3,7 @@ using UniSpy.Server.QueryReport.V1.Abstraction.Interface;
 using System.Linq;
 using UniSpy.Server.QueryReport.V1.Aggregation.Redis;
 using System.Net;
+using System.Collections.Generic;
 
 namespace UniSpy.Server.QueryReport.V1.Application
 {
@@ -25,10 +26,14 @@ namespace UniSpy.Server.QueryReport.V1.Application
                 return result.First().Secretkey;
             }
         }
-
+        public List<GameServerInfo> GetServersInfo(string gameName)
+        {
+            var result = _redisClient.Context.Where(s => s.GameName == gameName).ToList();
+            return result;
+        }
         public GameServerInfo GetServerInfo(IPEndPoint endPoint)
         {
-            var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.QueryReportPort == endPoint.Port);
+            var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.HostPort == endPoint.Port);
             if (result.Count() != 1)
             {
                 throw new QueryReport.Exception("Multiple server found in redis.");
@@ -41,7 +46,7 @@ namespace UniSpy.Server.QueryReport.V1.Application
         }
         public void RemoveServerInfo(IPEndPoint endPoint)
         {
-            var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.QueryReportPort == endPoint.Port);
+            var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.HostPort == endPoint.Port);
             foreach (var info in result)
             {
                 _redisClient.DeleteKeyValue(info);

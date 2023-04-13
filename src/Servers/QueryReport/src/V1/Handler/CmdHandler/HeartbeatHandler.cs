@@ -26,7 +26,7 @@ namespace UniSpy.Server.QueryReport.V1.Handler.CmdHandler
                 ServerID = _client.Server.Id,
                 HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,
                 // check whether this indicate game port
-                QueryReportPort = _request.QueryReportPort,
+                HostPort = _request.QueryReportPort,
                 GameName = _request.GameName,
                 KeyValues = _request.KeyValues
             };

@@ -15,7 +15,7 @@ namespace UniSpy.Server.Core.Misc
         /// </summary>
         public static string GetRequestName(string request)
         {
-            var frags = request.Split('\\');
+            var frags = request.Split('\\', StringSplitOptions.RemoveEmptyEntries);
             if (frags.Length < 4)
             {
                 throw new UniSpy.Exception("Request is not valid.");

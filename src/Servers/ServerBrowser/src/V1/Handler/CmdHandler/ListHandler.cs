@@ -17,8 +17,17 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            throw new System.NotImplementedException();
-            // base.RequestCheck();
+            switch (_request.Type)
+            {
+
+                case ListRequestType.Info:
+                case ListRequestType.Basic:
+                    _result.ServersInfo = QueryReport.V1.Application.StorageOperation.Persistance.GetServersInfo(_request.GameName);
+                    break;
+                case ListRequestType.Group:
+                    // todo
+                    break;
+            }
         }
         protected override void ResponseConstruct()
         {

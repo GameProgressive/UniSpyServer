@@ -18,12 +18,8 @@ namespace UniSpy.Server.Core.Encryption
             EncryptionType = type;
         }
 
-        public static string Encode(string plainText, XorType type)
-        {
-            return
-            UniSpyEncoding.GetString(
-                Encode(UniSpyEncoding.GetBytes(plainText), type));
-        }
+        public static string Encode(string plainText, XorType type) => UniSpyEncoding.GetString(Encode(UniSpyEncoding.GetBytes(plainText), type));
+
         /// <summary>
         /// simple xor encoding for Gstats,GPSP,GPCM
         /// </summary>

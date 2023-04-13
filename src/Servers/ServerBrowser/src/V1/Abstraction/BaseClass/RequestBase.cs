@@ -10,7 +10,6 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         public new string CommandName { get => (string)base.CommandName; protected set => base.CommandName = value; }
         public Dictionary<string, string> KeyValues { get; private set; }
         public string GameName { get; private set; }
-        public bool IsUsingEncryption { get; set; }
         public RequestBase(string rawRequest) : base(rawRequest)
         {
         }
@@ -18,10 +17,6 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         {
             KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = KeyValues.Keys.First();
-            if (KeyValues.ContainsKey("secure"))
-            {
-                IsUsingEncryption = true;
-            }
             if (!KeyValues.ContainsKey("gamename"))
             {
                 throw new ServerBrowser.Exception("No game name present in request.");

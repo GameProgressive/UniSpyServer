@@ -17,9 +17,9 @@ namespace UniSpy.Server.QueryReport.V1.Aggregation.Redis
         [JsonConverter(typeof(IPAddresConverter))]
         public IPAddress HostIPAddress { get; set; }
         [RedisKey]
-        public int? QueryReportPort { get; set; }
+        public int? HostPort { get; set; }
         [JsonIgnore]
-        public IPEndPoint QueryReportIPEndPoint => new IPEndPoint(HostIPAddress, (int)QueryReportPort);
+        public IPEndPoint HostIPEndPoint => new IPEndPoint(HostIPAddress, (int)HostPort);
         [RedisKey]
         public string GameName { get; set; }
         public bool IsValidated { get; set; }

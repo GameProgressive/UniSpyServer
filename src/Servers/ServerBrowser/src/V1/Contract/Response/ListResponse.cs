@@ -7,15 +7,15 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Response
 {
     public sealed class ListResponse : ResponseBase
     {
-        public new ListRequest _request => (ListRequest)base._request;
-        public new ListResult _result => (ListResult)base._result;
+        private new ListRequest _request => (ListRequest)base._request;
+        private new ListResult _result => (ListResult)base._result;
         public ListResponse(ListRequest request, ListResult result) : base(request, result)
         {
         }
 
         public override void Build()
         {
-            SendingBuffer = $@"\fieldcount\{_result.ServerIPList.Count}";
+            SendingBuffer = $@"\fieldcount\{_result.ServersInfo.Count}";
             if (_request.IsSendAllInfo)
             {
                 BuildServerAllInfo();
@@ -35,14 +35,14 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Response
         }
         public void BuildServerGeneralInfo()
         {
-            foreach (var endPoint in _result.ServerIPList)
+            foreach (var info in _result.ServersInfo)
             {
                 if (_request.IsSendingCompressFormat)
                 {
-                    var buffer = BitConverter.ToString(endPoint.Address.GetAddressBytes()) + BitConverter.ToString(BitConverter.GetBytes((short)endPoint.Port));
+                    var buffer = BitConverter.ToString(info.HostIPAddress.GetAddressBytes()) + BitConverter.ToString(BitConverter.GetBytes((short)info.HostPort));
                     SendingBuffer += @$"\ip\{buffer}";
                 }
-                SendingBuffer += @$"\ip\{endPoint}";
+                SendingBuffer += @$"\ip\{info.HostIPEndPoint}";
             }
         }
     }
