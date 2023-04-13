@@ -59,6 +59,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 // create channel
                 _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
             }
+            
             _user = _channel.GetChannelUser(_client);
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;

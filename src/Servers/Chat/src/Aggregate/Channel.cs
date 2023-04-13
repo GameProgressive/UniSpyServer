@@ -59,16 +59,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 case PeerRoomType.Title:
                 case PeerRoomType.Group:
                     // official room can not create by user
-                    //#GPG!622
-                    var groupIdStr = name.Split("!", StringSplitOptions.RemoveEmptyEntries)[1];
-                    if (!int.TryParse(groupIdStr, out var groupId))
-                    {
-                        throw new Chat.Exception("Peer room name is incorrect");
-                    }
                     AddUser(client, password);
-
-                    var roomInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(GameName, groupId).First();
-                    QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo);
                     break;
             }
             MessageBroker = new Redis.ChatMessageChannel(Name);
@@ -179,8 +170,30 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             var user = new ChannelUser(client, this);
             user.SetDefaultProperties(IsChannelCreator, IsChannelOperator);
             AddBindOnUserAndChannel(user);
+            UpdatePeerRoomInfo(user);
             return user;
         }
+        private void UpdatePeerRoomInfo(ChannelUser user)
+        {
+            if (RoomType != PeerRoomType.Group)
+            {
+                return;
+            }
+            if (user.ClientRef.Info.IsRemoteClient)
+            {
+                return;
+            }
+            //#GPG!622
+            var groupIdStr = Name.Split("!", StringSplitOptions.RemoveEmptyEntries)[1];
+            if (!int.TryParse(groupIdStr, out var groupId))
+            {
+                throw new Chat.Exception("Peer room name is incorrect");
+            }
+            var roomInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(GameName, groupId).First();
+            roomInfo.NumberOfPlayers = Users.Count;
+            QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo);
+        }
+
         public void VerifyPassword(string pass)
         {
             if (Password != pass)
@@ -196,6 +209,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             {
                 RemoveUser(user);
             }
+            UpdatePeerRoomInfo(user);
         }
         public void RemoveUser(ChannelUser user)
         {
