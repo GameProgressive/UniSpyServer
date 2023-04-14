@@ -201,19 +201,11 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 throw new Chat.Exception("Password is not correct");
             }
         }
-        public void RemoveUser(IChatClient client)
-        {
-            var user = GetChannelUser(client);
 
-            if (user is not null)
-            {
-                RemoveUser(user);
-            }
-            UpdatePeerRoomInfo(user);
-        }
         public void RemoveUser(ChannelUser user)
         {
             RemoveBindOnUserAndChannel(user);
+            UpdatePeerRoomInfo(user);
         }
         public ChannelUser GetChannelUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 
