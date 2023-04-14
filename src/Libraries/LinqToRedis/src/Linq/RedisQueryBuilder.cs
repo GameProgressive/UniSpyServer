@@ -55,24 +55,32 @@ namespace UniSpy.LinqToRedis.Linq
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
+            Expression correctNode;
+            if (node.Arguments.Count > 1)
+            {
+                // this indicate the first linq expression
+                if (node.Arguments[0].Type.GenericTypeArguments.FirstOrDefault().IsSubclassOf(typeof(RedisKeyValueObject)))
+                {
+                    correctNode = node.Arguments[1];
+                }
+                else
+                {
+                    correctNode = node.Arguments[0];
+                }
+            }
+            else
+            {
+                correctNode = node.Arguments[0];
+            }
+
+
             switch (node.Method.Name)
             {
                 case "Where":
-                    Visit(node.Arguments[1]);
-                    break;
                 case "Count":
                 case "First":
                 case "FirstOrDefault":
-                    if (node.Arguments.Count == 1)
-                    {
-                        // FirstOrDefault() is called at the end of the query
-                        Visit(node.Arguments[0]);
-                    }
-                    else
-                    {
-                        // FirstOrDefault() is called at the start of the query
-                        Visit(node.Arguments[1]);
-                    }
+                    Visit(correctNode);
                     break;
                 default:
                     throw new NotSupportedException(string.Format("The method '{0}' is not supported", node.Method.Name));

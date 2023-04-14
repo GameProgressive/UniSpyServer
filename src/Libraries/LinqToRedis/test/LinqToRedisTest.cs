@@ -154,8 +154,8 @@ namespace UniSpy.Redis.Test
             var redis = new RedisClient();
             var data1 = redis.Context.Count();
             var data2 = redis.Context.Count(k => k.Cookie == 134);
-            var data3 = redis.Context.First(k => k.Cookie == 134);
-            var data4 = redis.Context.Where(k => k.Cookie == 134).First();
+            Assert.Throws<InvalidOperationException>(()=>redis.Context.First(k => k.Cookie == 134));
+            var data4 = redis.Context.Where(k => k.Cookie == 0).First();
         }
         [Fact]
         public void SearchKeyBuild()
