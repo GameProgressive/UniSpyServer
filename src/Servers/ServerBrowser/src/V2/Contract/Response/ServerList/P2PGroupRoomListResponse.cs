@@ -35,13 +35,8 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList
                 //add has key flag
                 _serversInfoBuffer.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
-                // group id = 0 means the end flag of group list
-                var groupId = 0;
-                if (room != _result.PeerRoomsInfo.Last())
-                {
-                    groupId = (int)room.GroupId;
-                }
-                var groupIdBytes = BitConverter.GetBytes(groupId).Reverse().ToArray();
+
+                var groupIdBytes = BitConverter.GetBytes((int)room.GroupId).Reverse().ToArray();
                 _serversInfoBuffer.AddRange(groupIdBytes);
 
                 foreach (var key in _request.Keys)
@@ -53,6 +48,9 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList
                     _serversInfoBuffer.Add(StringFlag.StringSpliter);
                 }
             }
+            // group id = 0 means the end flag of group list
+            var endFlag = BitConverter.GetBytes((int)0);
+            _serversInfoBuffer.AddRange(endFlag);
         }
     }
 }
