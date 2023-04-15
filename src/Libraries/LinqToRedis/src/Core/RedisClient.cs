@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RedLockNet.SERedis;
+using RedLockNet.SERedis.Configuration;
 using StackExchange.Redis;
 using UniSpy.LinqToRedis.Linq;
 
@@ -13,7 +15,7 @@ namespace UniSpy.LinqToRedis
     /// TODO we need to implement get AllKeys, AllValues
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    public class RedisClient<TValue> where TValue : RedisKeyValueObject
+    public class RedisClient<TValue> : IDisposable where TValue : RedisKeyValueObject
     {
         public TimeSpan? ExpireTime { get; private set; }
         public IConnectionMultiplexer Multiplexer { get; private set; }
@@ -26,15 +28,42 @@ namespace UniSpy.LinqToRedis
         /// <typeparam name="TKey">The redis key class</typeparam>
         /// <returns></returns>
         public QueryableObject<TValue> Context;
-        // public List<TValue> AllValues => Context.ToList();
-        // public List<TValue> AllKeys => Context.Select(k => k.Key).ToList();
-        public RedisClient(string connectionString, int db)
+        private RedLockFactory _lockFactory;
+        private bool _isUsingLock;
+        public RedisClient(string connectionString, int db, bool isUsingLock = false)
         {
             CheckValidation();
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
             Db = Multiplexer.GetDatabase(db);
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
+            _isUsingLock = isUsingLock;
+            if (_isUsingLock)
+            {
+                _lockFactory = RedLockFactory.Create(new List<RedLockMultiplexer> {
+                (ConnectionMultiplexer)Multiplexer
+             });
+            }
+        }
+        /// <summary>
+        /// Use existing multiplexer for performance
+        /// </summary>
+        /// <param name="multiplexer"></param>
+        /// <param name="db"></param>
+        public RedisClient(IConnectionMultiplexer multiplexer, int db, bool isUsingLock = false)
+        {
+            CheckValidation();
+            Multiplexer = multiplexer;
+            Db = Multiplexer.GetDatabase(db);
+            _provider = new RedisQueryProvider<TValue>(this);
+            Context = new QueryableObject<TValue>(_provider);
+            _isUsingLock = isUsingLock;
+            if (_isUsingLock)
+            {
+                _lockFactory = RedLockFactory.Create(new List<RedLockMultiplexer> {
+                (ConnectionMultiplexer)Multiplexer
+             });
+            }
         }
         private void CheckValidation()
         {
@@ -55,19 +84,7 @@ namespace UniSpy.LinqToRedis
                 throw new ArgumentException($"The RedisKey object must be reference type, please convert the following properties to reference type:{propNames}");
             }
         }
-        /// <summary>
-        /// Use existing multiplexer for performance
-        /// </summary>
-        /// <param name="multiplexer"></param>
-        /// <param name="db"></param>
-        public RedisClient(IConnectionMultiplexer multiplexer, int db)
-        {
-            CheckValidation();
-            Multiplexer = multiplexer;
-            Db = Multiplexer.GetDatabase(db);
-            _provider = new RedisQueryProvider<TValue>(this);
-            Context = new QueryableObject<TValue>(_provider);
-        }
+
         public async Task DeleteKeyValueAsync(TValue key)
         {
             await Db.KeyDeleteAsync(key.FullKey);
@@ -158,12 +175,40 @@ namespace UniSpy.LinqToRedis
 
         public void SetValue(TValue value)
         {
-            // we use async method to make redis set operation do not block our codes
-            Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+            if (_isUsingLock)
+            {
+                var expiry = TimeSpan.FromMilliseconds(500);
+                using (var redlock = _lockFactory.CreateLock(value.FullKey, expiry))
+                {
+                    if (redlock.IsAcquired)
+                    {
+                        Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                    }
+                }
+            }
+            else
+            {
+                Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+            }
+
         }
         public async Task SetValueAsync(TValue value)
         {
-            await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+            if (_isUsingLock)
+            {
+                var expiry = TimeSpan.FromMilliseconds(500);
+                await using (var redlock = await _lockFactory.CreateLockAsync(value.FullKey, expiry))
+                {
+                    if (redlock.IsAcquired)
+                    {
+                        await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                    }
+                }
+            }
+            else
+            {
+                await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+            }
         }
         public TValue GetValue(IRedisKey key)
         {
@@ -183,6 +228,7 @@ namespace UniSpy.LinqToRedis
             }
             return JsonConvert.DeserializeObject<TValue>(value);
         }
+
         /// <summary>
         /// The index access of redis key value object is always sync
         /// </summary>
@@ -190,6 +236,11 @@ namespace UniSpy.LinqToRedis
         {
             get => GetValue(key);
             set => SetValue(value);
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_lockFactory).Dispose();
         }
     }
 }
