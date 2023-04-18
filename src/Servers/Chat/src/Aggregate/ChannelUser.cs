@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
@@ -10,6 +11,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
     public sealed class ChannelUser
     {
+        [JsonProperty]
+        public Guid? ServerId { get; private set; }
         /// <summary>
         /// Indicate whether this client is shared from redis channel
         /// </summary>
@@ -21,9 +24,9 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// <summary>
         /// The remote ip end point of this user
         /// </summary>
-        /// <value></value>
+        [JsonProperty]
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint RemoteIPEndPoint => ClientRef.Connection.RemoteIPEndPoint;
+        public IPEndPoint RemoteIPEndPoint { get; private set; }
         [JsonIgnore]
         public IChatClient ClientRef { get; private set; }
         [JsonIgnore]
@@ -35,7 +38,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// </summary>
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
         [JsonIgnore]
-        public Channel BelongedChannel { get; private set; }
+        public Channel Channel { get; private set; }
         [JsonIgnore]
         public string Modes
         {
@@ -56,10 +59,13 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
                 return buffer.ToString();
             }
         }
+        public ChannelUser() { }
         public ChannelUser(IChatClient client, Channel channel)
         {
             ClientRef = client;
-            BelongedChannel = channel;
+            Channel = channel;
+            ServerId = client.Server.Id;
+            RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;
         }
 
         public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)

@@ -23,7 +23,11 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             }
             return channel;
         }
-        public static void RemoveChannel(string name) => Channels.TryRemove(name, out _);
+        public static void RemoveChannel(string name)
+        {
+            Channels.TryRemove(name, out var chan);
+            Application.StorageOperation.Persistance.RemoveChannel(chan);
+        }
         public static Channel CreateChannel(string name, string password = null, IChatClient creator = null)
         {
             var channel = new Channel(name, creator, password);

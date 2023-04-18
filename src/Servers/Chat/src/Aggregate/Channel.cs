@@ -15,6 +15,8 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
     public sealed record Channel : LinqToRedis.RedisKeyValueObject
     {
         [JsonProperty]
+        public Guid ServerId { get; private set; }
+        [JsonProperty]
         public string GameName { get; private set; }
         /// <summary>
         /// Channel name
@@ -63,6 +65,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public Channel() : base(expireTime: TimeSpan.FromHours(1)) { }
         public Channel(string name, IChatClient client, string password = null) : base(expireTime: TimeSpan.FromHours(1))
         {
+            ServerId = client.Server.Id;
             Name = name;
             Password = password;
             RoomType = PeerRoom.GetRoomType(Name);
@@ -189,6 +192,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             user.SetDefaultProperties(IsChannelCreator, IsChannelOperator);
             AddBindOnUserAndChannel(user);
             UpdatePeerRoomInfo(user);
+            UpdateChannelCache(user);
             return user;
         }
         private void UpdatePeerRoomInfo(ChannelUser user)
@@ -211,7 +215,16 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             roomInfo.NumberOfPlayers = Users.Count;
             QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo);
         }
-
+        private void UpdateChannelCache(ChannelUser user)
+        {
+            if (!user.ClientRef.Info.IsRemoteClient)
+            {
+                if (!Application.StorageOperation.Persistance.UpdateChannel(this))
+                {
+                    throw new Error.IRC.Channel.NoSuchChannelException("Update channel on redis fail.", Name);
+                }
+            }
+        }
         public void VerifyPassword(string pass)
         {
             if (Password != pass)
@@ -224,6 +237,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         {
             RemoveBindOnUserAndChannel(user);
             UpdatePeerRoomInfo(user);
+            UpdateChannelCache(user);
         }
         public ChannelUser GetChannelUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
 

@@ -56,11 +56,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 var isChannelExistOnRedis = Application.StorageOperation.Persistance.IsChannelExist(_request.ChannelName);
                 var isChannelExistOnLocal = ChannelManager.IsChannelExist(_request.ChannelName);
-                // if (isChannelExistOnRedis == true && isChannelExistOnLocal == false)
-                // {
-                //     throw new Error.IRC.Channel.NoSuchChannelException("Channel is not exist on local", _request.ChannelName);
-                // }
-
                 if (isChannelExistOnLocal)
                 {
                     _channel = ChannelManager.GetChannel(_request.ChannelName);
@@ -71,13 +66,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     // create channel
                     _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
                     _user = _channel.GetChannelUser(_client);
-                }
-                if (!_client.Info.IsRemoteClient)
-                {
-                    if (!Application.StorageOperation.Persistance.UpdateChannel(_channel))
-                    {
-                        throw new Error.IRC.Channel.NoSuchChannelException("Update channel on redis fail.", _request.ChannelName);
-                    }
                 }
             }
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
