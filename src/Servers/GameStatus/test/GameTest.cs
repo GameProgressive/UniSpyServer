@@ -10,8 +10,8 @@ namespace UniSpy.Server.GameStatus.Test
         [Fact]
         public void Worm3d20230331()
         {
-            var client1 = (ITestClient)TestClasses.CreateClient(port: 123);
-            var client2 = (ITestClient)TestClasses.CreateClient(port: 124);
+            var client1 = (ITestClient)MockObject.CreateClient(port: 123);
+            var client2 = (ITestClient)MockObject.CreateClient(port: 124);
             // Given
             var requests = new List<KeyValuePair<ITestClient, string>>
             {
@@ -51,12 +51,10 @@ namespace UniSpy.Server.GameStatus.Test
                 @"\updgame\\sesskey\2020\connid\1\done\1\gamedata\hello\lid\1\final\",
                 @"\updgame\\sesskey\0\connid\1\done\1\gamedata\hello\lid\1\final\",
             };
-            // When
             foreach (var req in requests)
             {
-                ((ITestClient)TestClasses.Client).TestReceived(UniSpyEncoding.GetBytes(req));
+                ((ITestClient)MockObject.Client).TestReceived(UniSpyEncoding.GetBytes(req));
             }
-            // Then
         }
     }
 }

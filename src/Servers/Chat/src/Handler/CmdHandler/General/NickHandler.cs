@@ -25,7 +25,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             if(_request.NickName == "*")
             {
                 validNickName = System.Guid.NewGuid().ToString();
-                throw new ChatIRCNickNameInUseException(
+                throw new NickNameInUseException(
                 $"The nick name: {_request.NickName} is already in use",
                 _request.NickName,
                 validNickName);
@@ -45,7 +45,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                         break;
                     }
                 }
-                throw new ChatIRCNickNameInUseException(
+                throw new NickNameInUseException(
                 $"The nick name: {_request.NickName} is already in use",
                 _request.NickName,
                 validNickName);

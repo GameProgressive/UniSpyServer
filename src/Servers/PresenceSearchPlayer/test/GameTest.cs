@@ -10,7 +10,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Test
         public void CheckTest()
         {
             var raw = UniSpyEncoding.GetBytes(@"\check\\nick\spyguy\email\spyguy@gamespy.com\pass\0000\final\");
-            var client = TestClasses.CreateClient();
+            var client = MokeObject.CreateClient();
             var switcher = new CmdSwitcher(client, raw);
             switcher.Handle();
         }

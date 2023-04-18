@@ -173,7 +173,7 @@ namespace UniSpy.LinqToRedis
             return dict;
         }
 
-        public void SetValue(TValue value)
+        public bool SetValue(TValue value)
         {
             if (_isUsingLock)
             {
@@ -182,17 +182,21 @@ namespace UniSpy.LinqToRedis
                 {
                     if (redlock.IsAcquired)
                     {
-                        Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                        return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }
             else
             {
-                Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
             }
 
         }
-        public async Task SetValueAsync(TValue value)
+        public async Task<bool> SetValueAsync(TValue value)
         {
             if (_isUsingLock)
             {
@@ -201,13 +205,17 @@ namespace UniSpy.LinqToRedis
                 {
                     if (redlock.IsAcquired)
                     {
-                        await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                        return await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }
             else
             {
-                await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+                return await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
             }
         }
         public TValue GetValue(IRedisKey key)

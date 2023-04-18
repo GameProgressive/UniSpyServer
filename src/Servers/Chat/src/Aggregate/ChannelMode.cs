@@ -1,4 +1,5 @@
 using System.Text;
+using Newtonsoft.Json;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
@@ -6,18 +7,25 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
     public sealed class ChannelMode
     {
         //i - toggle the invite-only channel flag;
+        [JsonProperty]
         public bool IsInviteOnly { get; private set; } = false;
         //p - toggle the private channel flag;
+        [JsonProperty]
         public bool IsPrivateChannel { get; private set; } = false;
         //s - toggle the secret channel flag;
+        [JsonProperty]
         public bool IsSecretChannel { get; private set; } = false;
         //m - toggle the moderated channel;
+        [JsonProperty]
         public bool IsModeratedChannel { get; private set; } = false;
         //n - toggle the no messages to channel from clients on the outside;
+        [JsonProperty]
         public bool IsAllowExternalMessage { get; private set; } = false;
         //t - toggle the topic settable by channel operator only flag;
+        [JsonProperty]
         public bool IsTopicOnlySetByChannelOperator { get; private set; } = true;
         // e - toggle the operator allow channel limits flag;
+        [JsonProperty]
         public bool IsOperatorAbeyChannelLimits { get; private set; } = true;
         /// <summary>
         /// default constructor

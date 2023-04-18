@@ -170,6 +170,13 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// Received function for unit-test
         /// </summary>
         /// <param name="buffer">Raw byte array</param>
-        void ITestClient.TestReceived(byte[] buffer) => OnReceived(buffer);
+        void ITestClient.TestReceived(byte[] buffer)
+        {
+            if (Crypto is not null)
+            {
+                Crypto = null;
+            }
+            OnReceived(buffer);
+        }
     }
 }

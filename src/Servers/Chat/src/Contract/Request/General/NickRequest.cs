@@ -34,7 +34,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
                 if (NickName.Contains(c))
                 {
                     var validNickName = NickName.Replace(c, '0');
-                    throw new ChatIRCNickNameInUseException(
+                    throw new NickNameInUseException(
                     $"The nick name: {NickName} contains invalid character",
                     NickName,
                     validNickName);

@@ -41,7 +41,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             _receiver = _channel.GetChannelUser(_request.NickName);
             if (_receiver is null)
             {
-                throw new ChatIRCNoSuchNickException(
+                throw new NoSuchNickException(
                     $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");
             }
         }

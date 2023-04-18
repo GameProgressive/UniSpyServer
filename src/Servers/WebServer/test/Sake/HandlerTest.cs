@@ -9,7 +9,7 @@ namespace UniSpy.Server.WebServer.Test.Sake
         [Fact]
         public void CreateRecordTest()
         {
-            var client = TestClasses.CreateClient();
+            var client = MokeObject.CreateClient();
             var request = new CreateRecordRequest(RawRequests.CreateRecord);
             var handler = new CreateRecordHandler(client, request);
             Assert.Throws<System.NotImplementedException>(() => handler.Handle());

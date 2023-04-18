@@ -9,8 +9,8 @@ namespace UniSpy.Server.Test
         [Fact]
         public void Test20221106()
         {
-            var qrClient = QueryReport.V2.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var sbClient = ServerBrowser.V2.Test.TestClasses.CreateClient("79.209.224.29", 51104);
+            var qrClient = QueryReport.V2.Test.MockObject.CreateClient("79.209.224.29", 21701);
+            var sbClient = ServerBrowser.V2.Test.MockObject.CreateClient("79.209.224.29", 51104);
 
             var clients = new Dictionary<string, IClient>(){
                 {"qr",qrClient},
@@ -37,12 +37,12 @@ namespace UniSpy.Server.Test
         [Fact]
         public void Test20221104()
         {
-            var qrClient1 = QueryReport.V2.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var qrClient2 = QueryReport.V2.Test.TestClasses.CreateClient("31.18.120.193", 21701);
-            var sbClient1 = ServerBrowser.V2.Test.TestClasses.CreateClient("79.209.224.29", 45340);
-            var sbClient2 = ServerBrowser.V2.Test.TestClasses.CreateClient("31.18.120.193", 50587);
-            var natClient1 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 123);
-            var natClient2 = NatNegotiation.Test.TestClasses.CreateClient("31.18.120.193", 123);
+            var qrClient1 = QueryReport.V2.Test.MockObject.CreateClient("79.209.224.29", 21701);
+            var qrClient2 = QueryReport.V2.Test.MockObject.CreateClient("31.18.120.193", 21701);
+            var sbClient1 = ServerBrowser.V2.Test.MockObject.CreateClient("79.209.224.29", 45340);
+            var sbClient2 = ServerBrowser.V2.Test.MockObject.CreateClient("31.18.120.193", 50587);
+            var natClient1 = NatNegotiation.Test.MockObject.CreateClient("79.209.224.29", 123);
+            var natClient2 = NatNegotiation.Test.MockObject.CreateClient("31.18.120.193", 123);
 
             var clients = new Dictionary<string, IClient>(){
                 {"qr1",qrClient1},
@@ -81,10 +81,10 @@ namespace UniSpy.Server.Test
                 new KeyValuePair<string, byte[]>("client4",new byte[]{0xFD,0xFC,0x1E,0x66,0x6A,0xB2,0x03,0x00,0x00,0x00,0x2D,0xA5,0x02,0x01,0x01,0xC0,0xA8,0x00,0x32,0x54,0xC5,0x61,0x6E,0x6E,0x6F,0x31,0x37,0x30,0x31,0x00}),
                 new KeyValuePair<string, byte[]>("client4",new byte[]{0xFD,0xFC,0x1E,0x66,0x6A,0xB2,0x03,0x00,0x00,0x00,0x2D,0xA5,0x03,0x01,0x01,0xC0,0xA8,0x00,0x32,0x54,0xC5,0x61,0x6E,0x6E,0x6F,0x31,0x37,0x30,0x31,0x00})
             };
-            var client1 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 21701);
-            var client2 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 51298);
-            var client3 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 1024);
-            var client4 = NatNegotiation.Test.TestClasses.CreateClient("79.209.224.29", 41218);
+            var client1 = NatNegotiation.Test.MockObject.CreateClient("79.209.224.29", 21701);
+            var client2 = NatNegotiation.Test.MockObject.CreateClient("79.209.224.29", 51298);
+            var client3 = NatNegotiation.Test.MockObject.CreateClient("79.209.224.29", 1024);
+            var client4 = NatNegotiation.Test.MockObject.CreateClient("79.209.224.29", 41218);
 
 
             var clients = new Dictionary<string, IClient>()

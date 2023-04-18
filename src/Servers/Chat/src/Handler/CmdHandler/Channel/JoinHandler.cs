@@ -42,25 +42,44 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             //but GameSpy Arcade can join more than one channel
             if (_client.Info.JoinedChannels.Count > 3)
             {
-                throw new ChatIRCTooManyChannels($"{_client.Info.NickName} is join too many channels");
+                throw new TooManyChannels($"{_client.Info.NickName} is join too many channels");
+            }
+            if (_client.Info.GameName == null)
+            {
+                throw new Error.IRC.Channel.NoSuchChannelException("Game name is required for join a channel", _request.ChannelName);
             }
         }
 
         protected override void DataOperation()
         {
-            bool isChannelExist = ChannelManager.IsChannelExist(_request.ChannelName);
-            if (isChannelExist)
+            lock (ChannelManager.Channels)
             {
-                _channel = ChannelManager.GetChannel(_request.ChannelName);
-                _channel.AddUser(_client, _request.Password ?? null);
+                var isChannelExistOnRedis = Application.StorageOperation.Persistance.IsChannelExist(_request.ChannelName);
+                var isChannelExistOnLocal = ChannelManager.IsChannelExist(_request.ChannelName);
+                // if (isChannelExistOnRedis == true && isChannelExistOnLocal == false)
+                // {
+                //     throw new Error.IRC.Channel.NoSuchChannelException("Channel is not exist on local", _request.ChannelName);
+                // }
+
+                if (isChannelExistOnLocal)
+                {
+                    _channel = ChannelManager.GetChannel(_request.ChannelName);
+                    _user = _channel.AddUser(_client, _request.Password ?? null);
+                }
+                else
+                {
+                    // create channel
+                    _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
+                    _user = _channel.GetChannelUser(_client);
+                }
+                if (!_client.Info.IsRemoteClient)
+                {
+                    if (!Application.StorageOperation.Persistance.UpdateChannel(_channel))
+                    {
+                        throw new Error.IRC.Channel.NoSuchChannelException("Update channel on redis fail.", _request.ChannelName);
+                    }
+                }
             }
-            else
-            {
-                // create channel
-                _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
-            }
-            
-            _user = _channel.GetChannelUser(_client);
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();

@@ -17,7 +17,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
             };
             foreach (var raw in rawRequests)
             {
-                ((ITestClient)TestClasses.client).TestReceived(UniSpyEncoding.GetBytes(raw));
+                ((ITestClient)MokeObject.client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
         [Fact]
@@ -31,7 +31,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
             };
             foreach (var raw in rawRequests)
             {
-                ((ITestClient)TestClasses.client).TestReceived(UniSpyEncoding.GetBytes(raw));
+                ((ITestClient)MokeObject.client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
     }

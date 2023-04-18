@@ -8,7 +8,7 @@ namespace UniSpy.Server.QueryReport.V2.Test
         IClient _client;
         public GameTest()
         {
-            _client = TestClasses.Client;
+            _client = MockObject.Client;
         }
         [Fact]
         public void FaltOut2()

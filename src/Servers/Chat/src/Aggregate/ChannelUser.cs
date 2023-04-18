@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
@@ -12,7 +13,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// <summary>
         /// Indicate whether this client is shared from redis channel
         /// </summary>
-        [JsonIgnore]
+        [JsonProperty]
         public bool IsRemoteUser => Info.IsRemoteClient;
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
@@ -21,7 +22,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// The remote ip end point of this user
         /// </summary>
         /// <value></value>
-        [JsonIgnore]
+        [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint => ClientRef.Connection.RemoteIPEndPoint;
         [JsonIgnore]
         public IChatClient ClientRef { get; private set; }
@@ -35,6 +36,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
         [JsonIgnore]
         public Channel BelongedChannel { get; private set; }
+        [JsonIgnore]
         public string Modes
         {
             get

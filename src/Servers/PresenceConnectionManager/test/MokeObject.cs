@@ -5,13 +5,13 @@ using UniSpy.Server.PresenceConnectionManager.Application;
 
 namespace UniSpy.Server.PresenceConnectionManager.Test
 {
-    public class TestClasses
+    public class MokeObject
     {
         /// <summary>
         /// PCM test client, create one here, use anywhere
         /// </summary>
         public static IClient client;
-        static TestClasses()
+        static MokeObject()
         {
             client = CreateClient();
         }

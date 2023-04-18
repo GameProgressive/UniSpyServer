@@ -7,6 +7,7 @@ namespace UniSpy.Server.Core.Extension.Redis
         GameServerV2 = 2,
         NatAddressInfo = 3,
         NatFailInfo = 4,
-        GameTrafficRelay = 5
+        GameTrafficRelay = 5,
+        ChatChannel = 6
     }
 }

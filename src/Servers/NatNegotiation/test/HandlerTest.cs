@@ -11,7 +11,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         Client _client;
         public HandlerTest()
         {
-            _client = TestClasses.CreateClient();
+            _client = MockObject.CreateClient();
         }
         [Fact]
         public void InitTest()

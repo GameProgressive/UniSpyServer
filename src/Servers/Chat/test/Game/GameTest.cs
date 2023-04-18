@@ -19,12 +19,13 @@ namespace UniSpy.Server.Chat.Test
         public void Civilization4()
         {
             var rawRequests = new List<string>(){
-                "CRYPT des 1 anno1701",
+                // "CRYPT des 1 anno1701",
                 "USRIP",
                 "USER X419pGl4sX|18 127.0.0.1 peerchat.gamespy.com :aa3041ada9385b28fc4d4e47db288769",
                 "NICK a1701-5",
                 "CDKEY 81123-67814-77652-27631-11723-47707-22638-10701",
-                "JOIN #GSP!anno1701 ","MODE #GSP!anno1701",
+                "JOIN #GSP!anno1701 ",
+                "MODE #GSP!anno1701",
                 @"GETCKEY #GSP!anno1701 * 008 0 :\b_flags","WHO a1701-5",
                 "JOIN #GSP!anno1701!M9zK0KJaKM ",
                 "MODE #GSP!anno1701!M9zK0KJaKM",
@@ -37,6 +38,7 @@ namespace UniSpy.Server.Chat.Test
                 "PART #GSP!anno1701 :"
             };
             var client = (Client)MockObject.CreateClient();
+            
             foreach (var raw in rawRequests)
             {
                 new CmdSwitcher(client, UniSpyEncoding.GetBytes(raw)).Handle();
@@ -61,14 +63,14 @@ namespace UniSpy.Server.Chat.Test
 
             // Then
         }
-        [Fact(Skip = "Error in full test")]
+        [Fact]
         public void Worms3dTest()
         {
             var client1 = MockObject.CreateClient("107.244.81.1", 8888);
             var client2 = MockObject.CreateClient("91.34.72.1", 8889);
             var request1 = new List<string>()
             {
-                // "CRYPT des 1 worms3\r\n",
+                "CRYPT des 1 worms3\r\n",
                 "USRIP\r\n",
                 "USER X419pGl4sX|6 127.0.0.1 peerchat.gamespy.com :aa3041ada9385b28fc4d4e47db288769\r\n",
                 "NICK worms10\r\n",
@@ -97,7 +99,7 @@ namespace UniSpy.Server.Chat.Test
             };
             var request2 = new List<string>()
             {
-                // "CRYPT des 1 worms3",
+                "CRYPT des 1 worms3\r\n",
                 "USRIP\r\n",
                 "USER X419pGl4sX|7 127.0.0.1 peerchat.gamespy.com :5bb4f409fae8bc5aa1595cb6d5168a1c\r\n",
                 "NICK worms20\r\n",
@@ -120,9 +122,10 @@ namespace UniSpy.Server.Chat.Test
             {
                 ((ITestClient)client1).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
+            ;
             foreach (var raw in request2)
             {
-                ((ITestClient)client1).TestReceived(UniSpyEncoding.GetBytes(raw));
+                ((ITestClient)client2).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
         }
         [Fact(Skip = "Error in full test")]

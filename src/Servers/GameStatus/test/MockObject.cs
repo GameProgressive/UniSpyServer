@@ -5,7 +5,7 @@ using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Test
 {
-    public static class TestClasses
+    public static class MockObject
     {
         public static IClient Client = CreateClient();
         public static Client CreateClient(string ipAddress = "192.168.1.1", int port = 9999)

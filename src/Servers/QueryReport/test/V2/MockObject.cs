@@ -5,7 +5,7 @@ using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V2.Test
 {
-    public class TestClasses
+    public class MockObject
     {
         public static IClient Client = CreateClient();
 

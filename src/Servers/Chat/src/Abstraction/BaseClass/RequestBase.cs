@@ -12,7 +12,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         /// False means there are errors
         /// </summary>
         [JsonProperty]
-        public new string RawRequest => (string)base.RawRequest;
+        public new string RawRequest { get => (string)base.RawRequest; set => base.RawRequest = value; }
         [JsonProperty]
         public new string CommandName { get => (string)base.CommandName; protected set => base.CommandName = value; }
         [JsonProperty]
@@ -33,6 +33,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             // at most 2 colon character
             // we do not sure about all command
             // so i block this code here
+            RawRequest = RawRequest.Replace("\r", "").Replace("\n", "");
             List<string> dataFrag = new List<string>();
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)

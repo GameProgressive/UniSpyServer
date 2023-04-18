@@ -12,6 +12,7 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Test.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 using System.Collections.Generic;
+using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 
 namespace UniSpy.Server.Chat.Test
 {
@@ -142,6 +143,18 @@ namespace UniSpy.Server.Chat.Test
                 client2.TestReceived(UniSpyEncoding.GetBytes(r));
                 count = ClientManager.ClientPool.Count;
             }
+        }
+        [Fact]
+        public void ChannelInfoTest()
+        {
+            var client = MockObject.CreateClient() as Client;
+            client.Info.IsLoggedIn = true;
+            client.Info.NickName = "xiaojiuwo";
+            client.Info.GameName = "gmtest";
+            var channel = ChannelManager.CreateChannel("xiaojiuwo", creator: client);
+            var user = channel.GetChannelUser(client);
+            var channelStr = JsonConvert.SerializeObject(channel);
+            var channelObj = JsonConvert.DeserializeObject<Aggregate.Misc.ChannelInfo.Channel>(channelStr);
         }
     }
 }

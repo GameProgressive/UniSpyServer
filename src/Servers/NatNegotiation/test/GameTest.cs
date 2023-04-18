@@ -15,9 +15,9 @@ namespace UniSpy.Server.NatNegotiation.Test
             new RedisClient().Db.Execute("FLUSHALL");
             var clients = new Dictionary<string, IClient>()
             {
-                {"client1gp",TestClasses.CreateClient("192.168.0.109",1111)},
-                {"client1nn",TestClasses.CreateClient("192.168.0.109",64900)},
-                {"client2nn",TestClasses.CreateClient("192.168.0.109",4901)},
+                {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
+                {"client1nn",MockObject.CreateClient("192.168.0.109",64900)},
+                {"client2nn",MockObject.CreateClient("192.168.0.109",4901)},
             };
             // Given
             var gameClientInit = new List<KeyValuePair<string, byte[]>>()
@@ -53,7 +53,7 @@ namespace UniSpy.Server.NatNegotiation.Test
             var req1 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x06, 0x00, 0x00, 0x35, 0x7A, 0xD4, 0x00, 0xA7, 0x08, 0xC0, 0xFC, 0xA7, 0x08, 0x00 };
             var req2 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x06, 0x00, 0x00, 0x35, 0x7A, 0x99, 0x01, 0x78, 0x6D, 0xF0, 0x53, 0xE8, 0x13, 0x5D };
             // When
-            var client = (ITestClient)TestClasses.CreateClient("192.168.0.109", 64900);
+            var client = (ITestClient)MockObject.CreateClient("192.168.0.109", 64900);
             client.TestReceived(req1);
             client.TestReceived(req2);
             // Then
@@ -67,9 +67,9 @@ namespace UniSpy.Server.NatNegotiation.Test
             new RedisClient().Db.Execute("FLUSHALL");
             var clients = new Dictionary<string, IClient>()
             {
-                {"client1gp",TestClasses.CreateClient("192.168.0.109",1111)},
-                {"client1nn",TestClasses.CreateClient("192.168.0.109",64900)},
-                {"client2nn",TestClasses.CreateClient("192.168.0.109",4901)},
+                {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
+                {"client1nn",MockObject.CreateClient("192.168.0.109",64900)},
+                {"client2nn",MockObject.CreateClient("192.168.0.109",4901)},
             };
             var gameServerInit = new List<KeyValuePair<string, byte[]>>()
             {
@@ -115,9 +115,9 @@ namespace UniSpy.Server.NatNegotiation.Test
             new RedisClient().Db.Execute("FLUSHALL");
             var clients1 = new Dictionary<string, IClient>()
             {
-                {"client1gp",TestClasses.CreateClient("192.168.0.109",1111)},
-                {"client1nn",TestClasses.CreateClient("192.168.0.109",64900)},
-                {"client2nn",TestClasses.CreateClient("192.168.0.109",4901)},
+                {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
+                {"client1nn",MockObject.CreateClient("192.168.0.109",64900)},
+                {"client2nn",MockObject.CreateClient("192.168.0.109",4901)},
             };
             var gameServerInit = new List<KeyValuePair<string, byte[]>>()
             {
@@ -156,9 +156,9 @@ namespace UniSpy.Server.NatNegotiation.Test
 
             var clients2 = new Dictionary<string, IClient>()
             {
-                {"client1gp",TestClasses.CreateClient("192.168.0.109",1111)},
-                {"client1nn",TestClasses.CreateClient("192.168.0.109",64902)},
-                {"client2nn",TestClasses.CreateClient("192.168.0.109",4902)},
+                {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
+                {"client1nn",MockObject.CreateClient("192.168.0.109",64902)},
+                {"client2nn",MockObject.CreateClient("192.168.0.109",4902)},
             };
             // new negotiation
             var gameServerInit2 = new List<KeyValuePair<string, byte[]>>()
@@ -203,8 +203,8 @@ namespace UniSpy.Server.NatNegotiation.Test
             // clean all stuff in database
             new RedisClient().Db.Execute("FLUSHALL");
 
-            var client = TestClasses.CreateClient("192.168.1.2", 9999);
-            var server = TestClasses.CreateClient("192.168.1.3", 9999);
+            var client = MockObject.CreateClient("192.168.1.2", 9999);
+            var server = MockObject.CreateClient("192.168.1.3", 9999);
             var clientInitGP = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x00, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN1 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x01, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN2 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x02, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0xBB, 0x37, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
@@ -237,8 +237,8 @@ namespace UniSpy.Server.NatNegotiation.Test
             // clean all stuff in database
             new RedisClient().Db.Execute("FLUSHALL");
 
-            var client = TestClasses.CreateClient("192.168.1.2", 53935);
-            var server = TestClasses.CreateClient("192.168.1.3", 53935);
+            var client = MockObject.CreateClient("192.168.1.2", 53935);
+            var server = MockObject.CreateClient("192.168.1.3", 53935);
 
             var clientInitGP = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x00, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
             var clientInitNN1 = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2, 0x03, 0x00, 0x00, 0x00, 0x02, 0x9A, 0x01, 0x00, 0x01, 0x7F, 0x00, 0x01, 0x01, 0x00, 0x00, 0x67, 0x6D, 0x74, 0x65, 0x73, 0x74, 0x00 };
@@ -267,21 +267,21 @@ namespace UniSpy.Server.NatNegotiation.Test
         [Fact]
         public void Anno1701()
         {
-            var client1GP = TestClasses.CreateClient("31.18.120.193", 21701);
-            var client1NN1 = TestClasses.CreateClient("31.18.120.193", 51463);
-            var client1NN2 = TestClasses.CreateClient("31.18.120.193", 51463);
-            var client1NN3 = TestClasses.CreateClient("31.18.120.193", 51463);
+            var client1GP = MockObject.CreateClient("31.18.120.193", 21701);
+            var client1NN1 = MockObject.CreateClient("31.18.120.193", 51463);
+            var client1NN2 = MockObject.CreateClient("31.18.120.193", 51463);
+            var client1NN3 = MockObject.CreateClient("31.18.120.193", 51463);
 
-            var client2GP = TestClasses.CreateClient("79.209.224.29", 21701);
-            var client2NN1 = TestClasses.CreateClient("79.209.224.29", 51463);
-            var client2NN2 = TestClasses.CreateClient("79.209.224.29", 51463);
-            var client2NN3 = TestClasses.CreateClient("79.209.224.29", 51463);
+            var client2GP = MockObject.CreateClient("79.209.224.29", 21701);
+            var client2NN1 = MockObject.CreateClient("79.209.224.29", 51463);
+            var client2NN2 = MockObject.CreateClient("79.209.224.29", 51463);
+            var client2NN3 = MockObject.CreateClient("79.209.224.29", 51463);
 
 
-            var client3GP = TestClasses.CreateClient("79.209.224.29", 1024);
-            var client3NN1 = TestClasses.CreateClient("79.209.224.29", 55111);
-            var client3NN2 = TestClasses.CreateClient("79.209.224.29", 55111);
-            var client3NN3 = TestClasses.CreateClient("79.209.224.29", 55111);
+            var client3GP = MockObject.CreateClient("79.209.224.29", 1024);
+            var client3NN1 = MockObject.CreateClient("79.209.224.29", 55111);
+            var client3NN2 = MockObject.CreateClient("79.209.224.29", 55111);
+            var client3NN3 = MockObject.CreateClient("79.209.224.29", 55111);
 
             var clients = new Dictionary<string, IClient>()
             {

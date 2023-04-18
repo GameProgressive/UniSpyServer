@@ -5,7 +5,7 @@ using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Test
 {
-    public static class TestClasses
+    public static class MokeObject
     {
         public static IClient Client = CreateClient();
 

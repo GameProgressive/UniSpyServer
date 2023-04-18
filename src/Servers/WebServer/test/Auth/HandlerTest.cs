@@ -9,7 +9,7 @@ namespace UniSpy.Server.WebServer.Test
 {
     public class HandlerTest
     {
-        private IClient _client = TestClasses.CreateClient();
+        private IClient _client = MokeObject.CreateClient();
 
         [Fact]
         public void SwitcherTest()

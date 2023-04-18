@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Error.IRC.Channel;
@@ -11,39 +12,56 @@ using UniSpy.Server.Core.Logging;
 namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
 {
 
-    public sealed class Channel
+    public sealed record Channel : LinqToRedis.RedisKeyValueObject
     {
+        [JsonProperty]
         public string GameName { get; private set; }
         /// <summary>
         /// Channel name
         /// </summary>
         /// <value></value>
+        [LinqToRedis.RedisKey]
+        [JsonProperty]
         public string Name { get; private set; }
         /// <summary>
         /// The maximum number of users that can be in the channel
         /// </summary>
         /// <value></value>
+        [JsonProperty]
         public int MaxNumberUser { get; private set; } = 200;
+        [JsonProperty]
         public ChannelMode Mode { get; private set; } = new ChannelMode();
+        [JsonProperty]
         public DateTime CreateTime { get; private set; } = DateTime.Now;
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
-        public IDictionary<string, ChannelUser> BanList { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        [JsonProperty]
+        public ConcurrentDictionary<string, ChannelUser> BanList { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
+        [JsonProperty]
         public ConcurrentDictionary<string, ChannelUser> Users { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
         /// <summary>
         /// Channel key values
         /// </summary>
+        [JsonProperty]
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
+        [JsonProperty]
         public ChannelUser Creator { get; private set; }
+        [JsonProperty]
         public PeerRoomType RoomType { get; private set; }
+        [JsonProperty]
         public string Password { get; private set; }
         public string Topic { get; set; }
+        [JsonIgnore]
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
-        public Channel(string name, IChatClient client, string password = null)
+        /// <summary>
+        /// Constructor for json deserialization
+        /// </summary>
+        public Channel() : base(expireTime: TimeSpan.FromHours(1)) { }
+        public Channel(string name, IChatClient client, string password = null) : base(expireTime: TimeSpan.FromHours(1))
         {
             Name = name;
             Password = password;
@@ -141,7 +159,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             }
             if (IsUserBanned(client))
             {
-                throw new IRCBannedFromChanException($"You are banned from this channel:{Name}.", Name);
+                throw new BannedFromChanException($"You are banned from this channel:{Name}.", Name);
             }
             if (IsUserExisted(client))
             {
@@ -281,7 +299,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
             if (result.Count() == 1)
             {
                 var keyValue = result.First();
-                BanList.Remove(keyValue);
+                BanList.TryRemove(keyValue);
                 return;
             }
             if (result.Count() > 1)
