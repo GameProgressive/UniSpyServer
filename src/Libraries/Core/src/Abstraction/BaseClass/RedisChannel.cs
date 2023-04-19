@@ -20,6 +20,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         {
             _redisChannelName = redisChannelName;
             OnReceived += ReceivedMessage;
+            
         }
 
         /// <summary>
@@ -53,31 +54,11 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                 return;
             }
             string jsonStr = SerializeMessage(message);
-            try
-            {
-                _subscriber.Publish(_redisChannelName, jsonStr);
-            }
-            catch (StackExchange.Redis.RedisTimeoutException ex)
-            {
-                if (!System.Diagnostics.Debugger.IsAttached)
-                {
-                    throw ex;
-                }
-                else
-                {
-                    LogWriter.LogWarn("Redis channel timeout because of break point.");
-                }
-            }
+            _subscriber.Publish(_redisChannelName, jsonStr);
         }
 
-        protected virtual string SerializeMessage(T message)
-        {
-            return JsonConvert.SerializeObject(message);
-        }
+        protected virtual string SerializeMessage(T message) => JsonConvert.SerializeObject(message);
 
-        protected virtual T DeserializeMessage(string message)
-        {
-            return JsonConvert.DeserializeObject<T>(message);
-        }
+        protected virtual T DeserializeMessage(string message) => JsonConvert.DeserializeObject<T>(message);
     }
 }

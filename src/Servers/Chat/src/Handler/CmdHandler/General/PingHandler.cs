@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
@@ -11,7 +12,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new PingRequest _request => (PingRequest)base._request;
         private new PingResult _result { get => (PingResult)base._result; set => base._result = value; }
-        public PingHandler(IClient client, IRequest request) : base(client, request){ }
+        public PingHandler(IChatClient client, PingRequest request) : base(client, request){ }
         protected override void DataOperation()
         {
             _result = new PingResult();

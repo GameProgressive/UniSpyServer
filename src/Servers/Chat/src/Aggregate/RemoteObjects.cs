@@ -6,6 +6,7 @@ using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Misc;
@@ -79,7 +80,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public void TestReceived(byte[] buffer)
         {
             this.LogNetworkReceiving(buffer);
-            var switcher = new CmdSwitcher(this, buffer);
+            var switcher = new CmdSwitcher(this, UniSpyEncoding.GetString(buffer));
             switcher.Handle();
         }
     }

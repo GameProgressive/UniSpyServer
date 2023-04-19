@@ -16,9 +16,8 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
     public sealed class OthersHandler : CmdHandlerBase
     {
         private new OthersRequest _request => (OthersRequest)base._request;
-
         private new OthersResult _result { get => (OthersResult)base._result; set => base._result = value; }
-        public OthersHandler(IClient client, IRequest request) : base(client, request)
+        public OthersHandler(Client client, OthersRequest request) : base(client, request)
         {
             _result = new OthersResult();
         }

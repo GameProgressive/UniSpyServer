@@ -7,6 +7,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -16,33 +17,27 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         private new CryptRequest _request => (CryptRequest)base._request;
         private new CryptResult _result { get => (CryptResult)base._result; set => base._result = value; }
         // CRYPT des 1 gamename
-        public CryptHandler(IClient client, IRequest request) : base(client, request)
+        public CryptHandler(IChatClient client, CryptRequest request) : base(client, request)
         {
             _result = new CryptResult();
-        }
-        public override void Handle()
-        {
-            if (_client.Info.IsRemoteClient)
-            {
-                _client.LogDebug("Ignore remote client Crypt request");
-                return;
-            }
-            base.Handle();
         }
         protected override void DataOperation()
         {
             // we do not use crypto for remote client
-            var client = (Client)_client;
-            string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
-            if (secretKey is null)
+            if (!_client.Info.IsRemoteClient)
             {
-                client.Connection.Disconnect();
-                throw new Chat.Exception("secret key not found.");
+                string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
+                if (secretKey is null)
+                {
+                    (_client as Client)?.Connection.Disconnect();
+                    throw new Chat.Exception("secret key not found.");
+                }
+                _client.Info.GameSecretKey = secretKey;
+                // 2. Prepare two keys
+                (_client as Client).Crypto = new ChatCrypt(_client.Info.GameSecretKey);
             }
-            client.Info.GameSecretKey = secretKey;
-            client.Info.GameName = _request.GameName;
-            // 2. Prepare two keys
-            client.Crypto = new ChatCrypt(_client.Info.GameSecretKey);
+            _client.Info.GameName = _request.GameName;
+
         }
         protected override void ResponseConstruct()
         {

@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Aggregate;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Chat.Application

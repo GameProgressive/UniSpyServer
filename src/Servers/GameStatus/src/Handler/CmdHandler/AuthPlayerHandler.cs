@@ -1,10 +1,8 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Enumerate;
-
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Contract.Response;
 using UniSpy.Server.GameStatus.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
@@ -18,7 +16,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         private new AuthPlayerResult _result { get => (AuthPlayerResult)base._result; set => base._result = value; }
-        public AuthPlayerHandler(IClient client, IRequest request) : base(client, request)
+        public AuthPlayerHandler(Client client, AuthPlayerRequest request) : base(client, request)
         {
             _result = new AuthPlayerResult();
         }

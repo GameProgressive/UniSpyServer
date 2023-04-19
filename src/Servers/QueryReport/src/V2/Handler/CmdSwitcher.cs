@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
 using UniSpy.Server.QueryReport.V2.Enumerate;
 using UniSpy.Server.QueryReport.V2.Handler.CmdHandler;
 
@@ -9,7 +10,8 @@ namespace UniSpy.Server.QueryReport.V2.Handler
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

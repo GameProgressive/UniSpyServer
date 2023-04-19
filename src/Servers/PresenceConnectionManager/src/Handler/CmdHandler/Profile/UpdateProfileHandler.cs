@@ -8,7 +8,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
     public sealed class UpdateProfileHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new UpdateProfileRequest _request => (UpdateProfileRequest)base._request;
-        public UpdateProfileHandler(IClient client, IRequest request) : base(client, request)
+        public UpdateProfileHandler(Client client, UpdateProfileRequest request) : base(client, request)
         {
         }
 

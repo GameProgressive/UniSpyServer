@@ -15,7 +15,7 @@ namespace UniSpy.Server.NatNegotiation.Application
             Info = new ClientInfo();
             IsLogRaw = true;
         }
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, (byte[])buffer);
         protected override void EventBinding()
         {
             ((IUdpConnection)Connection).OnReceive += OnReceived;

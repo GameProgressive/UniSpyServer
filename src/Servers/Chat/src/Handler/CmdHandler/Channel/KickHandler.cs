@@ -1,5 +1,6 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -14,7 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new KickResponse _response { get => (KickResponse)base._response; set => base._response = value; }
         private new KickResult _result { get => (KickResult)base._result; set => base._result = value; }
         private ChannelUser _kickee;
-        public KickHandler(IClient client, IRequest request) : base(client, request)
+        public KickHandler(IChatClient client, KickRequest request) : base(client, request)
         {
             _result = new KickResult();
         }

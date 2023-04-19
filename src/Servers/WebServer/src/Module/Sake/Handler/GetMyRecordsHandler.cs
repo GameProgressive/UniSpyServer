@@ -3,6 +3,7 @@ using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
@@ -11,7 +12,7 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
     {
         private new GetMyRecordsRequest _request => (GetMyRecordsRequest)base._request;
         private new GetMyRecordsResult _result { get => (GetMyRecordsResult)base._result; set => base._result = value; }
-        public GetMyRecordsHandler(IClient client, IRequest request) : base(client, request)
+        public GetMyRecordsHandler(Client client, GetMyRecordsRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

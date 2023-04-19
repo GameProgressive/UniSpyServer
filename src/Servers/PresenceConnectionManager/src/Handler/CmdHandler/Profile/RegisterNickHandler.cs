@@ -11,7 +11,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
     public sealed class RegisterNickHandler : LoggedInCmdHandlerBase
     {
         private new RegisterNickRequest _request => (RegisterNickRequest)base._request;
-        public RegisterNickHandler(IClient client, IRequest request) : base(client, request)
+        public RegisterNickHandler(Client client, RegisterNickRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

@@ -16,7 +16,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
 
         private new OthersListResult _result { get => (OthersListResult)base._result; set => base._result = value; }
 
-        public OthersListHandler(IClient client, IRequest request) : base(client, request)
+        public OthersListHandler(Client client, OthersListRequest request) : base(client, request)
         {
             _result = new OthersListResult();
         }

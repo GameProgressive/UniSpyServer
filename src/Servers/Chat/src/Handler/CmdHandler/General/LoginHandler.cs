@@ -4,6 +4,7 @@ using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -13,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         private new LoginRequest _request => (LoginRequest)base._request;
         private new LoginResult _result { get => (LoginResult)base._result; set => base._result = value; }
-        public LoginHandler(IClient client, IRequest request) : base(client, request)
+        public LoginHandler(IChatClient client, LoginRequest request) : base(client, request)
         {
             _result = new LoginResult();
         }

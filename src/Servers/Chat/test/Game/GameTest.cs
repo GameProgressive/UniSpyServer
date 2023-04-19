@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -41,7 +41,7 @@ namespace UniSpy.Server.Chat.Test
             
             foreach (var raw in rawRequests)
             {
-                new CmdSwitcher(client, UniSpyEncoding.GetBytes(raw)).Handle();
+                new CmdSwitcher(client, raw).Handle();
             }
         }
         [Fact]

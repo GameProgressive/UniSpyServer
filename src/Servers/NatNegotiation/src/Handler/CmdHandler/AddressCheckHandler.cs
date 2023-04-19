@@ -6,6 +6,7 @@ using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
 using UniSpy.Server.NatNegotiation.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Application;
 
 namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
 {
@@ -13,7 +14,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
     {
         private new AddressCheckRequest _request => (AddressCheckRequest)base._request;
         private new AddressCheckResult _result { get => (AddressCheckResult)base._result; set => base._result = value; }
-        public AddressCheckHandler(IClient client, IRequest request) : base(client, request)
+        public AddressCheckHandler(Client client, AddressCheckRequest request) : base(client, request)
         {
             _result = new AddressCheckResult();
         }

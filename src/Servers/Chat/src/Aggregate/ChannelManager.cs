@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using UniSpy.Server.Chat.Abstraction.Interface;
 
-namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
+namespace UniSpy.Server.Chat.Aggregate
 {
     public static class ChannelManager
     {

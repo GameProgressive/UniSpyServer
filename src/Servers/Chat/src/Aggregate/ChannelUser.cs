@@ -7,7 +7,7 @@ using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Misc;
 
-namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
+namespace UniSpy.Server.Chat.Aggregate
 {
     public sealed class ChannelUser
     {
@@ -37,6 +37,9 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         /// The user key values storage
         /// </summary>
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
+        /// <summary>
+        /// The channel where user current in.
+        /// </summary>
         [JsonIgnore]
         public Channel Channel { get; private set; }
         [JsonIgnore]

@@ -13,7 +13,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
     public sealed class NewGameHandler : CmdHandlerBase
     {
         private new NewGameRequest _request => (NewGameRequest)base._request;
-        public NewGameHandler(IClient client, IRequest request) : base(client, request)
+        public NewGameHandler(Client client, NewGameRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

@@ -15,8 +15,9 @@ namespace UniSpy.Server.Chat.Test
             connectionMock.Setup(s => s.Manager).Returns(managerMock.Object);
             connectionMock.Setup(s => s.ConnectionType).Returns(NetworkConnectionType.Tcp);
             var serverMock = new Chat.Application.Server(managerMock.Object);
-
-            return new Client(connectionMock.Object, serverMock);
+            var client = new Client(connectionMock.Object, serverMock);
+            client.Info.GameName = "gmtest";
+            return client;
         }
     }
 }

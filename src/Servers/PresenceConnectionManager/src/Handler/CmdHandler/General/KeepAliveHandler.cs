@@ -1,5 +1,7 @@
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpy.Server.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Contract.Response;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
@@ -7,7 +9,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
 
     public sealed class KeepAliveHandler : CmdHandlerBase
     {
-        public KeepAliveHandler(IClient client, IRequest request) : base(client, request)
+        public KeepAliveHandler(Client client, KeepAliveRequest request) : base(client, request)
         {
         }
 

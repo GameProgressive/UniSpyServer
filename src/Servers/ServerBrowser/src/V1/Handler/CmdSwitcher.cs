@@ -11,10 +11,9 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
+        private new string _rawRequest => (string)base._rawRequest;
         private new Client _client => (Client)base._client;
-        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(Client client, string rawRequest) : base(client, rawRequest)
         {
         }
 

@@ -1,5 +1,6 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
@@ -12,7 +13,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new QuitRequest _request => (QuitRequest)base._request;
         // when a user disconnected with server we can call this function
-        public QuitHandler(IClient client, IRequest request) : base(client, request) { }
+        public QuitHandler(IChatClient client, QuitRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
@@ -26,7 +27,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         {
             foreach (var channel in _client.Info.JoinedChannels.Values)
             {
-                ChannelUser user = channel.GetChannelUser(_client);
+                ChannelUser user = channel.GetUser(_client);
                 if (user is null)
                 {
                     continue;

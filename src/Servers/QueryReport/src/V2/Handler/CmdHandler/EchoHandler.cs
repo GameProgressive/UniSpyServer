@@ -4,8 +4,8 @@ using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
@@ -14,7 +14,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
     {
         private new EchoRequest _request => (EchoRequest)base._request;
         private new EchoResult _result { get => (EchoResult)base._result; set => base._result = value; }
-        public EchoHandler(IClient client, IRequest request) : base(client, request)
+        public EchoHandler(Client client, EchoRequest request) : base(client, request)
         {
             _result = new EchoResult();
         }

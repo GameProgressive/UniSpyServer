@@ -16,7 +16,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
             IsLogRaw = true;
         }
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, (byte[])buffer);
 
         protected override void OnReceived(object buffer)
         {

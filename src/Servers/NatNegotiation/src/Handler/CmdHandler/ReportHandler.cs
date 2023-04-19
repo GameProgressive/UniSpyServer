@@ -31,7 +31,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         {
             // NatFailRecordInfos = new Dictionary<string, NatPunchStrategy>();
         }
-        public ReportHandler(IClient client, IRequest request) : base(client, request)
+        public ReportHandler(Client client, ReportRequest request) : base(client, request)
         {
             _result = new ReportResult();
         }

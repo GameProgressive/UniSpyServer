@@ -1,10 +1,11 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -19,7 +20,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private new SetCKeyResult _result { get => (SetCKeyResult)base._result; set => base._result = value; }
         private ChannelUser _otherUser;
-        public SetCKeyHandler(IClient client, IRequest request) : base(client, request)
+        public SetCKeyHandler(IChatClient client, SetCKeyRequest request) : base(client, request)
         {
             _result = new SetCKeyResult();
         }

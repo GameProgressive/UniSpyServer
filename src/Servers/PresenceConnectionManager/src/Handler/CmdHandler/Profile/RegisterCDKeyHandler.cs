@@ -9,7 +9,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
     public sealed class RegisterCDKeyHandler : LoggedInCmdHandlerBase
     {
         private new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;
-        public RegisterCDKeyHandler(IClient client, IRequest request) : base(client, request)
+        public RegisterCDKeyHandler(Client client, RegisterCDKeyRequest request) : base(client, request)
         {
         }
 

@@ -7,6 +7,7 @@ using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Response;
 using UniSpy.Server.QueryReport.V2.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
@@ -16,7 +17,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private new HeartBeatResult _result { get => (HeartBeatResult)base._result; set => base._result = value; }
         private GameServerInfo _gameServerInfo;
-        public HeartBeatHandler(IClient client, IRequest request) : base(client, request)
+        public HeartBeatHandler(Client client, HeartBeatRequest request) : base(client, request)
         {
             _result = new HeartBeatResult();
         }

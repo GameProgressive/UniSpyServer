@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Contract.Response.Message;
 using UniSpy.Server.Chat.Contract.Result.Message;
@@ -13,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
     {
         new AtmRequest _request => (AtmRequest)base._request;
         new AtmResult _result{ get => (AtmResult)base._result; set => base._result = value; }
-        public AtmHandler(IClient client, IRequest request) : base(client, request)
+        public AtmHandler(IChatClient client, AtmRequest request) : base(client, request)
         {
             _result = new AtmResult();
         }

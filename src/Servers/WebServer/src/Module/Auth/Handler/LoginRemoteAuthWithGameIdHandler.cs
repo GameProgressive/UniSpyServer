@@ -3,6 +3,7 @@ using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
@@ -10,7 +11,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
     public sealed class LoginRemoteAuthWithGameIdHandler : LoginRemoteAuthHandler
     {
         private new LoginRemoteAuthWithGameIdRequest _request => (LoginRemoteAuthWithGameIdRequest)base._request;
-        public LoginRemoteAuthWithGameIdHandler(IClient client, IRequest request) : base(client, request)
+        public LoginRemoteAuthWithGameIdHandler(Client client, LoginRemoteAuthWithGameIdRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

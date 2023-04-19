@@ -12,7 +12,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
     {
         //_connection.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
         private new InviteToRequest _request => (InviteToRequest)base._request;
-        public InviteToHandler(IClient client, IRequest request) : base(client, request)
+        public InviteToHandler(Client client, InviteToRequest request) : base(client, request)
         {
         }
 

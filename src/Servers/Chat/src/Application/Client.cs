@@ -8,6 +8,7 @@ using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Application
@@ -58,7 +59,7 @@ namespace UniSpy.Server.Chat.Application
             var message = new RemoteMessage(new DisconnectRequest(), GetRemoteClient());
             Chat.Application.Server.GeneralChannel.PublishMessage(message);
         }
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
         public RemoteClient GetRemoteClient()
         {
             var manager = new RemoteTcpConnectionManager();

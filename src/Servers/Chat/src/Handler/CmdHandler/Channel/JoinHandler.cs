@@ -1,12 +1,13 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -20,9 +21,9 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
         private static readonly GeneralMessageChannel GeneralMessageChannel = new GeneralMessageChannel();
-        private Aggregate.Misc.ChannelInfo.Channel _channel;
+        private Aggregate.Channel _channel;
         private ChannelUser _user;
-        public JoinHandler(IClient client, IRequest request) : base(client, request)
+        public JoinHandler(IChatClient client, JoinRequest request) : base(client, request)
         {
             _result = new JoinResult();
         }
@@ -54,7 +55,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             lock (ChannelManager.Channels)
             {
-                var isChannelExistOnRedis = Application.StorageOperation.Persistance.IsChannelExist(_request.ChannelName);
                 var isChannelExistOnLocal = ChannelManager.IsChannelExist(_request.ChannelName);
                 if (isChannelExistOnLocal)
                 {
@@ -65,7 +65,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 {
                     // create channel
                     _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
-                    _user = _channel.GetChannelUser(_client);
+                    _user = _channel.GetUser(_client);
                 }
             }
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();

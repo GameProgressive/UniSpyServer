@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -11,7 +12,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new TopicRequest _request => (TopicRequest)base._request;
         private new TopicResult _result { get => (TopicResult)base._result; set => base._result = value; }
-        public TopicHandler(IClient client, IRequest request) : base(client, request)
+        public TopicHandler(IChatClient client, TopicRequest request) : base(client, request)
         {
             _result = new TopicResult();
         }

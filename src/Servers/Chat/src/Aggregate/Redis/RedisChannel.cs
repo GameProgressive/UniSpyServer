@@ -5,6 +5,8 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
 using System.Threading.Tasks;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.Chat.Aggregate.Redis
 {
@@ -27,7 +29,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
                 ClientManager.RemoveClient(message.Client);
                 return;
             }
-            IClient client = ClientManager.GetClient(message.Client);
+            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client);
             if (client is null)
             {
                 ClientManager.AddClient(message.Client);
@@ -39,7 +41,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
                 ((RemoteClient)client).Info = message.Client.Info;
             }
 
-            var switcher = new CmdSwitcher(client, message.RawRequest);
+            var switcher = new CmdSwitcher(client, UniSpyEncoding.GetString(message.RawRequest));
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 switcher.Handle();
@@ -66,13 +68,13 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             {
                 return;
             }
-            IClient client = ClientManager.GetClient(message.Client);
+            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client);
             if (client is null)
             {
                 throw new Chat.Exception($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");
             }
 
-            var switcher = new CmdSwitcher(client, message.RawRequest);
+            var switcher = new CmdSwitcher(client, UniSpyEncoding.GetString(message.RawRequest));
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 switcher.Handle();

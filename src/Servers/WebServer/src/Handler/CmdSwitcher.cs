@@ -10,13 +10,15 @@ using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Handler;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Handler
 {
     public class CmdSwitcher : CmdSwitcherBase
     {
         private new IHttpRequest _rawRequest => (IHttpRequest)base._rawRequest;
-        public CmdSwitcher(IClient client, IHttpRequest rawRequest) : base(client, rawRequest)
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, IHttpRequest rawRequest) : base(client, rawRequest)
         {
         }
 

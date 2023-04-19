@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -10,7 +11,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class SetKeyHandler : LogedInHandlerBase
     {
         private new SetKeyRequest _request => (SetKeyRequest)base._request;
-        public SetKeyHandler(IClient client, IRequest request) : base(client, request) { }
+        public SetKeyHandler(IChatClient client, SetKeyRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {

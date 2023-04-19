@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -15,7 +16,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result { get => (SetChannelKeyResult)base._result; set => base._result = value; }
-        public SetChannelKeyHandler(IClient client, IRequest request) : base(client, request)
+        public SetChannelKeyHandler(IChatClient client, SetChannelKeyRequest request) : base(client, request)
         {
             _result = new SetChannelKeyResult();
         }

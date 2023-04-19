@@ -5,6 +5,7 @@ using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
@@ -13,7 +14,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
     {
         protected new LoginRemoteAuthRequest _request => (LoginRemoteAuthRequest)base._request;
         protected new LoginResultBase _result { get => (LoginResultBase)base._result; set => base._result = value; }
-        public LoginRemoteAuthHandler(IClient client, IRequest request) : base(client, request)
+        public LoginRemoteAuthHandler(Client client, LoginRemoteAuthRequest request) : base(client, request)
         {
             _result = new LoginRemoteAuthResult();
         }

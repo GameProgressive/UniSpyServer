@@ -4,14 +4,15 @@ using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.ServerBrowser.V2.Application;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
-
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
@@ -30,7 +31,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler
                 case RequestType.ServerInfoRequest:
                     return new ServerInfoHandler(_client, new ServerInfoRequest(req));
                 case RequestType.SendMessageRequest:
-                    return new SendMsgHandler(_client, new SendMsgRequest(req));                
+                    return new SendMsgHandler(_client, new SendMsgRequest(req));
                 default:
                     return null;
             }

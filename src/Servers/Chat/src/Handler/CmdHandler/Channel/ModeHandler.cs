@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -14,7 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
-        public ModeHandler(IClient client, IRequest request) : base(client, request) { }
+        public ModeHandler(IChatClient client, ModeRequest request) : base(client, request) { }
         protected override void DataOperation()
         {
             _result = new ModeResult();

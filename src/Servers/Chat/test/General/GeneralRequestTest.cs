@@ -53,7 +53,7 @@ namespace UniSpy.Server.Chat.Test.General
             var request = new InviteRequest(GeneralRequests.Invite);
             request.Parse();
             Assert.Equal("test", request.ChannelName);
-            Assert.Equal("spyguy", request.UserName);
+            Assert.Equal("spyguy", request.NickName);
         }
 
         [Fact]

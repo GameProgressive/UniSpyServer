@@ -15,7 +15,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
         private new GetPlayerDataResult _result { get => (GetPlayerDataResult)base._result; set => base._result = value; }
-        public GetPlayerDataHandler(IClient client, IRequest request) : base(client, request)
+        public GetPlayerDataHandler(Client client, GetPlayerDataRequest request) : base(client, request)
         {
             _result = new GetPlayerDataResult();
         }

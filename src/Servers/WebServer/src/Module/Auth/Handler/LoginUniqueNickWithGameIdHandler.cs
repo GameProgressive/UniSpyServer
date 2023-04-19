@@ -3,6 +3,7 @@ using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
@@ -10,7 +11,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
     public sealed class LoginUniqueNickWithGameIdHandler : LoginUniqueNickHandler
     {
         private new LoginUniqueNickRequest _request => (LoginUniqueNickRequest)base._request;
-        public LoginUniqueNickWithGameIdHandler(IClient client, IRequest request) : base(client, request)
+        public LoginUniqueNickWithGameIdHandler(Client client, LoginUniqueNickRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

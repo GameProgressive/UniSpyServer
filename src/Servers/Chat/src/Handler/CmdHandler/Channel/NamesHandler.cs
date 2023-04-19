@@ -5,6 +5,7 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -13,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new NamesRequest _request => (NamesRequest)base._request;
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
-        public NamesHandler(IClient client, IRequest request) : base(client, request) { }
+        public NamesHandler(IChatClient client, NamesRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
@@ -23,7 +24,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 {
                     throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
                 }
-                _user = _channel.GetChannelUser(_client);
+                _user = _channel.GetUser(_client);
                 if (_user is null)
                 {
                     throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");

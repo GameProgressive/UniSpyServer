@@ -10,7 +10,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
     public sealed class AddBlockHandler : LoggedInCmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;
-        public AddBlockHandler(IClient client, IRequest request) : base(client, request)
+        public AddBlockHandler(Client client, AddBlockRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

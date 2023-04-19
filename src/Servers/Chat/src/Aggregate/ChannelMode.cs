@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 
-namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
+namespace UniSpy.Server.Chat.Aggregate
 {
     public sealed class ChannelMode
     {
@@ -27,6 +28,7 @@ namespace UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo
         // e - toggle the operator allow channel limits flag;
         [JsonProperty]
         public bool IsOperatorAbeyChannelLimits { get; private set; } = true;
+        public List<string> InviteNickNames { get; private set; } = new List<string>();
         /// <summary>
         /// default constructor
         /// </summary>

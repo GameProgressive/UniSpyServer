@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Request.Message;
@@ -18,8 +19,9 @@ namespace UniSpy.Server.Chat.Handler
     /// </summary>
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
-        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest) { }
+        private new string _rawRequest => (string)base._rawRequest;
+        private new IChatClient _client => (IChatClient)base._client;
+        public CmdSwitcher(IChatClient client, string rawRequest) : base(client, rawRequest) { }
 
         protected override void ProcessRawRequest()
         {

@@ -24,9 +24,8 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
     public sealed class SearchHandler : CmdHandlerBase
     {
         private new SearchRequest _request => (SearchRequest)base._request;
-
         private new SearchResult _result { get => (SearchResult)base._result; set => base._result = value; }
-        public SearchHandler(IClient client, IRequest request) : base(client, request)
+        public SearchHandler(Client client, SearchRequest request) : base(client, request)
         {
             _result = new SearchResult();
         }

@@ -5,6 +5,7 @@ using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -12,7 +13,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class NickHandler : CmdHandlerBase
     {
         private new NickRequest _request => (NickRequest)base._request;
-        public NickHandler(IClient client, IRequest request) : base(client, request) { }
+        public NickHandler(IChatClient client, NickRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {

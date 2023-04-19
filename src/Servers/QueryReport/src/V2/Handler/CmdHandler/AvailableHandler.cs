@@ -1,7 +1,8 @@
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Response;
-using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
+
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
     /// <summary>
@@ -11,7 +12,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
     public sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;
-        public AvailableHandler(IClient client, IRequest request) : base(client, request)
+        public AvailableHandler(Client client, AvaliableRequest request) : base(client, request)
         {
         }
         protected override void ResponseConstruct()

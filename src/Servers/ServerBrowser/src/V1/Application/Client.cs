@@ -1,5 +1,6 @@
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.ServerBrowser.V1.Handler;
 
@@ -19,6 +20,6 @@ namespace UniSpy.Server.ServerBrowser.V1.Application
             base.OnConnected();
         }
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
     }
 }

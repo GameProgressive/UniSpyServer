@@ -3,6 +3,7 @@ using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Contract.Response;
 using UniSpy.Server.GameStatus.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
@@ -11,7 +12,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
     {
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthGameResult _result { get => (AuthGameResult)base._result; set => base._result = value; }
-        public AuthGameHandler(IClient client, IRequest request) : base(client, request)
+        public AuthGameHandler(Client client, AuthGameRequest request) : base(client, request)
         {
             _result = new AuthGameResult();
         }

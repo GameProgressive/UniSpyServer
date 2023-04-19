@@ -5,7 +5,8 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -18,7 +19,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result { get => (WhoResult)base._result; set => base._result = value; }
-        public WhoHandler(IClient client, IRequest request) : base(client, request) { }
+        public WhoHandler(IChatClient client, WhoRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {
@@ -64,7 +65,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
             foreach (var channel in client.Info.JoinedChannels.Values)
             {
-                var user = channel.GetChannelUser(client);
+                var user = channel.GetUser(client);
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Name,

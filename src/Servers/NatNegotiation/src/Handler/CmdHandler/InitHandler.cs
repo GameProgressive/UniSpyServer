@@ -21,7 +21,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         /// Local NatInitInfo storage, after all init packets are received we send all into redis database
         /// </summary>
         private NatAddressInfo _addressInfo;
-        public InitHandler(IClient client, IRequest request) : base(client, request)
+        public InitHandler(Client client, InitRequest request) : base(client, request)
         {
             _result = new InitResult();
         }

@@ -2,9 +2,8 @@ using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
-
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -15,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
         private new GetKeyResult _result { get => (GetKeyResult)base._result; set => base._result = value; }
-        public GetKeyHandler(IClient client, IRequest request) : base(client, request)
+        public GetKeyHandler(IChatClient client, GetKeyRequest request) : base(client, request)
         {
             _result = new GetKeyResult();
         }

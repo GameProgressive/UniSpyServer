@@ -16,6 +16,6 @@ namespace UniSpy.Server.QueryReport.Application
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
 
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, (byte[])buffer);
     }
 }

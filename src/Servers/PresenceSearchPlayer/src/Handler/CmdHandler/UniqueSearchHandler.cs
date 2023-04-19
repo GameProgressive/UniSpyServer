@@ -13,7 +13,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
     {
         private new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
         private new UniqueSearchResult _result { get => (UniqueSearchResult)base._result; set => base._result = value; }
-        public UniqueSearchHandler(IClient client, IRequest request) : base(client, request)
+        public UniqueSearchHandler(Client client, UniqueSearchRequest request) : base(client, request)
         {
             _result = new UniqueSearchResult();
         }

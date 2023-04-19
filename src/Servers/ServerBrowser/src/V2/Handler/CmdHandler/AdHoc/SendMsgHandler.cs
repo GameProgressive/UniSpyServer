@@ -4,6 +4,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.ServerBrowser.V2.Application;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
@@ -15,7 +16,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
     public sealed class SendMsgHandler : CmdHandlerBase
     {
         private new SendMsgRequest _request => (SendMsgRequest)base._request;
-        public SendMsgHandler(IClient client, IRequest request) : base(client, request)
+        public SendMsgHandler(Client client, SendMsgRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

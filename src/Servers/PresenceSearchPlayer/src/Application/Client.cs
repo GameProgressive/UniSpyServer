@@ -1,6 +1,7 @@
 using UniSpy.Server.PresenceSearchPlayer.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Application
 {
@@ -11,6 +12,6 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             Info = new ClientInfo();
         }
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
     }
 }

@@ -3,6 +3,7 @@ using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler
 {
@@ -12,7 +13,7 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler
         protected new GetPurchaseHistoryRequest _request => (GetPurchaseHistoryRequest)base._request;
         protected new GetPurchaseHistoryResult _result = new GetPurchaseHistoryResult();
 
-        public GetPurchaseHistoryHandler(IClient client, IRequest request) : base(client, request)
+        public GetPurchaseHistoryHandler(Client client, GetPurchaseHistoryRequest request) : base(client, request)
         {
 
         }

@@ -16,7 +16,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
         private new StatusInfoRequest _request => (StatusInfoRequest)base._request;
         private new StatusInfoResult _result { get => (StatusInfoResult)base._result; set => base._result = value; }
 
-        public StatusInfoHandler(IClient client, IRequest request) : base(client, request)
+        public StatusInfoHandler(Client client, StatusInfoRequest request) : base(client, request)
         {
             _result = new StatusInfoResult();
         }

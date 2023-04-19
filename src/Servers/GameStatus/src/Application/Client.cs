@@ -46,6 +46,6 @@ namespace UniSpy.Server.GameStatus.Application
         }
 
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
     }
 }

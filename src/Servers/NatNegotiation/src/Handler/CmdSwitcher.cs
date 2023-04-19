@@ -4,13 +4,15 @@ using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Application;
 
 namespace UniSpy.Server.NatNegotiation.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, byte[] rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

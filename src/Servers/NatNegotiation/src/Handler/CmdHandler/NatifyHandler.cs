@@ -3,6 +3,7 @@ using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
 using UniSpy.Server.NatNegotiation.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.NatNegotiation.Application;
 
 namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
 {
@@ -11,7 +12,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
     {
         private new NatifyRequest _request => (NatifyRequest)base._request;
         private new NatifyResult _result { get => (NatifyResult)base._result; set => base._result = value; }
-        public NatifyHandler(IClient client, IRequest request) : base(client, request)
+        public NatifyHandler(Client client, NatifyRequest request) : base(client, request)
         {
             _result = new NatifyResult();
         }

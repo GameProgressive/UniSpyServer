@@ -3,13 +3,15 @@ using System.Linq;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.V2.Application;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Application;
+using UniSpy.Server.QueryReport.V2.Contract.Request;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
 
     public sealed class KeepAliveHandler : CmdHandlerBase
     {
-        public KeepAliveHandler(IClient client, IRequest request) : base(client, request)
+        public KeepAliveHandler(Client client, KeepAliveRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

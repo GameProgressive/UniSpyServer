@@ -2,6 +2,7 @@ using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
@@ -14,7 +15,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
         private new UpdateGameRequest _request => (UpdateGameRequest)base._request;
-        public UpdateGameHandler(IClient client, IRequest request) : base(client, request)
+        public UpdateGameHandler(Client client, UpdateGameRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

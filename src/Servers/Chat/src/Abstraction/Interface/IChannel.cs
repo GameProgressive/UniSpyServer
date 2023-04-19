@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 

@@ -18,7 +18,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         private new ServerInfoRequest _request => (ServerInfoRequest)base._request;
         private new AdHocResult _result { get => (AdHocResult)base._result; set => base._result = value; }
 
-        public ServerInfoHandler(IClient client, IRequest request) : base(client, request)
+        public ServerInfoHandler(Client client, ServerInfoRequest request) : base(client, request)
         {
             _result = new AdHocResult();
         }

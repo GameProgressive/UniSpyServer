@@ -4,6 +4,7 @@ using UniSpy.Server.PresenceConnectionManager.Structure;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.PresenceConnectionManager.Application
 {
@@ -32,6 +33,6 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             Connection.Send(sendingBuffer);
         }
 
-        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, buffer);
+        protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
     }
 }

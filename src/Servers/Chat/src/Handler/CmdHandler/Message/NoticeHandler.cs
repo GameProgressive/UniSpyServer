@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Contract.Response.Message;
 using UniSpy.Server.Chat.Contract.Result.Message;
@@ -11,7 +12,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
         private new NoticeResult _result{ get => (NoticeResult)base._result; set => base._result = value; }
-        public NoticeHandler(IClient client, IRequest request) : base(client, request)
+        public NoticeHandler(IChatClient client, NoticeRequest request) : base(client, request)
         {
             _result = new NoticeResult();
         }

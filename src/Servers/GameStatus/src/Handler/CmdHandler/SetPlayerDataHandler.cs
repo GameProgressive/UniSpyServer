@@ -1,7 +1,7 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
-
+using UniSpy.Server.GameStatus.Application;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {
@@ -12,7 +12,7 @@ namespace UniSpy.Server.GameStatus.Handler.CmdHandler
     public sealed class SetPlayerDataHandler : CmdHandlerBase
     {
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;
-        public SetPlayerDataHandler(IClient client, IRequest request) : base(client, request)
+        public SetPlayerDataHandler(Client client, SetPlayerDataRequest request) : base(client, request)
         {
         }
 

@@ -28,7 +28,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         private NatInitInfo _othersInitInfo;
         private NatInitInfo _myInitInfo;
         private IPEndPoint _guessedOthersIPEndPoint;
-        public ConnectHandler(IClient client, IRequest request) : base(client, request)
+        public ConnectHandler(Client client, ConnectRequest request) : base(client, request)
         {
             _result = new ConnectResult();
         }

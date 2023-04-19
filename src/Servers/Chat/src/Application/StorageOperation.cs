@@ -102,9 +102,9 @@ namespace UniSpy.Server.Chat.Application
             }
         }
 
-        public bool UpdateChannel(Aggregate.Misc.ChannelInfo.Channel channel) => _redisClient.SetValue(channel);
-        public void RemoveChannel(Aggregate.Misc.ChannelInfo.Channel channel) => _redisClient.DeleteKeyValue(channel);
-        public Aggregate.Misc.ChannelInfo.Channel GetChannelInfo(string channelName) => _redisClient.Context.First(c => c.Name == channelName);
+        public bool UpdateChannel(Aggregate.Channel channel) => _redisClient.SetValue(channel);
+        public void RemoveChannel(Aggregate.Channel channel) => _redisClient.DeleteKeyValue(channel);
+        public Aggregate.Channel GetChannelInfo(string channelName) => _redisClient.Context.First(c => c.Name == channelName);
 
         public bool IsChannelExist(string channelName) => _redisClient.Context.Count(c => c.Name == channelName) != 0;
     }

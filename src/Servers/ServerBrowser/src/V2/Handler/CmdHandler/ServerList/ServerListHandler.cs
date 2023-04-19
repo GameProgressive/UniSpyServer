@@ -3,20 +3,17 @@ using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
 using UniSpy.Server.ServerBrowser.V2.Application;
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Enumerate;
-
 using UniSpy.Server.ServerBrowser.V2.Aggregate.Packet.Response;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response.ServerList;
 using UniSpy.Server.ServerBrowser.V2.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
-using System.Collections.Generic;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
+using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
 
     public class ServerListHandler : ServerListUpdateOptionHandlerBase
     {
-        public ServerListHandler(IClient client, IRequest request) : base(client, request)
+        public ServerListHandler(Client client, ServerListRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

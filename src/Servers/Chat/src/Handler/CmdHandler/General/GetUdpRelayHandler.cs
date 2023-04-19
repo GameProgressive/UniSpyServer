@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 
@@ -12,6 +13,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class GetUdpRelayHandler : CmdHandlerBase
     {
         new GetUdpRelayRequest _request => (GetUdpRelayRequest)base._request;
-        public GetUdpRelayHandler(IClient client, IRequest request) : base(client, request) { }
+        public GetUdpRelayHandler(IChatClient client, GetUdpRelayRequest request) : base(client, request) { }
     }
 }

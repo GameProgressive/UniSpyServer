@@ -4,14 +4,15 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Misc;
+using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V1.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
-        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        private new string _rawRequest => (string)base._rawRequest;
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, object rawRequest) : base(client, rawRequest)
         {
         }
 

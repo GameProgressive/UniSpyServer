@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
@@ -9,7 +10,7 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
     public class CreateRecordHandler : CmdHandlerBase
     {
         protected new CreateRecordRequest _request => (CreateRecordRequest)base._request;
-        public CreateRecordHandler(IClient client, IRequest request) : base(client, request)
+        public CreateRecordHandler(Client client, CreateRecordRequest request) : base(client, request)
         {
         }
         protected override void DataOperation()

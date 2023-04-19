@@ -1,9 +1,10 @@
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.BaseClass.Message;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -12,7 +13,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         protected new MessageRequestBase _request => (MessageRequestBase)base._request;
         protected new MessageResultBase _result { get => (MessageResultBase)base._result; set => base._result = value; }
         protected ChannelUser _receiver;
-        public MessageHandlerBase(IClient client, IRequest request) : base(client, request) { }
+        public MessageHandlerBase(IChatClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {

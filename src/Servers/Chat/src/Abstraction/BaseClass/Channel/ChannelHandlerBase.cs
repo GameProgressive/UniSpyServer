@@ -1,7 +1,8 @@
 using UniSpy.Server.Chat.Error.IRC.Channel;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -16,7 +17,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         /// </summary>
         protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
-        public ChannelHandlerBase(IClient client, IRequest request) : base(client, request) { }
+        public ChannelHandlerBase(IChatClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {
@@ -29,7 +30,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
             }
-            _user = _channel.GetChannelUser(_client);
+            _user = _channel.GetUser(_client);
             if (_user is null)
             {
                 throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");

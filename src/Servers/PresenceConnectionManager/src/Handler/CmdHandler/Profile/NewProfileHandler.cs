@@ -12,7 +12,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
     {
         private new NewProfileRequest _request => (NewProfileRequest)base._request;
         private new NewProfileResult _result { get => (NewProfileResult)base._result; set => base._result = value; }
-        public NewProfileHandler(IClient client, IRequest request) : base(client, request)
+        public NewProfileHandler(Client client, NewProfileRequest request) : base(client, request)
         {
             _result = new NewProfileResult();
         }

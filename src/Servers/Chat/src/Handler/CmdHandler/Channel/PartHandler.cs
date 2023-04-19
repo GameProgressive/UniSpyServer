@@ -1,12 +1,12 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Error.IRC.Channel;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate.Misc.ChannelInfo;
+using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Chat.Aggregate;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -16,7 +16,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
-        public PartHandler(IClient client, IRequest request) : base(client, request) { }
+        public PartHandler(IChatClient client, PartRequest request) : base(client, request) { }
         static PartHandler()
         {
         }
@@ -29,14 +29,16 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 {
                     throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
                 }
-                _user = _channel.GetChannelUser(_client);
+                _user = _channel.GetUser(_client);
                 if (_user is null)
                 {
                     throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
                 }
-                return;
             }
-            base.RequestCheck();
+            else
+            {
+                base.RequestCheck();
+            }
         }
         protected override void DataOperation()
         {
@@ -66,6 +68,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             new KickHandler(_client, kickRequest).Handle();
                         }
                         ChannelManager.RemoveChannel(_channel.Name);
+                        Application.StorageOperation.Persistance.RemoveChannel(_channel);
                     }
                     goto default;
                 default:
@@ -73,6 +76,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     _channel.RemoveUser(_user);
                     break;
             }
+            _client.Info.PreviousJoinedChannel = _request.ChannelName;
         }
 
         protected override void ResponseConstruct()

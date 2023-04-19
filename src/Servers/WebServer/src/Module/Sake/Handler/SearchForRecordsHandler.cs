@@ -2,6 +2,7 @@ using UniSpy.Server.WebServer.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Response;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
@@ -9,7 +10,7 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
     internal class SearchForRecordsHandler : CmdHandlerBase
     {
         protected new SearchForRecordsRequest _request => (SearchForRecordsRequest)base._request;
-        public SearchForRecordsHandler(IClient client, IRequest request) : base(client, request)
+        public SearchForRecordsHandler(Client client, SearchForRecordsRequest request) : base(client, request)
         {
 
         }

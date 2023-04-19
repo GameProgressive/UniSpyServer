@@ -1,4 +1,5 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
@@ -13,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
         private new WhoIsResult _result { get => (WhoIsResult)base._result; set => base._result = value; }
         private ClientInfo _clientInfo;
-        public WhoIsHandler(IClient client, IRequest request) : base(client, request) { }
+        public WhoIsHandler(IChatClient client, WhoIsRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {

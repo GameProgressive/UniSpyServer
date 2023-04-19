@@ -4,12 +4,13 @@ using UniSpy.Server.WebServer.Handler;
 using UniSpy.Server.WebServer.Test.Auth;
 using UniSpy.Server.Core.Abstraction.Interface;
 using Xunit;
+using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Test
 {
     public class HandlerTest
     {
-        private IClient _client = MokeObject.CreateClient();
+        private Client _client = MokeObject.CreateClient();
 
         [Fact]
         public void SwitcherTest()

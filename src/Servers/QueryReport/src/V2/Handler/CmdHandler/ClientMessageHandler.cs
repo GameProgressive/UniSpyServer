@@ -3,6 +3,7 @@ using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Response;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
 {
@@ -10,7 +11,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
     public sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
-        public ClientMessageHandler(IClient client, IRequest request) : base(client, request)
+        public ClientMessageHandler(Client client, ClientMessageRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()

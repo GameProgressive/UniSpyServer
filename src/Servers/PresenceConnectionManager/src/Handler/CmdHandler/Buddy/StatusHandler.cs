@@ -2,6 +2,7 @@ using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Application;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
 {
@@ -14,7 +15,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
         private new StatusRequest _request => (StatusRequest)base._request;
         private new StatusResult _result { get => (StatusResult)base._result; set => base._result = value; }
 
-        public StatusHandler(IClient client, IRequest request) : base(client, request)
+        public StatusHandler(Client client, StatusRequest request) : base(client, request)
         {
             _result = new StatusResult();
         }

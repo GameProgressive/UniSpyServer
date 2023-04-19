@@ -5,15 +5,16 @@ using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.PresenceSearchPlayer.Application;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Handler
 {
     public sealed class CmdSwitcher : CmdSwitcherBase
     {
-        private new string _rawRequest => UniSpyEncoding.GetString((byte[])base._rawRequest);
-        public CmdSwitcher(IClient client, object rawRequest) : base(client, rawRequest)
+        private new string _rawRequest => (string)base._rawRequest;
+        private new Client _client => (Client)base._client;
+        public CmdSwitcher(Client client, string rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
