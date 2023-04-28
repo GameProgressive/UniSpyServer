@@ -37,7 +37,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                     (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.NickAndEmailLogin(_request.NickName, _request.Email, _request.PasswordHash);
                     break;
                 case LoginReqeustType.UniqueNickLogin:
-                    (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.UniqueNickLogin(_request.UniqueNick, _request.NamespaceID);
+                    (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.UniqueNickLogin(_request.UniqueNick, _request.NamespaceId);
                     break;
             }
         }

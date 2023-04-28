@@ -26,9 +26,10 @@ namespace UniSpy.Server.QueryReport.V2.Application
         public void RemoveGameServer(GameServerInfo info) => _gameServerRedisClient.DeleteKeyValue(info);
         public void UpdateGameServer(GameServerInfo info) => _ = _gameServerRedisClient.SetValueAsync(info);
 
-        public void InitPeerRoomsInfo()
+        public void InitPeerRoomsInfo(string gameName = null)
         {
-            var peerRooms = GetGroupList();
+
+            var peerRooms = GetGroupList(gameName);
             foreach (var room in peerRooms)
             {
                 if (!IsPeerRoomExist(room.Game.Gamename, room.Roomname))
@@ -59,7 +60,7 @@ namespace UniSpy.Server.QueryReport.V2.Application
                 return _peerGroupRedisClient.Context.Where(r => r.GameName == gameName).ToList();
             }
         }
-        public List<Grouplist> GetGroupList(string gameName)
+        public List<Grouplist> GetGroupList(string gameName = null)
         {
             using (var db = new UniSpyContext())
             {
@@ -77,24 +78,24 @@ namespace UniSpy.Server.QueryReport.V2.Application
                 return result.ToList();
             }
         }
-        private List<Grouplist> GetGroupList()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from g in db.Games
-                             join gl in db.Grouplists on g.Gameid equals gl.Gameid
-                             orderby gl.Roomname
-                             select new Grouplist
-                             {
-                                 Game = g,
-                                 Gameid = g.Gameid,
-                                 Groupid = gl.Groupid,
-                                 Roomname = gl.Roomname
-                             };
+        // private List<Grouplist> GetGroupList()
+        // {
+        //     using (var db = new UniSpyContext())
+        //     {
+        //         var result = from g in db.Games
+        //                      join gl in db.Grouplists on g.Gameid equals gl.Gameid
+        //                      orderby gl.Roomname
+        //                      select new Grouplist
+        //                      {
+        //                          Game = g,
+        //                          Gameid = g.Gameid,
+        //                          Groupid = gl.Groupid,
+        //                          Roomname = gl.Roomname
+        //                      };
 
-                return result.ToList();
-            }
-        }
+        //         return result.ToList();
+        //     }
+        // }
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {
             return _gameServerRedisClient.Context.Where(x => x.GameName == gameName).ToList();

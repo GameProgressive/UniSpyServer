@@ -14,7 +14,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
         public LoginRequest(string rawRequest) : base(rawRequest){ }
 
         public LoginReqeustType ReqeustType { get; private set; }
-        public int NamespaceID { get; private set; }
+        public int NamespaceId { get; private set; }
         public string NickName { get; private set; }
         public string Email { get; private set; }
         public string UniqueNick { get; private set; }
@@ -29,7 +29,7 @@ namespace UniSpy.Server.Chat.Contract.Request.General
             {
                 throw new Chat.Exception("The namespaceid format is incorrect.");
             }
-            NamespaceID = namespaceid;
+            NamespaceId = namespaceid;
 
             if (_cmdParams[1] == "*")
             {

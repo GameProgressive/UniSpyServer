@@ -11,7 +11,10 @@ namespace UniSpy.Server.QueryReport.V2.Abstraction.Interface
         List<GameServerInfo> GetServerInfos(uint instantKey);
         void UpdateGameServer(GameServerInfo info);
         void RemoveGameServer(GameServerInfo info);
-        void InitPeerRoomsInfo();
+        void InitPeerRoomsInfo(string gameName = null);
+        /// <summary>
+        /// Get peer rooms info from redis database
+        /// </summary>
         List<PeerRoomInfo> GetPeerRoomsInfo(string gameName, int? groupId = null, string roomName = null);
         void UpdatePeerRoomInfo(PeerRoomInfo info);
         GameServerInfo GetGameServerInfo(IPEndPoint end);

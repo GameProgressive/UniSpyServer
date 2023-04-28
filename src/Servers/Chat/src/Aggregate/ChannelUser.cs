@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Aggregate
         /// </summary>
         [JsonProperty]
         public bool IsRemoteUser => Info.IsRemoteClient;
-        public bool IsVoiceable { get; set; }
+        public bool IsVoiceable { get; set; } = true;
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
         /// <summary>
@@ -69,15 +69,6 @@ namespace UniSpy.Server.Chat.Aggregate
             Channel = channel;
             ServerId = client.Server.Id;
             RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;
-        }
-
-        public void SetDefaultProperties(bool isCreator = false, bool isOperator = false)
-        {
-            IsVoiceable = true;
-            IsChannelCreator = isCreator;
-            IsChannelOperator = isOperator;
-            // KeyValues.Update(new KeyValuePair<string, string>("username", Info.UserName));
-            // KeyValues.Update(new KeyValuePair<string, string>("b_flags", "sh"));
         }
     }
 }

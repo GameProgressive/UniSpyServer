@@ -20,7 +20,7 @@ namespace UniSpy.Server.Chat.Application
         public override void Start()
         {
             base.Start();
-            GeneralChannel.StartSubscribe();
+            GeneralChannel.Subscribe();
         }
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);

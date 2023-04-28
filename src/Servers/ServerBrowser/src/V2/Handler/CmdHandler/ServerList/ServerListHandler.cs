@@ -62,11 +62,16 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         }
         private void P2PGroupRoomList()
         {
-            // we first get the peer rooms in redis
+
+            // first get the peer room in memory, if there is no such game we do not continue
+            if (!QueryReport.Application.Server.PeerGroupList.ContainsKey(_request.GameName))
+            {
+                return;
+            }
+            // then we get the peer rooms in redis
             // Game name is unique in redis database
             var peerRooms = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(_request.GameName);
-            // get the peer room in database
-            var grouplist = QueryReport.V2.Application.StorageOperation.Persistance.GetGroupList(_request.GameName);
+            var grouplist = QueryReport.Application.Server.PeerGroupList[_request.GameName];
             // check if there are missing peer rooms in redis
             var addInfos = grouplist.Where(g => peerRooms.All(r => r.GroupId != g.Groupid)).ToList();
             foreach (var room in addInfos)

@@ -88,7 +88,7 @@ namespace UniSpy.Server.Chat.Test.General
             var request = new LoginRequest(GeneralRequests.LoginNickAndEmail);
             request.Parse();
             Assert.Equal(LoginReqeustType.NickAndEmailLogin, request.ReqeustType);
-            Assert.Equal("0", request.NamespaceID.ToString());
+            Assert.Equal("0", request.NamespaceId.ToString());
             Assert.Equal("spyguy", request.NickName);
             Assert.Equal("xxxxx", request.PasswordHash);
             Assert.Equal("spyguy@unispy.org", request.Email);
@@ -100,7 +100,7 @@ namespace UniSpy.Server.Chat.Test.General
             var request = new LoginRequest(GeneralRequests.LoginUniqueNick);
             request.Parse();
             Assert.Equal(LoginReqeustType.UniqueNickLogin, request.ReqeustType);
-            Assert.Equal("0", request.NamespaceID.ToString());
+            Assert.Equal("0", request.NamespaceId.ToString());
             Assert.Equal("spyguy", request.UniqueNick);
             Assert.Equal("xxxxx", request.PasswordHash);
         }

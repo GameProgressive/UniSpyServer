@@ -1,6 +1,5 @@
-using System;
 using System.Linq;
-
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
@@ -8,38 +7,36 @@ namespace UniSpy.Server.Chat.Aggregate
     {
         public static void UpdatePeerRoomInfo(ChannelUser user)
         {
-            if (user.Channel.RoomType != PeerRoomType.Group)
-            {
-                return;
-            }
             if (user.ClientRef.Info.IsRemoteClient)
             {
                 return;
             }
+            if (user.Channel.RoomType != PeerRoomType.Group)
+            {
+                return;
+            }
+            if (user.Info.GameName is null)
+            {
+                return;
+            }
+            if (!QueryReport.Application.Server.PeerGroupList.ContainsKey(user.Info.GameName))
+            {
+                return;
+            }
+
             //#GPG!622
-            var groupIdStr = user.Channel.Name.Split("!", StringSplitOptions.RemoveEmptyEntries)[1];
-            if (!int.TryParse(groupIdStr, out var groupId))
+            // we just update this peer group
+            var peerRoomInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(user.Channel.GameName, user.Channel.GroupId).FirstOrDefault();
+            if (peerRoomInfo is null)
             {
-                throw new Chat.Exception("Peer room name is incorrect");
+                user.ClientRef.LogInfo("The peer room is not exist, we create it.");
+                var grouplist = QueryReport.Application.Server.PeerGroupList[user.Channel.GameName];
+                // check if there are missing peer rooms in redis
+                var room = grouplist.Where(g => g.Groupid == user.Channel.GroupId).First();
+                peerRoomInfo = new QueryReport.V2.Aggregate.Redis.PeerGroup.PeerRoomInfo(room.Game.Gamename, room.Groupid, room.Roomname);
             }
-            var roomInfo = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(user.Channel.GameName, groupId);
-            if (roomInfo.Count != 1)
-            {
-                throw new Chat.Exception($"No peer room info found with game name: {user.Channel.GameName}, group id:{groupId}");
-            }
-            roomInfo.First().NumberOfPlayers = user.Channel.Users.Count;
-            // if(!IsUserExisted(user))
-            // {
-            //     var chan = ChannelManager.GetChannel(user.Info.PreviousJoinedChannel);
-            //     if(chan is not null )
-            //     {
-            //         if(chan.RoomType == PeerRoomType.Group)
-            //         {
-            //             roomInfo.NumberOfGames
-            //         }
-            //     }
-            // }
-            QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(roomInfo.First());
+            peerRoomInfo.NumberOfPlayers = user.Channel.Users.Count;
+            QueryReport.V2.Application.StorageOperation.Persistance.UpdatePeerRoomInfo(peerRoomInfo);
         }
         public static void UpdateChannelCache(ChannelUser user)
         {

@@ -39,7 +39,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             // we get a first channel in his joined list
             _channel = client.Info.JoinedChannels.Values.First();
             // we find this user in this channel
-            _receiver = _channel.GetChannelUser(_request.NickName);
+            _receiver = _channel.GetUser(_request.NickName);
             if (_receiver is null)
             {
                 throw new NoSuchNickException(

@@ -3,7 +3,6 @@ using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Chat.Application;

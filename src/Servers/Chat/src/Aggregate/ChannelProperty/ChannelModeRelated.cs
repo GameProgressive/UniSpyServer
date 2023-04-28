@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 

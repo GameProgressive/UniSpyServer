@@ -28,7 +28,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 throw new Chat.Exception("The Kick operation failed, because you are not channel operator.");
             }
-            _kickee = _channel.GetChannelUser(_request.KickeeNickName);
+            _kickee = _channel.GetUser(_request.KickeeNickName);
             if (_kickee is null)
             {
                 throw new Chat.Exception($"Can not find kickee:{_request.KickeeNickName} in channel.");
@@ -50,6 +50,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _channel.MultiCast(_client, _response);
             _channel.RemoveUser(_kickee);
+            Aggregate.Channel.UpdateChannelCache(_user);
+            Aggregate.Channel.UpdatePeerRoomInfo(_user);
         }
     }
 }

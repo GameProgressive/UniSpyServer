@@ -68,12 +68,21 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             new KickHandler(_client, kickRequest).Handle();
                         }
                         ChannelManager.RemoveChannel(_channel.Name);
-                        Application.StorageOperation.Persistance.RemoveChannel(_channel);
+                        _channel.MessageBroker.Unsubscribe();
+                        switch (_channel.RoomType)
+                        {
+                            case PeerRoomType.Normal:
+                            case PeerRoomType.Staging:
+                                Application.StorageOperation.Persistance.RemoveChannel(_channel);
+                                break;
+                        }
                     }
                     goto default;
                 default:
                     // we need always remove the connection in leaver and channel
                     _channel.RemoveUser(_user);
+                    Aggregate.Channel.UpdateChannelCache(_user);
+                    Aggregate.Channel.UpdatePeerRoomInfo(_user);
                     break;
             }
             _client.Info.PreviousJoinedChannel = _request.ChannelName;

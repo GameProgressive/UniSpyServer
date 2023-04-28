@@ -131,16 +131,22 @@ namespace UniSpy.Server.Chat.Aggregate
                 kv.Value.IsVoiceable = false;
             }
         }
-        public ChannelUser GetChannelUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
-
-        public ChannelUser AddUser(IChatClient client, string password = null, bool IsChannelCreator = false, bool IsChannelOperator = false)
+        public ChannelUser GetUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
+        public ChannelUser GetUser(IChatClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
+        public ChannelUser AddUser(IChatClient client, string password = null, bool isChannelCreator = false, bool isChannelOperator = false)
         {
             Validation(client, password);
             var user = new ChannelUser(client, this);
-            user.SetDefaultProperties(IsChannelCreator, IsChannelOperator);
+            switch (RoomType)
+            {
+                case PeerRoomType.Normal:
+                case PeerRoomType.Staging:
+                    // user created room
+                    user.IsChannelCreator = isChannelCreator;
+                    user.IsChannelOperator = isChannelOperator;
+                    break;
+            }
             AddBindOnUserAndChannel(user);
-            Channel.UpdatePeerRoomInfo(user);
-            Channel.UpdateChannelCache(user);
             return user;
         }
 
@@ -148,13 +154,10 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             user.Info.PreviousJoinedChannel = Name;
             RemoveBindOnUserAndChannel(user);
-            Channel.UpdatePeerRoomInfo(user);
-            Channel.UpdateChannelCache(user);
         }
 
         public bool IsUserExisted(ChannelUser user) => IsUserExisted(user.ClientRef);
         public bool IsUserExisted(IChatClient client) => Users.ContainsKey(client.Info.NickName);
-        public ChannelUser GetUser(IChatClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
         public bool IsUserBanned(ChannelUser user) => IsUserBanned(user.ClientRef);
         private bool IsUserBanned(IChatClient client)
         {

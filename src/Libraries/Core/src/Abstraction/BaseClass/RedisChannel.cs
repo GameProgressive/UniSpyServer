@@ -1,12 +1,12 @@
+using System;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpy.Server.Core.Config;
-using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
 
-    public abstract class RedisChannelBase<T>
+    public abstract class RedisChannelBase<T> : IDisposable
     {
         public delegate void OnReceivedMessageEventHandler(T message);
         public event OnReceivedMessageEventHandler OnReceived;
@@ -20,7 +20,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         {
             _redisChannelName = redisChannelName;
             OnReceived += ReceivedMessage;
-            
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// Some server only require publish message
         /// so they do not need to run this function
         /// </summary>
-        public void StartSubscribe()
+        public void Subscribe()
         {
             if (IsStarted == false)
             {
@@ -60,5 +59,11 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         protected virtual string SerializeMessage(T message) => JsonConvert.SerializeObject(message);
 
         protected virtual T DeserializeMessage(string message) => JsonConvert.DeserializeObject<T>(message);
+        public void Unsubscribe()
+        {
+            _subscriber.Unsubscribe(_redisChannelName);
+            OnReceived -= ReceivedMessage;
+        }
+        public void Dispose() => Unsubscribe();
     }
 }

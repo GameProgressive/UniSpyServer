@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Net;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Network.Tcp.Server;
 
@@ -10,7 +9,6 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
 {
     public sealed class Server : ServerBase
     {
-        public static readonly Dictionary<string, List<Grouplist>> PeerGroupList = QueryReport.V2.Application.StorageOperation.Persistance.GetAllGroupList();
         static Server()
         {
             _name = "ServerBrowserV2";
@@ -20,7 +18,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
         public Server(IConnectionManager manager) : base(manager) { }
         public override void Start()
         {
-            QueryReport.V2.Application.StorageOperation.HeartbeatChannel.StartSubscribe();
+            QueryReport.V2.Application.StorageOperation.HeartbeatChannel.Subscribe();
             QueryReport.V2.Application.StorageOperation.HeartbeatChannel.OnReceived += ReceivedMessage;
             base.Start();
         }

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
 
@@ -41,6 +40,8 @@ namespace UniSpy.Server.Chat.Aggregate
         public string Topic { get; set; }
         [JsonIgnore]
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
+        [JsonProperty]
+        public int GroupId { get; private set; }
         /// <summary>
         /// Constructor for json deserialization
         /// </summary>
@@ -52,22 +53,17 @@ namespace UniSpy.Server.Chat.Aggregate
             Password = password;
             RoomType = PeerRoom.GetRoomType(Name);
             GameName = client.Info.GameName;
-            switch (RoomType)
+            if (RoomType == PeerRoomType.Group)
             {
-                case PeerRoomType.Normal:
-                case PeerRoomType.Staging:
-                    // user created room
-                    var user = AddUser(client, password, true, true);
-                    _creatorNickName = user.Info.NickName;
-                    break;
-                case PeerRoomType.Title:
-                case PeerRoomType.Group:
-                    // official room can not create by user
-                    AddUser(client, password);
-                    break;
+                var groupIdStr = Name.Split("!", StringSplitOptions.RemoveEmptyEntries)[1];
+                if (!int.TryParse(groupIdStr, out var groupId))
+                {
+                    throw new Chat.Exception("Peer room group id is incorrect");
+                }
+                GroupId = groupId;
             }
             MessageBroker = new Redis.ChatMessageChannel(Name);
-            MessageBroker.StartSubscribe();
+            MessageBroker.Subscribe();
         }
     }
 }

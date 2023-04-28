@@ -59,14 +59,15 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 if (isChannelExistOnLocal)
                 {
                     _channel = ChannelManager.GetChannel(_request.ChannelName);
-                    _user = _channel.AddUser(_client, _request.Password ?? null);
                 }
                 else
                 {
                     // create channel
                     _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
-                    _user = _channel.GetUser(_client);
                 }
+                _user = _channel.AddUser(_client, _request.Password ?? null);
+                Aggregate.Channel.UpdateChannelCache(_user);
+                Aggregate.Channel.UpdatePeerRoomInfo(_user);
             }
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;
