@@ -11,10 +11,6 @@ namespace UniSpy.Server.Chat.Test
 {
     public class GameTest
     {
-        public GameTest()
-        {
-        }
-
         [Fact]
         public void Civilization4()
         {
@@ -38,7 +34,7 @@ namespace UniSpy.Server.Chat.Test
                 "PART #GSP!anno1701 :"
             };
             var client = (Client)MockObject.CreateClient();
-            
+
             foreach (var raw in rawRequests)
             {
                 new CmdSwitcher(client, raw).Handle();

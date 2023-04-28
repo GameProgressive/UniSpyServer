@@ -70,10 +70,10 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             switch (_request.Type)
             {
                 case MessageType.ChannelMessage:
-                    _channel.MultiCast(_user.ClientRef, _response, true);
+                    _channel.MultiCast(_user.Client, _response, true);
                     break;
                 case MessageType.UserMessage:
-                    _receiver.ClientRef.Send(_response);
+                    _receiver.Client.Send(_response);
                     break;
             }
         }

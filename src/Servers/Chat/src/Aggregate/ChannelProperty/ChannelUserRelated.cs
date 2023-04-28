@@ -156,9 +156,9 @@ namespace UniSpy.Server.Chat.Aggregate
             RemoveBindOnUserAndChannel(user);
         }
 
-        public bool IsUserExisted(ChannelUser user) => IsUserExisted(user.ClientRef);
+        public bool IsUserExisted(ChannelUser user) => IsUserExisted(user.Client);
         public bool IsUserExisted(IChatClient client) => Users.ContainsKey(client.Info.NickName);
-        public bool IsUserBanned(ChannelUser user) => IsUserBanned(user.ClientRef);
+        public bool IsUserBanned(ChannelUser user) => IsUserBanned(user.Client);
         private bool IsUserBanned(IChatClient client)
         {
             if (!BanList.ContainsKey(client.Info.NickName))
@@ -178,11 +178,11 @@ namespace UniSpy.Server.Chat.Aggregate
             {
                 if (user.IsChannelCreator)
                 {
-                    nicks += $"@{user.ClientRef.Info.NickName}";
+                    nicks += $"@{user.Client.Info.NickName}";
                 }
                 else
                 {
-                    nicks += user.ClientRef.Info.NickName;
+                    nicks += user.Client.Info.NickName;
                 }
 
                 if (!user.Equals(Users.Values.Last()))
@@ -217,7 +217,7 @@ namespace UniSpy.Server.Chat.Aggregate
                 {
                     continue;
                 }
-                user.ClientRef.Send(message);
+                user.Client.Send(message);
             }
         }
     }

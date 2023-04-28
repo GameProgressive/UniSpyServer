@@ -27,12 +27,15 @@ namespace UniSpy.Server.Chat.Aggregate
         [JsonProperty]
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; private set; }
+        /// <summary>
+        /// The client reference
+        /// </summary>
         [JsonIgnore]
-        public IChatClient ClientRef { get; private set; }
+        public IChatClient Client { get; private set; }
         [JsonIgnore]
-        public ClientInfo Info => ClientRef.Info;
+        public ClientInfo Info => Client.Info;
         [JsonIgnore]
-        public IConnection Connection => ClientRef.Connection;
+        public IConnection Connection => Client.Connection;
         /// <summary>
         /// The user key values storage
         /// </summary>
@@ -65,7 +68,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public ChannelUser() { }
         public ChannelUser(IChatClient client, Channel channel)
         {
-            ClientRef = client;
+            Client = client;
             Channel = channel;
             ServerId = client.Server.Id;
             RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;

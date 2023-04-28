@@ -97,7 +97,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             // when user leave channel we must broadcast leave message, whatever the room type is.
             // otherwise the other client will not delete this user in his client list
-            _channel.MultiCast(_user.ClientRef, _response, true);
+            _channel.MultiCast(_user.Client, _response, true);
         }
     }
 }
