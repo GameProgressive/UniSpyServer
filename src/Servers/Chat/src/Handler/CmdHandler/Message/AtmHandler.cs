@@ -3,7 +3,6 @@ using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Contract.Response.Message;
 using UniSpy.Server.Chat.Contract.Result.Message;
-using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
 {

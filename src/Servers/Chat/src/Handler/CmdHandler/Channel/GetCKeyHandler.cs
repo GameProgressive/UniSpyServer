@@ -4,7 +4,6 @@ using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
-using UniSpy.Server.Core.Abstraction.Interface;
 using System;
 using UniSpy.Server.Chat.Abstraction.Interface;
 

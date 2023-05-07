@@ -1,7 +1,6 @@
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
 using System.Threading.Tasks;
 using UniSpy.Server.Chat.Application;

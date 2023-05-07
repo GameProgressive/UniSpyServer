@@ -4,7 +4,6 @@ using UniSpy.Server.WebServer.Module.Auth.Abstraction;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.WebServer.Application;
 

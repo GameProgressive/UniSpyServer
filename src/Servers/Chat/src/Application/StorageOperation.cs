@@ -1,7 +1,7 @@
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
-using UniSpy.Server.Chat.Aggregate.Redis;
+using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Application
 {
@@ -9,41 +9,6 @@ namespace UniSpy.Server.Chat.Application
     {
         public static IStorageOperation Persistance = new StorageOperation();
         private static RedisClient _redisClient = new RedisClient();
-
-        public bool IsPeerLobby(string channelName)
-        {
-            // TODO! check the room name by search the name on the official room name in database
-            string[] buffer = channelName.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
-            if (buffer.Length != 3)
-            {
-                return false;
-            }
-            using (var db = new UniSpyContext())
-            {
-                var officialRoom = db.Games.Join(db.Grouplists, g => g.Gameid, gl => gl.Gameid, (g, gl) => new { g, gl }).FirstOrDefault(x => x.gl.Roomname == buffer[1]);
-                if (officialRoom is null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            // using (var client = new RedisClient())
-            // {
-
-            //     var peerRoom = client.Values.Where(x => x.GameName == buffer[1]).ToList();
-            //     if (buffer[2].Length > 2 && peerRoom.Count > 0)
-            //     {
-            //         return true;
-            //     }
-            //     else
-            //     {
-            //         return false;
-            //     }
-            // }
-        }
         public (int userId, int profileId, bool emailVerified, bool banned) NickAndEmailLogin(string nickName, string email, string passwordHash)
         {
             using (var db = new UniSpyContext())
@@ -101,11 +66,5 @@ namespace UniSpy.Server.Chat.Application
                         banned: result.First().banned);
             }
         }
-
-        public bool UpdateChannel(Aggregate.Channel channel) => _redisClient.SetValue(channel);
-        public void RemoveChannel(Aggregate.Channel channel) => _redisClient.DeleteKeyValue(channel);
-        public Aggregate.Channel GetChannelInfo(string channelName) => _redisClient.Context.First(c => c.Name == channelName);
-
-        public bool IsChannelExist(string channelName) => _redisClient.Context.Count(c => c.Name == channelName) != 0;
     }
 }

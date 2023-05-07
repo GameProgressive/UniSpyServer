@@ -4,7 +4,6 @@ using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
-using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -51,7 +50,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _channel.MultiCast(_client, _response);
             _channel.RemoveUser(_kickee);
             Aggregate.Channel.UpdateChannelCache(_user);
-            Aggregate.Channel.UpdatePeerRoomInfo(_user);
+            // Aggregate.Channel.UpdatePeerRoomInfo(_user);
         }
     }
 }

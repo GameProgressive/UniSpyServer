@@ -4,7 +4,7 @@ using UniSpy.Server.Chat.Error.IRC.Channel;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
-    public partial record Channel
+    public partial class Channel
     {
         public void VerifyPassword(string pass)
         {

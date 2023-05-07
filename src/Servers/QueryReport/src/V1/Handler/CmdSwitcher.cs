@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Misc;
 using UniSpy.Server.QueryReport.Application;

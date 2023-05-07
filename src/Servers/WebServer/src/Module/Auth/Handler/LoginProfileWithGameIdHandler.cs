@@ -1,14 +1,12 @@
 using System.Linq;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Request;
 using UniSpy.Server.WebServer.Module.Auth.Contract.Response;
-
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Database.DatabaseModel;
 using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Auth.Handler
 {
-    
+
     public sealed class LoginProfileWithGameIdHandler : LoginProfileHandler
     {
         private new LoginProfileWithGameIdRequest _request => (LoginProfileWithGameIdRequest)base._request;

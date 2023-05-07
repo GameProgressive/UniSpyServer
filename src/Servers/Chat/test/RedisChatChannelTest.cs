@@ -151,8 +151,9 @@ namespace UniSpy.Server.Chat.Test
             client.Info.NickName = "xiaojiuwo";
             var channel = ChannelManager.CreateChannel("xiaojiuwo", creator: client);
             var user = channel.GetUser(client);
-            var channelStr = JsonConvert.SerializeObject(channel);
-            var channelObj = JsonConvert.DeserializeObject<Aggregate.Channel>(channelStr);
+
+            var channelStr = JsonConvert.SerializeObject(channel.GetChannelCache());
+            var channelObj = JsonConvert.DeserializeObject<QueryReport.Aggregate.Redis.Channel.ChannelInfo>(channelStr);
         }
     }
 }

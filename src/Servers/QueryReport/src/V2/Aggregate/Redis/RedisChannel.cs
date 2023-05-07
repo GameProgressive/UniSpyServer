@@ -1,6 +1,5 @@
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Handler.CmdHandler;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;

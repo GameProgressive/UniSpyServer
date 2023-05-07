@@ -1,5 +1,4 @@
 using UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceConnectionManager.Application;
 using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 

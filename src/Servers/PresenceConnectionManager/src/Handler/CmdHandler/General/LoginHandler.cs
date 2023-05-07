@@ -6,7 +6,6 @@ using UniSpy.Server.PresenceConnectionManager.Contract.Result;
 using UniSpy.Server.PresenceConnectionManager.Structure;
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.PresenceSearchPlayer.Exception.Login;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceConnectionManager.Application;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General

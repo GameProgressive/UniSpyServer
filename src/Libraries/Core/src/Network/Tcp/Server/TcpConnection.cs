@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;

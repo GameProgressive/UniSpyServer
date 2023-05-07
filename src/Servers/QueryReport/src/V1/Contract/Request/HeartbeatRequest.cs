@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UniSpy.Server.QueryReport.V1.Abstraction.BaseClass;
 
 

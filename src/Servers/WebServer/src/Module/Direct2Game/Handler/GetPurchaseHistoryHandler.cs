@@ -2,12 +2,11 @@ using UniSpy.Server.WebServer.Abstraction;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response;
 using UniSpy.Server.WebServer.Module.Direct2Game.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler
 {
-    
+
     internal class GetPurchaseHistoryHandler : CmdHandlerBase
     {
         protected new GetPurchaseHistoryRequest _request => (GetPurchaseHistoryRequest)base._request;

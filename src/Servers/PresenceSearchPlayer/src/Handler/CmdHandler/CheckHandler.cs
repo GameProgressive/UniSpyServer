@@ -5,7 +5,6 @@ using UniSpy.Server.PresenceSearchPlayer.Aggregate.Exception;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Response;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
 {

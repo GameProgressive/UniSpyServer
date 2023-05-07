@@ -3,7 +3,7 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
-    public partial record Channel
+    public partial class Channel
     {
         [JsonProperty]
         public ChannelMode Mode { get; private set; } = new ChannelMode();

@@ -64,7 +64,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         /// </summary>
         public void GameSpySDK20221116()
         {
-            new RedisClient().Db.Execute("FLUSHALL");
+            new RedisClient().Db.Execute("FLUSHDB");
             var clients = new Dictionary<string, IClient>()
             {
                 {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
@@ -112,7 +112,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         /// </summary>
         public void NatPunchStrategy20221117()
         {
-            new RedisClient().Db.Execute("FLUSHALL");
+            new RedisClient().Db.Execute("FLUSHDB");
             var clients1 = new Dictionary<string, IClient>()
             {
                 {"client1gp",MockObject.CreateClient("192.168.0.109",1111)},
@@ -201,7 +201,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         public void NatFullConeTest()
         {
             // clean all stuff in database
-            new RedisClient().Db.Execute("FLUSHALL");
+            new RedisClient().Db.Execute("FLUSHDB");
 
             var client = MockObject.CreateClient("192.168.1.2", 9999);
             var server = MockObject.CreateClient("192.168.1.3", 9999);
@@ -235,7 +235,7 @@ namespace UniSpy.Server.NatNegotiation.Test
         public void NatConePortIncrement()
         {
             // clean all stuff in database
-            new RedisClient().Db.Execute("FLUSHALL");
+            new RedisClient().Db.Execute("FLUSHDB");
 
             var client = MockObject.CreateClient("192.168.1.2", 53935);
             var server = MockObject.CreateClient("192.168.1.3", 53935);

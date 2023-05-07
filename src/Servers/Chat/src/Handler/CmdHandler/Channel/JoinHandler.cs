@@ -5,9 +5,9 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Error.IRC.Channel;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -47,7 +47,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             }
             if (_client.Info.GameName == null)
             {
-                throw new Error.IRC.Channel.NoSuchChannelException("Game name is required for join a channel", _request.ChannelName);
+                throw new NoSuchChannelException("Game name is required for join a channel", _request.ChannelName);
             }
         }
 
@@ -59,15 +59,16 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 if (isChannelExistOnLocal)
                 {
                     _channel = ChannelManager.GetChannel(_request.ChannelName);
+                    _user = _channel.AddUser(_client, _request.Password ?? null);
                 }
                 else
                 {
                     // create channel
                     _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
+                    _user = _channel.AddUser(_client, _request.Password ?? null, true, true);
                 }
-                _user = _channel.AddUser(_client, _request.Password ?? null);
                 Aggregate.Channel.UpdateChannelCache(_user);
-                Aggregate.Channel.UpdatePeerRoomInfo(_user);
+                // Aggregate.Channel.UpdatePeerRoomInfo(_user);
             }
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;

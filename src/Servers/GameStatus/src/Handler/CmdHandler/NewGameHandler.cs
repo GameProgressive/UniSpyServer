@@ -1,7 +1,6 @@
 using UniSpy.Server.GameStatus.Abstraction.BaseClass;
 using UniSpy.Server.GameStatus.Application;
 using UniSpy.Server.GameStatus.Contract.Request;
-using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.GameStatus.Handler.CmdHandler
 {

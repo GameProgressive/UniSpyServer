@@ -5,7 +5,6 @@ using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
 using UniSpy.Server.NatNegotiation.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.NatNegotiation.Application;
 
 namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler

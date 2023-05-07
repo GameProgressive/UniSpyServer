@@ -3,7 +3,6 @@ using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.ServerBrowser.V2.Contract.Response;
 using UniSpy.Server.ServerBrowser.V2.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler

@@ -4,7 +4,6 @@ using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Response;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Result;
 using System.Linq;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceSearchPlayer.Application;
 
 

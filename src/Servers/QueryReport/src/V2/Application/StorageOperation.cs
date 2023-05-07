@@ -4,7 +4,6 @@ using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 using System.Linq;
 using UniSpy.Server.QueryReport.V2.Aggregate.Redis;
 using UniSpy.Server.Core.Database.DatabaseModel;
-using UniSpy.Server.QueryReport.V2.Aggregate.Redis.PeerGroup;
 using System.Net;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 
@@ -13,7 +12,6 @@ namespace UniSpy.Server.QueryReport.V2.Application
     public sealed class StorageOperation : IStorageOperation
     {
         private static QueryReport.V2.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Aggregate.Redis.GameServer.RedisClient();
-        private static QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient _peerGroupRedisClient = new QueryReport.V2.Aggregate.Redis.PeerGroup.RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();
         public static NatNegChannel NatNegChannel = new NatNegChannel();
         ///<summary>
@@ -25,77 +23,6 @@ namespace UniSpy.Server.QueryReport.V2.Application
 
         public void RemoveGameServer(GameServerInfo info) => _gameServerRedisClient.DeleteKeyValue(info);
         public void UpdateGameServer(GameServerInfo info) => _ = _gameServerRedisClient.SetValueAsync(info);
-
-        public void InitPeerRoomsInfo(string gameName = null)
-        {
-
-            var peerRooms = GetGroupList(gameName);
-            foreach (var room in peerRooms)
-            {
-                if (!IsPeerRoomExist(room.Game.Gamename, room.Roomname))
-                {
-                    var roomInfo = new PeerRoomInfo(room.Game.Gamename, room.Groupid, room.Roomname);
-                    UpdatePeerRoomInfo(roomInfo);
-                }
-            }
-        }
-        public void UpdatePeerRoomInfo(PeerRoomInfo info) => _peerGroupRedisClient.SetValue(info);
-        public bool IsPeerRoomExist(string gameName, string roomName) => _peerGroupRedisClient.Context.Count(r => r.GameName == gameName && r.RoomName == roomName) == 1;
-        public List<PeerRoomInfo> GetPeerRoomsInfo(string gameName, int? groupId = null, string roomName = null)
-        {
-            if (groupId is not null && roomName is not null)
-            {
-                return _peerGroupRedisClient.Context.Where(r => r.GameName == gameName && r.GroupId == groupId && r.RoomName == roomName).ToList();
-            }
-            else if (groupId is not null)
-            {
-                return _peerGroupRedisClient.Context.Where(r => r.GameName == gameName && r.GroupId == groupId).ToList();
-            }
-            else if (roomName is not null)
-            {
-                return _peerGroupRedisClient.Context.Where(r => r.GameName == gameName && r.RoomName == roomName).ToList();
-            }
-            else
-            {
-                return _peerGroupRedisClient.Context.Where(r => r.GameName == gameName).ToList();
-            }
-        }
-        public List<Grouplist> GetGroupList(string gameName = null)
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from g in db.Games
-                             join gl in db.Grouplists on g.Gameid equals gl.Gameid
-                             where g.Gamename == gameName
-                             select new Grouplist
-                             {
-                                 Game = g,
-                                 Gameid = g.Gameid,
-                                 Groupid = gl.Groupid,
-                                 Roomname = gl.Roomname
-                             };
-
-                return result.ToList();
-            }
-        }
-        // private List<Grouplist> GetGroupList()
-        // {
-        //     using (var db = new UniSpyContext())
-        //     {
-        //         var result = from g in db.Games
-        //                      join gl in db.Grouplists on g.Gameid equals gl.Gameid
-        //                      orderby gl.Roomname
-        //                      select new Grouplist
-        //                      {
-        //                          Game = g,
-        //                          Gameid = g.Gameid,
-        //                          Groupid = gl.Groupid,
-        //                          Roomname = gl.Roomname
-        //                      };
-
-        //         return result.ToList();
-        //     }
-        // }
         public List<GameServerInfo> GetGameServerInfos(string gameName)
         {
             return _gameServerRedisClient.Context.Where(x => x.GameName == gameName).ToList();
@@ -107,10 +34,18 @@ namespace UniSpy.Server.QueryReport.V2.Application
             {
                 var result = from g in db.Games
                              join gl in db.Grouplists on g.Gameid equals gl.Gameid
-                             group gl by g.Gamename into dd
-                             select new KeyValuePair<string, List<Grouplist>>(dd.Key, dd.ToList());
+                             select new Grouplist
+                             {
+                                 Game = g,
+                                 Gameid = g.Gameid,
+                                 Groupid = gl.Groupid,
+                                 Roomname = gl.Roomname
+                             };
+                var result2 = from g in result
+                              group g by g.Game.Gamename into dd
+                              select new KeyValuePair<string, List<Grouplist>>(dd.Key, dd.ToList());
 
-                var data = result.ToDictionary(x => x.Key, x => x.Value);
+                var data = result2.ToDictionary(x => x.Key, x => x.Value);
                 return data;
             }
         }

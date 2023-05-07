@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using UniSpy.Server.Chat.Application;
+using UniSpy.LinqToRedis;
+using UniSpy.Server.Core.Config;
+using UniSpy.Server.Core.Extension.Redis;
 
-namespace UniSpy.Server.Chat.Aggregate
+namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel
 {
+
     public static class PeerRoom
     {
         /// <summary>
@@ -20,20 +25,26 @@ namespace UniSpy.Server.Chat.Aggregate
         /// </summary>
         public const string GroupRoomPrefix = "#GPG";
         public const char TitleSeperator = '!';
-
+        /// <summary>
+        /// Group room #GPG!622
+        /// Staging room #GSP!worms3!Ml4lz344lM
+        /// Normal room #islanbul
+        /// </summary>
+        /// <param name="channelName"></param>
+        /// <returns></returns>
         public static PeerRoomType GetRoomType(string channelName)
         {
-            var c = StorageOperation.Persistance.IsPeerLobby(channelName);
-
-            if (IsGroupRoom(channelName) || c)
+            if (IsGroupRoom(channelName))
             {
+                // var c = StorageOperation.Persistance.IsPeerLobby(channelName);
+
                 return PeerRoomType.Group;
             }
-            else if (IsStagingRoom(channelName) || c)
+            else if (IsStagingRoom(channelName))
             {
                 return PeerRoomType.Staging;
             }
-            else if (IsTitleRoom(channelName) || c)
+            else if (IsTitleRoom(channelName))
             {
                 return PeerRoomType.Title;
             }
@@ -65,20 +76,46 @@ namespace UniSpy.Server.Chat.Aggregate
     public enum PeerRoomType
     {
         /// <summary>
-        /// the first channel that a connected user joined at first time
+        /// The main room for a game.
         /// </summary>
         Title,
         /// <summary>
-        /// User created room for gaming
+        /// A room where players meet before starting a game.
         /// </summary>
         Staging,
         /// <summary>
-        /// User created room which can be seperated by categories
+        /// A room which is, in general, for a particular type of gameplay (team, dm, etc.).
         /// </summary>
         Group,
         /// <summary>
-        /// Testing room
+        /// The normal room
         /// </summary>
         Normal
+    }
+    /// <summary>
+    /// The channel info that stored in redis
+    /// </summary>
+    public record ChannelInfo : RedisKeyValueObject
+    {
+        [RedisKey]
+        public Guid? ServerId { get; set; }
+        [RedisKey]
+        public string Name { get; set; }
+        [RedisKey]
+        public string PreviousJoinedChannel { get; set; }
+        public PeerRoomType? RoomType { get; set; }
+        public int? GroupId { get; set; }
+        public string RoomName { get; set; }
+        public string GameName { get; set; }
+        public int MaxNumberUser { get; set; }
+        public DateTime CreateTime { get; set; }
+        public List<string> Users { get; set; }
+        public ChannelInfo() : base(TimeSpan.FromHours(1)) { }
+    }
+    public class RedisClient : LinqToRedis.RedisClient<ChannelInfo>
+    {
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.ChatChannel)
+        {
+        }
     }
 }

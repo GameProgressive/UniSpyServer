@@ -5,6 +5,7 @@ using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Message;
+using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 using Xunit;
 
 namespace UniSpy.Server.Chat.Test.Channel
@@ -12,10 +13,19 @@ namespace UniSpy.Server.Chat.Test.Channel
     public class ChannelHandlerTest
     {
         [Fact]
+        public void RoomTypeTest()
+        {
+            Assert.True(PeerRoom.GetRoomType("#GPG!622") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Group);
+            Assert.True(PeerRoom.GetRoomType("#GSP!worms3!Ml4lz344lM") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Staging);
+            Assert.True(PeerRoom.GetRoomType("#islanbul") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Normal);
+        }
+        [Fact]
         public void JoinHandleTest()
         {
             var client1 = (Client)MockObject.CreateClient(port: 1234);
+            client1.Info.GameName = "worm3";
             var client2 = (Client)MockObject.CreateClient(port: 1235);
+            client2.Info.GameName = "worm3";
             SingleJoinTest(client1, "unispy1", "unispy1", "#GSP!room!test1");
             SingleJoinTest(client2, "unispy2", "unispy2", "#GSP!room!test1");
         }
@@ -55,7 +65,7 @@ namespace UniSpy.Server.Chat.Test.Channel
         {
             var client = (Client)MockObject.CreateClient(port: 1238);
 
-            SingleJoinTest(client, "spyguy6", "spyguy6","#GSP!room!test14");
+            SingleJoinTest(client, "spyguy6", "spyguy6", "#GSP!room!test14");
             var request = new SetCKeyRequest(ChannelRequests.SetCKey);
             var handler = new SetCKeyHandler(client, request);
             handler.Handle();

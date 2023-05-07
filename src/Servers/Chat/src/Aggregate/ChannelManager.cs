@@ -26,7 +26,8 @@ namespace UniSpy.Server.Chat.Aggregate
         public static void RemoveChannel(string name)
         {
             Channels.TryRemove(name, out var chan);
-            Application.StorageOperation.Persistance.RemoveChannel(chan);
+            var chanInfo = chan.GetChannelCache();
+            QueryReport.Application.StorageOperation.RemoveChannel(chanInfo);
         }
         public static Channel CreateChannel(string name, string password = null, IChatClient creator = null)
         {

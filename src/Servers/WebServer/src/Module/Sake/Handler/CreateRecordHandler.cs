@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler

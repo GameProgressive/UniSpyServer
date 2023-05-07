@@ -28,7 +28,7 @@ namespace UniSpy.Server.Chat.Application
         [JsonIgnore]
         public string IRCPrefix => $"{NickName}!{UserName}@{Chat.Abstraction.BaseClass.ResponseBase.ServerDomain}";
         public bool IsRemoteClient { get; set; }
-        public string PreviousJoinedChannel { get; set; }
+        public string PreviousJoinedChannel { get; set; } = "";
         /// <summary>
         /// Global user key values
         /// </summary>

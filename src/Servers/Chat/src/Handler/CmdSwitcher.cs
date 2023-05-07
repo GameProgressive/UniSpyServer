@@ -10,7 +10,6 @@ using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Message;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 
 namespace UniSpy.Server.Chat.Handler
 {

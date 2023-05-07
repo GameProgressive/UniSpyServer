@@ -8,7 +8,6 @@ using UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile;
 using UniSpy.Server.PresenceSearchPlayer.Exception.General;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Application;
 

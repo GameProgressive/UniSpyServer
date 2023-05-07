@@ -1,6 +1,5 @@
 using UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V2.Contract.Request;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;

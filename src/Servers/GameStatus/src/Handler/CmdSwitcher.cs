@@ -5,7 +5,6 @@ using UniSpy.Server.GameStatus.Contract.Request;
 using UniSpy.Server.GameStatus.Handler.CmdHandler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.GameStatus.Application;
 

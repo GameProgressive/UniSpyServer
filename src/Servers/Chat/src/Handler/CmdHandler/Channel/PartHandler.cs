@@ -5,8 +5,8 @@ using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -73,7 +73,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                         {
                             case PeerRoomType.Normal:
                             case PeerRoomType.Staging:
-                                Application.StorageOperation.Persistance.RemoveChannel(_channel);
+                                var chanInfo = _channel.GetChannelCache();
+                                QueryReport.Application.StorageOperation.RemoveChannel(chanInfo);
                                 break;
                         }
                     }
@@ -82,10 +83,9 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     // we need always remove the connection in leaver and channel
                     _channel.RemoveUser(_user);
                     Aggregate.Channel.UpdateChannelCache(_user);
-                    Aggregate.Channel.UpdatePeerRoomInfo(_user);
+                    // Aggregate.Channel.UpdatePeerRoomInfo(_user);
                     break;
             }
-            _client.Info.PreviousJoinedChannel = _request.ChannelName;
         }
 
         protected override void ResponseConstruct()

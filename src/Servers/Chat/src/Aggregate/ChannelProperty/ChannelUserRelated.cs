@@ -5,10 +5,11 @@ using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
-    public partial record Channel
+    public partial class Channel
     {
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|

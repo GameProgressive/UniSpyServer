@@ -1,12 +1,10 @@
 using System;
 using UniSpy.Server.QueryReport.V2.Abstraction.BaseClass;
-using UniSpy.Server.QueryReport.V2.Application;
 using UniSpy.Server.QueryReport.V2.Enumerate;
 using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 using UniSpy.Server.QueryReport.V2.Contract.Request;
 using UniSpy.Server.QueryReport.V2.Contract.Response;
 using UniSpy.Server.QueryReport.V2.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.QueryReport.Application;
 
 namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
@@ -35,18 +33,18 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
             _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
             UpdateGameServerByState();
             // we publish message to notice all sb server to send adhoc message to their clients.
-            StorageOperation.HeartbeatChannel.PublishMessage(_gameServerInfo);
+            QueryReport.V2.Application.StorageOperation.HeartbeatChannel.PublishMessage(_gameServerInfo);
         }
 
         private void UpdateGameServerByState()
         {
             if (_gameServerInfo.ServerStatus == GameServerStatus.Shutdown)
             {
-                StorageOperation.Persistance.RemoveGameServer(_gameServerInfo);
+                QueryReport.V2.Application.StorageOperation.Persistance.RemoveGameServer(_gameServerInfo);
             }
             else
             {
-                StorageOperation.Persistance.UpdateGameServer(_gameServerInfo);
+                QueryReport.V2.Application.StorageOperation.Persistance.UpdateGameServer(_gameServerInfo);
             }
         }
 

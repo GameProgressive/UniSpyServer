@@ -2,12 +2,11 @@ using System.Linq;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Result;
-using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.WebServer.Application;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Handler
 {
-    
+
     public class GetMyRecordsHandler : CmdHandlerBase
     {
         private new GetMyRecordsRequest _request => (GetMyRecordsRequest)base._request;

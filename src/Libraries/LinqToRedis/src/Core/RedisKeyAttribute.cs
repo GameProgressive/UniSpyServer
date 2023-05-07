@@ -7,7 +7,7 @@ namespace UniSpy.LinqToRedis
     /// The key must be simple object, which mean its ToString method can out put a valid string
     /// Such as int, string, DateTime, Guid, IPEndPoint, etc.
     /// </summary>
-    [AttributeUsage(validOn: AttributeTargets.Property)]
+    [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Field)]
     public class RedisKeyAttribute : Attribute
     {
         public RedisKeyAttribute() { }
