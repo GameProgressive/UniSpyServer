@@ -8,7 +8,6 @@ using UniSpy.Server.ServerBrowser.V2.Contract.Result;
 using UniSpy.Server.ServerBrowser.V2.Contract.Request;
 using UniSpy.Server.QueryReport.Aggregate.Redis.PeerGroup;
 using System.Collections.Generic;
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
 {
@@ -68,33 +67,35 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
             // first get the peer room in memory, if there is no such game we do not continue
             if (!QueryReport.Application.StorageOperation.PeerGroupList.ContainsKey(_request.GameName))
             {
-                return;
+                throw new ServerBrowser.Exception($"Invalid game name: {_request.GameName}.");
             }
 
-            // then we get the peer rooms in redis
             // Game name is unique in redis database
-            // var peerRooms = QueryReport.V2.Application.StorageOperation.Persistance.GetPeerRoomsInfo(_request.GameName);
             var grouplist = QueryReport.Application.StorageOperation.PeerGroupList[_request.GameName];
             // we do not create peer room cache on redis, we just send peer room info to client
-            var temp = new List<PeerRoomInfo>();
+            var tempInfos = new List<PeerRoomInfo>();
             foreach (var group in grouplist)
             {
                 // we create room info, set the room properties to default
                 var roomInfo = new PeerRoomInfo(group.Game.Gamename, group.Groupid, group.Roomname);
-                //!在redis中筛选出groupid的channelInfo = groupRooms
-                //!在redis中筛选出PreviousChannelName是groupid的channelInfo并且类型为staging = stagingRooms
-                //!NumberOfPlayingPlayers = stagingRooms.Sum()
-                //!NumberOfWaitingPlayers = groupRooms.Sum()
-                //!NumberOfPlayers = NumberOfPlayingPlayers + NumberOfWaitingPlayers
+                tempInfos.Add(roomInfo);
+                // get the channels info from redis where groupid equals above
                 var groupRooms = QueryReport.Application.StorageOperation.GetPeerGroupChannel(group.Groupid);
-                var stagingRooms = QueryReport.Application.StorageOperation.GetPeerStagingChannel(group.Game.Gamename, group.Gameid);
-                roomInfo.NumberOfWaitingPlayers = groupRooms.Sum(r => r.Users.Count);
-                roomInfo.NumberOfPlayingPlayers = stagingRooms.Sum(r => r.Users.Count);
+                // get the channels info from redis where created under gamename and groupid above
+                var stagingRooms = QueryReport.Application.StorageOperation.GetPeerStagingChannel(group.Game.Gamename, group.Groupid);
+                if (groupRooms.Count != 0)
+                {
+                    roomInfo.NumberOfWaitingPlayers = groupRooms.Sum(r => r.Users.Count);
+                }
+                if (stagingRooms.Count != 0)
+                {
+                    roomInfo.NumberOfPlayingPlayers = stagingRooms.Sum(r => r.Users.Count);
+                    roomInfo.NumberOfGames = stagingRooms.Count;
+                }
                 roomInfo.NumberOfPlayers = roomInfo.NumberOfWaitingPlayers + roomInfo.NumberOfPlayingPlayers;
-                roomInfo.NumberOfGames = stagingRooms.Count;
                 // if there did not have any rooms in redis, the properties in roominfo stay default
             }
-            ((P2PGroupRoomListResult)_result).PeerRoomsInfo = temp;
+            ((P2PGroupRoomListResult)_result).PeerRoomsInfo = tempInfos;
         }
         private void P2PServerMainList()
         {
