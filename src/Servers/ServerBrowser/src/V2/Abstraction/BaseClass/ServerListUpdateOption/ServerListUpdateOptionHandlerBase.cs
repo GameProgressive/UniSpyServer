@@ -36,7 +36,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Abstraction.BaseClass
             // initialize sb encryption
             if (_client.Crypto is null)
             {
-                _client.Crypto = new SBCrypt(
+                _client.Crypto = new EnctypeX(
                     _client.Info.GameSecretKey,
                     _client.Info.ClientChallenge);
             }

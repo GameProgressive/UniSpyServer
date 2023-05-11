@@ -5,11 +5,7 @@ namespace UniSpy.Server.Chat.Error.IRC.General
     public class IRCException : UniSpy.Exception, IResponse
     {
         public string ErrorCode { get; private set; }
-        // public virtual string ErrorResponse => IRCReplyBuilder.Build(ErrorCode);
-
-        object IResponse.SendingBuffer => this.SendingBuffer;
-
-        public virtual string SendingBuffer { get; protected set; }
+        public object SendingBuffer { get; protected set; }
 
         public IRCException() { }
 

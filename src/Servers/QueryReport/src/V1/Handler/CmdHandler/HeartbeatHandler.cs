@@ -9,7 +9,6 @@ namespace UniSpy.Server.QueryReport.V1.Handler.CmdHandler
 {
     public sealed class HeartbeatHandler : CmdHandlerBase
     {
-
         private new HeartbeatRequest _request => (HeartbeatRequest)base._request;
         public HeartbeatHandler(Client client, HeartbeatRequest request) : base(client, request)
         {

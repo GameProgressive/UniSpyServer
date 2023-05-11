@@ -8,16 +8,5 @@ namespace UniSpy.Server.QueryReport.V1.Abstraction.BaseClass
         public CmdHandlerBase(Client client, RequestBase request) : base(client, request)
         {
         }
-        protected override void HandleException(System.Exception ex)
-        {
-            if (ex is QueryReport.Exception)
-            {
-                _client.Send((QueryReport.Exception)ex);
-            }
-            else
-            {
-                base.HandleException(ex);
-            }
-        }
     }
 }

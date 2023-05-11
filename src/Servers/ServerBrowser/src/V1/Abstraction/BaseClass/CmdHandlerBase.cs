@@ -8,5 +8,13 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         public CmdHandlerBase(Client client, RequestBase request) : base(client, request)
         {
         }
+        protected override void HandleException(System.Exception ex)
+        {
+            if (ex is ServerBrowser.Exception)
+            {
+                _client.Send((ServerBrowser.Exception)ex);
+            }
+            base.HandleException(ex);
+        }
     }
 }

@@ -23,10 +23,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
             {
                 _client.Send(ex as IResponse);
             }
-            else
-            {
-                base.HandleException(ex);
-            }
+            base.HandleException(ex);
         }
     }
 }
