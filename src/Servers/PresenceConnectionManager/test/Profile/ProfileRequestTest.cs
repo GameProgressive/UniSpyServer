@@ -59,7 +59,17 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
             Assert.Equal("spyguy", request.UniqueNick);
             Assert.Equal((int)0, request.PartnerId);
         }
+        [Fact]
+        public void UpdateProfile()
+        {
+            // Given
+            var crysisWarsRaw = @"\updatepro\\sesskey\1111\countrycode\DE\birthday\168232912\partnerid\0\final\";
+            var request = new UpdateProfileRequest(crysisWarsRaw);
+            request.Parse();
+            // When
 
+            // Then
+        }
         //TODO: publicmasks doesn't work
         /*[Fact]
         public void UpdatePro()

@@ -149,17 +149,17 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Request
                 PartnerID = partnerid;
             }
 
-            if (!RequestKeyValues.ContainsKey("nick"))
+            if (RequestKeyValues.ContainsKey("nick"))
             {
-                throw new GPParseException("nickname is missing.");
+                // throw new GPParseException("nickname is missing.");
+                Nick = RequestKeyValues["nick"];
             }
-            Nick = RequestKeyValues["nick"];
 
-            if (!RequestKeyValues.ContainsKey("uniquenick"))
+            if (RequestKeyValues.ContainsKey("uniquenick"))
             {
-                throw new GPParseException("uniquenick is missing.");
+                // throw new GPParseException("uniquenick is missing.");
+                Uniquenick = RequestKeyValues["uniquenick"];
             }
-            Uniquenick = RequestKeyValues["uniquenick"];
         }
     }
 }

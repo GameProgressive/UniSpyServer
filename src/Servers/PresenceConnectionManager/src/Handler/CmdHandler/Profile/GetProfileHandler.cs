@@ -20,9 +20,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         }
         protected override void DataOperation()
         {
-            var result = StorageOperation.Persistance.GetProfileInfos(_request.ProfileId, _client.Info.SubProfileInfo.NamespaceId);
+            _result.UserProfile = StorageOperation.Persistance.GetProfileInfos(_request.ProfileId, _client.Info.SubProfileInfo.NamespaceId);
 
-            if (result is null)
+            if (_result.UserProfile is null)
             {
                 throw new GPDatabaseException($"No profile of profileid:{_request.ProfileId} found in database.");
             }

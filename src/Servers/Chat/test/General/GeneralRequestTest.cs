@@ -118,6 +118,11 @@ namespace UniSpy.Server.Chat.Test.General
             var request = new NickRequest(GeneralRequests.Nick);
             request.Parse();
             Assert.Equal("spyguy", request.NickName);
+
+            // some game just use chat to authenticate do not use chat server to chat
+            request = new NickRequest("NICK *\r\n");
+            request.Parse();
+            Assert.Equal("*", request.NickName);
         }
 
         [Fact(Skip = "No reqeust")]
@@ -184,6 +189,11 @@ namespace UniSpy.Server.Chat.Test.General
             Assert.Equal("127.0.0.1", request.Hostname);
             Assert.Equal("peerchat.unispy.org", request.ServerName);
             Assert.Equal("spyguy2", request.Name);
+
+            request = new UserRequest("USER  127.0.0.1 peerchat.gamespy.com :");
+            request.Parse();
+            Assert.Equal("127.0.0.1", request.Hostname);
+            Assert.Equal("peerchat.gamespy.com", request.ServerName);
         }
 
         [Fact]
