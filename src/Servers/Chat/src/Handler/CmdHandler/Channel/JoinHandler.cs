@@ -8,6 +8,7 @@ using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Error.IRC.Channel;
+using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -65,7 +66,18 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 {
                     // create channel
                     _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
-                    _user = _channel.AddUser(_client, _request.Password ?? null, true, true);
+                    // we need to check whether this channel is gamespy official channel
+                    switch (_channel.RoomType)
+                    {
+                        case PeerRoomType.Title:
+                        case PeerRoomType.Staging:
+                        case PeerRoomType.Group:
+                            _user = _channel.AddUser(_client, _request.Password ?? null);
+                            break;
+                        case PeerRoomType.Normal:
+                            _user = _channel.AddUser(_client, _request.Password ?? null, true, true);
+                            break;
+                    }
                 }
                 Aggregate.Channel.UpdateChannelCache(_user);
                 // Aggregate.Channel.UpdatePeerRoomInfo(_user);

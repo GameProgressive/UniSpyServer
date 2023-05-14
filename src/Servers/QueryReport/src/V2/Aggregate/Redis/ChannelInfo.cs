@@ -56,20 +56,20 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel
         private static bool IsStagingRoom(string channelName)
         {
             var a = channelName.Count(c => c == TitleSeperator) == 2 ? true : false;
-            var b = channelName.StartsWith(StagingRoomPrefix) ? true : false;
+            var b = channelName.StartsWith(StagingRoomPrefix, StringComparison.CurrentCultureIgnoreCase) ? true : false;
             return a && b;
         }
         private static bool IsTitleRoom(string channelName)
         {
             var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(TitleRoomPrefix) ? true : false;
+            var b = channelName.StartsWith(TitleRoomPrefix, StringComparison.CurrentCultureIgnoreCase) ? true : false;
             return a && b;
         }
         private static bool IsGroupRoom(string channelName)
         {
 
             var a = channelName.Count(c => c == TitleSeperator) == 1 ? true : false;
-            var b = channelName.StartsWith(GroupRoomPrefix) ? true : false;
+            var b = channelName.StartsWith(GroupRoomPrefix, StringComparison.CurrentCultureIgnoreCase) ? true : false;
             return a && b;
         }
     }

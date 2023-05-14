@@ -22,7 +22,7 @@ namespace UniSpy.Server.Chat.Aggregate
         /// Channel key values
         /// </summary>
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
-        public PeerRoomType RoomType { get; private set; }
+        public PeerRoomType? RoomType { get; private set; }
         public string Password { get; private set; }
         public string Topic { get; set; }
         public Redis.ChatMessageChannel MessageBroker { get; private set; }
@@ -38,14 +38,18 @@ namespace UniSpy.Server.Chat.Aggregate
             RoomType = PeerRoom.GetRoomType(Name);
             GameName = client.Info.GameName;
             PreviousJoinedChannel = client.Info.PreviousJoinedChannel;
-            if (RoomType == PeerRoomType.Group)
+            switch (RoomType)
             {
-                GetGroupId();
-                GetPeerRoomName();
-            }
-            if (RoomType == PeerRoomType.Staging)
-            {
-                GetStagingRoomName();
+                case PeerRoomType.Group:
+                    GetGroupId();
+                    GetPeerRoomName();
+                    break;
+                case PeerRoomType.Staging:
+                    GetStagingRoomName();
+                    break;
+                case PeerRoomType.Title:
+                    GetTitileRoomName();
+                    break;
             }
             MessageBroker = new Redis.ChatMessageChannel(Name);
             MessageBroker.Subscribe();
@@ -76,5 +80,6 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             RoomName = Name.Split('!', StringSplitOptions.RemoveEmptyEntries).Last();
         }
+        private void GetTitileRoomName() => GetStagingRoomName();
     }
 }
