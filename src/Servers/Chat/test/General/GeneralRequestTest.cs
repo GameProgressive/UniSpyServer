@@ -118,11 +118,6 @@ namespace UniSpy.Server.Chat.Test.General
             var request = new NickRequest(GeneralRequests.Nick);
             request.Parse();
             Assert.Equal("spyguy", request.NickName);
-
-            // some game just use chat to authenticate do not use chat server to chat
-            request = new NickRequest("NICK *\r\n");
-            request.Parse();
-            Assert.Equal("*", request.NickName);
         }
 
         [Fact(Skip = "No reqeust")]

@@ -5,6 +5,7 @@ using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -22,14 +23,12 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             var clientInfos = ClientManager.GetAllClientInfo();
 
 
-            if(_request.NickName == "*")
+            if (_request.NickName == "*")
             {
-                validNickName = System.Guid.NewGuid().ToString();
-                throw new NickNameInUseException(
-                $"The nick name: {_request.NickName} is already in use",
-                _request.NickName,
-                validNickName);
+                //client is only authenticating with chat, we just sign a valid name to it.
+                _client.Info.NickName = System.Guid.NewGuid().ToString();
             }
+
             if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)
             {
                 _client.Info.NickName = _request.NickName;

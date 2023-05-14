@@ -10,11 +10,11 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         }
         protected override void HandleException(System.Exception ex)
         {
+            base.HandleException(ex);
             if (ex is ServerBrowser.Exception)
             {
                 _client.Send((ServerBrowser.Exception)ex);
             }
-            base.HandleException(ex);
         }
     }
 }

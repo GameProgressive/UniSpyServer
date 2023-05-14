@@ -21,7 +21,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             switch (_request.RequestType)
             {
                 // We get user nick name then get channel modes
-                case ModeRequestType.GetChannelUserModes:
+                case ModeRequestType.GetChannelAndUserModes:
                     _result.JoinerNickName = _request.NickName;
                     goto case ModeRequestType.GetChannelModes;
                 case ModeRequestType.GetChannelModes:
@@ -39,7 +39,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             // we only response to get channel modes
             switch (_request.RequestType)
             {
-                case ModeRequestType.GetChannelUserModes:
+                case ModeRequestType.GetChannelAndUserModes:
                 case ModeRequestType.GetChannelModes:
                     _response = new ModeResponse(_request, _result);
                     break;

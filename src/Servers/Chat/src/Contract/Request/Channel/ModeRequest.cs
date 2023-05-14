@@ -56,7 +56,7 @@ namespace UniSpy.Server.Chat.Contract.Request.Channel
     public enum ModeRequestType
     {
         GetChannelModes,
-        GetChannelUserModes,
+        GetChannelAndUserModes,
         SetChannelModes
 
     }

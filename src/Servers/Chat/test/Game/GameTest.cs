@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Application;
+using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
@@ -258,6 +260,26 @@ namespace UniSpy.Server.Chat.Test
             foreach (var item in requests)
             {
                 ((ITestClient)(item.Key)).TestReceived(UniSpyEncoding.GetBytes(item.Value));
+            }
+        }
+
+        [Fact]
+        public void CrysisWars20230514()
+        {
+            // Given
+            // some game just use chat to authenticate do not use chat server to chat
+            var client = MockObject.CreateClient();
+            var requests = new List<string>()
+            {
+                "CRYPT des 1 crysiswars\r\n",
+                "LOGIN 56 crysiswars3 4f83fb3e73b69253048ab90d9efb335c\r\n",
+                "USER  127.0.0.1 peerchat.gamespy.com :\r\nNICK *\r\n",
+                "LIST *\r\nJOIN #gsp!crysiswars\r\n",
+                @"MODE #gsp!crysiswars\r\nSETCKEY #gsp!crysiswars crysiswars3-cry :\Profile\11\\DE\TimePlayed\0\Accuracy\0\KillsPerMinute\0\Kills\0\Deaths\0\FavoriteGameMode\\FavoriteMap\\FavoriteWeapon\\FavoriteVehicle\\FavoriteSuitMode\"+"\r\n"
+            };
+            foreach (var req in requests)
+            {
+                (client as ITestClient).TestReceived(UniSpyEncoding.GetBytes(req));
             }
         }
     }

@@ -100,7 +100,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
             var userModeRequest = new ModeRequest
             {
-                RequestType = ModeRequestType.GetChannelUserModes,
+                RequestType = ModeRequestType.GetChannelAndUserModes,
                 ChannelName = _request.ChannelName,
                 NickName = _user.Info.NickName,
                 UserName = _user.Info.UserName,

@@ -4,9 +4,9 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Core.Extension;
-using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -15,6 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new CryptRequest _request => (CryptRequest)base._request;
         private new CryptResult _result { get => (CryptResult)base._result; set => base._result = value; }
+        private ICryptography _crypto;
         // CRYPT des 1 gamename
         public CryptHandler(IChatClient client, CryptRequest request) : base(client, request)
         {
@@ -33,10 +34,9 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 }
                 _client.Info.GameSecretKey = secretKey;
                 // 2. Prepare two keys
-                (_client as Client).Crypto = new ChatCrypt(_client.Info.GameSecretKey);
+                _crypto = new ChatCrypt(_client.Info.GameSecretKey);
             }
             _client.Info.GameName = _request.GameName;
-
         }
         protected override void ResponseConstruct()
         {
@@ -45,10 +45,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         protected override void Response()
         {
-            _response.Build();
-            _client.LogNetworkSending(_response.SendingBuffer);
-            // we need to send plaintext response here
-            _client.Connection.Send(_response.SendingBuffer);
+            base.Response();
+            if (!_client.Info.IsRemoteClient)
+            {
+                ((Client)_client).Crypto = _crypto;
+            }
         }
     }
 }
