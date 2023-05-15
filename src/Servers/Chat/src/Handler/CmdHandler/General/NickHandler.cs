@@ -5,7 +5,6 @@ using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {

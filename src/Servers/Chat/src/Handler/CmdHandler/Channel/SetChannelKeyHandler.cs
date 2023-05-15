@@ -19,7 +19,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _result = new SetChannelKeyResult();
         }
-
         protected override void DataOperation()
         {
             if (!_user.IsChannelOperator)

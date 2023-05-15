@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -30,6 +30,13 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 _client.Send(((IRCException)ex));
             }
+            else if (ex is HandleLaterException)
+            {
+                // if the exception is HandleLaterException, we log it as warning
+                _client.LogWarn(ex.Message);
+                return;
+            }
+
             base.HandleException(ex);
         }
         protected override void Response()
@@ -59,7 +66,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                 return;
             }
             // we have to make sure there are no error so we can publish this message
-            Task.Run(() => PublishMessage());
+            PublishMessage();
         }
     }
 }

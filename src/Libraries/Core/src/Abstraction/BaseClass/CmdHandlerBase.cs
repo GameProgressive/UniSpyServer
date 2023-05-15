@@ -18,19 +18,14 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         {
             _client = client;
             _request = request;
-            if (client is null)
-            {
-                LogWriter.LogCurrentClass(this);
-            }
-            else
-            {
-                _client.LogCurrentClass(this);
-            }
         }
         public virtual void Handle()
         {
             try
             {
+                // we first log this class
+                LogCurrentClass();
+                // then we handle it
                 RequestCheck();
                 DataOperation();
                 ResponseConstruct();
@@ -73,6 +68,18 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             else
             {
                 _client.LogError(ex.ToString());
+            }
+        }
+
+        private void LogCurrentClass()
+        {
+            if (_client is null)
+            {
+                LogWriter.LogCurrentClass(this);
+            }
+            else
+            {
+                _client.LogCurrentClass(this);
             }
         }
     }

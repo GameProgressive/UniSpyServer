@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
@@ -97,19 +96,22 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
                 header.AddRange(htonPort);
             }
         }
+        /// <summary>
+        /// !disabled because crysiswars localport is 64100 which is larger than short integer, need to find whether this function is needed.
+        /// </summary>
         public static void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo serverInfo)
         {
             // we check private port here
-            if (serverInfo.ServerData.ContainsKey("localport"))
-            {
-                if (serverInfo.ServerData["localport"] != ""
-                && serverInfo.ServerData["localport"] != ClientInfo.QueryReportDefaultPort.ToString())
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                    byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["localport"]));
-                    header.AddRange(port);
-                }
-            }
+            // if (serverInfo.ServerData.ContainsKey("localport"))
+            // {
+            //     if (serverInfo.ServerData["localport"] != ""
+            //     && serverInfo.ServerData["localport"] != ClientInfo.QueryReportDefaultPort.ToString())
+            //     {
+            //         header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
+            //         byte[] port = BitConverter.GetBytes(short.Parse(serverInfo.ServerData["localport"]));
+            //         header.AddRange(port);
+            //     }
+            // }
         }
         public static void CheckICMPSupport(List<byte> header, GameServerInfo serverInfo)
         {

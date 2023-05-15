@@ -18,14 +18,25 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         {
             var encData = new byte[326];
             var buffer = new List<byte>();
+            // add 8 bytes header
             buffer.AddRange(new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
-            buffer.AddRange(encData);
+            // add 1 byte empty data
+            buffer.Add(0);
+            // add data after 
+            buffer.AddRange(data);
 
-
-
+            KeyXor(encData);
             // at last
             data[0] ^= 0xec;
             throw new System.NotImplementedException();
+        }
+
+        private void KeyXor(byte[] data)
+        {
+            for (int i = 0; i < GameSecreteKey.Length; i++)
+            {
+                data[i] ^= GameSecreteKey[i];
+            }
         }
     }
 }

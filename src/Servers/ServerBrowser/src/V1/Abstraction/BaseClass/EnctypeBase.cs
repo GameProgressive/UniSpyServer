@@ -5,10 +5,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
     public abstract class EnctypeBase : ICryptography
     {
         public byte[] Decrypt(byte[] data) => throw new UniSpy.Exception("Enctype only encrypt message on server side.");
-
         public abstract byte[] Encrypt(byte[] data);
-
-
         protected void EncShare3(byte[] data, byte n1 = 0, byte n2 = 0)
         {
             byte t1, t2, t3, t4;
@@ -73,6 +70,8 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
                 for (i = 0; i <= 255; i++)
                 {
                     encodeData[i] = (byte)((encodeData[i] << 8) + i);
+                    // fill 256 bytes of encodeData with 0,1,2,3...255 
+                    // Array.Copy(Enumerable.Range(0,255).ToArray(),encodeData,256);
                 }
 
                 for (pos = y, x = 0; x < 2; x++)

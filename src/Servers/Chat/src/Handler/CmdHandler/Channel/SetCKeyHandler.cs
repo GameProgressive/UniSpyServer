@@ -3,7 +3,6 @@ using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
-using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
@@ -17,15 +16,28 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     public sealed class SetCKeyHandler : ChannelHandlerBase
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
-        private new SetCKeyResult _result { get => (SetCKeyResult)base._result; set => base._result = value; }
         private ChannelUser _otherUser;
         public SetCKeyHandler(IChatClient client, SetCKeyRequest request) : base(client, request)
         {
-            _result = new SetCKeyResult();
         }
 
         protected override void RequestCheck()
         {
+            _request.Parse();
+            // if client nickname is *, we set the name and execute the stored handlers
+            if (!_client.Info.IsNickNameSet)
+            {
+                _client.Info.NickName = _request.NickName;
+                lock (_client.Info.HandlerStack)
+                {
+                    foreach (var handler in _client.Info.HandlerStack)
+                    {
+                        handler.Handle();
+                    }
+                    _client.Info.HandlerStack.Clear();
+                }
+            }
+
             base.RequestCheck();
             if (_request.NickName != _client.Info.NickName)
             {
@@ -33,7 +45,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 {
                     throw new Chat.Exception("SETCKEY failed because you are not channel operator.");
                 }
-                _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetUser(_request.NickName);
                 if (_otherUser is null)
                 {
@@ -44,16 +55,13 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _result.ChannelName = _channel.Name;
-            if (_result.IsSetOthersKeyValue)
+            if (_otherUser is not null)
             {
                 _otherUser.KeyValues.Update(_request.KeyValues);
-                _result.NickName = _otherUser.Info.NickName;
             }
             else
             {
                 _user.KeyValues.Update(_request.KeyValues);
-                _result.NickName = _user.Info.NickName;
             }
         }
 
@@ -61,7 +69,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             if (_request.IsBroadCast)
             {
-                _response = new SetCKeyResponse(_request, _result);
+                _response = new SetCKeyResponse(_request);
             }
         }
         //! if there are key start with b_ we must broadcast to everyone
@@ -69,6 +77,5 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _channel.MultiCast(_client, _response);
         }
-
     }
 }

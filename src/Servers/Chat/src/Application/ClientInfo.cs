@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Application
 {
@@ -34,6 +36,13 @@ namespace UniSpy.Server.Chat.Application
         /// </summary>
         /// <value></value>
         public KeyValueManager KeyValues { get; private set; } = new KeyValueManager();
+        /// <summary>
+        /// Store Handler here processing later.
+        /// Some game is using * as nickname, and nickname will send in SETCHANKEY request, so we need to store handlers and process it latter
+        /// </summary>
+        /// <returns></returns>
+        public List<IHandler> HandlerStack { get; private set; } = new List<IHandler>();
+        public bool IsNickNameSet => NickName != "*";
         public ClientInfo()
         {
         }

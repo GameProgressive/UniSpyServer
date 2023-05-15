@@ -1,6 +1,3 @@
-
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
-
 namespace UniSpy.Server.Chat.Abstraction.Interface
 {
     public interface IStorageOperation
