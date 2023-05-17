@@ -40,7 +40,7 @@ namespace UniSpy.Server.Chat.Application
         /// Store Handler here processing later.
         /// Some game is using * as nickname, and nickname will send in SETCHANKEY request, so we need to store handlers and process it latter
         /// </summary>
-        /// <returns></returns>
+        [JsonIgnore]
         public List<IHandler> HandlerStack { get; private set; } = new List<IHandler>();
         public bool IsNickNameSet => NickName != "*";
         public ClientInfo()
