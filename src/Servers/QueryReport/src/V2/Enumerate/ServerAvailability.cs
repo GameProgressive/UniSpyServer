@@ -2,8 +2,9 @@ namespace UniSpy.Server.QueryReport.V2.Enumerate
 {
     public enum ServerAvailability : byte
     {
-        Available = 0x00,
-        PermanentUnavailable = 0x01,
-        TemporarilyUnavailable = 0x02,
+        Waiting = 0x00,
+        Available = 0x01,
+        PermanentUnavailable = 0x02,
+        TemporarilyUnavailable = 0x03,
     };
 }
