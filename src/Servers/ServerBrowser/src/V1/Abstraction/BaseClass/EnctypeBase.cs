@@ -94,6 +94,9 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             EncShare3(encodeData);
             return encodeData;
         }
+        protected void EncShare2(byte[] buffer, byte[] bufferp)
+        {
 
+        }
     }
 }
