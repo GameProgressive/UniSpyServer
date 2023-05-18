@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer
 {
-    public record GameServerInfo : LinqToRedis.RedisKeyValueObject
+    public record GameServerInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; set; }
@@ -42,14 +42,12 @@ namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer
         public Dictionary<string, string> ServerData { get; set; }
         public List<Dictionary<string, string>> PlayerData { get; set; }
         public List<Dictionary<string, string>> TeamData { get; set; }
-        public GameServerInfo() : base(TimeSpan.FromSeconds(30))
+        public GameServerInfo() : base(RedisDbNumber.GameServerV2, TimeSpan.FromSeconds(30))
         {
         }
     }
     internal class RedisClient : LinqToRedis.RedisClient<GameServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameServerV2)
-        {
-        }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
     }
 }

@@ -24,7 +24,6 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
         {
             // natneg connecthandler will send 2 request to game traffic relay
             ConnectionPair pair;
-
             if (!ConnectionPairs.TryGetValue(request.Cookie, out pair))
             {
                 var ports = NetworkUtils.GetAvailablePorts();

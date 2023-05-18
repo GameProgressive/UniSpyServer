@@ -23,7 +23,6 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.13" />
     </ItemGroup>
     <ItemGroup>
-        <!-- <ProjectReference Include="..\..\NatNegotiation\src\UniSpy.Server.NatNegotiation.csproj" /> -->
         <ProjectReference Include="..\..\..\Libraries\Core\src\UniSpy.Server.Core.csproj" />
     </ItemGroup>
 </Project>

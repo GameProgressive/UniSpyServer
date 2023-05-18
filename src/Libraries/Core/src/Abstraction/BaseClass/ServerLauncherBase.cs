@@ -18,7 +18,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         /// </summary>
         public static readonly string Version = "0.8.1";
 
-        public static List<IServer> ServerInstances { get; protected set; }
+        public static List<IServer> ServerInstances { get; protected set; } = new List<IServer>();
         public ServerLauncherBase()
         {
         }

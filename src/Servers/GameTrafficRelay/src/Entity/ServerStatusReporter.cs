@@ -27,6 +27,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
                 ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
             };
             _ = _redisClient.SetValueAsync(info);
+            var data = _redisClient.GetKeyValues();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
     /// The information pair using to switch strategy
     /// </summary>
     /// <value></value>
-    public record NatFailInfo : RedisKeyValueObject
+    public record NatFailInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         [JsonConverter(typeof(IPAddresConverter))]
@@ -21,7 +21,8 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
         [RedisKey]
         [JsonConverter(typeof(IPAddresConverter))]
         public IPAddress PublicIPAddress2 { get; init; }
-        public NatFailInfo(NatInitInfo info1, NatInitInfo info2) : base(TimeSpan.FromDays(1))
+        public NatFailInfo() : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1)) { }
+        public NatFailInfo(NatInitInfo info1, NatInitInfo info2) : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1))
         {
             // we need to store in sequence to make consistancy and reduce duplications
             if (info1.ClientIndex == NatClientIndex.GameClient)
@@ -39,6 +40,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
 
     public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatFailInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.NatFailInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
     }
 }

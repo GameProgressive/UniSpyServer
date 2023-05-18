@@ -95,7 +95,7 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel
     /// <summary>
     /// The channel info that stored in redis
     /// </summary>
-    public record ChannelInfo : RedisKeyValueObject
+    public record ChannelInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerId { get; set; }
@@ -110,12 +110,10 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel
         public int MaxNumberUser { get; set; }
         public DateTime CreateTime { get; set; }
         public List<string> Users { get; set; }
-        public ChannelInfo() : base(TimeSpan.FromHours(1)) { }
+        public ChannelInfo() : base(RedisDbNumber.ChatChannel, TimeSpan.FromHours(1)) { }
     }
     public class RedisClient : LinqToRedis.RedisClient<ChannelInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.ChatChannel)
-        {
-        }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
     }
 }

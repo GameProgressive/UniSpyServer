@@ -43,7 +43,7 @@ namespace UniSpy.Server.Core.Logging
                 }
             }
 
-            var path = ServerLauncherBase.ServerInstances is null ? "" : ServerLauncherBase.ServerInstances[0].Name;
+            var path = ServerLauncherBase.ServerInstances.Count == 0 ? "" : ServerLauncherBase.ServerInstances[0].Name;
             LogConfig = LogConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(

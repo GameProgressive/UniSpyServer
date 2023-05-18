@@ -47,14 +47,11 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             }
             base.Response();
         }
+        /// <summary>
+        /// publish message to redis channel
+        /// </summary>
         protected virtual void PublishMessage()
         {
-            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
-            Application.Server.GeneralChannel.PublishMessage(msg);
-        }
-        public override void Handle()
-        {
-            base.Handle();
             // we do not publish message when the message is received from remote client
             if (_client.Info.IsRemoteClient)
             {
@@ -65,8 +62,21 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 return;
             }
-            // we have to make sure there are no error so we can publish this message
-            PublishMessage();
+            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
+            Application.Server.GeneralChannel.PublishMessage(msg);
+        }
+        public override void Handle()
+        {
+            base.Handle();
+            try
+            {
+                // we publish this message to redis channel
+                PublishMessage();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
         }
     }
 }

@@ -39,10 +39,17 @@ namespace UniSpy.LinqToRedis
         public string FullKey => BuildFullKey();
         [JsonIgnore]
         public string SearchKey => BuildSearchKey();
-        public RedisKeyValueObject(TimeSpan? expireTime = null)
+        [RedisKey]
+        public int? Db { get; private set; }
+        public RedisKeyValueObject(int db, TimeSpan? expireTime = null)
         {
             ExpireTime = expireTime;
+            Db = db;
         }
+        /// <summary>
+        /// This is using for json deserialization
+        /// </summary>
+        protected RedisKeyValueObject() { }
 
         private string BuildFullKey()
         {

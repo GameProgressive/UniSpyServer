@@ -4,6 +4,8 @@ using System.Net;
 using Xunit;
 using UniSpy.Server.GameTrafficRelay.Controller;
 using System.Net.NetworkInformation;
+using UniSpy.Server.GameTrafficRelay.Application;
+using Moq;
 
 namespace UniSpy.Server.GameTrafficRelay.Test
 {
@@ -17,7 +19,10 @@ namespace UniSpy.Server.GameTrafficRelay.Test
         [Fact]
         public void GetNagNegotiationInfo()
         {
-            // var connectionInfo = new DefaultConnectionInfo
+            var mockServer = new Mock<Core.Abstraction.Interface.IServer>();
+            mockServer.Setup(s => s.PublicIPEndPoint).Returns(IPEndPoint.Parse("202.91.0.1:123"));
+            ServerLauncher.ServerInstances.Add(mockServer.Object);
+
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
 
             var controllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext()
@@ -36,9 +41,10 @@ namespace UniSpy.Server.GameTrafficRelay.Test
                 ServerId = System.Guid.NewGuid()
             };
 
+            controller.GetNatNegotiationInfo(request);
 
-            Assert.ThrowsAsync<System.NullReferenceException>(() => controller.GetNatNegotiationInfo(request));
-            
+            // Assert.ThrowsAsync<System.NullReferenceException>(() => controller.GetNatNegotiationInfo(request));
+
             // var resp = controller.GetNatNegotiationInfo(request);
 
             // Assert.True(IsPortUsing(resp.IPEndPoint1.Port));

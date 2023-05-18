@@ -9,7 +9,7 @@ using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.GameTrafficRelay.Entity
 {
-    public record RelayServerInfo : RedisKeyValueObject
+    public record RelayServerInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
@@ -18,13 +18,13 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
         public IPEndPoint PublicIPEndPoint { get; init; }
         public int ClientCount { get; set; }
 
-        public RelayServerInfo() : base(TimeSpan.FromMinutes(1))
+        public RelayServerInfo() : base(RedisDbNumber.GameTrafficRelay, TimeSpan.FromMinutes(1))
         {
         }
     }
 
-    public class RedisClient : UniSpy.LinqToRedis.RedisClient<RelayServerInfo>
+    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<RelayServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.GameTrafficRelay) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
     }
 }

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RedLockNet.SERedis;
-using RedLockNet.SERedis.Configuration;
 using StackExchange.Redis;
 using UniSpy.LinqToRedis.Linq;
 
@@ -15,12 +13,12 @@ namespace UniSpy.LinqToRedis
     /// TODO we need to implement get AllKeys, AllValues
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    public class RedisClient<TValue> : IDisposable where TValue : RedisKeyValueObject
+    public class RedisClient<TValue> where TValue : RedisKeyValueObject
     {
         public TimeSpan? ExpireTime { get; private set; }
         public IConnectionMultiplexer Multiplexer { get; private set; }
         public IDatabase Db { get; private set; }
-        private EndPoint[] _endPoints => Multiplexer.GetEndPoints();
+        protected EndPoint[] _endPoints => Multiplexer.GetEndPoints();
         private RedisQueryProvider<TValue> _provider;
         /// <summary>
         /// Search redis key value storage by key
@@ -28,42 +26,28 @@ namespace UniSpy.LinqToRedis
         /// <typeparam name="TKey">The redis key class</typeparam>
         /// <returns></returns>
         public QueryableObject<TValue> Context;
-        private RedLockFactory _lockFactory;
-        private bool _isUsingLock;
-        public RedisClient(string connectionString, int db, bool isUsingLock = false)
+        /// <summary>
+        /// The default keyvalue object, used to provide default information
+        /// </summary>
+        public readonly TValue DefaultKVObject = ((TValue)System.Activator.CreateInstance(typeof(TValue)));
+        public RedisClient(string connectionString)
         {
             CheckValidation();
             Multiplexer = ConnectionMultiplexer.Connect(connectionString);
-            Db = Multiplexer.GetDatabase(db);
+            Db = Multiplexer.GetDatabase((int)DefaultKVObject.Db);
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
-            _isUsingLock = isUsingLock;
-            if (_isUsingLock)
-            {
-                _lockFactory = RedLockFactory.Create(new List<RedLockMultiplexer> {
-                (ConnectionMultiplexer)Multiplexer
-             });
-            }
         }
         /// <summary>
         /// Use existing multiplexer for performance
         /// </summary>
-        /// <param name="multiplexer"></param>
-        /// <param name="db"></param>
-        public RedisClient(IConnectionMultiplexer multiplexer, int db, bool isUsingLock = false)
+        public RedisClient(IConnectionMultiplexer multiplexer)
         {
             CheckValidation();
             Multiplexer = multiplexer;
-            Db = Multiplexer.GetDatabase(db);
+            Db = Multiplexer.GetDatabase((int)DefaultKVObject.Db);
             _provider = new RedisQueryProvider<TValue>(this);
             Context = new QueryableObject<TValue>(_provider);
-            _isUsingLock = isUsingLock;
-            if (_isUsingLock)
-            {
-                _lockFactory = RedLockFactory.Create(new List<RedLockMultiplexer> {
-                (ConnectionMultiplexer)Multiplexer
-             });
-            }
         }
         private void CheckValidation()
         {
@@ -105,24 +89,14 @@ namespace UniSpy.LinqToRedis
         public List<string> GetMatchedKeys(IRedisKey key = null)
         {
             var matchedKeys = new List<string>();
+            var searchKey = key is null ? DefaultKVObject.SearchKey : key.SearchKey;
             foreach (var end in _endPoints)
             {
                 var server = Multiplexer.GetServer(end);
-                if (key is null)
+                // we get matched key from database
+                foreach (var k in server.Keys(pattern: searchKey, database: Db.Database))
                 {
-                    // we get all key from database
-                    foreach (var k in server.Keys(pattern: "*", database: Db.Database))
-                    {
-                        matchedKeys.Add(k);
-                    }
-                }
-                else
-                {
-                    // we get specific key from database
-                    foreach (var k in server.Keys(pattern: key.SearchKey, database: Db.Database))
-                    {
-                        matchedKeys.Add(k);
-                    }
+                    matchedKeys.Add(k);
                 }
             }
             return matchedKeys;
@@ -130,13 +104,12 @@ namespace UniSpy.LinqToRedis
         public async Task<List<string>> GetMatchedKeysAsync(IRedisKey key = null)
         {
             var matchedKeys = new List<string>();
+            var searchKey = key is null ? DefaultKVObject.SearchKey : key.SearchKey;
             foreach (var end in _endPoints)
             {
                 var server = Multiplexer.GetServer(end);
-
                 // we get specific key from database
-                var keyStr = key is null ? "*" : key.SearchKey;
-                await foreach (var k in server.KeysAsync(pattern: keyStr, database: Db.Database))
+                await foreach (var k in server.KeysAsync(pattern: searchKey, database: Db.Database))
                 {
                     matchedKeys.Add(k);
                 }
@@ -175,48 +148,11 @@ namespace UniSpy.LinqToRedis
 
         public bool SetValue(TValue value)
         {
-            if (_isUsingLock)
-            {
-                var expiry = TimeSpan.FromMilliseconds(500);
-                using (var redlock = _lockFactory.CreateLock(value.FullKey, expiry))
-                {
-                    if (redlock.IsAcquired)
-                    {
-                        return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
-            }
-
+            return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
         }
         public async Task<bool> SetValueAsync(TValue value)
         {
-            if (_isUsingLock)
-            {
-                var expiry = TimeSpan.FromMilliseconds(500);
-                await using (var redlock = await _lockFactory.CreateLockAsync(value.FullKey, expiry))
-                {
-                    if (redlock.IsAcquired)
-                    {
-                        return await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
-            }
+            return await Db.StringSetAsync(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
         }
         public TValue GetValue(IRedisKey key)
         {
@@ -244,11 +180,6 @@ namespace UniSpy.LinqToRedis
         {
             get => GetValue(key);
             set => SetValue(value);
-        }
-
-        public void Dispose()
-        {
-            ((IDisposable)_lockFactory).Dispose();
         }
     }
 }

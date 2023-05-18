@@ -12,7 +12,7 @@ using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
 {
-    public record NatAddressInfo : RedisKeyValueObject
+    public record NatAddressInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
@@ -33,7 +33,8 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
         /// </summary>
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PrivateIPEndPoint { get; init; }
-        public NatAddressInfo() : base(TimeSpan.FromMinutes(3))
+        
+        public NatAddressInfo() : base(RedisDbNumber.NatAddressInfo, TimeSpan.FromMinutes(3))
         {
         }
     }
@@ -113,6 +114,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
 
     public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatAddressInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection, (int)RedisDbNumber.NatAddressInfo) { }
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
     }
 }
