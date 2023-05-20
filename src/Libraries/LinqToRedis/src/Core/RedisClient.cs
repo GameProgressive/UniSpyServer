@@ -181,5 +181,21 @@ namespace UniSpy.LinqToRedis
             get => GetValue(key);
             set => SetValue(value);
         }
+        public async Task FlushDbAsync()
+        {
+            var keys = GetMatchedKeysAsync();
+            foreach (var key in await keys)
+            {
+                await Db.KeyDeleteAsync(key);
+            }
+        }
+        public void FlushDb()
+        {
+            var keys = GetMatchedKeys();
+            foreach (var key in keys)
+            {
+                Db.KeyDelete(key);
+            }
+        }
     }
 }

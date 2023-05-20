@@ -23,24 +23,28 @@ namespace UniSpy.LinqToRedis.Linq
         {
             KeyObject = (TKey)Activator.CreateInstance(typeof(TKey));
             Visit(_expression);
-            for (int i = 0; i < _builderStack.Count; i += 2)
+            System.Threading.Tasks.Parallel.For(0, _builderStack.Count,
+            i =>
             {
-                var keyProperty = KeyObject.GetType().GetProperty((string)_builderStack[i]);
-                // get target type
-                var targetType = IsNullableType(keyProperty.PropertyType) ? Nullable.GetUnderlyingType(keyProperty.PropertyType) : keyProperty.PropertyType;
-                // convert value to target type
-                var value = _builderStack[i + 1];
-                // _builderStack[i + 1] = Convert.ChangeType(_builderStack[i + 1], targetType);
-                if (targetType.IsEnum)
+                if (i % 2 == 0)
                 {
-                    value = Enum.ToObject(targetType, value);
+                    var keyProperty = KeyObject.GetType().GetProperty((string)_builderStack[i]);
+                    // get target type
+                    var targetType = IsNullableType(keyProperty.PropertyType) ? Nullable.GetUnderlyingType(keyProperty.PropertyType) : keyProperty.PropertyType;
+                    // convert value to target type
+                    var value = _builderStack[i + 1];
+                    // _builderStack[i + 1] = Convert.ChangeType(_builderStack[i + 1], targetType);
+                    if (targetType.IsEnum)
+                    {
+                        value = Enum.ToObject(targetType, value);
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(value, targetType);
+                    }
+                    keyProperty.SetValue(KeyObject, value);
                 }
-                else
-                {
-                    value = Convert.ChangeType(value, targetType);
-                }
-                keyProperty.SetValue(KeyObject, value);
-            }
+            });
         }
         private static bool IsNullableType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
 
