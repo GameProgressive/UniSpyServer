@@ -112,8 +112,8 @@ namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel
         public List<string> Users { get; set; }
         public ChannelInfo() : base(RedisDbNumber.ChatChannel, TimeSpan.FromHours(1)) { }
     }
-    public class RedisClient : LinqToRedis.RedisClient<ChannelInfo>
+    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<ChannelInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
+        public RedisClient() { }
     }
 }
