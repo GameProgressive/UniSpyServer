@@ -38,8 +38,8 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
         }
     }
 
-    public class RedisClient : UniSpy.LinqToRedis.RedisClient<NatFailInfo>
+    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<NatFailInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
+        public RedisClient() { }
     }
 }

@@ -1,10 +1,11 @@
 using StackExchange.Redis;
+using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
     public class RedisClient<TValue> : LinqToRedis.RedisClient<TValue> where TValue : RedisKeyValueObject
     {
-        public RedisClient(IConnectionMultiplexer multiplexer) : base(multiplexer)
+        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection)
         {
         }
     }

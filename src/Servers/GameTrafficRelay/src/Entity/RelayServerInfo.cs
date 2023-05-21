@@ -25,6 +25,6 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
 
     public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<RelayServerInfo>
     {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection) { }
+        public RedisClient() { }
     }
 }

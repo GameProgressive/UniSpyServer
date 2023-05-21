@@ -25,16 +25,50 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
-        public static NatProperty DetermineNatType(NatInitInfo iniInfo)
+        public static NatProperty DetermineNatTypeVersion2(NatInitInfo initInfo)
         {
             NatProperty natProperty = new NatProperty();
-            if (iniInfo.AddressInfos.Count < 3)
+            if (initInfo.AddressInfos.Count < 3)
             {
                 throw new NatNegotiation.Exception("We need 3 init records to determine the nat type.");
             }
-            var nn1 = iniInfo.AddressInfos[NatPortType.NN1];
-            var nn2 = iniInfo.AddressInfos[NatPortType.NN2];
-            var nn3 = iniInfo.AddressInfos[NatPortType.NN3];
+            var nn1 = initInfo.AddressInfos[NatPortType.NN1];
+            var nn2 = initInfo.AddressInfos[NatPortType.NN2];
+
+            // no nat
+            if (nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
+            && nn2.PublicIPEndPoint.Equals(nn2.PrivateIPEndPoint))
+            {
+                natProperty.NatType = NatType.NoNat;
+            }
+            // detect cone
+            else if (nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint))
+            {
+                natProperty.NatType = NatType.FullCone;
+            }
+            else if (!nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint))
+            {
+                natProperty.NatType = NatType.Symmetric;
+                natProperty.PortMapping = NatPortMappingScheme.Unrecognized;
+                //todo get all interval of the port increment value
+                var portIncrement1 = nn2.PublicIPEndPoint.Port - nn1.PublicIPEndPoint.Port;
+            }
+            else
+            {
+                natProperty.NatType = NatType.Unknown;
+            }
+            return natProperty;
+        }
+        public static NatProperty DetermineNatTypeVersion3(NatInitInfo initInfo)
+        {
+            NatProperty natProperty = new NatProperty();
+            if (initInfo.AddressInfos.Count < 3)
+            {
+                throw new NatNegotiation.Exception("We need 3 init records to determine the nat type.");
+            }
+            var nn1 = initInfo.AddressInfos[NatPortType.NN1];
+            var nn2 = initInfo.AddressInfos[NatPortType.NN2];
+            var nn3 = initInfo.AddressInfos[NatPortType.NN3];
 
             // no nat
             if (nn1.PublicIPEndPoint.Address.Equals(nn1.PrivateIPEndPoint.Address)
@@ -42,14 +76,12 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             && nn3.PublicIPEndPoint.Equals(nn3.PrivateIPEndPoint))
             {
                 natProperty.NatType = NatType.NoNat;
-                return natProperty;
             }
             // detect cone
             else if (nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
             && nn2.PublicIPEndPoint.Equals(nn3.PublicIPEndPoint))
             {
                 natProperty.NatType = NatType.FullCone;
-                return natProperty;
             }
             else if (!nn1.PublicIPEndPoint.Equals(nn2.PublicIPEndPoint)
             || !nn2.PublicIPEndPoint.Equals(nn3.PublicIPEndPoint))
@@ -68,13 +100,13 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                     var increaseInterval = portIncrement2 - portIncrement1;
                     natProperty.PortIncrement = portIncrement2 + increaseInterval;
                 }
-                return natProperty;
             }
             else
             {
                 natProperty.NatType = NatType.Unknown;
-                throw new NatNegotiation.Exception("Unknow nat type.");
+
             }
+            return natProperty;
         }
     }
 }

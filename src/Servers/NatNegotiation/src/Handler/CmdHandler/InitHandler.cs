@@ -13,7 +13,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
 
     public sealed class InitHandler : CmdHandlerBase
     {
-        public static readonly int InitPacketCount = 7;
+        public static readonly int InitPacketCount = 6;
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result { get => (InitResult)base._result; set => base._result = value; }
         /// <summary>
@@ -34,6 +34,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                 ClientIndex = (NatClientIndex)_request.ClientIndex,
                 Version = _request.Version,
                 PortType = _request.PortType,
+                GameName = _request.GameName,
                 PublicIPEndPoint = _client.Connection.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
@@ -64,10 +65,21 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
             StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
             // init packet nn3 is the last one client send, although receiving nn3 does not mean we received other init packets, but we can use this as a flag to prevent start multiple connect handler
-            if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
+            if (_request.Version == 2)
             {
-                _client.Info.IsNeigotiating = true;
-                PrepareForConnectingAsync();
+                if (_request.PortType == NatPortType.NN2 && _client.Info.IsNeigotiating == false)
+                {
+                    _client.Info.IsNeigotiating = true;
+                    PrepareForConnectingAsync();
+                }
+            }
+            else
+            {
+                if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
+                {
+                    _client.Info.IsNeigotiating = true;
+                    PrepareForConnectingAsync();
+                }
             }
         }
 
@@ -79,9 +91,15 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         {
             _client.LogInfo($"Watting for negotiator's initInfo with cookie:{_request.Cookie}.");
             await Task.Delay(2000);
+            int totalWaitCount = 4;
+            if (_request.Version == 2)
+            {
+                totalWaitCount = 3;
+            }
+
             int waitCount = 1;
             // we only wait 8 seconds
-            while (waitCount <= 4)
+            while (waitCount <= totalWaitCount)
             {
                 var initCount = StorageOperation.Persistance.CountInitInfo(_request.Cookie, _request.Version);
                 // some client do not send GP init packet, we can only receive 7 packets

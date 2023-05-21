@@ -35,14 +35,14 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         {
             // detecting nat
             var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
-            if (addressInfos.Count < InitHandler.InitPacketCount)
-            {
-                throw new NatNegotiation.Exception($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
-            }
+            // if (addressInfos.Count < InitHandler.InitPacketCount)
+            // {
+            //     throw new NatNegotiation.Exception($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
+            // }
             var otherClientIndex = (NatClientIndex)(1 - (int)_request.ClientIndex);
             // we need both info to determine nat type
-            _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).ToList());
-            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _request.ClientIndex).ToList());
+            _othersInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == otherClientIndex).OrderBy(i => i.PortType).ToList());
+            _myInitInfo = new NatInitInfo(addressInfos.Where(i => i.ClientIndex == _request.ClientIndex).OrderBy(i => i.PortType).ToList());
         }
 
         // NOTE: If GTR is not used and both clients are on the same LAN, we need to use PrivateIPEndPoint.
@@ -141,7 +141,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             // whether first 3 bytes of ip address is same, like 192.168.1.101 and 192.168.1.102
             bool IsBothInSamePrivateIPRange = info1.PrivateIPEndPoint.Address.GetAddressBytes().Take(3)
                                                 .SequenceEqual(info2.PrivateIPEndPoint.Address.GetAddressBytes().Take(3));
-            if (info1.NatType < NatType.Symmetric && info1.NatType < NatType.Symmetric)
+            if (info1.NatType < NatType.Symmetric && info2.NatType < NatType.Symmetric)
             {
                 if (IsBothHaveSamePublicIP)
                 {
