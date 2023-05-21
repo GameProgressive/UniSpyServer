@@ -26,6 +26,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             {
                 //client is only authenticating with chat, we just sign a valid name to it.
                 _client.Info.NickName = System.Guid.NewGuid().ToString();
+                return;
             }
 
             if (ClientManager.GetAllClientInfo().Where(i => i.NickName == _request.NickName).Count() == 0)

@@ -12,11 +12,21 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Test.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 using System.Collections.Generic;
+using System.Net;
+using Moq;
 
 namespace UniSpy.Server.Chat.Test
 {
     public class RedisChatChannelTest
     {
+        public RedisChatChannelTest()
+        {
+            var mockServer = new Mock<Core.Abstraction.Interface.IServer>();
+            mockServer.Setup(s => s.PublicIPEndPoint).Returns(IPEndPoint.Parse("202.91.0.1:123"));
+            mockServer.Setup(s => s.Id).Returns(System.Guid.Parse("00000000-0000-0000-0000-000000000000"));
+            ServerLauncher.ServerInstances.Add(mockServer.Object);
+        }
+
         [Fact]
         public void JsonSerialization()
         {
@@ -48,18 +58,15 @@ namespace UniSpy.Server.Chat.Test
             var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
             var message = new RemoteMessage(request, remoteClient);
-            // Given
             var msgStr = JsonConvert.SerializeObject(message);
             var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
             var chan = new GeneralMessageChannel();
-            Assert.Throws<System.NullReferenceException>(() => chan.ReceivedMessage(msgObj));
-            // When
-
-            // Then
+            chan.ReceivedMessage(msgObj);
         }
         [Fact]
         public void Crypt()
         {
+
             var request1 = new DisconnectRequest();
             var client = MockObject.CreateClient() as Client;
 
@@ -70,7 +77,7 @@ namespace UniSpy.Server.Chat.Test
             request.Parse();
             var message = new RemoteMessage(request, remoteClient);
             var chan = new GeneralMessageChannel();
-            Assert.Throws<System.NullReferenceException>(() => chan.ReceivedMessage(message));
+            chan.ReceivedMessage(message);
         }
         [Fact]
         public void GeneralTest()

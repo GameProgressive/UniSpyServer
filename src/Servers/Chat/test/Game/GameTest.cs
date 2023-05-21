@@ -280,5 +280,22 @@ namespace UniSpy.Server.Chat.Test
                 (client as ITestClient).TestReceived(UniSpyEncoding.GetBytes(req));
             }
         }
+
+        [Fact]
+        public void WormsFortsUnderSiege20230520()
+        {
+            var client = MockObject.CreateClient();
+            var requests = new List<string>()
+            {
+                "CRYPT des 1 wormsforts\r\n",
+                "LOGIN 1 wforts 149815eb972b3c370dee3b89d645ae14\r\n",
+                "USRIP\r\n",
+                "USER XaWqp4Df1X|19 127.0.0.1 peerchat.gamespy.com :52d55c23867fcafe3453c00a3a395503\r\nNICK *\r\n"
+            };
+            foreach (var req in requests)
+            {
+                (client as ITestClient).TestReceived(UniSpyEncoding.GetBytes(req));
+            }
+        }
     }
 }
