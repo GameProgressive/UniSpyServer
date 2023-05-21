@@ -2,15 +2,15 @@
 
 version: '3.7'
 services:
-  cdkey:
-    build:
-      context: ../
-      dockerfile: ./src/Servers/CDKey/src/Dockerfile
-    image: gameprogressive/cdkey
-    ports:
-    - "29910:29910/udp"
-    stdin_open: true
-    tty: true
+  # cdkey:
+  #   build:
+  #     context: ../
+  #     dockerfile: ./src/Servers/CDKey/src/Dockerfile
+  #   image: gameprogressive/cdkey
+  #   ports:
+  #   - "29910:29910/udp"
+  #   stdin_open: true
+  #   tty: true
 
   chat:
     build:

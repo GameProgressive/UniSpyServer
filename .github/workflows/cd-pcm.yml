@@ -7,7 +7,7 @@ on:
       - candidate
     paths:
       - "src/Servers/PresenceConnectionManager/src/**"
-      - "src/Libraries/UniSpyLib/src/**"
+      - "src/Libraries/Core/src/**"
 
 jobs:
   push:

@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-------------- Have you found a bug in RetroSpy? -----------------
+------------- Have you found a bug in UniSpy? -----------------
 **DO NOT FILL A BUG REPORT FOR AN UNSUPPORTED GAME, PLEASE USE THE APPROPRIATE TEMPLATE FOR UNSUPPORTED GAMES**
-1. Verify that the issue is still present in the last development version of RetroSpy
+1. Verify that the issue is still present in the last development version of UniSpy
 2. Set your logging to "Verbose" and reproduce the issue (this will help us tracking which data has been sent or received from the server)
 3. Fill the template below
 ------------ Remove this initial lines --------------------------

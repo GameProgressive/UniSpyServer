@@ -7,7 +7,7 @@ on:
       - candidate
     paths:
       - "src/Servers/NatNegotiation/src/**"
-      - "src/Libraries/UniSpyLib/src/**"
+      - "src/Libraries/Core/src/**"
 
 jobs:
   push:
