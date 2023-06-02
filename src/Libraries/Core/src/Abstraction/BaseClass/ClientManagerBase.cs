@@ -9,23 +9,25 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
     /// if you need search client in specific server,
     /// please inherit this class and create static method.
     /// </summary>
-    public abstract class ClientManagerBase
+    public abstract class ClientManagerBase<TKey, TValue>
+                                where TKey : IPEndPoint
+                                where TValue : IClient
     {
-        public static readonly ConcurrentDictionary<IPEndPoint, IClient> ClientPool = new ConcurrentDictionary<IPEndPoint, IClient>();
-        public static void AddClient(IClient client)
+        public static readonly ConcurrentDictionary<TKey, TValue> ClientPool = new ConcurrentDictionary<TKey, TValue>();
+        public static void AddClient(TValue client)
         {
-            ClientPool.TryAdd(client.Connection.RemoteIPEndPoint, client);
+            ClientPool.TryAdd((TKey)client.Connection.RemoteIPEndPoint, client);
         }
-        public static IClient RemoveClient(IClient client)
+        public static TValue RemoveClient(TValue client)
         {
-            return RemoveClient(client.Connection.RemoteIPEndPoint);
+            return RemoveClient((TKey)client.Connection.RemoteIPEndPoint);
         }
-        public static IClient RemoveClient(IPEndPoint endPoint)
+        public static TValue RemoveClient(TKey endPoint)
         {
             ClientPool.TryRemove(endPoint, out var client);
             return client;
         }
-        public static IClient GetClient(IPEndPoint endPoint)
+        public static TValue GetClient(TKey endPoint)
         {
             if (ClientPool.TryGetValue(endPoint, out var client))
             {
@@ -33,7 +35,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             }
             else
             {
-                return null;
+                return default;
             }
         }
     }

@@ -4,6 +4,7 @@ using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Extension;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
@@ -26,7 +27,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             Connection = connection;
             Server = server;
             EventBinding();
-            ClientManagerBase.AddClient(this);
+            ClientManagerBase<IPEndPoint, IClient>.AddClient(this);
         }
         protected virtual void EventBinding()
         {
@@ -56,7 +57,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        protected virtual void OnConnected() => ClientManagerBase.AddClient(this);
+        protected virtual void OnConnected() => ClientManagerBase<IPEndPoint, IClient>.AddClient(this);
 
         /// <summary>
         /// Only work for tcp
@@ -130,12 +131,12 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     ((ITcpConnection)Connection).OnReceive -= OnReceived;
                     ((ITcpConnection)Connection).OnConnect -= OnConnected;
                     ((ITcpConnection)Connection).OnDisconnect -= OnDisconnected;
-                    ClientManagerBase.RemoveClient(this);
+                    ClientManagerBase<IPEndPoint, IClient>.RemoveClient(this);
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive -= OnReceived;
                     _timer.Dispose();
-                    ClientManagerBase.RemoveClient(this);
+                    ClientManagerBase<IPEndPoint, IClient>.RemoveClient(this);
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive -= OnReceived;

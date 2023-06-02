@@ -46,13 +46,13 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             PublicIPEndPoint = _cfg.PublicIPEndPoint;
         }
         protected abstract IConnectionManager CreateConnectionManager(IPEndPoint endPoint);
-        private IClient HandleConnectionInitialization(IConnection connection)
+        protected virtual IClient HandleConnectionInitialization(IConnection connection)
         {
-            var client = ClientManagerBase.GetClient(connection.RemoteIPEndPoint);
+            var client = ClientManagerBase<IPEndPoint, IClient>.GetClient(connection.RemoteIPEndPoint);
             if (client is null)
             {
                 client = CreateClient(connection);
-                ClientManagerBase.AddClient(client);
+                ClientManagerBase<IPEndPoint, IClient>.AddClient(client);
             }
             return client;
         }

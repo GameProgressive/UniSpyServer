@@ -5,6 +5,7 @@ using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.QueryReport.Application;
+using System.Net;
 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis
 {
@@ -15,7 +16,7 @@ namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis
         }
         public override void ReceivedMessage(ClientMessageRequest message)
         {
-            var client = (Client)ClientManagerBase.GetClient(message.TargetIPEndPoint);
+            var client = (Client)ClientManagerBase<IPEndPoint, Client>.GetClient(message.TargetIPEndPoint);
             if (client is null)
             {
                 LogWriter.LogWarn($"Client:{message.TargetIPEndPoint} not found, we ignore natneg message from SB: {message.ServerBrowserSenderId}");

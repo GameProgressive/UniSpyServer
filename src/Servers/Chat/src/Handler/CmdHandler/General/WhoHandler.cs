@@ -61,6 +61,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         private void GetUserInfo()
         {
             var client = ClientManager.GetClientByNickName(_request.NickName);
+            
+            if (client is null)
+            {
+                throw new Chat.Exception($"Client not exist with nickname {_request.NickName}");
+            }
 
             foreach (var channel in client.Info.JoinedChannels.Values)
             {

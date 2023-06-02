@@ -28,7 +28,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
                 ClientManager.RemoveClient(message.Client);
                 return;
             }
-            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client);
+            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
             if (client is null)
             {
                 ClientManager.AddClient(message.Client);
@@ -67,7 +67,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
             {
                 return;
             }
-            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client);
+            IChatClient client = (IChatClient)ClientManager.GetClient(message.Client.Connection.RemoteIPEndPoint);
             if (client is null)
             {
                 throw new Chat.Exception($"There are no remote client found in RemoteClients pool, the client must be login on the remote server.");

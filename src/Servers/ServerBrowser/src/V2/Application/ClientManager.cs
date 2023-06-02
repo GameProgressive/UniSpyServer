@@ -1,10 +1,11 @@
+using System.Net;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace UniSpy.Server.ServerBrowser.V2.Application
 {
-    public class ClientManager : ClientManagerBase
+    public class ClientManager : ClientManagerBase<IPEndPoint,Client>
     {
         public static List<Client> GetClient(string gameName)
         {

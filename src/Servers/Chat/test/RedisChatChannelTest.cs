@@ -14,6 +14,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using System.Collections.Generic;
 using System.Net;
 using Moq;
+using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Test
 {
@@ -113,7 +114,7 @@ namespace UniSpy.Server.Chat.Test
             // Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
             ClientManager.RemoveClient(client1);
             var remoteClient = client1.GetRemoteClient() as ITestClient;
-            ClientManager.AddClient((IClient)remoteClient);
+            ClientManager.AddClient((IChatClient)remoteClient);
             foreach (var r in request1)
             {
                 var count = ClientManager.ClientPool.Count;
@@ -143,6 +144,7 @@ namespace UniSpy.Server.Chat.Test
                 // "PART #GSP!worms3!MJ0NJ4c3aM :Left Game\r\n"
             };
             var client2 = MockObject.CreateClient(port: 1235) as ITestClient;
+            ClientManager.AddClient((IChatClient)client2);
             foreach (var r in request2)
             {
                 var count = ClientManager.ClientPool.Count;
