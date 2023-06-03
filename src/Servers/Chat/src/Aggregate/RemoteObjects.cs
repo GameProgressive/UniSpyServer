@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Misc;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
@@ -58,21 +59,24 @@ namespace UniSpy.Server.Chat.Aggregate
         public bool IsLogRaw { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnection>))]
         public IConnection Connection { get; set; }
-        public ICryptography Crypto => null;
+        [JsonConverter(typeof(ConcreteTypeConverter<ChatCrypt>))]
+        public ICryptography Crypto { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
         public ClientInfoBase Info { get; set; }
         ClientInfo IChatClient.Info => (ClientInfo)Info;
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteServer>))]
         public IServer Server { get; set; }
-
-        // public RemoteClient() { }
-        public RemoteClient(RemoteTcpConnection conn, ClientInfo info, IServer server)
+        /// <summary>
+        /// using for json deserialization
+        /// </summary>
+        public RemoteClient() { }
+        public RemoteClient(Client client)
         {
-            Connection = conn;
-            // we need to copy the client info because it is a reference type
-            Info = info.DeepCopy();
-            Server = server;
-            (Info as ClientInfo).IsRemoteClient = true;
+            Connection = new RemoteTcpConnection(client.Connection, new RemoteTcpConnectionManager());
+            Server = new RemoteServer(client.Server);
+            Info = client.Info.DeepCopy();
+            ((ClientInfo)Info).IsRemoteClient = true;
+            Crypto = client.Crypto;
         }
         public void Send(IResponse response) => this.LogDebug("Ignore remote client Send() operation");
         public RemoteClient GetRemoteClient() => this;

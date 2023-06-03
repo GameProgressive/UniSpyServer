@@ -2,6 +2,9 @@ using System.Linq;
 
 namespace UniSpy.Server.Chat.Aggregate.Misc
 {
+    /// <summary>
+    /// Tcp data will be received uncomplete, we need to combine it according to gamespy protocol
+    /// </summary>
     public class BufferCache : Core.Misc.BufferCacheBase<byte[]>
     {
         public BufferCache()

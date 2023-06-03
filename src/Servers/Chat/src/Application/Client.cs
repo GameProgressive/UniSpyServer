@@ -62,11 +62,8 @@ namespace UniSpy.Server.Chat.Application
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
         public RemoteClient GetRemoteClient()
         {
-            var manager = new RemoteTcpConnectionManager();
-            var conn = new RemoteTcpConnection(Connection, manager);
-            var server = new RemoteServer(Server);
-            var client = new RemoteClient(conn, Info, server);
-            return client;
+            var remoteClient = new RemoteClient(this);
+            return remoteClient;
         }
     }
 }

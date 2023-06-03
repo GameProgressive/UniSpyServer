@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 
@@ -96,8 +97,14 @@ namespace UniSpy.Server.Chat.Aggregate.Misc
         {
             return false;
         }
+        [JsonProperty]
         public PeerChatCTX ClientCtx { get; private set; }
+        [JsonProperty]
         public PeerChatCTX ServerCtx { get; private set; }
+        /// <summary>
+        /// using for json deserialization
+        /// </summary>
+        public ChatCrypt() { }
         public ChatCrypt(string gameSecretKey)
         {
             ClientCtx = new PeerChatCTX();

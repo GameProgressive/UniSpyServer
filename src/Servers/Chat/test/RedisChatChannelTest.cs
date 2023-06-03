@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Net;
 using Moq;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Misc;
 
 namespace UniSpy.Server.Chat.Test
 {
@@ -58,6 +59,7 @@ namespace UniSpy.Server.Chat.Test
             var remoteClient = client.GetRemoteClient();
             var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
+            remoteClient.Crypto = new ChatCrypt("hello");
             var message = new RemoteMessage(request, remoteClient);
             var msgStr = JsonConvert.SerializeObject(message);
             var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
