@@ -4,7 +4,6 @@ using System.Net;
 using Newtonsoft.Json;
 using Serilog.Events;
 using StackExchange.Redis;
-using UniSpy.Server.Core.Database;
 
 namespace UniSpy.Server.Core.Config
 {
@@ -17,40 +16,11 @@ namespace UniSpy.Server.Core.Config
     }
     public class UniSpyDatabaseConfig
     {
-        public string ConnectionString =>
-                    $"Server={Server};"
-                    + $"Port={Port};"
-                    + $"Database={Database};"
-                    + $"Username={Username};"
-                    + $"Password={Password};"
-                    + $"SSL Mode={SSLMode};"
-                    + $"Trust Server Certificate={TrustServerCert};"
-                    + $"SSL Certificate={SSLCert};"
-                    + $"SSL Key={SSLKey};"
-                    + $"SSL Password={SSLPassword};"
-                    + $"Root Certificate={RootCert};";
-        public DatabaseType Type;
-        public string Server;
-        public int Port;
-        public string Database;
-        public string Username;
-        public string Password;
-        public string SSLMode;
-        public bool TrustServerCert;
-        public string SSLCert;
-        public string SSLKey;
-        public string SSLPassword;
-        public string RootCert;
+        public string ConnectionString;
     }
     public class UniSpyRedisConfig
     {
-        public string ConnectionString => $"{Server}:{Port},user={User},password={Password},ssl={SSL},sslHost={SSLHost}";
-        public string Server;
-        public int Port;
-        public string User;
-        public string Password;
-        public bool SSL;
-        public string SSLHost;
+        public string ConnectionString;
         [JsonIgnore]
         public IConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect(ConnectionString);
     }

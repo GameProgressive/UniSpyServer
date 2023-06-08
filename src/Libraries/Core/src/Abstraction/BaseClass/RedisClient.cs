@@ -1,4 +1,3 @@
-using StackExchange.Redis;
 using UniSpy.Server.Core.Config;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass

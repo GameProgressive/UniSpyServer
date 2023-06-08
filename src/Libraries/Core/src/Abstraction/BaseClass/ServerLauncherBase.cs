@@ -17,7 +17,9 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         /// UniSpy server version
         /// </summary>
         public static readonly string Version = "0.8.1";
-
+        /// <summary>
+        /// The server instances which contains the server objects
+        /// </summary>
         public static List<IServer> ServerInstances { get; protected set; } = new List<IServer>();
         public ServerLauncherBase()
         {
@@ -51,28 +53,26 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
 
         protected void ConnectRedis()
         {
-            var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                var r = StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
-                r.Dispose();
+                // auto dispose
+                using (StackExchange.Redis.ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString)) { }
             }
             catch (System.Exception e)
             {
                 throw new Exception("Can not connect to Redis", e);
             }
-            Console.WriteLine($"Successfully connected to Redis at {redisConfig.Server}:{redisConfig.Port}");
+            Console.WriteLine($"Successfully connected to Redis");
         }
         protected void ConnectMySql()
         {
             //Determine which database is used and establish the database connection.
-            var dbConfig = ConfigManager.Config.Database;
             if (!new UniSpyContext().Database.CanConnect())
             {
-                throw new Exception($"Can not connect to {dbConfig.Type}!");
+                throw new Exception($"Can not connect to Postgresql.");
             }
 
-            Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.Server}:{dbConfig.Port}");
+            Console.WriteLine($"Successfully connected to Postgresql.");
         }
         protected static void ShowUniSpyLogo()
         {

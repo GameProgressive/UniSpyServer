@@ -1,23 +1,9 @@
 {
   "Database": {
-    "Server": "127.0.0.1",
-    "Port": "5432",
-    "Database": "unispy",
-    "Username": "root",
-    "Password": "0000",
-    "SSLMode": "Prefer",
-    "TrustServerCert": "false",
-    "SSLKey": "",
-    "SSLPassword": "",
-    "RootCert": ""
+    "ConnectionString": "reference to https://www.connectionstrings.com/postgresql/ example: User ID=root;Password=myPassword;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;"
   },
   "Redis": {
-    "Server": "127.0.0.1",
-    "Port": "6379",
-    "User": "",
-    "Password": "",
-    "SSL": "false",
-    "SSLHost": ""
+    "ConnectionString": "reference to https://stackexchange.github.io/StackExchange.Redis/Configuration.html example: localhost:6379,user=,password=,ssl=,sslHost="
   },
   "Servers": [
     {

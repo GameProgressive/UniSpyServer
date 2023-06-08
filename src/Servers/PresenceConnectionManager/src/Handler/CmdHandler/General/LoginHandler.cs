@@ -76,7 +76,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
                 (LoginType)_request.Type,
-                (int?)_request.PartnerID,
+                _request.PartnerID,
                 LoginChallengeProof.ServerChallenge,
                 _request.UserChallenge,
                 _result.DatabaseResults.PasswordHash);

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.LinqToRedis;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.QueryReport.Aggregate.Redis.Channel

@@ -4,7 +4,6 @@ using System.Net;
 using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
 using UniSpy.Server.NatNegotiation.Enumerate;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Misc;
 using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 using System.Linq;
@@ -42,6 +41,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
     }
     public record NatInitInfo
     {
+        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
         public uint Cookie => (uint)AddressInfos.Values.Last().Cookie;
         public byte Version => (byte)AddressInfos.Values.Last().Version;
         public NatClientIndex ClientIndex => (NatClientIndex)AddressInfos.Values.Last().ClientIndex;
@@ -54,37 +54,13 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
         /// <summary>
         /// Some game will not send GP init packet, we use NN3 as default.
         /// </summary>
-        public IPEndPoint PublicIPEndPoint
-        {
-            get
-            {
-                if (Version == 2)
-                {
-                    return AddressInfos[NatPortType.NN2].PublicIPEndPoint;
-                }
-                else
-                {
-                    return AddressInfos[NatPortType.NN3].PublicIPEndPoint;
-                }
-            }
-        }
+        public IPEndPoint PublicIPEndPoint => AddressInfos.Values.Last().PublicIPEndPoint;
+
         /// <summary>
         /// The private address will show in NN2 and NN3 packets, in here we use private ip in NN3 as default
         /// </summary>
-        public IPEndPoint PrivateIPEndPoint
-        {
-            get
-            {
-                if (Version == 2)
-                {
-                    return AddressInfos[NatPortType.NN2].PrivateIPEndPoint;
-                }
-                else
-                {
-                    return AddressInfos[NatPortType.NN3].PrivateIPEndPoint;
-                }
-            }
-        }
+        public IPEndPoint PrivateIPEndPoint => AddressInfos.Values.Last().PrivateIPEndPoint;
+
         public NatType NatType
         {
             get
@@ -100,12 +76,11 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
             }
         }
 
-        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
 
         public NatInitInfo(List<NatAddressInfo> infos)
         {
             AddressInfos = infos.Select((i) => new { i }).ToDictionary(a => ((NatPortType)a.i.PortType), a => a.i);
-            if (infos.First().Version == 2)
+            if (Version == 2)
             {
                 if (!(AddressInfos.ContainsKey(NatPortType.NN1)
                     && AddressInfos.ContainsKey(NatPortType.NN2)))

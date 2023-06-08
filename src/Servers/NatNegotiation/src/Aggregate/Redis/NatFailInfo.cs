@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using Newtonsoft.Json;
 using UniSpy.LinqToRedis;
-using UniSpy.Server.Core.Config;
 using UniSpy.Server.Core.Extension.Redis;
 using UniSpy.Server.Core.Misc;
 using UniSpy.Server.NatNegotiation.Enumerate;

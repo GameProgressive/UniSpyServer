@@ -13,7 +13,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Structure
         public string Challenge1 { get; private set; }
         public string Challenge2 { get; private set; }
         public string PasswordHash { get; private set; }
-
+        /// <summary>
+        /// The context using to build the challenge and response, the challenge1 can be server challenge or client challenge as same as challenge2.
+        /// </summary>
         public LoginChallengeProof(string userData, LoginType loginType, int? partnerID, string challenge1, string challenge2, string passwordHash)
         {
             UserData = userData;
@@ -39,14 +41,15 @@ namespace UniSpy.Server.PresenceConnectionManager.Structure
             if (data.PartnerID is not null)
             {
                 if (data?.PartnerID != (int)GPPartnerID.Gamespy
-                             && data?.LoginType != LoginType.AuthToken)
+                    && data?.LoginType != LoginType.AuthToken)
                 {
                     tempUserData = $@"{data.PartnerID}@{data.UserData}";
                 }
             }
 
             // Generate our response string
-            StringBuilder responseString = new StringBuilder(data.PasswordHash);
+            var responseString = new StringBuilder();
+            responseString.Append(data.PasswordHash);
             responseString.Append(' ', 48); // 48 spaces
             responseString.Append(tempUserData);
             responseString.Append(data.Challenge1);
