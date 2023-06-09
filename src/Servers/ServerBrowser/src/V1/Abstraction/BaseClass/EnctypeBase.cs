@@ -5,6 +5,10 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
 {
+    /// <summary>
+    /// The encryption type 1 and 2 base class which contains the functions using in enctype1 and enctype2.
+    /// What confuses me the most is why gamespy doesn't use standard encryption schemes like DES, AES etc.
+    /// </summary>
     public abstract class EnctypeBase : ICryptography
     {
         public byte[] Decrypt(byte[] data) => throw new UniSpy.Exception("Enctype only encrypt message on server side.");
