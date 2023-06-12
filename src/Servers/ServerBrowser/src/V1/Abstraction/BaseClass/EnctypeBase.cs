@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System;
 using System.Linq;
@@ -13,31 +14,45 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
     {
         public byte[] Decrypt(byte[] data) => throw new UniSpy.Exception("Enctype only encrypt message on server side.");
         public abstract byte[] Encrypt(byte[] data);
-        protected void Encshare1(uint[] tbuff, byte[] datap, int len)
+        /// <summary>
+        /// The encryption function 2
+        /// </summary>
+        /// <param name="tbuff">the input tbuff</param>
+        /// <param name="tbuffIndex">tbuff start index</param>
+        /// <param name="datap">datap is a subset of tbuff</param>
+        /// <param name="datapIndex">datap start index</param>
+        /// <param name="len">unknown</param>
+        protected void Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len)
         {
             int pIndex, sIndex;
             // convert uint array to byte array
-            var tbuffBytes = Array.ConvertAll(tbuff, Convert.ToByte);
-            var datapIndex = 0;
-            pIndex = sIndex = 309 * 4;
-            Encshare2(tbuff, tbuff.Skip(pIndex / 4).ToArray(), 16);
+            pIndex = sIndex = 309 * sizeof(uint);
+            Encshare2(tbuff, 309, 16);
+            var tbuffBytes = ConvertUintToBytes(tbuff);
+
             while (len-- > 0)
             {
                 if ((pIndex - sIndex) == 63)
                 {
                     pIndex = sIndex;
                     //convert int array to byte array
-                    var newtbuffBytes = Array.ConvertAll(tbuff, Convert.ToUInt32);
-                    Encshare2(tbuff, newtbuffBytes, 16);
+                    Encshare2(tbuff, 0, 16);
+                    tbuffBytes = ConvertUintToBytes(tbuff);
                 }
                 datap[datapIndex] ^= tbuffBytes[pIndex];
                 datapIndex++;
                 pIndex++;
             }
+            tbuff = ConvertBytesToUint(tbuffBytes);
         }
-        protected void Encshare2(uint[] tbuff, uint[] tbuffp, int len)
+        /// <summary>
+        /// Encryption related function2
+        /// </summary>
+        /// <param name="tbuff">the input data</param>
+        /// <param name="tbuffp">the another index of input data</param>
+        /// <param name="len">unknown</param>
+        protected void Encshare2(uint[] tbuff, uint tbuffp, int len)
         {
-
             uint t1, t2, t3, t4, t5;
             uint limit;
             uint p;
@@ -46,26 +61,20 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             t1 = tbuff[305];
             t3 = tbuff[306];
             t5 = tbuff[307];
-            limit = (uint)len;
-            // Array.Copy(tbuffp, limit, len);
-            // for (int i = 0; i < len; i++)
-            // {
-
-            // }
-            uint tbuffpIndex = 0;
-            while (tbuffpIndex < limit)
+            limit = (uint)(tbuffp + len);
+            while (tbuffp < limit)
             {
                 p = t2 + 272;
-                while (t5 < (ushort.MaxValue + 1))
+                while (t5 <= ushort.MaxValue)
                 {
                     t1 += t5;
                     p++;
                     t3 += t1;
                     t1 += t3;
                     tbuff[p - 17] = t1;
-                    tbuff[p - 1] = t1;
+                    tbuff[p - 1] = t3;
                     t4 = (t3 << 24) | (t3 >> 8);
-                    tbuff[p + 15] = t1;
+                    tbuff[p + 15] = t5;
                     t5 <<= 1;
                     t2++;
                     t1 ^= tbuff[t1 & 0xff];
@@ -77,8 +86,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
                     t1 = (t4 >> 24) | (t4 << 8);
                 }
                 t3 ^= t1;
-                tbuff[tbuffpIndex] = t3;
-                tbuffpIndex++;
+                tbuff[tbuffp++] = t3;
                 t2--;
                 t1 = tbuff[t2 + 256];
                 t5 = tbuff[t2 + 272];
@@ -151,38 +159,68 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             data[307] = t4;
             data[308] = (uint)n1;
         }
+        /// <summary>
+        /// Seems this function is used to initialize encryption parameter
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="size"></param>
+        /// <param name="dest"></param>
         protected void EncShare4(byte[] src, int size, uint[] dest)
         {
             uint tmp;
             int i;
             byte pos, x, y;
 
-            for (i = 0; i < 256; i++) // Initialize all elements in dest array to 0
+            for (i = 0; i < 256; i++)
                 dest[i] = 0;
 
-            for (y = 0; y < 4; y++) // Loop 4 times, process one byte at a time
+            for (y = 0; y < 4; y++)
             {
-                for (i = 0; i < 256; i++) // Perform operation on each element in dest array
+                for (i = 0; i < 256; i++)
                 {
-                    dest[i] = (dest[i] << 8) + (uint)i; // Left shift dest[i] by 8 bits and add i in the low 8 bits
+                    dest[i] = (dest[i] << 8) + (uint)i;
                 }
 
-                for (pos = y, x = 0; x < 2; x++) // Loop 2 times, process 128 bytes each time
+                for (pos = y, x = 0; x < 2; x++)
                 {
-                    for (i = 0; i < 256; i++) // Perform operation on each element in dest array
+                    for (i = 0; i < 256; i++)
                     {
-                        tmp = dest[i];                            // Save the value of dest[i] in tmp
-                        pos += (byte)(tmp + src[i % size]);       // Calculate the value of pos
-                        dest[i] = dest[pos];                      // Assign the value of dest[pos] to dest[i]
-                        dest[pos] = tmp;                          // Assign the value of tmp to dest[pos]
+                        tmp = dest[i];
+                        pos += (byte)(tmp + src[i % size]);
+                        dest[i] = dest[pos];
+                        dest[pos] = tmp;
                     }
                 }
             }
 
-            for (i = 0; i < 256; i++) // Perform operation on each element in dest array
-                dest[i] ^= (uint)i;    // Perform XOR between dest[i] and i to obtain the final key
+            for (i = 0; i < 256; i++)
+                dest[i] ^= (uint)i;
 
-            EncShare3(dest); // Call the encshare3 function to further encrypt the key
+            EncShare3(dest);
+        }
+        protected static byte[] ConvertUintToBytes(uint[] input)
+        {
+            var ontputBytes = new byte[input.Length * sizeof(uint)];
+            for (var i = 0; i < input.Length; i++)
+            {
+                Array.Copy(BitConverter.GetBytes(input[i]), 0, ontputBytes, i * sizeof(uint), sizeof(uint));
+            }
+            return ontputBytes.ToArray();
+        }
+        protected static uint[] ConvertBytesToUint(byte[] input)
+        {
+            if (input.Length % sizeof(uint) != 0)
+            {
+                throw new System.Exception("the input length is not correct");
+            }
+            var onputInts = new uint[input.Length / sizeof(uint)];
+            for (var i = 0; i < (input.Length / sizeof(uint)); i++)
+            {
+                var tempBytes = input.Skip(i * sizeof(uint)).Take(sizeof(uint)).ToArray();
+                var tempUint = BitConverter.ToUInt32(tempBytes);
+                onputInts[i] = tempUint;
+            }
+            return onputInts;
         }
     }
 }

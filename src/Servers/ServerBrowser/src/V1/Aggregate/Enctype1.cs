@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.V1.Aggregate
@@ -25,20 +26,112 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
 
         public override byte[] Encrypt(byte[] data)
         {
+            // create a copy
+            var dataCopy = data.ToArray();
+
             throw new System.NotImplementedException();
         }
-
-        private void Func1(byte[] id)
+        private byte[] Decoder(byte[] data, int dataLen)
         {
-            if (id is not null)
+            var tbuff = new byte[326];
+            var tbuff2 = new byte[258];
+
+            var len = BitConverter.ToInt32(data.Take(4).ToArray());
+            if (len <= 0)
             {
-                if (id.Length > 0)
-                {
-                    Func4(id);
-                }
+                throw new ServerBrowser.Exception("input data length must bigger than 0");
+            }
+            if (len > dataLen)
+            {
+                throw new ServerBrowser.Exception("input data length can not bigger than dataLen");
+            }
+            data[4] = (byte)((data[4] ^ 62) - 20);
+            data[5] = (byte)((data[5] ^ 205) - 5);
+            var tempData1 = data.Skip(19).ToArray();
+            Func8(tempData1, 16, Enctype1Table);
+            data = data.Take(19).Concat(tempData1).ToArray();
+            len -= data[4] + data[5] + 40;
+            var dataP = 0 + data[5] + 40;
+            var tempLen = (len >> 2) - 5;
+            if (tempLen >= 0)
+            {
+                Func4(Key);
+                var tempData2 = data.Skip(dataP).ToArray();
+                Func6(tempData2, tempLen);
+            }
+
+
+            tempLen = (len >> 1) - 17;
+            if (tempLen >= 0)
+            {
+                var tempData3 = data.Skip(36).ToArray();
+                uint[] tbuffInt = Array.ConvertAll(tbuff, Convert.ToUInt32);
+                EncShare4(tempData3, 4, tbuffInt);
+                data = data.Skip(36).Concat(tempData3).ToArray();
+                var tempData4 = data.Skip(dataP).ToArray();
+                Encshare1(tbuffInt, 0, data, dataP, tempLen);
+                data = data.Skip(dataP).Concat(tempData4).ToArray();
+                tbuff = Array.ConvertAll(tbuffInt, Convert.ToByte);
+            }
+
+            var tempData5 = data.Skip(19).ToArray();
+            Func3(tempData5, 16, tbuff2);
+            data = data.Skip(19).Concat(tempData5).ToArray();
+            var tempData6 = data.Skip(dataP).ToArray();
+            Func2(tempData6, len, tbuff2);
+            data = data.Skip(dataP).Concat(tempData6).ToArray();
+            return data;
+        }
+        private void Func1(byte[] data)
+        {
+            if (data is not null)
+            {
+                throw new ServerBrowser.Exception("the input data should not be null.");
+            }
+            if (data.Length <= 0)
+            {
+                throw new ServerBrowser.Exception("the input data length is not valid.");
+            }
+            Func4(data);
+
+        }
+        void Func2(byte[] data, int size, byte[] crypt)
+        {
+            byte n1, n2, t;
+            n1 = crypt[256];
+            n2 = crypt[257];
+            int dataIndex = 0;
+            while (size-- > 0)
+            {
+                t = crypt[++n1];
+                n2 += t;
+                crypt[n1] = crypt[n2];
+                t += crypt[n1];
+                data[dataIndex] ^= crypt[t];
+                dataIndex++;
+            }
+            crypt[256] = n1;
+            crypt[257] = n2;
+        }
+        void Func3(byte[] data, int len, byte[] buff)
+        {
+            int i;
+            byte pos = 0, tmp, rev = 0xff;
+            for (i = 0; i <= byte.MaxValue; i++)
+            {
+                buff[i] = rev--;
+            }
+            buff[256] = 0;
+            buff[257] = 0;
+
+            for (i = 0; i <= byte.MaxValue; i++)
+            {
+                tmp = buff[i];
+                pos += (byte)(data[i % len] + tmp);
+                buff[i] = buff[pos];
+                buff[pos] = tmp;
             }
         }
-
         void Func4(byte[] id)
         {
             // Declare variables i, n1, n2, t1, t2
@@ -118,9 +211,8 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             return tmp;
         }
 
-        private void Func6(byte[] data)
+        private void Func6(byte[] data, int len)
         {
-            var len = data.Length;
             int i = 0;
             var dataInts = Array.ConvertAll(data, Convert.ToInt32);
             while (len-- > 0)

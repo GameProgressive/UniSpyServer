@@ -42,7 +42,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             EncShare4(datap, data[0], dest);
 
             Array.Clear(data, 1 + data[0] + size, 6);
-            Encshare1(dest, datap, size + 6);
+            Encshare1(dest, 0, datap, 0, size + 6);
 
             for (i = 0; i < key.Length; i++)
                 datap[i] ^= key[i];
