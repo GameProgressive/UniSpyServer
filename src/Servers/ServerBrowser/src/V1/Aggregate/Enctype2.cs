@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
@@ -33,19 +34,22 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             }
             data[0] = (byte)headerSize;
 
-            byte[] datap = new byte[data.Length - 1];
-            Array.Copy(data, 1, datap, 0, datap.Length);
-            Array.Clear(datap, 0, data[0]);
+            // set datap index
+            byte datap = 1;
+            // set 1-8 as 0
+            Array.Clear(data, datap, 8);
+            Array.Clear(dest, 256, dest.Length - 256);
 
-            for (i = 256; i < 326; i++)
-                dest[i] = 0;
-            EncShare4(datap, data[0], dest);
 
-            Array.Clear(data, 1 + data[0] + size, 6);
-            Encshare1(dest, 0, datap, 0, size + 6);
+            var dataTemp = data.Skip(datap).ToArray();
+            EncShare4(dataTemp, data[0], dest);
+            Array.Copy(dataTemp, 0, data, datap, dataTemp.Length);
+            Array.Clear(data, data[0] + size + 1, 6);
+
+            Encshare1(dest, 0, data, datap + data[0], size + 6);
 
             for (i = 0; i < key.Length; i++)
-                datap[i] ^= key[i];
+                data[datap + i] ^= key[i];
             size += 1 + data[0] + 6;
             data[0] ^= 0xec;
             return size;

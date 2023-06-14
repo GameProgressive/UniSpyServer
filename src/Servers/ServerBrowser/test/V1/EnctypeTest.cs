@@ -1,11 +1,12 @@
+using System.Data;
 using System;
 using System.Linq;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V1.Aggregate;
 using Xunit;
 
 public class EnctypeTest : EnctypeBase
 {
-
     public override byte[] Encrypt(byte[] data) => throw new System.NotImplementedException();
     [Fact]
     public void EncShare2Test()
@@ -51,5 +52,24 @@ public class EnctypeTest : EnctypeBase
         EncShare4(datap, 1, dest);
 
         Assert.True(destCorrect.SequenceEqual(dest));
+    }
+}
+
+
+public class Encrypt2Test : Enctype2
+{
+    public Encrypt2Test() : base("abcdef")
+    {
+    }
+
+    [Fact]
+    public void EncoderTest()
+    {
+        var data = Enumerable.Repeat<uint>(2, 326).ToArray();
+        var dataBytes = ConvertUintToBytes(data);
+        Encoder(GameSecreteKey, dataBytes, 6);
+        var dataCorrect = new uint[] { 1667391972, 6710628, 3464277760, 3324666663, 1732499745, 230, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+        data = ConvertBytesToUint(dataBytes);
+        Assert.True(dataCorrect.SequenceEqual(data));
     }
 }
