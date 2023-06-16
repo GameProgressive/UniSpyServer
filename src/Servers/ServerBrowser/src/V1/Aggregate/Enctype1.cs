@@ -96,7 +96,6 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
                 throw new ServerBrowser.Exception("the input data length is not valid.");
             }
             Func4(data);
-
         }
         void Func2(byte[] data, int size, byte[] crypt)
         {
@@ -109,6 +108,8 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
                 t = crypt[++n1];
                 n2 += t;
                 crypt[n1] = crypt[n2];
+                crypt[n2] = t;
+
                 t += crypt[n1];
                 data[dataIndex] ^= crypt[t];
                 dataIndex++;
@@ -212,14 +213,15 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             // Return the tmp value
             return tmp;
         }
-
+        /// <summary>
+        /// init the enckey, data is not touched
+        /// </summary>
         void Func6(byte[] data, int len)
         {
             int i = 0;
-            var dataInts = Array.ConvertAll(data, Convert.ToInt32);
             while (len-- > 0)
             {
-                dataInts[i] = Func7(dataInts[i]);
+                data[i] = (byte)Func7(data[i]);
                 i++;
             }
         }
@@ -293,7 +295,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             while (len-- > 0)
             {
                 // Encrypt the byte in data using the enctype1_data array
-                data[dataIndex] = enctype1_data[dataIndex];
+                data[dataIndex] = enctype1_data[data[dataIndex]];
                 dataIndex++;
             }
         }
