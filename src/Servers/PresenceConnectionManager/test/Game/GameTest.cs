@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.PresenceConnectionManager.Contract.Request;
 using Xunit;
 
 namespace UniSpy.Server.PresenceConnectionManager.Test
@@ -33,6 +34,14 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
             {
                 ((ITestClient)MokeObject.client).TestReceived(UniSpyEncoding.GetBytes(raw));
             }
+        }
+        [Fact]
+        public void swbfrontps2Test()
+        {
+         var raw = @"\status\1\sesskey\1111\statstring\EN LIGNE\locstring\\final\";
+         var req = new StatusRequest(raw);
+         req.Parse();
+         
         }
     }
 }

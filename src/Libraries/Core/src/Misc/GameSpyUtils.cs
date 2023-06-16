@@ -29,7 +29,7 @@ namespace UniSpy.Server.Core.Misc
         /// <returns></returns>
         public static Dictionary<string, string> ConvertToKeyValue(string request)
         {
-            string[] commandParts = request.Replace(@"\final\", "").TrimStart('\\').TrimEnd('\\').Split('\\');
+            string[] commandParts = request.Replace(@"\final\", "").TrimStart('\\').Split('\\');
             return ConvertToKeyValue(commandParts);
         }
 
