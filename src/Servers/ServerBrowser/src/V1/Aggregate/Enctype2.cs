@@ -6,7 +6,7 @@ using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
 namespace UniSpy.Server.ServerBrowser.V1.Aggregate
 {
 
-    public class Enctype2 : EnctypeBase
+    public class Enctype2 : EnctypeBase, IEnctype2Test
     {
         public const int HeaderSize = 8;
         public byte[] GameSecreteKey { get; private set; }
@@ -22,7 +22,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             // Encoder(GameSecreteKey,data,?);
         }
 
-        public int Encoder(byte[] key, byte[] data, int size)
+        private int Encoder(byte[] key, byte[] data, int size)
         {
             uint[] dest = new uint[326];
             int i;
@@ -62,5 +62,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
                 data[i] ^= GameSecreteKey[i];
             }
         }
+
+        int IEnctype2Test.Encoder(byte[] key, byte[] data, int size) => Encoder(key, data, size);
     }
 }

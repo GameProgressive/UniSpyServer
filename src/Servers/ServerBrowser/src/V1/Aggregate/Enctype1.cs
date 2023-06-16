@@ -4,7 +4,7 @@ using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.V1.Aggregate
 {
-    public class Enctype1 : EnctypeBase
+    public class Enctype1 : EnctypeBase, IEnctype1Test
     {
         /// <summary>
         /// The server key 
@@ -17,7 +17,10 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         /// </summary>
         public static readonly byte[] ClientKey = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         public byte[] Key { get; private set; }
-        private byte[] _enc1key = new byte[261];
+
+        byte[] IEnctype1Test.EncKey => _enckey;
+
+        private byte[] _enckey = new byte[261];
         public Enctype1(byte[] key)
         {
             Key = key;
@@ -146,25 +149,24 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
                 return;
 
             // Initialize encryption array _enc1key
-            byte[] _enc1key = new byte[256];
             for (i = 0; i < 256; i++)
-                _enc1key[i] = (byte)i;
+                _enckey[i] = (byte)i;
 
             // Shuffle the encryption array _enc1key
             for (i = 255; i >= 0; i--)
             {
                 t1 = (byte)Func5(i, id, ref n1, ref n2);
-                t2 = _enc1key[i];
-                _enc1key[i] = _enc1key[t1];
-                _enc1key[t1] = t2;
+                t2 = _enckey[i];
+                _enckey[i] = _enckey[t1];
+                _enckey[t1] = t2;
             }
 
             // Set specific values to some elements of the encryption array _enc1key
-            _enc1key[256] = _enc1key[1];
-            _enc1key[257] = _enc1key[3];
-            _enc1key[258] = _enc1key[5];
-            _enc1key[259] = _enc1key[7];
-            _enc1key[260] = _enc1key[n1 & 0xff];
+            _enckey[256] = _enckey[1];
+            _enckey[257] = _enckey[3];
+            _enckey[258] = _enckey[5];
+            _enckey[259] = _enckey[7];
+            _enckey[260] = _enckey[n1 & 0xff];
         }
         int Func5(int cnt, byte[] id, ref int n1, ref int n2)
         {
@@ -193,7 +195,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             do
             {
                 // Update the values of n1 and n2, and calculate the tmp value
-                n1 = _enc1key[n1 & 0xff] + id[n2];
+                n1 = _enckey[n1 & 0xff] + id[n2];
                 n2++;
                 if (n2 >= id.Length)
                 {
@@ -211,7 +213,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             return tmp;
         }
 
-        private void Func6(byte[] data, int len)
+        void Func6(byte[] data, int len)
         {
             int i = 0;
             var dataInts = Array.ConvertAll(data, Convert.ToInt32);
@@ -228,58 +230,58 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             byte a, b, c;
 
             // Get certain elements from the encryption array _enc1key and calculate new values based on them
-            a = _enc1key[256];
-            b = _enc1key[257];
-            c = _enc1key[a];
-            _enc1key[256] = (byte)(a + 1);
-            _enc1key[257] = (byte)(b + c);
+            a = _enckey[256];
+            b = _enckey[257];
+            c = _enckey[a];
+            _enckey[256] = (byte)(a + 1);
+            _enckey[257] = (byte)(b + c);
 
-            a = _enc1key[260];
-            b = _enc1key[257];
-            b = _enc1key[b];
-            c = _enc1key[a];
-            _enc1key[a] = b;
+            a = _enckey[260];
+            b = _enckey[257];
+            b = _enckey[b];
+            c = _enckey[a];
+            _enckey[a] = b;
 
-            a = _enc1key[259];
-            b = _enc1key[257];
-            a = _enc1key[a];
-            _enc1key[b] = a;
+            a = _enckey[259];
+            b = _enckey[257];
+            a = _enckey[a];
+            _enckey[b] = a;
 
-            a = _enc1key[256];
-            b = _enc1key[259];
-            a = _enc1key[a];
-            _enc1key[b] = a;
+            a = _enckey[256];
+            b = _enckey[259];
+            a = _enckey[a];
+            _enckey[b] = a;
 
-            a = _enc1key[256];
-            _enc1key[a] = c;
-            b = _enc1key[258];
-            a = _enc1key[c];
-            c = _enc1key[259];
+            a = _enckey[256];
+            _enckey[a] = c;
+            b = _enckey[258];
+            a = _enckey[c];
+            c = _enckey[259];
             b = (byte)(b + a);
-            _enc1key[258] = b;
+            _enckey[258] = b;
 
             a = b;
-            c = _enc1key[c];
-            b = _enc1key[257];
-            b = _enc1key[b];
-            a = _enc1key[a];
+            c = _enckey[c];
+            b = _enckey[257];
+            b = _enckey[b];
+            a = _enckey[a];
             c += b;
-            b = _enc1key[260];
-            b = _enc1key[b];
+            b = _enckey[260];
+            b = _enckey[b];
             c += b;
-            b = _enc1key[c];
-            c = _enc1key[256];
-            c = _enc1key[c];
+            b = _enckey[c];
+            c = _enckey[256];
+            c = _enckey[c];
             a += c;
-            c = _enc1key[b];
-            b = _enc1key[a];
+            c = _enckey[b];
+            b = _enckey[a];
 
             // Store the len value in variable a and perform XOR on c and a
             a = (byte)len;
             c ^= b;
-            _enc1key[260] = a;
+            _enckey[260] = a;
             c ^= a;
-            _enc1key[259] = c;
+            _enckey[259] = c;
 
             // Return c value
             return c;
@@ -296,5 +298,20 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             }
         }
 
+        void IEnctype1Test.Func1(byte[] data) => Func1(data);
+
+        void IEnctype1Test.Func2(byte[] data, int size, byte[] crypt) => Func2(data, size, crypt);
+
+        void IEnctype1Test.Func3(byte[] data, int len, byte[] buff) => Func3(data, len, buff);
+
+        void IEnctype1Test.Func4(byte[] id) => Func4(id);
+
+        int IEnctype1Test.Func5(int cnt, byte[] id, ref int n1, ref int n2) => Func5(cnt, id, ref n1, ref n2);
+
+        void IEnctype1Test.Func6(byte[] data, int len) => Func6(data, len);
+
+        int IEnctype1Test.Func7(int len) => Func7(len);
+
+        void IEnctype1Test.Func8(byte[] data, int len, byte[] enctype1_data) => Func8(data, len, enctype1_data);
     }
 }

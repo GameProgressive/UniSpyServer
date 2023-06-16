@@ -8,7 +8,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
     /// The encryption type 1 and 2 base class which contains the functions using in enctype1 and enctype2.
     /// What confuses me the most is why gamespy doesn't use standard encryption schemes like DES, AES etc.
     /// </summary>
-    public abstract class EnctypeBase : ICryptography
+    public abstract class EnctypeBase : ICryptography, IEnctypeShareTest
     {
         public byte[] Decrypt(byte[] data) => throw new UniSpy.Exception("Enctype only encrypt message on server side.");
         public abstract byte[] Encrypt(byte[] data);
@@ -220,5 +220,16 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             }
             return onputInts;
         }
+
+        void IEnctypeShareTest.Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len) => Encshare1(tbuff, tbuffIndex, datap, datapIndex, len);
+
+        void IEnctypeShareTest.Encshare2(uint[] tbuff, uint tbuffp, int len) => Encshare2(tbuff, tbuffp, len);
+
+        void IEnctypeShareTest.EncShare3(uint[] data, int n1, int n2) => EncShare3(data, n1, n2);
+
+        void IEnctypeShareTest.EncShare4(byte[] src, int size, uint[] dest) => EncShare4(src, size, dest);
+        uint[] IEnctypeShareTest.ConvertBytesToUint(byte[] input) => ConvertBytesToUint(input);
+        byte[] IEnctypeShareTest.ConvertUintToBytes(uint[] input) => ConvertUintToBytes(input);
+
     }
 }
