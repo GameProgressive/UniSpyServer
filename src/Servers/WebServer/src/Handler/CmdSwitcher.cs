@@ -29,13 +29,16 @@ namespace UniSpy.Server.WebServer.Handler
             // {
             //     throw new UniSpy.Exception($"Invalid http path access:{_rawRequest.Url}");
             // }
-            if (_rawRequest.Body == "")
+            try
             {
-                return;
+                dynamic xelements = XElement.Parse(_rawRequest.Body);
+                var name = xelements.FirstNode.FirstNode.Name.LocalName;
+                _requests.Add(new KeyValuePair<object, object>(name, _rawRequest.Body));
             }
-            dynamic xelements = XElement.Parse(_rawRequest.Body);
-            var name = xelements.FirstNode.FirstNode.Name.LocalName;
-            _requests.Add(new KeyValuePair<object, object>(name, _rawRequest.Body));
+            catch (System.Exception ex)
+            {
+                throw new WebServer.Exception("xml parsing error", ex);
+            }
         }
 
         protected override IHandler CreateCmdHandlers(object name, object rawRequest)

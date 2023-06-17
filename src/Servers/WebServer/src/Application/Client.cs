@@ -1,6 +1,7 @@
 using UniSpy.Server.WebServer.Handler;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.WebServer.Application
 {
@@ -15,10 +16,16 @@ namespace UniSpy.Server.WebServer.Application
 
         protected override void OnReceived(object buffer)
         {
-            base.OnReceived(buffer);
             var rq = (IHttpRequest)buffer;
+
+            if (rq.Body.Length == 0 || rq.Body == "")
+            {
+                this.LogWarn($"ignore empty message");
+                return;
+            }
+            base.OnReceived(buffer);
             if (!rq.KeepAlive)
-                ((IHttpConnection)Connection).Disconnect();
+                (Connection as IHttpConnection)?.Disconnect();
         }
     }
 }

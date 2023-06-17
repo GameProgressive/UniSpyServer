@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UniSpy.Server.WebServer.Contract;
+using UniSpy.Server.WebServer.Aggregate;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Contract.Request

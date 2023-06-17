@@ -15,7 +15,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             }
             catch (System.Exception e)
             {
-                LogWriter.LogError(e);
+                UniSpy.Exception.HandleException(e);
             }
         }
     }

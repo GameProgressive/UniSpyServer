@@ -1,4 +1,4 @@
-namespace UniSpy.Server.WebServer.Contract
+namespace UniSpy.Server.WebServer.Aggregate
 {
     public record RecordFieldObject : FieldObject
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UniSpy.Server.WebServer.Abstraction;
-using UniSpy.Server.WebServer.Contract;
+using UniSpy.Server.WebServer.Aggregate;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Contract.Result
 {

@@ -1,11 +1,7 @@
-namespace UniSpy
+namespace UniSpy.Server.WebServer
 {
-    public class Exception : System.Exception
+    public class Exception : UniSpy.Exception
     {
-        public Exception()
-        {
-        }
-
         public Exception(string message) : base(message)
         {
         }
@@ -14,5 +10,4 @@ namespace UniSpy
         {
         }
     }
-
 }

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
+using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
@@ -65,7 +66,7 @@ namespace UniSpy.Server.Chat.Aggregate
             }
             if (result.Count() > 1)
             {
-                LogWriter.LogError($"Multiple user with same nick name in channel {Name}");
+                throw new ErrOneUSNickNameException("Multiple user with same nick name in channel {Name}");
             }
         }
 

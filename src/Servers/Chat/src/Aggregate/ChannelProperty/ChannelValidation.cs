@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Aggregate
             if (Mode.IsInviteOnly)
             {
                 //invited only
-                throw new IRCChannelException("This is an invited only channel.", IRCErrorCode.InviteOnlyChan, Name);
+                throw new InviteOnlyChanException("This is an invited only channel.", Name);
             }
             if (IsUserBanned(client))
             {

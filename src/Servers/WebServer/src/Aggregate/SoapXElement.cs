@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace UniSpy.Server.WebServer.Contract
+namespace UniSpy.Server.WebServer.Aggregate
 {
     public class SoapXElement : XElement
     {

@@ -35,7 +35,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                 }
                 Response();
             }
-            catch (UniSpy.Exception ex)
+            catch (System.Exception ex)
             {
                 HandleException(ex);
             }
@@ -58,18 +58,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             _client.Send(_response);
         }
 
-        protected virtual void HandleException(System.Exception ex)
-        {
-            // we only log exception message when this message is UniSpy.Exception
-            if (ex is UniSpy.Exception)
-            {
-                _client.LogError(ex.Message);
-            }
-            else
-            {
-                _client.LogError(ex.ToString());
-            }
-        }
+        protected virtual void HandleException(System.Exception ex) => UniSpy.Exception.HandleException(ex, _client);
 
         private void LogCurrentClass()
         {

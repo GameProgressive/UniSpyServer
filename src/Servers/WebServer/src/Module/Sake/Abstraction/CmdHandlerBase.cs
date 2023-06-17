@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using UniSpy.Server.WebServer.Contract;
+using UniSpy.Server.WebServer.Aggregate;
 using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Abstraction
