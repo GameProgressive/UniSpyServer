@@ -52,7 +52,7 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
         }
         void ITcpConnection.Disconnect() => Disconnect();
         public new void Send(string response) => Send(UniSpyEncoding.GetBytes(response));
-        public new void Send(byte[] response) => base.SendAsync(response);
+        public new void Send(byte[] response) => base.Send(response);
 
     }
 }

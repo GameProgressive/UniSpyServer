@@ -24,11 +24,7 @@ namespace UniSpy.Server.Core.Network.Udp.Client
             base.OnConnected();
         }
 
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            // Continue receive datagrams
-            ReceiveAsync();
-        }
+        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size) => ReceiveAsync();
 
         protected override void OnError(SocketError error)
         {

@@ -32,7 +32,7 @@ namespace UniSpy.Server.Core.Network.Http.Server
             // Response.MakeOkResponse();
             Response.SetBegin(200);
             Response.SetBody(response);
-            base.SendResponseAsync();
+            base.SendResponse();
         }
 
         void IConnection.Send(byte[] response)
@@ -40,7 +40,7 @@ namespace UniSpy.Server.Core.Network.Http.Server
             // Response.MakeOkResponse();
             Response.SetBegin(200);
             Response.SetBody(response);
-            base.SendResponseAsync();
+            base.SendResponse();
         }
 
         void ITcpConnection.Disconnect() => Disconnect();

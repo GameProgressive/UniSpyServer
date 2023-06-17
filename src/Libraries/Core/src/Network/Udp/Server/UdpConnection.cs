@@ -33,11 +33,13 @@ namespace UniSpy.Server.Core.Network.Udp.Server
         {
             if (response.GetType() == typeof(string))
             {
-                return Manager.SendAsync(RemoteIPEndPoint, UniSpyEncoding.GetBytes((string)response));
+                Manager.Send(RemoteIPEndPoint, UniSpyEncoding.GetBytes((string)response));
+                return true;
             }
             else if (response.GetType() == typeof(byte[]))
             {
-                return Manager.SendAsync(RemoteIPEndPoint, (byte[])response);
+                Manager.Send(RemoteIPEndPoint, (byte[])response);
+                return true;
             }
             else
             {
