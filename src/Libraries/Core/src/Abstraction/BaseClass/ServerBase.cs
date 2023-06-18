@@ -48,11 +48,11 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         protected abstract IConnectionManager CreateConnectionManager(IPEndPoint endPoint);
         protected virtual IClient HandleConnectionInitialization(IConnection connection)
         {
-            var client = ClientManagerBase<IPEndPoint, IClient>.GetClient(connection.RemoteIPEndPoint);
+            var client = ClientManagerBase.GetClient(connection.RemoteIPEndPoint);
             if (client is null)
             {
                 client = CreateClient(connection);
-                ClientManagerBase<IPEndPoint, IClient>.AddClient(client);
+                ClientManagerBase.AddClient(client);
             }
             return client;
         }

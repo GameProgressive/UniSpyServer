@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace UniSpy.Server.ServerBrowser.V2.Application
 {
-    public class ClientManager : ClientManagerBase<IPEndPoint,Client>
+    public class ClientManager : ClientManagerBase
     {
         public static List<Client> GetClient(string gameName)
         {

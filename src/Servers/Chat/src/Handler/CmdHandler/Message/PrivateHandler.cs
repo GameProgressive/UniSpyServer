@@ -1,5 +1,6 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Contract.Response.Message;
 using UniSpy.Server.Chat.Contract.Result.Message;
@@ -17,11 +18,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
         }
         protected override void ChannelMessageDataOpration()
         {
-
-            if (_channel.Mode.IsModeratedChannel)
-            {
-                return;
-            }
+            var data = ClientManager.ClientPool;
+            // if (_channel.Mode.IsModeratedChannel)
+            // {
+            //     return;
+            // }
 
             if (_channel.IsUserBanned(_user))
             {

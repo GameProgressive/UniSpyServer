@@ -48,7 +48,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             while (true)
             {
                 string newNickName = _request.NickName + number;
-                if (ClientManager.ClientPool.Values.Count(c => c.Info.NickName == _request.NickName) == 0)
+                if (ClientManager.ClientPool.Values.Count(c => ((ClientInfo)(c.Info)).NickName == _request.NickName) == 0)
                 {
                     validNickName = newNickName;
                     break;
@@ -66,7 +66,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 //client using its <uniquenick>-<gamename> as his nickname in chat
                 SetUniqueNickAsNickName();
             }
-            else if (ClientManager.ClientPool.Values.Count(c => c.Info.NickName == _request.NickName) == 0)
+            else if (ClientManager.ClientPool.Values.Count(c => ((ClientInfo)(c.Info)).NickName == _request.NickName) == 0)
             {
                 _client.Info.NickName = _request.NickName;
             }

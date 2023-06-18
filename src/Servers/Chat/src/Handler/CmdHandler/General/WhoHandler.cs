@@ -1,3 +1,4 @@
+using System.Net;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Aggregate.Misc;
@@ -6,6 +7,8 @@ using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Contract.Result.General;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.BaseClass;
+using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -61,7 +64,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         private void GetUserInfo()
         {
             var client = ClientManager.GetClientByNickName(_request.NickName);
-            
             if (client is null)
             {
                 throw new Chat.Exception($"Client not exist with nickname {_request.NickName}");

@@ -17,6 +17,10 @@ namespace UniSpy.Server.GameStatus.Application
             {
                 UniSpy.Exception.HandleException(e);
             }
+            finally
+            {
+                while (Console.ReadKey().Key != ConsoleKey.Q) { }
+            }
         }
     }
 }

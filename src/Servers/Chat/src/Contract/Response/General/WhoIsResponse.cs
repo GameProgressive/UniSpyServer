@@ -23,9 +23,9 @@ namespace UniSpy.Server.Chat.Contract.Response.General
                 }
 
                 SendingBuffer += $":{ServerDomain} {ResponseName.WhoIsChannels} {_result.NickName} {_result.Name} :{channelNames}\r\n";
-
-                SendingBuffer += $":{ServerDomain} {ResponseName.EndOfWhoIs} {_result.NickName} {_result.Name} :End of WHOIS list.\r\n";
             }
+            
+            SendingBuffer += $":{ServerDomain} {ResponseName.EndOfWhoIs} {_result.NickName} {_result.Name} :End of WHOIS list.\r\n";
         }
     }
 }

@@ -17,6 +17,10 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             {
                 UniSpy.Exception.HandleException(e);
             }
+            finally
+            {
+                while (Console.ReadKey().Key != ConsoleKey.Q) { }
+            }
         }
     }
 }

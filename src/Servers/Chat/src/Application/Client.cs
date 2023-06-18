@@ -22,7 +22,11 @@ namespace UniSpy.Server.Chat.Application
         {
             Info = new ClientInfo();
         }
-
+        protected override void OnConnected()
+        {
+            Info.IsRemoteClient = false;
+            base.OnConnected();
+        }
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);

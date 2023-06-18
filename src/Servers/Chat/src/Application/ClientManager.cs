@@ -6,21 +6,20 @@ using UniSpy.Server.Chat.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Application
 {
-    public sealed class ClientManager : ClientManagerBase<IPEndPoint, IChatClient>
+    public sealed class ClientManager : ClientManagerBase
     {
         /// <summary>
         /// We need to make sure client is get by nickname, otherwise we throw exception
         /// </summary>
-        /// <param name="nickName"></param>
         public static IChatClient GetClientByNickName(string nickName)
         {
             IChatClient client;
-            client = ClientPool.Values.Where(c => c.Info.NickName == nickName).FirstOrDefault();
+            client = (IChatClient)ClientPool.Values.FirstOrDefault(c => ((IChatClient)c).Info.NickName == nickName);
             return client;
         }
         public static List<ClientInfo> GetAllClientInfo()
         {
-            var infos = ClientPool.Values.Select(c => (c.Info)).ToList();
+            var infos = ClientPool.Values.Select(c => ((ClientInfo)(c.Info))).ToList();
             return infos;
         }
     }

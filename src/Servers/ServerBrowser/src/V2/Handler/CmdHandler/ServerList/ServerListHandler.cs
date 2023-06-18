@@ -101,19 +101,27 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         {
             var serverInfos = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
-
+            var filteredGameServerInfos = new List<QueryReport.V2.Aggregate.Redis.GameServer.GameServerInfo>();
             //TODO do filter
-            if (_request.Filter.Contains("groupid="))
+            if (_request.Filter is not null)
             {
-                var groupId = _request.Filter.Replace("groupid=", "");
-                var filteredGameServerInfos = serverInfos.Where(s => s.ServerData.ContainsKey("groupid=")).Where(s => s.ServerData["groupid"] == groupId).ToList();
-                ((ServerMainListResult)_result).GameServerInfos = filteredGameServerInfos;
+                if (_request.Filter.Contains("groupid="))
+                {
+                    var groupId = _request.Filter.Replace("groupid=", "");
+                    filteredGameServerInfos = serverInfos.Where(s => s.ServerData.ContainsKey("groupid=")).Where(s => s.ServerData["groupid"] == groupId).ToList();
+                    ((ServerMainListResult)_result).GameServerInfos = filteredGameServerInfos;
+                }
+                else
+                {
+                    filteredGameServerInfos = serverInfos;
+                }
             }
             else
             {
-                ((ServerMainListResult)_result).GameServerInfos = serverInfos;
+                filteredGameServerInfos = serverInfos;
             }
-
+            
+            ((ServerMainListResult)_result).GameServerInfos = filteredGameServerInfos;
         }
         private void ServerMainList()
         {

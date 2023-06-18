@@ -16,6 +16,10 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             {
                 UniSpy.Exception.HandleException(e);
             }
+            finally
+            {
+                while (Console.ReadKey().Key != ConsoleKey.Q) { }
+            }
         }
     }
 }

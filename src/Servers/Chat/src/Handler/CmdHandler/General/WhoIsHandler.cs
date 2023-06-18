@@ -22,7 +22,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             // there only existed one nick name
             base.RequestCheck();
             var client = ClientManager.GetClientByNickName(_request.NickName);
-            _clientInfo = client.Info;
+            _clientInfo = client?.Info;
         }
         protected override void DataOperation()
         {
