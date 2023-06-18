@@ -14,7 +14,7 @@ namespace UniSpy.Server.GameTrafficRelay.Application
             var server = new Server();
             if (server.PublicIPEndPoint.Address.Equals(IPAddress.Any) || server.PublicIPEndPoint.Address.Equals(IPAddress.Loopback))
             {
-                throw new System.Exception("Game traffic relay server public address can not set to 0.0.0.0 or 127.0.0.1 !");
+                throw new UniSpy.Exception("Game traffic relay server public address can not set to 0.0.0.0 or 127.0.0.1 !");
             }
             return new List<IServer> { server };
         }

@@ -1,5 +1,4 @@
 using System;
-using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.GameTrafficRelay.Application
 {
