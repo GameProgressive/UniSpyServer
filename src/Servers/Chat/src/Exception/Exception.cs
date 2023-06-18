@@ -8,9 +8,4 @@ namespace UniSpy.Server.Chat
 
         public Exception(string message, System.Exception innerException) : base(message, innerException) { }
     }
-
-    public class HandleLaterException : Exception
-    {
-        public HandleLaterException(string message) : base(message) { }
-    }
 }

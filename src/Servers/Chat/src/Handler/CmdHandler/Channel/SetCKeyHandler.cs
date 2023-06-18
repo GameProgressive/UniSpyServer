@@ -24,24 +24,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         protected override void RequestCheck()
         {
             _request.Parse();
-            // if client nickname is *, we set the name and execute the stored handlers
-            if (!_client.Info.IsNickNameSet)
-            {
-                _client.Info.NickName = _request.NickName;
-                lock (_client.Info.HandlerStack)
-                {
-                    foreach (var handler in _client.Info.HandlerStack)
-                    {
-                        handler.Handle();
-                    }
-                    _client.Info.HandlerStack.Clear();
-                }
-            }
 
             base.RequestCheck();
             if (_request.NickName != _client.Info.NickName)
             {
-                if (!_user.IsChannelOperator)
+                if (_channel.Mode.IsTopicOnlySetByChannelOperator)
                 {
                     throw new Chat.Exception("SETCKEY failed because you are not channel operator.");
                 }

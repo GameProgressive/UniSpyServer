@@ -208,7 +208,6 @@ namespace UniSpy.Server.Chat.Aggregate
         /// Send message to all users in this channel
         /// except the sender
         /// </summary>
-        /// <returns></returns>
         public void MultiCast(IClient sender, IResponse message, bool isSkipSender = false)
         {
             foreach (var user in Users.Values)

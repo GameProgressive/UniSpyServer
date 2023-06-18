@@ -24,7 +24,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public bool IsAllowExternalMessage { get; private set; } = false;
         //t - toggle the topic settable by channel operator only flag;
         [JsonProperty]
-        public bool IsTopicOnlySetByChannelOperator { get; private set; } = true;
+        public bool IsTopicOnlySetByChannelOperator { get; private set; } = false;
         // e - toggle the operator allow channel limits flag;
         [JsonProperty]
         public bool IsOperatorAbeyChannelLimits { get; private set; } = true;

@@ -30,13 +30,6 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 _client.Send(((IRCException)ex));
             }
-            else if (ex is HandleLaterException)
-            {
-                // if the exception is HandleLaterException, we log it as warning
-                _client.LogWarn(ex.Message);
-                return;
-            }
-
             base.HandleException(ex);
         }
         protected override void Response()

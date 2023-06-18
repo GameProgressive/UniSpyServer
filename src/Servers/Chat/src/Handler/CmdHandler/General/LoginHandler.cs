@@ -1,3 +1,4 @@
+using System.Linq;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
@@ -34,9 +35,12 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 case LoginReqeustType.NickAndEmailLogin:
                     // the ignored variables _ will used in future
                     (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.NickAndEmailLogin(_request.NickName, _request.Email, _request.PasswordHash);
+                    //todo check whether NICK * will occur in this situation
                     break;
                 case LoginReqeustType.UniqueNickLogin:
                     (_result.ProfileId, _result.UserID, _, _) = StorageOperation.Persistance.UniqueNickLogin(_request.UniqueNick, _request.NamespaceId);
+                    // we set user's uniquenick
+                    _client.Info.UniqueNickName = _request.UniqueNick;
                     break;
             }
         }

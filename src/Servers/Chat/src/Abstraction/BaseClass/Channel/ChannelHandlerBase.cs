@@ -21,15 +21,6 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            // we handle join when get user nickname
-            if (!_client.Info.IsNickNameSet)
-            {
-                lock (_client.Info.HandlerStack)
-                {
-                    _client.Info.HandlerStack.Add(this);
-                }
-                throw new Chat.HandleLaterException($"{this.GetType().Name} is saved until nickname is set.");
-            }
             if (_request.RawRequest is not null)
             {
                 base.RequestCheck();
