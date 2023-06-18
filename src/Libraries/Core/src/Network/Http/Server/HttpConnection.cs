@@ -1,5 +1,7 @@
+using System.Linq;
 using System.Net;
 using UniSpy.Server.Core.Abstraction.Interface;
+using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
 
 namespace UniSpy.Server.Core.Network.Http.Server
@@ -13,6 +15,7 @@ namespace UniSpy.Server.Core.Network.Http.Server
         public event OnConnectedEventHandler OnConnect;
         public event OnDisconnectedEventHandler OnDisconnect;
         public event OnReceivedEventHandler OnReceive;
+        private HttpBufferCache _bufferCache = new HttpBufferCache();
         public HttpConnection(HttpConnectionManager server) : base(server)
         {
         }
@@ -26,6 +29,16 @@ namespace UniSpy.Server.Core.Network.Http.Server
         }
         protected override void OnConnected() => OnConnect();
         protected override void OnDisconnected() => OnDisconnect();
+        protected override void OnReceived(byte[] buffer, long offset, long size)
+        {
+            var req = UniSpyEncoding.GetString(buffer.Take((int)size).ToArray());
+            string compeleteBuffer;
+            if (_bufferCache.ProcessBuffer(req, out compeleteBuffer))
+            {
+                var completeBytes = UniSpyEncoding.GetBytes(compeleteBuffer);
+                base.OnReceived(completeBytes, offset, completeBytes.Length);
+            }
+        }
         protected override void OnReceivedRequest(NetCoreServer.HttpRequest request) => OnReceive(new HttpRequest(request));
         void IConnection.Send(string response)
         {

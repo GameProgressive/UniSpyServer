@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace UniSpy.Server.WebServer.Abstraction
@@ -59,11 +60,22 @@ namespace UniSpy.Server.WebServer.Abstraction
 
         public override string ToString()
         {
-            using (var writer = new StringWriter())
+            using (var writer = new MyStringWriter())
             {
                 Content.Save(writer);
                 return writer.ToString();
             }
         }
+
+        private class MyStringWriter : StringWriter
+        {
+            public MyStringWriter()
+            {
+                Encoding = Encoding.UTF8;
+            }
+
+            public override Encoding Encoding { get; }
+        }
     }
+
 }
