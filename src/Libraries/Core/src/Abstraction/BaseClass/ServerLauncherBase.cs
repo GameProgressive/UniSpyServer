@@ -17,9 +17,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
         /// UniSpy server version
         /// </summary>
         public static readonly string Version = "0.8.1";
-        /// <summary>
-        /// The server instances which contains the server objects
-        /// </summary>
+
         public static List<IServer> ServerInstances { get; protected set; } = new List<IServer>();
         public ServerLauncherBase()
         {
@@ -53,26 +51,27 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass.Factory
 
         protected void ConnectRedis()
         {
+            var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                // auto dispose
-                using (StackExchange.Redis.ConnectionMultiplexer.Connect(ConfigManager.Config.Redis.ConnectionString)) { }
+                using var r = StackExchange.Redis.ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
             }
             catch (System.Exception e)
             {
-                throw new Exception("Can not connect to Redis", e);
+                throw new UniSpy.Exception("Can not connect to Redis", e);
             }
-            Console.WriteLine($"Successfully connected to Redis");
+            Console.WriteLine($"Successfully connected to Redis at {redisConfig.Server}:{redisConfig.Port}");
         }
         protected void ConnectMySql()
         {
             //Determine which database is used and establish the database connection.
+            var dbConfig = ConfigManager.Config.Database;
             if (!new UniSpyContext().Database.CanConnect())
             {
-                throw new Exception($"Can not connect to Postgresql.");
+                throw new Exception($"Can not connect to {dbConfig.Type}!");
             }
 
-            Console.WriteLine($"Successfully connected to Postgresql.");
+            Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.Server}:{dbConfig.Port}");
         }
         protected static void ShowUniSpyLogo()
         {
