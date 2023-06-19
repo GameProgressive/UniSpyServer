@@ -41,7 +41,7 @@ namespace UniSpy.Server.WebServer.Module.Auth
         public Exception(string message) : this(message, AuthErrorCode.UnknownError)
         {
         }
-        public Exception(string message, AuthErrorCode code)
+        public Exception(string message, AuthErrorCode code) : base(message)
         {
             ErrorCode = code;
         }

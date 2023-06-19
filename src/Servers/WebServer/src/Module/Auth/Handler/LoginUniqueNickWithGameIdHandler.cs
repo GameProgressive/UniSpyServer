@@ -25,7 +25,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
                              select new { u, p, sp };
                 if (result.Count() != 1)
                 {
-                    throw new System.Exception("No account exists with the provided email address.");
+                    throw new Auth.Exception("No account exists with the provided email address.");
                 }
                 var data = result.First();
                 _result.UserId = data.u.UserId;

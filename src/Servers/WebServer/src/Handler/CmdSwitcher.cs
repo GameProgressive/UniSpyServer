@@ -55,15 +55,15 @@ namespace UniSpy.Server.WebServer.Handler
                 #region Auth
                 case "LoginProfile":
                     return new LoginProfileHandler(_client, new LoginProfileRequest((string)rawRequest));
-                case "LoginProfileWithGameid":
+                case "LoginProfileWithGameId":
                     return new LoginProfileWithGameIdHandler(_client, new LoginProfileWithGameIdRequest((string)rawRequest));
                 case "LoginRemoteAuth":
                     return new LoginRemoteAuthHandler(_client, new LoginRemoteAuthRequest((string)rawRequest));
-                case "LoginRemoteAuthWithGameid":
+                case "LoginRemoteAuthWithGameId":
                     return new LoginRemoteAuthWithGameIdHandler(_client, new LoginRemoteAuthWithGameIdRequest((string)rawRequest));
                 case "LoginUniqueNick":
                     return new LoginUniqueNickHandler(_client, new LoginUniqueNickRequest((string)rawRequest));
-                case "LoginUniqueNickWithGameid":
+                case "LoginUniqueNickWithGameId":
                     return new LoginUniqueNickWithGameIdHandler(_client, new LoginUniqueNickWithGameIdRequest((string)rawRequest));
                 #endregion
                 #region Direct2Game
