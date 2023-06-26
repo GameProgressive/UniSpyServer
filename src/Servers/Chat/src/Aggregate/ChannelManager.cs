@@ -29,7 +29,7 @@ namespace UniSpy.Server.Chat.Aggregate
             var chanInfo = chan.GetChannelCache();
             QueryReport.Application.StorageOperation.RemoveChannel(chanInfo);
         }
-        public static Channel CreateChannel(string name, string password = null, IChatClient creator = null)
+        public static Channel CreateChannel(string name, string password = null, IShareClient creator = null)
         {
             var channel = new Channel(name, creator, password);
 

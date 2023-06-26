@@ -4,7 +4,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Abstraction.Interface
 {
-    public interface IChatClient : IClient
+    public interface IShareClient : IClient, ITestClient
     {
         public new ClientInfo Info { get; }
         public RemoteClient GetRemoteClient();

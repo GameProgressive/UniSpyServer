@@ -31,7 +31,7 @@ namespace UniSpy.Server.Chat.Aggregate
         /// The client reference
         /// </summary>
         [JsonIgnore]
-        public IChatClient Client { get; private set; }
+        public IShareClient Client { get; private set; }
         [JsonIgnore]
         public ClientInfo Info => Client.Info;
         [JsonIgnore]
@@ -66,7 +66,7 @@ namespace UniSpy.Server.Chat.Aggregate
             }
         }
         public ChannelUser() { }
-        public ChannelUser(IChatClient client, Channel channel)
+        public ChannelUser(IShareClient client, Channel channel)
         {
             Client = client;
             Channel = channel;

@@ -14,7 +14,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new NickRequest _request => (NickRequest)base._request;
         private new NickResult _result { get => (NickResult)base._result; set => base._result = value; }
-        public NickHandler(IChatClient client, NickRequest request) : base(client, request)
+        public NickHandler(IShareClient client, NickRequest request) : base(client, request)
         {
             _result = new NickResult();
         }

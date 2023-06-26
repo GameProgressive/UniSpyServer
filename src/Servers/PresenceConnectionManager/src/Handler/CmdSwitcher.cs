@@ -10,6 +10,7 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.PresenceSearchPlayer.Contract.Request;
 using UniSpy.Server.PresenceConnectionManager.Application;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.Interface;
 
 namespace UniSpy.Server.PresenceConnectionManager.Handler
 {
@@ -17,7 +18,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler
     {
         private new string _rawRequest => (string)base._rawRequest;
         private new Client _client => (Client)base._client;
-        public CmdSwitcher(Client client, string rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(IShareClient client, string rawRequest) : base(client, rawRequest)
         {
         }
         protected override void ProcessRawRequest()

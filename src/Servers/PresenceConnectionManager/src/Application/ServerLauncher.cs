@@ -6,6 +6,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
 {
     public sealed class ServerLauncher : ServerLauncherBase
     {
+        public static IServer Server => ServerInstances[0];
         protected override List<IServer> LaunchNetworkService() => new List<IServer> { new Server() };
     }
 }

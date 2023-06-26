@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
     {
         private new UtmRequest _request => (UtmRequest)base._request;
         private new UtmResult _result { get => (UtmResult)base._result; set => base._result = value; }
-        public UtmHandler(IChatClient client, UtmRequest request) : base(client, request)
+        public UtmHandler(IShareClient client, UtmRequest request) : base(client, request)
         {
             _result = new UtmResult();
         }

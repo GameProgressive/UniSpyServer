@@ -2,7 +2,6 @@ using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -18,11 +17,11 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
     /// </summary>
     public abstract class CmdHandlerBase : UniSpy.Server.Core.Abstraction.BaseClass.CmdHandlerBase
     {
-        protected new IChatClient _client => (IChatClient)base._client;
+        protected new IShareClient _client => (IShareClient)base._client;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
         protected new ResponseBase _response { get => (ResponseBase)base._response; set => base._response = value; }
-        public CmdHandlerBase(IChatClient client, IRequest request) : base(client, request) { }
+        public CmdHandlerBase(IShareClient client, IRequest request) : base(client, request) { }
         //if we use this structure the error response should also write to _sendingBuffer
         protected override void HandleException(System.Exception ex)
         {

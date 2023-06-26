@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
     {
         new AtmRequest _request => (AtmRequest)base._request;
         new AtmResult _result{ get => (AtmResult)base._result; set => base._result = value; }
-        public AtmHandler(IChatClient client, AtmRequest request) : base(client, request)
+        public AtmHandler(IShareClient client, AtmRequest request) : base(client, request)
         {
             _result = new AtmResult();
         }

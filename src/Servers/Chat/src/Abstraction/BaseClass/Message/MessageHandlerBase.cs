@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         protected new MessageRequestBase _request => (MessageRequestBase)base._request;
         protected new MessageResultBase _result { get => (MessageResultBase)base._result; set => base._result = value; }
         protected ChannelUser _receiver;
-        public MessageHandlerBase(IChatClient client, IRequest request) : base(client, request) { }
+        public MessageHandlerBase(IShareClient client, IRequest request) : base(client, request) { }
 
         protected override void RequestCheck()
         {

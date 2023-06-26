@@ -5,7 +5,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
     public abstract class LogedInHandlerBase : CmdHandlerBase
     {
-        public LogedInHandlerBase(IChatClient client, IRequest request) : base(client, request) { }
+        public LogedInHandlerBase(IShareClient client, IRequest request) : base(client, request) { }
 
         // public override void Handle()
         // {

@@ -16,7 +16,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new PartRequest _request => (PartRequest)base._request;
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
-        public PartHandler(IChatClient client, PartRequest request) : base(client, request) { }
+        public PartHandler(IShareClient client, PartRequest request) : base(client, request) { }
         static PartHandler()
         {
         }

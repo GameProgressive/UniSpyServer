@@ -21,7 +21,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result { get => (WhoResult)base._result; set => base._result = value; }
-        public WhoHandler(IChatClient client, WhoRequest request) : base(client, request) { }
+        public WhoHandler(IShareClient client, WhoRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {

@@ -13,14 +13,16 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Application
 {
-    public class Client : ClientBase, IChatClient
+    public class Client : ClientBase, IShareClient
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         private BufferCache _bufferCache = new BufferCache();
+        private RemoteClient _remoteClient;
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
+            _remoteClient = new RemoteClient(this);
         }
         protected override void OnConnected()
         {
@@ -55,19 +57,16 @@ namespace UniSpy.Server.Chat.Application
                 new QuitHandler(this, req).Handle();
                 Info.IsLoggedIn = false;
             }
-            Task.Run(() => PublishDisconnectMessage());
-            base.OnDisconnected();
-        }
-        private void PublishDisconnectMessage()
-        {
-            var message = new RemoteMessage(new DisconnectRequest(), GetRemoteClient());
+            var request = new QuitRequest() { Reason = "Disconnect from server" };
+            var message = new RemoteMessage(request, GetRemoteClient());
             Chat.Application.Server.GeneralChannel.PublishMessage(message);
+            base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
         public RemoteClient GetRemoteClient()
         {
-            var remoteClient = new RemoteClient(this);
-            return remoteClient;
+            _remoteClient.Info = Info;
+            return _remoteClient;
         }
     }
 }

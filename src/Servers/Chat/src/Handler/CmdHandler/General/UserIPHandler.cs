@@ -12,7 +12,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         private new UserIPRequest _request => (UserIPRequest)base._request;
         private new UserIPResult _result { get => (UserIPResult)base._result; set => base._result = value; }
-        public UserIPHandler(IChatClient client, UserIPRequest request) : base(client, request){ }
+        public UserIPHandler(IShareClient client, UserIPRequest request) : base(client, request){ }
 
         protected override void DataOperation()
         {

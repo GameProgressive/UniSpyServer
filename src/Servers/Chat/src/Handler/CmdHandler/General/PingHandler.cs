@@ -11,7 +11,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new PingRequest _request => (PingRequest)base._request;
         private new PingResult _result { get => (PingResult)base._result; set => base._result = value; }
-        public PingHandler(IChatClient client, PingRequest request) : base(client, request){ }
+        public PingHandler(IShareClient client, PingRequest request) : base(client, request){ }
         protected override void DataOperation()
         {
             _result = new PingResult();

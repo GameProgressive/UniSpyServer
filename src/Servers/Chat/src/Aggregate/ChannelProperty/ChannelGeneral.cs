@@ -30,7 +30,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public string RoomName { get; private set; }
         public bool IsValidPeerRoom => GroupId is not null && RoomName is not null;
         public string PreviousJoinedChannel { get; private set; }
-        public Channel(string name, IChatClient client, string password = null)
+        public Channel(string name, IShareClient client, string password = null)
         {
             ServerId = client.Server.Id;
             Name = name;

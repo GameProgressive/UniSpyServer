@@ -11,7 +11,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
         private new NoticeResult _result{ get => (NoticeResult)base._result; set => base._result = value; }
-        public NoticeHandler(IChatClient client, NoticeRequest request) : base(client, request)
+        public NoticeHandler(IShareClient client, NoticeRequest request) : base(client, request)
         {
             _result = new NoticeResult();
         }

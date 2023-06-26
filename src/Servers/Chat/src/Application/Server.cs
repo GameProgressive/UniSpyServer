@@ -8,14 +8,14 @@ namespace UniSpy.Server.Chat.Application
 {
     public sealed class Server : ServerBase
     {
-        public static GeneralMessageChannel GeneralChannel = new GeneralMessageChannel();
+        public static readonly GeneralMessageChannel GeneralChannel = new GeneralMessageChannel();
         static Server()
         {
             _name = "Chat";
         }
-        public Server(){ }
+        public Server() { }
 
-        public Server(IConnectionManager manager) : base(manager){}
+        public Server(IConnectionManager manager) : base(manager) { }
 
         public override void Start()
         {

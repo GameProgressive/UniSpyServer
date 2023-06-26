@@ -1,18 +1,12 @@
 using System;
 using System.Net;
 using Newtonsoft.Json;
-using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.Chat.Aggregate.Misc;
-using UniSpy.Server.Chat.Application;
-using UniSpy.Server.Chat.Handler;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Misc;
 
-namespace UniSpy.Server.Chat.Aggregate
+namespace UniSpy.Server.Core.Network
 {
     public class ConcreteTypeConverter<TConcrete> : JsonConverter
     {
@@ -54,45 +48,11 @@ namespace UniSpy.Server.Chat.Aggregate
         }
         public void Start() { }
     }
-    public class RemoteClient : IChatClient, Core.Abstraction.Interface.ITestClient
-    {
-        public bool IsLogRaw { get; set; }
-        [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnection>))]
-        public IConnection Connection { get; set; }
-        [JsonConverter(typeof(ConcreteTypeConverter<ChatCrypt>))]
-        public ICryptography Crypto { get; set; }
-        [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
-        public ClientInfoBase Info { get; set; }
-        ClientInfo IChatClient.Info => (ClientInfo)Info;
-        [JsonConverter(typeof(ConcreteTypeConverter<RemoteServer>))]
-        public IServer Server { get; set; }
-        /// <summary>
-        /// using for json deserialization
-        /// </summary>
-        public RemoteClient() { }
-        public RemoteClient(Client client)
-        {
-            Connection = new RemoteTcpConnection(client.Connection, new RemoteTcpConnectionManager());
-            Server = new RemoteServer(client.Server);
-            Info = client.Info.DeepCopy();
-            ((ClientInfo)Info).IsRemoteClient = true;
-            Crypto = client.Crypto;
-        }
-        public void Send(IResponse response) => this.LogDebug("Ignore remote client Send() operation");
-        public RemoteClient GetRemoteClient() => this;
-
-        public void TestReceived(byte[] buffer)
-        {
-            this.LogNetworkReceiving(buffer);
-            var switcher = new CmdSwitcher(this, UniSpyEncoding.GetString(buffer));
-            switcher.Handle();
-        }
-    }
     public class RemoteTcpConnectionManager : IConnectionManager
     {
 #pragma warning disable CS0067
         public event OnConnectingEventHandler OnInitialization;
-        public void Start() => throw new Chat.Exception("Remote tcp connection do not have this method.");
+        public void Start() => throw new UniSpy.Exception("Remote tcp connection do not have this method.");
         public RemoteTcpConnectionManager() { }
     }
 

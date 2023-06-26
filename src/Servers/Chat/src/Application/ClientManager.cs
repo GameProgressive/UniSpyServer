@@ -11,10 +11,10 @@ namespace UniSpy.Server.Chat.Application
         /// <summary>
         /// We need to make sure client is get by nickname, otherwise we throw exception
         /// </summary>
-        public static IChatClient GetClientByNickName(string nickName)
+        public static IShareClient GetClientByNickName(string nickName)
         {
-            IChatClient client;
-            client = (IChatClient)ClientPool.Values.FirstOrDefault(c => ((IChatClient)c).Info.NickName == nickName);
+            IShareClient client;
+            client = (IShareClient)ClientPool.Values.FirstOrDefault(c => ((IShareClient)c).Info.NickName == nickName);
             return client;
         }
         public static List<ClientInfo> GetAllClientInfo()

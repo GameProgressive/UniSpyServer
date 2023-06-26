@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
         private new GetCKeyResult _result { get => (GetCKeyResult)base._result; set => base._result = value; }
         private TimeSpan _waitingTime = TimeSpan.FromSeconds(10);
-        public GetCKeyHandler(IChatClient client, GetCKeyRequest request) : base(client, request)
+        public GetCKeyHandler(IShareClient client, GetCKeyRequest request) : base(client, request)
         {
             _result = new GetCKeyResult();
         }

@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new NamesRequest _request => (NamesRequest)base._request;
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
-        public NamesHandler(IChatClient client, NamesRequest request) : base(client, request) { }
+        public NamesHandler(IShareClient client, NamesRequest request) : base(client, request) { }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)

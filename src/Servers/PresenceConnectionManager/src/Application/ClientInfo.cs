@@ -19,8 +19,14 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         public User UserInfo { get; set; }
         public Subprofile SubProfileInfo { get; set; }
         public Profile ProfileInfo { get; set; }
+        public bool IsRemoteClient { get; set; }
         public ClientInfo()
         {
+        }
+        public ClientInfo DeepCopy()
+        {
+            var infoCopy = (ClientInfo)this.MemberwiseClone();
+            return infoCopy;
         }
     }
 }

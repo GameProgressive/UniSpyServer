@@ -12,6 +12,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class GetUdpRelayHandler : CmdHandlerBase
     {
         new GetUdpRelayRequest _request => (GetUdpRelayRequest)base._request;
-        public GetUdpRelayHandler(IChatClient client, GetUdpRelayRequest request) : base(client, request) { }
+        public GetUdpRelayHandler(IShareClient client, GetUdpRelayRequest request) : base(client, request) { }
     }
 }

@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new CdKeyRequest _request => (CdKeyRequest)base._request;
 
-        public CdKeyHandler(IChatClient client, CdKeyRequest request) : base(client, request){ }
+        public CdKeyHandler(IShareClient client, CdKeyRequest request) : base(client, request){ }
 
         protected override void ResponseConstruct()
         {

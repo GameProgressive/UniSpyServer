@@ -17,7 +17,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private ChannelUser _otherUser;
-        public SetCKeyHandler(IChatClient client, SetCKeyRequest request) : base(client, request)
+        public SetCKeyHandler(IShareClient client, SetCKeyRequest request) : base(client, request)
         {
         }
 

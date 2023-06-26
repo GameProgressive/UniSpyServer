@@ -11,7 +11,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     {
         private new TopicRequest _request => (TopicRequest)base._request;
         private new TopicResult _result { get => (TopicResult)base._result; set => base._result = value; }
-        public TopicHandler(IChatClient client, TopicRequest request) : base(client, request)
+        public TopicHandler(IShareClient client, TopicRequest request) : base(client, request)
         {
             _result = new TopicResult();
         }

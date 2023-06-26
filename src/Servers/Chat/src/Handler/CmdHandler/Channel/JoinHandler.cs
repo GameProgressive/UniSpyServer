@@ -24,7 +24,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private static readonly GeneralMessageChannel GeneralMessageChannel = new GeneralMessageChannel();
         private Aggregate.Channel _channel;
         private ChannelUser _user;
-        public JoinHandler(IChatClient client, JoinRequest request) : base(client, request)
+        public JoinHandler(IShareClient client, JoinRequest request) : base(client, request)
         {
             _result = new JoinResult();
         }

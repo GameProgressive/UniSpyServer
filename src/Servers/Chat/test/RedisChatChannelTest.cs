@@ -70,7 +70,7 @@ namespace UniSpy.Server.Chat.Test
         public void Crypt()
         {
 
-            var request1 = new DisconnectRequest();
+            var request1 = new QuitRequest() { Reason = "client disconnected." };
             var client = MockObject.CreateClient() as Client;
 
             client.Info.IsLoggedIn = true;
@@ -116,7 +116,7 @@ namespace UniSpy.Server.Chat.Test
             // Client.ClientPool.Remove(client1.Connection.RemoteIPEndPoint, out _);
             ClientManager.RemoveClient(client1);
             var remoteClient = client1.GetRemoteClient() as ITestClient;
-            ClientManager.AddClient((IChatClient)remoteClient);
+            ClientManager.AddClient((IShareClient)remoteClient);
             foreach (var r in request1)
             {
                 var count = ClientManager.ClientPool.Count;
@@ -146,7 +146,7 @@ namespace UniSpy.Server.Chat.Test
                 // "PART #GSP!worms3!MJ0NJ4c3aM :Left Game\r\n"
             };
             var client2 = MockObject.CreateClient(port: 1235) as ITestClient;
-            ClientManager.AddClient((IChatClient)client2);
+            ClientManager.AddClient((IShareClient)client2);
             foreach (var r in request2)
             {
                 var count = ClientManager.ClientPool.Count;

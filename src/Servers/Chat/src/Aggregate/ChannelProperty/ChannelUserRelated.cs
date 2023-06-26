@@ -134,8 +134,8 @@ namespace UniSpy.Server.Chat.Aggregate
             }
         }
         public ChannelUser GetUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
-        public ChannelUser GetUser(IChatClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
-        public ChannelUser AddUser(IChatClient client, string password = null, bool isChannelCreator = false, bool isChannelOperator = false)
+        public ChannelUser GetUser(IShareClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
+        public ChannelUser AddUser(IShareClient client, string password = null, bool isChannelCreator = false, bool isChannelOperator = false)
         {
             Validation(client, password);
             var user = new ChannelUser(client, this);
@@ -159,9 +159,9 @@ namespace UniSpy.Server.Chat.Aggregate
         }
 
         public bool IsUserExisted(ChannelUser user) => IsUserExisted(user.Client);
-        public bool IsUserExisted(IChatClient client) => Users.ContainsKey(client.Info.NickName);
+        public bool IsUserExisted(IShareClient client) => Users.ContainsKey(client.Info.NickName);
         public bool IsUserBanned(ChannelUser user) => IsUserBanned(user.Client);
-        private bool IsUserBanned(IChatClient client)
+        private bool IsUserBanned(IShareClient client)
         {
             if (!BanList.ContainsKey(client.Info.NickName))
             {

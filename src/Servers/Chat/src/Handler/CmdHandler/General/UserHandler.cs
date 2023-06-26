@@ -8,7 +8,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class UserHandler : CmdHandlerBase
     {
         private new UserRequest _request => (UserRequest)base._request;
-        public UserHandler(IChatClient client, UserRequest request) : base(client, request){ }
+        public UserHandler(IShareClient client, UserRequest request) : base(client, request){ }
 
         protected override void DataOperation()
         {

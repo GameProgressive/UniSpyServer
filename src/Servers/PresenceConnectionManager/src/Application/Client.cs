@@ -5,16 +5,20 @@ using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.PresenceConnectionManager.Abstraction.Interface;
+using UniSpy.Server.PresenceConnectionManager.Aggregate;
 
 namespace UniSpy.Server.PresenceConnectionManager.Application
 {
-    public sealed class Client : ClientBase
+    public sealed class Client : ClientBase, IShareClient
     {
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
-        public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
+        public new ClientInfo Info { get => (ClientInfo)base.Info; set => base.Info = value; }
+        private RemoteClient _remoteClient;
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
+            _remoteClient = new RemoteClient(this);
         }
         protected override void OnConnected()
         {
@@ -34,5 +38,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         }
 
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
+
+        public RemoteClient GetRemoteClient()
+        {
+            _remoteClient.Info = Info;
+            return _remoteClient;
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace UniSpy.Server.Core.Extension.Redis
         public const string HeartbeatChannel = "QueryReport:HeartbeatChannel";
         public const string PresenceConnectionManagerBuddyMessageChannel = "PresenceConnectionManager:BuddyMessageChannel";
         public const string ChatChannelPrefix = "Chat:Channel";
+        public const string PresenceConnectionManagerUserInfoChannel = "PresenceConnectionManager:UserInfoChannel";
     }
 }

@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class SetKeyHandler : LogedInHandlerBase
     {
         private new SetKeyRequest _request => (SetKeyRequest)base._request;
-        public SetKeyHandler(IChatClient client, SetKeyRequest request) : base(client, request) { }
+        public SetKeyHandler(IShareClient client, SetKeyRequest request) : base(client, request) { }
 
         protected override void DataOperation()
         {

@@ -13,7 +13,7 @@ namespace UniSpy.Server.Chat.Aggregate
                 throw new Chat.Exception("Password is not correct");
             }
         }
-        private void Validation(IChatClient client, string password)
+        private void Validation(IShareClient client, string password)
         {
             if (Mode.IsInviteOnly)
             {

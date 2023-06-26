@@ -8,7 +8,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     public sealed class InviteHandler : CmdHandlerBase
     {
         private new InviteRequest _request => (InviteRequest)base._request;
-        public InviteHandler(IChatClient client, InviteRequest request) : base(client, request)
+        public InviteHandler(IShareClient client, InviteRequest request) : base(client, request)
         {
         }
         protected override void RequestCheck()
