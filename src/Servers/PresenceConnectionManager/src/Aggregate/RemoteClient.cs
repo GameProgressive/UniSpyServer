@@ -25,7 +25,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Aggregate
         /// <summary>
         /// using for json deserialization
         /// </summary>
-        /// public RemoteClient() { }
+        public RemoteClient() { }
         public RemoteClient(Client client)
         {
             Connection = new RemoteTcpConnection(client.Connection, new RemoteTcpConnectionManager());

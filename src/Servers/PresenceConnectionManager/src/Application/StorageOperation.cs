@@ -111,7 +111,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             }
         }
 
-        public (User, Profile, Subprofile) GetUsersInfos(string email, string nickName)
+        public (int, int, int) GetUsersInfos(string email, string nickName)
         {
             using (var db = new UniSpyContext())
             {
@@ -127,11 +127,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadProfileException("email and nick dose not exist");
                 }
-                return (info.u, info.p, info.n);
+                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
             }
         }
 
-        public (User, Profile, Subprofile) GetUsersInfos(string uniqueNick, int namespaceId)
+        public (int, int, int) GetUsersInfos(string uniqueNick, int namespaceId)
         {
 
             using (var db = new UniSpyContext())
@@ -148,11 +148,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadUniquenickException($"The uniquenick: {uniqueNick} is invalid.");
                 }
-                return (info.u, info.p, info.n);
+                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
             }
         }
 
-        public (User, Profile, Subprofile) GetUsersInfos(string authToken, int partnerId, int namespaceId)
+        public (int, int, int) GetUsersInfos(string authToken, int partnerId, int namespaceId)
         {
             using (var db = new UniSpyContext())
             {
@@ -169,7 +169,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadPreAuthException("The pre-authentication token is invalid.");
                 }
-                return (info.u, info.p, info.n);
+                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
             }
         }
 

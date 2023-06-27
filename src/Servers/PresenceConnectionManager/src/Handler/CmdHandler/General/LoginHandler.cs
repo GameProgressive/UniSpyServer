@@ -108,18 +108,18 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
                 throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
             }
 
-            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.Email, _request.Nick);
+            (_client.Info.UserId, _client.Info.ProfileId, _client.Info.SubProfileId) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.Email, _request.Nick);
         }
 
 
         private void UniquenickLogin()
         {
-            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.UniqueNick, (int)_request.NamespaceID);
+            (_client.Info.UserId, _client.Info.ProfileId, _client.Info.SubProfileId) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.UniqueNick, (int)_request.NamespaceID);
         }
 
         private void AuthtokenLogin()
         {
-            (_client.Info.UserInfo, _client.Info.ProfileInfo, _client.Info.SubProfileInfo) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.AuthToken, (int)_request.PartnerID, (int)_request.NamespaceID);
+            (_client.Info.UserId, _client.Info.ProfileId, _client.Info.SubProfileId) = PresenceConnectionManager.Application.StorageOperation.Persistance.GetUsersInfos(_request.AuthToken, (int)_request.PartnerID, (int)_request.NamespaceID);
         }
 
         private void IsChallengeCorrect()

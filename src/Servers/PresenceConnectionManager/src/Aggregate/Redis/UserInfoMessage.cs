@@ -8,6 +8,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Aggregate.Redis
 {
     public class UserInfoMessage
     {
+        [JsonProperty]
         public RemoteClient Client { get; private set; }
         public UserInfoMessage() { }
         public UserInfoMessage(RemoteClient client)

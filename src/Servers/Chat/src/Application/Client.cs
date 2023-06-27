@@ -24,6 +24,11 @@ namespace UniSpy.Server.Chat.Application
             Info = new ClientInfo();
             _remoteClient = new RemoteClient(this);
         }
+        public Client(IConnection connection, IServer server, ClientInfo info) : this(connection, server)
+        {
+            Info = info;
+            _remoteClient = new RemoteClient(this);
+        }
         protected override void OnConnected()
         {
             Info.IsRemoteClient = false;

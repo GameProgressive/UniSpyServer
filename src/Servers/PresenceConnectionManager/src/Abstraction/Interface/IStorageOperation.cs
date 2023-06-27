@@ -9,9 +9,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.Interface
         List<int> GetBlockedProfileIds(int profileId, int namespaceId);
         List<int> GetFriendProfileIds(int profileId, int namespaceId);
         void DeleteFriendByProfileId(int profileId, int targetId, int namespaceId);
-        (User, Profile, Subprofile) GetUsersInfos(string email, string nickName);
-        (User, Profile, Subprofile) GetUsersInfos(string uniqueNick, int namespaceId);
-        (User, Profile, Subprofile) GetUsersInfos(string authToken, int partnerId, int namespaceId);
+        (int, int, int) GetUsersInfos(string email, string nickName);
+        (int, int, int) GetUsersInfos(string uniqueNick, int namespaceId);
+        (int, int, int) GetUsersInfos(string authToken, int partnerId, int namespaceId);
         void UpdateBlockInfo(int targetId, int profileId, int namespaceId);
         void UpdateFriendInfo(int targetId, int profileId, int namespaceId);
         void UpdateProfileInfo(Profile profile);
