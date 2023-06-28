@@ -88,14 +88,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             }
             // we let child class to create swicher for us
             var switcher = CreateSwitcher(buffer);
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                switcher.Handle();
-            }
-            else
-            {
-                Task.Run(() => switcher.Handle());
-            }
+            switcher.Handle();
         }
         protected virtual byte[] DecryptMessage(byte[] buffer)
         {

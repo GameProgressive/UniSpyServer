@@ -37,6 +37,10 @@ namespace UniSpy.Server.PresenceConnectionManager.Abstraction.BaseClass
             {
                 return;
             }
+            if (_client.Info.LoginStat != Enumerate.LoginStatus.Completed)
+            {
+                return;
+            }
             var msg = new UserInfoMessage(_client.GetRemoteClient());
             Application.Server.UserInfoChannel.PublishMessage(msg);
         }

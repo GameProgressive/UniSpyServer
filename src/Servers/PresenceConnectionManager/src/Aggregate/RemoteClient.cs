@@ -19,6 +19,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Aggregate
         public ICryptography Crypto => null;
         [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
         public ClientInfoBase Info { get; set; }
+        [JsonIgnore]
         ClientInfo IShareClient.Info => (ClientInfo)Info;
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteServer>))]
         public IServer Server { get; set; }

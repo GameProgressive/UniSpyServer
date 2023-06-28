@@ -46,7 +46,6 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 }
                 return _userInfo;
             }
-            // set => _userInfo = value;
         }
         [JsonIgnore]
         public Profile ProfileInfo
@@ -66,7 +65,6 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 }
                 return _profileInfo;
             }
-            // set => _profileInfo = value;
         }
         [JsonIgnore]
         public Subprofile SubProfileInfo
@@ -86,7 +84,6 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 }
                 return _subProfileInfo;
             }
-            // set => _subProfileInfo = value;
         }
 
         public bool IsRemoteClient { get; set; }

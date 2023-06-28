@@ -20,6 +20,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public ICryptography Crypto { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<ClientInfo>))]
         public ClientInfoBase Info { get; set; }
+        [JsonIgnore]
         ClientInfo IShareClient.Info => (ClientInfo)Info;
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteServer>))]
         public IServer Server { get; set; }
