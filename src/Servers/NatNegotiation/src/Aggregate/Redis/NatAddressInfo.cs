@@ -75,93 +75,103 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                 }
             }
         }
+        private void ProcessVersion2(List<NatAddressInfo> infos)
+        {
+            if (!(AddressInfos.ContainsKey(NatPortType.NN1)
+                    && AddressInfos.ContainsKey(NatPortType.NN2)))
+            {
+                throw new NatNegotiation.Exception("Incomplete init packets");
+            }
 
+            if (AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN2].Cookie)
+            {
+                throw new NatNegotiation.Exception("Broken cookie");
+            }
+            if (AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN2].Version)
+            {
+                throw new NatNegotiation.Exception("Broken version");
+            }
+            if (AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN2].ClientIndex)
+            {
+                throw new NatNegotiation.Exception("Broken client index");
+            }
+            // if (!AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN2].PrivateIPEndPoint))
+            // {
+            //     throw new NatNegotiation.Exception("Client is sending wrong initpacket.");
+            // }
+            if (AddressInfos.ContainsKey(NatPortType.GP))
+            {
+                if (AddressInfos[NatPortType.GP].Cookie != AddressInfos[NatPortType.NN1].Cookie ||
+                AddressInfos[NatPortType.GP].Version != AddressInfos[NatPortType.NN1].Version ||
+                AddressInfos[NatPortType.GP].ClientIndex != AddressInfos[NatPortType.NN1].ClientIndex ||
+                AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN1].UseGamePort)
+                {
+                    throw new NatNegotiation.Exception("GP packet info is not correct");
+                }
+            }
+        }
+        private void ProcessVersion3(List<NatAddressInfo> infos)
+        {
+            // todo 
+            // some game will not send GP packet to natneg server, currently do not know the reason of it, need more game for analysis.
+            // this will happen in GameClient
+            if (!(AddressInfos.ContainsKey(NatPortType.NN1)
+                && AddressInfos.ContainsKey(NatPortType.NN2)
+                && AddressInfos.ContainsKey(NatPortType.NN3)))
+            {
+                throw new NatNegotiation.Exception("Incomplete init packets");
+            }
+
+            if (AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN2].Cookie
+                || AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN3].Cookie)
+            {
+                throw new NatNegotiation.Exception("Broken cookie");
+            }
+            if (AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN2].Version
+                || AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN3].Version)
+            {
+                throw new NatNegotiation.Exception("Broken version");
+            }
+
+            if (AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN2].ClientIndex
+               || AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN3].ClientIndex)
+            {
+                throw new NatNegotiation.Exception("Broken client index");
+            }
+            if (AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN2].UseGamePort
+                || AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN3].UseGamePort)
+            {
+                throw new NatNegotiation.Exception("Broken use game port");
+            }
+            if (!AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
+            {
+                throw new NatNegotiation.Exception("Client is sending wrong initpacket.");
+            }
+            if (AddressInfos.ContainsKey(NatPortType.GP))
+            {
+                if (AddressInfos[NatPortType.GP].Cookie != AddressInfos[NatPortType.NN1].Cookie ||
+                AddressInfos[NatPortType.GP].Version != AddressInfos[NatPortType.NN1].Version ||
+                AddressInfos[NatPortType.GP].ClientIndex != AddressInfos[NatPortType.NN1].ClientIndex ||
+                AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN1].UseGamePort)
+                {
+                    throw new NatNegotiation.Exception("GP packet info is not correct");
+                }
+            }
+        }
 
         public NatInitInfo(List<NatAddressInfo> infos)
         {
             AddressInfos = infos.Select((i) => new { i }).ToDictionary(a => ((NatPortType)a.i.PortType), a => a.i);
-            if (Version == 2)
+            switch (this.Version)
             {
-                if (!(AddressInfos.ContainsKey(NatPortType.NN1)
-                    && AddressInfos.ContainsKey(NatPortType.NN2)))
-                {
-                    throw new NatNegotiation.Exception("Incomplete init packets");
-                }
-
-                if (AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN2].Cookie)
-                {
-                    throw new NatNegotiation.Exception("Broken cookie");
-                }
-                if (AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN2].Version)
-                {
-                    throw new NatNegotiation.Exception("Broken version");
-                }
-                if (AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN2].ClientIndex)
-                {
-                    throw new NatNegotiation.Exception("Broken client index");
-                }
-                if (!AddressInfos[NatPortType.NN1].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN2].PrivateIPEndPoint))
-                {
-                    throw new NatNegotiation.Exception("Client is sending wrong initpacket.");
-                }
-                if (AddressInfos.ContainsKey(NatPortType.GP))
-                {
-                    if (AddressInfos[NatPortType.GP].Cookie != AddressInfos[NatPortType.NN1].Cookie ||
-                    AddressInfos[NatPortType.GP].Version != AddressInfos[NatPortType.NN1].Version ||
-                    AddressInfos[NatPortType.GP].ClientIndex != AddressInfos[NatPortType.NN1].ClientIndex ||
-                    AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN1].UseGamePort)
-                    {
-                        throw new NatNegotiation.Exception("GP packet info is not correct");
-                    }
-                }
-            }
-            else
-            {
-                // todo 
-                // some game will not send GP packet to natneg server, currently do not know the reason of it, need more game for analysis.
-                // this will happen in GameClient
-                if (!(AddressInfos.ContainsKey(NatPortType.NN1)
-                    && AddressInfos.ContainsKey(NatPortType.NN2)
-                    && AddressInfos.ContainsKey(NatPortType.NN3)))
-                {
-                    throw new NatNegotiation.Exception("Incomplete init packets");
-                }
-
-                if (AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN2].Cookie
-                    || AddressInfos[NatPortType.NN1].Cookie != AddressInfos[NatPortType.NN3].Cookie)
-                {
-                    throw new NatNegotiation.Exception("Broken cookie");
-                }
-                if (AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN2].Version
-                    || AddressInfos[NatPortType.NN1].Version != AddressInfos[NatPortType.NN3].Version)
-                {
-                    throw new NatNegotiation.Exception("Broken version");
-                }
-
-                if (AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN2].ClientIndex
-                   || AddressInfos[NatPortType.NN1].ClientIndex != AddressInfos[NatPortType.NN3].ClientIndex)
-                {
-                    throw new NatNegotiation.Exception("Broken client index");
-                }
-                if (AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN2].UseGamePort
-                    || AddressInfos[NatPortType.NN1].UseGamePort != AddressInfos[NatPortType.NN3].UseGamePort)
-                {
-                    throw new NatNegotiation.Exception("Broken use game port");
-                }
-                if (!AddressInfos[NatPortType.NN2].PrivateIPEndPoint.Equals(AddressInfos[NatPortType.NN3].PrivateIPEndPoint))
-                {
-                    throw new NatNegotiation.Exception("Client is sending wrong initpacket.");
-                }
-                if (AddressInfos.ContainsKey(NatPortType.GP))
-                {
-                    if (AddressInfos[NatPortType.GP].Cookie != AddressInfos[NatPortType.NN1].Cookie ||
-                    AddressInfos[NatPortType.GP].Version != AddressInfos[NatPortType.NN1].Version ||
-                    AddressInfos[NatPortType.GP].ClientIndex != AddressInfos[NatPortType.NN1].ClientIndex ||
-                    AddressInfos[NatPortType.GP].UseGamePort != AddressInfos[NatPortType.NN1].UseGamePort)
-                    {
-                        throw new NatNegotiation.Exception("GP packet info is not correct");
-                    }
-                }
+                case 1:
+                    throw new NatNegotiation.Exception("version 1 do not implemented.");
+                case 2:
+                    ProcessVersion2(infos);
+                    break;
+                case 3:
+                    ProcessVersion3(infos);
+                    break;
             }
         }
     }

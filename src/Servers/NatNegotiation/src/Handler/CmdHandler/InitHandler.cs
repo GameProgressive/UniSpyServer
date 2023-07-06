@@ -65,21 +65,28 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
             StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
             // init packet nn3 is the last one client send, although receiving nn3 does not mean we received other init packets, but we can use this as a flag to prevent start multiple connect handler
-            if (_request.Version == 2)
+            switch (_request.Version)
             {
-                if (_request.PortType == NatPortType.NN2 && _client.Info.IsNeigotiating == false)
-                {
+                case 1:
+                    throw new NatNegotiation.Exception("The natneg version 1 is not implemented");
+                case 2:
+                    if (_request.PortType == NatPortType.NN2
+                    && _client.Info.IsNeigotiating == false)
+                    {
+                        goto default;
+                    }
+                    break;
+                case 3:
+                    if (_request.PortType == NatPortType.NN3
+                    && _client.Info.IsNeigotiating == false)
+                    {
+                        goto default;
+                    }
+                    break;
+                default:
                     _client.Info.IsNeigotiating = true;
                     PrepareForConnectingAsync();
-                }
-            }
-            else
-            {
-                if (_request.PortType == NatPortType.NN3 && _client.Info.IsNeigotiating == false)
-                {
-                    _client.Info.IsNeigotiating = true;
-                    PrepareForConnectingAsync();
-                }
+                    break;
             }
         }
 
