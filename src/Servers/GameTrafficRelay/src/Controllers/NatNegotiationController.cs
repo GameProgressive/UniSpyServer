@@ -23,7 +23,7 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
         public Task<NatNegotiationResponse> GetNatNegotiationInfo(NatNegotiationRequest request)
         {
             NatNegotiationResponse response;
-            if (request.GameClientEnd is null || request.GameServerEnd is null)
+            if (request.GameClientIP is null || request.GameServerIP is null)
             {
                 response = new NatNegotiationResponse()
                 {
@@ -34,18 +34,20 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
             }
             // natneg connecthandler will send 2 request to game traffic relay
             ConnectionListener listener;
-            if (!ConnectionListeners.TryGetValue(request.Cookie, out listener))
+            lock (ConnectionListeners)
             {
-                var relayEnd = NetworkUtils.GetAvaliableLocalEndPoint();
-                listener = new ConnectionListener(
-                relayEnd,
-                request.Cookie,
-                request.GameServerEnd.Address,
-                request.GameClientEnd.Address);
+                if (!ConnectionListeners.TryGetValue(request.Cookie, out listener))
+                {
+                    var relayEnd = NetworkUtils.GetAvaliableLocalEndPoint();
+                    listener = new ConnectionListener(
+                    relayEnd,
+                    request.Cookie,
+                    IPEndPoint.Parse(request.GameServerIP).Address,
+                    IPEndPoint.Parse(request.GameClientIP).Address);
 
-                ConnectionListeners.TryAdd(request.Cookie, listener);
+                    ConnectionListeners.TryAdd(request.Cookie, listener);
+                }
             }
-
             response = new NatNegotiationResponse()
             {
                 Port = listener.ListeningEndPoint.Port

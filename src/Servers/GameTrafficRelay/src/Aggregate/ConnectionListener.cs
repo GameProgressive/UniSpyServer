@@ -22,7 +22,7 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
             _gameServerAddress = gameServerAddr;
             _gameClientAddress = gameClientAddr;
             Cookie = cookie;
-            _timer = new EasyTimer(TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(10), CheckExpiredClient);
+            _timer = new EasyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10), CheckExpiredClient);
             // after create listener we start it
             Start();
             LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener started.");
@@ -30,13 +30,14 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
         protected override void OnStarted() => ReceiveAsync();
         private void CheckExpiredClient()
         {
-            if (_gameServerEndPoint is null || _gameClientEndPoint is null)
+            if (_gameClientEndPoint is null || _gameServerEndPoint is null || _timer.IsExpired)
             {
                 if (!IsDisposed)
                 {
                     Dispose();
                     NatNegotiationController.ConnectionListeners.TryRemove(this.Cookie, out _);
                     LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy listener shutdown.");
+                    _timer.Dispose();
                 }
             }
         }
@@ -45,10 +46,26 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
             var message = buffer.Skip((int)offset).Take((int)size).ToArray();
             OnReceived(endpoint, message);
         }
+        private bool CheckValidation(byte[] buffer)
+        {
+            var magic = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2 };
+            if (!buffer.Take(6).SequenceEqual(magic))
+            {
+                return false;
+            }
+            var cookie = buffer.Skip(8).Take(4).ToArray();
+
+            if (Cookie != BitConverter.ToInt32(cookie))
+            {
+                return false;
+            }
+
+            return true;
+        }
         protected void OnReceived(EndPoint endPoint, byte[] buffer)
         {
             ThreadPool.QueueUserWorkItem(o => { try { ReceiveAsync(); } catch { } });
-            LogWriter.LogDebug($"[{endPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
+
             // we only accept the gamespy client message
             if (_gameClientEndPoint is null || _gameClientEndPoint is null)
             {
@@ -64,6 +81,7 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
                 {
                     //ignore
                 }
+                LogWriter.LogDebug($"[{endPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
             }
             else
             {

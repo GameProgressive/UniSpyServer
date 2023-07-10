@@ -36,8 +36,8 @@ namespace UniSpy.Server.GameTrafficRelay.Test
             {
                 Cookie = 123456,
                 ServerId = System.Guid.NewGuid(),
-                GameClientEnd = IPEndPoint.Parse("127.0.0.1:1234"),
-                GameServerEnd = IPEndPoint.Parse("127.0.0.1:1235")
+                GameClientIP = "127.0.0.1:1234",
+                GameServerIP = "127.0.0.1:1235"
             };
 
             var resp = controller.GetNatNegotiationInfo(request).Result;

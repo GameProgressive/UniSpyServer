@@ -60,7 +60,6 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                 _client.LogInfo("The public ip is in nat fail record database, we use game traffic relay.");
                 strategy = NatStrategyType.UseGameTrafficRelay;
             }
-
             switch (strategy)
             {
                 case NatStrategyType.UsePublicIP:
@@ -117,8 +116,8 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             {
                 Cookie = _myInitInfo.Cookie,
                 ServerId = _client.Server.Id,
-                GameClientEnd = _myInitInfo.ClientIndex == NatClientIndex.GameClient ? _myInitInfo.PublicIPEndPoint : _othersInitInfo.PublicIPEndPoint,
-                GameServerEnd = _myInitInfo.ClientIndex == NatClientIndex.GameServer ? _myInitInfo.PublicIPEndPoint : _othersInitInfo.PublicIPEndPoint
+                GameClientIP = _myInitInfo.ClientIndex == NatClientIndex.GameClient ? _myInitInfo.PublicIPEndPoint.ToString() : _othersInitInfo.PublicIPEndPoint.ToString(),
+                GameServerIP = _myInitInfo.ClientIndex == NatClientIndex.GameServer ? _myInitInfo.PublicIPEndPoint.ToString() : _othersInitInfo.PublicIPEndPoint.ToString()
             };
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(req);
