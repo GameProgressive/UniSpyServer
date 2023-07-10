@@ -2,51 +2,42 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using UniSpy.Server.GameTrafficRelay.Controller;
-using UniSpy.Server.GameTrafficRelay.Interface;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.GameTrafficRelay.Controller;
 
 namespace UniSpy.Server.GameTrafficRelay.Aggregate
 {
-    public class ConnectionListener : NetCoreServer.UdpServer, IConnectionListener
+    public class ConnectionListener : NetCoreServer.UdpServer
     {
         public uint Cookie { get; private set; }
         public IPEndPoint ListeningEndPoint => (IPEndPoint)Endpoint;
-        /// <summary>
-        /// The other gamespy client that message need forward to
-        /// </summary>
-        public IConnectionListener ForwardTargetListener { get; set; }
-        public IPEndPoint GameSpyClientIPEndPoint { get; private set; }
-        public DateTime LastPacketReceivedTime { get; private set; }
-        public TimeSpan ConnectionExistedTime => DateTime.Now - LastPacketReceivedTime;
-        private TimeSpan _expireTimeInterval;
-        private System.Timers.Timer _timer;
-        public ConnectionListener(IPEndPoint listeningEndPoint, uint cookie) : base(listeningEndPoint.Address, listeningEndPoint.Port)
+        private EasyTimer _timer;
+        private IPAddress _gameServerAddress;
+        private IPAddress _gameClientAddress;
+        private IPEndPoint _gameServerEndPoint;
+        private IPEndPoint _gameClientEndPoint;
+        public ConnectionListener(IPEndPoint listeningEndPoint, uint cookie, IPAddress gameServerAddr, IPAddress gameClientAddr) : base(listeningEndPoint)
         {
-            // after create listener we start it
+            _gameServerAddress = gameServerAddr;
+            _gameClientAddress = gameClientAddr;
             Cookie = cookie;
+            _timer = new EasyTimer(TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(10), CheckExpiredClient);
+            // after create listener we start it
             Start();
-            LastPacketReceivedTime = DateTime.Now;
-            // we set expire time to 2 minutes
-            _expireTimeInterval = new TimeSpan(0, 2, 0);
-            _timer = new System.Timers.Timer
-            {
-                Enabled = true,
-                Interval = 60000,
-                AutoReset = true
-            };//10000
-            _timer.Start();
-            _timer.Elapsed += (s, e) => CheckExpiredClient();
             LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener started.");
         }
         protected override void OnStarted() => ReceiveAsync();
         private void CheckExpiredClient()
         {
-            // we calculate the interval between last packe and current time
-            if (ConnectionExistedTime > _expireTimeInterval)
+            if (_gameServerEndPoint is null || _gameClientEndPoint is null)
             {
-                ((IConnectionListener)this).Dispose();
+                if (!IsDisposed)
+                {
+                    Dispose();
+                    NatNegotiationController.ConnectionListeners.TryRemove(this.Cookie, out _);
+                    LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy listener shutdown.");
+                }
             }
         }
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
@@ -56,53 +47,46 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
         }
         protected void OnReceived(EndPoint endPoint, byte[] buffer)
         {
-            // we only accept the gamespy client message
-
-            if (GameSpyClientIPEndPoint is null)
-            {
-                GameSpyClientIPEndPoint = (IPEndPoint)endPoint;
-            }
-
             ThreadPool.QueueUserWorkItem(o => { try { ReceiveAsync(); } catch { } });
-            LogWriter.LogDebug($"[{GameSpyClientIPEndPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
-            ForwardTargetListener.ForwardMessage(buffer);
-            LastPacketReceivedTime = DateTime.Now;
-        }
-
-        public void ForwardMessage(byte[] data)
-        {
-            // we must send the every message to both client
-            var retryCount = 0;
-            // we wait for clients connect 5 sec
-            if (GameSpyClientIPEndPoint is null)
+            LogWriter.LogDebug($"[{endPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
+            // we only accept the gamespy client message
+            if (_gameClientEndPoint is null || _gameClientEndPoint is null)
             {
-                LogWriter.LogDebug($"[{ListeningEndPoint}] is waiting for gamespy client to connect.");
-                Thread.Sleep(5000);
-                retryCount++;
-            }
-
-            // after waiting for 10 sec client still not connecting we just dispose it
-            if (GameSpyClientIPEndPoint is null)
-            {
-                ForwardTargetListener?.Dispose();
-                if (NatNegotiationController.ConnectionPairs.TryGetValue(Cookie, out _))
+                if (_gameServerAddress.Equals(((IPEndPoint)endPoint).Address) && _gameServerEndPoint is null)
                 {
-                    NatNegotiationController.ConnectionPairs.TryRemove(Cookie, out _);
+                    _gameServerEndPoint = (IPEndPoint)endPoint;
                 }
-                ((IConnectionListener)this).Dispose();
-                return;
+                else if (_gameClientAddress.Equals(((IPEndPoint)endPoint).Address) && _gameClientEndPoint is null && !_gameClientAddress.Equals((IPEndPoint)endPoint))
+                {
+                    _gameClientEndPoint = (IPEndPoint)endPoint;
+                }
+                else
+                {
+                    //ignore
+                }
             }
-            LogWriter.LogDebug($"[{ListeningEndPoint}] => [{GameSpyClientIPEndPoint}]  {StringExtensions.ConvertPrintableBytesToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
-            SendAsync(GameSpyClientIPEndPoint, data);
+            else
+            {
+                if (_gameServerEndPoint.Equals((IPEndPoint)endPoint))
+                {
+                    ForwardMessage(_gameServerEndPoint, _gameClientEndPoint, buffer);
+                }
+                else if (_gameClientEndPoint.Equals((IPEndPoint)endPoint))
+                {
+                    ForwardMessage(_gameClientEndPoint, _gameServerEndPoint, buffer);
+                }
+                else
+                {
+                    //ignore
+                }
+            }
         }
 
-        void IConnectionListener.Dispose()
+        public void ForwardMessage(IPEndPoint sender, IPEndPoint receiver, byte[] data)
         {
-            if (!IsDisposed)
-            {
-                LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener stoped");
-                Dispose();
-            }
+            _timer.RefreshLastActiveTime();
+            SendAsync(receiver, data);
+            LogWriter.LogDebug($"[{sender}] => [{receiver}]  {StringExtensions.ConvertPrintableBytesToString(data)} [{StringExtensions.ConvertByteToHexString(data)}]");
         }
     }
 }

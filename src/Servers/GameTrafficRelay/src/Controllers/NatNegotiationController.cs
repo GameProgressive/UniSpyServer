@@ -14,7 +14,7 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
     public class NatNegotiationController : ControllerBase
     {
         private readonly ILogger<NatNegotiationController> _logger;
-        public static ConcurrentDictionary<uint, ConnectionPair> ConnectionPairs = new ConcurrentDictionary<uint, ConnectionPair>();
+        public static ConcurrentDictionary<uint, ConnectionListener> ConnectionListeners = new ConcurrentDictionary<uint, ConnectionListener>();
         public NatNegotiationController(ILogger<NatNegotiationController> logger)
         {
             _logger = logger;
@@ -22,21 +22,33 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
         [HttpPost]
         public Task<NatNegotiationResponse> GetNatNegotiationInfo(NatNegotiationRequest request)
         {
-            // natneg connecthandler will send 2 request to game traffic relay
-            ConnectionPair pair;
-            if (!ConnectionPairs.TryGetValue(request.Cookie, out pair))
+            NatNegotiationResponse response;
+            if (request.GameClientEnd is null || request.GameServerEnd is null)
             {
-                var ports = NetworkUtils.GetAvailablePorts();
-                var ends = new IPEndPoint[]{new IPEndPoint(IPAddress.Any,ports[0]),
-                                                new IPEndPoint(IPAddress.Any,ports[1])};
-                pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
-                ConnectionPairs.TryAdd(request.Cookie, pair);
+                response = new NatNegotiationResponse()
+                {
+                    Port = -1,
+                    Message = "game client/server's address is missing from request"
+                };
+                return Task.FromResult(response);
+            }
+            // natneg connecthandler will send 2 request to game traffic relay
+            ConnectionListener listener;
+            if (!ConnectionListeners.TryGetValue(request.Cookie, out listener))
+            {
+                var relayEnd = NetworkUtils.GetAvaliableLocalEndPoint();
+                listener = new ConnectionListener(
+                relayEnd,
+                request.Cookie,
+                request.GameServerEnd.Address,
+                request.GameClientEnd.Address);
+
+                ConnectionListeners.TryAdd(request.Cookie, listener);
             }
 
-            var response = new NatNegotiationResponse()
+            response = new NatNegotiationResponse()
             {
-                IPEndPoint1 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener1.ListeningEndPoint.Port),
-                IPEndPoint2 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener2.ListeningEndPoint.Port)
+                Port = listener.ListeningEndPoint.Port
             };
             return Task.FromResult(response);
         }

@@ -116,23 +116,19 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             var req = new NatNegotiationRequest()
             {
                 Cookie = _myInitInfo.Cookie,
-                ServerId = _client.Server.Id
+                ServerId = _client.Server.Id,
+                GameClientEnd = _myInitInfo.ClientIndex == NatClientIndex.GameClient ? _myInitInfo.PublicIPEndPoint : _othersInitInfo.PublicIPEndPoint,
+                GameServerEnd = _myInitInfo.ClientIndex == NatClientIndex.GameServer ? _myInitInfo.PublicIPEndPoint : _othersInitInfo.PublicIPEndPoint
             };
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(req);
             var resp = client.Post<NatNegotiationResponse>(request);
-            if (_client.Info.ClientIndex == NatClientIndex.GameClient)
+            if (resp.Port == -1)
             {
-                _guessedOthersIPEndPoint = resp.IPEndPoint1;
+                throw new NatNegotiation.Exception(resp.Message);
             }
-            else if (_client.Info.ClientIndex == NatClientIndex.GameServer)
-            {
-                _guessedOthersIPEndPoint = resp.IPEndPoint2;
-            }
-            else
-            {
-                throw new NatNegotiation.Exception("The client index is not applied");
-            }
+            // we create endpoint by using the relay server address and the relay port
+            _guessedOthersIPEndPoint = new IPEndPoint(relayEndPoint.Address, resp.Port);
         }
 
         public static NatStrategyType DetermineNATStrategy(NatInitInfo info1, NatInitInfo info2)

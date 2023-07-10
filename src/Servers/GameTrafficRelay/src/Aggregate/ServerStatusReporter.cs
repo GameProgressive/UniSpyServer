@@ -24,7 +24,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
             {
                 ServerID = _server.Id,
                 PublicIPEndPoint = _server.PublicIPEndPoint,
-                ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
+                ClientCount = NatNegotiationController.ConnectionListeners.Values.Count * 2
             };
             _ = _redisClient.SetValueAsync(info);
             var data = _redisClient.GetKeyValues();

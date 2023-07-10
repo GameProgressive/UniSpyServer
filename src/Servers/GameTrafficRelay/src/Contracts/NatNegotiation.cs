@@ -9,12 +9,21 @@ namespace UniSpy.Server.GameTrafficRelay
     {
         public uint Cookie { get; set; }
         public Guid ServerId { get; set; }
+        /// <summary>
+        /// Gameserver public ip endpoint, used to validate the negotiator's ip
+        /// </summary>
+        [JsonConverter(typeof(IPEndPoint))]
+        public IPEndPoint GameServerEnd { get; set; }
+        /// <summary>
+        /// Gameclient public ip endpoint, used to validate the negotiator's ip
+        /// </summary>
+        [JsonConverter(typeof(IPEndPoint))]
+        public IPEndPoint GameClientEnd { get; set; }
     }
     public record NatNegotiationResponse
     {
         [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint IPEndPoint1 { get; set; }
-        [JsonConverter(typeof(IPEndPointConverter))]
-        public IPEndPoint IPEndPoint2 { get; set; }
+        public int Port { get; set; }
+        public string Message { get; set; }
     }
 }
