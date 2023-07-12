@@ -21,7 +21,6 @@ namespace UniSpy.Server.QueryReport.Application
             V2.Application.StorageOperation.NatNegChannel.Subscribe();
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
-
         protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new UdpConnectionManager(endPoint);
 
     }

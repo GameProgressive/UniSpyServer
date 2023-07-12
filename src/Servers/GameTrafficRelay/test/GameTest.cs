@@ -3,6 +3,7 @@ using System.Net;
 using Xunit;
 using UniSpy.Server.GameTrafficRelay.Controller;
 using System.Net.Sockets;
+using UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay;
 
 namespace UniSpy.Server.GameTrafficRelay.Test
 {
@@ -36,8 +37,8 @@ namespace UniSpy.Server.GameTrafficRelay.Test
             {
                 Cookie = 123456,
                 ServerId = System.Guid.NewGuid(),
-                GameClientIP = "127.0.0.1:1234",
-                GameServerIP = "127.0.0.1:1235"
+                GameClientIPs = new System.Collections.Generic.List<string>() { "127.0.0.1:1234" },
+                GameServerIPs = new System.Collections.Generic.List<string>() { "127.0.0.1:1235" }
             };
 
             var resp = controller.GetNatNegotiationInfo(request).Result;
@@ -67,7 +68,6 @@ namespace UniSpy.Server.GameTrafficRelay.Test
             // // because we are not runing server, so the server object is null
             // Assert.Null(resp.IPEndPoint1);
             // Assert.Null(resp.IPEndPoint2);
-            Thread.Sleep(20000);
         }
     }
 }

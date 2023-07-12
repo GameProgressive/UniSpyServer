@@ -19,6 +19,6 @@
         <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="108.0.3" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\GameTrafficRelay\src\UniSpy.Server.GameTrafficRelay.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\Core\src\UniSpy.Server.Core.csproj" />
     </ItemGroup>
 </Project>

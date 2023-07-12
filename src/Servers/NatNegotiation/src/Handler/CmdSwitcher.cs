@@ -8,7 +8,7 @@ using UniSpy.Server.NatNegotiation.Application;
 
 namespace UniSpy.Server.NatNegotiation.Handler
 {
-    public sealed class CmdSwitcher : CmdSwitcherBase
+    public class CmdSwitcher : CmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
         private new Client _client => (Client)base._client;

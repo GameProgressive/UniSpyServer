@@ -1,11 +1,9 @@
-using System.Collections.Concurrent;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using UniSpy.Server.GameTrafficRelay.Application;
-using UniSpy.Server.GameTrafficRelay.Entity;
-using UniSpy.Server.GameTrafficRelay.Aggregate;
 using System.Threading.Tasks;
+using UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 
 namespace UniSpy.Server.GameTrafficRelay.Controller
 {
@@ -14,7 +12,6 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
     public class NatNegotiationController : ControllerBase
     {
         private readonly ILogger<NatNegotiationController> _logger;
-        public static ConcurrentDictionary<uint, ConnectionListener> ConnectionListeners = new ConcurrentDictionary<uint, ConnectionListener>();
         public NatNegotiationController(ILogger<NatNegotiationController> logger)
         {
             _logger = logger;
@@ -23,7 +20,7 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
         public Task<NatNegotiationResponse> GetNatNegotiationInfo(NatNegotiationRequest request)
         {
             NatNegotiationResponse response;
-            if (request.GameClientIP is null || request.GameServerIP is null)
+            if (request.GameClientIPs is null || request.GameServerIPs is null)
             {
                 response = new NatNegotiationResponse()
                 {
@@ -34,18 +31,17 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
             }
             // natneg connecthandler will send 2 request to game traffic relay
             ConnectionListener listener;
-            lock (ConnectionListeners)
+            lock (PingHandler.ConnectionListeners)
             {
-                if (!ConnectionListeners.TryGetValue(request.Cookie, out listener))
+                if (!PingHandler.ConnectionListeners.TryGetValue(request.Cookie, out listener))
                 {
                     var relayEnd = NetworkUtils.GetAvaliableLocalEndPoint();
-                    listener = new ConnectionListener(
-                    relayEnd,
-                    request.Cookie,
-                    IPEndPoint.Parse(request.GameServerIP).Address,
-                    IPEndPoint.Parse(request.GameClientIP).Address);
+                    listener = new ConnectionListener(relayEnd,
+                                                    request.Cookie,
+                                                    request.GameServerIPs,
+                                                    request.GameClientIPs);
 
-                    ConnectionListeners.TryAdd(request.Cookie, listener);
+                    PingHandler.ConnectionListeners.TryAdd(request.Cookie, listener);
                 }
             }
             response = new NatNegotiationResponse()

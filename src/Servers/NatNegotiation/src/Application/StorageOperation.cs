@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.NatNegotiation.Abstraction.Interface;
-using UniSpy.Server.NatNegotiation.Aggregate.Redis;
+using UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay;
 
 namespace UniSpy.Server.NatNegotiation.Application
 {
@@ -11,9 +11,14 @@ namespace UniSpy.Server.NatNegotiation.Application
         /// <summary>
         /// natneg init information redis server.
         /// </summary>
-        private static RedisClient _redisClient = new RedisClient();
+        private static Aggregate.Redis.RedisClient _redisClient = new Aggregate.Redis.RedisClient();
+        private static Aggregate.GameTrafficRelay.RedisClient _relayRedisClient = new Aggregate.GameTrafficRelay.RedisClient();
         private static NatNegotiation.Aggregate.Redis.Fail.RedisClient _natFailRedisClient = new NatNegotiation.Aggregate.Redis.Fail.RedisClient();
         public static IStorageOperation Persistance = new StorageOperation();
+        public List<RelayServerInfo> GetAvaliableRelayServers()
+        {
+            return _relayRedisClient.Context.ToList();
+        }
         public int CountInitInfo(uint cookie, byte version)
         {
             return _redisClient.Context.Count(k =>
@@ -21,19 +26,19 @@ namespace UniSpy.Server.NatNegotiation.Application
                          && k.Version == version);
         }
 
-        public List<NatAddressInfo> GetInitInfos(Guid serverId, uint cookie)
+        public List<Aggregate.Redis.NatAddressInfo> GetInitInfos(Guid serverId, uint cookie)
         {
             return _redisClient.Context.Where(k =>
                  k.ServerID == serverId
                  && k.Cookie == cookie).ToList();
         }
 
-        public void UpdateInitInfo(NatAddressInfo info)
+        public void UpdateInitInfo(Aggregate.Redis.NatAddressInfo info)
         {
             _ = _redisClient.SetValueAsync(info);
         }
 
-        public void RemoveInitInfo(NatAddressInfo info)
+        public void RemoveInitInfo(Aggregate.Redis.NatAddressInfo info)
         {
             _redisClient.DeleteKeyValue(info);
         }

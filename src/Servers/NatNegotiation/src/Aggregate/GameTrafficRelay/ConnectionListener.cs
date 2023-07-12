@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
-using UniSpy.Server.GameTrafficRelay.Controller;
+using UniSpy.Server.Core.Network.Udp.Server;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 
-namespace UniSpy.Server.GameTrafficRelay.Aggregate
+namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
 {
     public class ConnectionListener : NetCoreServer.UdpServer
     {
+        private IConnectionManager _manager;
         public uint Cookie { get; private set; }
         public IPEndPoint ListeningEndPoint => (IPEndPoint)Endpoint;
         private EasyTimer _timer;
@@ -17,15 +21,25 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
         private IPAddress _gameClientAddress;
         private IPEndPoint _gameServerEndPoint;
         private IPEndPoint _gameClientEndPoint;
-        public ConnectionListener(IPEndPoint listeningEndPoint, uint cookie, IPAddress gameServerAddr, IPAddress gameClientAddr) : base(listeningEndPoint)
+        private List<string> _gameServerValidIPs;
+        private List<string> _gameClientValidIPs;
+        public ConnectionListener(IPEndPoint listeningEndPoint, uint cookie, List<string> gameServerIPs, List<string> gameClientIPs) : base(listeningEndPoint)
         {
-            _gameServerAddress = gameServerAddr;
-            _gameClientAddress = gameClientAddr;
+            _manager = new UdpConnectionManager(listeningEndPoint);
+            // _manager.OnInitialization
+            // _gameServerAddress = IPEndPoint.Parse(request.GameServerIP);
+            // _gameClientAddress = IPEndPoint.Parse(request.GameClientIP);
+            _gameServerValidIPs = gameServerIPs;
+            _gameClientValidIPs = gameClientIPs;
             Cookie = cookie;
             _timer = new EasyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10), CheckExpiredClient);
             // after create listener we start it
             Start();
             LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener started.");
+        }
+        private void OnInit()
+        {
+
         }
         protected override void OnStarted() => ReceiveAsync();
         private void CheckExpiredClient()
@@ -35,17 +49,13 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
                 if (!IsDisposed)
                 {
                     Dispose();
-                    NatNegotiationController.ConnectionListeners.TryRemove(this.Cookie, out _);
+                    PingHandler.ConnectionListeners.TryRemove(this.Cookie, out _);
                     LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy listener shutdown.");
                     _timer.Dispose();
                 }
             }
         }
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            var message = buffer.Skip((int)offset).Take((int)size).ToArray();
-            OnReceived(endpoint, message);
-        }
+        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size) => OnReceived(endpoint, buffer.Skip((int)offset).Take((int)size).ToArray());
         private bool CheckValidation(byte[] buffer)
         {
             var magic = new byte[] { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2 };
@@ -69,11 +79,11 @@ namespace UniSpy.Server.GameTrafficRelay.Aggregate
             // we only accept the gamespy client message
             if (_gameClientEndPoint is null || _gameClientEndPoint is null)
             {
-                if (_gameServerAddress.Equals(((IPEndPoint)endPoint).Address) && _gameServerEndPoint is null)
+                if (_gameServerValidIPs.Contains(endPoint.ToString()) && _gameServerEndPoint is null)
                 {
                     _gameServerEndPoint = (IPEndPoint)endPoint;
                 }
-                else if (_gameClientAddress.Equals(((IPEndPoint)endPoint).Address) && _gameClientEndPoint is null && !_gameClientAddress.Equals((IPEndPoint)endPoint))
+                else if (_gameClientValidIPs.Contains(endPoint.ToString()) && _gameClientEndPoint is null && !_gameClientAddress.Equals((IPEndPoint)endPoint))
                 {
                     _gameClientEndPoint = (IPEndPoint)endPoint;
                 }
