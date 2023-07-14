@@ -1,11 +1,9 @@
-using System.Collections.Concurrent;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using UniSpy.Server.GameTrafficRelay.Application;
-using UniSpy.Server.GameTrafficRelay.Entity;
-using UniSpy.Server.GameTrafficRelay.Aggregate;
 using System.Threading.Tasks;
+using UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay;
+using UniSpy.Server.NatNegotiation.Handler.CmdHandler;
 
 namespace UniSpy.Server.GameTrafficRelay.Controller
 {
@@ -14,7 +12,6 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
     public class NatNegotiationController : ControllerBase
     {
         private readonly ILogger<NatNegotiationController> _logger;
-        public static ConcurrentDictionary<uint, ConnectionPair> ConnectionPairs = new ConcurrentDictionary<uint, ConnectionPair>();
         public NatNegotiationController(ILogger<NatNegotiationController> logger)
         {
             _logger = logger;
@@ -22,21 +19,34 @@ namespace UniSpy.Server.GameTrafficRelay.Controller
         [HttpPost]
         public Task<NatNegotiationResponse> GetNatNegotiationInfo(NatNegotiationRequest request)
         {
-            // natneg connecthandler will send 2 request to game traffic relay
-            ConnectionPair pair;
-            if (!ConnectionPairs.TryGetValue(request.Cookie, out pair))
+            NatNegotiationResponse response;
+            if (request.GameClientIPs is null || request.GameServerIPs is null)
             {
-                var ports = NetworkUtils.GetAvailablePorts();
-                var ends = new IPEndPoint[]{new IPEndPoint(IPAddress.Any,ports[0]),
-                                                new IPEndPoint(IPAddress.Any,ports[1])};
-                pair = new ConnectionPair(ends[0], ends[1], request.Cookie);
-                ConnectionPairs.TryAdd(request.Cookie, pair);
+                response = new NatNegotiationResponse()
+                {
+                    Port = -1,
+                    Message = "game client/server's address is missing from request"
+                };
+                return Task.FromResult(response);
             }
-
-            var response = new NatNegotiationResponse()
+            // natneg connecthandler will send 2 request to game traffic relay
+            ConnectionListener listener;
+            lock (PingHandler.ConnectionListeners)
             {
-                IPEndPoint1 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener1.ListeningEndPoint.Port),
-                IPEndPoint2 = new IPEndPoint(ServerLauncher.Server.PublicIPEndPoint.Address, pair.Listener2.ListeningEndPoint.Port)
+                if (!PingHandler.ConnectionListeners.TryGetValue(request.Cookie, out listener))
+                {
+                    var relayEnd = NetworkUtils.GetAvaliableLocalEndPoint();
+                    listener = new ConnectionListener(relayEnd,
+                                                    request.Cookie,
+                                                    request.GameServerIPs,
+                                                    request.GameClientIPs);
+
+                    PingHandler.ConnectionListeners.TryAdd(request.Cookie, listener);
+                }
+            }
+            response = new NatNegotiationResponse()
+            {
+                Port = listener.ListeningEndPoint.Port
             };
             return Task.FromResult(response);
         }

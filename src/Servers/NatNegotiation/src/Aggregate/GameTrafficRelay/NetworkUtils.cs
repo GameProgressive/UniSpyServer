@@ -1,16 +1,15 @@
+using System.Net;
 using System.Linq;
 using System.Net.NetworkInformation;
 
-namespace UniSpy.Server.GameTrafficRelay.Entity
+namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
 {
     public sealed class NetworkUtils
     {
         /// <summary>
-        /// Find 2 ports is not using by other programs
+        /// Find 1 port is not using by other programs
         /// </summary>
-        /// <param name="startingPort"></param>
-        /// <returns>ports array</returns>
-        public static int[] GetAvailablePorts(int startingPort = 1025)
+        public static int GetAvailablePort(int startingPort)
         {
             var properties = IPGlobalProperties.GetIPGlobalProperties();
 
@@ -29,13 +28,18 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
                                 .Where(n => n.Port >= startingPort)
                                 .Select(n => n.Port);
 
-            var ports = Enumerable.Range(startingPort, ushort.MaxValue)
+            var port = Enumerable.Range(startingPort, ushort.MaxValue)
                 .Where(i => !tcpConnectionPorts.Contains(i))
                 .Where(i => !tcpListenerPorts.Contains(i))
                 .Where(i => !udpListenerPorts.Contains(i))
-                .Take(2).ToArray();
+                .First();
 
-            return ports;
+            return port;
+        }
+        public static IPEndPoint GetAvaliableLocalEndPoint(int startingPort = 1025)
+        {
+            var port = GetAvailablePort(startingPort);
+            return new IPEndPoint(IPAddress.Any, port);
         }
     }
 }

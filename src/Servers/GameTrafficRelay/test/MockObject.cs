@@ -4,7 +4,7 @@ using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.GameTrafficRelay.Test
 {
-    public static class TestClasses
+    public static class MockObject
     {
         public static IServer Server = CreateServer();
 

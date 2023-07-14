@@ -38,10 +38,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Test
         [Fact]
         public void swbfrontps2Test()
         {
-         var raw = @"\status\1\sesskey\1111\statstring\EN LIGNE\locstring\\final\";
-         var req = new StatusRequest(raw);
-         req.Parse();
-         
+            var raw = @"\status\1\sesskey\1111\statstring\EN LIGNE\locstring\\final\";
+            var req = new StatusRequest(raw);
+            req.Parse();
+            Assert.True(req.Status.LocationString == "");
+            Assert.True(req.Status.StatusString == "EN LIGNE");
         }
     }
 }

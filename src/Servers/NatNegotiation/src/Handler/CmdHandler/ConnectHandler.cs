@@ -7,10 +7,10 @@ using UniSpy.Server.NatNegotiation.Aggregate.Redis;
 using UniSpy.Server.NatNegotiation.Contract.Request;
 using UniSpy.Server.NatNegotiation.Contract.Response;
 using UniSpy.Server.NatNegotiation.Contract.Result;
-using UniSpy.Server.GameTrafficRelay;
 using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 using UniSpy.Server.Core.Logging;
+using UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay;
 
 namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
 {
@@ -60,7 +60,6 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                 _client.LogInfo("The public ip is in nat fail record database, we use game traffic relay.");
                 strategy = NatStrategyType.UseGameTrafficRelay;
             }
-
             switch (strategy)
             {
                 case NatStrategyType.UsePublicIP:
@@ -106,33 +105,31 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         }
         private void UsingGameRelayServerToNegotiate()
         {
-            var relayServers = GameTrafficRelay.Application.StorageOperation.Persistance.GetAvaliableRelayServers();
+            var relayServers = StorageOperation.Persistance.GetAvaliableRelayServers();
             if (relayServers.Count == 0)
             {
                 throw new NatNegotiation.Exception("No GameRelayServer found, you must start a GameRelayServer!");
             }
             //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
+            var myIPs = _myInitInfo.AddressInfos.Select(x=>x.Value.PublicIPEndPoint.ToString()).ToList();
+            var otherIPs = _othersInitInfo.AddressInfos.Select(x=>x.Value.PublicIPEndPoint.ToString()).ToList();
             var req = new NatNegotiationRequest()
             {
                 Cookie = _myInitInfo.Cookie,
-                ServerId = _client.Server.Id
+                ServerId = _client.Server.Id,
+                GameClientIPs = _myInitInfo.ClientIndex == NatClientIndex.GameClient ? myIPs : otherIPs,
+                GameServerIPs = _myInitInfo.ClientIndex == NatClientIndex.GameServer ? myIPs : otherIPs
             };
             var client = new RestClient($"http://{relayEndPoint}/NatNegotiation").UseNewtonsoftJson();
             var request = new RestRequest().AddJsonBody(req);
             var resp = client.Post<NatNegotiationResponse>(request);
-            if (_client.Info.ClientIndex == NatClientIndex.GameClient)
+            if (resp.Port == -1)
             {
-                _guessedOthersIPEndPoint = resp.IPEndPoint1;
+                throw new NatNegotiation.Exception(resp.Message);
             }
-            else if (_client.Info.ClientIndex == NatClientIndex.GameServer)
-            {
-                _guessedOthersIPEndPoint = resp.IPEndPoint2;
-            }
-            else
-            {
-                throw new NatNegotiation.Exception("The client index is not applied");
-            }
+            // we create endpoint by using the relay server address and the relay port
+            _guessedOthersIPEndPoint = new IPEndPoint(relayEndPoint.Address, resp.Port);
         }
 
         public static NatStrategyType DetermineNATStrategy(NatInitInfo info1, NatInitInfo info2)

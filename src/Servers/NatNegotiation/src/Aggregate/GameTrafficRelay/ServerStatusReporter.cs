@@ -1,10 +1,9 @@
 using System;
-using UniSpy.Server.GameTrafficRelay.Controller;
 using UniSpy.Server.Core.Extension;
 
-namespace UniSpy.Server.GameTrafficRelay.Entity
+namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
 {
-    internal class ServerStatusReporter
+    public class ServerStatusReporter
     {
         private EasyTimer _myTimer;
         private RedisClient _redisClient = new RedisClient();
@@ -24,7 +23,7 @@ namespace UniSpy.Server.GameTrafficRelay.Entity
             {
                 ServerID = _server.Id,
                 PublicIPEndPoint = _server.PublicIPEndPoint,
-                ClientCount = NatNegotiationController.ConnectionPairs.Values.Count * 2
+                ClientCount = Handler.CmdHandler.PingHandler.ConnectionListeners.Values.Count
             };
             _ = _redisClient.SetValueAsync(info);
             var data = _redisClient.GetKeyValues();

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -26,7 +27,7 @@ namespace UniSpy.Server.Core.Network.Udp.Server
         {
             // Server.ReceiveAsync();
             ThreadPool.QueueUserWorkItem(o => { try { Manager.ReceiveAsync(); } catch { } });
-            OnReceive(message);
+            Task.Run(() => OnReceive(message));
         }
 
         public bool Send(object response)
