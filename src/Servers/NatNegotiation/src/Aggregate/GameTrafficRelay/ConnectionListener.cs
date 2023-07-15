@@ -17,8 +17,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
         public uint Cookie { get; private set; }
         public IPEndPoint ListeningEndPoint => (IPEndPoint)Endpoint;
         private EasyTimer _timer;
-        private IPAddress _gameServerAddress;
-        private IPAddress _gameClientAddress;
         private IPEndPoint _gameServerEndPoint;
         private IPEndPoint _gameClientEndPoint;
         private List<string> _gameServerValidIPs;
@@ -77,13 +75,14 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
             ThreadPool.QueueUserWorkItem(o => { try { ReceiveAsync(); } catch { } });
 
             // we only accept the gamespy client message
-            if (_gameClientEndPoint is null || _gameClientEndPoint is null)
+            if (_gameServerEndPoint is null || _gameClientEndPoint is null)
             {
+
                 if (_gameServerValidIPs.Contains(endPoint.ToString()) && _gameServerEndPoint is null)
                 {
                     _gameServerEndPoint = (IPEndPoint)endPoint;
                 }
-                else if (_gameClientValidIPs.Contains(endPoint.ToString()) && _gameClientEndPoint is null && !_gameClientAddress.Equals((IPEndPoint)endPoint))
+                else if (_gameClientValidIPs.Contains(endPoint.ToString()) && _gameClientEndPoint is null)
                 {
                     _gameClientEndPoint = (IPEndPoint)endPoint;
                 }
@@ -91,6 +90,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
                 {
                     //ignore
                 }
+
                 LogWriter.LogDebug($"[{endPoint}] [recv] {StringExtensions.ConvertPrintableBytesToString(buffer)} [{StringExtensions.ConvertByteToHexString(buffer)}]");
             }
             else
