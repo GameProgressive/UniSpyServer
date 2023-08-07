@@ -23,7 +23,7 @@ Technical papers and documentation about the GameSpy protocol and the games that
 * [openspy-core-v2](https://github.com/chc/openspy-core-v2) for code reference that were used to understand GameSpy protocol in detail
 
 ## Thanks
-* [CHC](https://github.com/chc) for sharing his knowledge and give us much help
+* [CHC](https://github.com/chc) for sharing his knowledge and giving us much help
 
 
 ## License
