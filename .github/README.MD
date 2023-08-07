@@ -20,6 +20,10 @@ Technical papers and documentation about the GameSpy protocol and the games that
 * [Luigi Auriemma](https://aluigi.altervista.org/papers.htm#distrust) for his gamespy papers that were used as a reference
 * [BattleSpy](https://github.com/BF2Statistics/BattleSpy) for their library, that we used as a base for UniSpy
 * [NetCoreServer](https://github.com/chronoxor/NetCoreServer) for their TCP and UDP server
+* [openspy-core-v2](https://github.com/chc/openspy-core-v2) for code reference that were used to understand GameSpy protocol in detail
+
+## Thanks
+* [CHC](https://github.com/chc) for sharing his knowledge and give us much help
 
 
 ## License
