@@ -40,11 +40,17 @@ namespace UniSpy.Server.WebServer.Abstraction
         {
             CurrentElement = CurrentElement.Parent;
         }
+        /// <summary>
+        /// Add the element and go inside it
+        /// </summary>
         public virtual void Add(string name)
         {
             CurrentElement.Add(new XElement(_bodyNamespace + name));
             ChangeToElement(name);
         }
+        /// <summary>
+        /// Add the element and stay current position
+        /// </summary>
         public virtual void Add(string name, object value)
         {
             CurrentElement.Add(new XElement(_bodyNamespace + name, value));

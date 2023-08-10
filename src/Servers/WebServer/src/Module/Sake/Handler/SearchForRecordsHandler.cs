@@ -11,7 +11,6 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
         protected new SearchForRecordsRequest _request => (SearchForRecordsRequest)base._request;
         public SearchForRecordsHandler(Client client, SearchForRecordsRequest request) : base(client, request)
         {
-
         }
 
         protected override void ResponseConstruct()

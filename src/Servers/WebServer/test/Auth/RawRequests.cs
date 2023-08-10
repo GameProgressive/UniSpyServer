@@ -8,7 +8,7 @@ namespace UniSpy.Server.WebServer.Test.Auth
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
                 xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/sake"">
+                xmlns:ns1=""http://gamespy.net/AuthService"">
                 <SOAP-ENV:Body>
                     <ns1:LoginProfile>
                         <ns1:version>1</ns1:version>
@@ -31,7 +31,7 @@ namespace UniSpy.Server.WebServer.Test.Auth
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
                 xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/sake"">
+                xmlns:ns1=""http://gamespy.net/AuthService"">
                 <SOAP-ENV:Body>
                     <ns1:LoginPs3Cert>
                         <ns1:version>0</ns1:version>
@@ -50,7 +50,7 @@ namespace UniSpy.Server.WebServer.Test.Auth
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
                 xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/sake"">
+                xmlns:ns1=""http://gamespy.net/AuthService"">
                 <SOAP-ENV:Body>
                     <ns1:LoginRemoteAuth>
                         <ns1:version>1</ns1:version>
@@ -69,7 +69,7 @@ namespace UniSpy.Server.WebServer.Test.Auth
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
                 xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/sake"">
+                xmlns:ns1=""http://gamespy.net/AuthService"">
                 <SOAP-ENV:Body>
                     <ns1:LoginUniqueNick>
                         <ns1:version>1</ns1:version>

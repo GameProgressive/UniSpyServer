@@ -22,7 +22,11 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
         }
         public override void Parse()
         {
-            base.Parse();
+            // base.Parse();
+            var firstGameIndex = RawRequest.IndexOf('\\', 10);
+            var gameNameHeader = RawRequest.Substring(0, firstGameIndex);
+
+
             if (KeyValues.ContainsKey("where"))
             {
                 Filter = KeyValues["where"];

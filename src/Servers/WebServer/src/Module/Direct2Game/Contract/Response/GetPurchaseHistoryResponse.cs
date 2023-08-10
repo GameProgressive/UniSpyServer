@@ -16,10 +16,12 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Contract.Response
         {
             _content.Add("GetPurchaseHistoryResult");
             _content.Add("status");
-            _content.Add("code", _result.Status);
-            _content.ChangeToElement("GetPurchaseHistoryResult");
+            _content.Add("code", _result.Code);
             _content.Add("orderpurchases");
+            // we do not know the purchace content for each game, so currently we just make it 0
             _content.Add("count", 0);
+            // _content.ChangeToElement("GetPurchaseHistoryResult");
+            // _content.BackToParentElement();
             base.Build();
         }
     }

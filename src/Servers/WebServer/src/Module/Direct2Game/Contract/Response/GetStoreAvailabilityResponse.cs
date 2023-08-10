@@ -15,9 +15,10 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request
         {
             _content.Add("GetStoreAvailabilityResult");
             _content.Add("status");
-            _content.Add("code", _result.Status);
+            _content.Add("code", _result.Code);
+            _content.ChangeToElement("status");
+            _content.Add("storestatusid", _result.StoreStatusId);
             _content.ChangeToElement("GetStoreAvailabilityResult");
-            _content.Add("storestatusid", _result.StoreResult);
             base.Build();
         }
     }

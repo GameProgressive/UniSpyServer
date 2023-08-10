@@ -24,7 +24,7 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Handler
 
         protected override void ResponseConstruct()
         {
-            _result.Status = 0;
+            _result.Code = 0;
 
             _response = new GetPurchaseHistoryResponse(_request, _result);
         }

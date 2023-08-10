@@ -20,27 +20,27 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request
             base.Parse();
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "gameid"))
             {
-                throw new Exception("gameid is missing from the request");
+                throw new WebServer.Exception("gameid is missing from the request");
             }
             var gameid = _contentElement.Descendants().First(p => p.Name.LocalName == "gameid").Value;
             GameId = int.Parse(gameid);
             
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "version"))
             {
-                throw new Exception("version is missing from the request");
+                throw new WebServer.Exception("version is missing from the request");
             }
             var version = _contentElement.Descendants().First(p => p.Name.LocalName == "version").Value;
             Version = int.Parse(version);
 
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "region"))
             {
-                throw new Exception("region is missing from the request");
+                throw new WebServer.Exception("region is missing from the request");
             }
             Region = _contentElement.Descendants().First(p => p.Name.LocalName == "region").Value;
             
             if (!_contentElement.Descendants().Any(p => p.Name.LocalName == "accesstoken"))
             {
-                throw new Exception("accesstoken is missing from the request");
+                throw new WebServer.Exception("accesstoken is missing from the request");
             }
             AccessToken = _contentElement.Descendants().First(p => p.Name.LocalName == "accesstoken").Value;
         }
