@@ -18,8 +18,8 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
         protected override void RequestCheck() { }
         protected override void DataOperation()
         {
-            var friendsId = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.ProfileId,
-                                                                          _client.Info.SubProfileInfo.NamespaceId);
+            var friendsId = StorageOperation.Persistance.GetFriendProfileIds(_client.Info.ProfileInfo.Profileid,
+                                                                          _client.Info.SubProfileInfo.Namespaceid);
             _result.ProfileIDList = friendsId;
 
         }
@@ -40,7 +40,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
                 var request = new StatusInfoRequest
                 {
                     ProfileId = profileID,
-                    NamespaceID = (int)_client.Info.SubProfileInfo.NamespaceId,
+                    NamespaceID = (int)_client.Info.SubProfileInfo.Namespaceid,
                     IsGetStatusInfo = true
                 };
                 new StatusInfoHandler(_client, request).Handle();

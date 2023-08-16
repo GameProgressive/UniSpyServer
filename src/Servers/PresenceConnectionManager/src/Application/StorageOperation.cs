@@ -19,7 +19,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 var result = from u in db.Users
                                  //According to FSW partnerid is not nessesary
                              where u.Email == email
-                             select u.UserId;
+                             select u.Userid;
 
                 if (result.Count() == 0)
                 {
@@ -32,7 +32,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         {
             using (var db = new UniSpyContext())
             {
-                var result = db.Friends.Where(f => f.ProfileId == profileId
+                var result = db.Friends.Where(f => f.Profileid == profileId
                                                    && f.Targetid == targetId
                                                    && f.Namespaceid == namespaceId).FirstOrDefault();
                 if (result is not null)
@@ -50,7 +50,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         {
             using (var db = new UniSpyContext())
             {
-                return db.Blockeds.Where(f => f.ProfileId == profileId
+                return db.Blockeds.Where(f => f.Profileid == profileId
                                   && f.Namespaceid == namespaceId)
                                   .Select(f => f.Targetid).ToList();
             }
@@ -60,7 +60,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         {
             using (var db = new UniSpyContext())
             {
-                return db.Friends.Where(f => f.ProfileId == profileId
+                return db.Friends.Where(f => f.Profileid == profileId
                                           && f.Namespaceid == namespaceId).Select(f => f.Targetid).ToList();
             }
         }
@@ -71,14 +71,14 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             {
                 //we have to make sure the search target has the same namespaceID
                 var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.ProfileId equals s.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
-                             where p.ProfileId == profileId
-                             && s.NamespaceId == namespaceId
+                             join s in db.Subprofiles on p.Profileid equals s.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
+                             where p.Profileid == profileId
+                             && s.Namespaceid == namespaceId
                              select new GetProfileDataModel
                              {
                                  Nick = p.Nick,
-                                 ProfileId = p.ProfileId,
+                                 ProfileId = p.Profileid,
                                  UniqueNick = s.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
@@ -116,8 +116,8 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
-                             join p in db.Profiles on u.UserId equals p.Userid
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where u.Email == email
                              && p.Nick == nickName
                              select new { u, p, n };
@@ -127,7 +127,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadProfileException("email and nick dose not exist");
                 }
-                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
+                return (info.u.Userid, info.p.Profileid, info.n.Subprofileid);
             }
         }
 
@@ -137,10 +137,10 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             using (var db = new UniSpyContext())
             {
                 var result = from n in db.Subprofiles
-                             join p in db.Profiles on n.ProfileId equals p.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join p in db.Profiles on n.Profileid equals p.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where n.Uniquenick == uniqueNick
-                             && n.NamespaceId == namespaceId
+                             && n.Namespaceid == namespaceId
                              select new { u, p, n };
 
                 var info = result.FirstOrDefault();
@@ -148,7 +148,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadUniquenickException($"The uniquenick: {uniqueNick} is invalid.");
                 }
-                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
+                return (info.u.Userid, info.p.Profileid, info.n.Subprofileid);
             }
         }
 
@@ -157,11 +157,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
-                             join p in db.Profiles on u.UserId equals p.Userid
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where n.Authtoken == authToken
-                             && n.PartnerId == partnerId
-                             && n.NamespaceId == namespaceId
+                             && n.Partnerid == partnerId
+                             && n.Namespaceid == namespaceId
                              select new { u, p, n };
 
                 var info = result.FirstOrDefault();
@@ -169,7 +169,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     throw new GPLoginBadPreAuthException("The pre-authentication token is invalid.");
                 }
-                return (info.u.UserId, info.p.ProfileId, info.n.SubProfileId);
+                return (info.u.Userid, info.p.Profileid, info.n.Subprofileid);
             }
         }
 
@@ -179,11 +179,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             {
                 if (db.Blockeds.Where(b => b.Targetid == targetId
                                            && b.Namespaceid == namespaceId
-                                           && b.ProfileId == profileId).Count() == 0)
+                                           && b.Profileid == profileId).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        ProfileId = profileId,
+                        Profileid = profileId,
                         Targetid = targetId,
                         Namespaceid = namespaceId
                     };
@@ -198,11 +198,11 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             {
                 if (db.Friends.Where(b => b.Targetid == targetId
                                            && b.Namespaceid == namespaceId
-                                           && b.ProfileId == profileId).Count() == 0)
+                                           && b.Profileid == profileId).Count() == 0)
                 {
                     Friend friend = new Friend
                     {
-                        ProfileId = profileId,
+                        Profileid = profileId,
                         Targetid = targetId,
                         Namespaceid = namespaceId
                     };
@@ -217,7 +217,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
 
                 var profiles = new UniSpy.Server.Core.Database.DatabaseModel.Profile
                 {
-                    ProfileId = profileId,
+                    Profileid = profileId,
                     Nick = newNick,
                     Userid = userId
                 };
@@ -231,7 +231,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             where p.ProfileId == profileId
+                             where p.Profileid == profileId
                              && p.Nick == oldNick
                              select p;
 
@@ -244,7 +244,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                     result.First().Nick = newNick;
                 }
 
-                var profile = db.Profiles.Where(p => p.ProfileId == profileId
+                var profile = db.Profiles.Where(p => p.Profileid == profileId
                 && p.Nick == oldNick).First();
                 profile.Nick = newNick;
                 db.Profiles.Add(profile);
@@ -265,7 +265,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         {
             using (var db = new UniSpyContext())
             {
-                var result = db.Subprofiles.FirstOrDefault(s => s.SubProfileId == subProfileId);
+                var result = db.Subprofiles.FirstOrDefault(s => s.Subprofileid == subProfileId);
                 result.Uniquenick = uniqueNick;
                 db.Subprofiles.Update(result);
                 db.SaveChanges();

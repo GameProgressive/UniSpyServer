@@ -6,7 +6,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
     public partial class Addrequest
     {
         public int Addrequestid { get; set; }
-        public int ProfileId { get; set; }
+        public int Profileid { get; set; }
         public int Namespaceid { get; set; }
         public int Targetid { get; set; }
         public string Reason { get; set; } = null!;

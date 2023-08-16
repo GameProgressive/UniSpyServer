@@ -14,14 +14,14 @@ namespace UniSpy.Server.Chat.Application
             using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
-                             join p in db.Profiles on u.UserId equals p.Userid
+                             join p in db.Profiles on u.Userid equals p.Userid
                              where u.Email == email
                              && p.Nick == nickName
                              && u.Password == passwordHash
                              select new
                              {
-                                 userId = u.UserId,
-                                 profileId = p.ProfileId,
+                                 userId = u.Userid,
+                                 profileId = p.Profileid,
                                  emailVerified = u.Emailverified,
                                  banned = u.Banned
                              };
@@ -41,14 +41,14 @@ namespace UniSpy.Server.Chat.Application
             using (var db = new UniSpyContext())
             {
                 var result = from n in db.Subprofiles
-                             join p in db.Profiles on n.ProfileId equals p.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join p in db.Profiles on n.Profileid equals p.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where n.Uniquenick == uniqueNick
-                             && n.NamespaceId == namespaceId
+                             && n.Namespaceid == namespaceId
                              select new
                              {
-                                 userId = u.UserId,
-                                 profileId = p.ProfileId,
+                                 userId = u.Userid,
+                                 profileId = p.Profileid,
                                  uniquenick = n.Uniquenick,
                                  emailVerified = u.Emailverified,
                                  banned = u.Banned

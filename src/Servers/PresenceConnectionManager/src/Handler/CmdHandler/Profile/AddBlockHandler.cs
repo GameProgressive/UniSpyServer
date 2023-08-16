@@ -15,7 +15,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            if (_client.Info.ProfileInfo.ProfileId == _request.TargetId)
+            if (_client.Info.ProfileInfo.Profileid == _request.TargetId)
             {
                 throw new GPException("You can not block your self.");
             }
@@ -23,8 +23,8 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         protected override void DataOperation()
         {
             StorageOperation.Persistance.UpdateBlockInfo(_request.TargetId,
-                                                         _client.Info.ProfileInfo.ProfileId,
-                                                         _client.Info.SubProfileInfo.NamespaceId);
+                                                         _client.Info.ProfileInfo.Profileid,
+                                                         _client.Info.SubProfileInfo.Namespaceid);
         }
     }
 }

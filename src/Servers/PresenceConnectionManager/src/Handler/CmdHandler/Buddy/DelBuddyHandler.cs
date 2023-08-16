@@ -18,9 +18,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
 
         protected override void DataOperation()
         {
-            StorageOperation.Persistance.DeleteFriendByProfileId(_client.Info.ProfileInfo.ProfileId,
+            StorageOperation.Persistance.DeleteFriendByProfileId(_client.Info.ProfileInfo.Profileid,
                                                                  _request.TargetId,
-                                                                 _client.Info.SubProfileInfo.NamespaceId);
+                                                                 _client.Info.SubProfileInfo.Namespaceid);
         }
     }
 }

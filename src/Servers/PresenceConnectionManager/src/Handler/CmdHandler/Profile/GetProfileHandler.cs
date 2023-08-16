@@ -20,7 +20,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         }
         protected override void DataOperation()
         {
-            _result.UserProfile = StorageOperation.Persistance.GetProfileInfos(_request.ProfileId, _client.Info.SubProfileInfo.NamespaceId);
+            _result.UserProfile = StorageOperation.Persistance.GetProfileInfos(_request.ProfileId, _client.Info.SubProfileInfo.Namespaceid);
 
             if (_result.UserProfile is null)
             {

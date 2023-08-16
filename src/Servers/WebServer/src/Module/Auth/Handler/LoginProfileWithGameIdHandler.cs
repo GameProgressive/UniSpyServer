@@ -18,12 +18,12 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.UserId
-                             join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
+                             join u in db.Users on p.Userid equals u.Userid
+                             join sp in db.Subprofiles on p.Profileid equals sp.Profileid
                              where sp.Uniquenick == _request.Uniquenick
                              && sp.Cdkeyenc == _request.CDKey
-                             && sp.PartnerId == _request.PartnerCode
-                             && sp.NamespaceId == _request.NamespaceId
+                             && sp.Partnerid == _request.PartnerCode
+                             && sp.Namespaceid == _request.NamespaceId
                              && u.Email == _request.Email
                              // we do not care about game id now
                              select new { u, p, sp };
@@ -32,8 +32,8 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
                     throw new Auth.Exception("No account exists with the provided email address.");
                 }
                 var data = result.First();
-                _result.UserId = data.u.UserId;
-                _result.ProfileId = data.p.ProfileId;
+                _result.UserId = data.u.Userid;
+                _result.ProfileId = data.p.Profileid;
                 _result.CdKeyHash = data.sp.Cdkeyenc;
                 // currently we set this to uniquenick
                 _result.ProfileNick = data.sp.Uniquenick;

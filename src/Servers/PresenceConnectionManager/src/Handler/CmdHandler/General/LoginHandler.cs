@@ -42,15 +42,15 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.General
                 _result.DatabaseResults = new LogInDataModel
                 {
                     Email = _client.Info.UserInfo.Email,
-                    UserId = _client.Info.UserInfo.UserId,
-                    ProfileId = _client.Info.ProfileInfo.ProfileId,
-                    SubProfileId = _client.Info.SubProfileInfo.SubProfileId,
+                    UserId = _client.Info.UserInfo.Userid,
+                    ProfileId = _client.Info.ProfileInfo.Profileid,
+                    SubProfileId = _client.Info.SubProfileInfo.Subprofileid,
                     Nick = _client.Info.ProfileInfo.Nick,
                     UniqueNick = _client.Info.SubProfileInfo.Uniquenick,
                     PasswordHash = _client.Info.UserInfo.Password,
                     EmailVerifiedFlag = (bool)_client.Info.UserInfo.Emailverified,
                     BannedFlag = (bool)_client.Info.UserInfo.Banned,
-                    NamespaceId = _client.Info.SubProfileInfo.NamespaceId
+                    NamespaceId = _client.Info.SubProfileInfo.Namespaceid
                 };
                 _client.Info.Status.CurrentStatus = GPStatusCode.Online;
             }

@@ -7,7 +7,7 @@ namespace UniSpy.Server.WebServer.Test
 {
     public static class MokeObject
     {
-        public static IClient Client = CreateClient();
+        public static Client Client = CreateClient();
 
         public static Client CreateClient(string ipAddress = "192.168.1.2", int port = 9999)
         {

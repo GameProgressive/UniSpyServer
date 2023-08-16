@@ -25,7 +25,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         {
             try
             {
-                StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.SubProfileId,
+                StorageOperation.Persistance.UpdateUniqueNick(_client.Info.SubProfileInfo.Subprofileid,
                                                               _request.UniqueNick);
             }
             catch (System.Exception e)

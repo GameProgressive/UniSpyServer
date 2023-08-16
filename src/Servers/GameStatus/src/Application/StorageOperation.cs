@@ -25,7 +25,7 @@ namespace UniSpy.Server.GameStatus.Application
             {
 
                 var result = from p in db.Pstorages
-                             where p.ProfileId == profileId
+                             where p.Profileid == profileId
                              && p.Dindex == dataIndex
                              && p.Ptype == (int)storageType
                              select p;
@@ -36,7 +36,7 @@ namespace UniSpy.Server.GameStatus.Application
                     //insert a new record in database
                     ps = new Pstorage();
                     ps.Dindex = dataIndex;
-                    ps.ProfileId = profileId;
+                    ps.Profileid = profileId;
                     ps.Ptype = (int)storageType;
                     ps.Data = data;
                     db.Pstorages.Add(ps);
@@ -58,7 +58,7 @@ namespace UniSpy.Server.GameStatus.Application
             {
                 var result = from s in db.Subprofiles
                              where s.Authtoken == token
-                             select s.ProfileId;
+                             select s.Profileid;
                 if (result.Count() != 1)
                 {
                     throw new GameStatus.Exception("No records found in database by authtoken.");
@@ -72,9 +72,9 @@ namespace UniSpy.Server.GameStatus.Application
             using (var db = new UniSpyContext())
             {
                 var result = from s in db.Subprofiles
-                             join p in db.Profiles on s.ProfileId equals p.ProfileId
+                             join p in db.Profiles on s.Profileid equals p.Profileid
                              where s.Cdkeyenc == cdKey && p.Nick == nickName
-                             select s.ProfileId;
+                             select s.Profileid;
                 if (result.Count() != 1)
                 {
                     throw new GameStatus.Exception("No records found in database by cdkey hash.");
@@ -88,8 +88,8 @@ namespace UniSpy.Server.GameStatus.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             where p.ProfileId == profileId
-                             select p.ProfileId;
+                             where p.Profileid == profileId
+                             select p.Profileid;
                 if (result.Count() != 1)
                 {
                     throw new GameStatus.Exception("No records found in database by profileid.");
@@ -105,7 +105,7 @@ namespace UniSpy.Server.GameStatus.Application
                 var result = from ps in db.Pstorages
                              where ps.Ptype == (int)storageType
                              && ps.Dindex == dataIndex
-                             && ps.ProfileId == profileId
+                             && ps.Profileid == profileId
                              select ps.Data;
 
                 if (result.Count() != 1)

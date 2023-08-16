@@ -31,12 +31,12 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
         {
             if (_request.HasPartnerIDFlag)
             {
-                _result.SubProfile.PartnerId = _request.PartnerID;
+                _result.SubProfile.Partnerid = _request.PartnerID;
             }
 
             if (_request.HasProductIDFlag)
             {
-                _result.SubProfile.ProductId = _request.ProductID;
+                _result.SubProfile.Productid = _request.ProductID;
             }
 
             if (_request.HasGameNameFlag)
@@ -90,7 +90,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
                     }
 
                 case NewUserStatus.CheckProfile:
-                    var profile = StorageOperation.Persistance.GetProfile(_result.User.UserId, _request.Nick);
+                    var profile = StorageOperation.Persistance.GetProfile(_result.User.Userid, _request.Nick);
                     if (profile is null)
                     {
                         goto case NewUserStatus.ProfileNotExist;
@@ -102,7 +102,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
                     }
 
                 case NewUserStatus.ProfileNotExist:
-                    _result.Profile = new Profile { Userid = _result.User.UserId, Nick = _request.Nick };
+                    _result.Profile = new Profile { Userid = _result.User.Userid, Nick = _request.Nick };
                     StorageOperation.Persistance.AddProfile(_result.Profile);
                     goto case NewUserStatus.CheckSubProfile;
 
@@ -110,7 +110,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
                 //we do nothing here
 
                 case NewUserStatus.CheckSubProfile:
-                    var subProfile = StorageOperation.Persistance.GetSubProfile(_result.Profile.ProfileId, _request.NamespaceID, _request.ProductID);
+                    var subProfile = StorageOperation.Persistance.GetSubProfile(_result.Profile.Profileid, _request.NamespaceID, _request.ProductID);
                     if (subProfile is null)
                     {
                         goto case NewUserStatus.SubProfileNotExist;
@@ -125,9 +125,9 @@ namespace UniSpy.Server.PresenceSearchPlayer.Handler.CmdHandler
                     //we create subprofile and return
                     _result.SubProfile = new Subprofile
                     {
-                        ProfileId = _result.Profile.ProfileId,
+                        Profileid = _result.Profile.Profileid,
                         Uniquenick = _request.Uniquenick,
-                        NamespaceId = _request.NamespaceID
+                        Namespaceid = _request.NamespaceID
                     };
                     StorageOperation.Persistance.AddSubProfile(_result.SubProfile);
                     break;

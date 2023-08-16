@@ -27,17 +27,17 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Profile
         {
             if (_request.IsReplaceNickName)
             {
-                StorageOperation.Persistance.UpdateNickName(_client.Info.ProfileInfo.ProfileId,
+                StorageOperation.Persistance.UpdateNickName(_client.Info.ProfileInfo.Profileid,
                                                             _request.OldNick,
                                                             _request.NewNick);
             }
             else
             {
-                StorageOperation.Persistance.AddNickName(_client.Info.UserInfo.UserId,
-                                                         _client.Info.ProfileInfo.ProfileId,
+                StorageOperation.Persistance.AddNickName(_client.Info.UserInfo.Userid,
+                                                         _client.Info.ProfileInfo.Profileid,
                                                          _request.NewNick);
             }
-            _result.ProfileId = _client.Info.ProfileInfo.ProfileId;
+            _result.ProfileId = _client.Info.ProfileInfo.Profileid;
         }
 
         protected override void ResponseConstruct()

@@ -11,7 +11,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
 
         public override void Build()
         {
-            SendingBuffer = $@"\nur\\userid\{_result.User.UserId}\profileid\{_result.SubProfile.ProfileId}\id\{_request.OperationID}\final\";
+            SendingBuffer = $@"\nur\\userid\{_result.User.Userid}\profileid\{_result.SubProfile.Profileid}\id\{_request.OperationID}\final\";
         }
     }
 }

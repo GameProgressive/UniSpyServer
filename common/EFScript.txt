@@ -1,0 +1,2 @@
+
+dotnet ef dbcontext scaffold "ConnectionString" Npgsql.EntityFrameworkCore.PostgreSQL -o Models

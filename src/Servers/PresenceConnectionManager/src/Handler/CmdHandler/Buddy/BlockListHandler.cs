@@ -18,8 +18,8 @@ namespace UniSpy.Server.PresenceConnectionManager.Handler.CmdHandler.Buddy
         protected override void DataOperation()
         {
 
-            _result.ProfileIdList = StorageOperation.Persistance.GetBlockedProfileIds(_client.Info.ProfileInfo.ProfileId,
-                                                                                      _client.Info.SubProfileInfo.NamespaceId);
+            _result.ProfileIdList = StorageOperation.Persistance.GetBlockedProfileIds(_client.Info.ProfileInfo.Profileid,
+                                                                                      _client.Info.SubProfileInfo.Namespaceid);
         }
 
         protected override void ResponseConstruct()

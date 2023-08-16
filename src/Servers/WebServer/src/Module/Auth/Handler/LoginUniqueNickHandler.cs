@@ -23,10 +23,10 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.UserId
-                             join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
+                             join u in db.Users on p.Userid equals u.Userid
+                             join sp in db.Subprofiles on p.Profileid equals sp.Profileid
                              where sp.Uniquenick == _request.Uniquenick
-                             && sp.NamespaceId == _request.NamespaceId
+                             && sp.Namespaceid == _request.NamespaceId
                              //  && u.Password == _request.Password
                              select new { u, p, sp };
                 if (result.Count() != 1)
@@ -34,8 +34,8 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
                     throw new Auth.Exception("No account exists with the provided email address.");
                 }
                 var data = result.First();
-                _result.UserId = data.u.UserId;
-                _result.ProfileId = data.p.ProfileId;
+                _result.UserId = data.u.Userid;
+                _result.ProfileId = data.p.Profileid;
                 // _result.CdKeyHash = data.sp.Cdkeyenc;
                 _result.CdKeyHash = "xxxxxxxxxxx";
                 // currently we set this to uniquenick

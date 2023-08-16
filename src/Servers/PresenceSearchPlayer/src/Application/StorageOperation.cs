@@ -29,13 +29,13 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             {
                 // Not every game uses PartnerId; optional
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.UserId
-                             join sp in db.Subprofiles on p.ProfileId equals sp.ProfileId
+                             join u in db.Users on p.Userid equals u.Userid
+                             join sp in db.Subprofiles on p.Profileid equals sp.Profileid
                              where u.Email.Equals(email)
                              && u.Password.Equals(password)
                              && p.Nick.Equals(nickName)
-                             || sp.PartnerId.Equals(partnerId)
-                             select p.ProfileId;
+                             || sp.Partnerid.Equals(partnerId)
+                             select p.Profileid;
 
                 if (result.Count() == 1)
                 {
@@ -111,9 +111,9 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 return db.Subprofiles.Where(s =>
-                        s.ProfileId == profileId &&
-                        s.NamespaceId == namespaceId &&
-                        s.ProductId == productId).FirstOrDefault();
+                        s.Profileid == profileId &&
+                        s.Namespaceid == namespaceId &&
+                        s.Productid == productId).FirstOrDefault();
             }
         }
 
@@ -122,11 +122,11 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from u in db.Users
-                             join p in db.Profiles on u.UserId equals p.Userid
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where u.Email == email
                              && u.Password == password
-                             && n.NamespaceId == namespaceId
+                             && n.Namespaceid == namespaceId
                              select new NicksDataModel
                              {
                                  NickName = p.Nick,
@@ -142,24 +142,24 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from b in db.Friends
-                             where b.ProfileId == profileId && b.Namespaceid == namespaceId
+                             where b.Profileid == profileId && b.Namespaceid == namespaceId
                              select b.Targetid;
 
                 foreach (var info in result)
                 {
                     var b = from p in db.Profiles
-                            join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                            join u in db.Users on p.Userid equals u.UserId
-                            where n.NamespaceId == namespaceId
-                            && n.ProfileId == info && n.Gamename == gameName
+                            join n in db.Subprofiles on p.Profileid equals n.Profileid
+                            join u in db.Users on p.Userid equals u.Userid
+                            where n.Namespaceid == namespaceId
+                            && n.Profileid == info && n.Gamename == gameName
                             select new OthersDatabaseModel
                             {
-                                ProfileId = p.ProfileId,
+                                ProfileId = p.Profileid,
                                 Nick = p.Nick,
                                 Uniquenick = n.Uniquenick,
                                 Lastname = p.Lastname,
                                 Firstname = p.Firstname,
-                                Userid = u.UserId,
+                                Userid = u.Userid,
                                 Email = u.Email
                             };
 
@@ -177,12 +177,12 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
                 foreach (var pid in profileIds)
                 {
                     var result = from n in db.Subprofiles
-                                 where n.ProfileId == pid
-                                 && n.NamespaceId == namespaceId
+                                 where n.Profileid == pid
+                                 && n.Namespaceid == namespaceId
                                  //select new { uniquenick = n.Uniquenick };
                                  select new OthersListDatabaseModel
                                  {
-                                     ProfileId = n.ProfileId,
+                                     ProfileId = n.Profileid,
                                      Uniquenick = n.Uniquenick
                                  };
 
@@ -197,19 +197,19 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where p.Nick == nickName
                              //&& n.Namespaceid == _request.NamespaceID
                              select new SearchDataBaseModel
                              {
-                                 ProfileId = n.ProfileId,
+                                 ProfileId = n.Profileid,
                                  Nick = p.Nick,
                                  Uniquenick = n.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
                                  Lastname = p.Lastname,
-                                 NamespaceID = n.NamespaceId
+                                 NamespaceID = n.Namespaceid
                              };
                 return result.ToList();
             }
@@ -223,18 +223,18 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
 
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where u.Email == email
                              select new SearchDataBaseModel
                              {
-                                 ProfileId = n.ProfileId,
+                                 ProfileId = n.Profileid,
                                  Nick = p.Nick,
                                  Uniquenick = n.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
                                  Lastname = p.Lastname,
-                                 NamespaceID = n.NamespaceId
+                                 NamespaceID = n.Namespaceid
                              };
                 return result.ToList();
             }
@@ -246,21 +246,21 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where p.Nick == nickName && u.Email == email
                              //&& n.Namespaceid == _request.NamespaceID
                              //&& n.Gamename == _request.GameName
                              //&& n.Partnerid == _request.PartnerID
                              select new SearchDataBaseModel
                              {
-                                 ProfileId = n.ProfileId,
+                                 ProfileId = n.Profileid,
                                  Nick = p.Nick,
                                  Uniquenick = n.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
                                  Lastname = p.Lastname,
-                                 NamespaceID = n.NamespaceId
+                                 NamespaceID = n.Namespaceid
                              };
                 return result.ToList();
             }
@@ -272,21 +272,21 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                             join u in db.Users on p.Userid equals u.UserId
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
                              where n.Uniquenick == uniqueNick
-                             && n.NamespaceId == namespaceId
+                             && n.Namespaceid == namespaceId
                              //&& n.Gamename == _request.GameName
                              //&& n.Partnerid == _request.PartnerID
                              select new SearchDataBaseModel
                              {
-                                 ProfileId = n.ProfileId,
+                                 ProfileId = n.Profileid,
                                  Nick = p.Nick,
                                  Uniquenick = n.Uniquenick,
                                  Email = u.Email,
                                  Firstname = p.Firstname,
                                  Lastname = p.Lastname,
-                                 NamespaceID = n.NamespaceId
+                                 NamespaceID = n.Namespaceid
                              };
                 return result.ToList();
             }
@@ -301,19 +301,19 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
                 foreach (var nsId in namespaceIds)
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.ProfileId equals n.ProfileId
-                                 join u in db.Users on p.Userid equals u.UserId
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Userid
                                  where n.Uniquenick == uniqueNick
-                                 && n.NamespaceId == nsId
+                                 && n.Namespaceid == nsId
                                  select new SearchUniqueDatabaseModel
                                  {
-                                     ProfileId = n.ProfileId,
+                                     ProfileId = n.Profileid,
                                      Nick = p.Nick,
                                      Uniquenick = n.Uniquenick,
                                      Email = u.Email,
                                      Firstname = p.Firstname,
                                      Lastname = p.Lastname,
-                                     NamespaceID = n.NamespaceId
+                                     NamespaceID = n.Namespaceid
                                  };
                     dataList.Add(result.First());
                 }
@@ -326,11 +326,11 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
             using (var db = new UniSpyContext())
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.ProfileId equals n.ProfileId
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where n.Uniquenick == uniqueNick
-                             && n.NamespaceId == namespaceId
+                             && n.Namespaceid == namespaceId
                              && n.Gamename == gameName
-                             select p.ProfileId;
+                             select p.Profileid;
 
                 if (result.Count() != 0)
                 {
@@ -347,7 +347,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Application
                 var result = from u in db.Users
                                  //According to FSW partnerid is not nessesary
                              where u.Email == email
-                             select u.UserId;
+                             select u.Userid;
 
                 if (result.Count() == 0)
                 {

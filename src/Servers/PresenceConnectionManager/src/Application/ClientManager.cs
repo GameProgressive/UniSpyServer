@@ -9,9 +9,9 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
         public static Client GetClient(int profileid, int? productid = null, int? namespaceId = null)
         {
             return (Client)ClientPool.Values.FirstOrDefault(
-                c => ((ClientInfo)c.Info).SubProfileInfo.ProductId == productid
-                && ((ClientInfo)c.Info).SubProfileInfo.ProfileId == profileid
-                && ((ClientInfo)c.Info).SubProfileInfo.NamespaceId == namespaceId);
+                c => ((ClientInfo)c.Info).SubProfileInfo.Productid == productid
+                && ((ClientInfo)c.Info).SubProfileInfo.Profileid == profileid
+                && ((ClientInfo)c.Info).SubProfileInfo.Namespaceid == namespaceId);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UniSpy.Server.PresenceSearchPlayer.Contract.Response
         }
         public override void Build()
         {
-            SendingBuffer = $@"\nur\\pid\{_result.SubProfile.ProfileId}\final\";
+            SendingBuffer = $@"\nur\\pid\{_result.SubProfile.Profileid}\final\";
         }
     }
 }

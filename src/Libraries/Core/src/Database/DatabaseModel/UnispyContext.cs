@@ -49,7 +49,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.Property(e => e.Namespaceid).HasColumnName("namespaceid");
 
-                entity.Property(e => e.ProfileId).HasColumnName("profileid");
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
 
                 entity.Property(e => e.Reason)
                     .HasColumnType("character varying")
@@ -63,7 +63,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Addrequests)
-                    .HasForeignKey(d => d.ProfileId)
+                    .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("addrequests_fk");
             });
@@ -83,13 +83,13 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.Property(e => e.Namespaceid).HasColumnName("namespaceid");
 
-                entity.Property(e => e.ProfileId).HasColumnName("profileid");
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
 
                 entity.Property(e => e.Targetid).HasColumnName("targetid");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Blockeds)
-                    .HasForeignKey(d => d.ProfileId)
+                    .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("blocked_fk");
             });
@@ -106,13 +106,13 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.Property(e => e.Namespaceid).HasColumnName("namespaceid");
 
-                entity.Property(e => e.ProfileId).HasColumnName("profileid");
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
 
                 entity.Property(e => e.Targetid).HasColumnName("targetid");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Friends)
-                    .HasForeignKey(d => d.ProfileId)
+                    .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("friends_fk");
             });
@@ -215,7 +215,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.HasComment("User profiles.");
 
-                entity.Property(e => e.ProfileId)
+                entity.Property(e => e.Profileid)
                     .HasColumnName("profileid")
                     .HasDefaultValueSql("nextval('profiles_profileid_seq'::regclass)");
 
@@ -399,13 +399,13 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.Property(e => e.Dindex).HasColumnName("dindex");
 
-                entity.Property(e => e.ProfileId).HasColumnName("profileid");
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
 
                 entity.Property(e => e.Ptype).HasColumnName("ptype");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Pstorages)
-                    .HasForeignKey(d => d.ProfileId)
+                    .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("pstorage_fk");
             });
@@ -420,9 +420,21 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
                     .HasColumnName("sakestorageid")
                     .HasDefaultValueSql("nextval('sakestorage_sakestorageid_seq'::regclass)");
 
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
+
                 entity.Property(e => e.Tableid)
                     .HasColumnType("character varying")
                     .HasColumnName("tableid");
+
+                entity.Property(e => e.Userdata)
+                    .HasColumnType("jsonb")
+                    .HasColumnName("userdata");
+
+                entity.HasOne(d => d.Profile)
+                    .WithMany(p => p.Sakestorages)
+                    .HasForeignKey(d => d.Profileid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("profileid_fk");
             });
 
             modelBuilder.Entity<Subprofile>(entity =>
@@ -431,7 +443,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.HasComment("User subprofiles.");
 
-                entity.Property(e => e.SubProfileId)
+                entity.Property(e => e.Subprofileid)
                     .HasColumnName("subprofileid")
                     .HasDefaultValueSql("nextval('subprofiles_subprofileid_seq'::regclass)");
 
@@ -449,17 +461,17 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.Property(e => e.Gamename).HasColumnName("gamename");
 
-                entity.Property(e => e.NamespaceId).HasColumnName("namespaceid");
+                entity.Property(e => e.Namespaceid).HasColumnName("namespaceid");
 
-                entity.Property(e => e.PartnerId).HasColumnName("partnerid");
+                entity.Property(e => e.Partnerid).HasColumnName("partnerid");
 
                 entity.Property(e => e.Port)
                     .HasColumnName("port")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.ProductId).HasColumnName("productid");
+                entity.Property(e => e.Productid).HasColumnName("productid");
 
-                entity.Property(e => e.ProfileId).HasColumnName("profileid");
+                entity.Property(e => e.Profileid).HasColumnName("profileid");
 
                 entity.Property(e => e.Uniquenick)
                     .HasColumnType("character varying")
@@ -467,7 +479,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Subprofiles)
-                    .HasForeignKey(d => d.ProfileId)
+                    .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("subprofiles_fk");
             });
@@ -478,7 +490,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
 
                 entity.HasComment("User account information.");
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.Userid)
                     .HasColumnName("userid")
                     .HasDefaultValueSql("nextval('users_userid_seq'::regclass)");
 
@@ -500,7 +512,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
                     .HasColumnName("emailverified")
                     .HasDefaultValueSql("true");
 
-                entity.Property(e => e.LastIp).HasColumnName("lastip");
+                entity.Property(e => e.Lastip).HasColumnName("lastip");
 
                 entity.Property(e => e.Lastonline)
                     .HasColumnType("timestamp without time zone")

@@ -13,10 +13,11 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
             Blockeds = new HashSet<Blocked>();
             Friends = new HashSet<Friend>();
             Pstorages = new HashSet<Pstorage>();
+            Sakestorages = new HashSet<Sakestorage>();
             Subprofiles = new HashSet<Subprofile>();
         }
 
-        public int ProfileId { get; set; }
+        public int Profileid { get; set; }
         public int Userid { get; set; }
         public string Nick { get; set; } = null!;
         public int Serverflag { get; set; }
@@ -65,6 +66,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
         public virtual ICollection<Blocked> Blockeds { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Pstorage> Pstorages { get; set; }
+        public virtual ICollection<Sakestorage> Sakestorages { get; set; }
         public virtual ICollection<Subprofile> Subprofiles { get; set; }
     }
 }

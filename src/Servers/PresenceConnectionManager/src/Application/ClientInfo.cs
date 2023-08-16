@@ -41,7 +41,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     using (var db = new UniSpyContext())
                     {
-                        _userInfo = db.Users.Where(s => s.UserId == UserId).First();
+                        _userInfo = db.Users.Where(s => s.Userid == UserId).First();
                     }
                 }
                 return _userInfo;
@@ -60,7 +60,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     using (var db = new UniSpyContext())
                     {
-                        _profileInfo = db.Profiles.Where(s => s.ProfileId == ProfileId).First();
+                        _profileInfo = db.Profiles.Where(s => s.Profileid == ProfileId).First();
                     }
                 }
                 return _profileInfo;
@@ -79,7 +79,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Application
                 {
                     using (var db = new UniSpyContext())
                     {
-                        _subProfileInfo = db.Subprofiles.Where(s => s.SubProfileId == SubProfileId).First();
+                        _subProfileInfo = db.Subprofiles.Where(s => s.Subprofileid == SubProfileId).First();
                     }
                 }
                 return _subProfileInfo;
