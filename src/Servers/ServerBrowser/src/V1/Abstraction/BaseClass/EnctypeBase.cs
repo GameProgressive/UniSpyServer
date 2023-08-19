@@ -15,18 +15,18 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         /// <summary>
         /// The encryption function 2
         /// </summary>
-        /// <param name="tbuff">the input tbuff</param>
-        /// <param name="tbuffIndex">tbuff start index</param>
-        /// <param name="datap">datap is a subset of tbuff</param>
-        /// <param name="datapIndex">datap start index</param>
+        /// <param name="sbox">the input tbuff</param>
+        /// <param name="sboxIndex">tbuff start index</param>
+        /// <param name="data">datap is a subset of tbuff</param>
+        /// <param name="startIndex">datap start index</param>
         /// <param name="len">unknown</param>
-        protected void Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len)
+        protected void ChangeSboxEncryptPlaintext(uint[] sbox, int sboxIndex, byte[] data, int startIndex, int len)
         {
             int pIndex, sIndex;
             // convert uint array to byte array
             pIndex = sIndex = 309 * sizeof(uint);
-            Encshare2(tbuff, 309, 16);
-            var tbuffBytes = ConvertUintToBytes(tbuff);
+            SboxElementExchange(sbox, 309, 16);
+            var sboxBytes = ConvertUintToBytes(sbox);
 
             while (len-- > 0)
             {
@@ -34,33 +34,33 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
                 {
                     pIndex = sIndex;
                     //convert int array to byte array
-                    Encshare2(tbuff, 0, 16);
-                    tbuffBytes = ConvertUintToBytes(tbuff);
+                    SboxElementExchange(sbox, 0, 16);
+                    sboxBytes = ConvertUintToBytes(sbox);
                 }
-                datap[datapIndex] ^= tbuffBytes[pIndex];
-                datapIndex++;
+                data[startIndex] ^= sboxBytes[pIndex];
+                startIndex++;
                 pIndex++;
             }
-            tbuff = ConvertBytesToUint(tbuffBytes);
+            sbox = ConvertBytesToUint(sboxBytes);
         }
         /// <summary>
         /// Encryption related function2
         /// </summary>
-        /// <param name="tbuff">the input data</param>
-        /// <param name="tbuffp">the another index of input data</param>
+        /// <param name="sbox">the input data</param>
+        /// <param name="startIndex">the another index of input data</param>
         /// <param name="len">unknown</param>
-        protected void Encshare2(uint[] tbuff, uint tbuffp, int len)
+        protected void SboxElementExchange(uint[] sbox, uint startIndex, int len)
         {
             uint t1, t2, t3, t4, t5;
             uint limit;
             uint p;
 
-            t2 = tbuff[304];
-            t1 = tbuff[305];
-            t3 = tbuff[306];
-            t5 = tbuff[307];
-            limit = (uint)(tbuffp + len);
-            while (tbuffp < limit)
+            t2 = sbox[304];
+            t1 = sbox[305];
+            t3 = sbox[306];
+            t5 = sbox[307];
+            limit = (uint)(startIndex + len);
+            while (startIndex < limit)
             {
                 p = t2 + 272;
                 while (t5 <= ushort.MaxValue)
@@ -69,41 +69,41 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
                     p++;
                     t3 += t1;
                     t1 += t3;
-                    tbuff[p - 17] = t1;
-                    tbuff[p - 1] = t3;
+                    sbox[p - 17] = t1;
+                    sbox[p - 1] = t3;
                     t4 = (t3 << 24) | (t3 >> 8);
-                    tbuff[p + 15] = t5;
+                    sbox[p + 15] = t5;
                     t5 <<= 1;
                     t2++;
-                    t1 ^= tbuff[t1 & 0xff];
-                    t4 ^= tbuff[t4 & 0xff];
+                    t1 ^= sbox[t1 & 0xff];
+                    t4 ^= sbox[t4 & 0xff];
                     t3 = (t4 << 24) | (t4 >> 8);
                     t4 = (t1 >> 24) | (t1 << 8);
-                    t4 ^= tbuff[t4 & 0xff];
-                    t3 ^= tbuff[t3 & 0xff];
+                    t4 ^= sbox[t4 & 0xff];
+                    t3 ^= sbox[t3 & 0xff];
                     t1 = (t4 >> 24) | (t4 << 8);
                 }
                 t3 ^= t1;
-                tbuff[tbuffp++] = t3;
+                sbox[startIndex++] = t3;
                 t2--;
-                t1 = tbuff[t2 + 256];
-                t5 = tbuff[t2 + 272];
+                t1 = sbox[t2 + 256];
+                t5 = sbox[t2 + 272];
                 t1 = ~t1;
                 t3 = (t1 << 24) | (t1 >> 8);
-                t3 ^= tbuff[t3 & 0xff];
-                t5 ^= tbuff[t5 & 0xff];
+                t3 ^= sbox[t3 & 0xff];
+                t5 ^= sbox[t5 & 0xff];
                 t1 = (t3 << 24) | (t3 >> 8);
                 t4 = (t5 >> 24) | (t5 << 8);
-                t1 ^= tbuff[t1 & 0xff];
-                t4 ^= tbuff[t4 & 0xff];
+                t1 ^= sbox[t1 & 0xff];
+                t4 ^= sbox[t4 & 0xff];
                 t3 = (t4 >> 24) | (t4 << 8);
-                t5 = (tbuff[t2 + 288] << 1) + 1;
+                t5 = (sbox[t2 + 288] << 1) + 1;
             }
 
-            tbuff[304] = t2;
-            tbuff[305] = t1;
-            tbuff[306] = t3;
-            tbuff[307] = t5;
+            sbox[304] = t2;
+            sbox[305] = t1;
+            sbox[306] = t3;
+            sbox[307] = t5;
         }
         protected void EncShare3(uint[] data, int n1 = 0, int n2 = 0)
         {
@@ -160,41 +160,41 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         /// <summary>
         /// Seems this function is used to initialize encryption parameter
         /// </summary>
-        /// <param name="src"></param>
-        /// <param name="size"></param>
-        /// <param name="dest"></param>
-        protected void EncShare4(byte[] src, int size, uint[] dest)
+        /// <param name="input">the sbox seed</param>
+        /// <param name="size">seed size</param>
+        /// <param name="output">sbox</param>
+        protected void ConstructSbox(byte[] input, int size, uint[] output)
         {
             uint tmp;
             int i;
             byte pos, x, y;
 
             for (i = 0; i < 256; i++)
-                dest[i] = 0;
+                output[i] = 0;
 
             for (y = 0; y < 4; y++)
             {
                 for (i = 0; i < 256; i++)
                 {
-                    dest[i] = (dest[i] << 8) + (uint)i;
+                    output[i] = (output[i] << 8) + (uint)i;
                 }
 
                 for (pos = y, x = 0; x < 2; x++)
                 {
                     for (i = 0; i < 256; i++)
                     {
-                        tmp = dest[i];
-                        pos += (byte)(tmp + src[i % size]);
-                        dest[i] = dest[pos];
-                        dest[pos] = tmp;
+                        tmp = output[i];
+                        pos += (byte)(tmp + input[i % size]);
+                        output[i] = output[pos];
+                        output[pos] = tmp;
                     }
                 }
             }
 
             for (i = 0; i < 256; i++)
-                dest[i] ^= (uint)i;
+                output[i] ^= (uint)i;
 
-            EncShare3(dest);
+            EncShare3(output);
         }
         protected static byte[] ConvertUintToBytes(uint[] input)
         {
@@ -221,13 +221,13 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             return onputInts;
         }
 
-        void IEnctypeShareTest.Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len) => Encshare1(tbuff, tbuffIndex, datap, datapIndex, len);
+        void IEnctypeShareTest.Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len) => ChangeSboxEncryptPlaintext(tbuff, tbuffIndex, datap, datapIndex, len);
 
-        void IEnctypeShareTest.Encshare2(uint[] tbuff, uint tbuffp, int len) => Encshare2(tbuff, tbuffp, len);
+        void IEnctypeShareTest.Encshare2(uint[] tbuff, uint tbuffp, int len) => SboxElementExchange(tbuff, tbuffp, len);
 
         void IEnctypeShareTest.EncShare3(uint[] data, int n1, int n2) => EncShare3(data, n1, n2);
 
-        void IEnctypeShareTest.EncShare4(byte[] src, int size, uint[] dest) => EncShare4(src, size, dest);
+        void IEnctypeShareTest.EncShare4(byte[] src, int size, uint[] dest) => ConstructSbox(src, size, dest);
         uint[] IEnctypeShareTest.ConvertBytesToUint(byte[] input) => ConvertBytesToUint(input);
         byte[] IEnctypeShareTest.ConvertUintToBytes(uint[] input) => ConvertUintToBytes(input);
 

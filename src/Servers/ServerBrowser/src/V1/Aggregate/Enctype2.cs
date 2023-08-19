@@ -24,7 +24,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
 
         private int Encoder(byte[] key, byte[] data, int size)
         {
-            uint[] dest = new uint[326];
+            uint[] sbox = new uint[326];
             int i;
             int headerSize = 8;
 
@@ -38,15 +38,15 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             byte datap = 1;
             // set 1-8 as 0
             Array.Clear(data, datap, 8);
-            Array.Clear(dest, 256, dest.Length - 256);
+            Array.Clear(sbox, 256, sbox.Length - 256);
 
 
-            var dataTemp = data.Skip(datap).ToArray();
-            EncShare4(dataTemp, data[0], dest);
-            Array.Copy(dataTemp, 0, data, datap, dataTemp.Length);
+            var sboxSeed = data.Skip(datap).ToArray();
+            ConstructSbox(sboxSeed, data[0], sbox);
+            Array.Copy(sboxSeed, 0, data, datap, sboxSeed.Length);
             Array.Clear(data, data[0] + size + 1, 6);
 
-            Encshare1(dest, 0, data, datap + data[0], size + 6);
+            ChangeSboxEncryptPlaintext(sbox, 0, data, datap + data[0], size + 6);
 
             for (i = 0; i < key.Length; i++)
                 data[datap + i] ^= key[i];

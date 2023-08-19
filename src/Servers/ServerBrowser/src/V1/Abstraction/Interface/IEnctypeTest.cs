@@ -1,14 +1,15 @@
 public interface IEnctype1Test : IEnctypeShareTest
 {
-    void Func1(byte[] data);
-    void Func2(byte[] data, int size, byte[] crypt);
-    void Func3(byte[] data, int len, byte[] buff);
-    void Func4(byte[] id);
-    int Func5(int cnt, byte[] id, ref int n1, ref int n2);
-    void Func6(byte[] data, int len);
-    int Func7(int len);
+    void EncryptByEnc0Key(byte[] data, int size, byte[] crypt);
+    void CreateEnc0Key(byte[] data, int len, byte[] buff);
+    void CreateEnc1Key(byte[] validateKey, byte[] enc1Key);
+    int Func5(int cnt, byte[] id, ref int n1, ref int n2, byte[] encKey);
+    void EncryptByEnc1Key(byte[] data, int len, byte[] enc1Key);
+    int SubstituteEnc1key(int len, byte[] enc1Key);
     void Func8(byte[] data, int len, byte[] enctype1_data);
-    byte[] EncKey { get; }
+    byte[] Enc0Key { get; }
+    byte[] Enc1Key { get; }
+    byte[] ValidateKey { get; }
 }
 
 public interface IEnctypeShareTest
