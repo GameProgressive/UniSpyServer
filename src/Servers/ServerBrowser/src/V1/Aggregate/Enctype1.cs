@@ -49,7 +49,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             if (tempLen >= 0)
             {
                 ConstructSbox(_sboxInitSeed, _sboxInitSeed.Length, _sbox);
-                ChangeSboxEncryptPlaintext(_sbox, 0, plaintext, 0, tempLen);
+                ChangeSboxEncryptPlaintext(_sbox, plaintext, 0, tempLen);
             }
             CreateEnc0Key(_enc0Seed, _enc0Key);
             EncryptByEnc0Key(plaintext, plaintext.Length, _enc0Key);

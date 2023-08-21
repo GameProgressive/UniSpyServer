@@ -14,7 +14,7 @@ public interface IEnctype1Test : IEnctypeShareTest
 
 public interface IEnctypeShareTest
 {
-    void Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len);
+    void Encshare1(uint[] tbuff, byte[] datap, int datapIndex, int len);
     void Encshare2(uint[] tbuff, uint tbuffp, int len);
     void EncShare3(uint[] data, int n1 = 0, int n2 = 0);
     void EncShare4(byte[] src, int size, uint[] dest);

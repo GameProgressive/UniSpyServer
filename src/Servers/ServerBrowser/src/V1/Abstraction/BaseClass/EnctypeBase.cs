@@ -20,7 +20,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         /// <param name="data">datap is a subset of tbuff</param>
         /// <param name="startIndex">datap start index</param>
         /// <param name="len">unknown</param>
-        protected void ChangeSboxEncryptPlaintext(uint[] sbox, int sboxIndex, byte[] data, int startIndex, int len)
+        protected void ChangeSboxEncryptPlaintext(uint[] sbox, byte[] data, int startIndex, int len)
         {
             int pIndex, sIndex;
             // convert uint array to byte array
@@ -221,7 +221,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             return onputInts;
         }
 
-        void IEnctypeShareTest.Encshare1(uint[] tbuff, int tbuffIndex, byte[] datap, int datapIndex, int len) => ChangeSboxEncryptPlaintext(tbuff, tbuffIndex, datap, datapIndex, len);
+        void IEnctypeShareTest.Encshare1(uint[] tbuff, byte[] datap, int datapIndex, int len) => ChangeSboxEncryptPlaintext(tbuff, datap, datapIndex, len);
 
         void IEnctypeShareTest.Encshare2(uint[] tbuff, uint tbuffp, int len) => SboxElementExchange(tbuff, tbuffp, len);
 
