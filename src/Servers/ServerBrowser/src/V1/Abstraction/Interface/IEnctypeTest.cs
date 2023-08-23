@@ -24,6 +24,6 @@ public interface IEnctypeShareTest
 
 public interface IEnctype2Test : IEnctypeShareTest
 {
-    int Encoder(byte[] key, byte[] data, int size);
+    void Encoder(byte[] key, byte[] data, int size);
 
 }
