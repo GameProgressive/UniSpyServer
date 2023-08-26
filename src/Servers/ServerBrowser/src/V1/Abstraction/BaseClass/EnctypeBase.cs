@@ -196,7 +196,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
 
             EncShare3(output);
         }
-        protected static byte[] ConvertUintToBytes(uint[] input)
+        public static byte[] ConvertUintToBytes(uint[] input)
         {
             var ontputBytes = new byte[input.Length * sizeof(uint)];
             for (var i = 0; i < input.Length; i++)
@@ -205,7 +205,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
             }
             return ontputBytes.ToArray();
         }
-        protected static uint[] ConvertBytesToUint(byte[] input)
+        public static uint[] ConvertBytesToUint(byte[] input)
         {
             if (input.Length % sizeof(uint) != 0)
             {
@@ -228,8 +228,5 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
         void IEnctypeShareTest.EncShare3(uint[] data, int n1, int n2) => EncShare3(data, n1, n2);
 
         void IEnctypeShareTest.EncShare4(byte[] src, int size, uint[] dest) => ConstructSbox(src, size, dest);
-        uint[] IEnctypeShareTest.ConvertBytesToUint(byte[] input) => ConvertBytesToUint(input);
-        byte[] IEnctypeShareTest.ConvertUintToBytes(uint[] input) => ConvertUintToBytes(input);
-
     }
 }

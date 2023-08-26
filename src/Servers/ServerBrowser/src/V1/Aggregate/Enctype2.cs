@@ -19,33 +19,33 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         public int Index;
         public uint X, Y, Z;
         public uint TreeNum;
-        public uint[] KeyData = new uint[16];
-        public byte[] EncryptKey { get; private set; } = new byte[13] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public uint[] EncryptKey { get; set; } = new uint[16];
+        public byte[] Seed { get; private set; } = new byte[13];
         public bool IsInitialized = false;
 
         public Enctype2Params(byte[] gameSecretKey)
         {
-            Array.Copy(gameSecretKey, EncryptKey, gameSecretKey.Length);
             InitCryptParam();
+            Array.Copy(gameSecretKey, Seed, gameSecretKey.Length);
         }
 
         private void InitCryptParam()
         {
-            int i, j, k, index;
+            uint i, j, k, index;
             uint tmp;
             for (j = 0; j < 4; j++)
             {
-                for (i = 0; i < Sbox.Length; i++)
+                for (i = 0; i < Enctype2Params.SBOX_SIZE; i++)
                 {
-                    Sbox[i] = (byte)(Sbox[i] * Enctype2Params.SBOX_SIZE + i);
+                    Sbox[i] = Sbox[i] * Enctype2Params.SBOX_SIZE + i;
                 }
                 index = j;
                 for (k = 0; k < Enctype2Params.NUM_KEYSETUP_SKIP; k++)
                 {
                     for (i = 0; i < Enctype2Params.SBOX_SIZE; i++)
                     {
-                        index += (byte)(EncryptKey[i % EncryptKey.Length] + Sbox[i]);
-                        index &= (Enctype2Params.SBOX_SIZE - 1);
+                        index += (Seed[i % Seed.Length] + Sbox[i]);
+                        index &= Enctype2Params.SBOX_SIZE - 1;
                         tmp = Sbox[i];
                         Sbox[i] = Sbox[index];
                         Sbox[index] = tmp;
@@ -59,13 +59,13 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             UpdateParams();
             IsInitialized = true;
         }
-        private static void Accumlator(ref uint x, ref uint y, ref uint z)
+        public static void Accumlator(ref uint x, ref uint y, ref uint z)
         {
             x += z;
             y += x;
             x += y;
         }
-        private static void ByteShift1(ref uint x, ref uint y, ref uint z, uint[] sbox)
+        public static void ByteShift1(ref uint x, ref uint y, ref uint z, uint[] sbox)
         {
             x = ~x;
             x = (((x) << 24) | ((x) >> 8));
@@ -78,7 +78,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             y = (((y) << 8) | ((y) >> 24));
             z += (z + 1);
         }
-        private static void ByteShift2(ref uint x, ref uint y, ref uint z, uint[] sbox)
+        public static void ByteShift2(ref uint x, ref uint y, ref uint z, uint[] sbox)
         {
             y = (((y) << 24) | ((y) >> 8));
             x ^= sbox[x & 0xFF];
@@ -92,62 +92,65 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         }
         private void UpdateParams(uint treeNum = 0, uint leafNum = 0)
         {
-            int i;
-            uint x, y, z;
-            i = 1 << (CRYPT_HEADER_LENGTH - 1);
-            x = treeNum;
-            y = 0;
-            z = 1;
+            int i = 1 << (CRYPT_HEADER_LENGTH - 1);
+            X = treeNum;
+            Y = 0;
+            Z = 1;
             Index = 0;
             while (i > 0)
             {
-                Accumlator(ref x, ref y, ref z);
+                Accumlator(ref X, ref Y, ref Z);
                 if ((i & leafNum) != 0)
                 {
-                    ByteShift1(ref x, ref y, ref z, Sbox);
+                    ByteShift1(ref X, ref Y, ref Z, Sbox);
                 }
                 else
                 {
-                    XStack[Index] = x;
-                    YStack[Index] = y;
-                    ZStack[Index] = z;
-                    Index++;
-
-                    ByteShift2(ref x, ref y, ref z, Sbox);
-                }
-                i >>= 1;
-            }
-            X = x;
-            Y = y;
-            Z = z;
-            TreeNum = treeNum;
-            // return X ^ Y;
-        }
-        public void RollingEncryptKey(uint startIndex = CRYPT_HEADER_LENGTH)
-        {
-            for (int i = 0; i < CRYPT_HEADER_LENGTH; i++)
-            {
-                while (Z < CRYPT_MIN_LEAF_NUM)
-                {
-                    Accumlator(ref X, ref Y, ref Z);
                     XStack[Index] = X;
                     YStack[Index] = Y;
                     ZStack[Index] = Z;
                     Index++;
-                    ByteShift1(ref X, ref Y, ref Z, Sbox);
+
+                    ByteShift2(ref X, ref Y, ref Z, Sbox);
                 }
-                startIndex++;
-                startIndex = X ^ Y;
-                Index--;
-                if (Index < 0)
-                {
-                    Index = 0;
-                }
-                X = XStack[Index];
-                Y = YStack[Index];
-                Z = ZStack[Index];
-                ByteShift2(ref X, ref Y, ref Z, Sbox);
+                i >>= 1;
             }
+            TreeNum = treeNum;
+        }
+        public void InitKeyData()
+        {
+            uint x, y, z;
+            int index;
+            x = X;
+            y = Y;
+            z = Z;
+            index = Index;
+            for (uint i = 0; i < EncryptKey.Length; i++)
+            {
+                while (z < Enctype2Params.CRYPT_MIN_LEAF_NUM)
+                {
+                    Enctype2Params.Accumlator(ref x, ref y, ref z);
+                    XStack[index] = x;
+                    YStack[index] = y;
+                    ZStack[index] = z;
+                    index++;
+                    Enctype2Params.ByteShift2(ref x, ref y, ref z, Sbox);
+                }
+                EncryptKey[i] = x ^ y;
+                index--;
+                if (index < 0)
+                {
+                    index = 0;
+                }
+                x = XStack[index];
+                y = YStack[index];
+                z = ZStack[index];
+                Enctype2Params.ByteShift1(ref x, ref y, ref z, Sbox);
+            }
+            X = x;
+            Y = y;
+            Z = z;
+            Index = index;
         }
     }
     public class Enctype2 : EnctypeBase, IEnctype2Test
@@ -155,33 +158,34 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         public const int HeaderSize = 8;
         public byte[] GameSecreteKey { get; private set; }
         private Enctype2Params _params;
+        private List<byte> _header = new List<byte>();
         public Enctype2(string gameSecretKey)
         {
             GameSecreteKey = UniSpyEncoding.GetBytes(gameSecretKey);
             _params = new Enctype2Params(GameSecreteKey);
+            _header.Add((byte)(_params.Seed.Length ^ 0xEC));
+            _header.AddRange(_params.Seed);
         }
 
         public override byte[] Encrypt(byte[] data)
         {
-            throw new System.NotImplementedException();
-            //convert the byte array to unit array and parse into following functions
-            // Encoder(GameSecreteKey,data,?);
-        }
-
-        private void Encoder(byte[] key, byte[] data, int size)
-        {
             int i;
             var plainText = data.ToArray();
+            var encKeyBytes = EnctypeBase.ConvertUintToBytes(_params.EncryptKey);
             for (i = 0; i < plainText.Length; i++)
             {
-                if (i == 0 || i >= (_params.EncryptKey.Length - 1))
+                var modIndex = i % (encKeyBytes.Length - 1);
+                if (modIndex == 0)
                 {
-
+                    _params.InitKeyData();
+                    encKeyBytes = EnctypeBase.ConvertUintToBytes(_params.EncryptKey);
                 }
-                plainText[i] ^= _params.EncryptKey[i % _params.EncryptKey.Length];
+                plainText[i] ^= encKeyBytes[modIndex];
             }
+            return plainText;
         }
 
-        void IEnctype2Test.Encoder(byte[] key, byte[] data, int size) => Encoder(key, data, size);
+
+        // void IEnctype2Test.Encoder(uint[] data) => InitKeyData(data);
     }
 }

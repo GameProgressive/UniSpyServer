@@ -18,12 +18,10 @@ public interface IEnctypeShareTest
     void Encshare2(uint[] tbuff, uint tbuffp, int len);
     void EncShare3(uint[] data, int n1 = 0, int n2 = 0);
     void EncShare4(byte[] src, int size, uint[] dest);
-    byte[] ConvertUintToBytes(uint[] input);
-    uint[] ConvertBytesToUint(byte[] input);
 }
 
 public interface IEnctype2Test : IEnctypeShareTest
 {
-    void Encoder(byte[] key, byte[] data, int size);
+    // void Encoder(uint[] data);
 
 }

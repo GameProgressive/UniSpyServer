@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
 
 namespace UniSpy.Server.ServerBrowser.V1.Aggregate
@@ -31,9 +32,9 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         /// we only use the 0 index value in master key so we hard code the index
         /// </summary>
         private byte[] _enc0seedIndex = Enumerable.Repeat<byte>(0x00, 16).ToArray();
-        public Enctype1(byte[] validateKey)
+        public Enctype1(string validateKey)
         {
-            ValidateKey = validateKey;
+            ValidateKey = Encoding.ASCII.GetBytes(validateKey);
         }
 
         public override byte[] Encrypt(byte[] data)
@@ -66,23 +67,21 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         private byte[] BuildOutput(byte[] validateKey, byte[] scrambleData, byte[] encryptedData, byte[] sboxInitSeed)
         {
             var output = new List<byte>();
-            // 4 bytes message length
-            // newOutput.AddRange(new byte[4] { 0x00, 0x00, 0x00, 0x00 });
             output.Add(42);
             output.Add(218);
             // 6 to 19 is unknown data, we do not use it
             output.AddRange(Enumerable.Repeat<byte>(0, 13).ToArray());
             output.AddRange(scrambleData);
-            // unused data
-            output.AddRange(new byte[4] { 0x00, 0x00, 0x00, 0x00 });
+            output.Add(0);
             // sboxInitSeed
             output.AddRange(sboxInitSeed);
             // unused data
             output.AddRange(Enumerable.Repeat<byte>(0x00, 18).ToArray());
 
             output.AddRange(encryptedData);
-            // insert encryption length to index 0
-            output.InsertRange(0, BitConverter.GetBytes(output.Count).Reverse());
+            // insert total message length to index 0
+            // 4 bytes message length
+            output.InsertRange(0, BitConverter.GetBytes(output.Count + 4).Reverse());
             return output.ToArray();
         }
         private byte[] Decoder(byte[] data, int dataLen)
