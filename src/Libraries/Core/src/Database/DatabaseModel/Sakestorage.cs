@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace UniSpy.Server.Core.Database.DatabaseModel
 {
@@ -12,8 +12,7 @@ namespace UniSpy.Server.Core.Database.DatabaseModel
         public string Tableid { get; set; } = null!;
         public int Profileid { get; set; }
         [Column(TypeName = "jsonb")]
-        public Dictionary<string, string> Userdata { get; set; } = null!;
-
+        public JsonDocument Userdata { get; set; } = null!;
         public virtual Profile Profile { get; set; } = null!;
     }
 }

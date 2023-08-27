@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 namespace UniSpy.Server.WebServer.Aggregate
 {
+
     public record RecordFieldObject : FieldObject
     {
         public string FieldValue { get; private set; }
@@ -11,6 +13,7 @@ namespace UniSpy.Server.WebServer.Aggregate
 
     public record FieldObject
     {
+
         public string FieldName { get; private set; }
         public string FiledType { get; private set; }
 

@@ -14,7 +14,7 @@ namespace UniSpy.Server.WebServer.Module.Sake.Contract.Request
         public string Offset { get; set; }
         public string Max { get; set; }
         public string Surrounding { get; set; }
-        public string OwnerIds { get; set; }
+        public int OwnerIds { get; set; }
         public string CacheFlag { get; set; }
 
         public List<FieldObject> Fields { get; set; }
@@ -37,7 +37,7 @@ namespace UniSpy.Server.WebServer.Module.Sake.Contract.Request
             var surrounding = _contentElement.Descendants().Where(p => p.Name.LocalName == "surrounding").First().Value;
             Surrounding = surrounding;
             var ownerids = _contentElement.Descendants().Where(p => p.Name.LocalName == "ownerids").First().Value;
-            OwnerIds = ownerids;
+            OwnerIds = int.Parse(ownerids);
             var cacheFlag = _contentElement.Descendants().Where(p => p.Name.LocalName == "cacheFlag").First().Value;
             CacheFlag = cacheFlag;
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();

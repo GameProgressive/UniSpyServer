@@ -122,7 +122,7 @@ namespace UniSpy.Server.WebServer.Test.Sake
             Assert.Equal("0", request.Offset);
             Assert.Equal("3", request.Max);
             Assert.Equal("0", request.Surrounding);
-            Assert.Equal("", request.OwnerIds);
+            Assert.Equal(2, request.OwnerIds);
             Assert.Equal("0", request.CacheFlag);
             Assert.Equal("score", request.Fields[0].FieldName);
             Assert.Equal("string", request.Fields[0].FiledType);

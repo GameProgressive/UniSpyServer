@@ -27,7 +27,7 @@ namespace UniSpy.Server.WebServer.Test.Sake
                                         <ns1:offset>0</ns1:offset>
                                         <ns1:max>1</ns1:max>
                                         <ns1:surrounding>0</ns1:surrounding>
-                                        <ns1:ownerids></ns1:ownerids>
+                                        <ns1:ownerids>2</ns1:ownerids>
                                         <ns1:cacheFlag>0</ns1:cacheFlag>
                                         <ns1:fields>
                                             <ns1:string>DATA</ns1:string>
