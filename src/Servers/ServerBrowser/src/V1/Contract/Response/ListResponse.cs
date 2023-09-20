@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using System.Linq;
 using System;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
 using UniSpy.Server.ServerBrowser.V1.Contract.Request;
@@ -31,25 +33,54 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Response
 
             SendingBuffer += @"\final\";
         }
-
+        /// <summary>
+        /// Build group infos
+        /// </summary>
         public void BuildGroupInfo()
         {
-
+            SendingBuffer = @"\group" + SendingBuffer;
+            foreach (var group in _result.PeerRoomsInfo)
+            {
+                foreach (var kv in group.KeyValues)
+                {
+                    SendingBuffer += @$"\{kv.Key}\{kv.Value}";
+                }
+            }
         }
+        /// <summary>
+        /// Build servers detailed info (contain all keyvalues of all server)
+        /// </summary>
         public void BuildServerAllInfo()
         {
-
+            SendingBuffer = @"\list2" + SendingBuffer;
+            foreach (var info in _result.ServersInfo)
+            {
+                foreach (var kv in info.KeyValues)
+                {
+                    SendingBuffer += @$"\{kv.Key}\{kv.Value}";
+                }
+            }
         }
+
+        /// <summary>
+        /// Build general info for servers (ip and port)
+        /// </summary>
         public void BuildServerGeneralInfo()
         {
+            SendingBuffer = @"\list2" + SendingBuffer;
+
             foreach (var info in _result.ServersInfo)
             {
                 if (_request.IsSendingCompressFormat)
                 {
-                    var buffer = BitConverter.ToString(info.HostIPAddress.GetAddressBytes()) + BitConverter.ToString(BitConverter.GetBytes((short)info.HostPort));
-                    SendingBuffer += @$"\ip\{buffer}";
+                    var portBytes = BitConverter.GetBytes((short)info.HostPort);
+                    var buffer = BitConverter.ToString(info.HostIPAddress.GetAddressBytes()) + BitConverter.ToString(portBytes);
+                    SendingBuffer += buffer;
                 }
-                SendingBuffer += @$"\ip\{info.HostIPEndPoint}";
+                else
+                {
+                    SendingBuffer += @$"\ip\{info.HostIPEndPoint}";
+                }
             }
         }
     }

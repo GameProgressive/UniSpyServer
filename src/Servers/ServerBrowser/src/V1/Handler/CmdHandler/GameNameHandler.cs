@@ -1,5 +1,6 @@
 using UniSpy.Server.Core.Extension;
 using UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass;
+using UniSpy.Server.ServerBrowser.V1.Aggregate;
 using UniSpy.Server.ServerBrowser.V1.Application;
 using UniSpy.Server.ServerBrowser.V1.Contract.Request;
 
@@ -26,16 +27,15 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-
             switch (_request.EncType)
             {
                 case EncryptionType.Plaintext:
                     break;
                 case EncryptionType.Type1:
-                    // _client.Crypto = xxx;
+                    _client.Crypto = new Enctype1(_request.ValidateKey);
                     break;
                 case EncryptionType.Type2:
-                    // _client.Crypto = xxx;
+                    _client.Crypto = new Enctype2(_client.Info.GameSecretKey);
                     break;
             }
         }
