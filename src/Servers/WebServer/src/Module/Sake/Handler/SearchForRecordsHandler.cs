@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using UniSpy.Server.WebServer.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Response;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;

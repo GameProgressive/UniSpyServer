@@ -10,7 +10,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Abstraction.BaseClass
     /// </summary>
     public abstract class EnctypeBase : ICryptography, IEnctypeShareTest
     {
-        public byte[] Decrypt(byte[] data) => throw new UniSpy.Exception("Enctype only encrypt message on server side.");
+        public byte[] Decrypt(byte[] data) => data;
         public abstract byte[] Encrypt(byte[] data);
         /// <summary>
         /// The encryption function 2

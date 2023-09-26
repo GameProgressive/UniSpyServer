@@ -158,13 +158,13 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
         public const int HeaderSize = 8;
         public byte[] GameSecreteKey { get; private set; }
         private Enctype2Params _params;
-        private List<byte> _header = new List<byte>();
+        private List<byte> _buffer = new List<byte>();
         public Enctype2(string gameSecretKey)
         {
             GameSecreteKey = UniSpyEncoding.GetBytes(gameSecretKey);
             _params = new Enctype2Params(GameSecreteKey);
-            _header.Add((byte)(_params.Seed.Length ^ 0xEC));
-            _header.AddRange(_params.Seed);
+            _buffer.Add((byte)(_params.Seed.Length ^ 0xEC));
+            _buffer.AddRange(_params.Seed);
         }
 
         public override byte[] Encrypt(byte[] data)
@@ -182,7 +182,8 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
                 }
                 plainText[i] ^= encKeyBytes[modIndex];
             }
-            return plainText;
+            _buffer.AddRange(plainText);
+            return _buffer.ToArray();
         }
 
 

@@ -1,6 +1,3 @@
-using System.Text;
-using System.Xml.Linq;
-using System.Text.Json;
 using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Result;
@@ -17,20 +14,17 @@ namespace UniSpy.Server.WebServer.Module.Sake.Contract.Response
 
         public override void Build()
         {
-
-            var newXele = Newtonsoft.Json.JsonConvert.DeserializeXNode(_result.UserData.RootElement.ToString()).Root;
+            _content.Add("SearchForRecordsResponse");
+            _content.Add("SearchForRecordsResult", "Success");
+            var temp = Newtonsoft.Json.JsonConvert.DeserializeXNode(_result.UserData.RootElement.ToString()).Root;
             // add namespace to root element
-            newXele.Name = SakeSoapEnvelope.SakeNamespace + newXele.Name.LocalName;
+            temp.Name = SakeSoapEnvelope.SakeNamespace + temp.Name.LocalName;
             // Add the namespace to each selected node
-            foreach (var childNode in newXele.DescendantsAndSelf())
+            foreach (var element in temp.DescendantsAndSelf())
             {
-                foreach (var element in childNode.Elements())
-                {
-                    element.Name = SakeSoapEnvelope.SakeNamespace + element.Name.LocalName;
-                }
+                element.Name = SakeSoapEnvelope.SakeNamespace + element.Name.LocalName;
             }
-            _content.Add("values", newXele);
-
+            _content.Add("values", temp);
             base.Build();
         }
     }

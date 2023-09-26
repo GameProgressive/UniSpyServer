@@ -11,7 +11,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Handler.CmdHandler
         private new ListResult _result { get => (ListResult)base._result; set => base._result = value; }
         private new ListResponse _response { get => (ListResponse)base._response; set => base._response = value; }
         private new ListRequest _request => (ListRequest)base._request;
-        public ListHandler(Client client, RequestBase request) : base(client, request)
+        public ListHandler(Client client, ListRequest request) : base(client, request)
         {
             _result = new ListResult();
         }

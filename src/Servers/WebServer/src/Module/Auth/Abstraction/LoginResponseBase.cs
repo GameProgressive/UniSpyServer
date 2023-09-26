@@ -31,8 +31,8 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
             _content.Add("profilenick", _result.ProfileNick);
             _content.Add("uniquenick", _result.UniqueNick);
             _content.Add("cdkeyhash", _result.CdKeyHash);
-            _content.Add("peerkeymodulus", ClientInfo.PeerKeyPublicModulus);
-            _content.Add("peerkeyexponent", ClientInfo.PeerKeyPrivate);
+            _content.Add("peerkeymodulus", ClientInfo.PeerKeyModulus);
+            _content.Add("peerkeyexponent", ClientInfo.PeerKeyExponent);
             _content.Add("serverdata", ClientInfo.ServerData);
 
             using (var md5 = MD5.Create())
@@ -60,7 +60,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
                 _content.Add("signature", ClientInfo.SignaturePreFix + hashString);
             }
             _content.BackToParentElement();
-            _content.Add("peerkeyprivate", ClientInfo.PeerKeyPrivate);
+            _content.Add("peerkeyprivate", ClientInfo.PeerKeyExponent);
         }
     }
 }

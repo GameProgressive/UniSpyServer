@@ -84,58 +84,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Aggregate
             output.InsertRange(0, BitConverter.GetBytes(output.Count + 4).Reverse());
             return output.ToArray();
         }
-        private byte[] Decoder(byte[] data, int dataLen)
-        {
-            // var tbuff = new byte[326];
-            // var tbuff2 = new byte[258];
 
-            // var len = BitConverter.ToInt32(data.Take(4).ToArray());
-            // if (len <= 0)
-            // {
-            //     throw new ServerBrowser.Exception("input data length must bigger than 0");
-            // }
-            // if (len > dataLen)
-            // {
-            //     throw new ServerBrowser.Exception("input data length can not bigger than dataLen");
-            // }
-            // data[4] = (byte)((data[4] ^ 62) - 20);
-            // data[5] = (byte)((data[5] ^ 205) - 5);
-            // var tempData1 = data.Skip(19).ToArray();
-            // Func8(tempData1, 16, Enctype1Table);
-            // data = data.Take(19).Concat(tempData1).ToArray();
-            // len -= data[4] + data[5] + 40;
-            // var dataP = 0 + data[5] + 40;
-            // var tempLen = (len >> 2) - 5;
-            // if (tempLen >= 0)
-            // {
-            //     ChangeEncKeyByValidateKey(Key,enckey);
-            //     var tempData2 = data.Skip(dataP).ToArray();
-            //     Func6(tempData2, tempLen);
-            // }
-
-
-            // tempLen = (len >> 1) - 17;
-            // if (tempLen >= 0)
-            // {
-            //     var tempData3 = data.Skip(36).ToArray();
-            //     uint[] tbuffInt = Array.ConvertAll(tbuff, Convert.ToUInt32);
-            //     ConstructSbox(tempData3, 4, tbuffInt);
-            //     data = data.Skip(36).Concat(tempData3).ToArray();
-            //     var tempData4 = data.Skip(dataP).ToArray();
-            //     ChangeSboxEncryptPlaintext(tbuffInt, 0, data, dataP, tempLen);
-            //     data = data.Skip(dataP).Concat(tempData4).ToArray();
-            //     tbuff = Array.ConvertAll(tbuffInt, Convert.ToByte);
-            // }
-
-            // var tempData5 = data.Skip(19).ToArray();
-            // CreateEncryptionKey(tempData5, tbuff2);
-            // data = data.Skip(19).Concat(tempData5).ToArray();
-            // var tempData6 = data.Skip(dataP).ToArray();
-            // EncryptByEncKey(tempData6, len, tbuff2);
-            // data = data.Skip(dataP).Concat(tempData6).ToArray();
-            // return data;
-            throw new System.NotImplementedException();
-        }
         void EncryptByEnc0Key(byte[] data, int size, byte[] enc0Key)
         {
             byte n1, n2, t;

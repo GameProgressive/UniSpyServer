@@ -6,9 +6,9 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
     {
         // do not encrypt
         Plaintext,
-        // use encryption method 1
+        // use enctype 1
         Type1,
-        // use encryption method 2
+        // use enctype 2
         Type2
     }
     /// <summary>
