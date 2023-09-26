@@ -19,7 +19,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
     {
         public EncryptionType EncType { get; private set; }
         public string Version { get; private set; }
-        public string EncKey { get; private set; }
+        public string ValidateKey { get; private set; }
         public GameNameRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -46,7 +46,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Request
             // star trek armada 2 do not use encryption
             if (KeyValues.ContainsKey("secure"))
             {
-                EncKey = KeyValues["secure"];
+                ValidateKey = KeyValues["secure"];
             }
         }
     }

@@ -1,10 +1,8 @@
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml;
 using UniSpy.Server.WebServer.Module.Sake.Handler;
 using UniSpy.Server.WebServer.Module.Sake.Contract.Request;
 using Xunit;
-using ChoETL;
 
 namespace UniSpy.Server.WebServer.Test.Sake
 {

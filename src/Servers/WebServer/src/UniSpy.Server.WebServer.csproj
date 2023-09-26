@@ -14,9 +14,6 @@
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="ChoETL.JSON" Version="1.2.1.62" />
-        <!-- <PackageReference Include="ChoETL.NETStandard" Version="1.2.1.62" /> -->
-        <PackageReference Include="ChoETL" Version="1.2.1.62" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
