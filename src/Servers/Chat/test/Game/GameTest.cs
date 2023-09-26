@@ -297,5 +297,23 @@ namespace UniSpy.Server.Chat.Test
                 (client as ITestClient).TestReceived(UniSpyEncoding.GetBytes(req));
             }
         }
+
+        [Fact]
+        public void Crysis2_20230926()
+        {
+            var client = MockObject.CreateClient();
+
+            var requests = new List<string>{
+                "CRYPT des 1 capricorn\r\n",
+                "LOGIN 95 Sporesirius baec04ae6862e941b948c8a1a361c096\r\n",
+                "USRIP\r\n",
+                "USER XpaGflff1X|39 127.0.0.1 peerchat.unispy.dev :e51130924b08de265d9ae69113103f78\r\nNICK *\r\n",
+                "QUIT :Later!\r\n"
+            };
+            foreach (var req in requests)
+            {
+                (client as ITestClient).TestReceived(UniSpyEncoding.GetBytes(req));
+            }
+        }
     }
 }
