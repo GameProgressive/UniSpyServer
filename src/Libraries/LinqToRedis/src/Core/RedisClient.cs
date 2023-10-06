@@ -30,14 +30,7 @@ namespace UniSpy.LinqToRedis
         /// The default keyvalue object, used to provide default information
         /// </summary>
         public readonly TValue DefaultKVObject = ((TValue)System.Activator.CreateInstance(typeof(TValue)));
-        public RedisClient(string connectionString)
-        {
-            CheckValidation();
-            Multiplexer = ConnectionMultiplexer.Connect(connectionString);
-            Db = Multiplexer.GetDatabase((int)DefaultKVObject.Db);
-            _provider = new RedisQueryProvider<TValue>(this);
-            Context = new QueryableObject<TValue>(_provider);
-        }
+        public RedisClient(string connectionString) : this(ConnectionMultiplexer.Connect(connectionString)) { }
         /// <summary>
         /// Use existing multiplexer for performance
         /// </summary>
@@ -51,6 +44,11 @@ namespace UniSpy.LinqToRedis
         }
         private void CheckValidation()
         {
+            // check if Db is set
+            if (DefaultKVObject.Db is null)
+            {
+                throw new ArgumentNullException($"The RedisKeyValueObject:{this.GetType().Name} must set database number in constructor");
+            }
             var properties = typeof(TValue).GetProperties().Where(p => p.GetCustomAttributes(typeof(RedisKeyAttribute), true).Select(a => a is RedisKeyAttribute).Any()).ToList();
             if (properties.Count() == 0)
             {
