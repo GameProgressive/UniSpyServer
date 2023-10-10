@@ -18,5 +18,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\Libraries\Core\src\UniSpy.Server.Core.csproj" />
+        <ProjectReference Include="..\..\Chat\src\UniSpy.Server.Chat.csproj" />
     </ItemGroup>
 </Project>

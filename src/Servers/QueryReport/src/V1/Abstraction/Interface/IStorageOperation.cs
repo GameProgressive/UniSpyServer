@@ -6,10 +6,10 @@ namespace UniSpy.Server.QueryReport.V1.Abstraction.Interface
 {
     public interface IStorageOperation
     {
-        List<GameServerInfo> GetServersInfo(string gameName);
+        List<GameServerCache> GetServersInfo(string gameName);
         string GetGameSecretKey(string gameName);
-        GameServerInfo GetServerInfo(IPEndPoint endPoint);
-        void UpdateServerInfo(GameServerInfo info);
+        GameServerCache GetServerInfo(IPEndPoint endPoint);
+        void UpdateServerInfo(GameServerCache info);
         void RemoveServerInfo(IPEndPoint endPoint);
     }
 }

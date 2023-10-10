@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Application;
@@ -6,6 +7,7 @@ using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.General;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Result.General;
+using UniSpy.Server.Chat.Aggregate.Redis;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -14,6 +16,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
     {
         private new NickRequest _request => (NickRequest)base._request;
         private new NickResult _result { get => (NickResult)base._result; set => base._result = value; }
+        private string _tempNickName;
         public NickHandler(IShareClient client, NickRequest request) : base(client, request)
         {
             _result = new NickResult();
@@ -39,25 +42,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             {
                 postFix = _client.Info.GameName.Substring(0, 2);
             }
-            _client.Info.NickName = $"{_client.Info.UniqueNickName}-{postFix}";
-        }
-        private void SuggestNewNickName()
-        {
-            int number = 0;
-            string validNickName;
-            while (true)
-            {
-                string newNickName = _request.NickName + number;
-                if (ClientManager.ClientPool.Values.Count(c => ((ClientInfo)(c.Info)).NickName == _request.NickName) == 0)
-                {
-                    validNickName = newNickName;
-                    break;
-                }
-            }
-            throw new NickNameInUseException(
-            $"The nick name: {_request.NickName} is already in use",
-            _request.NickName,
-            validNickName);
+            _tempNickName = $"{_client.Info.UniqueNickName}-{postFix}";
         }
         protected override void DataOperation()
         {
@@ -66,14 +51,32 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 //client using its <uniquenick>-<gamename> as his nickname in chat
                 SetUniqueNickAsNickName();
             }
-            else if (ClientManager.ClientPool.Values.Count(c => ((ClientInfo)(c.Info)).NickName == _request.NickName) == 0)
-            {
-                _client.Info.NickName = _request.NickName;
-            }
             else
             {
-                SuggestNewNickName();
+                _tempNickName = _request.NickName;
             }
+            var key = new ClientInfoCache { NickName = _tempNickName };
+            using (var locker = new LinqToRedis.RedisLock(TimeSpan.FromSeconds(10), Application.StorageOperation.Persistance.ClientCacheClient.Db, key))
+            {
+                if (locker.LockTake())
+                {
+                    if (!Application.StorageOperation.Persistance.IsClientExist(key))
+                    {
+                        _client.Info.NickName = _request.NickName;
+                        Application.StorageOperation.Persistance.UpdateClient((Client)_client);
+                    }
+                    else
+                    {
+                        throw new NickNameInUseException();
+                    }
+                }
+                else
+                {
+                    throw new NickNameInUseException();
+                }
+
+            }
+
             _result.NickName = _client.Info.NickName;
         }
         protected override void ResponseConstruct()

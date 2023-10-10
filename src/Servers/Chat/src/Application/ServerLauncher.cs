@@ -8,5 +8,11 @@ namespace UniSpy.Server.Chat.Application
     {
         public static IServer Server => ServerInstances[0];
         protected override List<IServer> LaunchNetworkService() => new List<IServer> { new Server() };
+        public override void Start()
+        {
+            base.Start();
+            // initialize peergrouplist
+            _ = Chat.Application.StorageOperation.Persistance.PeerGroupList;
+        }
     }
 }

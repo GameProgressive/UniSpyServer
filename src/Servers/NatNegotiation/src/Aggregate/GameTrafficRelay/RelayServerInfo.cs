@@ -8,7 +8,7 @@ using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
 {
-    public record RelayServerInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
+    public record RelayServerCache : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
@@ -17,13 +17,12 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
         public IPEndPoint PublicIPEndPoint { get; init; }
         public int ClientCount { get; set; }
 
-        public RelayServerInfo() : base(RedisDbNumber.GameTrafficRelay, TimeSpan.FromMinutes(1))
+        public RelayServerCache() : base(RedisDbNumber.GameTrafficRelay, TimeSpan.FromMinutes(1))
         {
         }
-    }
-
-    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<RelayServerInfo>
-    {
-        public RedisClient() { }
+        public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<RelayServerCache>
+        {
+            public RedisClient() { }
+        }
     }
 }

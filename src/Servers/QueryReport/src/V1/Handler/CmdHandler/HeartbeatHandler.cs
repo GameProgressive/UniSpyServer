@@ -19,7 +19,7 @@ namespace UniSpy.Server.QueryReport.V1.Handler.CmdHandler
             var gameServerEnd = new IPEndPoint(_client.Connection.RemoteIPEndPoint.Address, _request.QueryReportPort);
             _client.Info.GameSecretKey = QueryReport.V1.Application.StorageOperation.Persistance.GetGameSecretKey(_request.GameName);
             // _result.Challenge = Challenge;
-            var info = new GameServerInfo()
+            var info = new GameServerCache()
             {
                 ServerID = _client.Server.Id,
                 HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,

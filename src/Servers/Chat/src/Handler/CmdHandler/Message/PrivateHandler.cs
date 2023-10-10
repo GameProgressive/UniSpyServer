@@ -33,7 +33,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
             {
                 return;
             }
-            // if (_user.Info.IsQuietMode)
+            // if (_user.Client.Info.IsQuietMode)
             // {
             //     return;
             // }

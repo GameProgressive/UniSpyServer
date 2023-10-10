@@ -4,7 +4,7 @@ using UniSpy.Server.QueryReport.V2.Aggregate.Redis.GameServer;
 
 namespace UniSpy.Server.QueryReport.V2.Aggregate.Redis
 {
-    public class HeartbeatChannel : RedisChannelBase<GameServerInfo>
+    public class HeartbeatChannel : RedisChannelBase<GameServerCache>
     {
         public HeartbeatChannel() : base(RedisChannelName.HeartbeatChannel)
         {

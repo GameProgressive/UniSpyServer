@@ -4,7 +4,6 @@ using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
-using UniSpy.Server.Core.Abstraction.BaseClass;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 {
@@ -27,7 +26,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         {
             foreach (var channel in _client.Info.JoinedChannels.Values)
             {
-                ChannelUser user = channel.GetUser(_client);
+                var user = channel.GetUser(_client);
                 if (user is null)
                 {
                     continue;
@@ -41,11 +40,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                 new PartHandler(_client, partRequest).Handle();
                 // client is loged out
                 _client.Info.IsLoggedIn = false;
-            }
-            // we remove client from ClientManager
-            if (_client.Info.IsRemoteClient)
-            {
-                ClientManagerBase.RemoveClient(_client.Connection.RemoteIPEndPoint);
             }
         }
     }

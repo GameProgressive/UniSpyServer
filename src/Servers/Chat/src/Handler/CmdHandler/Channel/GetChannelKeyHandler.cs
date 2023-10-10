@@ -23,7 +23,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _result.ChannelUserIRCPrefix = _user.Info.IRCPrefix;
+            _result.ChannelUserIRCPrefix = _user.Client.Info.IRCPrefix;
             _result.Values = _channel.KeyValues.GetValueString(_request.Keys);
             _result.ChannelName = _channel.Name;
         }

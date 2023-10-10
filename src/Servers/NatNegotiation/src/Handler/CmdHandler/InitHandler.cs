@@ -19,14 +19,14 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         /// <summary>
         /// Local NatInitInfo storage, after all init packets are received we send all into redis database
         /// </summary>
-        private NatAddressInfo _addressInfo;
+        private InitPacketCache _addressInfo;
         public InitHandler(Client client, InitRequest request) : base(client, request)
         {
             _result = new InitResult();
         }
         protected override void DataOperation()
         {
-            _addressInfo = new NatAddressInfo()
+            _addressInfo = new InitPacketCache()
             {
                 ServerID = _client.Server.Id,
                 Cookie = (uint)_request.Cookie,

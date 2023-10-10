@@ -13,6 +13,8 @@ namespace UniSpy.Server.Chat.Aggregate
 {
     public class RemoteClient : IShareClient
     {
+        [JsonProperty]
+        public bool IsRemoteClient => !ClientManager.ClientPool.ContainsKey(Connection.RemoteIPEndPoint);
         public bool IsLogRaw { get; set; }
         [JsonConverter(typeof(ConcreteTypeConverter<RemoteTcpConnection>))]
         public IConnection Connection { get; set; }
@@ -32,8 +34,7 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             Connection = new RemoteTcpConnection(client.Connection, new RemoteTcpConnectionManager());
             Server = new RemoteServer(client.Server);
-            Info = client.Info.DeepCopy();
-            ((ClientInfo)Info).IsRemoteClient = true;
+            Info = client.Info;
             Crypto = client.Crypto;
         }
         public void Send(IResponse response) { }

@@ -6,7 +6,6 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Test.Channel;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Aggregate;
-using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Test.General;
@@ -63,8 +62,8 @@ namespace UniSpy.Server.Chat.Test
             var message = new RemoteMessage(request, remoteClient);
             var msgStr = JsonConvert.SerializeObject(message);
             var msgObj = JsonConvert.DeserializeObject<RemoteMessage>(msgStr);
-            var chan = new GeneralMessageChannel();
-            chan.ReceivedMessage(msgObj);
+            // var chan = new GeneralMessageChannel();
+            // chan.ReceivedMessage(msgObj);
         }
         [Fact]
         public void Crypt()
@@ -79,8 +78,8 @@ namespace UniSpy.Server.Chat.Test
             var request = new CryptRequest(GeneralRequests.Crypt);
             request.Parse();
             var message = new RemoteMessage(request, remoteClient);
-            var chan = new GeneralMessageChannel();
-            chan.ReceivedMessage(message);
+            // var chan = new GeneralMessageChannel();
+            // chan.ReceivedMessage(message);
         }
         [Fact]
         public void GeneralTest()
@@ -160,11 +159,11 @@ namespace UniSpy.Server.Chat.Test
             var client = MockObject.CreateClient() as Client;
             client.Info.IsLoggedIn = true;
             client.Info.NickName = "xiaojiuwo";
-            var channel = ChannelManager.CreateChannel("xiaojiuwo", creator: client);
+            var channel = Aggregate.Channel.CreateLocalChannel("xiaojiuwo", creator: client);
             var user = channel.GetUser(client);
 
-            var channelStr = JsonConvert.SerializeObject(channel.GetChannelCache());
-            var channelObj = JsonConvert.DeserializeObject<QueryReport.Aggregate.Redis.Channel.ChannelInfo>(channelStr);
+            var channelStr = JsonConvert.SerializeObject(channel);
+            var channelObj = JsonConvert.DeserializeObject<Chat.Aggregate.Redis.ChannelCache>(channelStr);
         }
     }
 }

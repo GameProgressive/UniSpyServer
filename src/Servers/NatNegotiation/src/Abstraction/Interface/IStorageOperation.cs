@@ -8,12 +8,12 @@ namespace UniSpy.Server.NatNegotiation.Abstraction.Interface
 {
     public interface IStorageOperation
     {
-        List<RelayServerInfo> GetAvaliableRelayServers();
-        void UpdateInitInfo(NatAddressInfo info);
+        List<RelayServerCache> GetAvaliableRelayServers();
+        void UpdateInitInfo(InitPacketCache info);
         int CountInitInfo(uint cookie, byte version);
-        List<NatAddressInfo> GetInitInfos(Guid serverId, uint cookie);
-        void RemoveInitInfo(NatAddressInfo info);
-        void UpdateNatFailInfo(NatFailInfo info);
-        int GetNatFailInfo(NatFailInfo info);
+        List<InitPacketCache> GetInitInfos(Guid serverId, uint cookie);
+        void RemoveInitInfo(InitPacketCache info);
+        void UpdateNatFailInfo(NatFailInfoCache info);
+        int GetNatFailInfo(NatFailInfoCache info);
     }
 }

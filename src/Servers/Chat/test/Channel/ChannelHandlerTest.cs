@@ -1,3 +1,4 @@
+using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Application;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
@@ -5,7 +6,6 @@ using UniSpy.Server.Chat.Contract.Request.Message;
 using UniSpy.Server.Chat.Handler.CmdHandler.Channel;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Chat.Handler.CmdHandler.Message;
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 using Xunit;
 
 namespace UniSpy.Server.Chat.Test.Channel
@@ -15,9 +15,9 @@ namespace UniSpy.Server.Chat.Test.Channel
         [Fact]
         public void RoomTypeTest()
         {
-            Assert.True(PeerRoom.GetRoomType("#GPG!622") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Group);
-            Assert.True(PeerRoom.GetRoomType("#GSP!worms3!Ml4lz344lM") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Staging);
-            Assert.True(PeerRoom.GetRoomType("#islanbul") == QueryReport.Aggregate.Redis.Channel.PeerRoomType.Normal);
+            Assert.True(PeerRoom.GetRoomType("#GPG!622") == Chat.Aggregate.PeerRoomType.Group);
+            Assert.True(PeerRoom.GetRoomType("#GSP!worms3!Ml4lz344lM") == Chat.Aggregate.PeerRoomType.Staging);
+            Assert.True(PeerRoom.GetRoomType("#islanbul") == Chat.Aggregate.PeerRoomType.Normal);
         }
         [Fact]
         public void JoinHandleTest()

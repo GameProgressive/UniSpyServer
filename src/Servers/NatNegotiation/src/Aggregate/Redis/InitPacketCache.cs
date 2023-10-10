@@ -11,7 +11,7 @@ using UniSpy.Server.Core.Extension.Redis;
 
 namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
 {
-    public record NatAddressInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
+    public record InitPacketCache : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; init; }
@@ -35,13 +35,19 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
         [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint PrivateIPEndPoint { get; init; }
 
-        public NatAddressInfo() : base(RedisDbNumber.NatAddressInfo, TimeSpan.FromMinutes(3))
+        public InitPacketCache() : base(RedisDbNumber.NatAddressInfo, TimeSpan.FromMinutes(3))
         {
+        }
+        public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<InitPacketCache>
+        {
+            public RedisClient()
+            {
+            }
         }
     }
     public record NatInitInfo
     {
-        public Dictionary<NatPortType, NatAddressInfo> AddressInfos { get; private set; }
+        public Dictionary<NatPortType, InitPacketCache> AddressInfos { get; private set; }
         public uint Cookie => (uint)AddressInfos.Values.Last().Cookie;
         public byte Version => (byte)AddressInfos.Values.Last().Version;
         public NatClientIndex ClientIndex => (NatClientIndex)AddressInfos.Values.Last().ClientIndex;
@@ -75,7 +81,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                 }
             }
         }
-        private void ProcessVersion2(List<NatAddressInfo> infos)
+        private void ProcessVersion2(List<InitPacketCache> infos)
         {
             if (!(AddressInfos.ContainsKey(NatPortType.NN1)
                     && AddressInfos.ContainsKey(NatPortType.NN2)))
@@ -110,7 +116,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                 }
             }
         }
-        private void ProcessVersion3(List<NatAddressInfo> infos)
+        private void ProcessVersion3(List<InitPacketCache> infos)
         {
             // todo 
             // some game will not send GP packet to natneg server, currently do not know the reason of it, need more game for analysis.
@@ -159,7 +165,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
             }
         }
 
-        public NatInitInfo(List<NatAddressInfo> infos)
+        public NatInitInfo(List<InitPacketCache> infos)
         {
             AddressInfos = infos.Select((i) => new { i }).ToDictionary(a => ((NatPortType)a.i.PortType), a => a.i);
             switch (this.Version)
@@ -173,13 +179,6 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis
                     ProcessVersion3(infos);
                     break;
             }
-        }
-    }
-
-    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<NatAddressInfo>
-    {
-        public RedisClient()
-        {
         }
     }
 }

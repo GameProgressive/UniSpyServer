@@ -7,7 +7,7 @@ namespace UniSpy.Server.ServerBrowser.V1.Contract.Result
 {
     public sealed class ListResult : ResultBase
     {
-        public List<GameServerInfo> ServersInfo { get; set; }
+        public List<GameServerCache> ServersInfo { get; set; }
         public List<PeerRoomInfo> PeerRoomsInfo { get; set; }
         public ListResult()
         {

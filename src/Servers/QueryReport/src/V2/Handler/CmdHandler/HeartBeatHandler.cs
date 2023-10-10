@@ -14,7 +14,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private new HeartBeatResult _result { get => (HeartBeatResult)base._result; set => base._result = value; }
-        private GameServerInfo _gameServerInfo;
+        private GameServerCache _gameServerInfo;
         public HeartBeatHandler(Client client, HeartBeatRequest request) : base(client, request)
         {
             _result = new HeartBeatResult();
@@ -56,7 +56,7 @@ namespace UniSpy.Server.QueryReport.V2.Handler.CmdHandler
         private void CheckSpamGameServer()
         {
             // Ensures that an IP address creates a server for each game, we check if redis has multiple game servers
-            _gameServerInfo = new GameServerInfo()
+            _gameServerInfo = new GameServerCache()
             {
                 ServerID = _client.Server.Id,
                 HostIPAddress = _client.Connection.RemoteIPEndPoint.Address,

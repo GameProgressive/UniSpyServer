@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             if (_request.RawRequest is null)
             {
-                _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
+                _channel = _client.Info.GetLocalJoinedChannel(_request.ChannelName);
                 if (_channel is null)
                 {
                     throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
@@ -37,7 +37,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result = new NamesResult();
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.ChannelName = _channel.Name;
-            _result.RequesterNickName = _user.Info.NickName;
+            _result.RequesterNickName = _user.Client.Info.NickName;
         }
         protected override void ResponseConstruct()
         {

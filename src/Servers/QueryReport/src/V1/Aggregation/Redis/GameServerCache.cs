@@ -9,7 +9,7 @@ using UniSpy.Server.Core.Misc;
 
 namespace UniSpy.Server.QueryReport.V1.Aggregation.Redis
 {
-    public record GameServerInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
+    public record GameServerCache : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         public Guid? ServerID { get; set; }
@@ -27,14 +27,14 @@ namespace UniSpy.Server.QueryReport.V1.Aggregation.Redis
         /// The key values that contians all the information about this game server
         /// </summary>
         public Dictionary<string, string> KeyValues { get; set; }
-        public GameServerInfo() : base(RedisDbNumber.GameServerV1, TimeSpan.FromSeconds(30))
+        public GameServerCache() : base(RedisDbNumber.GameServerV1, TimeSpan.FromSeconds(30))
         {
         }
-    }
-    public class RedisClient : RedisClient<GameServerInfo>
-    {
-        public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection)
+        public class RedisClient : RedisClient<GameServerCache>
         {
+            public RedisClient() : base(ConfigManager.Config.Redis.RedisConnection)
+            {
+            }
         }
     }
 }

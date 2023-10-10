@@ -26,7 +26,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
             Connection = connection;
             Server = server;
             EventBinding();
-            // ClientManagerBase<IPEndPoint, IClient>.AddClient(this);
         }
         protected virtual void EventBinding()
         {
@@ -39,7 +38,9 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive += OnReceived;
-                    _timer = new EasyTimer(TimeSpan.FromHours(1), TimeSpan.FromMinutes(1), CheckExpiredClient);
+                    _timer = new EasyTimer(TimeSpan.FromHours(1), TimeSpan.FromMinutes(1));
+                    _timer.Elapsed += (s, e) => CheckExpiredClient();
+                    _timer.Start();
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive += OnReceived;

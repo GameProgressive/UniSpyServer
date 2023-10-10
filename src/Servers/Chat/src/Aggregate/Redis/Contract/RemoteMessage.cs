@@ -15,7 +15,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis.Contract
         /// <summary>
         /// Constructor for json deserialization
         /// </summary>
-        public RemoteMessage(){}
+        public RemoteMessage() { }
         public RemoteMessage(RequestBase request, RemoteClient client)
         {
             RawRequest = UniSpyEncoding.GetBytes(request.RawRequest);

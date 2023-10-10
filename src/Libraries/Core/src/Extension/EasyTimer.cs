@@ -13,7 +13,15 @@ namespace UniSpy.Server.Core.Extension
         /// </summary>
         private Timer _timer;
         public bool IsExpired => IdleTime > ExpireTime;
-        public EasyTimer(TimeSpan expireTimeSpan, TimeSpan intervalTimeSpan, Action invokingAction)
+        public event ElapsedEventHandler Elapsed
+        {
+            add { _timer.Elapsed += value; }
+            remove { _timer.Elapsed -= value; }
+        }
+        /// <summary>
+        /// Easy timer constructor, remember to call Start()
+        /// </summary>
+        public EasyTimer(TimeSpan expireTimeSpan, TimeSpan intervalTimeSpan)
         {
             _timer = new Timer
             {
@@ -22,8 +30,13 @@ namespace UniSpy.Server.Core.Extension
                 AutoReset = true
             };
             ExpireTime = expireTimeSpan;
+        }
+        /// <summary>
+        /// Start the timer
+        /// </summary>
+        public void Start()
+        {
             RefreshLastActiveTime();
-            _timer.Elapsed += (s, e) => invokingAction();
             _timer.Start();
         }
         public void RefreshLastActiveTime() => LastActiveTime = DateTime.Now;

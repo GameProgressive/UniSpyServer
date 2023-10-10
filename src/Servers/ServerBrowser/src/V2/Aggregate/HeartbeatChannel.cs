@@ -10,7 +10,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
         /// we do not run subscribe() in QR because QR only need to push
         /// We run subscribe() in SB, because SB need to receive message
         /// </summary>
-        public override void ReceivedMessage(GameServerInfo message)
+        public override void ReceivedMessage(GameServerCache message)
         {
             LogWriter.LogInfo($"Received game server message from QR:{message.ServerID}");
             var handler = new AdHocHandler(message);

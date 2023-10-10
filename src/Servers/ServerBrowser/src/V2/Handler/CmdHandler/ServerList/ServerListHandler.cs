@@ -65,13 +65,13 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         {
 
             // first get the peer room in memory, if there is no such game we do not continue
-            if (!QueryReport.Application.StorageOperation.PeerGroupList.ContainsKey(_request.GameName))
+            if (!Chat.Application.StorageOperation.Persistance.PeerGroupList.ContainsKey(_request.GameName))
             {
                 throw new ServerBrowser.Exception($"Invalid game name: {_request.GameName}.");
             }
 
             // Game name is unique in redis database
-            var grouplist = QueryReport.Application.StorageOperation.PeerGroupList[_request.GameName];
+            var grouplist = Chat.Application.StorageOperation.Persistance.PeerGroupList[_request.GameName];
             // we do not create peer room cache on redis, we just send peer room info to client
             var tempInfos = new List<PeerRoomInfo>();
             foreach (var group in grouplist)
@@ -80,9 +80,9 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
                 var roomInfo = new PeerRoomInfo(group.Game.Gamename, group.Groupid, group.Roomname);
                 tempInfos.Add(roomInfo);
                 // get the channels info from redis where groupid equals above
-                var groupRooms = QueryReport.Application.StorageOperation.GetPeerGroupChannel(group.Groupid);
+                var groupRooms = QueryReport.Application.StorageOperation.Persistance.GetPeerGroupChannel(group.Groupid);
                 // get the channels info from redis where created under gamename and groupid above
-                var stagingRooms = QueryReport.Application.StorageOperation.GetPeerStagingChannel(group.Game.Gamename, group.Groupid);
+                var stagingRooms = QueryReport.Application.StorageOperation.Persistance.GetPeerStagingChannel(group.Game.Gamename, group.Groupid);
                 if (groupRooms.Count != 0)
                 {
                     roomInfo.NumberOfWaitingPlayers = groupRooms.Sum(r => r.Users.Count);
@@ -101,7 +101,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
         {
             var serverInfos = QueryReport.V2.Application.StorageOperation.Persistance.GetGameServerInfos(_request.GameName);
             ((ServerMainListResult)_result).Flag = GameServerFlags.HasKeysFlag;
-            var filteredGameServerInfos = new List<QueryReport.V2.Aggregate.Redis.GameServer.GameServerInfo>();
+            var filteredGameServerInfos = new List<QueryReport.V2.Aggregate.Redis.GameServer.GameServerCache>();
             //TODO do filter
             if (_request.Filter is not null)
             {
@@ -120,7 +120,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler
             {
                 filteredGameServerInfos = serverInfos;
             }
-            
+
             ((ServerMainListResult)_result).GameServerInfos = filteredGameServerInfos;
         }
         private void ServerMainList()

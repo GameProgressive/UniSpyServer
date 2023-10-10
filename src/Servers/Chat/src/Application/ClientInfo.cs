@@ -1,4 +1,5 @@
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System;
 using Newtonsoft.Json;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.BaseClass;
@@ -12,7 +13,8 @@ namespace UniSpy.Server.Chat.Application
         /// (We do not send this information to our public channel)
         /// </summary>
         [JsonIgnore]
-        public ConcurrentDictionary<string, Channel> JoinedChannels { get; private set; } = new ConcurrentDictionary<string, Channel>();
+        public Dictionary<string, Channel> JoinedChannels { get; private set; } = new();
+
         // secure connection
         public string GameName { get; set; }
         public string NickName { get; set; }
@@ -27,8 +29,8 @@ namespace UniSpy.Server.Chat.Application
         public bool IsQuietMode { get; set; } = false;
         [JsonIgnore]
         public string IRCPrefix => $"{NickName}!{UserName}@{Chat.Abstraction.BaseClass.ResponseBase.ServerDomain}";
-        public bool IsRemoteClient { get; set; }
         public string PreviousJoinedChannel { get; set; } = "";
+        public Guid ServerId { get; private set; }
         /// <summary>
         /// Global user key values
         /// </summary>
@@ -41,7 +43,7 @@ namespace UniSpy.Server.Chat.Application
 
         public bool IsJoinedChannel(string channelName) => JoinedChannels.ContainsKey(channelName);
 
-        public Channel GetJoinedChannel(string channelName)
+        public Channel GetLocalJoinedChannel(string channelName)
         {
             if (JoinedChannels.ContainsKey(channelName))
             {

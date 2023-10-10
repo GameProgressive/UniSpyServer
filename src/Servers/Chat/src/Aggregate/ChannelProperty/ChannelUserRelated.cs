@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Logging;
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Aggregate
 {
@@ -16,12 +15,12 @@ namespace UniSpy.Server.Chat.Aggregate
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         [JsonProperty]
-        public ConcurrentDictionary<string, ChannelUser> BanList { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        public ConcurrentDictionary<string, ChannelUser> BanList { get; private set; } = new();
         /// <summary>
         /// | key -> Nickname | value -> ChannelUser|
         /// </summary>
         [JsonProperty]
-        public ConcurrentDictionary<string, ChannelUser> Users { get; private set; } = new ConcurrentDictionary<string, ChannelUser>();
+        public ConcurrentDictionary<string, ChannelUser> Users { get; private set; } = new();
         [JsonProperty]
         public string _creatorNickName { get; private set; }
         [JsonIgnore]
@@ -29,7 +28,7 @@ namespace UniSpy.Server.Chat.Aggregate
         {
             get
             {
-                if (Users.Values.Where(u => u.Info.NickName == _creatorNickName).Count() == 1)
+                if (Users.Values.Where(u => u.Client.Info.NickName == _creatorNickName).Count() == 1)
                 {
                     return Users[_creatorNickName];
                 }
@@ -41,23 +40,23 @@ namespace UniSpy.Server.Chat.Aggregate
         }
         private void BanUser(ModeRequest request)
         {
-            var result = Users.Values.Where(u => u.Info.NickName == request.NickName);
+            var result = Users.Values.Where(u => u.Client.Info.NickName == request.NickName);
             if (result.Count() != 1)
             {
                 return;
             }
             ChannelUser user = result.First();
 
-            if (BanList.Values.Where(u => u.Info.NickName == request.NickName).Count() == 1)
+            if (BanList.Values.Where(u => u.Client.Info.NickName == request.NickName).Count() == 1)
             {
                 return;
             }
 
-            BanList.TryAdd(user.Info.NickName, user);
+            BanList.TryAdd(user.Client.Info.NickName, user);
         }
         private void UnBanUser(ModeRequest request)
         {
-            var result = BanList.Where(u => u.Value.Info.NickName == request.NickName);
+            var result = BanList.Where(u => u.Value.Client.Info.NickName == request.NickName);
             if (result.Count() == 1)
             {
                 var keyValue = result.First();
@@ -73,7 +72,7 @@ namespace UniSpy.Server.Chat.Aggregate
         private void AddChannelOperator(ModeRequest request)
         {
             //check whether this user is in this channel
-            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Client.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -90,7 +89,7 @@ namespace UniSpy.Server.Chat.Aggregate
 
         private void RemoveChannelOperator(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Client.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -105,7 +104,7 @@ namespace UniSpy.Server.Chat.Aggregate
 
         private void EnableUserVoicePermission(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Client.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -121,7 +120,7 @@ namespace UniSpy.Server.Chat.Aggregate
         }
         private void DisableUserVoicePermission(ModeRequest request)
         {
-            var result = Users.Where(u => u.Value.Info.UserName == request.UserName);
+            var result = Users.Where(u => u.Value.Client.Info.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -134,7 +133,7 @@ namespace UniSpy.Server.Chat.Aggregate
             }
         }
         public ChannelUser GetUser(string nickName) => Users.ContainsKey(nickName) == true ? Users[nickName] : null;
-        public ChannelUser GetUser(IShareClient client) => Users.Values.FirstOrDefault(u => u.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
+        public ChannelUser GetUser(IShareClient client) => Users.Values.FirstOrDefault(u => u.Client.Connection.RemoteIPEndPoint == client.Connection.RemoteIPEndPoint);
         public ChannelUser AddUser(IShareClient client, string password = null, bool isChannelCreator = false, bool isChannelOperator = false)
         {
             Validation(client, password);
@@ -154,7 +153,7 @@ namespace UniSpy.Server.Chat.Aggregate
 
         public void RemoveUser(ChannelUser user)
         {
-            user.Info.PreviousJoinedChannel = Name;
+            user.Client.Info.PreviousJoinedChannel = Name;
             RemoveBindOnUserAndChannel(user);
         }
 
@@ -167,7 +166,7 @@ namespace UniSpy.Server.Chat.Aggregate
             {
                 return false;
             }
-            if (BanList[client.Info.NickName].Connection.RemoteIPEndPoint != client.Connection.RemoteIPEndPoint)
+            if (BanList[client.Info.NickName].Client.Connection.RemoteIPEndPoint != client.Connection.RemoteIPEndPoint)
             {
                 return false;
             }
@@ -196,13 +195,13 @@ namespace UniSpy.Server.Chat.Aggregate
         }
         public static void AddBindOnUserAndChannel(ChannelUser joiner)
         {
-            joiner.Channel.Users.TryAdd(joiner.Info.NickName, joiner);
-            joiner.Info.JoinedChannels.TryAdd(joiner.Channel.Name, joiner.Channel);
+            joiner.Channel.Users.TryAdd(joiner.Client.Info.NickName, joiner);
+            joiner.Client.Info.JoinedChannels.TryAdd(joiner.Channel.Name, joiner.Channel);
         }
         public static void RemoveBindOnUserAndChannel(ChannelUser leaver)
         {
-            leaver.Channel.Users.TryRemove(leaver.Info.NickName, out _);
-            leaver.Info.JoinedChannels.TryRemove(leaver.Channel.Name, out _);
+            leaver.Channel.Users.TryRemove(leaver.Client.Info.NickName, out _);
+            leaver.Client.Info.JoinedChannels.Remove(leaver.Channel.Name, out _);
         }
         /// <summary>
         /// Send message to all users in this channel
@@ -210,11 +209,10 @@ namespace UniSpy.Server.Chat.Aggregate
         /// </summary>
         public void MultiCast(IClient sender, IResponse message, bool isSkipSender = false)
         {
-            foreach (var user in Users.Values)
+            var users = Users.Values.Where(u => !u.IsRemoteClient).ToList();
+            foreach (var user in users)
             {
-                if (user.IsRemoteUser
-                || (isSkipSender
-                && user.RemoteIPEndPoint.Equals(sender.Connection.RemoteIPEndPoint)))
+                if (isSkipSender)
                 {
                     continue;
                 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using Moq;
 using UniSpy.Server.Chat.Application;
@@ -17,6 +18,9 @@ namespace UniSpy.Server.Chat.Test
             var serverMock = new Chat.Application.Server(managerMock.Object);
             var client = new Client(connectionMock.Object, serverMock);
             client.Info.GameName = "gmtest";
+            ClientManager.ClientPool.TryAdd(client.Connection.RemoteIPEndPoint, client);
+            // if(ServerLauncher.ServerInstances.Count(s=>s.id))
+            // ServerLauncher.ServerInstances.Add(serverMock);
             return client;
         }
     }

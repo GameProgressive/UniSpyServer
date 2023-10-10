@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Misc;
-using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Handler;
 using UniSpy.Server.Chat.Handler.CmdHandler.General;
@@ -17,6 +16,7 @@ namespace UniSpy.Server.Chat.Application
     {
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
+        public bool IsRemoteClient => !ClientManager.ClientPool.ContainsKey(Connection.RemoteIPEndPoint);
         private BufferCache _bufferCache = new BufferCache();
         private RemoteClient _remoteClient;
         public Client(IConnection connection, IServer server) : base(connection, server)
@@ -29,11 +29,7 @@ namespace UniSpy.Server.Chat.Application
             Info = info;
             _remoteClient = new RemoteClient(this);
         }
-        protected override void OnConnected()
-        {
-            Info.IsRemoteClient = false;
-            base.OnConnected();
-        }
+
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);
@@ -62,16 +58,14 @@ namespace UniSpy.Server.Chat.Application
                 new QuitHandler(this, req).Handle();
                 Info.IsLoggedIn = false;
             }
-            var request = new QuitRequest() { Reason = "Disconnect from server" };
-            var message = new RemoteMessage(request, GetRemoteClient());
-            Chat.Application.Server.GeneralChannel.PublishMessage(message);
             base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
-        public RemoteClient GetRemoteClient()
+        public RemoteClient GetRemoteClient() => _remoteClient;
+        protected override void OnConnected()
         {
-            _remoteClient.Info = Info;
-            return _remoteClient;
+            StorageOperation.Persistance.RemoveClient(this);
+            base.OnConnected();
         }
     }
 }

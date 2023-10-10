@@ -33,9 +33,10 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             else
             {
                 _result.NickName = _request.NickName;
-                var target = ClientManager.GetClientByNickName(_request.NickName);
-                _result.Values.Add(_client.Info.KeyValues.GetValueString(_request.Keys));
+
             }
+            var target = ClientManager.GetClientByNickName(_request.NickName);
+            _result.Values.Add(target.Info.KeyValues.GetValueString(_request.Keys));
         }
 
         protected override void ResponseConstruct()

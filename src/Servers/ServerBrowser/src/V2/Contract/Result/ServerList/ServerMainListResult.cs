@@ -6,10 +6,10 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Result
 {
     public class ServerMainListResult : ServerListUpdateOptionResultBase
     {
-        public List<GameServerInfo> GameServerInfos { get; set; }
+        public List<GameServerCache> GameServerInfos { get; set; }
         public ServerMainListResult()
         {
-            GameServerInfos = new List<GameServerInfo>();
+            GameServerInfos = new List<GameServerCache>();
         }
     }
 }

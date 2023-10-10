@@ -28,6 +28,6 @@
     <ItemGroup>
         <ProjectReference Include="..\src\UniSpy.Server.ServerBrowser.csproj" />
         <ProjectReference Include="..\..\QueryReport\test\UniSpy.Server.QueryReport.Test.csproj" />
-
+        <ProjectReference Include="..\..\Chat\test\UniSpy.Server.Chat.Test.csproj" />
     </ItemGroup>
 </Project>

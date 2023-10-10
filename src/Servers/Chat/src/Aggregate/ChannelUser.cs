@@ -16,11 +16,10 @@ namespace UniSpy.Server.Chat.Aggregate
         /// <summary>
         /// Indicate whether this client is shared from redis channel
         /// </summary>
-        [JsonProperty]
-        public bool IsRemoteUser => Info.IsRemoteClient;
         public bool IsVoiceable { get; set; } = true;
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
+        public bool IsRemoteClient => Client.IsRemoteClient;
         /// <summary>
         /// The remote ip end point of this user
         /// </summary>
@@ -31,11 +30,27 @@ namespace UniSpy.Server.Chat.Aggregate
         /// The client reference
         /// </summary>
         [JsonIgnore]
-        public IShareClient Client { get; private set; }
+        public IShareClient Client
+        {
+            get
+            {
+                if (_client is not null)
+                {
+                    return _client;
+                }
+                else
+                {
+                    var client = ClientManager.GetClient(RemoteIPEndPoint);
+                    if (client is null)
+                    {
+                        throw new UniSpy.Exception("the client is not on local server, please check logic");
+                    }
+                    return (IShareClient)client;
+                }
+            }
+        }
         [JsonIgnore]
-        public ClientInfo Info => Client.Info;
-        [JsonIgnore]
-        public IConnection Connection => Client.Connection;
+        private IShareClient _client;
         /// <summary>
         /// The user key values storage
         /// </summary>
@@ -68,7 +83,7 @@ namespace UniSpy.Server.Chat.Aggregate
         public ChannelUser() { }
         public ChannelUser(IShareClient client, Channel channel)
         {
-            Client = client;
+            _client = client;
             Channel = channel;
             ServerId = client.Server.Id;
             RemoteIPEndPoint = client.Connection.RemoteIPEndPoint;

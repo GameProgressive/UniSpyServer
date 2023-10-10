@@ -21,7 +21,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Application
             QueryReport.V2.Application.StorageOperation.HeartbeatChannel.OnReceived += ReceivedMessage;
             base.Start();
         }
-        public void ReceivedMessage(QueryReport.V2.Aggregate.Redis.GameServer.GameServerInfo message)
+        public void ReceivedMessage(QueryReport.V2.Aggregate.Redis.GameServer.GameServerCache message)
         {
             LogWriter.LogInfo($"Received game server message from QR:{message.ServerID}");
             var handler = new Handler.CmdHandler.AdHoc.AdHocHandler(message);

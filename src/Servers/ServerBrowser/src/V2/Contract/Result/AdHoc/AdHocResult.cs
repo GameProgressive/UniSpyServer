@@ -5,7 +5,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Result
 {
     public sealed class AdHocResult : ResultBase
     {
-        public GameServerInfo GameServerInfo { get; set; }
+        public GameServerCache GameServerInfo { get; set; }
         public AdHocResult()
         {
         }

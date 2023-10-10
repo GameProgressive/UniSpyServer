@@ -11,7 +11,7 @@ namespace UniSpy.Server.QueryReport.V2.Application
 {
     public sealed class StorageOperation : IStorageOperation
     {
-        private static QueryReport.V2.Aggregate.Redis.GameServer.RedisClient _gameServerRedisClient = new QueryReport.V2.Aggregate.Redis.GameServer.RedisClient();
+        private static GameServerCache.RedisClient _gameServerRedisClient = new();
         public static IStorageOperation Persistance = new StorageOperation();
         public static NatNegChannel NatNegChannel = new NatNegChannel();
         ///<summary>
@@ -19,37 +19,16 @@ namespace UniSpy.Server.QueryReport.V2.Application
         /// We run subscribe() in SB, because SB need to receive message.
         ///</summary>
         public static HeartbeatChannel HeartbeatChannel = new HeartbeatChannel();
-        public List<GameServerInfo> GetServerInfos(uint instantKey) => _gameServerRedisClient.Context.Where(x => x.InstantKey == instantKey).ToList();
+        public List<GameServerCache> GetServerInfos(uint instantKey) => _gameServerRedisClient.Context.Where(x => x.InstantKey == instantKey).ToList();
 
-        public void RemoveGameServer(GameServerInfo info) => _gameServerRedisClient.DeleteKeyValue(info);
-        public void UpdateGameServer(GameServerInfo info) => _ = _gameServerRedisClient.SetValueAsync(info);
-        public List<GameServerInfo> GetGameServerInfos(string gameName)
+        public void RemoveGameServer(GameServerCache info) => _gameServerRedisClient.DeleteKeyValue(info);
+        public void UpdateGameServer(GameServerCache info) => _ = _gameServerRedisClient.SetValueAsync(info);
+        public List<GameServerCache> GetGameServerInfos(string gameName)
         {
             return _gameServerRedisClient.Context.Where(x => x.GameName == gameName).ToList();
         }
 
-        public Dictionary<string, List<Grouplist>> GetAllGroupList()
-        {
-            using (var db = new UniSpyContext())
-            {
-                var result = from g in db.Games
-                             join gl in db.Grouplists on g.Gameid equals gl.Gameid
-                             select new Grouplist
-                             {
-                                 Game = g,
-                                 Gameid = g.Gameid,
-                                 Groupid = gl.Groupid,
-                                 Roomname = gl.Roomname
-                             };
-                var result2 = from g in result
-                              group g by g.Game.Gamename into dd
-                              select new KeyValuePair<string, List<Grouplist>>(dd.Key, dd.ToList());
-
-                var data = result2.ToDictionary(x => x.Key, x => x.Value);
-                return data;
-            }
-        }
-        public GameServerInfo GetGameServerInfo(IPEndPoint end)
+        public GameServerCache GetGameServerInfo(IPEndPoint end)
         {
             return _gameServerRedisClient.Context.FirstOrDefault(x =>
                 x.HostIPAddress == end.Address &

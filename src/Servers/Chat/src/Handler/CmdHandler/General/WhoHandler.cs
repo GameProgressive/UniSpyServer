@@ -40,19 +40,20 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
 
         private void GetChannelUsersInfo()
         {
-            if (!ChannelManager.IsChannelExist(_request.ChannelName))
+
+            var channel = Aggregate.Channel.GetLocalChannel(_request.ChannelName);
+            if (channel is null)
             {
-                throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
+                throw new IRCChannelException($"Channel do not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
-            var channel = ChannelManager.GetChannel(_request.ChannelName);
             foreach (var user in channel.Users.Values)
             {
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Name,
-                    UserName = user.Info.UserName,
-                    NickName = user.Info.NickName,
-                    PublicIPAddress = user.Connection.RemoteIPEndPoint.Address.ToString(),
+                    UserName = user.Client.Info.UserName,
+                    NickName = user.Client.Info.NickName,
+                    PublicIPAddress = user.Client.Connection.RemoteIPEndPoint.Address.ToString(),
                     Modes = user.Modes
                 };
                 _result.DataModels.Add(data);

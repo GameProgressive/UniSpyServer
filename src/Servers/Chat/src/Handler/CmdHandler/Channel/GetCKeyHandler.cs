@@ -62,7 +62,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             string userValues = user.KeyValues.GetValueString(_request.Keys);
             var model = new GetCKeyDataModel
             {
-                NickName = user.Info.NickName,
+                NickName = user.Client.Info.NickName,
                 UserValues = userValues
             };
             _result.DataResults.Add(model);

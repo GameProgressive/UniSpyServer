@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
             {
                 throw new Chat.Exception("To invite user, you must in the channel.");
             }
-            var chan = ChannelManager.GetChannel(_request.ChannelName);
+            var chan = Aggregate.Channel.GetLocalChannel(_request.ChannelName);
             chan.Mode.InviteNickNames.Add(_request.NickName);
         }
     }

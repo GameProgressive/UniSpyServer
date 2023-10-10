@@ -3,6 +3,7 @@ using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Chat.Aggregate.Redis.Contract;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -18,14 +19,16 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
         public ChannelHandlerBase(IShareClient client, IRequest request) : base(client, request) { }
-
         protected override void RequestCheck()
         {
             if (_request.RawRequest is not null)
             {
                 base.RequestCheck();
             }
-            _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
+            if (_channel is null)
+            {
+                _channel = _client.Info.GetLocalJoinedChannel(_request.ChannelName);
+            }
             if (_channel is null)
             {
                 throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
@@ -36,13 +39,40 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                 throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
             }
         }
-        protected override void PublishMessage()
+
+        public override void Handle()
         {
+            base.Handle();
+            try
+            {
+                PublishMessage();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+        /// <summary>
+        /// publish message to redis channel, only localclient can publish message
+        /// </summary>
+        protected void PublishMessage()
+        {
+            // we do not publish message when the message is received from remote client
+            if (_client.IsRemoteClient)
+            {
+                return;
+            }
             if (_channel is null)
             {
                 return;
             }
-            base.PublishMessage();
+            if (_request.RawRequest is null)
+            {
+                return;
+            }
+            Aggregate.Channel.UpdateChannelCache(_user, _channel);
+            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
+            _channel.Broker.PublishMessage(msg);
         }
     }
 }

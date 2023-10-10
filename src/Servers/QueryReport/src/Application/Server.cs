@@ -18,6 +18,7 @@ namespace UniSpy.Server.QueryReport.Application
         public override void Start()
         {
             base.Start();
+            _ = Chat.Application.StorageOperation.Persistance.PeerGroupList;
             V2.Application.StorageOperation.NatNegChannel.Subscribe();
         }
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);

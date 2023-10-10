@@ -6,10 +6,10 @@ namespace UniSpy.Server.ServerBrowser.V2.Contract.Result.ServerList
 
     public sealed class ServerNetworkInfoListResult : ServerMainListResult
     {
-        public List<GameServerInfo> ServersInfo { get; private set; }
+        public List<GameServerCache> ServersInfo { get; private set; }
         public ServerNetworkInfoListResult()
         {
-            ServersInfo = new List<GameServerInfo>();
+            ServersInfo = new List<GameServerCache>();
         }
     }
 }

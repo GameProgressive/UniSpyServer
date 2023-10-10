@@ -30,14 +30,16 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.GameTrafficRelay
             _gameServerValidIPs = gameServerIPs;
             _gameClientValidIPs = gameClientIPs;
             Cookie = cookie;
-            _timer = new EasyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10), CheckExpiredClient);
+            _timer = new EasyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+            _timer.Elapsed += (s, e) => CheckExpiredClient();
             // after create listener we start it
             Start();
             LogWriter.LogDebug($"[{ListeningEndPoint}] gamespy client listener started.");
         }
-        private void OnInit()
+        public override bool Start()
         {
-
+            _timer.Start();
+            return base.Start();
         }
         protected override void OnStarted() => ReceiveAsync();
         private void CheckExpiredClient()

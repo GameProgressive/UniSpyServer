@@ -12,7 +12,7 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
     /// The information pair using to switch strategy
     /// </summary>
     /// <value></value>
-    public record NatFailInfo : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
+    public record NatFailInfoCache : UniSpy.Server.Core.Abstraction.BaseClass.RedisKeyValueObject
     {
         [RedisKey]
         [JsonConverter(typeof(IPAddresConverter))]
@@ -20,8 +20,8 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
         [RedisKey]
         [JsonConverter(typeof(IPAddresConverter))]
         public IPAddress PublicIPAddress2 { get; init; }
-        public NatFailInfo() : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1)) { }
-        public NatFailInfo(NatInitInfo info1, NatInitInfo info2) : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1))
+        public NatFailInfoCache() : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1)) { }
+        public NatFailInfoCache(NatInitInfo info1, NatInitInfo info2) : base(RedisDbNumber.NatFailInfo, TimeSpan.FromDays(1))
         {
             // we need to store in sequence to make consistancy and reduce duplications
             if (info1.ClientIndex == NatClientIndex.GameClient)
@@ -35,10 +35,9 @@ namespace UniSpy.Server.NatNegotiation.Aggregate.Redis.Fail
                 PublicIPAddress2 = info1.PublicIPEndPoint.Address;
             }
         }
-    }
-
-    public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<NatFailInfo>
-    {
-        public RedisClient() { }
+        public class RedisClient : UniSpy.Server.Core.Abstraction.BaseClass.RedisClient<NatFailInfoCache>
+        {
+            public RedisClient() { }
+        }
     }
 }

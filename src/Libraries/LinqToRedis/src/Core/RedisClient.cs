@@ -10,7 +10,7 @@ using UniSpy.LinqToRedis.Linq;
 namespace UniSpy.LinqToRedis
 {
     /// <summary>
-    /// TODO we need to implement get AllKeys, AllValues
+    /// The redis linq client
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     public class RedisClient<TValue> where TValue : RedisKeyValueObject
@@ -86,18 +86,7 @@ namespace UniSpy.LinqToRedis
         }
         public List<string> GetMatchedKeys(IRedisKey key = null)
         {
-            var matchedKeys = new List<string>();
-            var searchKey = key is null ? DefaultKVObject.SearchKey : key.SearchKey;
-            foreach (var end in _endPoints)
-            {
-                var server = Multiplexer.GetServer(end);
-                // we get matched key from database
-                foreach (var k in server.Keys(pattern: searchKey, database: Db.Database))
-                {
-                    matchedKeys.Add(k);
-                }
-            }
-            return matchedKeys;
+            return Task.Run(async () => await GetMatchedKeysAsync(key)).Result;
         }
         public async Task<List<string>> GetMatchedKeysAsync(IRedisKey key = null)
         {
@@ -119,17 +108,9 @@ namespace UniSpy.LinqToRedis
         /// if key is null this will get all key value from database
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
         public Dictionary<string, TValue> GetKeyValues(IRedisKey key = null)
         {
-            var dict = new Dictionary<string, TValue>();
-            var keys = GetMatchedKeys(key);
-            foreach (var k in keys)
-            {
-                var value = Db.StringGet(k.ToString());
-                dict.Add(k, JsonConvert.DeserializeObject<TValue>(value));
-            }
-            return dict;
+            return Task.Run<Dictionary<string, TValue>>(async () => await GetKeyValuesAsync(key)).Result;
         }
 
         public async Task<Dictionary<string, TValue>> GetKeyValuesAsync(IRedisKey key = null)
@@ -146,7 +127,7 @@ namespace UniSpy.LinqToRedis
 
         public bool SetValue(TValue value)
         {
-            return Db.StringSet(value.FullKey, JsonConvert.SerializeObject((TValue)value), value.ExpireTime);
+            return Task.Run(async () => await SetValueAsync(value)).Result;
         }
         public async Task<bool> SetValueAsync(TValue value)
         {
@@ -154,12 +135,7 @@ namespace UniSpy.LinqToRedis
         }
         public TValue GetValue(IRedisKey key)
         {
-            var value = Db.StringGet(key.FullKey);
-            if (value.IsNull)
-            {
-                return default;
-            }
-            return JsonConvert.DeserializeObject<TValue>(value);
+            return Task.Run(async () => await GetValueAsync(key)).Result;
         }
         public async Task<TValue> GetValueAsync(IRedisKey key)
         {
@@ -179,20 +155,16 @@ namespace UniSpy.LinqToRedis
             get => GetValue(key);
             set => SetValue(value);
         }
+        public void FlushDb()
+        {
+            Task.Run(async () => await FlushDbAsync());
+        }
         public async Task FlushDbAsync()
         {
             var keys = GetMatchedKeysAsync();
             foreach (var key in await keys)
             {
                 await Db.KeyDeleteAsync(key);
-            }
-        }
-        public void FlushDb()
-        {
-            var keys = GetMatchedKeys();
-            foreach (var key in keys)
-            {
-                Db.KeyDelete(key);
             }
         }
     }

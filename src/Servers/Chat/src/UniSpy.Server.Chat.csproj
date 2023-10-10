@@ -17,7 +17,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\QueryReport\src\UniSpy.Server.QueryReport.csproj" />
         <ProjectReference Include="..\..\..\Libraries\Core\src\UniSpy.Server.Core.csproj" />
     </ItemGroup>
 </Project>

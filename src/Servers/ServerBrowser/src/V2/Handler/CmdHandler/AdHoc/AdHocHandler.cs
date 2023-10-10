@@ -12,8 +12,8 @@ namespace UniSpy.Server.ServerBrowser.V2.Handler.CmdHandler.AdHoc
 {
     public class AdHocHandler : IHandler
     {
-        public GameServerInfo _message;
-        public AdHocHandler(GameServerInfo message)
+        public GameServerCache _message;
+        public AdHocHandler(GameServerCache message)
         {
             LogWriter.LogCurrentClass(this);
             _message = message;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Abstraction.Interface;
+using UniSpy.Server.Core.Abstraction.Interface;
 
 namespace UniSpy.Server.Chat.Application
 {
@@ -11,10 +12,9 @@ namespace UniSpy.Server.Chat.Application
         /// <summary>
         /// We need to make sure client is get by nickname, otherwise we throw exception
         /// </summary>
-        public static IShareClient GetClientByNickName(string nickName)
+        public static Client GetClientByNickName(string nickName)
         {
-            IShareClient client;
-            client = (IShareClient)ClientPool.Values.FirstOrDefault(c => ((IShareClient)c).Info.NickName == nickName);
+            var client = (Client)ClientPool.Values.FirstOrDefault(c => ((IShareClient)c).Info.NickName == nickName);
             return client;
         }
         public static List<ClientInfo> GetAllClientInfo()

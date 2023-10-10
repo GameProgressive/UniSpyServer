@@ -38,7 +38,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.ChannelName = _channel.Name;
             _result.KickerNickName = _client.Info.NickName;
             _result.KickerIRCPrefix = _client.Info.IRCPrefix;
-            _result.KickeeNickName = _kickee.Info.NickName;
+            _result.KickeeNickName = _kickee.Client.Info.NickName;
         }
         protected override void ResponseConstruct()
         {
@@ -49,7 +49,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _channel.MultiCast(_client, _response);
             _channel.RemoveUser(_kickee);
-            Aggregate.Channel.UpdateChannelCache(_user);
+            Aggregate.Channel.UpdateChannelCache(_user,_channel);
             // Aggregate.Channel.UpdatePeerRoomInfo(_user);
         }
     }

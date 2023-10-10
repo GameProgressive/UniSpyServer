@@ -7,6 +7,7 @@ namespace UniSpy.Server.Chat.Abstraction.Interface
     public interface IShareClient : IClient, ITestClient
     {
         public new ClientInfo Info { get; }
+        public bool IsRemoteClient { get; }
         public RemoteClient GetRemoteClient();
     }
 }

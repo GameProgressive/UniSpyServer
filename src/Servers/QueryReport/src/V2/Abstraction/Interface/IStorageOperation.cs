@@ -7,12 +7,11 @@ namespace UniSpy.Server.QueryReport.V2.Abstraction.Interface
 {
     public interface IStorageOperation
     {
-        List<GameServerInfo> GetServerInfos(uint instantKey);
-        void UpdateGameServer(GameServerInfo info);
-        void RemoveGameServer(GameServerInfo info);
-        GameServerInfo GetGameServerInfo(IPEndPoint end);
-        List<GameServerInfo> GetGameServerInfos(string gameName);
-        Dictionary<string, List<Core.Database.DatabaseModel.Grouplist>> GetAllGroupList();
+        List<GameServerCache> GetServerInfos(uint instantKey);
+        void UpdateGameServer(GameServerCache info);
+        void RemoveGameServer(GameServerCache info);
+        GameServerCache GetGameServerInfo(IPEndPoint end);
+        List<GameServerCache> GetGameServerInfos(string gameName);
         public void PublishClientMessage(ClientMessageRequest message);
 
     }

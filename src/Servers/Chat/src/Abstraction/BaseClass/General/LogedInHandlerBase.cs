@@ -7,16 +7,6 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
     {
         public LogedInHandlerBase(IShareClient client, IRequest request) : base(client, request) { }
 
-        // public override void Handle()
-        // {
-        //     if (!_client.Info.IsLoggedIn)
-        //     {
-        //         _client.LogInfo($"{_client.Info.NickName} Please login first!");
-        //         return;
-        //     }
-
-        //     base.Handle();
-        // }
         protected override void RequestCheck()
         {
             if (!_client.Info.IsLoggedIn)

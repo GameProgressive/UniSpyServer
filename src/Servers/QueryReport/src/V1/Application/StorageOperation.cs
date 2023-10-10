@@ -9,7 +9,7 @@ namespace UniSpy.Server.QueryReport.V1.Application
 {
     public class StorageOperation : IStorageOperation
     {
-        private static RedisClient _redisClient = new RedisClient();
+        private static GameServerCache.RedisClient _redisClient = new();
         public static IStorageOperation Persistance = new StorageOperation();
         public string GetGameSecretKey(string gameName)
         {
@@ -26,12 +26,12 @@ namespace UniSpy.Server.QueryReport.V1.Application
                 return result.First().Secretkey;
             }
         }
-        public List<GameServerInfo> GetServersInfo(string gameName)
+        public List<GameServerCache> GetServersInfo(string gameName)
         {
             var result = _redisClient.Context.Where(s => s.GameName == gameName).ToList();
             return result;
         }
-        public GameServerInfo GetServerInfo(IPEndPoint endPoint)
+        public GameServerCache GetServerInfo(IPEndPoint endPoint)
         {
             var result = _redisClient.Context.Where(s => s.HostIPAddress == endPoint.Address && s.HostPort == endPoint.Port);
             if (result.Count() != 1)
@@ -40,7 +40,7 @@ namespace UniSpy.Server.QueryReport.V1.Application
             }
             return result.First();
         }
-        public void UpdateServerInfo(GameServerInfo info)
+        public void UpdateServerInfo(GameServerCache info)
         {
             _ = _redisClient.SetValueAsync(info);
         }

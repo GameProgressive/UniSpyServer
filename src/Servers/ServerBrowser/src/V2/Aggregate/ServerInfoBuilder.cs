@@ -19,7 +19,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
         /// </summary>
         /// <param name="flag"></param>
         /// <param name="serverInfo"></param>
-        public static List<byte> BuildServerInfoHeader(GameServerFlags flag, GameServerInfo serverInfo)
+        public static List<byte> BuildServerInfoHeader(GameServerFlags flag, GameServerCache serverInfo)
         {
             List<byte> header = new List<byte>();
             // add key flag
@@ -42,7 +42,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
             // _serverListData.AddRange(header);
             return header;
         }
-        public static void CheckNatNegFlag(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckNatNegFlag(List<byte> header, GameServerCache serverInfo)
         {
             if (serverInfo.ServerData.ContainsKey("natneg"))
             {
@@ -54,7 +54,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
                 }
             }
         }
-        public static void CheckUnsolicitedUdp(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckUnsolicitedUdp(List<byte> header, GameServerCache serverInfo)
         {
             if (serverInfo.ServerData.ContainsKey("allow_unsolicited_udp"))
             {
@@ -69,9 +69,9 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
         /// !when game create a channel chat, it will use both the public ip and private ip to build the name.
         /// !Known game: Worm3d
         /// </summary>
-        public static void CheckPrivateIP(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckPrivateIP(List<byte> header, GameServerCache serverInfo)
         {
-            if (QueryReport.Application.StorageOperation.PeerGroupList.ContainsKey(serverInfo.GameName))
+            if (Chat.Application.StorageOperation.Persistance.PeerGroupList.ContainsKey(serverInfo.GameName))
             {
                 // We already have the localip. Bytes are worng.
                 if (serverInfo.ServerData.ContainsKey("localip0"))
@@ -84,7 +84,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
                 }
             }
         }
-        public static void CheckNonStandardPort(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckNonStandardPort(List<byte> header, GameServerCache serverInfo)
         {
             // !! only dedicated server have different query report port and host port
             // !! but peer server have same query report port and host port
@@ -99,7 +99,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
         /// <summary>
         /// !disabled because crysiswars localport is 64100 which is larger than short integer, need to find whether this function is needed.
         /// </summary>
-        public static void CheckNonStandardPrivatePort(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckNonStandardPrivatePort(List<byte> header, GameServerCache serverInfo)
         {
             // we check private port here
             // if (serverInfo.ServerData.ContainsKey("localport"))
@@ -113,7 +113,7 @@ namespace UniSpy.Server.ServerBrowser.V2.Aggregate
             //     }
             // }
         }
-        public static void CheckICMPSupport(List<byte> header, GameServerInfo serverInfo)
+        public static void CheckICMPSupport(List<byte> header, GameServerCache serverInfo)
         {
             if (serverInfo.ServerData.ContainsKey("icmp_address"))
             {

@@ -1,14 +1,13 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
 using UniSpy.Server.Chat.Error.IRC.General;
-using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
-using UniSpy.Server.Chat.Aggregate.Redis;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Error.IRC.Channel;
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
+using System;
+using UniSpy.Server.Chat.Aggregate;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -16,14 +15,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
     /// Game will only join one channel at one time
     /// </summary>
 
-    public sealed class JoinHandler : LogedInHandlerBase
+    public sealed class JoinHandler : ChannelHandlerBase
     {
         private new JoinRequest _request => (JoinRequest)base._request;
         private new JoinResult _result { get => (JoinResult)base._result; set => base._result = value; }
         private new JoinResponse _response { get => (JoinResponse)base._response; set => base._response = value; }
-        private static readonly GeneralMessageChannel GeneralMessageChannel = new GeneralMessageChannel();
-        private Aggregate.Channel _channel;
-        private ChannelUser _user;
         public JoinHandler(IShareClient client, JoinRequest request) : base(client, request)
         {
             _result = new JoinResult();
@@ -38,7 +34,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         //发送频道用户列表给此用户
         protected override void RequestCheck()
         {
-            base.RequestCheck();
+            if (!_client.Info.IsLoggedIn)
+            {
+                new Chat.Exception($"{_client.Info.NickName} Please login first!");
+            }
+            _request.Parse();
             //some GameSpy game only allow one player join one chat room
             //but GameSpy Arcade can join more than one channel
             if (_client.Info.JoinedChannels.Count > 3)
@@ -53,34 +53,53 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            lock (ChannelManager.Channels)
+            // we acquire redis lock
+            // redis lock
+            var key = new Aggregate.Redis.ChannelCache
             {
-                var isChannelExistOnLocal = ChannelManager.IsChannelExist(_request.ChannelName);
-                if (isChannelExistOnLocal)
+                ChannelName = _request.ChannelName,
+                GameName = _client.Info.GameName
+            };
+            using (var locker = new LinqToRedis.RedisLock(TimeSpan.FromSeconds(10), Application.StorageOperation.Persistance.ChannelCacheClient.Db, key))
+            {
+                if (locker.LockTake())
                 {
-                    _channel = ChannelManager.GetChannel(_request.ChannelName);
-                    _user = _channel.AddUser(_client, _request.Password ?? null);
+                    _channel = Aggregate.Channel.GetLocalChannel(_request.ChannelName);
+                    // if local channel is null
+                    if (_channel is null)
+                    {
+                        _channel = Aggregate.Channel.GetChannelCache(key);
+                    }
+                    // if remote channel is null
+                    if (_channel is null)
+                    {
+                        // create channel
+                        _channel = Aggregate.Channel.CreateLocalChannel(_request.ChannelName, _client, _request.Password);
+                        // we need to check whether this channel is gamespy official channel
+                        switch (_channel.RoomType)
+                        {
+                            case PeerRoomType.Title:
+                            case PeerRoomType.Group:
+                                _user = _channel.AddUser(_client, _request.Password ?? null);
+                                break;
+                            case PeerRoomType.Normal:
+                            case PeerRoomType.Staging:
+                                _user = _channel.AddUser(_client, _request.Password ?? null, true, true);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        _user = _channel.AddUser(_client, _request.Password ?? null);
+                    }
+                    Aggregate.Channel.UpdateChannelCache(_user, _channel);
                 }
                 else
                 {
-                    // create channel
-                    _channel = ChannelManager.CreateChannel(_request.ChannelName, _request.Password ?? null, _client);
-                    // we need to check whether this channel is gamespy official channel
-                    switch (_channel.RoomType)
-                    {
-                        case PeerRoomType.Title:
-                        case PeerRoomType.Staging:
-                        case PeerRoomType.Group:
-                            _user = _channel.AddUser(_client, _request.Password ?? null);
-                            break;
-                        case PeerRoomType.Normal:
-                            _user = _channel.AddUser(_client, _request.Password ?? null, true, true);
-                            break;
-                    }
+                    throw new BadChannelKeyException("The channel is created by other person, try to re-join this channel", _request.ChannelName);
                 }
-                Aggregate.Channel.UpdateChannelCache(_user);
-                // Aggregate.Channel.UpdatePeerRoomInfo(_user);
             }
+
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _client.Info.NickName;
             _result.ChannelModes = _channel.Mode.ToString();
@@ -113,8 +132,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 RequestType = ModeRequestType.GetChannelAndUserModes,
                 ChannelName = _request.ChannelName,
-                NickName = _user.Info.NickName,
-                UserName = _user.Info.UserName,
+                NickName = _user.Client.Info.NickName,
+                UserName = _user.Client.Info.UserName,
                 Password = _request.Password is null ? null : _request.Password
             };
             new ModeHandler(_client, userModeRequest).Handle();

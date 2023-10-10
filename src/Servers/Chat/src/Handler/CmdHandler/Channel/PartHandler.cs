@@ -6,7 +6,6 @@ using UniSpy.Server.Chat.Contract.Request.Channel;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
 using UniSpy.Server.Chat.Abstraction.Interface;
-using UniSpy.Server.QueryReport.Aggregate.Redis.Channel;
 
 namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
 {
@@ -24,7 +23,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             if (_request.RawRequest is null)
             {
-                _channel = _client.Info.GetJoinedChannel(_request.ChannelName);
+                _channel = _client.Info.GetLocalJoinedChannel(_request.ChannelName);
                 if (_channel is null)
                 {
                     throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
@@ -43,7 +42,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             _result = new PartResult();
-            _result.LeaverIRCPrefix = _user.Info.IRCPrefix;
+            _result.LeaverIRCPrefix = _user.Client.Info.IRCPrefix;
             _result.ChannelName = _channel.Name;
             switch (_channel.RoomType)
             {
@@ -51,38 +50,36 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 case PeerRoomType.Staging:
                     if (_user.IsChannelCreator)
                     {
+                        switch (_channel.RoomType)
+                        {
+                            case PeerRoomType.Normal:
+                            case PeerRoomType.Staging:
+                                Aggregate.Channel.RemoveLocalChannel(_channel);
+                                Aggregate.Channel.RemoveChannelCache(_user, _channel);
+                                break;
+                        }
                         foreach (var user in _channel.Users.Values)
                         {
                             // we do not need to send part message to leaver
-                            if (user.Info.NickName == _user.Info.NickName)
+                            if (user.Client.Info.NickName == _user.Client.Info.NickName)
                             {
                                 continue;
                             }
                             // We create a new KICKHandler to handle KICK operation for us
                             var kickRequest = new KickRequest
                             {
-                                KickeeNickName = user.Info.NickName,
+                                KickeeNickName = user.Client.Info.NickName,
                                 ChannelName = _channel.Name,
                                 Reason = _request.Reason,
                             };
                             new KickHandler(_client, kickRequest).Handle();
-                        }
-                        ChannelManager.RemoveChannel(_channel.Name);
-                        _channel.MessageBroker.Unsubscribe();
-                        switch (_channel.RoomType)
-                        {
-                            case PeerRoomType.Normal:
-                            case PeerRoomType.Staging:
-                                var chanInfo = _channel.GetChannelCache();
-                                QueryReport.Application.StorageOperation.RemoveChannel(chanInfo);
-                                break;
                         }
                     }
                     goto default;
                 default:
                     // we need always remove the connection in leaver and channel
                     _channel.RemoveUser(_user);
-                    Aggregate.Channel.UpdateChannelCache(_user);
+                    Aggregate.Channel.UpdateChannelCache(_user, _channel);
                     // Aggregate.Channel.UpdatePeerRoomInfo(_user);
                     break;
             }

@@ -24,7 +24,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             // we do not use crypto for remote client
-            if (!_client.Info.IsRemoteClient)
+            if (!_client.IsRemoteClient)
             {
                 string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
                 if (secretKey is null)
@@ -46,7 +46,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void Response()
         {
             base.Response();
-            if (!_client.Info.IsRemoteClient)
+            if (!_client.IsRemoteClient)
             {
                 ((Client)_client).Crypto = _crypto;
             }

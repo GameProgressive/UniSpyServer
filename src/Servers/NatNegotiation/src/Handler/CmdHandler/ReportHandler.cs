@@ -62,7 +62,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             if (!(bool)_request.IsNatSuccess)
             {
                 //todo we save the fail information some where else.
-                var info = new NatNegotiation.Aggregate.Redis.Fail.NatFailInfo(_myInitInfo, _othersInitInfo);
+                var info = new NatNegotiation.Aggregate.Redis.Fail.NatFailInfoCache(_myInitInfo, _othersInitInfo);
                 if (StorageOperation.Persistance.GetNatFailInfo(info) == 0)
                 {
                     StorageOperation.Persistance.UpdateNatFailInfo(info);
