@@ -126,8 +126,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 ChannelName = _request.ChannelName
             };
-            new NamesHandler(_client, namesRequest).Handle();
-
+            var nameHandler = new NamesHandler(_client, namesRequest, _channel, _user);
+            nameHandler.Handle();
             var userModeRequest = new ModeRequest
             {
                 RequestType = ModeRequestType.GetChannelAndUserModes,
@@ -136,7 +136,8 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 UserName = _user.Client.Info.UserName,
                 Password = _request.Password is null ? null : _request.Password
             };
-            new ModeHandler(_client, userModeRequest).Handle();
+            var modeHandler = new ModeHandler(_client, userModeRequest, _channel, _user);
+            modeHandler.Handle();
         }
     }
 }

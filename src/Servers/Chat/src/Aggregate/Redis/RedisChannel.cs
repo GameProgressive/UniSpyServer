@@ -19,8 +19,8 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
 
         public override void ReceivedMessage(RemoteMessage message)
         {
-            // we are uint testing
-            if (ServerLauncher.Server is null)
+            // we are uint testing so we skip publish message here
+            if (ServerLauncher.ServerInstances.Count == 0)
             {
                 return;
             }

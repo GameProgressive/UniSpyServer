@@ -19,14 +19,14 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         /// <summary>
         /// Local NatInitInfo storage, after all init packets are received we send all into redis database
         /// </summary>
-        private InitPacketCache _addressInfo;
+        private InitPacketCache _cache;
         public InitHandler(Client client, InitRequest request) : base(client, request)
         {
             _result = new InitResult();
         }
         protected override void DataOperation()
         {
-            _addressInfo = new InitPacketCache()
+            _cache = new InitPacketCache()
             {
                 ServerID = _client.Server.Id,
                 Cookie = (uint)_request.Cookie,
@@ -38,7 +38,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
                 PublicIPEndPoint = _client.Connection.RemoteIPEndPoint,
                 PrivateIPEndPoint = _request.PrivateIPEndPoint
             };
-            _client.LogInfo($"Received init request with private ip: [{_addressInfo.PrivateIPEndPoint}], cookie: {_addressInfo.Cookie}, client index: {_addressInfo.ClientIndex}.");
+            _client.LogInfo($"Received init request with private ip: [{_cache.PrivateIPEndPoint}], cookie: {_cache.Cookie}, client index: {_cache.ClientIndex}.");
             _result.RemoteIPEndPoint = _client.Connection.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
@@ -62,8 +62,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             }
 
             // todo make the code do not block and redis do not have thread theaf problem
-            // Task.Run(() => StorageOperation.Persistance.UpdateInitInfo(_addressInfo));
-            StorageOperation.Persistance.UpdateInitInfo(_addressInfo);
+            StorageOperation.Persistance.UpdateInitInfo(_cache);
             // init packet nn3 is the last one client send, although receiving nn3 does not mean we received other init packets, but we can use this as a flag to prevent start multiple connect handler
             switch (_request.Version)
             {

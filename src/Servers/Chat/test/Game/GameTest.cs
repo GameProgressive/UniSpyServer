@@ -52,11 +52,6 @@ namespace UniSpy.Server.Chat.Test
             {
                 ((ITestClient)client).TestReceived(raw);
             }
-            // Given
-
-            // When
-
-            // Then
         }
         [Fact]
         public void Worms3dTest()

@@ -49,8 +49,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _channel.MultiCast(_client, _response);
             _channel.RemoveUser(_kickee);
-            Aggregate.Channel.UpdateChannelCache(_user,_channel);
-            // Aggregate.Channel.UpdatePeerRoomInfo(_user);
         }
     }
 }

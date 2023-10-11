@@ -27,7 +27,10 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.Values = _channel.KeyValues.GetValueString(_request.Keys);
             _result.ChannelName = _channel.Name;
         }
-
+        /// <summary>
+        /// We do not publish message in GetChanKey
+        /// </summary>
+        protected override void PublishMessage() { }
         protected override void ResponseConstruct()
         {
             _response = new GetChannelKeyResponse(_request, _result);

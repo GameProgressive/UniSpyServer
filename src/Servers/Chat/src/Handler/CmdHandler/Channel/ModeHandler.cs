@@ -15,6 +15,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
         public ModeHandler(IShareClient client, ModeRequest request) : base(client, request) { }
+        public ModeHandler(IShareClient client, ModeRequest request, Aggregate.Channel channel, Aggregate.ChannelUser user) : base(client, request)
+        {
+            _user = user;
+            _channel = channel;
+        }
         protected override void DataOperation()
         {
             _result = new ModeResult();
@@ -33,7 +38,13 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     break;
             }
         }
-
+        protected override void PublishMessage()
+        {
+            if (_request.RequestType == ModeRequestType.SetChannelModes)
+            {
+                base.PublishMessage();
+            }
+        }
         protected override void ResponseConstruct()
         {
             // we only response to get channel modes

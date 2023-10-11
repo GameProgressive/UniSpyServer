@@ -4,6 +4,8 @@ using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate.Redis.Contract;
+using System;
+using UniSpy.Server.Chat.Aggregate.Redis;
 
 namespace UniSpy.Server.Chat.Abstraction.BaseClass
 {
@@ -33,7 +35,10 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
             }
-            _user = _channel.GetUser(_client);
+            if (_user is null)
+            {
+                _user = _channel.GetUser(_client);
+            }
             if (_user is null)
             {
                 throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
@@ -55,7 +60,7 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         /// <summary>
         /// publish message to redis channel, only localclient can publish message
         /// </summary>
-        protected void PublishMessage()
+        protected virtual void PublishMessage()
         {
             // we do not publish message when the message is received from remote client
             if (_client.IsRemoteClient)
@@ -70,7 +75,20 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             {
                 return;
             }
-            Aggregate.Channel.UpdateChannelCache(_user, _channel);
+
+            var key = new ChannelCache
+            {
+                ChannelName = _channel.Name,
+                GameName = _channel.GameName
+            };
+            using (var locker = new LinqToRedis.RedisLock(TimeSpan.FromSeconds(10), Application.StorageOperation.Persistance.ChannelCacheClient.Db, key))
+            {
+                if (locker.LockTake())
+                {
+                    Aggregate.Channel.UpdateChannelCache(_user, _channel);
+                }
+            }
+
             var msg = new RemoteMessage(_request, _client.GetRemoteClient());
             _channel.Broker.PublishMessage(msg);
         }

@@ -72,7 +72,10 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         {
             _response = new GetCKeyResponse(_request, _result);
         }
-
+        /// <summary>
+        /// We do not publish message in GetCKey
+        /// </summary>
+        protected override void PublishMessage() { }
         private void WaittingForKey(ChannelUser user)
         {
             // if user did not contains all key and value we wait for it

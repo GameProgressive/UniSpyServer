@@ -1,6 +1,4 @@
 using UniSpy.Server.Chat.Abstraction.BaseClass;
-using UniSpy.Server.Chat.Error.IRC.Channel;
-using UniSpy.Server.Chat.Error.IRC.General;
 using UniSpy.Server.Chat.Contract.Request.General;
 using UniSpy.Server.Chat.Contract.Response.Channel;
 using UniSpy.Server.Chat.Contract.Result.Channel;
@@ -14,24 +12,12 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new NamesRequest _request => (NamesRequest)base._request;
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
         public NamesHandler(IShareClient client, NamesRequest request) : base(client, request) { }
-        protected override void RequestCheck()
+        public NamesHandler(IShareClient client, NamesRequest request, Aggregate.Channel channel, Aggregate.ChannelUser user) : base(client, request)
         {
-            if (_request.RawRequest is null)
-            {
-                _channel = _client.Info.GetLocalJoinedChannel(_request.ChannelName);
-                if (_channel is null)
-                {
-                    throw new NoSuchChannelException($"No such channel {_request.ChannelName}", _request.ChannelName);
-                }
-                _user = _channel.GetUser(_client);
-                if (_user is null)
-                {
-                    throw new NoSuchNickException($"Can not find user with nickname: {_client.Info.NickName} username: {_client.Info.UserName}");
-                }
-                return;
-            }
-            base.RequestCheck();
+            _user = user;
+            _channel = channel;
         }
+
         protected override void DataOperation()
         {
             _result = new NamesResult();
@@ -39,6 +25,11 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.ChannelName = _channel.Name;
             _result.RequesterNickName = _user.Client.Info.NickName;
         }
+
+        /// <summary>
+        /// We do not publish message in names handler
+        /// </summary>
+        protected override void PublishMessage() { }
         protected override void ResponseConstruct()
         {
             _response = new NamesResponse(_request, _result);

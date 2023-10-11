@@ -55,7 +55,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                             case PeerRoomType.Normal:
                             case PeerRoomType.Staging:
                                 Aggregate.Channel.RemoveLocalChannel(_channel);
-                                Aggregate.Channel.RemoveChannelCache(_user, _channel);
                                 break;
                         }
                         foreach (var user in _channel.Users.Values)
@@ -79,12 +78,22 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                 default:
                     // we need always remove the connection in leaver and channel
                     _channel.RemoveUser(_user);
-                    Aggregate.Channel.UpdateChannelCache(_user, _channel);
-                    // Aggregate.Channel.UpdatePeerRoomInfo(_user);
                     break;
             }
         }
-
+        protected override void PublishMessage()
+        {
+            switch (_channel.RoomType)
+            {
+                case PeerRoomType.Normal:
+                case PeerRoomType.Staging:
+                    Aggregate.Channel.RemoveChannelCache(_user, _channel);
+                    break;
+                default:
+                    base.PublishMessage();
+                    break;
+            }
+        }
         protected override void ResponseConstruct()
         {
             _response = new PartResponse(_request, _result);

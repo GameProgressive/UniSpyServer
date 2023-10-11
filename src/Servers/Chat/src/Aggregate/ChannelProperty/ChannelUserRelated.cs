@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Contract.Request.Channel;
@@ -212,7 +211,8 @@ namespace UniSpy.Server.Chat.Aggregate
             var users = Users.Values.Where(u => !u.IsRemoteClient).ToList();
             foreach (var user in users)
             {
-                if (isSkipSender)
+                if (isSkipSender
+                && sender.Connection.RemoteIPEndPoint.Equals(user.RemoteIPEndPoint))
                 {
                     continue;
                 }
