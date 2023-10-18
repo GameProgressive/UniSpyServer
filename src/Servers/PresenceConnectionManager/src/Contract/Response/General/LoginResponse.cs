@@ -25,7 +25,7 @@ namespace UniSpy.Server.PresenceConnectionManager.Contract.Response
             SendingBuffer += @"\userid\" + _result.DatabaseResults.UserId;
             SendingBuffer += @"\profileid\" + _result.DatabaseResults.ProfileId;
 
-            if (_request.Type != LoginType.NickEmail)
+            if (_result.DatabaseResults.UniqueNick is not null)
             {
                 SendingBuffer += @"\uniquenick\" + _result.DatabaseResults.UniqueNick;
             }
