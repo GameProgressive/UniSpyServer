@@ -5,14 +5,27 @@ namespace UniSpy.Server.Core.Extension
 {
     public class EasyTimer
     {
-        public TimeSpan ExpireTime { get; private set; }
+        public TimeSpan? ExpireTime { get; private set; }
         public DateTime LastActiveTime { get; private set; }
         public TimeSpan IdleTime => DateTime.Now - LastActiveTime;
         /// <summary>
         /// The timer to count and invoke some event
         /// </summary>
         private Timer _timer;
-        public bool IsExpired => IdleTime > ExpireTime;
+        public bool IsExpired
+        {
+            get
+            {
+                if (ExpireTime is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return IdleTime > ExpireTime;
+                }
+            }
+        }
         public event ElapsedEventHandler Elapsed
         {
             add { _timer.Elapsed += value; }
@@ -21,7 +34,7 @@ namespace UniSpy.Server.Core.Extension
         /// <summary>
         /// Easy timer constructor, remember to call Start()
         /// </summary>
-        public EasyTimer(TimeSpan expireTimeSpan, TimeSpan intervalTimeSpan)
+        public EasyTimer(TimeSpan? expireTimeSpan, TimeSpan intervalTimeSpan)
         {
             _timer = new Timer
             {
@@ -31,6 +44,7 @@ namespace UniSpy.Server.Core.Extension
             };
             ExpireTime = expireTimeSpan;
         }
+        public EasyTimer(TimeSpan intervalTimeSpan) : this(null, intervalTimeSpan) { }
         /// <summary>
         /// Start the timer
         /// </summary>

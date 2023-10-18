@@ -9,7 +9,7 @@ namespace UniSpy.Server.Core.Misc
         }
 
         /// <summary>
-        /// Process the incoming buffer, if buffer is complete return complete buffer, other wise return null
+        /// Process the incoming buffer, if buffer is complete return true, otherwise return false
         /// </summary>
         /// <param name="buffer"></param>
         public abstract bool ProcessBuffer(T buffer, out T completeBuffer);
