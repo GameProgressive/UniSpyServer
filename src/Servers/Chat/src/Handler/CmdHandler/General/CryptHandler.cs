@@ -46,7 +46,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
         protected override void Response()
         {
             base.Response();
-            if (!_client.IsRemoteClient)
+            if (!_client.IsRemoteClient && _client.GetType() == typeof(Client))
             {
                 ((Client)_client).Crypto = _crypto;
             }

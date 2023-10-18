@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System;
 using UniSpy.Server.Chat.Abstraction.Interface;
 using UniSpy.Server.Chat.Aggregate;
 using UniSpy.Server.Chat.Aggregate.Misc;
@@ -8,6 +8,7 @@ using UniSpy.Server.Chat.Handler.CmdHandler.General;
 using UniSpy.Server.Core.Abstraction.BaseClass;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
+using UniSpy.Server.Core.Extension;
 using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Chat.Application
@@ -29,7 +30,13 @@ namespace UniSpy.Server.Chat.Application
             Info = info;
             _remoteClient = new RemoteClient(this);
         }
-
+        protected override void EventBinding()
+        {
+            base.EventBinding();
+            _timer = new EasyTimer(TimeSpan.FromMinutes(1));
+            _timer.Elapsed += (s, e) => Application.StorageOperation.Persistance.UpdateClient(this);
+            _timer.Start();
+        }
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);
@@ -37,14 +44,7 @@ namespace UniSpy.Server.Chat.Application
             {
                 this.LogNetworkReceiving(completeBuffer);
                 var switcher = CreateSwitcher(completeBuffer);
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    switcher.Handle();
-                }
-                else
-                {
-                    Task.Run(() => switcher.Handle());
-                }
+                switcher.Handle();
             }
         }
         protected override void OnDisconnected()

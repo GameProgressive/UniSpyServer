@@ -50,7 +50,21 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
             base.Handle();
             try
             {
+                // we do not publish message when the message is received from remote client
+                if (_client.IsRemoteClient)
+                {
+                    return;
+                }
+                if (_channel is null)
+                {
+                    return;
+                }
+                if (_request.RawRequest is null)
+                {
+                    return;
+                }
                 PublishMessage();
+                UpdateChannelCache();
             }
             catch (Exception ex)
             {
@@ -62,25 +76,19 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
         /// </summary>
         protected virtual void PublishMessage()
         {
-            // we do not publish message when the message is received from remote client
-            if (_client.IsRemoteClient)
-            {
-                return;
-            }
-            if (_channel is null)
-            {
-                return;
-            }
-            if (_request.RawRequest is null)
-            {
-                return;
-            }
 
+            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
+            _channel.Broker.PublishMessage(msg);
+        }
+
+        protected virtual void UpdateChannelCache()
+        {
             var key = new ChannelCache
             {
                 ChannelName = _channel.Name,
                 GameName = _channel.GameName
             };
+
             using (var locker = new LinqToRedis.RedisLock(TimeSpan.FromSeconds(10), Application.StorageOperation.Persistance.ChannelCacheClient.Db, key))
             {
                 if (locker.LockTake())
@@ -88,9 +96,6 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                     Aggregate.Channel.UpdateChannelCache(_user, _channel);
                 }
             }
-
-            var msg = new RemoteMessage(_request, _client.GetRemoteClient());
-            _channel.Broker.PublishMessage(msg);
         }
     }
 }

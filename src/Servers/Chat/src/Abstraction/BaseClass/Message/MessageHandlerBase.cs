@@ -77,5 +77,9 @@ namespace UniSpy.Server.Chat.Abstraction.BaseClass
                     break;
             }
         }
+        protected override void UpdateChannelCache()
+        {
+            // we do nothing here, when there is a channel message
+        }
     }
 }

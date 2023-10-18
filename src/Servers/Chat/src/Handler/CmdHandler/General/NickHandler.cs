@@ -63,7 +63,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.General
                     if (!Application.StorageOperation.Persistance.IsClientExist(key))
                     {
                         _client.Info.NickName = _request.NickName;
-                        Application.StorageOperation.Persistance.UpdateClient((Client)_client);
+                        Application.StorageOperation.Persistance.UpdateClient(_client);
                     }
                     else
                     {

@@ -16,12 +16,11 @@ namespace UniSpy.Server.Chat.Aggregate
         /// </summary>
         [JsonIgnore]
         public static readonly ConcurrentDictionary<string, Channel> LocalChannels = new();
+        [JsonIgnore]
         public static readonly ConcurrentDictionary<string, ChannelMessageBroker> MessageBrokers = new();
         /// <summary>
         /// You need to manually check channel existance then get channel
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public static Channel GetLocalChannel(string name)
         {
             LocalChannels.TryGetValue(name, out var channel);

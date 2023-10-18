@@ -113,7 +113,7 @@ namespace UniSpy.Server.Chat.Application
             ChannelCacheClient.DeleteKeyValue(data);
         }
 
-        public void UpdateClient(Client client)
+        public void UpdateClient(IShareClient client)
         {
             var data = new ClientInfoCache
             {
@@ -123,7 +123,7 @@ namespace UniSpy.Server.Chat.Application
             ClientCacheClient.SetValue(data);
         }
 
-        public void RemoveClient(Client client)
+        public void RemoveClient(IShareClient client)
         {
             var data = new ClientInfoCache
             {

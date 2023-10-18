@@ -17,8 +17,8 @@ namespace UniSpy.Server.Chat.Abstraction.Interface
         Channel GetChannel(ChannelCache key);
         void UpdateChannel(Channel channel);
         void RemoveChannel(Channel channel);
-        void UpdateClient(Client client);
-        void RemoveClient(Client client);
+        void UpdateClient(IShareClient client);
+        void RemoveClient(IShareClient client);
         bool IsClientExist(ClientInfoCache key);
     }
 }
