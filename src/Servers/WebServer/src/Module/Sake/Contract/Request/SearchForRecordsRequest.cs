@@ -6,7 +6,7 @@ using UniSpy.Server.WebServer.Module.Sake.Abstraction;
 
 namespace UniSpy.Server.WebServer.Module.Sake.Contract.Request
 {
-    
+
     public class SearchForRecordsRequest : RequestBase
     {
         public string Filter { get; set; }
@@ -37,7 +37,10 @@ namespace UniSpy.Server.WebServer.Module.Sake.Contract.Request
             var surrounding = _contentElement.Descendants().Where(p => p.Name.LocalName == "surrounding").First().Value;
             Surrounding = surrounding;
             var ownerids = _contentElement.Descendants().Where(p => p.Name.LocalName == "ownerids").First().Value;
-            OwnerIds = int.Parse(ownerids);
+            if (int.TryParse(ownerids, out var ids))
+            {
+                OwnerIds = ids;
+            }
             var cacheFlag = _contentElement.Descendants().Where(p => p.Name.LocalName == "cacheFlag").First().Value;
             CacheFlag = cacheFlag;
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
