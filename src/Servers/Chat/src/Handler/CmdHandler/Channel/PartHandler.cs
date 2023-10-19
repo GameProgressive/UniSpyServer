@@ -16,9 +16,6 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
         private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
         private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
         public PartHandler(IShareClient client, PartRequest request) : base(client, request) { }
-        static PartHandler()
-        {
-        }
         protected override void RequestCheck()
         {
             if (_request.RawRequest is null)
@@ -48,32 +45,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             {
                 case PeerRoomType.Normal:
                 case PeerRoomType.Staging:
-                    if (_user.IsChannelCreator)
-                    {
-                        switch (_channel.RoomType)
-                        {
-                            case PeerRoomType.Normal:
-                            case PeerRoomType.Staging:
-                                Aggregate.Channel.RemoveLocalChannel(_channel);
-                                break;
-                        }
-                        foreach (var user in _channel.Users.Values)
-                        {
-                            // we do not need to send part message to leaver
-                            if (user.Client.Info.NickName == _user.Client.Info.NickName)
-                            {
-                                continue;
-                            }
-                            // We create a new KICKHandler to handle KICK operation for us
-                            var kickRequest = new KickRequest
-                            {
-                                KickeeNickName = user.Client.Info.NickName,
-                                ChannelName = _channel.Name,
-                                Reason = _request.Reason,
-                            };
-                            new KickHandler(_client, kickRequest).Handle();
-                        }
-                    }
+                    KickAllUser();
                     goto default;
                 default:
                     // we need always remove the connection in leaver and channel
@@ -81,7 +53,38 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     break;
             }
         }
-        protected override void PublishMessage()
+        private void KickAllUser()
+        {
+            if (_user.IsChannelCreator)
+            {
+                // we first send all user message to let them known the creator is leaving
+                foreach (var user in _channel.Users.Values)
+                {
+                    // we do not need to send part message to leaver
+                    if (user.Client.Info.NickName == _user.Client.Info.NickName)
+                    {
+                        continue;
+                    }
+                    // We create a new KICKHandler to handle KICK operation for us
+                    var kickRequest = new KickRequest
+                    {
+                        KickeeNickName = user.Client.Info.NickName,
+                        ChannelName = _channel.Name,
+                        Reason = _request.Reason,
+                    };
+                    new KickHandler(_client, kickRequest).Handle();
+                }
+                // we remove the local channel and unbind events
+                switch (_channel.RoomType)
+                {
+                    case PeerRoomType.Normal:
+                    case PeerRoomType.Staging:
+                        Aggregate.Channel.RemoveLocalChannel(_channel);
+                        break;
+                }
+            }
+        }
+        protected override void UpdateChannelCache()
         {
             switch (_channel.RoomType)
             {
@@ -90,7 +93,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     Aggregate.Channel.RemoveChannelCache(_user, _channel);
                     break;
                 default:
-                    base.PublishMessage();
+                    base.UpdateChannelCache();
                     break;
             }
         }

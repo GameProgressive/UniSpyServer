@@ -33,6 +33,7 @@ namespace UniSpy.Server.Chat.Application
         protected override void EventBinding()
         {
             base.EventBinding();
+            // bind a event that can update the client info to redis
             _timer = new EasyTimer(TimeSpan.FromMinutes(1));
             _timer.Elapsed += (s, e) => Application.StorageOperation.Persistance.UpdateClient(this);
             _timer.Start();

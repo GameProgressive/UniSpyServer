@@ -92,7 +92,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
                     {
                         _user = _channel.AddUser(_client, _request.Password ?? null);
                     }
-                    Aggregate.Channel.UpdateChannelCache(_user, _channel);
+                    base.UpdateChannelCache(); // <= we update the channel cache here
                 }
                 else
                 {
@@ -106,6 +106,10 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Channel
             _result.JoinerPrefix = _client.Info.IRCPrefix;
         }
 
+        protected override void UpdateChannelCache()
+        {
+            // we do not update channel cache again in base class because we update it when channel is created
+        }
         protected override void ResponseConstruct()
         {
             _response = new JoinResponse(_request, _result);

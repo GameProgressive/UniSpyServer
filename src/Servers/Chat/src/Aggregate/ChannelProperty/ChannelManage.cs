@@ -76,7 +76,8 @@ namespace UniSpy.Server.Chat.Aggregate
         }
         public static void RemoveMessageBrocker(Channel channel)
         {
-            MessageBrokers.TryRemove(channel.Name, out var _);
+            MessageBrokers.TryRemove(channel.Name, out var broker);
+            broker.Dispose();
         }
     }
 }

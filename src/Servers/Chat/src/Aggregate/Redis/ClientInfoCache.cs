@@ -10,7 +10,7 @@ namespace UniSpy.Server.Chat.Aggregate.Redis
         [RedisKey]
         public string NickName { get; set; }
         public ClientInfo Info { get; set; }
-        public ClientInfoCache() : base(RedisDbNumber.ChatChannel, TimeSpan.FromHours(1)) { }
+        public ClientInfoCache() : base(RedisDbNumber.ChatChannel, TimeSpan.FromMinutes(2)) { }
         public class RedisClient : Core.Abstraction.BaseClass.RedisClient<ClientInfoCache>
         {
             public RedisClient() { }
