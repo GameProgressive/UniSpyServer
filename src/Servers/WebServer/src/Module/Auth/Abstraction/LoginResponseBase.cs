@@ -49,9 +49,8 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
                 dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.UniqueNick));
                 dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.CdKeyHash));
 
-                // if these 2 value be 0 we do not need to add them to the list
-                // dataToHash.AddRange(ClientInfo.PeerKeyPublicModulus.FromHexStringToBytes());
-                // dataToHash.AddRange(ClientInfo.PeerKeyPrivate.FromHexStringToBytes());
+                dataToHash.AddRange(ClientInfo.PeerKeyModulusBytes);
+                dataToHash.Add(ClientInfo.PeerKeyExponentByte);
 
                 // server data should be convert to bytes[128] then added to list
                 dataToHash.AddRange(ClientInfo.ServerData.FromHexStringToBytes());

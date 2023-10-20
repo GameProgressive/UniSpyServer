@@ -1,3 +1,4 @@
+using System.Numerics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -210,12 +211,11 @@ namespace UniSpy.Server.Core.Extension
         /// <returns></returns>
         public static byte[] FromHexStringToBytes(this string hex)
         {
-            return Enumerable.Range(0, hex.Length)
+            var data = Enumerable.Range(0, hex.Length)
               .Where(x => x % 2 == 0)
               .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
               .ToArray();
+            return data;
         }
-
-
     }
 }
