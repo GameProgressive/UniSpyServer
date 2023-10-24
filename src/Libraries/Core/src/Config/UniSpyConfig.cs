@@ -44,7 +44,7 @@ namespace UniSpy.Server.Core.Config
     }
     public class UniSpyRedisConfig
     {
-        public string ConnectionString => $"{Server}:{Port},user={User},password={Password},ssl={SSL},sslHost={SSLHost}";
+        public string ConnectionString => $"{Server}:{Port},user={User},password={Password},ssl={SSL},sslHost={SSLHost},abortConnect=false";
         public string Server;
         public int Port;
         public string User;

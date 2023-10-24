@@ -11,7 +11,7 @@ namespace UniSpy.Server.QueryReport.V1.Handler
     {
         private new string _rawRequest => (string)base._rawRequest;
         private new Client _client => (Client)base._client;
-        public CmdSwitcher(Client client, object rawRequest) : base(client, rawRequest)
+        public CmdSwitcher(Client client, string rawRequest) : base(client, rawRequest)
         {
         }
 
