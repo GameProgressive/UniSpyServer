@@ -59,14 +59,10 @@ namespace UniSpy.Server.Chat.Application
                 new QuitHandler(this, req).Handle();
                 Info.IsLoggedIn = false;
             }
+            StorageOperation.Persistance.RemoveClient(this);
             base.OnDisconnected();
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, UniSpyEncoding.GetString((byte[])buffer));
         public RemoteClient GetRemoteClient() => _remoteClient;
-        protected override void OnConnected()
-        {
-            StorageOperation.Persistance.RemoveClient(this);
-            base.OnConnected();
-        }
     }
 }
