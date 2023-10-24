@@ -115,6 +115,11 @@ namespace UniSpy.Server.Chat.Application
 
         public void UpdateClient(IShareClient client)
         {
+            // we do not update client info when its nickname is not registered
+            if (client.Info.NickName is null)
+            {
+                return;
+            }
             var data = new ClientInfoCache
             {
                 NickName = client.Info.NickName,
