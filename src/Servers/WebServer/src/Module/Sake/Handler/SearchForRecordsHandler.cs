@@ -28,10 +28,10 @@ namespace UniSpy.Server.WebServer.Module.Sake.Handler
                 && t.Tableid == _request.TableId)
                 .Select(s => s.Userdata).FirstOrDefault();
             }
-            if (_result.UserData is null)
-            {
-                throw new WebServer.Exception("There are no sake data found in the database, please manually add it in the database");
-            }
+            // if (_result.UserData is null)
+            // {
+            //     throw new WebServer.Exception("There are no sake data found in the database, please manually add it in the database");
+            // }
         }
         protected override void ResponseConstruct()
         {

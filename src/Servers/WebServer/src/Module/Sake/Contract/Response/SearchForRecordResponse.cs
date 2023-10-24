@@ -16,15 +16,23 @@ namespace UniSpy.Server.WebServer.Module.Sake.Contract.Response
         {
             _content.Add("SearchForRecordsResponse");
             _content.Add("SearchForRecordsResult", "Success");
-            var temp = Newtonsoft.Json.JsonConvert.DeserializeXNode(_result.UserData.RootElement.ToString()).Root;
-            // add namespace to root element
-            temp.Name = SakeSoapEnvelope.SakeNamespace + temp.Name.LocalName;
-            // Add the namespace to each selected node
-            foreach (var element in temp.DescendantsAndSelf())
+            if (_result.UserData is not null)
             {
-                element.Name = SakeSoapEnvelope.SakeNamespace + element.Name.LocalName;
+                var temp = Newtonsoft.Json.JsonConvert.DeserializeXNode(_result.UserData.RootElement.ToString()).Root;
+                // add namespace to root element
+                temp.Name = SakeSoapEnvelope.SakeNamespace + temp.Name.LocalName;
+                // Add the namespace to each selected node
+                foreach (var element in temp.DescendantsAndSelf())
+                {
+                    element.Name = SakeSoapEnvelope.SakeNamespace + element.Name.LocalName;
+                }
+                _content.Add("values", temp);
             }
-            _content.Add("values", temp);
+            else
+            {
+                _content.Add("values");
+            }
+
             base.Build();
         }
     }
