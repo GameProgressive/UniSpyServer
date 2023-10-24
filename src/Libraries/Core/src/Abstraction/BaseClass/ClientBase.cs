@@ -38,7 +38,7 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     break;
                 case NetworkConnectionType.Udp:
                     ((IUdpConnection)Connection).OnReceive += OnReceived;
-                    _timer = new EasyTimer(TimeSpan.FromHours(1), TimeSpan.FromMinutes(1));
+                    _timer = new EasyTimer(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1));
                     _timer.Elapsed += (s, e) => CheckExpiredClient();
                     _timer.Start();
                     break;

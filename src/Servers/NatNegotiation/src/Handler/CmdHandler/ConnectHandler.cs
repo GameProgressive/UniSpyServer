@@ -34,7 +34,7 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
         protected override void RequestCheck()
         {
             // detecting nat
-            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, (uint)_client.Info.Cookie);
+            var addressInfos = StorageOperation.Persistance.GetInitInfos(_client.Server.Id, _request.Cookie);
             // if (addressInfos.Count < InitHandler.InitPacketCount)
             // {
             //     throw new NatNegotiation.Exception($"The number of init info in redis with cookie: {_client.Info.Cookie} is not bigger than 7.");
@@ -112,8 +112,8 @@ namespace UniSpy.Server.NatNegotiation.Handler.CmdHandler
             }
             //todo the optimized server will be selected
             var relayEndPoint = relayServers.OrderBy(x => x.ClientCount).First().PublicIPEndPoint;
-            var myIPs = _myInitInfo.AddressInfos.Select(x=>x.Value.PublicIPEndPoint.ToString()).ToList();
-            var otherIPs = _othersInitInfo.AddressInfos.Select(x=>x.Value.PublicIPEndPoint.ToString()).ToList();
+            var myIPs = _myInitInfo.AddressInfos.Select(x => x.Value.PublicIPEndPoint.ToString()).ToList();
+            var otherIPs = _othersInitInfo.AddressInfos.Select(x => x.Value.PublicIPEndPoint.ToString()).ToList();
             var req = new NatNegotiationRequest()
             {
                 Cookie = _myInitInfo.Cookie,

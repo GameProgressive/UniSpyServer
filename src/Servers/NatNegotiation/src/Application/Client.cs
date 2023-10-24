@@ -13,14 +13,8 @@ namespace UniSpy.Server.NatNegotiation.Application
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
             Info = new ClientInfo();
-            _timer = new EasyTimer(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1));
             IsLogRaw = true;
         }
         protected override ISwitcher CreateSwitcher(object buffer) => new CmdSwitcher(this, (byte[])buffer);
-        protected override void EventBinding()
-        {
-            ((IUdpConnection)Connection).OnReceive += OnReceived;
-            _timer.Elapsed += (s, e) => CheckExpiredClient();
-        }
     }
 }
