@@ -136,21 +136,21 @@
     ],
     "compounds": [
         {
-            "name": "PCM, PSP",
+            "name": "PCM PSP",
             "configurations": [
                 "PCM",
                 "PSP"
             ]
         },
         {
-            "name": "NatNeg, GTR",
+            "name": "NatNeg GTR",
             "configurations": [
                 "NatNeg",
                 "GTR"
             ]
         },
         {
-            "name": "QR, SB, NatNeg, GTR",
+            "name": "QR SB NatNeg GTR",
             "configurations": [
                 "QR",
                 "SB",
@@ -159,14 +159,14 @@
             ]
         },
         {
-            "name": "GS, PSP",
+            "name": "GS PSP",
             "configurations": [
                 "PSP",
                 "GS"
             ]
         },
         {
-            "name": "SAKE, PCM",
+            "name": "Web PCM",
             "configurations": [
                 "Web",
                 "PCM"
@@ -181,7 +181,7 @@
             ]
         },
         {
-            "name": "Legacy servers",
+            "name": "PCM PSP NN Chat QR SB GS",
             "configurations": [
                 "PCM",
                 "PSP",
@@ -193,7 +193,7 @@
             ]
         },
         {
-            "name": "New servers",
+            "name": "PCM PSP NatNeg Chat QR SB Web",
             "configurations": [
                 "PCM",
                 "PSP",
@@ -205,7 +205,7 @@
             ]
         },
         {
-            "name": "All servers",
+            "name": "PCM PSP NN GTR Chat QR SB GS Web",
             "configurations": [
                 "PCM",
                 "PSP",
