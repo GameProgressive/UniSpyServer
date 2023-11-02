@@ -34,5 +34,9 @@ public class HttpConnection : IHttpConnection
         Context.Response.StatusCode = (int)HttpStatusCode.OK;
         Context.Response.ContentType = "application/xml?";
         Context.Response.OutputStream.Write(response);
+        if (Context.Request.Headers["Connection"] == "close")
+        {
+            Context.Response.Close();
+        }
     }
 }
