@@ -3,7 +3,6 @@ using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Logging;
 using UniSpy.Server.Core.Extension;
-using System.Threading.Tasks;
 
 namespace UniSpy.Server.Core.Abstraction.BaseClass
 {
@@ -44,8 +43,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
                     break;
                 case NetworkConnectionType.Http:
                     ((IHttpConnection)Connection).OnReceive += OnReceived;
-                    ((IHttpConnection)Connection).OnConnect += OnConnected;
-                    ((IHttpConnection)Connection).OnDisconnect += OnDisconnected;
                     break;
                 case NetworkConnectionType.Test:
                     this.LogVerbose("Using unit-test mock connection.");
@@ -57,7 +54,8 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// <summary>
         /// Only work for tcp
         /// </summary>
-        protected virtual void OnConnected() => ClientManagerBase.AddClient(this);
+        // protected virtual void OnConnected() => ClientManagerBase.AddClient(this);
+        protected virtual void OnConnected() { }
 
         /// <summary>
         /// Only work for tcp
@@ -139,7 +137,6 @@ namespace UniSpy.Server.Core.Abstraction.BaseClass
         /// <summary>
         /// Sending IResponse to client(ciphertext or plaintext)
         /// </summary>
-        /// <param name="response"></param>
         public void Send(IResponse response)
         {
             byte[] buffer = null;

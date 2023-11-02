@@ -11,12 +11,19 @@ namespace UniSpy.Server.WebServer.Application
         {
             _name = "WebServer";
         }
-        public Server(){ }
+        public Server() { }
 
-        public Server(IConnectionManager manager) : base(manager){}
+        public Server(IConnectionManager manager) : base(manager) { }
 
         protected override IClient CreateClient(IConnection connection) => new Client(connection, this);
 
         protected override IConnectionManager CreateConnectionManager(IPEndPoint endPoint) => new HttpConnectionManager(endPoint);
+
+        protected override IClient HandleConnectionInitialization(IConnection connection)
+        {
+            var client = CreateClient(connection);
+            return client;
+        }
+
     }
 }

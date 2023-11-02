@@ -1,35 +1,48 @@
 using System;
+using System.Collections.Concurrent;
 using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Events;
 
-namespace UniSpy.Server.Core.Network.Tcp.Server
+namespace UniSpy.Server.Core.Network.Tcp.Server;
+
+public class TcpConnectionManager : IConnectionManager, IDisposable
 {
-    /// <summary>
-    /// This is a template class that helps creating a TCP Server with logging functionality and ServerName, as required in the old network stack.
-    /// </summary>
-    public class TcpConnectionManager : NetCoreServer.TcpServer, IConnectionManager
+    public event OnConnectingEventHandler OnInitialization;
+    public TcpListener Listener;
+    public ConcurrentDictionary<IPEndPoint, IConnection> ConnectionPool = new();
+
+    public TcpConnectionManager(IPEndPoint endPoint)
     {
-        public TcpConnectionManager(IPEndPoint endpoint) : base(endpoint)
-        {
-        }
+        Listener = new TcpListener(endPoint);
+    }
 
-        public event OnConnectingEventHandler OnInitialization;
 
-        public new virtual void Start()
+    public void Start()
+    {
+        Listener.Start();
+        Task.Run(() =>
         {
-            if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
+            while (true)
             {
-                throw new ArgumentException("Buffer size can not big than length of integer!");
+                var client = Listener.AcceptTcpClient();
+                var conn = new TcpConnection(client, this);
+                Task.Run(() => OnConnecting(conn));
             }
-            base.Start();
-        }
-        protected override NetCoreServer.TcpSession CreateSession() => new TcpConnection(this);
+        });
+    }
 
-        protected override void OnConnecting(NetCoreServer.TcpSession connection)
-        {
-            OnInitialization((IConnection)connection);
-            base.OnConnecting(connection);
-        }
+
+    public void OnConnecting(ITcpConnection connection)
+    {
+        OnInitialization((IConnection)connection);
+        (connection as TcpConnection).OnConnected();
+    }
+
+    public void Dispose()
+    {
+        Listener.Stop();
     }
 }

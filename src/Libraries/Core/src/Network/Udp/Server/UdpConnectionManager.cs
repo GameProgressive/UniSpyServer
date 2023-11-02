@@ -1,48 +1,42 @@
 using System;
-using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using UniSpy.Server.Core.Abstraction.Interface;
 using UniSpy.Server.Core.Events;
 
-namespace UniSpy.Server.Core.Network.Udp.Server
+namespace UniSpy.Server.Core.Network.Udp.Server;
+
+public class UdpConnectionManager : IConnectionManager, IDisposable
 {
-    /// <summary>
-    /// This is a template class that helps creating a UDP Server with
-    /// logging functionality and ServerName, as required in the old network stack.
-    /// </summary>
-    public class UdpConnectionManager : NetCoreServer.UdpServer, IConnectionManager
+    public event OnConnectingEventHandler OnInitialization;
+    public UdpClient Listener { get; private set; }
+    public UdpConnectionManager(IPEndPoint endPoint)
     {
-        public UdpConnectionManager(IPEndPoint endpoint) : base(endpoint)
-        {
-        }
-        public event OnConnectingEventHandler OnInitialization;
+        Listener = new UdpClient(endPoint);
+    }
 
-        public new virtual void Start()
+    public void Start()
+    {
+        Task.Run(() =>
         {
-            if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
+            while (true)
             {
-                throw new ArgumentException("Buffer size can not big than length of integer!");
+                var clientEndPoint = new IPEndPoint(IPAddress.Any, (Listener.Client.RemoteEndPoint as IPEndPoint).Port);
+                var data = Listener.Receive(ref clientEndPoint);
+                var conn = new UdpConnection(clientEndPoint, this);
+                OnConnecting(conn);
+                Task.Run(() => conn.OnReceived(data));
             }
-            base.Start();
-        }
-        protected override void OnStarted() => ReceiveAsync();
+        });
+    }
+    public void OnConnecting(IUdpConnection connection)
+    {
+        OnInitialization?.Invoke(connection);
+    }
 
-        /// <summary>
-        /// Send unencrypted data
-        /// </summary>
-        /// <param name="buffer">plaintext</param>
-        /// <returns>is sending succeed</returns>
-        protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
-        {
-            var connection = CreateConnection((IPEndPoint)endPoint);
-            (connection as UdpConnection).OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
-        }
-        protected virtual IUdpConnection CreateConnection(IPEndPoint endPoint)
-        {
-            var connection = new UdpConnection(this, endPoint);
-            var client = OnInitialization(connection);
-            return client.Connection as IUdpConnection;
-        }
+    public void Dispose()
+    {
+        Listener.Dispose();
     }
 }
-

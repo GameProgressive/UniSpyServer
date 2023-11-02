@@ -24,8 +24,6 @@ namespace UniSpy.Server.WebServer.Application
                 return;
             }
             base.OnReceived(buffer);
-            if (!rq.KeepAlive)
-                (Connection as IHttpConnection)?.Disconnect();
         }
     }
 }

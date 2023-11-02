@@ -18,7 +18,6 @@ namespace UniSpy.Server.Chat.Application
         public new ClientInfo Info { get => (ClientInfo)base.Info; private set => base.Info = value; }
         public new ITcpConnection Connection => (ITcpConnection)base.Connection;
         public bool IsRemoteClient => !ClientManager.ClientPool.ContainsKey(Connection.RemoteIPEndPoint);
-        private BufferCache _bufferCache = new BufferCache();
         private RemoteClient _remoteClient;
         public Client(IConnection connection, IServer server) : base(connection, server)
         {
@@ -41,12 +40,9 @@ namespace UniSpy.Server.Chat.Application
         protected override void OnReceived(object buffer)
         {
             var message = DecryptMessage((byte[])buffer);
-            if (_bufferCache.ProcessBuffer(message, out var completeBuffer))
-            {
-                this.LogNetworkReceiving(completeBuffer);
-                var switcher = CreateSwitcher(completeBuffer);
-                switcher.Handle();
-            }
+            this.LogNetworkReceiving(message);
+            var switcher = CreateSwitcher(message);
+            switcher.Handle();
         }
         protected override void OnDisconnected()
         {

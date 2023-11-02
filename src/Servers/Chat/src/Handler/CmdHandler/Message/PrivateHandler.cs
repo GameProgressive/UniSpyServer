@@ -18,7 +18,7 @@ namespace UniSpy.Server.Chat.Handler.CmdHandler.Message
         }
         protected override void ChannelMessageDataOpration()
         {
-            var data = ClientManager.ClientPool;
+            // var data = ClientManager.ClientPool;
             // if (_channel.Mode.IsModeratedChannel)
             // {
             //     return;

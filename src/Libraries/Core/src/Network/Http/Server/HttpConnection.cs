@@ -1,62 +1,38 @@
-using System.Linq;
 using System.Net;
+using System.Text;
 using UniSpy.Server.Core.Abstraction.Interface;
-using UniSpy.Server.Core.Encryption;
 using UniSpy.Server.Core.Events;
 
-namespace UniSpy.Server.Core.Network.Http.Server
+namespace UniSpy.Server.Core.Network.Http.Server;
+
+public class HttpConnection : IHttpConnection
 {
-    public class HttpConnection : NetCoreServer.HttpSession, IHttpConnection
+    public IConnectionManager Manager { get; private set; }
+    public HttpListenerContext Context { get; private set; }
+    public IPEndPoint RemoteIPEndPoint { get; private set; }
+
+    public NetworkConnectionType ConnectionType { get; } = NetworkConnectionType.Http;
+    public event OnReceivedEventHandler OnReceive;
+    public HttpConnection(HttpListenerContext context, IConnectionManager manager)
     {
-        public IPEndPoint RemoteIPEndPoint { get; private set; }
-        public NetworkConnectionType ConnectionType => NetworkConnectionType.Http;
-        public IConnectionManager Manager => (IConnectionManager)Server;
+        Manager = manager;
+        Context = context;
+        RemoteIPEndPoint = context.Request.RemoteEndPoint;
+    }
+    public void OnReceived(IHttpRequest request)
+    {
+        OnReceive(request);
+    }
 
-        public event OnConnectedEventHandler OnConnect;
-        public event OnDisconnectedEventHandler OnDisconnect;
-        public event OnReceivedEventHandler OnReceive;
-        private HttpBufferCache _bufferCache = new HttpBufferCache();
-        public HttpConnection(HttpConnectionManager server) : base(server)
-        {
-        }
-        protected override void OnConnecting()
-        {
-            if (RemoteIPEndPoint is null)
-            {
-                RemoteIPEndPoint = (IPEndPoint)Socket.RemoteEndPoint;
-            }
-            base.OnConnecting();
-        }
-        protected override void OnConnected() => OnConnect();
-        protected override void OnDisconnected() => OnDisconnect();
-        protected override void OnReceived(byte[] buffer, long offset, long size)
-        {
-            var req = UniSpyEncoding.GetString(buffer.Take((int)size).ToArray());
-            string compeleteBuffer;
-            if (_bufferCache.ProcessBuffer(req, out compeleteBuffer))
-            {
-                var completeBytes = UniSpyEncoding.GetBytes(compeleteBuffer);
-                base.OnReceived(completeBytes, offset, completeBytes.Length);
-            }
-        }
-        protected override void OnReceivedRequest(NetCoreServer.HttpRequest request) => OnReceive(new HttpRequest(request));
-        void IConnection.Send(string response)
-        {
-            // Response.MakeOkResponse();
-            Response.SetBegin(200);
-            Response.SetBody(response);
-            base.SendResponse();
-        }
+    public void Send(string response)
+    {
+        Send(Encoding.UTF8.GetBytes(response));
+    }
 
-        void IConnection.Send(byte[] response)
-        {
-            // Response.MakeOkResponse();
-            Response.SetBegin(200);
-            Response.SetBody(response);
-            base.SendResponse();
-        }
-
-        void ITcpConnection.Disconnect() => Disconnect();
-
+    public void Send(byte[] response)
+    {
+        Context.Response.StatusCode = (int)HttpStatusCode.OK;
+        Context.Response.ContentType = "application/xml?";
+        Context.Response.OutputStream.Write(response);
     }
 }

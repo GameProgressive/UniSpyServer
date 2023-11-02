@@ -1,45 +1,26 @@
 using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using UniSpy.Server.Core.Abstraction.Interface;
 
-namespace UniSpy.Server.Core.Network.Http.Server
+namespace UniSpy.Server.Core.Network.Http.Server;
+public class HttpRequest : IHttpRequest
 {
-    public class HttpRequest : IHttpRequest
+    public string Body { get; private set; }
+    public Uri Url { get; private set; }
+    public string Method { get; private set; }
+    public HttpListenerRequest RawRequest { get; private set; }
+    public HttpRequest(HttpListenerRequest rawRequest)
     {
-        public Uri Uri => new Uri(Url);
-
-        public byte[] BodyBytes { get; private set; }
-
-        public string Body { get; private set; }
-
-        public long Cookies { get; private set; }
-
-        public long Headers { get; private set; }
-
-        public string Protocol { get; private set; }
-
-        public string Url { get; private set; }
-
-        public string Method { get; private set; }
-
-        public bool KeepAlive { get; private set; }
-
-
-        public HttpRequest(NetCoreServer.HttpRequest request)
+        RawRequest = rawRequest;
+        Method = RawRequest.HttpMethod;
+        Url = RawRequest.Url;
+        using (var stream = rawRequest.InputStream)
         {
-            Url = request.Url;
-            BodyBytes = request.BodyBytes;
-            Body = request.Body;
-            Cookies = request.Cookies;
-            Headers = request.Headers;
-            Protocol = request.Protocol;
-            Method = request.Method;
-            KeepAlive = false;
-
-            for (var m = 0; m < request.Headers; m++)
+            using (var reader = new StreamReader(stream, rawRequest.ContentEncoding))
             {
-                var k = request.Header(m);
-                if (k.Item1 == "Connection" && k.Item2.ToLower() == "keep-alive")
-                    KeepAlive = true;
+                Body = reader.ReadToEnd();
             }
         }
     }

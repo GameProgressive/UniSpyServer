@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using UniSpy.Server.Core.Events;
 
@@ -29,7 +30,6 @@ namespace UniSpy.Server.Core.Abstraction.Interface
     /// </summary>
     public interface IUdpConnection : IConnection
     {
-        // public TimeSpan ConnectionExistedTime { get; }
         void Send(IPEndPoint endPoint, byte[] response);
         void Send(IPEndPoint endPoint, string response);
     }
@@ -42,11 +42,11 @@ namespace UniSpy.Server.Core.Abstraction.Interface
         event OnDisconnectedEventHandler OnDisconnect;
         void Disconnect();
     }
-    public interface IHttpConnection : ITcpConnection
+    public interface IHttpConnection : IConnection
     {
     }
 
-    public interface IConnectionManager
+    public interface IConnectionManager : IDisposable
     {
         event OnConnectingEventHandler OnInitialization;
         void Start();

@@ -52,8 +52,9 @@ namespace UniSpy.Server.Core.Network
     {
 #pragma warning disable CS0067
         public event OnConnectingEventHandler OnInitialization;
-        public void Start() => throw new UniSpy.Exception("Remote tcp connection do not have this method.");
         public RemoteTcpConnectionManager() { }
+        public void Start() { }
+        public void Dispose() { }
     }
 
     public class RemoteTcpConnection : ITcpConnection
