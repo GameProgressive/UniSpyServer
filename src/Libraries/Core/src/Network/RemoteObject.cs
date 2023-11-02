@@ -81,5 +81,7 @@ namespace UniSpy.Server.Core.Network
         public void Disconnect() => LogWriter.LogDebug("Remote tcp connection do not have this method.");
         public void Send(string response) => LogWriter.LogDebug("Remote tcp connection do not have this method.");
         public void Send(byte[] response) => LogWriter.LogDebug("Remote tcp connection do not have this method.");
+
+        public void Dispose() { }
     }
 }

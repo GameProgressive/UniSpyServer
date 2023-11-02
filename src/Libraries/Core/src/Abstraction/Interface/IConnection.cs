@@ -36,7 +36,7 @@ namespace UniSpy.Server.Core.Abstraction.Interface
     /// <summary>
     /// Represent a tcp connection
     /// </summary>
-    public interface ITcpConnection : IConnection
+    public interface ITcpConnection : IConnection, IDisposable
     {
         event OnConnectedEventHandler OnConnect;
         event OnDisconnectedEventHandler OnDisconnect;

@@ -10,7 +10,7 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Network.Tcp.Server
 {
-    public class TcpConnection : ITcpConnection, IDisposable
+    public class TcpConnection : ITcpConnection
     {
         public IConnectionManager Manager { get; private set; }
 
@@ -62,7 +62,7 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
                     }
 
                     var receivedData = buffer.Take(bytesRead).ToArray();
-                    OnReceived(receivedData);
+                    OnReceive(receivedData);
                 }
                 catch (Exception ex)
                 {
@@ -72,8 +72,11 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
                 }
             }
         }
-        public void OnDisconnected() => OnDisconnect();
-        public void OnReceived(object buffer) => OnReceive(buffer);
+        public void OnDisconnected()
+        {
+            OnDisconnect();
+            Client.Close();
+        }
 
         public void Dispose() => Client.Dispose();
     }

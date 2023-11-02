@@ -22,18 +22,15 @@ public class UdpConnectionManager : IConnectionManager, IDisposable
         {
             while (true)
             {
-                var clientEndPoint = new IPEndPoint(IPAddress.Any, (Listener.Client.RemoteEndPoint as IPEndPoint).Port);
+                var clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 var data = Listener.Receive(ref clientEndPoint);
                 var conn = new UdpConnection(clientEndPoint, this);
-                OnConnecting(conn);
+                // OnInitialization?.Invoke(conn);
                 Task.Run(() => conn.OnReceived(data));
             }
         });
     }
-    public void OnConnecting(IUdpConnection connection)
-    {
-        OnInitialization?.Invoke(connection);
-    }
+
 
     public void Dispose()
     {

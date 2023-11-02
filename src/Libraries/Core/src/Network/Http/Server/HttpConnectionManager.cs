@@ -7,7 +7,7 @@ using UniSpy.Server.Core.Logging;
 
 namespace UniSpy.Server.Core.Network.Http.Server;
 
-public class HttpConnectionManager : IConnectionManager, IDisposable
+public class HttpConnectionManager : IConnectionManager
 {
     public event OnConnectingEventHandler OnInitialization;
     public HttpListener Listener { get; private set; }
@@ -29,7 +29,7 @@ public class HttpConnectionManager : IConnectionManager, IDisposable
                     var raw = context.Request;
                     var request = new HttpRequest(raw);
                     var conn = new HttpConnection(context, this);
-                    OnConnecting(conn);
+                    OnInitialization(conn);
                     conn.OnReceived(request);
                 }
                 catch (Exception ex)
@@ -38,10 +38,6 @@ public class HttpConnectionManager : IConnectionManager, IDisposable
                 }
             }
         });
-    }
-    public void OnConnecting(IHttpConnection connection)
-    {
-        OnInitialization((IConnection)connection);
     }
 
     public void Dispose()

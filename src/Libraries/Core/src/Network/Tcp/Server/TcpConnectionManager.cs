@@ -29,16 +29,13 @@ public class TcpConnectionManager : IConnectionManager, IDisposable
             {
                 var client = Listener.AcceptTcpClient();
                 var conn = new TcpConnection(client, this);
-                Task.Run(() => OnConnecting(conn));
+                Task.Run(() =>
+                {
+                    OnInitialization(conn);
+                    conn.OnConnected();
+                });
             }
         });
-    }
-
-
-    public void OnConnecting(ITcpConnection connection)
-    {
-        OnInitialization((IConnection)connection);
-        (connection as TcpConnection).OnConnected();
     }
 
     public void Dispose()
