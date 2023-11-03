@@ -15,7 +15,21 @@ public class HttpConnectionManager : IConnectionManager
     public HttpConnectionManager(IPEndPoint endPoint)
     {
         Listener = new HttpListener();
-        Listener.Prefixes.Add($"http://localhost:{endPoint.Port}/");
+        string host;
+        if (endPoint.Address.ToString() == "0.0.0.0")
+        {
+            host = "+";
+        }
+        else if (endPoint.Address.ToString() == "127.0.0.1")
+        {
+            host = "localhost";
+        }
+        else
+        {
+            host = endPoint.Address.ToString();
+        }
+
+        Listener.Prefixes.Add($"http://{host}:{endPoint.Port}/");
     }
     public void Start()
     {

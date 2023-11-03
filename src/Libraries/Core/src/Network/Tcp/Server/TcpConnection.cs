@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -47,13 +46,14 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
 
         private void StartReceiving()
         {
-            var stream = Client.GetStream();
-            byte[] buffer = new byte[2048];
-            int bytesRead;
+
             while (true)
             {
                 try
                 {
+                    var stream = Client.GetStream();
+                    byte[] buffer = new byte[2048];
+                    int bytesRead;
                     bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead == 0)
                     {
@@ -64,7 +64,7 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
                     var receivedData = buffer.Take(bytesRead).ToArray();
                     OnReceive(receivedData);
                 }
-                catch (Exception ex)
+                catch (SocketException ex)
                 {
                     LogWriter.LogError(ex);
                     OnDisconnected();
