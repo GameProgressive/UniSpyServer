@@ -31,8 +31,8 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
         }
         public void Disconnect()
         {
-            OnDisconnected();
             Client.Client.Disconnect(true);
+            OnDisconnected();
         }
 
         public void Send(string response) => Send(UniSpyEncoding.GetBytes(response));

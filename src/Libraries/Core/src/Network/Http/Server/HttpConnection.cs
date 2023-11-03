@@ -23,6 +23,10 @@ public class HttpConnection : IHttpConnection
     public void OnReceived(IHttpRequest request)
     {
         OnReceive(request);
+        if (Context.Request.Headers["Connection"] == "close")
+        {
+            Context.Response.Close();
+        }
     }
 
     public void Send(string response)

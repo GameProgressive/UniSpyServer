@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Threading.Tasks;
 using UniSpy.Server.Core.Abstraction.Interface;
@@ -23,19 +24,16 @@ public class HttpConnectionManager : IConnectionManager
         {
             while (true)
             {
-                try
-                {
-                    var context = Listener.GetContext();
-                    var raw = context.Request;
-                    var request = new HttpRequest(raw);
-                    var conn = new HttpConnection(context, this);
-                    OnInitialization(conn);
-                    conn.OnReceived(request);
-                }
-                catch (Exception ex)
-                {
-                    LogWriter.LogError(ex);
-                }
+                var context = Listener.GetContext();
+                Task.Run(() =>
+                   {
+
+                       var conn = new HttpConnection(context, this);
+                       OnInitialization(conn);
+                       var raw = context.Request;
+                       var request = new HttpRequest(raw);
+                       conn.OnReceived(request);
+                   });
             }
         });
     }

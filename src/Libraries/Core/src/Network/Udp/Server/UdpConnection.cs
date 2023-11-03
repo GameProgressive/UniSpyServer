@@ -14,6 +14,7 @@ public class UdpConnection : IUdpConnection
     public NetworkConnectionType ConnectionType { get; } = NetworkConnectionType.Udp;
 
     public event OnReceivedEventHandler OnReceive;
+
     public UdpConnection(IPEndPoint endPoint, IConnectionManager manager)
     {
         RemoteIPEndPoint = endPoint;

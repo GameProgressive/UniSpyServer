@@ -12,13 +12,10 @@ public class TcpConnectionManager : IConnectionManager, IDisposable
 {
     public event OnConnectingEventHandler OnInitialization;
     public TcpListener Listener;
-    public ConcurrentDictionary<IPEndPoint, IConnection> ConnectionPool = new();
-
     public TcpConnectionManager(IPEndPoint endPoint)
     {
         Listener = new TcpListener(endPoint);
     }
-
 
     public void Start()
     {
