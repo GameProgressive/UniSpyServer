@@ -13,12 +13,12 @@ namespace UniSpy.Server.WebServer.Module.Direct2Game.Contract.Request
 
         public override void Build()
         {
+            _content.Add("GetStoreAvailabilityResponse");
             _content.Add("GetStoreAvailabilityResult");
             _content.Add("status");
             _content.Add("code", _result.Code);
-            _content.ChangeToElement("status");
-            _content.Add("storestatusid", _result.StoreStatusId);
             _content.ChangeToElement("GetStoreAvailabilityResult");
+            _content.Add("storestatusid", (int)_result.StoreStatusId);
             base.Build();
         }
     }

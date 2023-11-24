@@ -55,20 +55,12 @@ namespace UniSpy.Server.WebServer.Abstraction
         {
             CurrentElement.Add(new XElement(_bodyNamespace + name, value));
         }
-        // public virtual void Add(string name, List<RecordFieldObject> values)
-        // {
-        //     throw new NotImplementedException();
-        // }
-        // public virtual void Add(string name, List<FieldObject> values)
-        // {
-        //     throw new NotImplementedException();
-        // }
 
         public override string ToString()
         {
             using (var writer = new MyStringWriter())
             {
-                Content.Save(writer);
+                Content.Save(writer, SaveOptions.DisableFormatting);
                 return writer.ToString();
             }
         }

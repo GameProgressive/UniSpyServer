@@ -37,7 +37,9 @@ public class HttpConnection : IHttpConnection
     public void Send(byte[] response)
     {
         Context.Response.StatusCode = (int)HttpStatusCode.OK;
-        Context.Response.ContentType = "application/xml?";
+        Context.Response.ContentType = "application/xml";
+        Context.Response.SendChunked = false;
+        Context.Response.ContentLength64 = response.Length;
         Context.Response.OutputStream.Write(response);
         if (Context.Request.Headers["Connection"] == "close")
         {

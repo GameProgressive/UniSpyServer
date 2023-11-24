@@ -31,7 +31,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Handler
                 _result.UserId = data.u.Userid;
                 _result.ProfileId = data.p.Profileid;
                 // _result.CdKeyHash = data.sp.Cdkeyenc;
-                _result.CdKeyHash = "xxxxxxxxxxx";
+                _result.CdKeyHash = "D41D8CD98F00B204E9800998ECF8427E";
                 // currently we set this to uniquenick
                 _result.ProfileNick = data.p.Nick;
                 _result.UniqueNick = data.sp.Uniquenick;

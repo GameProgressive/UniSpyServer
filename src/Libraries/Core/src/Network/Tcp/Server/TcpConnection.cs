@@ -46,14 +46,22 @@ namespace UniSpy.Server.Core.Network.Tcp.Server
 
         private void StartReceiving()
         {
-
+            if (Client.Connected == false)
+            {
+                OnDisconnected();
+                return;
+            }
+            var stream = Client.GetStream();
+            byte[] buffer = new byte[2048];
+            int bytesRead;
             while (true)
             {
                 try
                 {
-                    var stream = Client.GetStream();
-                    byte[] buffer = new byte[2048];
-                    int bytesRead;
+                    if (!stream.CanRead || !stream.CanWrite)
+                    {
+                        break;
+                    }
                     bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead == 0)
                     {

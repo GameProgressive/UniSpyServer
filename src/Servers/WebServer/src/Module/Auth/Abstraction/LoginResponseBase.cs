@@ -19,7 +19,7 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
 
         protected void BuildContext()
         {
-            _content.Add("responseCode", _result.ResponseCode);
+            _content.Add("responseCode", "h");
             _content.Add("certificate");
             _content.Add("length", _result.Length);
             _content.Add("version", _request.Version);
@@ -49,9 +49,12 @@ namespace UniSpy.Server.WebServer.Module.Auth.Abstraction
                 dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.UniqueNick));
                 dataToHash.AddRange(Encoding.ASCII.GetBytes(_result.CdKeyHash));
 
-                dataToHash.AddRange(ClientInfo.PeerKeyModulusBytes);
-                dataToHash.Add(ClientInfo.PeerKeyExponentByte);
+                dataToHash.AddRange(ClientInfo.PeerKeyModulus.FromHexStringToBytes());
+                dataToHash.AddRange(ClientInfo.PeerKeyExponent.FromHexStringToBytes());
+                // dataToHash.AddRange(new byte[] { 0x01, 0x00, 0x01 });
 
+                // var exp = System.Numerics.BigInteger.Parse(ClientInfo.PeerKeyExponent,System.Globalization.NumberStyles.HexNumber);
+                // exp.ToByteArray()
                 // server data should be convert to bytes[128] then added to list
                 dataToHash.AddRange(ClientInfo.ServerData.FromHexStringToBytes());
                 var hash = md5.ComputeHash(dataToHash.ToArray());
