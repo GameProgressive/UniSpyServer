@@ -1,0 +1,11 @@
+// See https://containers.dev/implementors/json_reference/ for configuration reference
+{
+	"name": "Untitled Node.js project",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+"remoteUser": "node",
+"features": {
+	"ghcr.io/devcontainers/features/git:1": {}
+}
+}

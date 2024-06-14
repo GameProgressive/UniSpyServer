@@ -1,0 +1,3 @@
+ALL_SERVER_END_FLAG = bytes([0, 255, 255, 255, 255])
+STRING_SPLITER = bytes([0])
+NTS_STRING_FLAG = bytes([0xFF])

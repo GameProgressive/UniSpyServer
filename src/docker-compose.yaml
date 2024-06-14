@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 123456
+
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: unispy
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+
+  postgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: unispy
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: unispy

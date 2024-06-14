@@ -1,0 +1,97 @@
+{
+  "database": {
+    "server": "ip",
+    "port": 5432,
+    "database": "unispy-db",
+    "username": "unispy",
+    "password": "123456",
+    "ssl_mode": "require",
+    "trust_server_cert": "false",
+    "ssl_key": "",
+    "ssl_password": "",
+    "root_cert": ""
+  },
+  "redis": {
+    "server": "ip",
+    "port": 5678,
+    "user": "",
+    "password": "password",
+    "ssl": "true",
+    "ssl_host": ""
+  },
+  "servers": [
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "PresenceConnectionManager",
+      "public_address": "0.0.0.0",
+      "listening_port": 29900
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "PresenceSearchPlayer",
+      "public_address": "0.0.0.0",
+      "listening_port": 29901
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "CDKey",
+      "public_address": "0.0.0.0",
+      "listening_port": 29910
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "ServerBrowserV1",
+      "public_address": "0.0.0.0",
+      "listening_port": 28900
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "ServerBrowserV2",
+      "public_address": "0.0.0.0",
+      "listening_port": 28910
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "QueryReport",
+      "public_address": "0.0.0.0",
+      "listening_port": 27900
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "NatNegotiation",
+      "public_address": "0.0.0.0",
+      "listening_port": 27901
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "GameStatus",
+      "public_address": "0.0.0.0",
+      "listening_port": 29920
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "Chat",
+      "public_address": "0.0.0.0",
+      "listening_port": 6667
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "WebServices",
+      "public_address": "0.0.0.0",
+      "listening_port": 80
+    },
+    {
+      "server_id": "00000000-0000-0000-0000-000000000000",
+      "server_name": "GameTrafficRelay",
+      "public_address": "0.0.0.0",
+      "listening_port": 10086
+    }
+  ],
+  "backend": {
+    "url": "http://localhost:8080"
+  },
+  "logging": {
+    "path": "~/Downloads/unispy_server/log/",
+    "min_log_level": "verbose"
+  }
+}
