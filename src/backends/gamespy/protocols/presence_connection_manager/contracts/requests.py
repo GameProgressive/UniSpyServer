@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Union
 
 import jsonschema
+from pydantic import UUID4, BaseModel
 from servers.presence_connection_manager.aggregates.user_status import UserStatus
 from servers.presence_connection_manager.aggregates.user_status_info import (
     UserStatusInfo,
@@ -15,45 +16,24 @@ from servers.presence_connection_manager.enums.general import (
 import backends.gamespy.library.abstractions.request_base as lib
 
 
-@dataclass
-class RequestBase(lib.RequestBase):
-    raw_request: str
-    json_schema = {
-        "type": "object",
-        "properties": {
-            "raw_request": {"type": "string"},
-        },
-    }
+class RequestBase(BaseModel):
+    server_id: UUID4
 
-    def validate(self) -> None:
-        super().validate()
-        jsonschema.validate(self.__dict__, self.json_schema)
+
+class ErrorOnParse(RequestBase):
+    raw_request: str
 
 
 # region buddy
-@dataclass
 class AddBuddyRequest(RequestBase):
     friend_profile_id: int
     reason: str
-    json_schema = {
-        "type": "object",
-        "properties": {
-            "friend_profile_id": {"type": "number"},
-            "reason": {"type": "string"},
-        },
-    }
-
-    def validate(self) -> None:
-        super().validate()
-        jsonschema.validate(self.__dict__, self.json_schema)
 
 
-@dataclass
 class DelBuddyRequest(RequestBase):
     friend_profile_id: int
 
 
-@dataclass
 class InviteToRequest(RequestBase):
     product_id: int
     profile_id: int
@@ -61,7 +41,6 @@ class InviteToRequest(RequestBase):
     """the invite target profile id"""
 
 
-@dataclass
 class StatusInfoRequest(RequestBase):
     is_get_status_info: bool
     profile_id: int
@@ -69,19 +48,18 @@ class StatusInfoRequest(RequestBase):
     status_info: UserStatusInfo
 
 
-@dataclass
 class StatusRequest(RequestBase):
     status: UserStatus
     is_get_status: bool
 
 
 # region general
-@dataclass
+
+
 class KeepAliveRequest(RequestBase):
     pass
 
 
-@dataclass
 class LoginRequest(RequestBase):
     user_challenge: str
     response: str
@@ -103,24 +81,22 @@ class LoginRequest(RequestBase):
     firewall: bool
 
 
-@dataclass
 class LogoutRequest(RequestBase):
     pass
 
 
 # region profile
-@dataclass
+
+
 class AddBlockRequest(RequestBase):
     taget_id: int
 
 
-@dataclass
 class GetProfileRequest(RequestBase):
     profile_id: int
     session_key: str
 
 
-@dataclass
 class NewProfileRequest(RequestBase):
     is_replace_nick_name: bool
     session_key: str
@@ -128,20 +104,17 @@ class NewProfileRequest(RequestBase):
     old_nick: str
 
 
-@dataclass
 class RegisterCDKeyRequest(RequestBase):
     session_key: str
     cdkey_enc: str
 
 
-@dataclass
 class RegisterNickRequest(RequestBase):
     unique_nick: str
     session_key: str
     partner_id: int
 
 
-@dataclass
 class UpdateProfileRequest(RequestBase):
     has_public_mask_flag: bool = None
     public_mask: Union[PublicMasks, int] = None
@@ -169,7 +142,6 @@ class UpdateProfileRequest(RequestBase):
     country_code: str = None
 
 
-@dataclass
 class UpdateUiRequest(RequestBase):
     cpubrandid: str = None
     cpuspeed: str = None

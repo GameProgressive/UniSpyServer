@@ -1,4 +1,4 @@
-
+from fastapi import BaseModel
 
 # import abc
 # from dataclasses import dataclass
