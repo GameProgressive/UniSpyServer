@@ -6,7 +6,7 @@ from backends.urls import *
 app = FastAPI()
 
 
-@app.route(f"/{PRESENCE_CONNECTION_MANAGER}/login", methods=["POST"])
-def pcm_login(request: LoginRequest):
+@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/login")
+def login(request: LoginRequest):
 
     pass

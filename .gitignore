@@ -164,4 +164,4 @@ cython_debug/
 
 *.pyc
 *.txt
-!requirement.txt
+!requirements.txt

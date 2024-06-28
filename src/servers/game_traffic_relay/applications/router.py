@@ -1,10 +1,10 @@
-from flask import Flask, request
+from fastapi import FastAPI
 from backends.urls import *
+from servers.game_traffic_relay.contracts.general import InitPacketInfo
 
-app = Flask(__name__)
+app = FastAPI()
 
 
-@app.route(f"/GetNatNegotiationInfo", methods=["POST"])
-async def get_natneg_info():
+@app.post(f"/GetNatNegotiationInfo")
+async def get_natneg_info(request: InitPacketInfo):
     data = request.json
-    

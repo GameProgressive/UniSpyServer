@@ -18,7 +18,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 123456
 
   postgresql:
-    image: postgres
+    image: postgres:14
     ports:
       - "5432:5432"
     restart: always
@@ -26,3 +26,5 @@ services:
       POSTGRES_USER: unispy
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: unispy
+    volumes:
+      - ../postgre_creation.sql:/docker-entrypoint-initdb.d/postgre_creation.sql

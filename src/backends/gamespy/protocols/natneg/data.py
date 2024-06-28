@@ -1,5 +1,5 @@
 from servers.natneg.contracts.requests import InitRequest
-from backends.gamespy.protocols.natneg.aggregates.init_packet_info import InitPacketInfo
+from servers.natneg.aggregations.init_packet_info import InitPacketInfo
 
 
 def store_init_packet(request: InitRequest):

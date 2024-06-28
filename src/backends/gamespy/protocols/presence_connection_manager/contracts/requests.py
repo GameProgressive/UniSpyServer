@@ -1,7 +1,5 @@
-from dataclasses import dataclass
 from typing import Union
 
-import jsonschema
 from pydantic import UUID4, BaseModel
 from servers.presence_connection_manager.aggregates.user_status import UserStatus
 from servers.presence_connection_manager.aggregates.user_status_info import (
@@ -155,14 +153,4 @@ class UpdateUiRequest(RequestBase):
 
 
 if __name__ == "__main__":
-    from jsonschema import validate
-
-    data = {
-        "server_id": "550e8400-e29b-41d4-a716-446655440000",
-        "raw_request": "hello",
-        "friend_profile_id": 1,
-        "reason": "hello",
-    }
-    r = AddBuddyRequest(**data)
-    r.validate()
     pass
