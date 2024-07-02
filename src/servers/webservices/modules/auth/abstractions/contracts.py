@@ -1,5 +1,4 @@
 import hashlib
-import struct
 import servers.webservices.abstractions.contracts as lib
 from servers.webservices.aggregations.soap_envelop import SoapEnvelop
 from servers.webservices.applications.client import ClientInfo
@@ -16,18 +15,21 @@ class LoginRequestBase(lib.RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        version = self._content_element.find(f".//{{{NAMESPACE}}}version")
-        if version is None:
+        version_node = self._content_element.find(
+            f".//{{{NAMESPACE}}}version")
+        if version_node is None or version_node.text is None:
             raise AuthException("version is missing from the request.")
-        self.version = int(version)
-        partner_id = self._content_element.find(f".//{{{NAMESPACE}}}version")
-        if version is None:
+        self.version = int(version_node.text)
+        partner_id_node = self._content_element.find(
+            f".//{{{NAMESPACE}}}version")
+        if partner_id_node is None or partner_id_node.text is None:
             raise AuthException("partner id is missing from the request.")
-        self.partner_code = int(partner_id)
-        namespace_id = self._content_element.find(f".//{{{NAMESPACE}}}version")
-        if namespace_id is None:
+        self.partner_code = int(partner_id_node.text)
+        namespace_id_node = self._content_element.find(
+            f".//{{{NAMESPACE}}}version")
+        if namespace_id_node is None or namespace_id_node.text is None:
             raise AuthException("namespace id is missing from the request.")
-        self.namespace_id = int(namespace_id)
+        self.namespace_id = int(namespace_id_node.text)
 
 
 class LoginResultBase(lib.ResultBase):
@@ -81,12 +83,18 @@ class LoginResponseBase(lib.ResponseBase):
     def __compute_hash(self) -> str:
         """return md5 str"""
         data_to_hash = bytearray()
-        data_to_hash.extend(self._result.length.to_bytes(4, byteorder="little"))
-        data_to_hash.extend(self._request.version.to_bytes(4, byteorder="little"))
-        data_to_hash.extend(self._request.partner_code.to_bytes(4, byteorder="little"))
-        data_to_hash.extend(self._request.namespace_id.to_bytes(4, byteorder="little"))
-        data_to_hash.extend(self._result.user_id.to_bytes(4, byteorder="little"))
-        data_to_hash.extend(self._result.profile_id.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._result.length.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._request.version.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._request.partner_code.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._request.namespace_id.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._result.user_id.to_bytes(4, byteorder="little"))
+        data_to_hash.extend(
+            self._result.profile_id.to_bytes(4, byteorder="little"))
         data_to_hash.extend(self._expiretime.to_bytes(4, byteorder="little"))
         data_to_hash.extend(self._result.profile_nick.encode("ascii"))
         data_to_hash.extend(self._result.unique_nick.encode("ascii"))

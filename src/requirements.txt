@@ -11,3 +11,4 @@ mongoengine == 0.28.2
 flask_socketio
 socketio
 fastapi
+xmltodict

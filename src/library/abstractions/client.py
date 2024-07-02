@@ -15,15 +15,15 @@ if TYPE_CHECKING:
 
 
 class ClientBase(abc.ABC):
-    server_config: ServerConfig
+    server_config: "ServerConfig"
     connection: object
-    logger: LogWriter
-    crypto: EncryptBase = None
-    info: ClientInfoBase
-    is_log_raw: bool = False
+    logger: "LogWriter"
+    crypto: "EncryptBase" = None
+    info: "ClientInfoBase"
+    is_log_raw: "bool" = False
 
     def __init__(
-        self, connection: ConnectionBase, server_config: ServerConfig, logger: LogWriter
+        self, connection: "ConnectionBase", server_config: "ServerConfig", logger: "LogWriter"
     ):
         assert isinstance(server_config, ServerConfig)
         # assert isinstance(logger, LogWriter)
@@ -39,12 +39,12 @@ class ClientBase(abc.ABC):
     def on_disconnected(self) -> None:
         self.__del__()
 
-    @abc.abstractedmethod
-    def create_switcher(self, buffer) -> SwitcherBase:
+    @abc.abstractmethod
+    def create_switcher(self, buffer) -> "SwitcherBase":
         pass
 
     def on_received(self, buffer) -> None:
-        switcher: SwitcherBase = self.create_switcher(buffer)
+        switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()
 
     def decrypt_message(self, buffer) -> bytes:
@@ -53,7 +53,7 @@ class ClientBase(abc.ABC):
         else:
             return buffer
 
-    def send(self, response: ResponseBase) -> None:
+    def send(self, response: "ResponseBase") -> None:
         response.build()
         sending_buffer = response.sending_buffer
         if isinstance(sending_buffer, str):

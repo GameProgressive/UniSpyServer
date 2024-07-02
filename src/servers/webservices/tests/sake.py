@@ -5,8 +5,7 @@ from servers.webservices.modules.auth.contracts.requests import LoginUniqueNickR
 
 class Auth(unittest.TestCase):
     def test_login_unique_nick(self) -> None:
-        raw = """
-                <?xml version="1.0" encoding="UTF-8"?>
+        raw = """<?xml version="1.0" encoding="UTF-8"?>
                     <SOAP-ENV:Envelope
                         xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
                         xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
@@ -24,8 +23,12 @@ class Auth(unittest.TestCase):
                                 </ns1:password>
                             </ns1:LoginUniqueNick>
                         </SOAP-ENV:Body>
-                    </SOAP-ENV:Envelope>
-                """
+                    </SOAP-ENV:Envelope>"""
         r = LoginUniqueNickRequest(raw)
         r.parse()
+        pass
         
+
+if __name__ == "__main__":
+    a = Auth()
+    a.test_login_unique_nick()
