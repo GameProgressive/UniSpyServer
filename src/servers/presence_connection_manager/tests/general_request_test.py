@@ -26,8 +26,8 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(request.game_port, 0)
         self.assertEqual(request.product_id, 0)
         self.assertEqual("gmtest", request.game_name)
-        self.assertEqual(SdkRevisionType(3), request.sdk_revision_type)
-        self.assertEqual(QuietModeType(0), request.quiet_mode_flags)
+        self.assertEqual(SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision_type)
+        self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_unique_nick(self) -> None:
         request = LoginRequest(GeneralRequestTest.LOGIN_UNIQUE_NICK)
@@ -44,8 +44,8 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(0, request.game_port)
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
-        self.assertEqual(SdkRevisionType(3), request.sdk_revision_type)
-        self.assertEqual(QuietModeType(0), request.quiet_mode_flags)
+        self.assertEqual(SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision_type)
+        self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_user(self) -> None:
         request = LoginRequest(GeneralRequestTest.LOGIN_USER)
@@ -63,8 +63,8 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(0, request.game_port)
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
-        self.assertEqual(SdkRevisionType(3), request.sdk_revision_type)
-        self.assertEqual(QuietModeType(0), request.quiet_mode_flags)
+        self.assertEqual(SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision_type)
+        self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
 
 if __name__ == "__main__":
