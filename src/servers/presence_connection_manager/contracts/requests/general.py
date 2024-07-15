@@ -10,7 +10,8 @@ from servers.presence_search_player.exceptions.general import (
 
 
 class KeepAliveRequest(RequestBase):
-    pass
+    def __init__(self, raw_request):
+        super().__init__(raw_request)
 
 
 class LoginRequest(RequestBase):
@@ -114,4 +115,5 @@ class LoginRequest(RequestBase):
 
 
 class LogoutRequest(RequestBase):
-    pass
+    def __init__(self, raw_request):
+        super().__init__(raw_request)
