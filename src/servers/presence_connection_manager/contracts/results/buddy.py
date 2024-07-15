@@ -25,3 +25,6 @@ class StatusInfoResult(ResultBase):
 
 class StatusResult(ResultBase):
     status: UserStatus
+
+
+# class NewUserResult()
