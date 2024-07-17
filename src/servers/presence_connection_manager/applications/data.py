@@ -17,8 +17,8 @@ def is_email_exist(email: str) -> bool:
         return False
 
 
-def delete_friend_by_profile_id(profile_id: int):
-    friend = PG_SESSION.query(Friends).filter(Friends.friendid == profile_id).first()
+def delete_friend_by_profile_id(profile_id: int, target_id: int, namespace_id: int):
+    friend = PG_SESSION.query(Friends).filter(Friends.ProfileId == profile_id, Friends.TargetId == target_id, Friends.NamespaceId == namespace_id).first()
     if friend is None:
         raise GPDatabaseException(
             f"friend deletion have errors on profile id:{profile_id}"
@@ -152,7 +152,6 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
 def update_profile_info(profile: Profiles):
     PG_SESSION.add(profile)
     PG_SESSION.commit()
-
 
 def update_unique_nick(subprofile_id: int, unique_nick: str):
     result = (
