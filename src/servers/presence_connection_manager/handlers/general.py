@@ -26,16 +26,11 @@ class KeepAliveHandler(CmdHandlerBase):
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
 
-    def _data_operation(self) -> None:
-        # We need to keep the player cache online
-        # So that other players can find the player
-        pass
-
     def _response_construct(self) -> None:
         self._response = KeepAliveResponse(self._request)
 
 
-class LoginHandler(CmdHandlerBase):
+class LoginHandelr(CmdHandlerBase):
 
     _request: LoginRequest
     _result: LoginResult
@@ -54,9 +49,6 @@ class LogoutHandler(LoginHandlerBase):
     def __init__(self, client: Client, request: LogoutRequest) -> None:
         assert isinstance(request, LogoutRequest)
         super().__init__(client, request)
-
-    def _data_operation(self) -> None:
-        self._client.connection.disconnect()
 
 
 import servers.presence_search_player.handlers.handlers

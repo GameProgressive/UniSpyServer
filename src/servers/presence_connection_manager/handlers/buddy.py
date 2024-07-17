@@ -5,11 +5,6 @@ from servers.presence_connection_manager.abstractions.handler import (
     LoginHandlerBase,
 )
 from servers.presence_connection_manager.applications.client import Client
-from servers.presence_connection_manager.applications.data import (
-    get_blocked_profile_id_list,
-    get_friend_profile_id_list,
-    delete_friend_by_profile_id,
-)
 from servers.presence_connection_manager.contracts.requests.buddy import (
     DelBuddyRequest,
     StatusInfoRequest,
@@ -40,9 +35,6 @@ class BlockListHandler(CmdHandlerBase):
     def __init__(self, client: Client) -> None:
         assert isinstance(client, Client)
 
-    def _data_operation(self) -> None:
-        self._result.profile_ids = get_blocked_profile_id_list(self._client.info.profile_id, self._client.info.namespace_id)
-
     def _response_construct(self) -> None:
         self._response = BlockListResponse(self._result)
 
@@ -53,10 +45,6 @@ class BuddyListHandler(LoginHandlerBase):
     def __init__(self, client: Client):
         assert isinstance(client, Client)
         self._client = client
-
-    def _data_operation(self) -> None:
-        friends_id = get_friend_profile_id_list(self._client.info.profile_id, self._client.info.namespace_id)
-        self._result.profile_ids = friends_id
 
     def response_construct(self):
         self._response = BuddyListResponse(self._request, self._result)
@@ -90,9 +78,6 @@ class BuddyStatusInfoHandler(CmdHandlerBase):
         raise NotImplementedError()
         super().__init__(client, request)
 
-    def _data_operation(self) -> None:
-        raise NotImplementedError()
-
 
 class DelBuddyHandler(LoginHandlerBase):
     _request: DelBuddyRequest
@@ -101,22 +86,13 @@ class DelBuddyHandler(LoginHandlerBase):
         assert isinstance(request, DelBuddyRequest)
         super().__init__(client, request)
 
-    def _data_operation(self) -> None:
-        delete_friend_by_profile_id(self._client.info.profile_id, self._request.friend_profile_id, self._client.info.namespace_id)
-
 
 class InviteToHandler(LoginHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         raise NotImplementedError()
         super().__init__(client, request)
 
-    def _data_operation(self) -> None:
-        if(self._client == None):
-            return
-        else:
-            # TODO
-            # Parse user to Buddy Message System
-            raise NotImplementedError()
+    pass
 
 
 class StatusHandler(CmdHandlerBase):
@@ -139,16 +115,6 @@ class StatusInfoHandler(LoginHandlerBase):
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)
         super().__init__(client, request)
-
-    def _data_operation(self) -> None:
-        if(self._request.is_get_status_info):
-            if(self._client != None):
-                # User is not online we do not need to send status info
-                self._result.status_info = self._client.info.status_info
-            else:
-                self._result.status_info = self._request.status_info
-                # TODO
-                # Notify every online friend?
 
     def _response_send(self) -> None:
         if self._request.is_get_status_info:
