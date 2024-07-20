@@ -1,6 +1,6 @@
 import unittest
 
-from servers.presence_connection_manager.contracts.requests.buddy import StatusRequest
+from servers.presence_connection_manager.src.contracts.requests.buddy import StatusRequest
 
 
 class GameTest(unittest.TestCase):

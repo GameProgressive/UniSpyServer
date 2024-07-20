@@ -1,6 +1,6 @@
 import unittest
 
-from servers.presence_connection_manager.contracts.requests.profile import (
+from servers.presence_connection_manager.src.contracts.requests.profile import (
     AddBlockRequest,
     GetProfileRequest,
     NewProfileRequest,

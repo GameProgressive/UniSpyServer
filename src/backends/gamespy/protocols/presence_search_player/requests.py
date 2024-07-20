@@ -1,7 +1,7 @@
 import abc
 from dataclasses import dataclass
 from backends.gamespy.library.abstractions.request_base import RequestBase as RB
-from servers.presence_connection_manager.enums.general import LoginType, SdkRevisionType
+from servers.presence_connection_manager.src.enums.general import LoginType, SdkRevisionType
 
 
 class RequestBase(RB, abc.ABC):

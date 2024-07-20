@@ -1,13 +1,13 @@
 import unittest
-from library.extentions.bytes_extentions import int_to_bytes
-from servers.natneg.contracts.requests import (
+from library.src.extentions.bytes_extentions import int_to_bytes
+from servers.natneg.src.contracts.requests import (
     AddressCheckRequest,
     ErtAckRequest,
     InitRequest,
     NatifyRequest,
     PreInitRequest,
 )
-from servers.natneg.enums.general import (
+from servers.natneg.src.enums.general import (
     NatClientIndex,
     NatPortType,
     PreInitState,

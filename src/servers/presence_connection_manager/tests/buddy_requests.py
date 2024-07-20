@@ -1,6 +1,6 @@
 import unittest
 
-from servers.presence_connection_manager.contracts.requests.buddy import (
+from servers.presence_connection_manager.src.contracts.requests.buddy import (
     AddBuddyRequest,
     DelBuddyRequest,
     InviteToRequest,
