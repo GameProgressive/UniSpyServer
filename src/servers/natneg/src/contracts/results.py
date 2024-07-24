@@ -3,7 +3,7 @@ from servers.natneg.src.enums.general import ConnectPacketStatus, PreInitState, 
 
 
 class AddressCheckResult(CommonResultBase):
-    packet_type: ResponseType = bytes(ResponseType.ADDRESS_REPLY)
+    packet_type: ResponseType = ResponseType.ADDRESS_REPLY
 
 
 class ConnectResult(ResultBase):
