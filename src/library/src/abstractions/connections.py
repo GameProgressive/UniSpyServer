@@ -1,7 +1,7 @@
 import abc
 import socketserver
 from library.src.abstractions.client import ClientBase
-from library.src.extentions.string_extentions import IPEndPoint
+# from library.src.extentions.string_extentions import IPEndPoint
 from library.src.log.log_manager import LogWriter
 from library.src.unispy_server_config import ServerConfig
 
@@ -27,7 +27,7 @@ class ConnectionBase(abc.ABC):
         assert isinstance(config, ServerConfig)
         assert issubclass(t_client, ClientBase)
         # assert isinstance(logger, LogWriter)
-        assert issubclass(type(handler), socketserver.BaseRequestHandler)
+        # assert issubclass(type(handler), socketserver.BaseRequestHandler)
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
         self.config = config

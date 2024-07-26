@@ -7,6 +7,7 @@ from library.src.unispy_server_config import ServerConfig
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from library.src.abstractions.handler import CmdHandlerBase
     from library.src.abstractions.connections import ConnectionBase
     from library.src.abstractions.switcher import SwitcherBase
     from library.src.abstractions.enctypt_base import EncryptBase
@@ -32,6 +33,8 @@ class ClientBase(abc.ABC):
 
         self.connection: ConnectionBase = connection
         self.logger = logger
+        self.__log_prefix = f"[{self.connection.remote_ip}:{
+            self.connection.remote_port}]"
 
     def on_connected(self) -> None:
         pass
@@ -74,26 +77,27 @@ class ClientBase(abc.ABC):
 
         self.on_received(buffer)
 
-    def log_verbose(self, message: str) -> None:
-        pass
+    def log_debug(self, message: str) -> None:
+        self.logger.debug(f"{self.__log_prefix}: {message}")
 
     def log_info(self, message: str) -> None:
-        pass
+        self.logger.info(f"{self.__log_prefix}: {message}")
 
     def log_warn(self, message: str) -> None:
-        pass
+        self.logger.warn(f"{self.__log_prefix}: {message}")
 
     def log_error(self, message: str) -> None:
-        pass
+        self.logger.error(f"{self.__log_prefix}: {message}")
 
     def log_network_sending(self, data: object) -> None:
-        pass
+        self.logger.info(f"{self.__log_prefix} [send]: {data}")
 
     def log_network_receving(self, data: object) -> None:
-        pass
+        self.logger.info(f"{self.__log_prefix} [recv]: {data}")
 
-    def log_current_class(self, object) -> None:
-        pass
+    def log_current_class(self, object: "CmdHandlerBase") -> None:
+        self.logger.debug(f"{self.__log_prefix} [=>] <{
+                          object.__class__.__name__}>")
 
 
 class EasyTimer:

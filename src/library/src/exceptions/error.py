@@ -10,8 +10,8 @@ class UniSpyException(Exception):
 
     @staticmethod
     # def handle_exception(e: Exception, client: ClientBase = None):
-    def handle_exception(e: Exception, client = None):
-        if issubclass(e, UniSpyException):
+    def handle_exception(e: Exception, client=None):
+        if issubclass(type(e), UniSpyException):
             if client is None:
                 # LogWriter.LogError(ex.Message);
                 pass

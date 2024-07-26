@@ -1,10 +1,13 @@
 import unittest
 
 from library.src.unispy_server_config import CONFIG
-from library.tests.mock_objects.general import ClientMock, ConnectionMock, LogMock, RequestHandlerMock
+from library.tests.mock_objects.general import ConnectionMock, LogMock, RequestHandlerMock
 from servers.natneg.src.contracts.requests import InitRequest
 from servers.natneg.src.contracts.results import InitResult
 from servers.natneg.src.handlers.handlers import InitHandler
+import responses
+
+from servers.natneg.tests.mock_objects import ClientMock
 
 
 def create_client():
@@ -14,11 +17,12 @@ def create_client():
         handler=handler,
         config=CONFIG.servers["NatNegotiation"], t_client=ClientMock,
         logger=logger)
+
     return conn._client
 
 
 class HandlerTests(unittest.TestCase):
-
+    @responses.activate
     def init_test(self):
         raw = bytes(
             [
@@ -29,11 +33,13 @@ class HandlerTests(unittest.TestCase):
         )  # fmt: skip
         req = InitRequest(raw)
         client = create_client()
+
         handler = InitHandler(client, req)
-        # change function pointer
-        handler._data_operate = lambda: None
+        url = f"{
+            CONFIG.backend.url}/{handler._client.server_config.server_name}/{handler._backend_url}/"
+        responses.add(responses.POST, url, json={"message": "ok"}, status=200)
+
         handler.handle()
-        handler._result = InitResult()
 
 
 if __name__ == "__main__":

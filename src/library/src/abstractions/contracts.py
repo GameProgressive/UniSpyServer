@@ -2,6 +2,7 @@ import abc
 from copy import deepcopy
 from dataclasses import dataclass
 import enum
+from uuid import UUID
 
 
 class RequestBase(abc.ABC):
@@ -40,6 +41,8 @@ class RequestBase(abc.ABC):
                 result[key] = value.value
             elif isinstance(value, enum.IntEnum):
                 result[key] = value.value
+            elif isinstance(value, UUID):
+                result[key] = str(value)
         return result
 
 

@@ -1,6 +1,6 @@
 from socket import inet_ntoa
 import struct
-from library.src.extentions.string_extentions import IPEndPoint
+# from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.abstractions.contracts import CommonRequestBase, RequestBase
 from servers.natneg.src.enums.general import (
     NatClientIndex,
@@ -37,10 +37,9 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    def __init__(self, raw_request: bytes) -> None:
-        super().__init__(raw_request)
-        self.game_name = None
-        self.private_ip_endpoint = None
+    game_name: str = None
+    private_ip: str = None
+    private_port: int = None
 
     def parse(self) -> None:
         super().parse()
@@ -48,7 +47,8 @@ class InitRequest(CommonRequestBase):
         port_bytes = self.raw_request[19:21][::-1]
         port = struct.unpack("H", port_bytes)[0]
         ip_address_str = inet_ntoa(ip_bytes)
-        self.private_ip_endpoint = IPEndPoint(ip_address_str, port)
+        self.private_ip = ip_address_str
+        self.private_port = port
 
         if len(self.raw_request) > 21 and self.raw_request[-1] == 0:
             game_name_bytes = self.raw_request[21:-1]
@@ -66,7 +66,8 @@ class PreInitRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.state = PreInitState(self.raw_request[12])
-        self.target_cookie = int.from_bytes(self.raw_request[13:17], byteorder="big")
+        self.target_cookie = int.from_bytes(
+            self.raw_request[13:17], byteorder="big")
 
 
 class ReportRequest(CommonRequestBase):
@@ -89,4 +90,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")

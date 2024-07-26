@@ -1,5 +1,5 @@
 from library.src.abstractions.contracts import RequestBase
-from library.src.extentions.string_extentions import IPEndPoint
+# from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.abstractions.handlers import CmdHandlerBase
 from servers.natneg.src.applications.client import Client
 from servers.natneg.src.contracts.requests import AddressCheckRequest, ConnectAckRequest, ConnectRequest, ErtAckRequest, InitRequest, NatifyRequest, ReportRequest
@@ -9,7 +9,7 @@ from servers.natneg.src.contracts.results import AddressCheckResult, ConnectResu
 
 class AddressCheckHandler(CmdHandlerBase):
     _request: AddressCheckRequest
-    _result: AddressCheckResult = AddressCheckResult()
+    _result: AddressCheckResult
     _response: InitResponse
 
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
@@ -18,9 +18,13 @@ class AddressCheckHandler(CmdHandlerBase):
         assert isinstance(request, AddressCheckRequest)
 
     def _data_operate(self) -> None:
-        self._result.ip_endpoint = IPEndPoint(
-            self._client.connection.ip, self._client.connection.port
-        )
+        """
+        address check did not require restapi backend, \n
+        just send the remote ip back to the client
+        """
+        self._result = AddressCheckResult()
+        self._result.public_ip_addr = self._client.connection.remote_ip
+        self._result.public_port = self._client.connection.remote_port
 
     def _response_construct(self) -> None:
         self._response = InitResponse(self._request, self._result)
@@ -70,10 +74,17 @@ class InitHandler(CmdHandlerBase):
     _request: InitRequest
     _result: InitResult
     _response: InitResponse
+    _backend_url: str = "init"
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         super().__init__(client, request)
         assert isinstance(request, InitRequest)
+
+    def _data_operate(self) -> None:
+        super()._data_operate()
+        self._result = InitResult()
+        self._result.public_ip_addr = self._client.connection.remote_ip
+        self._result.public_port = self._client.connection.remote_port
 
     def _response_construct(self):
         self._response = InitResponse(self._request, self._result)

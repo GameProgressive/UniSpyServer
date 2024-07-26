@@ -1,6 +1,7 @@
 import abc
+import socket
 import library.src.abstractions.contracts
-from library.src.extentions.string_extentions import IPEndPoint
+# from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.enums.general import (
     NatClientIndex,
     NatPortType,
@@ -44,14 +45,14 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
 
     def __init__(self, request: RequestBase, result: ResultBase) -> None:
         super().__init__(request, result)
-        assert issubclass(request, RequestBase)
-        assert issubclass(result, ResultBase)
+        assert issubclass(type(request), RequestBase)
+        assert issubclass(type(result), ResultBase)
 
     def build(self) -> None:
         data = bytes()
         data += MAGIC_DATA
         data += self._request.version.to_bytes(1, "little")
-        data += int(self._result.packet_type).to_bytes(1, "little")
+        data += self._result.packet_type.value.to_bytes(1, "little")
         data += self._request.cookie
         self.sending_buffer = data
 
@@ -67,7 +68,8 @@ class CommonRequestBase(RequestBase):
 
 
 class CommonResultBase(ResultBase, abc.ABC):
-    ip_endpoint: IPEndPoint
+    public_ip_addr: str
+    public_port: int
 
 
 class CommonResponseBase(ResponseBase):
@@ -78,9 +80,9 @@ class CommonResponseBase(ResponseBase):
         super().build()
         data = bytes()
         data += self.sending_buffer
-        data += int(self._request.port_type).to_bytes(1, "little")
-        data += int(self._request.client_index).to_bytes(1, "little")
+        data += self._request.port_type.value.to_bytes(1, "little")
+        data += self._request.client_index.value.to_bytes(1, "little")
         data += bytes(self._request.use_game_port)
-        data += self._result.ip_endpoint.get_ip_bytes()
-        data += self._result.ip_endpoint.get_port_bytes()
+        data += socket.inet_aton(self._result.public_ip_addr)
+        data += self._result.public_port.to_bytes(2)
         self.sending_buffer = data

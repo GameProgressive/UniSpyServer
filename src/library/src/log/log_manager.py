@@ -9,6 +9,9 @@ class LogWriter:
     def __init__(self, logger) -> None:
         self.original_logger = logger
 
+    def debug(self, message: str):
+        self.original_logger.debug(message)
+
     def info(self, message: str):
         self.original_logger.info(message)
 
