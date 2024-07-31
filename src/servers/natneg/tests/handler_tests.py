@@ -10,7 +10,7 @@ import responses
 from servers.natneg.tests.mock_objects import ClientMock
 
 
-def create_client():
+def create_client()->ClientMock:
     handler = RequestHandlerMock()
     logger = LogMock()
     conn = ConnectionMock(
@@ -32,6 +32,7 @@ class HandlerTests(unittest.TestCase):
             ]
         )  # fmt: skip
         req = InitRequest(raw)
+
         client = create_client()
 
         handler = InitHandler(client, req)

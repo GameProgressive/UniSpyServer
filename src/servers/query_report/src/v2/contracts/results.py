@@ -1,5 +1,4 @@
-from library.src.extentions.string_extentions import IPEndPoint
-from servers.query_report.src.v2.abstractions.result_base import ResultBase
+from servers.query_report.src.v2.abstractions.contracts import ResultBase
 from servers.query_report.src.v2.enums.general import PacketType
 
 
@@ -19,5 +18,6 @@ class EchoResult(ResultBase):
 
 
 class HeartBeatResult(ResultBase):
-    remote_ip_endpoint: IPEndPoint
+    remote_ip_address:str
+    remote_port:int
     packet_type: PacketType = PacketType.HEARTBEAT

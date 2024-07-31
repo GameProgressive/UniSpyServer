@@ -4,6 +4,8 @@ from dataclasses import dataclass
 import enum
 from uuid import UUID
 
+from pydantic import BaseModel
+
 
 class RequestBase(abc.ABC):
     command_name: object = None
@@ -46,8 +48,7 @@ class RequestBase(abc.ABC):
         return result
 
 
-@dataclass
-class ResultBase(abc.ABC):
+class ResultBase(BaseModel, abc.ABC):
     pass
 
 

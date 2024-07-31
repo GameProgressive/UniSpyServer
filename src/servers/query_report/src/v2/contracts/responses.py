@@ -2,7 +2,7 @@ from library.src.extentions.encoding import get_bytes
 from servers.presence_connection_manager.src.contracts.requests.general import (
     KeepAliveRequest,
 )
-from servers.query_report.src.v2.abstractions.response_base import ResponseBase
+from servers.query_report.src.v2.abstractions.contracts import ResponseBase
 from servers.query_report.src.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,

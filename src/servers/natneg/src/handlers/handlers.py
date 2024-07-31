@@ -1,10 +1,31 @@
-from library.src.abstractions.contracts import RequestBase
-# from library.src.extentions.string_extentions import IPEndPoint
+from copy import copy
+
+from servers.natneg.src.abstractions.contracts import RequestBase
 from servers.natneg.src.abstractions.handlers import CmdHandlerBase
 from servers.natneg.src.applications.client import Client
-from servers.natneg.src.contracts.requests import AddressCheckRequest, ConnectAckRequest, ConnectRequest, ErtAckRequest, InitRequest, NatifyRequest, ReportRequest
-from servers.natneg.src.contracts.responses import InitResponse
-from servers.natneg.src.contracts.results import AddressCheckResult, ConnectResult, ErtAckResult, InitResult, NatifyResult, ReportResult
+from servers.natneg.src.contracts.requests import (
+    AddressCheckRequest,
+    ConnectAckRequest,
+    ConnectRequest,
+    ErtAckRequest,
+    InitRequest,
+    NatifyRequest,
+    ReportRequest,
+)
+from servers.natneg.src.contracts.responses import (
+    AddressCheckResponse,
+    ErcAckResponse,
+    InitResponse,
+    NatifyResponse,
+)
+from servers.natneg.src.contracts.results import (
+    AddressCheckResult,
+    ConnectResult,
+    ErtAckResult,
+    InitResult,
+    NatifyResult,
+    ReportResult,
+)
 
 
 class AddressCheckHandler(CmdHandlerBase):
@@ -22,12 +43,16 @@ class AddressCheckHandler(CmdHandlerBase):
         address check did not require restapi backend, \n
         just send the remote ip back to the client
         """
-        self._result = AddressCheckResult()
+        data = {
+            "public_ip_addr": copy(self._client.connection.remote_ip),
+            "public_port": copy(self._client.connection.remote_port),
+        }
+        self._result = AddressCheckResult(**data)
         self._result.public_ip_addr = self._client.connection.remote_ip
         self._result.public_port = self._client.connection.remote_port
 
     def _response_construct(self) -> None:
-        self._response = InitResponse(self._request, self._result)
+        self._response = AddressCheckResponse(self._request, self._result)
 
 
 class ConnectAckHandler(CmdHandlerBase):
@@ -49,21 +74,23 @@ class ConnectHandler(CmdHandlerBase):
 
 
 class ErtAckHandler(CmdHandlerBase):
-    _request: ErtAckRequest
-    _result: ErtAckResult = ErtAckResult()
-    _response: InitResponse
+    _request: "ErtAckRequest"
+    _result: "ErtAckResult"
+    _response: "ErcAckResponse"
 
-    def __init__(self, client: Client, request: ErtAckRequest) -> None:
+    def __init__(self, client: "Client", request: "ErtAckRequest") -> None:
         super().__init__(client, request)
         assert isinstance(request, ErtAckRequest)
 
     def _data_operate(self) -> None:
-        self._result.ip_endpoint = IPEndPoint(
-            self._client.connection.ip, self._client.connection.port
-        )
+        data = {
+            "public_ip_addr": copy(self._client.connection.remote_ip),
+            "public_port": copy(self._client.connection.remote_port),
+        }
+        self._result = ErtAckResult(**data)
 
     def _response_construct(self) -> None:
-        self._response = InitResponse(self._request, self._result)
+        self._response = ErcAckResponse(self._request, self._result)
 
 
 class InitHandler(CmdHandlerBase):
@@ -81,18 +108,24 @@ class InitHandler(CmdHandlerBase):
         assert isinstance(request, InitRequest)
 
     def _data_operate(self) -> None:
-        super()._data_operate()
-        self._result = InitResult()
-        self._result.public_ip_addr = self._client.connection.remote_ip
-        self._result.public_port = self._client.connection.remote_port
+        data = {
+            "public_ip_addr": copy(self._client.connection.remote_ip),
+            "public_port": copy(self._client.connection.remote_port),
+        }
+        self._result = InitResult(**data)
 
     def _response_construct(self):
         self._response = InitResponse(self._request, self._result)
 
+    def _response_send(self) -> None:
+        """we need first to send the response to client in case of the time expire"""
+        super()._response_send()
+        super()._data_operate()
+
 
 class NatifyHandler(CmdHandlerBase):
     _request: NatifyRequest
-    _result: NatifyResult = NatifyResult()
+    _result: NatifyResult
     _response: InitResponse
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
@@ -100,12 +133,18 @@ class NatifyHandler(CmdHandlerBase):
         assert isinstance(request, NatifyRequest)
 
     def _data_operate(self):
-        self._result.ip_endpoint = IPEndPoint(
-            self._client.connection.ip, self._client.connection.port
-        )
+        data = {
+            "public_ip_addr": copy(self._client.connection.remote_ip),
+            "public_port": copy(self._client.connection.remote_port),
+        }
+        self._result = NatifyResult(**data)
 
     def _response_construct(self):
-        self._response = InitResponse(self._request, self._result)
+        self._response = NatifyResponse(self._request, self._result)
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        super()._data_operate()
 
 
 class PingHandler(CmdHandlerBase):

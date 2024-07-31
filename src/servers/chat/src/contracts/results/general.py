@@ -1,4 +1,6 @@
 from typing import List, Tuple
+
+from pydantic import BaseModel
 from servers.chat.src.abstractions.contract import ResultBase
 
 
@@ -12,8 +14,12 @@ class GetKeyResult(ResultBase):
 
 
 class ListResult(ResultBase):
+    class ListInfo(BaseModel):
+        channel_name: str
+        total_channel_user: int
+        channel_topic: str
     user_irc_prefix: str
-    channel_info_list: List[Tuple[str, int, str]] = []
+    channel_info_list: list[ListInfo] = []
     """(channel_name:str,total_channel_user:int,channel_topic:str)"""
 
 
@@ -31,8 +37,15 @@ class PingResult(ResultBase):
 
 
 class QuitResult(ResultBase):
+    class QuitInfo(BaseModel):
+        channel_name: str
+        is_peer_server: bool
+        is_channel_operator: bool
+        leave_reply_sending_buffer: str
+        kick_replay_sending_buffer: str
+
     quiter_prefix: str
-    channel_infos: List[Tuple[str, bool, bool, str, str]]
+    channel_infos: list[QuitInfo]
     # (channel_name: str, is_peer_server: bool, is_channel_operator: bool,leave_reply_sending_buffer: str,kick_replay_sending_buffer: str)
     message: str
 
@@ -50,11 +63,10 @@ class WhoIsResult(ResultBase):
 
 
 class WhoResult(ResultBase):
-    infos: list[tuple[str, str, str, str, str]]
-    """
-        public string ChannelName { get; set; }
-        public string UserName { get; set; }
-        public string PublicIPAddress { get; set; }
-        public string NickName { get; set; }
-        public string Modes { get; set; }
-    """
+    class WhoInfo(BaseModel):
+        channel_name: str
+        user_name: str
+        public_ip_addr: str
+        nick_name: str
+        modes: str
+    infos: list[WhoInfo]

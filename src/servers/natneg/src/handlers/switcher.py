@@ -8,7 +8,7 @@ class CmdSwitcher(SwitcherBase):
 
     def __init__(self, client: Client, rawRequest: bytes) -> None:
         super().__init__(client, rawRequest)
-        assert issubclass(client, Client)
+        assert issubclass(type(client), Client)
         assert isinstance(rawRequest, bytes)
 
     def _process_raw_request(self) -> None:

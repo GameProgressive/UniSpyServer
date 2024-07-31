@@ -1,5 +1,6 @@
 from socket import inet_ntoa
 import struct
+
 # from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.abstractions.contracts import CommonRequestBase, RequestBase
 from servers.natneg.src.enums.general import (
@@ -37,9 +38,9 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: str = None
-    private_ip: str = None
-    private_port: int = None
+    game_name: str
+    private_ip: str
+    private_port: int
 
     def parse(self) -> None:
         super().parse()
@@ -61,17 +62,16 @@ class NatifyRequest(CommonRequestBase):
 
 class PreInitRequest(RequestBase):
     state: PreInitState
-    target_cookie: bytes
+    target_cookie: int
 
     def parse(self) -> None:
         super().parse()
         self.state = PreInitState(self.raw_request[12])
-        self.target_cookie = int.from_bytes(
-            self.raw_request[13:17], byteorder="big")
+        self.target_cookie = int.from_bytes(self.raw_request[13:17])
 
 
 class ReportRequest(CommonRequestBase):
-    is_nat_success: bool = None
+    is_nat_success: bool = False
     game_name: str
     nat_type: NatType
     mapping_scheme: NatPortMappingScheme
@@ -90,4 +90,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")

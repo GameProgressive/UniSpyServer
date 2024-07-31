@@ -1,4 +1,6 @@
 from typing import OrderedDict
+
+from pydantic import BaseModel
 from servers.webservices.src.modules.sake.abstractions.general import (
     RequestBase,
     NAMESPACE,
@@ -66,6 +68,7 @@ class GetRecordLimitRequest(RequestBase):
 
 
 class GetSpecificRecordsRequest(RequestBase):
+
     record_ids: list[tuple]
     """
     [

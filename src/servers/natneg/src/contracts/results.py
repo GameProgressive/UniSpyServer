@@ -1,5 +1,10 @@
+from typing import Any
 from servers.natneg.src.abstractions.contracts import CommonResultBase, ResultBase
-from servers.natneg.src.enums.general import ConnectPacketStatus, PreInitState, ResponseType
+from servers.natneg.src.enums.general import (
+    ConnectPacketStatus,
+    PreInitState,
+    ResponseType,
+)
 
 
 class AddressCheckResult(CommonResultBase):
@@ -13,20 +18,15 @@ class ConnectResult(ResultBase):
     port: int
     version: bytes
     cookie: bytes
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.packet_type = ResponseType.CONNECT
-
-
-class ErtAckResult(CommonResultBase):
-    def __init__(self) -> None:
-        super().__init__()
-        self.packet_type = ResponseType.ERT_ACK
+    packet_type: ResponseType = ResponseType.CONNECT
 
 
 class InitResult(CommonResultBase):
     packet_type: ResponseType = ResponseType.INIT_ACK
+
+
+class ErtAckResult(InitResult):
+    packet_type: ResponseType = ResponseType.ERT_ACK
 
 
 class NatifyResult(CommonResultBase):
@@ -37,11 +37,8 @@ class PreInitResult(ResultBase):
     client_index: int
     state: PreInitState
     client_id: int
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.packet_type = ResponseType.PRE_INIT_ACK
-        self.state = PreInitState.READY
+    packet_type = ResponseType.PRE_INIT_ACK
+    state = PreInitState.READY
 
 
 class ReportResult(ResultBase):

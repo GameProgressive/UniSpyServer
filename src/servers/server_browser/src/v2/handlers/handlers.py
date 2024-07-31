@@ -19,10 +19,17 @@ from servers.server_browser.src.v2.contracts.results import (
     AdHocResult,
     ServerMainListResult,
 )
-from servers.server_browser.src.v2.enums.general import RequestType, ServerListUpdateOption
+from servers.server_browser.src.v2.enums.general import (
+    RequestType,
+    ServerListUpdateOption,
+)
 from servers.server_browser.src.v2.abstractions.handlers import CmdHandlerBase
 
 from servers.server_browser.src.v2.applications.client import Client
+
+
+def get_clients(ss):
+    raise NotImplementedError()
 
 
 class AdHocHandler(CmdHandlerBase):

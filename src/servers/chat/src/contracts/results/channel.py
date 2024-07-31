@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from servers.chat.src.abstractions.contract import ResultBase
 
 
@@ -8,7 +9,11 @@ class GetChannelKeyResult(ResultBase):
 
 
 class GetCKeyResult(ResultBase):
-    infos: list[tuple]
+    class GetCKeyInfos(BaseModel):
+        nick_name: str
+        user_values: str
+
+    infos: list[GetCKeyInfos]
     """ nick_name:str, user_values:str"""
     channel_name: str
 
@@ -59,3 +64,21 @@ class TopicResult(ResultBase):
 class SetChannelKeyResult(ResultBase):
     channel_user_irc_prefix: str
     channel_name: str
+
+
+if __name__ == "__main__":
+    dd = {
+        "infos": [
+            {
+                "nick_name": "John",
+                "user_values": "12345"
+            },
+            {
+                "nick_name": "Alice",
+                "user_values": "67890"
+            }
+        ],
+        "channel_name": "example_channel"
+    }
+    result = GetCKeyResult(**dd)
+    pass

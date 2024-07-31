@@ -12,5 +12,5 @@ class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase, abc.ABC):
 
 
 if __name__ == "__main__":
-    cmd = CmdHandlerBase(None, None)
+    # cmd = CmdHandlerBase(None, None)
     pass

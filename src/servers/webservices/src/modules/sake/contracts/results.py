@@ -1,4 +1,6 @@
 from typing import OrderedDict
+
+from pydantic import BaseModel
 from servers.webservices.src.modules.sake.abstractions.general import ResultBase
 
 
@@ -9,16 +11,11 @@ class CreateRecordResult(ResultBase):
 
 
 class GetMyRecordsResult(ResultBase):
-    records: list[tuple]
-    """
-    [
-    (field_name,field_type,field_value),
-    (field_name,field_type,field_value),
-    (field_name,field_type,field_value),
-    ...
-    (field_name,field_type,field_value)
-    ]
-    """
+    class GetMyRecordsInfo(BaseModel):
+        field_name: str
+        field_type: str
+        field_value: str
+    records: list[GetMyRecordsInfo]
 
 
 class SearchForRecordsResult(ResultBase):

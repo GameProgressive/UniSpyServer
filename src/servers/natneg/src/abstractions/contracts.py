@@ -1,7 +1,7 @@
 import abc
 import socket
+from typing import Optional
 import library.src.abstractions.contracts
-# from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.enums.general import (
     NatClientIndex,
     NatPortType,
@@ -14,12 +14,16 @@ MAGIC_DATA = bytes([0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2])
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
     version: int
-    cookie: bytes
+    cookie: int
+    """
+    byteorder:
+        big
+    """
     port_type: NatPortType
-    command_name: bytes
+    command_name: RequestType
     raw_request: bytes
 
-    def __init__(self, raw_request: bytes = None):
+    def __init__(self, raw_request: Optional[bytes] = None):
         assert isinstance(raw_request, bytes)
         self.raw_request = raw_request
 
@@ -27,9 +31,9 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         if len(self.raw_request) < 12:
             return
 
-        self.version = self.raw_request[6]
+        self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
-        self.cookie = self.raw_request[8:12]
+        self.cookie = int.from_bytes(self.raw_request[8:12])
         self.port_type = NatPortType(self.raw_request[12])
 
 
@@ -53,7 +57,7 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
         data += MAGIC_DATA
         data += self._request.version.to_bytes(1, "little")
         data += self._result.packet_type.value.to_bytes(1, "little")
-        data += self._request.cookie
+        data += self._request.cookie.to_bytes(4)
         self.sending_buffer = data
 
 

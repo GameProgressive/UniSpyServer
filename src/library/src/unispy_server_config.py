@@ -1,111 +1,93 @@
-import json
-from typing import Dict, Optional
+from typing import Any, Literal, Optional
 from uuid import UUID
 import os
+
+from pydantic import BaseModel, Field, constr
 
 from library.src.exceptions.error import UniSpyException
 
 
-class PostgreSql:
-    url: str
+class PostgreSql(BaseModel):
+    server: str
+    port: int = Field(..., ge=1, le=65535)  # Ensures port is between 1 and 65535
+    database: str
+    username: str
+    password: str
+    ssl_mode: str  # You might want to restrict this to specific values
+    trust_server_cert: bool
+    ssl_key: Optional[str] = None  # Optional field for SSL key
+    ssl_password: Optional[str] = None  # Optional field for SSL password
+    root_cert: Optional[str] = None  # Optional field for root certificate
+    url: str = None  # URL will be generated based on other fields
 
-    def __init__(
-        self,
-        server,
-        port,
-        database,
-        username,
-        password,
-        ssl_mode,
-        trust_server_cert,
-        ssl_key,
-        ssl_password,
-        root_cert,
-    ) -> None:
-        self.server = server
-        self.port = int(port)
-        self.database = database
-        self.username = username
-        self.password = password
-        self.ssl_mode = ssl_mode
-        self.trust_server_cert = trust_server_cert
-        self.ssl_key = ssl_key
-        self.ssl_password = ssl_password
-        self.root_cert = root_cert
+    def model_post_init(self, __context: Any) -> None:
         self.url = f"postgresql://{self.username}:{self.password}@{self.server}:{self.port}/{self.database}?sslmode={self.ssl_mode}"
 
 
-class RedisConfig:
-    url: str
+class RedisConfig(BaseModel):
+    server: str
+    port: int = Field(..., ge=1, le=65535)  # Ensures port is between 1 and 65535
+    user: str
+    password: str
+    ssl: bool  # Use bool for SSL flag
+    ssl_host: Optional[str] = None  # Optional field for SSL host
+    url: str = None  # URL will be generated based on other fields
 
-    def __init__(self, server, port, user, password, ssl, ssl_host) -> None:
-        self.server = server
-        self.port = int(port)
-        self.user = user
-        self.password = password
-        self.ssl = ssl
-        self.ssl_host = ssl_host
-        if self.ssl == "true":
+    def model_post_init(self, __context: Any) -> None:
+        if self.ssl:
             self.url = (
                 f"rediss://{self.user}:{self.password}@{self.server}:{self.port}/0"
             )
+        else:
+            self.url = (
+                f"redis://{self.user}:{self.password}@{self.server}:{self.port}/0"
+            )
 
 
-class ServerConfig:
-    def __init__(self, server_id, server_name, public_address, listening_port) -> None:
-        self.server_id = UUID(server_id)
-        self.server_name = server_name
-        self.public_address = public_address
-        self.listening_port = int(listening_port)
+class ServerConfig(BaseModel):
+    server_id: UUID
+    server_name: str = constr(min_length=1)  # Ensures server_name is a non-empty string
+    public_address: str = constr(
+        min_length=1
+    )  # Ensures public_address is a non-empty string
+    listening_port: int = Field(
+        ..., ge=1, le=65535
+    )  # Ensures listening_port is between 1 and 65535
 
 
-class LoggingConfig:
-    def __init__(self, path: str, min_log_level: str) -> None:
-        self.path = path
-        self.min_log_level = min_log_level
+class LoggingConfig(BaseModel):
+    path: str
+    min_log_level: Literal["debug", "info", "warning", "error"]
 
 
-class BackendConfig:
-    def __init__(self, url: str) -> None:
-        self.url = url
-
-
-class MongoDbConfig:
-    server: str
-    port: int
-    username: str
-    password: str
-    database: str
+class BackendConfig(BaseModel):
     url: str
 
-    def __init__(self, server, port, username, password, database) -> None:
-        self.server = server
-        self.port = port
-        self.username = username
-        self.password = password
-        self.database = database
-        self.url = f"mongodb+srv://{self.username}:{self.password}@{server}"
-        if port is not None:
-            self.url += f":{port}"
-        if database is not None:
-            self.url += f"/{database}"
+
+class MongoDbConfig(BaseModel):
+    server: str
+    username: str
+    password: str
+    port: int = Field(default=None)
+    database: str | None = Field(default=None)
+    url: str = Field(default=None)
+
+    def model_post_init(self, __context: Any) -> None:
+        url = f"mongodb+srv://{self.username}:{self.password}@{self.server}"
+        if self.port is not None:
+            url += f":{self.port}"
+        if self.database is not None:
+            url += f"/{self.database}"
+        return url
 
 
-class UniSpyServerConfig:
+class UniSpyServerConfig(BaseModel):
     postgresql: PostgreSql
     redis: RedisConfig
     backend: BackendConfig
-    servers: Dict[str, ServerConfig] = {}
+    servers: dict[str, ServerConfig] = Field(default_factory=dict)
     mongodb: MongoDbConfig
 
-    def __init__(self, config: Dict[str, str]) -> None:
-        self.mongodb = MongoDbConfig(**config["mongodb"])
-        self.postgresql = PostgreSql(**config["postgresql"])
-        self.redis = RedisConfig(**config["redis"])
-        self.backend = BackendConfig(**config["backend"])
-        self.logging = LoggingConfig(**config["logging"])
-        for info in config["servers"]:
-            self.servers[info["server_name"]] = ServerConfig(**info)
 
 
 unispy_config = os.environ.get("UNISPY_CONFIG")
@@ -114,8 +96,10 @@ if unispy_config is None:
         "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     )
 with open(unispy_config, "r") as f:
+    import json
+
     config = json.load(f)
-    CONFIG = UniSpyServerConfig(config)
+    CONFIG = UniSpyServerConfig(**config)
     pass
 
 if __name__ == "__main__":

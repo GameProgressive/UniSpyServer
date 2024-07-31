@@ -20,7 +20,7 @@ class ConnectionBase(abc.ABC):
         self,
         handler: socketserver.BaseRequestHandler,
         config: ServerConfig,
-        t_client: ClientBase,
+        t_client: type[ClientBase],
         logger: LogWriter,
     ) -> None:
         super().__init__()
