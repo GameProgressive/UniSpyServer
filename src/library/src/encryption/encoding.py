@@ -7,6 +7,7 @@ class Encoding:
         assert isinstance(data, bytes)
         return data.decode("ascii")
 
-    def get_bytes(data: str) -> List[int]:
+    @staticmethod
+    def get_bytes(data: str) -> bytes:
         assert isinstance(data, str)
-        return list(data.encode())
+        return bytes(data.encode())

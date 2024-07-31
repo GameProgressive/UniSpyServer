@@ -1,10 +1,11 @@
 import abc
 from library.src.encryption.encoding import Encoding
+from library.src.exceptions.error import UniSpyException
 from library.src.log.log_manager import LogWriter
 from library.src.log.log_manager import LogWriter
 from library.src.unispy_server_config import ServerConfig
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from library.src.abstractions.handler import CmdHandlerBase
@@ -17,9 +18,9 @@ if TYPE_CHECKING:
 
 class ClientBase(abc.ABC):
     server_config: "ServerConfig"
-    connection: object
+    connection: "ConnectionBase"
     logger: "LogWriter"
-    crypto: "EncryptBase" = None
+    crypto: "Optional[EncryptBase]" = None
     info: "ClientInfoBase"
     is_log_raw: "bool" = False
 
@@ -29,9 +30,8 @@ class ClientBase(abc.ABC):
         assert isinstance(server_config, ServerConfig)
         # assert isinstance(logger, LogWriter)
         self.server_config = server_config
-        from library.src.abstractions.connections import ConnectionBase
 
-        self.connection: ConnectionBase = connection
+        self.connection = connection
         self.logger = logger
         self.__log_prefix = f"[{self.connection.remote_ip}:{
             self.connection.remote_port}]"
@@ -40,13 +40,16 @@ class ClientBase(abc.ABC):
         pass
 
     def on_disconnected(self) -> None:
-        self.__del__()
+        pass
 
     @abc.abstractmethod
     def create_switcher(self, buffer) -> "SwitcherBase":
         pass
 
     def on_received(self, buffer) -> None:
+        if self.crypto is not None:
+            buffer = self.crypto.decrypt(buffer)
+        
         switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()
 
@@ -57,13 +60,17 @@ class ClientBase(abc.ABC):
             return buffer
 
     def send(self, response: "ResponseBase") -> None:
+        from library.src.abstractions.contracts import ResponseBase
+
+        assert issubclass(type(response),ResponseBase)
         response.build()
         sending_buffer = response.sending_buffer
         if isinstance(sending_buffer, str):
-            buffer = Encoding.get_bytes(sending_buffer)
-        else:
+            buffer:bytes = Encoding.get_bytes(sending_buffer)
+        if isinstance(sending_buffer, bytes):
             buffer = sending_buffer
-
+        else:
+            raise UniSpyException("not supported buffer type")
         self.log_network_sending(buffer)
 
         if self.crypto is not None:
@@ -71,11 +78,6 @@ class ClientBase(abc.ABC):
 
         self.connection.send(buffer)
 
-    def test_received(self, buffer) -> None:
-        if self.crypto is not None:
-            self.crypto = None
-
-        self.on_received(buffer)
 
     def log_debug(self, message: str) -> None:
         self.logger.debug(f"{self.__log_prefix}: {message}")

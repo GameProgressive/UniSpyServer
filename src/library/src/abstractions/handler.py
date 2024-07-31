@@ -15,13 +15,13 @@ class CmdHandlerBase(abc.ABC):
 
     _client: "ClientBase"
     _request: "RequestBase"
-    _result: "ResultBase" = None
-    _response: "ResponseBase" = None
-    _backend_url: "str" = None
+    _result: "ResultBase" 
+    _response: "ResponseBase" 
+    _backend_url: "str" 
     """
     store the backend url
     """
-    _result_cls: "Type" = None
+    _result_cls: "Type[ResultBase]" 
     """
     the result class type
     """
@@ -76,10 +76,13 @@ class CmdHandlerBase(abc.ABC):
         data = self._request.to_serializable_dict()
         data["server_id"] = str(self._client.server_config.server_id)
 
-        result = requests.post(url, json=data)
+        response = requests.post(url, json=data)
+        result = response.json()
         # if the result cls is not declared, we do not parse the response values
 
         if self._result_cls is None:
+            return
+        if self._result is not None:
             return
         self._result = self._result_cls(**result)
         pass

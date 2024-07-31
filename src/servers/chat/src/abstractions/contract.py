@@ -3,11 +3,11 @@ import library.src.abstractions.contracts
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
-    raw_request: str = None
-    command_name: str = None
-    _prefix: str = None
-    _cmd_params: list = None
-    _longParam: str = None
+    raw_request: str
+    command_name: str
+    _prefix: str
+    _cmd_params: list
+    _longParam: str
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)

@@ -17,6 +17,10 @@ class AddressCheckRequest(CommonRequestBase):
     pass
 
 
+class PingRequest(RequestBase):
+    pass
+
+
 class ConnectAckRequest(RequestBase):
     client_index: NatClientIndex
 

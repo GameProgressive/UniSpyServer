@@ -1,15 +1,15 @@
 import abc
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
 
 class SwitcherBase(abc.ABC):
 
     _client: ClientBase
     _raw_request: object
-    _handlers: List[CmdHandlerBase]
-    _requests: List[tuple]
+    _handlers: List[CmdHandlerBase] = []
+    _requests: List[tuple] = []
     """
     [
         (request_name,raw_request),
@@ -20,13 +20,11 @@ class SwitcherBase(abc.ABC):
 
     """
 
-    def __init__(self, client: ClientBase, raw_request: object) -> None:
+    def __init__(self, client: ClientBase, raw_request: Optional[bytes | str]) -> None:
 
         assert isinstance(client, ClientBase)
         self._client = client
         self._raw_request = raw_request
-        self._handlers = []
-        self._requests = []
 
     def handle(self):
         from library.src.exceptions.error import UniSpyException
@@ -54,5 +52,5 @@ class SwitcherBase(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def _create_cmd_handlers(self, name: object, rawRequest: object) -> CmdHandlerBase:
+    def _create_cmd_handlers(self, name: object, raw_request: object) -> CmdHandlerBase:
         pass

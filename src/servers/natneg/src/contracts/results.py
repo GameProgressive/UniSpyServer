@@ -37,9 +37,9 @@ class PreInitResult(ResultBase):
     client_index: int
     state: PreInitState
     client_id: int
-    packet_type = ResponseType.PRE_INIT_ACK
+    packet_type: ResponseType = ResponseType.PRE_INIT_ACK
     state = PreInitState.READY
 
 
 class ReportResult(ResultBase):
-    packet_type = ResponseType.REPORT_ACK
+    packet_type: ResponseType = ResponseType.REPORT_ACK

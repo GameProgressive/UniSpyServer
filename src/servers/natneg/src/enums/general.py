@@ -6,6 +6,9 @@ class RequestType(Enum):
     ERT_ACK = 3
     CONNECT = 5
     CONNECT_ACK = 6
+    """
+    only used in client, not used by server
+    """
     PING = 7
     ADDRESS_CHECK = 10
     NATIFY_REQUEST = 12

@@ -9,6 +9,7 @@ class Client(ClientBase):
         self.is_log_raw = True
 
     def create_switcher(self, buffer: bytes):
-        # return super().create_switcher(buffer)
         assert isinstance(buffer, bytes)
-        return
+        from servers.natneg.src.handlers.switcher import CmdSwitcher
+
+        return CmdSwitcher(self, buffer)

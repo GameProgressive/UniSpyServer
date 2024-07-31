@@ -10,6 +10,7 @@ from servers.natneg.src.contracts.requests import (
     ErtAckRequest,
     InitRequest,
     NatifyRequest,
+    PingRequest,
     ReportRequest,
 )
 from servers.natneg.src.contracts.responses import (
@@ -102,6 +103,7 @@ class InitHandler(CmdHandlerBase):
     _result: InitResult
     _response: InitResponse
     _backend_url: str = "init"
+    _result_cls: type[InitResult] = InitResult
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         super().__init__(client, request)
@@ -148,7 +150,7 @@ class NatifyHandler(CmdHandlerBase):
 
 
 class PingHandler(CmdHandlerBase):
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: PingRequest) -> None:
         super().__init__(client, request)
         raise NotImplementedError()
 

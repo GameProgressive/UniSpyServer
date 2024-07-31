@@ -13,7 +13,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             },
-            "justMyCode": false
+            "justMyCode": true
         },
         {
             "name": "pcm",
