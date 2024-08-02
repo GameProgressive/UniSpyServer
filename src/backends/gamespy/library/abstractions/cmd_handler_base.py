@@ -2,7 +2,7 @@ import abc
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from library.abstractions.request_base import RequestBase
+    from library.src.abstractions.contracts import RequestBase
 
 
 class CmdHandlerBase(abc.ABC):

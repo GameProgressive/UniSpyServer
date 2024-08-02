@@ -1,5 +1,5 @@
 import unittest
-from library.encryption.gs_encryption import ChatCrypt
+from library.src.encryption.gs_encryption import ChatCrypt
 
 
 class GSEncryptionTest(unittest.TestCase):

@@ -1,6 +1,13 @@
 {
-  "database": {
-    "server": "ip",
+  "backend": {
+    "url": "http://localhost:8080"
+  },
+  "logging": {
+    "path": "~/Downloads/unispy_server/log/",
+    "min_log_level": "debug"
+  },
+  "postgresql": {
+    "server": "127.0.0.1",
     "port": 5432,
     "database": "unispy-db",
     "username": "unispy",
@@ -11,87 +18,87 @@
     "ssl_password": "",
     "root_cert": ""
   },
+  "mongodb": {
+    "server": "127.0.0.1",
+    "port": 5432,
+    "username": "unispy",
+    "password": "123456",
+    "database": null
+  },
   "redis": {
-    "server": "ip",
+    "server": "127.0.0.1",
     "port": 5678,
     "user": "",
     "password": "password",
     "ssl": "true",
     "ssl_host": ""
   },
-  "servers": [
-    {
+  "servers": {
+    "PresenceConnectionManager": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "PresenceConnectionManager",
       "public_address": "0.0.0.0",
       "listening_port": 29900
     },
-    {
+    "PresenceSearchPlayer": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "PresenceSearchPlayer",
       "public_address": "0.0.0.0",
       "listening_port": 29901
     },
-    {
+    "CDKey": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "CDKey",
       "public_address": "0.0.0.0",
       "listening_port": 29910
     },
-    {
+    "ServerBrowserV1": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "ServerBrowserV1",
       "public_address": "0.0.0.0",
       "listening_port": 28900
     },
-    {
+    "ServerBrowserV2": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "ServerBrowserV2",
       "public_address": "0.0.0.0",
       "listening_port": 28910
     },
-    {
+    "QueryReport": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "QueryReport",
       "public_address": "0.0.0.0",
       "listening_port": 27900
     },
-    {
+    "NatNegotiation": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "NatNegotiation",
       "public_address": "0.0.0.0",
       "listening_port": 27901
     },
-    {
+    "GameStatus": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "GameStatus",
       "public_address": "0.0.0.0",
       "listening_port": 29920
     },
-    {
+    "Chat": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "Chat",
       "public_address": "0.0.0.0",
       "listening_port": 6667
     },
-    {
+    "WebServices": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "WebServices",
       "public_address": "0.0.0.0",
       "listening_port": 80
     },
-    {
+    "GameTrafficRelay": {
       "server_id": "00000000-0000-0000-0000-000000000000",
       "server_name": "GameTrafficRelay",
       "public_address": "0.0.0.0",
       "listening_port": 10086
     }
-  ],
-  "backend": {
-    "url": "http://localhost:8080"
-  },
-  "logging": {
-    "path": "~/Downloads/unispy_server/log/",
-    "min_log_level": "verbose"
   }
 }

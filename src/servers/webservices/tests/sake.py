@@ -1,6 +1,6 @@
 import unittest
 
-from servers.webservices.modules.auth.contracts.requests import LoginUniqueNickRequest
+from servers.webservices.src.modules.auth.contracts.requests import LoginUniqueNickRequest
 
 
 class Auth(unittest.TestCase):

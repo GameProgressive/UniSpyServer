@@ -1,11 +1,11 @@
 from typing import Union
 
 from pydantic import UUID4, BaseModel
-from servers.presence_connection_manager.aggregates.user_status import UserStatus
-from servers.presence_connection_manager.aggregates.user_status_info import (
+from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
+from servers.presence_connection_manager.src.aggregates.user_status_info import (
     UserStatusInfo,
 )
-from servers.presence_connection_manager.enums.general import (
+from servers.presence_connection_manager.src.enums.general import (
     LoginType,
     PublicMasks,
     SdkRevisionType,
