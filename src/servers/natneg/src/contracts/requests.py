@@ -57,7 +57,9 @@ class InitRequest(CommonRequestBase):
 
         if len(self.raw_request) > 21 and self.raw_request[-1] == 0:
             game_name_bytes = self.raw_request[21:-1]
-            self.game_name = game_name_bytes.decode("ascii").replace("\x00","")
+            game_name = game_name_bytes.decode("ascii").replace("\x00", "")
+            if len(game_name) != 0:
+                self.game_name = game_name
 
 
 class NatifyRequest(CommonRequestBase):
@@ -94,4 +96,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")

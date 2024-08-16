@@ -17,20 +17,12 @@ class CmdHandlerBase(abc.ABC):
     _request: "RequestBase"
     _result: "ResultBase"
     _response: "ResponseBase"
-    _backend_url: "str"
-    """
-    store the backend url
-    """
     _result_cls: "Type[ResultBase]"
     """
     the result class type
     """
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
-
-        if self._backend_url is None:
-            raise UniSpyException(
-                "The backend url and result_cls should not be None or not None at same time")
 
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)

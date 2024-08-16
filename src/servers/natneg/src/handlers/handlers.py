@@ -1,6 +1,5 @@
 from copy import copy
 
-from servers.natneg.src.abstractions.contracts import RequestBase
 from servers.natneg.src.abstractions.handlers import CmdHandlerBase
 from servers.natneg.src.applications.client import Client
 from servers.natneg.src.contracts.requests import (
@@ -33,6 +32,7 @@ class AddressCheckHandler(CmdHandlerBase):
     _request: AddressCheckRequest
     _result: AddressCheckResult
     _response: InitResponse
+    _result_cls = None
 
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
         super().__init__(client, request)
@@ -75,11 +75,12 @@ class ConnectHandler(CmdHandlerBase):
 
 
 class ErtAckHandler(CmdHandlerBase):
-    _request: "ErtAckRequest"
-    _result: "ErtAckResult"
-    _response: "ErcAckResponse"
+    _request: ErtAckRequest
+    _result: ErtAckResult
+    _response: ErcAckResponse
+    _result_cls = None
 
-    def __init__(self, client: "Client", request: "ErtAckRequest") -> None:
+    def __init__(self, client: Client, request: ErtAckRequest) -> None:
         super().__init__(client, request)
         assert isinstance(request, ErtAckRequest)
 
@@ -102,8 +103,7 @@ class InitHandler(CmdHandlerBase):
     _request: InitRequest
     _result: InitResult
     _response: InitResponse
-    _backend_url: str = "init"
-    _result_cls: type[InitResult] = InitResult
+    _result_cls = None
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         super().__init__(client, request)
@@ -129,6 +129,7 @@ class NatifyHandler(CmdHandlerBase):
     _request: NatifyRequest
     _result: NatifyResult
     _response: InitResponse
+    _result_cls = None
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         super().__init__(client, request)
