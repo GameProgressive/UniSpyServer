@@ -57,7 +57,7 @@ class InitRequest(CommonRequestBase):
 
         if len(self.raw_request) > 21 and self.raw_request[-1] == 0:
             game_name_bytes = self.raw_request[21:-1]
-            self.game_name = game_name_bytes.decode("ascii")
+            self.game_name = game_name_bytes.decode("ascii").replace("\x00","")
 
 
 class NatifyRequest(CommonRequestBase):

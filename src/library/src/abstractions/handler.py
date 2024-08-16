@@ -15,13 +15,13 @@ class CmdHandlerBase(abc.ABC):
 
     _client: "ClientBase"
     _request: "RequestBase"
-    _result: "ResultBase" 
-    _response: "ResponseBase" 
-    _backend_url: "str" 
+    _result: "ResultBase"
+    _response: "ResponseBase"
+    _backend_url: "str"
     """
     store the backend url
     """
-    _result_cls: "Type[ResultBase]" 
+    _result_cls: "Type[ResultBase]"
     """
     the result class type
     """
@@ -72,7 +72,7 @@ class CmdHandlerBase(abc.ABC):
 
         # get the http response and create it with this type
         url = f"{
-            CONFIG.backend.url}/{self._client.server_config.server_name}/{self._backend_url}/"
+            CONFIG.backend.url}/{self._client.server_config.server_name}/{self.__class__.__name__}/"
         data = self._request.to_serializable_dict()
         data["server_id"] = str(self._client.server_config.server_id)
 

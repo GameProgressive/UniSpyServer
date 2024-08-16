@@ -1,14 +1,18 @@
 import socketserver
+
+import responses
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase
+from library.src.abstractions.handler import CmdHandlerBase
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
+from library.src.unispy_server_config import CONFIG
 from servers.natneg.src.handlers.switcher import CmdSwitcher
 
 
 class ConnectionMock(ConnectionBase):
     def send(self, data: bytes) -> None:
-        return print(data)
+        pass
 
 
 class RequestHandlerMock(socketserver.BaseRequestHandler):
@@ -34,3 +38,9 @@ class LogMock(LogWriter):
 
     def warn(self, message):
         print(message)
+
+
+def create_mock_url(client: ClientBase, handler: type[CmdHandlerBase], data: dict) -> None:
+    url = f"{
+        CONFIG.backend.url}/{client.server_config.server_name}/{handler.__name__}/"
+    responses.add(responses.POST, url, json=data, status=200)

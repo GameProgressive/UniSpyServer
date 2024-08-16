@@ -39,7 +39,7 @@ class RequestBase(abc.ABC):
         result = deepcopy(self.__dict__)
         for key, value in result.items():
             if isinstance(value, bytes):
-                result[key] = value.decode("utf-8")
+                result[key] = list(value)
             elif isinstance(value, enum.Enum):
                 result[key] = value.value
             elif isinstance(value, enum.IntEnum):

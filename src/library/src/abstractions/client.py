@@ -34,7 +34,7 @@ class ClientBase(abc.ABC):
 
         self.connection = connection
         self.logger = logger
-        self.__log_prefix = f"[{self.connection.remote_ip}:{
+        self._log_prefix = f"[{self.connection.remote_ip}:{
             self.connection.remote_port}]"
 
     def on_connected(self) -> None:
@@ -81,25 +81,25 @@ class ClientBase(abc.ABC):
         self.connection.send(buffer)
 
     def log_debug(self, message: str) -> None:
-        self.logger.debug(f"{self.__log_prefix}: {message}")
+        self.logger.debug(f"{self._log_prefix}: {message}")
 
     def log_info(self, message: str) -> None:
-        self.logger.info(f"{self.__log_prefix}: {message}")
+        self.logger.info(f"{self._log_prefix}: {message}")
 
     def log_warn(self, message: str) -> None:
-        self.logger.warn(f"{self.__log_prefix}: {message}")
+        self.logger.warn(f"{self._log_prefix}: {message}")
 
     def log_error(self, message: str) -> None:
-        self.logger.error(f"{self.__log_prefix}: {message}")
+        self.logger.error(f"{self._log_prefix}: {message}")
 
     def log_network_sending(self, data: object) -> None:
-        self.logger.info(f"{self.__log_prefix} [send]: {data}")
+        self.logger.info(f"{self._log_prefix} [send]: {data}")
 
     def log_network_receving(self, data: object) -> None:
-        self.logger.info(f"{self.__log_prefix} [recv]: {data}")
+        self.logger.info(f"{self._log_prefix} [recv]: {data}")
 
     def log_current_class(self, object: "CmdHandlerBase") -> None:
-        self.logger.debug(f"{self.__log_prefix} [=>] <{
+        self.logger.debug(f"{self._log_prefix} [=>] <{
                           object.__class__.__name__}>")
 
 
