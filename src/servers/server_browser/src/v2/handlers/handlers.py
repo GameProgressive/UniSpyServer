@@ -1,4 +1,5 @@
 from concurrent.futures import ProcessPoolExecutor
+import socket
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.query_report.src.v2.contracts.requests import ClientMessageRequest
 from servers.query_report.src.v2.enums.general import GameServerStatus

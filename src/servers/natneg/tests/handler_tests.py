@@ -1,24 +1,24 @@
 import unittest
 
 from library.src.unispy_server_config import CONFIG
-from library.tests.mock_objects.general import ConnectionMock, LogMock, RequestHandlerMock
 from servers.natneg.src.contracts.requests import InitRequest
-from servers.natneg.src.contracts.results import InitResult
 from servers.natneg.src.handlers.handlers import InitHandler
 import responses
+from servers.natneg.src.contracts.requests import (
+    AddressCheckRequest,
+    ErtAckRequest,
+    InitRequest,
+    NatifyRequest,
+    PreInitRequest,
+)
+from servers.natneg.src.enums.general import (
+    NatClientIndex,
+    NatPortType,
+    PreInitState,
+    RequestType,
+)
 
-from servers.natneg.tests.mock_objects import ClientMock
-
-
-def create_client():
-    handler = RequestHandlerMock()
-    logger = LogMock()
-    conn = ConnectionMock(
-        handler=handler,
-        config=CONFIG.servers["NatNegotiation"], t_client=ClientMock,
-        logger=logger)
-
-    return conn._client
+from servers.natneg.tests.mock_objects import ClientMock, create_client
 
 
 class HandlerTests(unittest.TestCase):
@@ -37,8 +37,23 @@ class HandlerTests(unittest.TestCase):
         url = f"{
             CONFIG.backend.url}/{client.server_config.server_name}/{InitHandler._backend_url}/"
         responses.add(responses.POST, url, json={"message": "ok"}, status=200)
-        client.on_received(raw)
 
+        # test request parsing
+        request = InitRequest(raw)
+        request.parse()
+        cookie = 151191552
+        self.assertEqual(cookie, request.cookie)
+        self.assertEqual(RequestType.INIT, request.command_name)
+        self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
+        self.assertEqual(False, request.use_game_port)
+        self.assertEqual(3, request.version)
+        self.assertEqual(NatPortType.NN1, request.port_type)
+        handler = InitHandler(client, request)
+        handler.handle()
+
+        # test response constructing
+        self.assertTrue(handler._response.sending_buffer ==
+                        b'\xfd\xfc\x1efj\xb2\x03\x01\x00\x00\x03\t\x01\x00\xc0\xa8\x00\x01\x00\x00')
 
 
 if __name__ == "__main__":

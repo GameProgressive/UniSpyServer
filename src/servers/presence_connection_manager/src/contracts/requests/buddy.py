@@ -1,6 +1,9 @@
+from typing import Optional
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
-from servers.presence_connection_manager.src.aggregates.user_status_info import UserStatusInfo
+from servers.presence_connection_manager.src.aggregates.user_status_info import (
+    UserStatusInfo,
+)
 from servers.presence_connection_manager.src.enums.general import GPStatusCode
 from servers.presence_search_player.src.exceptions.general import GPParseException
 
@@ -66,12 +69,13 @@ class InviteToRequest(RequestBase):
 
 
 class StatusInfoRequest(RequestBase):
-    def __init__(self):
-        super().__init__()
-        self.is_get_status_info = False
-        self.profile_id = 0
-        self.namespace_id = None
-        self.status_info = UserStatusInfo()
+    namespace_id: Optional[int] = None
+    status_info: UserStatusInfo = UserStatusInfo()
+    profile_id: int = 0
+
+    def __init__(self, raw_request: Optional[str] = None) -> None:
+        if raw_request is not None:
+            self.raw_request = raw_request
 
     def parse(self):
         super().parse()
@@ -97,7 +101,7 @@ class StatusInfoRequest(RequestBase):
         try:
             self.status_info.query_report_port = int(self.request_key_values["qport"])
             self.status_info.host_port = int(self.request_key_values["hport"])
-            self.status_info.session_flags = int(self.request_key_values["sessflags"])
+            self.status_info.session_flags = self.request_key_values["sessflags"]
         except ValueError:
             raise GPParseException("qport, hport, or sessflags format is incorrect.")
 
@@ -108,10 +112,11 @@ class StatusInfoRequest(RequestBase):
 
 
 class StatusRequest(RequestBase):
+    status: UserStatus
+    is_get_status: bool
+
     def __init__(self, raw_request):
         super().__init__(raw_request)
-        self.status = UserStatus()
-        self.IsGetStatus = False
 
     def parse(self):
         super().parse()

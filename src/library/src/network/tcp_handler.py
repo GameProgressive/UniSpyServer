@@ -1,5 +1,6 @@
 import socket
 import socketserver
+from typing import Optional
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase, ServerBase
 
@@ -25,11 +26,11 @@ class TcpConnection(ConnectionBase):
 
 class TcpHandler(socketserver.BaseRequestHandler):
     request: socket.socket
-    conn: TcpConnection = None
+    conn: Optional[TcpConnection] = None
 
     def handle(self) -> None:
         if self.conn is None:
-            self.conn = TcpConnection(self, *self.server.handler_params)
+            self.conn = TcpConnection(self, *self.server.handler_params)  # type: ignore
         self.conn.on_connected()
         while True:
             try:
@@ -52,7 +53,7 @@ class TcpServer(ServerBase):
             TcpHandler,
         )
         self._server.allow_reuse_address = True
-        self._server.handler_params = (self._config, self._t_client, self._logger)
+        self._server.handler_params = (self._config, self._client_cls, self._logger)  # type: ignore
         self._server.serve_forever()
 
 
@@ -69,6 +70,8 @@ class TestClient(ClientBase):
 
 
 if __name__ == "__main__":
-    s = TcpServer(list(CONFIG.servers.values())[0], TestClient, None)
+    from tests.mock_objects.general import LogMock
+
+    s = TcpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
     s.start()
     pass

@@ -4,6 +4,6 @@ import abc
 
 class Server(abc.ABC):
 
-    @abc.abstractclassmethod
+    @abc.abstractmethod
     def start(self):
         pass

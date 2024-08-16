@@ -1,5 +1,3 @@
-from servers.chat.src.contracts.requests.general import LoginRequest
-from servers.chat.src.contracts.results.general import LoginResult
 from servers.presence_connection_manager.src.abstractions.contracts import ResponseBase
 from servers.presence_connection_manager.src.applications.client import (
     LOGIN_TICKET,
@@ -7,6 +5,10 @@ from servers.presence_connection_manager.src.applications.client import (
 )
 from servers.presence_connection_manager.src.contracts.requests.general import (
     KeepAliveRequest,
+    LoginRequest,
+)
+from servers.presence_connection_manager.src.contracts.results.general import (
+    LoginResult,
 )
 from servers.presence_search_player.src.contracts.requests import (
     NewUserRequest,
@@ -27,24 +29,18 @@ class KeepAliveResponse(ResponseBase):
 
 class LoginResponse(ResponseBase):
     _result: LoginResult
+    _request: LoginRequest
 
     def __init__(self, request: LoginRequest, result: LoginResult):
         super().__init__(request, result)
+        assert isinstance(request, LoginRequest)
+        assert isinstance(result, LoginResult)
 
     def build(self):
         # string checkSumStr = _result.DatabaseResults.Nick + _result.DatabaseResults.UniqueNick + _result.DatabaseResults.NamespaceID;
         # _connection.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
-        self.sending_buffer = (
-            "\\lc\\2\\sesskey\\"
-            + SESSION_KEY
-            + "\\proof\\"
-            + self._result.response_proof
-            + "\\userid\\"
-            + self._result.data.user_id
-            + "\\profileid\\"
-            + self._result.data.profile_id
-        )
+        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{self._result.response_proof}\\userid\\{self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
 
         if self._result.data.unique_nick is not None:
             self.sending_buffer += "\\uniquenick\\" + self._result.data.unique_nick
@@ -58,4 +54,4 @@ class NewUserResponse(NUR):
     _request: NewUserRequest
 
     def build(self):
-        self.sending_buffer = f"\\nur\\userid\\{self._result.user.userid}\\profileid\\{self._result.sub_profile.profileid}\\id\\{self._request.operation_id}\\final\\"
+        self.sending_buffer = f"\\nur\\userid\\{self._result.user.userid}\\profileid\\{self._result.subprofiles.profileid}\\id\\{self._request.operation_id}\\final\\"

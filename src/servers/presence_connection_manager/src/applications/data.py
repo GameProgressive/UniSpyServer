@@ -17,8 +17,7 @@ def is_email_exist(email: str) -> bool:
 
 
 def delete_friend_by_profile_id(profile_id: int):
-    friend = PG_SESSION.query(Friends).filter(
-        Friends.friendid == profile_id).first()
+    friend = PG_SESSION.query(Friends).filter(Friends.friendid == profile_id).first()
     if friend is None:
         raise GPDatabaseException(
             f"friend deletion have errors on profile id:{profile_id}"
@@ -82,8 +81,7 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
         of users that match the provided email and nickname in the database.
     """
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid,
-                         SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(Users.email == email, Profiles.nick == nick_name)
@@ -94,8 +92,7 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
 
 def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid,
-                         SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
@@ -109,8 +106,7 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
 
 def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, int]]:
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid,
-                         SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
@@ -133,8 +129,7 @@ def update_block_info_list(target_id: int, profile_id: int, namespace_id: int) -
         .count()
     )
     if result == 0:
-        b = Blocked(targetid=target_id, namespaceid=namespace_id,
-                    profileid=profile_id)
+        b = Blocked(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
         PG_SESSION.add(b)
         PG_SESSION.commit()
 
@@ -149,8 +144,7 @@ def update_friend_info(target_id: int, profile_id: int, namespace_id: int):
         )
         .count()
     )
-    f = Friends(targetid=target_id, namespaceid=namespace_id,
-                profileid=profile_id)
+    f = Friends(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
 
     if result == 0:
         PG_SESSION.add(f)

@@ -8,7 +8,7 @@ from servers.presence_connection_manager.src.abstractions.contracts import (
     RequestBase,
     ResultBase,
 )
-import library
+import library.src.abstractions.handler
 
 
 class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):

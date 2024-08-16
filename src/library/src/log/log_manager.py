@@ -34,7 +34,7 @@ def create_dir(path):
 class LogManager:
 
     @staticmethod
-    def create(log_file_path, logger_name) -> None:
+    def create(log_file_path: str, logger_name: str) -> "LogWriter":
         create_dir(log_file_path)
 
         logging.basicConfig(

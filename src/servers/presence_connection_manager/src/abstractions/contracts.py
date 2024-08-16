@@ -6,7 +6,7 @@ from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.presence_search_player.src.exceptions.general import (
     GPParseException,
 )
-from typing import Dict
+from typing import Dict, Optional
 
 import library.src.abstractions.contracts
 
@@ -26,7 +26,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
     raw_request: str
     request_key_values: Dict[str, str]
 
-    def __init__(self, raw_request: "str") -> None:
+    def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
 
@@ -50,7 +50,7 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
     _result: ResultBase
     sending_buffer: str
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
+    def __init__(self, request: RequestBase, result: Optional[ResultBase]) -> None:
         assert issubclass(type(request), RequestBase)
         assert issubclass(type(result), ResultBase)
         super().__init__(request, result)

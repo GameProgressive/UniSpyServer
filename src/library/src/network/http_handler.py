@@ -7,10 +7,13 @@ from library.src.unispy_server_config import CONFIG
 
 class HttpRequest:
     url: str
-    headers: dict
+    headers: dict[str, str]
     content: str
 
     def __init__(self, url: str, headers: dict, content: str) -> None:
+        assert isinstance(url, str)
+        assert isinstance(headers, dict)
+        assert isinstance(content, str)
         self.url = url
         self.headers = headers
         self.content = content
@@ -30,7 +33,7 @@ class HttpResponse:
 class HttpConnection(ConnectionBase):
     handler: BaseHTTPRequestHandler
 
-    def send(self, data: bytes) -> None:
+    def send(self, data: HttpResponse) -> None:
         self.handler.send_response(200)
         self.handler.send_header("Content-type", "text/xml")
         self.handler.end_headers()
@@ -41,12 +44,12 @@ class HttpHandler(BaseHTTPRequestHandler):
     conn: HttpConnection
 
     def do_POST(self) -> None:
-        parsed_url = urlparse(self.path)
+        parsed_url = urlparse(self.path).geturl()
         content_length = int(self.headers["Content-Length"])
         data = self.rfile.read(content_length).decode()
-        request = HttpRequest(parsed_url, self.headers, data)
+        request = HttpRequest(parsed_url, dict(self.headers), data)
         if self.conn is None:
-            self.conn = HttpConnection(self, *self.server.handler_params)
+            self.conn = HttpConnection(self, *self.server.handler_params)  # type: ignore
         self.conn.on_received(request)
 
 
@@ -55,7 +58,7 @@ class HttpServer(ServerBase):
         self._server = ThreadingHTTPServer(
             (self._config.public_address, self._config.listening_port), HttpHandler
         )
-        self._server.handler_params = (self._config, self._t_client, self._logger)
+        self._server.handler_params = (self._config, self._client_cls, self._logger)  # type: ignore
         self._server.serve_forever()
 
 
@@ -73,4 +76,6 @@ class TestClient(ClientBase):
 
 if __name__ == "__main__":
     # create_http_server(list(CONFIG.servers.values())[0], ClientBase)
-    s = HttpServer(list(CONFIG.servers.values())[0], TestClient, None)
+    from library.tests.mock_objects.general import LogMock
+
+    s = HttpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())

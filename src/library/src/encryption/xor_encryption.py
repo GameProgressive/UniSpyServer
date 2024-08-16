@@ -23,8 +23,8 @@ class XorEncoding(EncryptBase):
         seed_1 = b"GameSpy3D"
         seed_2 = b"Industries"
         seed_3 = b"ProjectAphex"
-
-        length = len(plaintext)
+        temp_plaintext = list(plaintext)
+        length = len(temp_plaintext)
         index = 0
         temp = seed_0
 
@@ -43,10 +43,10 @@ class XorEncoding(EncryptBase):
             if i >= temp_length:
                 i = 0
 
-            plaintext[index] ^= temp[i]
+            temp_plaintext[index] ^= temp[i]
             index += 1
 
-        return plaintext
+        return bytes(temp_plaintext)
 
     def encrypt(self, data: bytes):
         super().encrypt(data)

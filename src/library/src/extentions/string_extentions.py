@@ -99,20 +99,3 @@ def format_network_message(
         tempLog = convert_nonprintable_bytes_to_hex_string(message)
 
     return f"[{type}] {tempLog}"
-
-
-# class IPEndPoint:
-#     ip: str
-#     port: int
-
-#     def __init__(self, ip: str, port: int) -> None:
-#         assert isinstance(ip, str)
-#         assert isinstance(port, int)
-#         self.ip = ip
-#         self.port = port
-
-#     def get_ip_bytes(self) -> bytes:
-#         return socket.inet_aton(self.ip)
-
-#     def get_port_bytes(self) -> bytes:
-#         return struct.pack("!H", self.port)

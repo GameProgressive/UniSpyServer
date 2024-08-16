@@ -1,3 +1,4 @@
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 
@@ -15,12 +16,11 @@ class SoapEnvelop:
         self.current_element = self.body
 
     def finish_add_sub_element(self):
-        self.current_element = ET.SubElement(
-            self.current_element,
-        )
+        self.current_element = ET.SubElement(self.current_element,)
 
     def change_to_element(self, name: str):
-        self.current_element = self.body.find(f".//{{{self._body_namespace}}}{name}")
+        self.current_element = self.body.find(
+            f".//{{{self._body_namespace}}}{name}")
 
     def back_to_parent_element(self):
         self.current_element = self.body

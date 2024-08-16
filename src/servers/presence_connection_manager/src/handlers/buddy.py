@@ -40,7 +40,8 @@ class BlockListHandler(CmdHandlerBase):
 
 
 class BuddyListHandler(LoginHandlerBase):
-    _result: BuddyListResult = BuddyListResult()
+    _result: BuddyListResult
+    _result_cls = BuddyListResult
 
     def __init__(self, client: Client):
         assert isinstance(client, Client)

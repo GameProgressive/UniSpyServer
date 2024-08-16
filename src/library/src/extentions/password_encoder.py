@@ -40,11 +40,12 @@ def game_spy_encode_method(password_bytes: bytes):
     assert isinstance(password_bytes, bytes)
     a = 0
     num = 0x79707367  # gamespy
+    temp_data = list(password_bytes)
     for i in range(len(password_bytes)):
         num = game_spy_byte_shift(num)
         a = num % 0xFF
-        password_bytes[i] ^= a
-    return password_bytes
+        temp_data[i] ^= a
+    return bytes(temp_data)
 
 
 def game_spy_byte_shift(num):

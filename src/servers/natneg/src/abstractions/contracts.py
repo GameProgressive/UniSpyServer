@@ -8,12 +8,14 @@ from servers.natneg.src.enums.general import (
     RequestType,
     ResponseType,
 )
+from library.src.extentions.bytes_extentions import ip_to_4_bytes
 
 MAGIC_DATA = bytes([0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2])
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
     version: int
+    #! check bytes order
     cookie: int
     """
     byteorder:
@@ -33,7 +35,8 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
 
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(self.raw_request[8:12])
+        self.cookie = int.from_bytes(
+            self.raw_request[8:12], byteorder="little")
         self.port_type = NatPortType(self.raw_request[12])
 
 
@@ -55,8 +58,8 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     def build(self) -> None:
         data = bytes()
         data += MAGIC_DATA
-        data += self._request.version.to_bytes(1, "little")
-        data += self._result.packet_type.value.to_bytes(1, "little")
+        data += self._request.version.to_bytes()
+        data += self._result.packet_type.value.to_bytes()
         data += self._request.cookie.to_bytes(4)
         self.sending_buffer = data
 
@@ -84,9 +87,9 @@ class CommonResponseBase(ResponseBase):
         super().build()
         data = bytes()
         data += self.sending_buffer
-        data += self._request.port_type.value.to_bytes(1, "little")
-        data += self._request.client_index.value.to_bytes(1, "little")
+        data += self._request.port_type.value.to_bytes()
+        data += self._request.client_index.value.to_bytes()
         data += bytes(self._request.use_game_port)
-        data += socket.inet_aton(self._result.public_ip_addr)
+        data += ip_to_4_bytes(self._result.public_ip_addr)
         data += self._result.public_port.to_bytes(2)
         self.sending_buffer = data

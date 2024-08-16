@@ -33,14 +33,14 @@ class ClientMessageAckRequest(RequestBase):
 
 class ClientMessageRequest(RequestBase):
     server_browser_sender_id: UUID
-    natneg_message: bytes
-    target_ip_address: bytes
-    target_port: bytes
+    natneg_message: list[int]
+    target_ip_address: str
+    target_port: str
     message_key: int
 
     @property
     def cookie(self):
-        return self.natneg_message[6:10]
+        return int.from_bytes(self.natneg_message[6:10], "little")
 
 
 class HeartBeatRequest(RequestBase):
@@ -110,7 +110,7 @@ class HeartBeatRequest(RequestBase):
             temp_value = key_value_array[i + 1]
 
             if temp_key == "":
-                LogWriter.LogVerbose("Skipping empty key value")
+                LogWriter.debug("Skipping empty key value")
                 continue
 
             if temp_key in self.server_data:

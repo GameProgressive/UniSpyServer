@@ -3,9 +3,7 @@ import socketserver
 
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase, ServerBase
-from library.src.extentions.string_extentions import IPEndPoint
-from library.src.log.log_manager import LogWriter
-from library.src.unispy_server_config import CONFIG, ServerConfig
+from library.src.unispy_server_config import CONFIG
 
 
 class UdpConnection(ConnectionBase):
@@ -15,12 +13,12 @@ class UdpConnection(ConnectionBase):
 
 
 class UdpHandler(socketserver.BaseRequestHandler):
-    request: socket.socket
+    request: tuple[bytes, socket.socket]
     conn: UdpConnection
 
     def handle(self) -> None:
         data = self.request[0]
-        conn = UdpConnection(self, *self.server.handler_params)
+        conn = UdpConnection(self, *self.server.handler_params)  # type: ignore
         conn.on_received(data)
 
     def send(self, data: bytes) -> None:
@@ -34,8 +32,13 @@ class UdpServer(ServerBase):
             (self._config.public_address, self._config.listening_port),
             UdpHandler,
         )
-        self._server.handler_params = (self._config, self._t_client, self._logger)
+        # inject the handler params to ThreadingUDPServer
+        self._server.handler_params = (self._config, self._client_cls, self._logger)  # type: ignore
+
         self._server.serve_forever()
+
+    def __exit__(self, *args):
+        self._server.__exit__(*args)
 
 
 class TestClient(ClientBase):
@@ -52,6 +55,8 @@ class TestClient(ClientBase):
 
 if __name__ == "__main__":
     # create_udp_server(list(CONFIG.servers.values())[0], ClientBase)
-    s = UdpServer(list(CONFIG.servers.values())[0], TestClient, None)
+    from tests.mock_objects.general import LogMock
+
+    s = UdpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
     s.start()
     pass

@@ -14,18 +14,19 @@ if TYPE_CHECKING:
     from library.src.abstractions.enctypt_base import EncryptBase
     from library.src.abstractions.contracts import ResponseBase
     from library.src.abstractions.client import ClientInfoBase
+    from library.src.network.http_handler import HttpRequest
 
 
 class ClientBase(abc.ABC):
-    server_config: "ServerConfig"
+    server_config: ServerConfig
     connection: "ConnectionBase"
-    logger: "LogWriter"
-    crypto: "Optional[EncryptBase]" = None
+    logger: LogWriter
+    crypto: Optional["EncryptBase"] = None
     info: "ClientInfoBase"
-    is_log_raw: "bool" = False
+    is_log_raw: bool = False
 
     def __init__(
-        self, connection: "ConnectionBase", server_config: "ServerConfig", logger: "LogWriter"
+        self, connection: "ConnectionBase", server_config: ServerConfig, logger: LogWriter
     ):
         assert isinstance(server_config, ServerConfig)
         # assert isinstance(logger, LogWriter)
@@ -46,10 +47,11 @@ class ClientBase(abc.ABC):
     def create_switcher(self, buffer) -> "SwitcherBase":
         pass
 
-    def on_received(self, buffer) -> None:
-        if self.crypto is not None:
-            buffer = self.crypto.decrypt(buffer)
-        
+    def on_received(self, buffer: "Optional[bytes | HttpRequest]") -> None:
+        if isinstance(buffer, bytes):
+            if self.crypto is not None:
+                buffer = self.crypto.decrypt(buffer)
+
         switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()
 
@@ -62,11 +64,11 @@ class ClientBase(abc.ABC):
     def send(self, response: "ResponseBase") -> None:
         from library.src.abstractions.contracts import ResponseBase
 
-        assert issubclass(type(response),ResponseBase)
+        assert issubclass(type(response), ResponseBase)
         response.build()
         sending_buffer = response.sending_buffer
         if isinstance(sending_buffer, str):
-            buffer:bytes = Encoding.get_bytes(sending_buffer)
+            buffer: bytes = Encoding.get_bytes(sending_buffer)
         if isinstance(sending_buffer, bytes):
             buffer = sending_buffer
         else:
@@ -77,7 +79,6 @@ class ClientBase(abc.ABC):
             buffer = self.crypto.encrypt(buffer)
 
         self.connection.send(buffer)
-
 
     def log_debug(self, message: str) -> None:
         self.logger.debug(f"{self.__log_prefix}: {message}")

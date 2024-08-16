@@ -3,6 +3,7 @@ from library.src.log.log_manager import LogManager, LogWriter
 from library.src.unispy_server_config import CONFIG, ServerConfig
 import pyfiglet
 import requests
+
 VERSION = 0.45
 
 __server_name_mapping = {

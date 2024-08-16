@@ -1,7 +1,14 @@
 from library.src.extentions.gamespy_ramdoms import StringType, generate_random_string
 from servers.presence_connection_manager.src.abstractions.contracts import ResponseBase
-from servers.presence_connection_manager.src.contracts.requests.profile import GetProfileRequest, NewProfileRequest, RegisterNickRequest
-from servers.presence_connection_manager.src.contracts.results.profile import GetProfileResult, NewProfileResult
+from servers.presence_connection_manager.src.contracts.requests.profile import (
+    GetProfileRequest,
+    NewProfileRequest,
+    RegisterNickRequest,
+)
+from servers.presence_connection_manager.src.contracts.results.profile import (
+    GetProfileResult,
+    NewProfileResult,
+)
 
 
 class GetProfileResponse(ResponseBase):
@@ -15,32 +22,19 @@ class GetProfileResponse(ResponseBase):
 
     def build(self):
         self.sending_buffer = (
-            "\\pi\\profileid\\"
-            + str(self._result.user_profile.profile_id)
-            + "\\nick\\"
-            + self._result.user_profile.nick
-            + "\\uniquenick\\"
-            + self._result.user_profile.unique_nick
-            + "\\email\\"
-            + self._result.user_profile.email
-            + "\\firstname\\"
-            + self._result.user_profile.firstname
-            + "\\lastname\\"
-            + self._result.user_profile.lastname
-            + "\\icquin\\"
-            + self._result.user_profile.icquin
-            + "\\homepage\\"
-            + self._result.user_profile.homepage
-            + "\\zipcode\\"
-            + self._result.user_profile.zipcode
-            + "\\countrycode\\"
-            + self._result.user_profile.countrycode
-            + "\\lon\\"
-            + str(self._result.user_profile.longitude)
-            + "\\lat\\"
-            + str(self._result.user_profile.latitude)
-            + "\\loc\\"
-            + self._result.user_profile.location
+            f"\\pi\\profileid\\{self._result.user_profile.profile_id}"
+            + f"\\nick\\{self._result.user_profile.nick}"
+            + f"\\uniquenick\\{self._result.user_profile.unique_nick}"
+            + f"\\email\\{self._result.user_profile.email}"
+            + f"\\firstname\\{self._result.user_profile.firstname}"
+            + f"\\lastname\\{self._result.user_profile.lastname}"
+            + f"\\icquin\\{self._result.user_profile.icquin}"
+            + f"\\homepage\\{self._result.user_profile.homepage}"
+            + f"\\zipcode\\{self._result.user_profile.zipcode}"
+            + f"\\countrycode\\{self._result.user_profile.countrycode}"
+            + f"\\lon\\{self._result.user_profile.longitude}"
+            + f"\\lat\\{self._result.user_profile.latitude}"
+            + f"\\loc\\{self._result.user_profile.location}"
         )
 
         birth_str = (
@@ -48,22 +42,23 @@ class GetProfileResponse(ResponseBase):
             | (self._result.user_profile.birthmonth << 16)
             | self._result.user_profile.birthyear
         )
-        self.sending_buffer += "\\birthday\\" + str(birth_str)
-
-        self.sending_buffer += "\\sex\\" + self._result.user_profile.sex
-        self.sending_buffer += "\\publicmask\\" + self._result.user_profile.publicmask
-        self.sending_buffer += "\\aim\\" + self._result.user_profile.aim
-        self.sending_buffer += "\\picture\\" + self._result.user_profile.picture
-        self.sending_buffer += "\\ooc" + str(self._result.user_profile.occupationid)
-        self.sending_buffer += "\\ind\\" + str(self._result.user_profile.industryid)
-        self.sending_buffer += "\\inc\\" + str(self._result.user_profile.incomeid)
-        self.sending_buffer += "\\mar\\" + str(self._result.user_profile.marriedid)
-        self.sending_buffer += "\\chc\\" + str(self._result.user_profile.childcount)
-        self.sending_buffer += "\\i1\\" + self._result.user_profile.interests1
-        self.sending_buffer += "\\o1\\" + self._result.user_profile.ownership1
-        self.sending_buffer += "\\conn\\" + self._result.user_profile.connectiontype
-        self.sending_buffer += "\\sig\\+" + generate_random_string(10, StringType.HEX)
-        self.sending_buffer += "\\id\\" + str(self._request.operation_id) + "\\final\\"
+        self.sending_buffer += (
+            f"\\birthday\\{birth_str}"
+            f"\\sex\\{self._result.user_profile.sex}"
+            + f"\\publicmask\\{self._result.user_profile.publicmask}"
+            + f"\\aim\\{self._result.user_profile.aim}"
+            + f"\\picture\\{self._result.user_profile.picture}"
+            + f"\\ooc{self._result.user_profile.occupationid}"
+            + f"\\ind\\{self._result.user_profile.industryid}"
+            + f"\\inc\\{self._result.user_profile.incomeid}"
+            + f"\\mar\\{self._result.user_profile.marriedid}"
+            + f"\\chc\\{self._result.user_profile.childcount}"
+            + f"\\i1\\{self._result.user_profile.interests1}"
+            + f"\\o1\\{self._result.user_profile.ownership1}"
+            + f"\\conn\\{self._result.user_profile.connectiontype}"
+            + f"\\sig\\+{generate_random_string(10, StringType.HEX)}"
+            + f"\\id\\{self._request.operation_id}\\final\\"
+        )
 
 
 class NewProfileResponse(ResponseBase):

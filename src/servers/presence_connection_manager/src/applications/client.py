@@ -49,9 +49,11 @@ class Client(ClientBase):
                 "The server challenge has already been sent. Cannot send another login challenge."
             )
         self.info.login_status = LoginStatus.PROCESSING
-        buffer = f"\\lc\\1\\challenge\\{SERVER_CHALLENGE}\\id\\1\\final\\"
-        self.send(buffer)
+        buffer = f"\\lc\\1\\challenge\\{SERVER_CHALLENGE}\\id\\1\\final\\".encode(
+            "ascii"
+        )
         self.log_network_sending(buffer)
+        self.connection.send(buffer)
 
     def create_switcher(self, buffer) -> "SwitcherBase":
         return Switcher(self, buffer)

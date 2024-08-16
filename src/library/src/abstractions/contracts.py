@@ -2,6 +2,7 @@ import abc
 from copy import deepcopy
 from dataclasses import dataclass
 import enum
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -38,7 +39,7 @@ class RequestBase(abc.ABC):
         result = deepcopy(self.__dict__)
         for key, value in result.items():
             if isinstance(value, bytes):
-                result[key] = list(value)
+                result[key] = value.decode("utf-8")
             elif isinstance(value, enum.Enum):
                 result[key] = value.value
             elif isinstance(value, enum.IntEnum):
@@ -57,7 +58,7 @@ class ResponseBase(abc.ABC):
     _result: ResultBase
     _request: RequestBase
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
+    def __init__(self, request: RequestBase, result: Optional[ResultBase]) -> None:
         super().__init__()
         if request is not None:
             assert issubclass(type(request), RequestBase)

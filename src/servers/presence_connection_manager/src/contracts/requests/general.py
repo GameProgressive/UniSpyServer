@@ -29,7 +29,7 @@ class LoginRequest(RequestBase):
     user_id: int
     profile_id: int
     partner_id: int
-    game_name: int
+    game_name: str
     quiet_mode_flags: int
     firewall: bool
 
@@ -106,7 +106,7 @@ class LoginRequest(RequestBase):
             self.product_id = product_id
 
         if "firewall" in self.request_key_values:
-            self.firewall = self.request_key_values["firewall"]
+            self.firewall = bool(self.request_key_values["firewall"])
 
         if "quiet" in self.request_key_values:
             quiet = int(self.request_key_values["quiet"])

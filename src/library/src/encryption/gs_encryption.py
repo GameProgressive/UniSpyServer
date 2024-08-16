@@ -53,30 +53,6 @@ def init(ctx: PeerChatCtx, challenge_key: str, secret_key: str):
         index1 += 1
 
 
-def handle(ctx: PeerChatCtx, data):
-    num1 = ctx.buffer1
-    num2 = ctx.buffer2
-    buffer = []
-    size = len(data)
-    datapos = 0
-
-    while size > 0:
-        num1 = (num1 + 1) % 256
-        num2 = (ctx.sbox[num1] + num2) % 256
-        t = ctx.sbox[num1]
-        ctx.sbox[num1] = ctx.sbox[num2]
-        ctx.sbox[num2] = t
-        t = (ctx.sbox[num2] + ctx.sbox[num1]) % 256
-        temp = data[datapos] ^ ctx.sbox[t]
-        buffer.append(temp)
-        datapos += 1
-        size -= 1
-
-    ctx.buffer1 = num1
-    ctx.buffer2 = num2
-    return bytes(buffer)
-
-
 class ChatCrypt(EncryptBase):
     def __init__(self, game_secret_key):
         self.client_ctx = PeerChatCtx()
@@ -84,13 +60,37 @@ class ChatCrypt(EncryptBase):
         init(self.client_ctx, CLIENT_KEY, game_secret_key)
         init(self.server_ctx, SERVER_KEY, game_secret_key)
 
+    @staticmethod
+    def handle(ctx: PeerChatCtx, data):
+        num1 = ctx.buffer1
+        num2 = ctx.buffer2
+        buffer = []
+        size = len(data)
+        datapos = 0
+
+        while size > 0:
+            num1 = (num1 + 1) % 256
+            num2 = (ctx.sbox[num1] + num2) % 256
+            t = ctx.sbox[num1]
+            ctx.sbox[num1] = ctx.sbox[num2]
+            ctx.sbox[num2] = t
+            t = (ctx.sbox[num2] + ctx.sbox[num1]) % 256
+            temp = data[datapos] ^ ctx.sbox[t]
+            buffer.append(temp)
+            datapos += 1
+            size -= 1
+
+        ctx.buffer1 = num1
+        ctx.buffer2 = num2
+        return bytes(buffer)
+
     def encrypt(self, data: bytes) -> bytes:
         super().encrypt(data)
-        return self.handle(self.server_ctx, data)
+        return ChatCrypt.handle(self.server_ctx, data)
 
     def decrypt(self, data: bytes) -> bytes:
         super().decrypt(data)
-        return self.handle(self.client_ctx, data)
+        return ChatCrypt.handle(self.client_ctx, data)
 
 
 if __name__ == "__main__":

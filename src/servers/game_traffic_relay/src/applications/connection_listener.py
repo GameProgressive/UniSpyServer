@@ -1,17 +1,21 @@
 import socketserver
-from library.src.extentions.string_extentions import IPEndPoint
+
+from library.src.network.udp_handler import UdpHandler
 
 
 class ConnectionListener:
     cookie: bytes
-    ip_end_point: IPEndPoint
+    ip_addr: str
+    port: int
 
-    def __init__(self, ip_end_point: IPEndPoint) -> None:
-        assert isinstance(ip_end_point, IPEndPoint)
-        self.ip_end_point = ip_end_point
+    def __init__(self, ip_addr: str, port: int) -> None:
+        assert isinstance(ip_addr, str)
+        assert isinstance(port, int)
+        self.ip_addr = ip_addr
+        self.port = port
 
     def start(self):
         with socketserver.ThreadingUDPServer(
-            self.ip_end_point.ip, self.ip_end_point.port
+            (self.ip_addr, self.port), UdpHandler
         ) as s:
             s.serve_forever()

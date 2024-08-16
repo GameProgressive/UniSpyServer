@@ -9,7 +9,8 @@ from library.src.exceptions.error import UniSpyException
 
 class PostgreSql(BaseModel):
     server: str
-    port: int = Field(..., ge=1, le=65535)  # Ensures port is between 1 and 65535
+    # Ensures port is between 1 and 65535
+    port: int = Field(..., ge=1, le=65535)
     database: str
     username: str
     password: str
@@ -18,38 +19,38 @@ class PostgreSql(BaseModel):
     ssl_key: Optional[str] = None  # Optional field for SSL key
     ssl_password: Optional[str] = None  # Optional field for SSL password
     root_cert: Optional[str] = None  # Optional field for root certificate
-    url: str = None  # URL will be generated based on other fields
 
-    def model_post_init(self, __context: Any) -> None:
-        self.url = f"postgresql://{self.username}:{self.password}@{self.server}:{self.port}/{self.database}?sslmode={self.ssl_mode}"
+    @property
+    def url(self) -> str:
+        # fmt ignore
+        return f"postgresql://{self.username}:{self.password}@{self.server}:{self.port}/{self.database}?sslmode={self.ssl_mode}"
 
 
 class RedisConfig(BaseModel):
     server: str
-    port: int = Field(..., ge=1, le=65535)  # Ensures port is between 1 and 65535
+    # Ensures port is between 1 and 65535
+    port: int = Field(..., ge=1, le=65535)
     user: str
     password: str
     ssl: bool  # Use bool for SSL flag
     ssl_host: Optional[str] = None  # Optional field for SSL host
-    url: str = None  # URL will be generated based on other fields
 
-    def model_post_init(self, __context: Any) -> None:
+    @property
+    def url(self) -> str:
         if self.ssl:
-            self.url = (
+            return (
                 f"rediss://{self.user}:{self.password}@{self.server}:{self.port}/0"
             )
         else:
-            self.url = (
+            return (
                 f"redis://{self.user}:{self.password}@{self.server}:{self.port}/0"
             )
 
 
 class ServerConfig(BaseModel):
     server_id: UUID
-    server_name: str = constr(min_length=1)  # Ensures server_name is a non-empty string
-    public_address: str = constr(
-        min_length=1
-    )  # Ensures public_address is a non-empty string
+    server_name: str = Field(..., min_length=1)
+    public_address: str = Field(..., min_length=1)
     listening_port: int = Field(
         ..., ge=1, le=65535
     )  # Ensures listening_port is between 1 and 65535
@@ -78,7 +79,6 @@ class MongoDbConfig(BaseModel):
             url += f":{self.port}"
         if self.database is not None:
             url += f"/{self.database}"
-        return url
 
 
 class UniSpyServerConfig(BaseModel):
@@ -87,7 +87,7 @@ class UniSpyServerConfig(BaseModel):
     backend: BackendConfig
     servers: dict[str, ServerConfig] = Field(default_factory=dict)
     mongodb: MongoDbConfig
-
+    logging: LoggingConfig
 
 
 unispy_config = os.environ.get("UNISPY_CONFIG")

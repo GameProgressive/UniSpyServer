@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 
-@dataclass
 class UserStatusInfo:
     status_state: str
     buddy_ip: str
@@ -15,3 +14,6 @@ class UserStatusInfo:
     game_variant: str
     game_map_name: str
     quiet_mode_flags: str
+
+    def __init__(self) -> None:
+        pass

@@ -1,3 +1,4 @@
+import socket
 from library.src.extentions.encoding import get_bytes
 from servers.presence_connection_manager.src.contracts.requests.general import (
     KeepAliveRequest,
@@ -9,9 +10,12 @@ from servers.query_report.src.v2.contracts.requests import (
     ClientMessageRequest,
     HeartBeatRequest,
 )
-from servers.query_report.src.v2.contracts.results import ChallengeResult, HeartBeatResult
+from servers.query_report.src.v2.contracts.results import (
+    ChallengeResult,
+    HeartBeatResult,
+)
 from servers.query_report.src.v2.enums.general import ServerAvailability
-
+from library.src.extentions.bytes_extentions import ip_to_4_bytes, port_to_2_bytes
 
 RESPONSE_PREFIX = bytes([0xFE, 0xFD, 0x09, 0x00, 0x00, 0x00])
 
@@ -79,9 +83,9 @@ class HeartBeatResponse(ResponseBase):
         data = bytearray()
         data.extend(self.sending_buffer)
         data.extend(CHALLENGE)
-        data.extend(self._result.remote_ip_endpoint.get_ip_bytes())
+        data.extend(ip_to_4_bytes(self._result.remote_ip_address))
         data.extend(SPLITER)
-        data.extend(self._result.remote_ip_endpoint.get_port_bytes())
+        data.extend(port_to_2_bytes(self._result.remote_port))
         self.sending_buffer = bytes(data)
 
 

@@ -10,7 +10,7 @@ class StringType(IntEnum):
 
 
 def generate_random_string(count: int, type: StringType) -> str:
-    random.seed(datetime.datetime.now())
+    random.seed(datetime.datetime.now().timestamp())
 
     alpha_chars = [
         "A",

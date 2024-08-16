@@ -1,9 +1,16 @@
 import abc
 import socketserver
+from typing import Optional
 from library.src.abstractions.client import ClientBase
+
 # from library.src.extentions.string_extentions import IPEndPoint
 from library.src.log.log_manager import LogWriter
 from library.src.unispy_server_config import ServerConfig
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from library.src.network.http_handler import HttpRequest
 
 
 class ConnectionBase(abc.ABC):
@@ -35,7 +42,7 @@ class ConnectionBase(abc.ABC):
         self.logger = logger
         self._client = self.t_client(self, self.config, self.logger)
 
-    def on_received(self, data: bytes) -> None:
+    def on_received(self, data: "Optional[bytes|HttpRequest]") -> None:
         self._client.on_received(data)
 
     @abc.abstractmethod
@@ -43,7 +50,6 @@ class ConnectionBase(abc.ABC):
         if not self._is_started:
             raise Exception("Server is not running.")
         assert isinstance(data, bytes)
-
 
 class UcpConnectionBase(ConnectionBase, abc.ABC):
     pass
@@ -69,7 +75,7 @@ class HttpConnectionBase(TcpConnectionBase, abc.ABC):
 
 class ServerBase(abc.ABC):
     _config: ServerConfig
-    _t_client: type[ClientBase]
+    _client_cls: type[ClientBase]
     _logger: LogWriter
     _server: socketserver.BaseServer
 
@@ -80,10 +86,10 @@ class ServerBase(abc.ABC):
         assert issubclass(t_client, ClientBase)
         # assert isinstance(logger, LogWriter)
         self._config = config
-        self._t_client = t_client
+        self._client_cls = t_client
         self._logger = logger
 
-    @abc.abstractclassmethod
+    @abc.abstractmethod
     def start(self):
         pass
 
