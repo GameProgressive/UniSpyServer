@@ -21,12 +21,12 @@ class LoginRequestBase(lib.RequestBase):
             raise AuthException("version is missing from the request.")
         self.version = int(version_node.text)
         partner_id_node = self._content_element.find(
-            f".//{{{NAMESPACE}}}version")
+            f".//{{{NAMESPACE}}}partnercode")
         if partner_id_node is None or partner_id_node.text is None:
             raise AuthException("partner id is missing from the request.")
         self.partner_code = int(partner_id_node.text)
         namespace_id_node = self._content_element.find(
-            f".//{{{NAMESPACE}}}version")
+            f".//{{{NAMESPACE}}}namespaceid")
         if namespace_id_node is None or namespace_id_node.text is None:
             raise AuthException("namespace id is missing from the request.")
         self.namespace_id = int(namespace_id_node.text)

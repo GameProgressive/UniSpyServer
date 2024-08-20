@@ -2,15 +2,15 @@ import unittest
 
 import responses
 
-from servers.webservices.src.modules.auth.contracts.requests import LoginProfileWithGameIdRequest, LoginUniqueNickRequest
+from servers.webservices.src.modules.auth.contracts.requests import LoginProfileWithGameIdRequest, LoginPs3CertRequest, LoginRemoteAuthRequest, LoginUniqueNickRequest
 from servers.webservices.src.modules.auth.handlers.general import LoginProfileWithGameIdHandler
 
-LOGIN_PROFILE = """<?xml version=""1.0"" encoding=""UTF-8""?>
-            <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
-                xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
-                xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
-                xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/AuthService"">
+LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?>
+            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ns1="http://gamespy.net/AuthService/">
                 <SOAP-ENV:Body>
                     <ns1:LoginProfile>
                         <ns1:version>1</ns1:version>
@@ -26,12 +26,12 @@ LOGIN_PROFILE = """<?xml version=""1.0"" encoding=""UTF-8""?>
                     </ns1:LoginProfile>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>"""
-LOGIN_PS3_CERT = """<?xml version=""1.0"" encoding=""UTF-8""?>
-            <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
-                xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
-                xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
-                xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/AuthService"">
+LOGIN_PS3_CERT = """<?xml version="1.0" encoding="UTF-8"?>
+            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ns1="http://gamespy.net/AuthService/">
                 <SOAP-ENV:Body>
                     <ns1:LoginPs3Cert>
                         <ns1:version>0</ns1:version>
@@ -44,12 +44,12 @@ LOGIN_PS3_CERT = """<?xml version=""1.0"" encoding=""UTF-8""?>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>"""
 
-LOGIN_REMOTE_AUTH = """<?xml version=""1.0"" encoding=""UTF-8""?>
-            <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
-                xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
-                xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
-                xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/AuthService"">
+LOGIN_REMOTE_AUTH = """<?xml version="1.0" encoding="UTF-8"?>
+            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ns1="http://gamespy.net/AuthService/">
                 <SOAP-ENV:Body>
                     <ns1:LoginRemoteAuth>
                         <ns1:version>1</ns1:version>
@@ -62,12 +62,12 @@ LOGIN_REMOTE_AUTH = """<?xml version=""1.0"" encoding=""UTF-8""?>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>"""
 
-LOGIN_UNIQUENICK = """<?xml version=""1.0"" encoding=""UTF-8""?>
-            <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
-                xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
-                xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
-                xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                xmlns:ns1=""http://gamespy.net/AuthService"">
+LOGIN_UNIQUENICK = """<?xml version="1.0" encoding="UTF-8"?>
+            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ns1="http://gamespy.net/AuthService/">
                 <SOAP-ENV:Body>
                     <ns1:LoginUniqueNick>
                         <ns1:version>1</ns1:version>
@@ -81,16 +81,13 @@ LOGIN_UNIQUENICK = """<?xml version=""1.0"" encoding=""UTF-8""?>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>"""
 
-
-class AuthTest(unittest.TestCase):
-    def CrysisAuth(self):
-        raw = """<?xml version=""1.0"" encoding=""UTF-8""?>
+CRYSIS = """<?xml version="1.0" encoding="UTF-8"?>
                         <SOAP-ENV:Envelope
-                            xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
-                            xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
-                            xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
-                            xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
-                            xmlns:ns1=""http://gamespy.net/AuthService/"">
+                            xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                            xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                            xmlns:ns1="http://gamespy.net/AuthService/">
                             <SOAP-ENV:Body>
                                 <ns1:LoginUniqueNick>
                                     <ns1:version>1</ns1:version>
@@ -104,15 +101,59 @@ class AuthTest(unittest.TestCase):
                             </SOAP-ENV:Body>
                         </SOAP-ENV:Envelope>"""
 
-        request = LoginUniqueNickRequest(raw)
+
+class AuthTest(unittest.TestCase):
+    @responses.activate
+    def test_crysis_auth(self):
+
+        request = LoginUniqueNickRequest(CRYSIS)
         request.parse()
 
     @responses.activate
-    def login_profile(self):
+    def test_login_profile(self):
         request = LoginProfileWithGameIdRequest(LOGIN_PROFILE)
-        handler= LoginProfileWithGameIdHandler(request)
+        request.parse()
+        self.assertEqual(1, request.version)
+        self.assertEqual(0, request.game_id)
+        self.assertEqual(0, request.partner_code)
+        self.assertEqual(0, request.namespace_id)
+        self.assertEqual("spyguy@unispy.org", request.email)
+        self.assertEqual("spyguy", request.uniquenick)
+        self.assertEqual("XXXXXXXXXXX", request.cdkey)
+        self.assertEqual("XXXXXXXXXXX", request.password)
+
+        # handler = LoginProfileWithGameIdHandler(request)
+        # handler.handle()
+
+    def test_login_ps3_cert(self):
+        request = LoginPs3CertRequest(LOGIN_PS3_CERT)
+        request.parse()
+        self.assertEqual(0, request.version)
+        self.assertEqual(0, request.game_id)
+        self.assertEqual(1, request.partner_code)
+        self.assertEqual(0, request.namespace_id)
+        self.assertEqual("0", request.ps3_cert)
+        self.assertEqual("0001", request.npticket)
+
+    def test_remote_auth(self):
+        request = LoginRemoteAuthRequest(LOGIN_REMOTE_AUTH)
+        request.parse()
+        self.assertEqual(1, request.version)
+        self.assertEqual(0, request.game_id)
+        self.assertEqual(0, request.partner_code)
+        self.assertEqual(0, request.namespace_id)
+        self.assertEqual("XXXXXXXXXXX", request.auth_token)
+        self.assertEqual("XXXXXXXXXXX", request.challenge)
+
+    def test_login_uniquenick(self):
+        request = LoginUniqueNickRequest(LOGIN_UNIQUENICK)
+        request.parse()
+        self.assertEqual(1, request.version)
+        self.assertEqual(0, request.partner_code)
+        self.assertEqual(0, request.namespace_id)
+        self.assertEqual("spyguy", request.uniquenick)
+        self.assertEqual("XXXXXXXXXXX", request.password)
 
 
 if __name__ == "__main__":
-    t = AuthTest()
-    t.CrysisAuth()
+    unittest.main()

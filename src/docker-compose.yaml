@@ -27,4 +27,4 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: unispy
     volumes:
-      - ../postgre_creation.sql:/docker-entrypoint-initdb.d/postgre_creation.sql
+      - ../common/postgre_creation.sql:/docker-entrypoint-initdb.d/postgre_creation.sql
