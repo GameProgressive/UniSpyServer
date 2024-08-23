@@ -1,3 +1,5 @@
+from copy import copy, deepcopy
+import xml.etree.ElementTree as ET
 from typing import OrderedDict
 
 from pydantic import BaseModel
@@ -11,15 +13,28 @@ from servers.webservices.src.modules.sake.exceptions.general import SakeExceptio
 
 
 class CreateRecordRequest(RequestBase):
-    values: dict
+    values: list[tuple[str, str, str]] = []
+    """
+    (name,type,value)
+    """
 
     def parse(self) -> None:
         super().parse()
-        value_node = self._content_element.find(f".//{{{NAMESPACE}}}values")
-        if value_node is None:
+        values = self._content_element.find(f".//{{{NAMESPACE}}}values")
+        if values is None:
             raise SakeException("values is missing from request")
+        record_fields = values.findall(f".//{{{NAMESPACE}}}RecordField")
+        for f in record_fields:
+            temp = []
+            name = f.find(f".//{{{NAMESPACE}}}name")
+            temp.append(name.text)
+            value = f.find(f".//{{{NAMESPACE}}}value")
+            for v in value:
+                temp.append(v.tag.split("}")[1])
+                for i in v:
+                    temp.append(i.text)
 
-        self.values = xmltodict.parse(value_node)
+            self.values.append(tuple(temp))
 
 
 class DeleteRecordRequest(RequestBase):
@@ -32,35 +47,39 @@ class DeleteRecordRequest(RequestBase):
         if record_id is None:
             raise SakeException("recordid is missing from request")
 
-        self.record_id = int(record_id)
+        self.record_id = int(record_id.text)
 
 
 class GetMyRecordsRequest(RequestBase):
-    fields: dict
+    fields: list[tuple[str, str]] = []
 
     def parse(self) -> None:
         super().parse()
-        fields_node = self._content_element.find(f".//{{{NAMESPACE}}}fields")
-        if fields_node is None:
+        fields = self._content_element.find(f".//{{{NAMESPACE}}}fields")
+        if fields is None:
             raise SakeException("fields is missing from request")
-        self.fields = xmltodict.parse(fields_node)
+        for e in fields:
+            data = (e.text, e.tag.split("}")[1])
+            self.fields.append(data)
 
 
 class GetRandomRecordsRequest(RequestBase):
-    max: str
-    fields: dict
+    max: int
+    fields: list[tuple[str, str]] = []
 
     def parse(self) -> None:
         super().parse()
         max = self._content_element.find(f".//{{{NAMESPACE}}}max")
         if max is None:
             raise SakeException("max is missing from request")
-        self.max = int(max)
+        self.max = int(max.text)
 
-        fields_node = self._content_element.find(f".//{{{NAMESPACE}}}fields")
-        if fields_node is None:
+        fields = self._content_element.find(f".//{{{NAMESPACE}}}fields")
+        if fields is None:
             raise SakeException("fields is missing from request")
-        self.fields = xmltodict.parse(fields_node)
+        for e in fields:
+            data = (e.text, e.tag.split("}")[1])
+            self.fields.append(data)
 
 
 class GetRecordLimitRequest(RequestBase):
@@ -69,7 +88,7 @@ class GetRecordLimitRequest(RequestBase):
 
 class GetSpecificRecordsRequest(RequestBase):
 
-    record_ids: list[tuple]
+    record_ids: list[tuple] = []
     """
     [
     (field_name,field_type),
@@ -79,7 +98,7 @@ class GetSpecificRecordsRequest(RequestBase):
     (field_name,field_type)
     ]
     """
-    fields: list[tuple]
+    fields: list[tuple] = []
     """
     [
     (field_name,field_type),
@@ -92,17 +111,21 @@ class GetSpecificRecordsRequest(RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        record_id_node = self._content_element.find(
+        record_ids = self._content_element.find(
             f".//{{{NAMESPACE}}}recordids")
-        if record_id_node is None:
+        if record_ids is None:
             raise SakeException("No record id found.")
-        self.record_ids = xmltodict.parse(str(record_id_node))
+        for e in record_ids:
+            data = (e.text, e.tag.split("}")[1])
+            self.record_ids.append(data)
         fields = self._content_element.find(
-            f".//{{{NAMESPACE}}}recordids")
+            f".//{{{NAMESPACE}}}fields")
         if fields is None:
             raise SakeException("No record id found.")
 
-        self.fields = xmltodict.parse(str(fields))
+        for e in fields:
+            data = (e.text, e.tag.split("}")[1])
+            self.fields.append(data)
 
 
 class RateRecordRequest(RequestBase):
@@ -115,7 +138,7 @@ class RateRecordRequest(RequestBase):
             f".//{{{NAMESPACE}}}recordid")
         if record_id is None:
             raise SakeException("No record id found.")
-        self.record_id = record_id
+        self.record_id = record_id.text
 
         rating = self._content_element.find(
             f".//{{{NAMESPACE}}}rating")
@@ -132,7 +155,7 @@ class SearchForRecordsRequest(RequestBase):
     surrounding: str
     owner_ids: str
     cache_flag: str
-    fields: OrderedDict[str, object]
+    fields: list[tuple[str, str]] = []
     """
     [
     (field_name,field_type),
@@ -145,46 +168,55 @@ class SearchForRecordsRequest(RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        self.filter = self._content_element.find(
+        filter = self._content_element.find(
             f".//{{{NAMESPACE}}}filter")
-        if self.filter is None:
+        if filter is None:
             raise SakeException("No filter found.")
+        self.filter = filter.text
 
-        self.sort = self._content_element.find(
+        sort = self._content_element.find(
             f".//{{{NAMESPACE}}}sort")
-        if self.sort is None:
+        if sort is None:
             raise SakeException("No sort found.")
+        self.sort = sort.text
 
-        self.offset = self._content_element.find(
+        offset = self._content_element.find(
             f".//{{{NAMESPACE}}}offset")
-        if self.offset is None:
+        if offset is None:
             raise SakeException("No offset found.")
+        self.offset = offset.text
 
-        self.max = self._content_element.find(
+        max = self._content_element.find(
             f".//{{{NAMESPACE}}}max")
-        if self.max is None:
+        if max is None:
             raise SakeException("No max found.")
+        self.max = max.text
 
-        self.surrounding = self._content_element.find(
+        surrounding = self._content_element.find(
             f".//{{{NAMESPACE}}}surrounding")
-        if self.sort is None:
+        if surrounding is None:
             raise SakeException("No surrounding found.")
-        self.owner_ids = self._content_element.find(
-            f".//{{{NAMESPACE}}}ownerids")
-        if self.owner_ids is None:
-            raise SakeException("No ownderids found.")
+        self.surrounding = surrounding.text
 
-        self.cache_flag = self._content_element.find(
+        owner_ids = self._content_element.find(
+            f".//{{{NAMESPACE}}}ownerids")
+        if owner_ids is None:
+            raise SakeException("No ownderids found.")
+        self.owner_ids = owner_ids.text
+
+        cache_flag = self._content_element.find(
             f".//{{{NAMESPACE}}}cacheFlag")
-        if self.cache_flag is None:
+        if cache_flag is None:
             raise SakeException("No cache flag found.")
+        self.cache_flag = cache_flag.text
 
         fields = self._content_element.find(
             f".//{{{NAMESPACE}}}fields")
         if fields is None:
             raise SakeException("No record id found.")
-
-        self.fields = xmltodict.parse(str(fields))
+        for e in fields:
+            data = (e.text, e.tag.split("}")[1])
+            self.fields.append(data)
 
 
 class UpdateRecordRequest(RequestBase):
@@ -206,7 +238,9 @@ class UpdateRecordRequest(RequestBase):
             f".//{{{NAMESPACE}}}recordid")
         if record_id is None:
             raise SakeException("No record id found.")
-        self.record_id = record_id
+        self.record_id = record_id.text
         values_node = self._content_element.find(
             f".//{{{NAMESPACE}}}values")
-        self.values = xmltodict.parse(str(values_node))
+        temp_str = ET.tostring(
+            values_node, encoding="unicode").replace("ns0:", "")
+        self.values = xmltodict.parse(temp_str)['values']["RecordField"]

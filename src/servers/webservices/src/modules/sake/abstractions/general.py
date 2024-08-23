@@ -1,3 +1,4 @@
+from xml.etree import ElementTree
 import servers.webservices.src.abstractions.handler as h
 import servers.webservices.src.abstractions.contracts as lib
 from servers.webservices.src.aggregations.soap_envelop import SoapEnvelop
@@ -17,22 +18,34 @@ class RequestBase(lib.RequestBase):
         game_id = self._content_element.find(f".//{{{NAMESPACE}}}gameid")
         if game_id is None:
             raise SakeException("gameid is missing from the request.")
-        self.game_id = int(game_id)
+        self.game_id = int(game_id.text)
 
-        self.secret_key = self._content_element.find(
+        secret_key = self._content_element.find(
             f".//{{{NAMESPACE}}}secretKey")
-        if self.secret_key is None:
+        if secret_key is None:
             raise SakeException("secretkey id is missing from the request.")
+        self.secret_key = secret_key.text
 
-        self.login_ticket = self._content_element.find(
+        login_ticket = self._content_element.find(
             f".//{{{NAMESPACE}}}loginTicket")
-        if self.login_ticket is None:
+        if login_ticket is None:
             raise SakeException("loginTicket is missing from the request.")
+        self.login_ticket = login_ticket.text
 
-        self.table_id = self._content_element.find(
+        table_id = self._content_element.find(
             f".//{{{NAMESPACE}}}tableid")
-        if self.table_id is None:
+        if table_id is None:
             raise SakeException("tableid is missing from the request.")
+        self.table_id = table_id.text
+
+    @staticmethod
+    def remove_namespace(tree: ElementTree):
+        tree.tag = tree.tag.split('}', 1)[-1]
+        for elem in tree:
+            # Remove the namespace by splitting the tag
+            # Keep the part after the '}'
+            elem.tag = elem.tag.split('}', 1)[-1]
+        return tree
 
 
 class ResultBase(lib.ResultBase):
