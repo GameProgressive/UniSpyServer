@@ -11,7 +11,7 @@ from library.src.unispy_server_config import CONFIG
 from library.src.abstractions.contracts import RequestBase, ResultBase, ResponseBase
 
 
-class CmdHandlerBase(abc.ABC):
+class CmdHandlerBase:
 
     _client: "ClientBase"
     _request: "RequestBase"

@@ -1,10 +1,10 @@
 import abc
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
-from typing import TYPE_CHECKING, List, Optional
+from typing import List, Optional
 
 
-class SwitcherBase(abc.ABC):
+class SwitcherBase:
 
     _client: ClientBase
     _raw_request: object

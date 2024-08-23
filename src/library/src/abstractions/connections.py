@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from library.src.network.http_handler import HttpRequest
 
 
-class ConnectionBase(abc.ABC):
+class ConnectionBase:
     remote_ip: str
     remote_port: int
     _is_started: bool = False
@@ -51,11 +51,12 @@ class ConnectionBase(abc.ABC):
             raise Exception("Server is not running.")
         assert isinstance(data, bytes)
 
-class UcpConnectionBase(ConnectionBase, abc.ABC):
+
+class UcpConnectionBase(ConnectionBase):
     pass
 
 
-class TcpConnectionBase(ConnectionBase, abc.ABC):
+class TcpConnectionBase(ConnectionBase):
     @abc.abstractmethod
     def on_connected(self):
         pass
@@ -69,11 +70,11 @@ class TcpConnectionBase(ConnectionBase, abc.ABC):
         pass
 
 
-class HttpConnectionBase(TcpConnectionBase, abc.ABC):
+class HttpConnectionBase(TcpConnectionBase):
     pass
 
 
-class ServerBase(abc.ABC):
+class ServerBase:
     _config: ServerConfig
     _client_cls: type[ClientBase]
     _logger: LogWriter

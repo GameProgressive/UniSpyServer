@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from library.src.network.http_handler import HttpRequest
 
 
-class ClientBase(abc.ABC):
+class ClientBase:
     server_config: ServerConfig
     connection: "ConnectionBase"
     logger: LogWriter

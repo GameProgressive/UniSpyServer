@@ -8,7 +8,7 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class RequestBase(abc.ABC):
+class RequestBase:
     command_name: object = None
     raw_request: object = None
 
@@ -49,11 +49,11 @@ class RequestBase(abc.ABC):
         return result
 
 
-class ResultBase(BaseModel, abc.ABC):
+class ResultBase(BaseModel):
     pass
 
 
-class ResponseBase(abc.ABC):
+class ResponseBase:
     sending_buffer: object
     _result: ResultBase
     _request: RequestBase

@@ -21,7 +21,7 @@ __server_name_mapping = {
 }
 
 
-class ServerLauncherBase(abc.ABC):
+class ServerLauncherBase:
     config: ServerConfig
     logger: LogWriter
 
