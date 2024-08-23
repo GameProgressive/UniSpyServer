@@ -2,7 +2,7 @@ import abc
 import library.src.abstractions.contracts
 
 
-class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
+class RequestBase(library.src.abstractions.contracts.RequestBase):
     raw_request: str
     command_name: str
     _prefix: str
@@ -46,14 +46,14 @@ class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
             self._cmd_params = dataFrag[1:]
 
 
-class ResultBase(library.src.abstractions.contracts.ResultBase, abc.ABC):
+class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 
 
 SERVER_DOMAIN = "unispy.net"
 
 
-class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
+class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     sending_buffer: str
     _result: ResultBase
     _request: RequestBase

@@ -12,7 +12,7 @@ from servers.presence_search_player.src.abstractions.contracts import (
 )
 
 
-class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
+class RequestBase(library.src.abstractions.contracts.RequestBase):
     request_dict: Dict[str, str]
     raw_request: str
     command_name: str
@@ -39,10 +39,10 @@ class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
                 raise GPParseException("namespaceid is incorrect.")
 
 
-class ResultBase(library.src.abstractions.contracts.ResultBase, abc.ABC):
+class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 
 
-class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
+class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _result: ResultBase
     _request: RequestBase

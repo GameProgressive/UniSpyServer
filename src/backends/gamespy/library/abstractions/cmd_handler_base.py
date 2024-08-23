@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from library.src.abstractions.contracts import RequestBase
 
 
-class CmdHandlerBase(abc.ABC):
+class CmdHandlerBase:
     _request: RequestBase
 
     def handle(self):

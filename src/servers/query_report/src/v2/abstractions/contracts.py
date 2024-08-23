@@ -26,7 +26,7 @@ import library.src.abstractions.contracts
 from servers.query_report.src.v2.enums.general import PacketType
 
 
-class ResultBase(library.src.abstractions.contracts.ResultBase, abc.ABC):
+class ResultBase(library.src.abstractions.contracts.ResultBase):
     packet_type: PacketType
 
 
@@ -34,7 +34,7 @@ import abc
 import library.src.abstractions.contracts
 
 
-class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
+class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _result: ResultBase
     _request: RequestBase
     sending_buffer: bytes

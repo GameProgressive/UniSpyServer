@@ -15,7 +15,7 @@ from servers.server_browser.src.v2.abstractions.contracts import (
 )
 
 
-class CmdHandlerBase(CMB, abc.ABC):
+class CmdHandlerBase(CMB):
     _client: Client
     _request: RequestBase
     _result: ResultBase

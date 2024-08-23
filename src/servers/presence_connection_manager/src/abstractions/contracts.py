@@ -20,7 +20,7 @@ def normalize_request(message: str):
     return message
 
 
-class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
+class RequestBase(library.src.abstractions.contracts.RequestBase):
     command_name: str
     operation_id: int
     raw_request: str
@@ -45,7 +45,7 @@ class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 
 
-class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
+class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _request: RequestBase
     _result: ResultBase
     sending_buffer: str

@@ -4,7 +4,7 @@ import abc
 from library.src.extentions.gamespy_utils import convert_to_key_value
 
 
-class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
+class RequestBase(library.src.abstractions.contracts.RequestBase):
     request_dict: dict[str, str] = {}
 
     def __init__(self, raw_request: str) -> None:
@@ -16,7 +16,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
         self.command_name = self.request_dict.keys()[0]
 
 
-class ResultBase(library.src.abstractions.contracts.ResultBase, abc.ABC):
+class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 
 

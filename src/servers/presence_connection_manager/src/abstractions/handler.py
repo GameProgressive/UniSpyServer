@@ -27,7 +27,7 @@ class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
         super()._handle_exception(ex)
 
 
-class LoginHandlerBase(CmdHandlerBase, abc.ABC):
+class LoginHandlerBase(CmdHandlerBase):
 
     def _request_check(self) -> None:
         if self._client.info.login_status != LoginStatus.COMPLETED:

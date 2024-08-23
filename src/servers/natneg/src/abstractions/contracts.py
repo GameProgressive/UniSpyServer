@@ -74,7 +74,7 @@ class CommonRequestBase(RequestBase):
         self.use_game_port = bool(self.raw_request[14])
 
 
-class CommonResultBase(ResultBase, abc.ABC):
+class CommonResultBase(ResultBase):
     public_ip_addr: str
     public_port: int
 

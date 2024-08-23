@@ -4,7 +4,7 @@ import library.src.abstractions.handler
 from servers.natneg.src.abstractions.contracts import RequestBase
 
 
-class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase, abc.ABC):
+class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
         assert isinstance(client, Client)

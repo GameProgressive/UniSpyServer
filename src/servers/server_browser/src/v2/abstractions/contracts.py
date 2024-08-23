@@ -17,7 +17,7 @@ from servers.server_browser.src.v2.enums.general import (
 QUERY_REPORT_DEFAULT_PORT = 6500
 
 
-class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
+class RequestBase(library.src.abstractions.contracts.RequestBase):
     request_length: int
     raw_request: bytes
     command_name: RequestType
@@ -31,11 +31,11 @@ class RequestBase(library.src.abstractions.contracts.RequestBase, abc.ABC):
         self.command_name = RequestType(self.raw_request[2])
 
 
-class ResultBase(library.src.abstractions.contracts.ResultBase, abc.ABC):
+class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 
 
-class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
+class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _request: RequestBase
     _result: ResultBase
     sending_buffer: bytes
@@ -46,7 +46,7 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase, abc.ABC):
         super().__init__(request, result)
 
 
-class ServerListUpdateOptionRequestBase(RequestBase, abc.ABC):
+class ServerListUpdateOptionRequestBase(RequestBase):
     def __init__(self):
         self.request_version: Optional[int] = None
         self.protocol_version: Optional[int] = None
@@ -67,13 +67,13 @@ class ServerListUpdateOptionRequestBase(RequestBase, abc.ABC):
         super().__init__(raw_request)
 
 
-class ServerListUpdateOptionResultBase(ResultBase, abc.ABC):
+class ServerListUpdateOptionResultBase(ResultBase):
     client_remote_ip: bytes
     flag: GameServerFlags
     game_secret_key: str
 
 
-class ServerListUpdateOptionResponseBase(ResponseBase, abc.ABC):
+class ServerListUpdateOptionResponseBase(ResponseBase):
     _request: ServerListUpdateOptionRequestBase
     _result: ServerListUpdateOptionResultBase
     _servers_info_buffers: list = []
