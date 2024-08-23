@@ -3,7 +3,6 @@ import unittest
 import responses
 
 from servers.webservices.src.modules.auth.contracts.requests import LoginProfileWithGameIdRequest, LoginPs3CertRequest, LoginRemoteAuthRequest, LoginUniqueNickRequest
-from servers.webservices.src.modules.auth.handlers.general import LoginProfileWithGameIdHandler
 
 LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?>
             <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
@@ -102,7 +101,7 @@ CRYSIS = """<?xml version="1.0" encoding="UTF-8"?>
                         </SOAP-ENV:Envelope>"""
 
 
-class AuthTest(unittest.TestCase):
+class AuthTests(unittest.TestCase):
     @responses.activate
     def test_crysis_auth(self):
 

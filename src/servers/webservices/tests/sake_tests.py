@@ -309,7 +309,7 @@ CREATE_RECORD = """<?xml version="1.0" encoding="UTF-8"?>
             </SOAP-ENV:Envelope>"""
 
 
-class Direct2GameTest(unittest.TestCase):
+class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_record_limit(self):
         request = GetRecordLimitRequest(GET_RECORD_LIMIT)
@@ -461,11 +461,9 @@ class Direct2GameTest(unittest.TestCase):
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("test", request.table_id)
 
-        self.assertEqual("MyAsciiString",request.values[0][0])
-        self.assertEqual("asciiStringValue",request.values[0][1])
-        self.assertEqual("this is a record",request.values[0][2])
-
-
+        self.assertEqual("MyAsciiString", request.values[0][0])
+        self.assertEqual("asciiStringValue", request.values[0][1])
+        self.assertEqual("this is a record", request.values[0][2])
 
 
 if __name__ == "__main__":
