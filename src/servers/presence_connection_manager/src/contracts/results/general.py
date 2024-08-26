@@ -17,3 +17,8 @@ class LoginDataModel:
 class LoginResult(ResultBase):
     response_proof: str
     data: LoginDataModel
+
+
+class NewUserResult(ResultBase):
+    user_id: int
+    profile_id: int

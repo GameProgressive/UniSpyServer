@@ -1,4 +1,3 @@
-import abc
 
 from servers.presence_connection_manager.src.applications.client import Client
 from servers.presence_connection_manager.src.enums.general import LoginStatus
@@ -27,7 +26,7 @@ class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
         super()._handle_exception(ex)
 
 
-class LoginHandlerBase(CmdHandlerBase):
+class LoginedHandlerBase(CmdHandlerBase):
 
     def _request_check(self) -> None:
         if self._client.info.login_status != LoginStatus.COMPLETED:

@@ -1,8 +1,8 @@
 from multiprocessing.pool import Pool
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
-from servers.presence_connection_manager.src.abstractions.handler import (
+from servers.presence_connection_manager.src.abstractions.handlers import (
     CmdHandlerBase,
-    LoginHandlerBase,
+    LoginedHandlerBase,
 )
 from servers.presence_connection_manager.src.applications.client import Client
 from servers.presence_connection_manager.src.contracts.requests.buddy import (
@@ -39,7 +39,7 @@ class BlockListHandler(CmdHandlerBase):
         self._response = BlockListResponse(self._result)
 
 
-class BuddyListHandler(LoginHandlerBase):
+class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
     _result_cls = BuddyListResult
 
@@ -80,7 +80,7 @@ class BuddyStatusInfoHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
-class DelBuddyHandler(LoginHandlerBase):
+class DelBuddyHandler(LoginedHandlerBase):
     _request: DelBuddyRequest
 
     def __init__(self, client: Client, request: DelBuddyRequest) -> None:
@@ -88,7 +88,7 @@ class DelBuddyHandler(LoginHandlerBase):
         super().__init__(client, request)
 
 
-class InviteToHandler(LoginHandlerBase):
+class InviteToHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         raise NotImplementedError()
         super().__init__(client, request)
@@ -109,7 +109,7 @@ class StatusHandler(CmdHandlerBase):
         raise NotImplementedError()
 
 
-class StatusInfoHandler(LoginHandlerBase):
+class StatusInfoHandler(LoginedHandlerBase):
     _request: StatusInfoRequest
     _result: StatusInfoResult = StatusInfoResult()
 

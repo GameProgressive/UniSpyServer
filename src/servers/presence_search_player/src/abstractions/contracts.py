@@ -1,14 +1,8 @@
-import abc
 from typing import Dict
-import library
+import library.src.abstractions.contracts
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.presence_search_player.src.exceptions.general import (
     GPParseException,
-)
-
-from servers.presence_search_player.src.abstractions.contracts import (
-    RequestBase,
-    ResultBase,
 )
 
 
@@ -25,7 +19,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
 
     def parse(self) -> None:
         self.request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = self.request_dict.keys()[0]
+        self.command_name = list(self.request_dict.keys())[0]
         if "id" in self.request_dict.keys():
             try:
                 self.operation_id = int(self.request_dict["id"])

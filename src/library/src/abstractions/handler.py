@@ -1,7 +1,5 @@
-import abc
 from library.src.abstractions.client import ClientBase
 from library.src.exceptions.error import UniSpyException
-from typing import TYPE_CHECKING
 from typing import Type
 import requests
 
@@ -19,7 +17,15 @@ class CmdHandlerBase:
     _response: "ResponseBase"
     _result_cls: "Type[ResultBase]"
     """
-    the result class type
+    the result type class, use to deserialize json data from backend
+    """
+    _is_uploading = True
+    """
+    whether need send data to backend
+    """
+    _is_feaching = True
+    """
+    whether need get data from backend
     """
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
@@ -27,7 +33,7 @@ class CmdHandlerBase:
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
         # if some subclass do not need result, override the __init__() in that subclass
-        if self._result_cls is not None:
+        if self._is_feaching:
             assert issubclass(self._result_cls, ResultBase)
 
         self._client = client
@@ -59,9 +65,11 @@ class CmdHandlerBase:
         """
         virtual function, can be override
         """
+        # we check whether we need fetch data
+        if not self._is_uploading:
+            return
 
         # default use restapi to access to our backend service
-
         # get the http response and create it with this type
         url = f"{
             CONFIG.backend.url}/{self._client.server_config.server_name}/{self.__class__.__name__}/"
@@ -72,12 +80,8 @@ class CmdHandlerBase:
         result = response.json()
         # if the result cls is not declared, we do not parse the response values
 
-        if self._result_cls is None:
-            return
-        if self._result is not None:
-            return
-        self._result = self._result_cls(**result)
-        pass
+        if self._is_feaching:
+            self._result = self._result_cls(**result)
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""

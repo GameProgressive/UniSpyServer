@@ -1,6 +1,5 @@
 import unittest
 
-from library.src.unispy_server_config import CONFIG
 from servers.presence_connection_manager.src.contracts.requests.buddy import StatusRequest
 from servers.presence_connection_manager.tests.mock_objects import create_client
 
@@ -14,7 +13,7 @@ class GameTest(unittest.TestCase):
         client = create_client()
 
         for x in raw_requests:
-            client.on_received(x)
+            client.on_received(x.encode("ascii"))
             pass
 
     def test_conflict_global_storm(self) -> None:
@@ -26,7 +25,7 @@ class GameTest(unittest.TestCase):
         client = create_client()
 
         for x in raw_requests:
-            client.on_received(x)
+            client.on_received(x.encode("ascii"))
             pass
 
     def test_sbwfrontps2(self) -> None:
@@ -35,3 +34,7 @@ class GameTest(unittest.TestCase):
         request.parse()
         self.assertTrue(request.status.location_string == "")
         self.assertTrue(request.status.status_string == "EN LIGNE")
+
+
+if __name__ == "__main__":
+    unittest.main()

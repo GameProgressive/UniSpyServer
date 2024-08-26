@@ -52,5 +52,5 @@ class SwitcherBase:
         pass
 
     @abc.abstractmethod
-    def _create_cmd_handlers(self, name: object, raw_request: object) -> CmdHandlerBase:
+    def _create_cmd_handlers(self, name: object, raw_request: object) -> Optional[CmdHandlerBase]:
         pass

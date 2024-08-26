@@ -1,4 +1,3 @@
-import abc
 from library.src.encryption.encoding import Encoding
 from library.src.exceptions.error import UniSpyException
 from library.src.log.log_manager import LogWriter
@@ -43,7 +42,6 @@ class ClientBase:
     def on_disconnected(self) -> None:
         pass
 
-    @abc.abstractmethod
     def create_switcher(self, buffer) -> "SwitcherBase":
         pass
 
@@ -69,7 +67,7 @@ class ClientBase:
         sending_buffer = response.sending_buffer
         if isinstance(sending_buffer, str):
             buffer: bytes = Encoding.get_bytes(sending_buffer)
-        if isinstance(sending_buffer, bytes):
+        elif isinstance(sending_buffer, bytes):
             buffer = sending_buffer
         else:
             raise UniSpyException("not supported buffer type")

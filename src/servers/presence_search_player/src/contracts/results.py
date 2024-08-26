@@ -1,5 +1,6 @@
-from library.src.database.pg_orm import Profiles, SubProfiles, Users
-from servers.presence_connection_manager.src.abstractions.contracts import ResultBase
+from pydantic import BaseModel
+
+from servers.presence_search_player.src.abstractions.contracts import ResultBase
 
 
 class CheckResult(ResultBase):
@@ -7,18 +8,17 @@ class CheckResult(ResultBase):
 
 
 class NewUserResult(ResultBase):
-    user: Users
-    profile: Profiles
-    subprofiles: SubProfiles
+    user_id: int
+    profile_id: int
 
 
-class NickResultModel:
+class NickResultData(BaseModel):
     nick: str
     uniquenick: str
 
 
 class NicksResult(ResultBase):
-    data: list[NickResultModel] = []
+    data: list[NickResultData]
     """ [
             (nick1, uniquenick1),
             (nick2, uniquenick2),
@@ -29,13 +29,13 @@ class NicksResult(ResultBase):
     is_require_uniquenicks: bool = False
 
 
-class OthersListModel:
+class OthersListData(BaseModel):
     profile_id: int
     unique_nick: str
 
 
 class OthersListResult(ResultBase):
-    data: list[OthersListModel] = []
+    data: list[OthersListData] = []
     """
     [
         (prifileid1,uniquenick1),
@@ -46,7 +46,7 @@ class OthersListResult(ResultBase):
     """
 
 
-class OthersResultModel:
+class OthersResultData(BaseModel):
     profile_id: int
     nick: str
     uniquenick: str
@@ -57,10 +57,10 @@ class OthersResultModel:
 
 
 class OthersResult(ResultBase):
-    data: list[OthersResultModel] = []
+    data: list[OthersResultData] = []
 
 
-class SearchResultDataModel:
+class SearchResultData(BaseModel):
     profile_id: int
     nick: str
     uniquenick: str
@@ -71,10 +71,10 @@ class SearchResultDataModel:
 
 
 class SearchResult(ResultBase):
-    result: list[SearchResultDataModel] = []
+    result: list[SearchResultData]
 
 
-class SearchUniqueResultModel:
+class SearchUniqueResultData(BaseModel):
     profile_id: int
     nick: str
     uniquenick: str
@@ -85,7 +85,7 @@ class SearchUniqueResultModel:
 
 
 class SearchUniqueResult(ResultBase):
-    data: list[SearchUniqueResultModel] = []
+    data: list[SearchUniqueResultData]
 
 
 class UniqueSearchResult(ResultBase):

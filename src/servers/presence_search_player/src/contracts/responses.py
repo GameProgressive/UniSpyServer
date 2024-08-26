@@ -1,4 +1,4 @@
-from servers.presence_connection_manager.src.abstractions.contracts import ResponseBase
+from servers.presence_search_player.src.abstractions.contracts import ResponseBase
 from servers.presence_search_player.src.contracts.requests import (
     CheckRequest,
     NewUserRequest,
@@ -31,7 +31,8 @@ class CheckResponse(ResponseBase):
         if self._result.profile_id is None:
             self.sending_buffer = f"\\cur\\1\\final\\"
         else:
-            self.sending_buffer = f"\\cur\\0\\pid\\{self._result.profile_id}\\final\\"
+            self.sending_buffer = f"\\cur\\0\\pid\\{
+                self._result.profile_id}\\final\\"
 
 
 class NewUserResponse(ResponseBase):
@@ -45,7 +46,7 @@ class NewUserResponse(ResponseBase):
 
     def build(self):
         self.sending_buffer = (
-            f"\\nur\\\\pid\\{self._result.subprofiles.profileid}\\final\\"
+            f"\\nur\\\\pid\\{self._result.profile_id}\\final\\"
         )
 
 
@@ -174,5 +175,6 @@ class UniqueSearchResponse(ResponseBase):
             self.sending_buffer = "\\us\\1\\nick\\Choose another name\\usdone\\final\\"
         else:
             self.sending_buffer = (
-                f"\\us\\1\\nick\\{self._request.preferred_nick}\\usdone\\final\\"
+                f"\\us\\1\\nick\\{
+                    self._request.preferred_nick}\\usdone\\final\\"
             )

@@ -1,7 +1,7 @@
 from library.src.abstractions.switcher import SwitcherBase
 from servers.chat.src.contracts.requests.general import LoginRequest, RegisterNickRequest
-from servers.presence_connection_manager.src.abstractions.handler import LoginHandlerBase
-from servers.presence_connection_manager.src.applications.client import Client
+from servers.presence_connection_manager.src.handlers.general import LoginHandler
+
 from servers.presence_connection_manager.src.contracts.requests.buddy import StatusInfoRequest, StatusRequest
 from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest, LogoutRequest
 from servers.presence_connection_manager.src.contracts.requests.profile import AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, UpdateProfileRequest
@@ -12,6 +12,9 @@ from servers.presence_search_player.src.contracts.requests import NewUserRequest
 from servers.presence_search_player.src.exceptions.general import (
     GPParseException,
 )
+from servers.presence_search_player.src.abstractions.handler import CmdHandlerBase
+from typing import Optional
+from servers.presence_connection_manager.src.applications.client import Client
 
 
 class Switcher(SwitcherBase):
@@ -19,22 +22,23 @@ class Switcher(SwitcherBase):
 
     def __init__(self, client: Client, raw_request: str) -> None:
         assert isinstance(client, Client)
+        assert isinstance(raw_request, str)
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
         if self._raw_request[0] != "\\":
             raise GPParseException("Request format is invalid")
-        raw_requests = self._raw_request.split("\\final\\")
+        raw_requests = [r for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\")[0]
             self._requests.append((name, raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> None:
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
         match name:
             case "ka":
                 return KeepAliveHandler(self._client, KeepAliveRequest(raw_request))
             case "login":
-                return LoginHandlerBase(self._client, LoginRequest(raw_request))
+                return LoginHandler(self._client, LoginRequest(raw_request))
             case "logout":
                 return LogoutHandler(self._client, LogoutRequest(raw_request))
             case "newuser":

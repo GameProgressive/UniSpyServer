@@ -1,4 +1,5 @@
 from typing import Optional
+from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
 from servers.presence_connection_manager.src.aggregates.user_status_info import (
@@ -15,17 +16,17 @@ class AddBuddyRequest(RequestBase):
     def parse(self):
         super().parse()
         if (
-            ("sesskey" not in self.request_key_values)
-            or ("newprofileid" not in self.request_key_values)
-            or ("reason" not in self.request_key_values)
+            ("sesskey" not in self.request_dict)
+            or ("newprofileid" not in self.request_dict)
+            or ("reason" not in self.request_dict)
         ):
             raise GPParseException("addbuddy request is invalid.")
-
-        self.friend_profile_id = int(self.request_key_values["newprofileid"])
-        if self.friend_profile_id == 0:
+        try:
+            self.friend_profile_id = int(self.request_dict["newprofileid"])
+        except:
             raise GPParseException("newprofileid format is incorrect.")
 
-        self.reason = self.request_key_values["reason"]
+        self.reason = self.request_dict["reason"]
 
 
 class DelBuddyRequest(RequestBase):
@@ -33,11 +34,12 @@ class DelBuddyRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if "delprofileid" not in self.request_key_values:
+        if "delprofileid" not in self.request_dict:
             raise GPParseException("delprofileid is missing.")
 
-        self.friend_profile_id = int(self.request_key_values["delprofileid"])
-        if self.friend_profile_id == 0:
+        try:
+            self.friend_profile_id = int(self.request_dict["delprofileid"])
+        except:
             raise GPParseException("delprofileid format is incorrect.")
 
 
@@ -49,23 +51,23 @@ class InviteToRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if "productid" not in self.request_key_values:
+        if "productid" not in self.request_dict:
             raise GPParseException("productid is missing.")
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing.")
 
         try:
-            self.product_id = int(self.request_key_values["productid"])
+            self.product_id = int(self.request_dict["productid"])
         except ValueError:
             raise GPParseException("productid format is incorrect.")
 
         try:
-            self.profile_id = int(self.request_key_values["profileid"])
+            self.profile_id = int(self.request_dict["profileid"])
         except ValueError:
             raise GPParseException("profileid format is incorrect.")
 
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
 
 class StatusInfoRequest(RequestBase):
@@ -81,60 +83,60 @@ class StatusInfoRequest(RequestBase):
         super().parse()
 
         if (
-            "state" not in self.request_key_values
-            or "hostip" not in self.request_key_values
-            or "hprivip" not in self.request_key_values
-            or "qport" not in self.request_key_values
-            or "hport" not in self.request_key_values
-            or "sessflags" not in self.request_key_values
-            or "rechstatus" not in self.request_key_values
-            or "gametype" not in self.request_key_values
-            or "gamevariant" not in self.request_key_values
-            or "gamemapname" not in self.request_key_values
+            "state" not in self.request_dict
+            or "hostip" not in self.request_dict
+            or "hprivip" not in self.request_dict
+            or "qport" not in self.request_dict
+            or "hport" not in self.request_dict
+            or "sessflags" not in self.request_dict
+            or "rechstatus" not in self.request_dict
+            or "gametype" not in self.request_dict
+            or "gamevariant" not in self.request_dict
+            or "gamemapname" not in self.request_dict
         ):
             raise GPParseException("StatusInfo request is invalid.")
 
-        self.status_info.status_state = self.request_key_values["state"]
-        self.status_info.host_ip = self.request_key_values["hostip"]
-        self.status_info.host_private_ip = self.request_key_values["hprivip"]
+        self.status_info.status_state = self.request_dict["state"]
+        self.status_info.host_ip = self.request_dict["hostip"]
+        self.status_info.host_private_ip = self.request_dict["hprivip"]
 
         try:
-            self.status_info.query_report_port = int(self.request_key_values["qport"])
-            self.status_info.host_port = int(self.request_key_values["hport"])
-            self.status_info.session_flags = self.request_key_values["sessflags"]
+            self.status_info.query_report_port = int(
+                self.request_dict["qport"])
+            self.status_info.host_port = int(self.request_dict["hport"])
+            self.status_info.session_flags = self.request_dict["sessflags"]
         except ValueError:
-            raise GPParseException("qport, hport, or sessflags format is incorrect.")
+            raise GPParseException(
+                "qport, hport, or sessflags format is incorrect.")
 
-        self.status_info.rich_status = self.request_key_values["rechstatus"]
-        self.status_info.game_type = self.request_key_values["gametype"]
-        self.status_info.game_variant = self.request_key_values["gamevariant"]
-        self.status_info.game_map_name = self.request_key_values["gamemapname"]
+        self.status_info.rich_status = self.request_dict["rechstatus"]
+        self.status_info.game_type = self.request_dict["gametype"]
+        self.status_info.game_variant = self.request_dict["gamevariant"]
+        self.status_info.game_map_name = self.request_dict["gamemapname"]
 
 
 class StatusRequest(RequestBase):
-    status: UserStatus
+    status: UserStatus = UserStatus()
     is_get_status: bool
 
-    def __init__(self, raw_request):
-        super().__init__(raw_request)
-
     def parse(self):
-        super().parse()
+        self.request_dict = convert_to_key_value(self.raw_request)
+        self.command_name = list(self.request_dict.keys())[0]
 
-        if "status" not in self.request_key_values:
+        if "status" not in self.request_dict:
             raise GPParseException("status is missing.")
 
-        if "statstring" not in self.request_key_values:
+        if "statstring" not in self.request_dict:
             raise GPParseException("statstring is missing.")
 
-        if "locstring" not in self.request_key_values:
+        if "locstring" not in self.request_dict:
             raise GPParseException("locstring is missing.")
 
         try:
-            status_code = int(self.request_key_values["status"])
+            status_code = int(self.request_dict["status"])
             self.status.current_status = GPStatusCode(status_code)
         except ValueError:
             raise GPParseException("status format is incorrect.")
 
-        self.status.location_string = self.request_key_values["locstring"]
-        self.status.status_string = self.request_key_values["statstring"]
+        self.status.location_string = self.request_dict["locstring"]
+        self.status.status_string = self.request_dict["statstring"]

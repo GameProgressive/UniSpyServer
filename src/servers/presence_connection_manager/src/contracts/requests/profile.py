@@ -13,11 +13,11 @@ class AddBlockRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "profileid" not in self.request_key_values:
+        if "profileid" not in self.request_dict:
             raise GPParseException("profileid is missing")
 
         try:
-            self.taget_id = int(self.request_key_values["profileid"])
+            self.taget_id = int(self.request_dict["profileid"])
         except ValueError:
             raise GPParseException("profileid format is incorrect")
 
@@ -29,18 +29,18 @@ class GetProfileRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "profileid" not in self.request_key_values:
+        if "profileid" not in self.request_dict:
             raise GPParseException("profileid is missing")
 
         try:
-            self.profile_id = int(self.request_key_values["profileid"])
+            self.profile_id = int(self.request_dict["profileid"])
         except ValueError:
             raise GPParseException("profileid format is incorrect")
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
 
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
 
 class NewProfileRequest(RequestBase):
@@ -52,29 +52,29 @@ class NewProfileRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
 
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
-        if "replace" in self.request_key_values:
+        if "replace" in self.request_dict:
             if (
-                "oldnick" not in self.request_key_values
-                and "nick" not in self.request_key_values
+                "oldnick" not in self.request_dict
+                and "nick" not in self.request_dict
             ):
                 raise GPParseException("oldnick or nick is missing.")
 
-            if "oldnick" in self.request_key_values:
-                self.old_nick = self.request_key_values["oldnick"]
-            if "nick" in self.request_key_values:
-                self.new_nick = self.request_key_values["nick"]
+            if "oldnick" in self.request_dict:
+                self.old_nick = self.request_dict["oldnick"]
+            if "nick" in self.request_dict:
+                self.new_nick = self.request_dict["nick"]
 
             self.is_replace_nick_name = True
         else:
-            if "nick" not in self.request_key_values:
+            if "nick" not in self.request_dict:
                 raise GPParseException("nick is missing.")
 
-            self.new_nick = self.request_key_values["nick"]
+            self.new_nick = self.request_dict["nick"]
             self.is_replace_nick_name = False
 
 
@@ -85,15 +85,15 @@ class RegisterCDKeyRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
 
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
-        if "cdkeyenc" not in self.request_key_values:
+        if "cdkeyenc" not in self.request_dict:
             raise GPParseException("cdkeyenc is missing")
 
-        self.cdkey_enc = self.request_key_values["cdkeyenc"]
+        self.cdkey_enc = self.request_dict["cdkeyenc"]
 
 
 class RegisterNickRequest(RequestBase):
@@ -104,19 +104,19 @@ class RegisterNickRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
 
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
-        if "uniquenick" not in self.request_key_values:
+        if "uniquenick" not in self.request_dict:
             raise GPParseException("uniquenick is missing")
 
-        self.unique_nick = self.request_key_values["uniquenick"]
+        self.unique_nick = self.request_dict["uniquenick"]
 
-        if "partnerid" in self.request_key_values:
+        if "partnerid" in self.request_dict:
             try:
-                self.partner_id = int(self.request_key_values["partnerid"])
+                self.partner_id = int(self.request_dict["partnerid"])
             except ValueError:
                 raise GPParseException("partnerid is missing")
 
@@ -150,38 +150,38 @@ class UpdateProfileRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "publicmask" in self.request_key_values:
-            if not self.request_key_values["publicmask"].isdigit():
+        if "publicmask" in self.request_dict:
+            if not self.request_dict["publicmask"].isdigit():
                 raise GPParseException("publicmask format is incorrect")
             self.has_public_mask_flag = True
-            self.public_mask = PublicMasks(int(self.request_key_values["publicmask"]))
+            self.public_mask = PublicMasks(int(self.request_dict["publicmask"]))
 
-        if "sesskey" not in self.request_key_values:
+        if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
-        self.session_key = self.request_key_values["sesskey"]
+        self.session_key = self.request_dict["sesskey"]
 
-        if "firstname" in self.request_key_values:
-            self.first_name = self.request_key_values["firstname"]
+        if "firstname" in self.request_dict:
+            self.first_name = self.request_dict["firstname"]
             self.has_first_name_flag = True
 
-        if "lastname" in self.request_key_values:
-            self.last_name = self.request_key_values["lastname"]
+        if "lastname" in self.request_dict:
+            self.last_name = self.request_dict["lastname"]
             self.has_last_name_flag = True
 
-        if "icquin" in self.request_key_values:
-            if not self.request_key_values["icquin"].isdigit():
+        if "icquin" in self.request_dict:
+            if not self.request_dict["icquin"].isdigit():
                 raise GPParseException("icquin format is incorrect")
             self.has_icq_flag = True
-            self.icq_uin = int(self.request_key_values["icquin"])
+            self.icq_uin = int(self.request_dict["icquin"])
 
         # Remaining attribute assignments...
-        if "homepage" in self.request_key_values:
-            self.home_page = self.request_key_values["homepage"]
+        if "homepage" in self.request_dict:
+            self.home_page = self.request_dict["homepage"]
             self.has_home_page_flag = True
 
-        if "birthday" in self.request_key_values:
+        if "birthday" in self.request_dict:
             try:
-                date = int(self.request_key_values["birthday"])
+                date = int(self.request_dict["birthday"])
                 d = (date >> 24) & 0xFF
                 m = (date >> 16) & 0xFF
                 y = date & 0xFFFF
@@ -193,32 +193,32 @@ class UpdateProfileRequest(RequestBase):
             except ValueError:
                 pass
 
-        if "sex" in self.request_key_values:
+        if "sex" in self.request_dict:
             try:
-                self.sex = int(self.request_key_values["sex"])
+                self.sex = int(self.request_dict["sex"])
                 self.has_sex_flag = True
             except ValueError:
                 raise GPParseException("sex format is incorrect")
 
-        if "zipcode" in self.request_key_values:
-            self.zip_code = self.request_key_values["zipcode"]
+        if "zipcode" in self.request_dict:
+            self.zip_code = self.request_dict["zipcode"]
             self.has_zip_code = True
 
-        if "countrycode" in self.request_key_values:
-            self.country_code = self.request_key_values["countrycode"]
+        if "countrycode" in self.request_dict:
+            self.country_code = self.request_dict["countrycode"]
             self.has_country_code = True
 
-        if "partnerid" in self.request_key_values:
+        if "partnerid" in self.request_dict:
             try:
-                self.partner_id = int(self.request_key_values["partnerid"])
+                self.partner_id = int(self.request_dict["partnerid"])
             except ValueError:
                 raise GPParseException("partnerid is incorrect")
 
-        if "nick" in self.request_key_values:
-            self.nick = self.request_key_values["nick"]
+        if "nick" in self.request_dict:
+            self.nick = self.request_dict["nick"]
 
-        if "uniquenick" in self.request_key_values:
-            self.uniquenick = self.request_key_values["uniquenick"]
+        if "uniquenick" in self.request_dict:
+            self.uniquenick = self.request_dict["uniquenick"]
 
 
 class UpdateUiRequest(RequestBase):
@@ -235,29 +235,29 @@ class UpdateUiRequest(RequestBase):
     def parse(self):
         super().parse()
 
-        if "cpubrandid" in self.request_key_values:
-            self.cpubrandid = self.request_key_values["cpubrandid"]
+        if "cpubrandid" in self.request_dict:
+            self.cpubrandid = self.request_dict["cpubrandid"]
 
-        if "cpuspeed" in self.request_key_values:
-            self.cpuspeed = self.request_key_values["cpuspeed"]
+        if "cpuspeed" in self.request_dict:
+            self.cpuspeed = self.request_dict["cpuspeed"]
 
-        if "memory" in self.request_key_values:
-            self.memory = self.request_key_values["memory"]
+        if "memory" in self.request_dict:
+            self.memory = self.request_dict["memory"]
 
-        if "videocard1ram" in self.request_key_values:
-            self.videocard1ram = self.request_key_values["videocard1ram"]
+        if "videocard1ram" in self.request_dict:
+            self.videocard1ram = self.request_dict["videocard1ram"]
 
-        if "videocard2ram" in self.request_key_values:
-            self.videocard2ram = self.request_key_values["videocard2ram"]
+        if "videocard2ram" in self.request_dict:
+            self.videocard2ram = self.request_dict["videocard2ram"]
 
-        if "connectionid" in self.request_key_values:
-            self.connectionid = self.request_key_values["connectionid"]
+        if "connectionid" in self.request_dict:
+            self.connectionid = self.request_dict["connectionid"]
 
-        if "connectionspeed" in self.request_key_values:
-            self.connectionspeed = self.request_key_values["connectionspeed"]
+        if "connectionspeed" in self.request_dict:
+            self.connectionspeed = self.request_dict["connectionspeed"]
 
-        if "hasnetwork" in self.request_key_values:
-            self.hasnetwork = self.request_key_values["hasnetwork"]
+        if "hasnetwork" in self.request_dict:
+            self.hasnetwork = self.request_dict["hasnetwork"]
 
-        if "pic" in self.request_key_values:
-            self.pic = self.request_key_values["pic"]
+        if "pic" in self.request_dict:
+            self.pic = self.request_dict["pic"]

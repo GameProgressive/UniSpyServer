@@ -1,6 +1,6 @@
 from servers.chat.src.contracts.requests.general import RegisterNickRequest
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
-from servers.presence_connection_manager.src.abstractions.handler import CmdHandlerBase
+from servers.presence_connection_manager.src.abstractions.handlers import CmdHandlerBase
 from servers.presence_connection_manager.src.applications.client import Client
 from servers.presence_connection_manager.src.contracts.requests.profile import (
     AddBlockRequest,

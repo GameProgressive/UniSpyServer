@@ -1,6 +1,5 @@
 from servers.chat.src.abstractions.contract import SERVER_DOMAIN
 from servers.chat.src.enums.irc_error_code import IRCErrorCode
-import abc
 
 from library.src.exceptions.error import UniSpyException as ER
 
@@ -18,7 +17,6 @@ class IRCException(ChatException):
         assert isinstance(error_code, IRCErrorCode)
         self.error_code = error_code
 
-    @abc.abstractedmethod
     def build(self):
         pass
 

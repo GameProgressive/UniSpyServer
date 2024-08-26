@@ -7,10 +7,8 @@ from library.src.unispy_server_config import ServerConfig
 from servers.presence_connection_manager.src.aggregates.login_challenge import (
     SERVER_CHALLENGE,
 )
-from servers.presence_connection_manager.src.handlers.switcher import Switcher
 from servers.presence_connection_manager.src.enums.general import LoginStatus
 
-from typing import TYPE_CHECKING
 
 from servers.presence_connection_manager.src.aggregates.sdk_revision import SdkRevision
 from servers.presence_connection_manager.src.enums.general import LoginStatus
@@ -55,5 +53,6 @@ class Client(ClientBase):
         self.log_network_sending(buffer)
         self.connection.send(buffer)
 
-    def create_switcher(self, buffer) -> "SwitcherBase":
+    def create_switcher(self, buffer) -> SwitcherBase:
+        from servers.presence_connection_manager.src.handlers.switcher import Switcher
         return Switcher(self, buffer)

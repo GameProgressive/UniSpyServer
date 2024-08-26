@@ -1,5 +1,6 @@
 from copy import copy
 
+from servers.natneg.src.abstractions.contracts import RequestBase
 from servers.natneg.src.abstractions.handlers import CmdHandlerBase
 from servers.natneg.src.applications.client import Client
 from servers.natneg.src.contracts.requests import (
@@ -29,10 +30,7 @@ from servers.natneg.src.contracts.results import (
 
 
 class AddressCheckHandler(CmdHandlerBase):
-    _request: AddressCheckRequest
-    _result: AddressCheckResult
-    _response: InitResponse
-    _result_cls = None
+    _is_feaching = False
 
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
         super().__init__(client, request)
@@ -57,7 +55,11 @@ class AddressCheckHandler(CmdHandlerBase):
 
 
 class ConnectAckHandler(CmdHandlerBase):
-    _request: ConnectAckRequest
+    _is_feaching = False
+
+    def __init__(self, client: Client, request: ConnectAckRequest) -> None:
+        super().__init__(client, request)
+        assert isinstance(request, ConnectAckRequest)
 
     def _data_operate(self) -> None:
         self._client.log_info(
@@ -66,8 +68,7 @@ class ConnectAckHandler(CmdHandlerBase):
 
 
 class ConnectHandler(CmdHandlerBase):
-    _request: ConnectRequest
-    _result: ConnectResult
+    _is_feaching = False
 
     def __init__(self, client: Client, request: ConnectRequest) -> None:
         super().__init__(client, request)
@@ -75,10 +76,7 @@ class ConnectHandler(CmdHandlerBase):
 
 
 class ErtAckHandler(CmdHandlerBase):
-    _request: ErtAckRequest
-    _result: ErtAckResult
-    _response: ErcAckResponse
-    _result_cls = None
+    _is_feaching = False
 
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         super().__init__(client, request)
@@ -100,10 +98,7 @@ class InitHandler(CmdHandlerBase):
     In init process, we need response the initresponse first to make client not timeout
     """
 
-    _request: InitRequest
-    _result: InitResult
-    _response: InitResponse
-    _result_cls = None
+    _is_feaching = False
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         super().__init__(client, request)
@@ -126,10 +121,7 @@ class InitHandler(CmdHandlerBase):
 
 
 class NatifyHandler(CmdHandlerBase):
-    _request: NatifyRequest
-    _result: NatifyResult
-    _response: InitResponse
-    _result_cls = None
+    _is_feaching = False
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         super().__init__(client, request)

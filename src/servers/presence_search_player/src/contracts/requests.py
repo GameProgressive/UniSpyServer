@@ -23,7 +23,7 @@ class CheckRequest(RequestBase):
         if "nick" not in self.request_dict or "email" not in self.request_dict:
             raise GPParseException("check request is incompelete.")
 
-        if is_email_format_correct(self.request_dict["email"]):
+        if not is_email_format_correct(self.request_dict["email"]):
             raise GPParseException(" email format is incorrect.")
 
         self.nick = self.request_dict["nick"]
@@ -173,6 +173,10 @@ class SearchRequest(RequestBase):
     email: str
     nick: str
     uniquenick: str
+    session_key: str
+    firstname: str
+    lastname: str
+    icquin: str
 
     def parse(self) -> None:
         super().parse()
@@ -183,8 +187,20 @@ class SearchRequest(RequestBase):
             and "email" not in self.request_dict
             and "namespaceid" not in self.request_dict
             and "gamename" not in self.request_dict
+            and "sesskey" not in self.request_dict
         ):
             raise GPParseException("Search request is incomplete.")
+
+        self.session_key = self.request_dict["sesskey"]
+
+        if "firstname" in self.request_dict:
+            self.firstname = self.request_dict["firstname"]
+
+        if "lastname" in self.request_dict:
+            self.lastname = self.request_dict["lastname"]
+
+        if "icquin" in self.request_dict:
+            self.icquin = self.request_dict["icquin"]
 
         if "gamename" in self.request_dict:
             self.game_name = self.request_dict["gamename"]

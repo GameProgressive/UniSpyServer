@@ -1,8 +1,10 @@
 from library.src.abstractions.client import ClientBase
-from servers.presence_search_player.src.handlers.switcher import CmdSwitcher
+
+from library.src.abstractions.switcher import SwitcherBase
 
 
 class Client(ClientBase):
 
-    def _create_switcher(self, buffer) -> CmdSwitcher:
+    def _create_switcher(self, buffer) -> SwitcherBase:
+        from servers.presence_search_player.src.handlers.switcher import CmdSwitcher
         return CmdSwitcher(self, buffer)

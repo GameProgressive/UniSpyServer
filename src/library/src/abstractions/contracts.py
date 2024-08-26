@@ -1,6 +1,5 @@
 import abc
 from copy import deepcopy
-from dataclasses import dataclass
 import enum
 from typing import Optional
 from uuid import UUID

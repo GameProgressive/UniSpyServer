@@ -11,12 +11,12 @@ from servers.presence_connection_manager.src.contracts.requests.profile import (
 
 
 class ProfileRequestTest(unittest.TestCase):
-    ADD_BLOCK = "\\addblock\\profileid\\0\\final\\"
-    GET_PROFILE = "\\getprofile\\sesskey\\xxxx\\profileid\\0\\final\\"
-    NEW_PROFILE = "\\newprofile\\sesskey\\xxxx\\nick\\spyguy\\id\\1\\final\\"
-    NEW_PROFILE_REPLACE = "\\newprofile\\sesskey\\xxxx\\nick\\spyguy2\\replace\\1\\oldnick\\spyguy\\id\\1\\final\\"
-    REGISTER_CD_KEY = "\\registercdkey\\sesskey\\xxxx\\cdkeyenc\\xxxx\\id\\1\\final\\"
-    REGISTER_NICK = "\\registernick\\sesskey\\xxxx\\uniquenick\\spyguy\\partnerid\\0\\id\\1\\final\\"
+    ADD_BLOCK = "\\addblock\\\\profileid\\0\\final\\"
+    GET_PROFILE = "\\getprofile\\\\sesskey\\xxxx\\profileid\\0\\final\\"
+    NEW_PROFILE = "\\newprofile\\\\sesskey\\xxxx\\nick\\spyguy\\id\\1\\final\\"
+    NEW_PROFILE_REPLACE = "\\newprofile\\\\sesskey\\xxxx\\nick\\spyguy2\\replace\\1\\oldnick\\spyguy\\id\\1\\final\\"
+    REGISTER_CD_KEY = "\\registercdkey\\\\sesskey\\xxxx\\cdkeyenc\\xxxx\\id\\1\\final\\"
+    REGISTER_NICK = "\\registernick\\\\sesskey\\xxxx\\uniquenick\\spyguy\\partnerid\\0\\id\\1\\final\\"
 
     def test_add_block(self) -> None:
         request = AddBlockRequest(ProfileRequestTest.ADD_BLOCK)
@@ -56,6 +56,10 @@ class ProfileRequestTest(unittest.TestCase):
         self.assertEqual(0, request.partner_id)
 
     def test_update_profile(self) -> None:
-        crysisWarsRaw = "\\updatepro\\sesskey\\1111\\countrycode\\DE\\birthday\\168232912\\partnerid\\0\\final\\"
+        crysisWarsRaw = "\\updatepro\\\\sesskey\\1111\\countrycode\\DE\\birthday\\168232912\\partnerid\\0\\final\\"
         request = UpdateProfileRequest(crysisWarsRaw)
-        request.Parse()
+        request.parse()
+
+
+if __name__ == "__main__":
+    unittest.main()

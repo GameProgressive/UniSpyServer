@@ -10,4 +10,4 @@ class Encoding:
     @staticmethod
     def get_bytes(data: str) -> bytes:
         assert isinstance(data, str)
-        return bytes(data.encode())
+        return data.encode()

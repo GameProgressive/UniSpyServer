@@ -15,7 +15,7 @@ def normalize_request(message: str):
     if "login" in message:
         message = message.replace("\\-", "\\")
         pos = message.index("\\", message.index("\\") + 1)
-        if message[pos : pos + 2] != "\\\\":
+        if message[pos: pos + 2] != "\\\\":
             message = message[:pos] + "\\" + message[pos:]
     return message
 
@@ -24,7 +24,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
     command_name: str
     operation_id: int
     raw_request: str
-    request_key_values: Dict[str, str]
+    request_dict: Dict[str, str]
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
@@ -32,13 +32,14 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
 
     def parse(self):
         super().parse()
-        self.request_key_values = convert_to_key_value(self.raw_request)
-        self.command_name = list(self.request_key_values.keys())[0]
+        self.request_dict = convert_to_key_value(self.raw_request)
+        self.command_name = list(self.request_dict.keys())[0]
 
-        if "id" in self.request_key_values:
-            self.operation_id = int(self.request_key_values["id"])
-        else:
-            raise GPParseException("namespaceid is invalid.")
+        if "id" in self.request_dict:
+            try:
+                self.operation_id = int(self.request_dict["id"])
+            except:
+                raise GPParseException("namespaceid is invalid.")
 
 
 class ResultBase(library.src.abstractions.contracts.ResultBase):

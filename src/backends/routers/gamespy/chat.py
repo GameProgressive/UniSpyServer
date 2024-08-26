@@ -1,41 +1,41 @@
-from flask import session
-from flask_socketio import SocketIO, emit
+# from backends.urls import CHAT
+# from fastapi import FastAPI, WebSocket
 
-import socketio
-from backends.urls import CHAT
+# app = FastAPI()
 
 
-# @socketio.on(f"/{CHAT}/join")
+# @app.websocket(f"/{CHAT}/join")
 # def join(request: "JoinRequest"):
+#     # directly send the irc chat raw message to the channel
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/setckey")
+# @app.websocket(f"/{CHAT}/setckey")
 # def setckey(request: "SetCKeyRequest"):
 #     sender = session.get("nickname")
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/setchankey")
+# @app.websocket(f"/{CHAT}/setchankey")
 # def set_channel_key(request: "SetChannelKeyRequest"):
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/atm")
+# @app.websocket(f"/{CHAT}/atm")
 # def atm(request: "ATMRequest"):
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/utm")
+# @app.websocket(f"/{CHAT}/utm")
 # def utm(request: "UTMRequest"):
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/notice")
+# @app.websocket(f"/{CHAT}/notice")
 # def notice(request: "UTMRequest"):
 #     raise NotImplementedError()
 
 
-# @socketio.on(f"/{CHAT}/private")
+# @app.websocket(f"/{CHAT}/private")
 # def notice(request: "PrivateRequest"):
 #     raise NotImplementedError()
