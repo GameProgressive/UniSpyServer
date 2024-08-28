@@ -16,6 +16,10 @@ if TYPE_CHECKING:
     from library.src.network.http_handler import HttpRequest
 
 
+class ClientInfoBase:
+    pass
+
+
 class ClientBase:
     server_config: ServerConfig
     connection: "ConnectionBase"
@@ -53,7 +57,7 @@ class ClientBase:
         switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()
 
-    def decrypt_message(self, buffer) -> bytes:
+    def decrypt_message(self, buffer: bytes) -> bytes:
         if self.crypto is not None:
             return self.crypto.decrypt(buffer)
         else:
@@ -118,7 +122,3 @@ class EasyTimer:
 
     def dispose(self) -> None:
         pass
-
-
-class ClientInfoBase:
-    pass

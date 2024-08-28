@@ -22,7 +22,6 @@ class PostgreSql(BaseModel):
 
     @property
     def url(self) -> str:
-        # fmt ignore
         return f"postgresql://{self.username}:{self.password}@{self.server}:{self.port}/{self.database}?sslmode={self.ssl_mode}"
 
 
