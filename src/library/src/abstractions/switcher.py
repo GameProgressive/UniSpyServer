@@ -27,7 +27,7 @@ class SwitcherBase:
         self._raw_request = raw_request
 
     def handle(self):
-        from library.src.exceptions.error import UniSpyException
+        from library.src.exceptions.general import UniSpyException
 
         try:
             self._process_raw_request()

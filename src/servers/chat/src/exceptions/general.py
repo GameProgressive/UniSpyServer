@@ -1,7 +1,7 @@
 from servers.chat.src.abstractions.contract import SERVER_DOMAIN
 from servers.chat.src.enums.irc_error_code import IRCErrorCode
 
-from library.src.exceptions.error import UniSpyException as ER
+from library.src.exceptions.general import UniSpyException as ER
 
 
 class ChatException(ER):

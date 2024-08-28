@@ -1,7 +1,7 @@
 import library.src.abstractions.contracts as lib
 import xml.etree.ElementTree as ET
 
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 from servers.webservices.src.aggregations.soap_envelop import SoapEnvelop
 
 

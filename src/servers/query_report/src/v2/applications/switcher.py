@@ -1,5 +1,5 @@
 from library.src.abstractions.switcher import SwitcherBase
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 from servers.presence_connection_manager.src.contracts.requests.general import (
     KeepAliveRequest,
 )

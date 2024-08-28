@@ -1,5 +1,5 @@
 from library.src.exceptions.general import UniSpyException
 
 
-class QRException(UniSpyException):
+class GSException(UniSpyException):
     pass

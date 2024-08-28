@@ -4,7 +4,7 @@ import os
 
 from pydantic import BaseModel, Field, constr
 
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 
 
 class PostgreSql(BaseModel):

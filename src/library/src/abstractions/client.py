@@ -1,5 +1,5 @@
 from library.src.encryption.encoding import Encoding
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogWriter
 from library.src.log.log_manager import LogWriter
 from library.src.unispy_server_config import ServerConfig

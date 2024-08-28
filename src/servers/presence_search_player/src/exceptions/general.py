@@ -1,4 +1,4 @@
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 from servers.presence_search_player.src.enums.error_codes import GPErrorCode
 from library.src.abstractions.contracts import ResponseBase
 

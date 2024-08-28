@@ -1,7 +1,7 @@
 import hashlib
 import base64
 
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 
 
 def process_password(request: dict):

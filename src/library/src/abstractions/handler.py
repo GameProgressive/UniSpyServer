@@ -1,5 +1,5 @@
 from library.src.abstractions.client import ClientBase
-from library.src.exceptions.error import UniSpyException
+from library.src.exceptions.general import UniSpyException
 from typing import Type
 import requests
 
