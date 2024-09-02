@@ -21,7 +21,6 @@ class SwitcherBase:
     """
 
     def __init__(self, client: ClientBase, raw_request: Optional[bytes | str]) -> None:
-
         assert isinstance(client, ClientBase)
         self._client = client
         self._raw_request = raw_request
@@ -45,7 +44,7 @@ class SwitcherBase:
             for handler in self._handlers:
                 handler.handle()
         except Exception as e:
-            UniSpyException.handle_exception(e)
+            UniSpyException.handle_exception(e, self._client)
 
     @abc.abstractmethod
     def _process_raw_request(self) -> None:

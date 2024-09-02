@@ -53,6 +53,6 @@ class Client(ClientBase):
         self.log_network_sending(buffer)
         self.connection.send(buffer)
 
-    def create_switcher(self, buffer) -> SwitcherBase:
+    def create_switcher(self, buffer: bytes) -> SwitcherBase:
         from servers.presence_connection_manager.src.handlers.switcher import Switcher
-        return Switcher(self, buffer)
+        return Switcher(self, buffer.decode())

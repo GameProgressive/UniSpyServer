@@ -46,13 +46,17 @@ class ClientBase:
     def on_disconnected(self) -> None:
         pass
 
-    def create_switcher(self, buffer) -> "SwitcherBase":
+    def create_switcher(self, buffer: "Optional[bytes | HttpRequest]") -> "SwitcherBase":
         pass
 
     def on_received(self, buffer: "Optional[bytes | HttpRequest]") -> None:
         if isinstance(buffer, bytes):
             if self.crypto is not None:
                 buffer = self.crypto.decrypt(buffer)
+        elif isinstance(buffer, HttpRequest):
+            pass
+        else:
+            raise UniSpyException("buffer type is invalid")
 
         switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()

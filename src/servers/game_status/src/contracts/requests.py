@@ -73,7 +73,7 @@ class GetPlayerDataRequest(RequestBase):
 
         if "pid" in self.request_dict:
             try:
-                self.profile_id = int(self.request_dict["profile_id"])
+                self.profile_id = int(self.request_dict["pid"])
             except:
                 raise GSException("pid format is incorrect")
 
@@ -97,7 +97,7 @@ class GetPlayerDataRequest(RequestBase):
         if not keys:
             self.is_get_all_data = True
         else:
-            key_list = keys.split("\x1")
+            key_list = keys.split("\x01")
             for key in key_list:
                 self.keys.append(key)
             self.is_get_all_data = False

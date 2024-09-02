@@ -16,7 +16,8 @@ class Channel:
     game_name: str
     name: str
     max_num_user: int = 200
-    create_time: datetime.datetime = datetime.datetime.now(datetime.timezone.utc)
+    create_time: datetime.datetime = datetime.datetime.now(
+        datetime.timezone.utc)
     kv_manager: KeyValueManager = KeyValueManager()
     room_type: PeerRoomType
     password: str
@@ -59,7 +60,8 @@ class Channel:
     def get_peer_room_name(self):
         if self.game_name in PEER_GROUP_LIST:
             grouplist = PEER_GROUP_LIST[self.game_name]
-            room = next((g for g in grouplist if g["group_id"] == self.group_id), None)
+            room = next(
+                (g for g in grouplist if g["group_id"] == self.group_id), None)
             if room is None:
                 raise Exception(f"Invalid peer room: {self.name}")
             self.room_name = room["room_name"]
@@ -175,8 +177,9 @@ def remove_local_channel(name: str) -> None:
 
 def add_message_broker(name: str) -> object:
     if name not in message_brokers:
-        message_brokers[name] = broker
-    return message_brokers[name]
+        brocker = MessageBrocker(name)
+        message_brokers[name] = brocker
+    return brocker
 
 
 def remove_message_brocker(name: str) -> None:

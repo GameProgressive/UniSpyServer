@@ -1,4 +1,9 @@
-# from library.src.abstractions.client_base import ClientBase
+
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from library.src.abstractions.client import ClientBase
 
 
 class UniSpyException(Exception):
@@ -10,13 +15,14 @@ class UniSpyException(Exception):
 
     @staticmethod
     # def handle_exception(e: Exception, client: ClientBase = None):
-    def handle_exception(e: Exception, client=None):
+    def handle_exception(e: Exception, client: "ClientBase" = None):
         if issubclass(type(e), UniSpyException):
+            ex: UniSpyException = e
             if client is None:
                 # LogWriter.LogError(ex.Message);
                 pass
             else:
-                # client.LogError(ex.Message);
+                client.log_error(ex.message)
                 pass
         else:
             if client is None:

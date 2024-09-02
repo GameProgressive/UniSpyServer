@@ -75,9 +75,9 @@ class SetPlayerDataHandler(CmdHandlerBase):
 
 class UpdateGameHandler(CmdHandlerBase):
     """
-        old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
+        old request "\\updgame\\\\sesskey\\%d\\done\\%d\\gamedata\\%s"
 
-        new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
+        new request "\\updgame\\\\sesskey\\%d\\connid\\%d\\done\\%d\\gamedata\\%s"
     """
     _request: UpdateGameRequest
 

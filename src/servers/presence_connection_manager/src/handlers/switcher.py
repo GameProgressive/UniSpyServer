@@ -21,9 +21,9 @@ class Switcher(SwitcherBase):
     _raw_request: str
 
     def __init__(self, client: Client, raw_request: str) -> None:
+        super().__init__(client, raw_request)
         assert isinstance(client, Client)
         assert isinstance(raw_request, str)
-        super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
         if self._raw_request[0] != "\\":

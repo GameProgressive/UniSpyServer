@@ -1,6 +1,6 @@
 from library.src.unispy_server_config import CONFIG
 from library.tests.mock_objects.general import ConnectionMock, LogMock, RequestHandlerMock
-from servers.presence_search_player.src.applications.client import Client
+from servers.game_status.src.applications.client import Client
 
 
 class ClientMock(Client):
@@ -13,7 +13,7 @@ def create_client():
     logger = LogMock()
     conn = ConnectionMock(
         handler=handler,
-        config=CONFIG.servers["PresenceSearchPlayer"], t_client=ClientMock,
+        config=CONFIG.servers["GameStatus"], t_client=ClientMock,
         logger=logger)
 
     return conn._client
