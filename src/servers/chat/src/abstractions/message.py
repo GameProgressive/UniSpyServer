@@ -1,6 +1,7 @@
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.channel import ChannelHandlerBase, ChannelRequestBase
 from servers.chat.src.abstractions.contract import ResultBase
+from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.enums.general import MessageType
 
 

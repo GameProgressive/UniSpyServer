@@ -1,4 +1,5 @@
 import abc
+from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogManager, LogWriter
 from library.src.unispy_server_config import CONFIG, ServerConfig
 import pyfiglet
@@ -52,7 +53,7 @@ class ServerLauncherBase:
                     )
         except:
             # fmt: off
-            raise Exception(f"backend server: {CONFIG.backend.url} not available.")
+            raise UniSpyException(f"backend server: {CONFIG.backend.url} not available.")
             # fmt: on
 
     def _create_logger(self):

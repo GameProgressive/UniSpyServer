@@ -1,6 +1,7 @@
 import datetime
 from uuid import UUID
 from servers.chat.src.abstractions.contract import ResponseBase
+from servers.chat.src.aggregates.brockers import RedisBrocker
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.key_value_manager import KeyValueManager
 from servers.chat.src.aggregates.peer_room import PeerRoom
@@ -10,8 +11,13 @@ from servers.chat.src.enums.peer_room import PeerRoomType
 from servers.chat.src.exceptions.general import ChatException
 from servers.server_browser.src.v2.aggregations.server_info_builder import PEER_GROUP_LIST
 
+MIN_CHANNEL_NAME_LENGTH = 4
+
 
 class Channel:
+    """
+    The channel class, every channel class manage a brocker
+    """
     server_id: UUID
     game_name: str
     name: str
@@ -85,7 +91,7 @@ class Channel:
         else:
             return None
 
-    def __add_ban_user(self, request: ModeRequest):
+    def _add_ban_user(self, request: ModeRequest):
         assert isinstance(request, ModeRequest)
         if request.nick_name not in self.users:
             raise ChatException(
@@ -95,11 +101,11 @@ class Channel:
 
         self.ban_list[request.nick_name] = user
 
-    def __remove_ban_user(self, nick_name: str):
+    def _remove_ban_user(self, nick_name: str):
         if nick_name in self.ban_list:
             del self.ban_list[nick_name:str]
 
-    def __add_channel_operator(self, nick_name: str):
+    def _add_channel_operator(self, nick_name: str):
         if nick_name not in self.users:
             return
 
@@ -107,14 +113,14 @@ class Channel:
         if not user.is_channel_creator:
             user.is_channel_creator = True
 
-    def __remove_channel_operator(self, nick_name: str):
+    def _remove_channel_operator(self, nick_name: str):
         if nick_name not in self.users:
             return
 
         user = self.users[nick_name]
         user.is_channel_creator = False
 
-    def __user_voice_permission(self, nick_name: str, enable: bool = True):
+    def _user_voice_permission(self, nick_name: str, enable: bool = True):
         if nick_name not in self.users:
             return
         user = self.users[nick_name]
@@ -151,37 +157,23 @@ class Channel:
                     user.client.send(message)
 
     def remove_user(self, user: ChannelUser):
-        user.client.info.previously_joined_channel = self.name
+        user.client.info.previously_joined_channel
 
 
-# channel_manager = Manager()
-# brocker_manager = Manager()
-# local_channels: dict = channel_manager.dict()
-# message_brokers: dict = brocker_manager.dict()
-local_channels: dict = {}
-message_brokers: dict = {}
+class ChannelManager:
+    local_channels: dict = {}
+    """The code blow is for channel manage"""
 
+    @staticmethod
+    def get_local_channel(name: str) -> Channel:
+        if name in ChannelManager.local_channels:
+            return ChannelManager.local_channels[name]
 
-"""The code blow is for channel manage"""
+    def add_local_channel(channel: Channel):
+        if channel.name not in ChannelManager.local_channels:
+            ChannelManager.local_channels[channel.name] = channel
 
-
-def get_local_channel(name: str) -> Channel:
-    if name in local_channels:
-        return local_channels[name]
-
-
-def remove_local_channel(name: str) -> None:
-    if name in local_channels:
-        del local_channels[name]
-
-
-def add_message_broker(name: str) -> object:
-    if name not in message_brokers:
-        brocker = MessageBrocker(name)
-        message_brokers[name] = brocker
-    return brocker
-
-
-def remove_message_brocker(name: str) -> None:
-    if name in message_brokers:
-        del message_brokers[name]
+    @staticmethod
+    def remove_local_channel(name: str) -> None:
+        if name in ChannelManager.local_channels:
+            del ChannelManager.local_channels[name]

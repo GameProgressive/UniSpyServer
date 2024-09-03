@@ -1,5 +1,6 @@
 import abc
 import library.src.abstractions.contracts
+from servers.chat.src.exceptions.general import ChatException
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
@@ -34,7 +35,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
 
         indexOfColon = rawRequest.index(":")
         if indexOfColon != 0 and indexOfColon != -1:
-            self._longParam = rawRequest[indexOfColon + 1 :]
+            self._longParam = rawRequest[indexOfColon + 1:]
             # reset the request string
             rawRequest = rawRequest[:indexOfColon]
 
@@ -57,6 +58,13 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     sending_buffer: str
     _result: ResultBase
     _request: RequestBase
+
+    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
+        super().__init__(request, result)
+        if result is not None:
+            assert issubclass(type(result), ResultBase)
+        assert issubclass(request, RequestBase)
+
 
 
 if __name__ == "__main__":

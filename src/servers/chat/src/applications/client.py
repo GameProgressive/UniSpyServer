@@ -10,6 +10,7 @@ class ClientInfo:
     joined_channels: list["Channel"]
     nick_name: str
     gamename: str
+    user_name: str
 
 
 class Client(ClientBase):

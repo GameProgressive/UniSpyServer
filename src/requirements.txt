@@ -13,3 +13,5 @@ responses
 pydantic
 responses
 redis
+websocket-client
+uvicorn

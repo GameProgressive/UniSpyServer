@@ -1,7 +1,28 @@
 from servers.chat.src.abstractions.contract import *
 from servers.chat.src.abstractions.handler import PostLoginHandlerBase
+from servers.chat.src.aggregates.channel import Channel, ChannelManager
+from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.exceptions.channel import NoSuchChannelException
 from servers.chat.src.exceptions.general import ChatException, NoSuchNickException
+
+
+class ChannelRequestBase(RequestBase):
+    channel_name: str = None
+
+    def parse(self) -> None:
+        super().parse()
+        if self._cmd_params is None or len(self._cmd_params) < 1:
+            raise ChatException("Channel name is missing.")
+        self.channel_name = self._cmd_params[0]
+
+
+class ChannelResponseBase(ResponseBase):
+    _request: ChannelRequestBase
+
+    def __init__(self, request: RequestBase, result: ResultBase) -> None:
+        super().__init__(request, result)
+        assert isinstance(request, RequestBase)
+        assert isinstance(result, ResultBase)
 
 
 class ChannelHandlerBase(PostLoginHandlerBase):
@@ -14,7 +35,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
             return super()._request_check()
 
         if self._channel is None:
-            self._channel = self._client.info.get_local_channel(
+            self._channel = ChannelManager.get_local_channel(
                 self._request.channel_name
             )
             if self._channel is None:
@@ -28,7 +49,8 @@ class ChannelHandlerBase(PostLoginHandlerBase):
 
             if self._user is None:
                 raise NoSuchNickException(
-                    f"Can not find user with nickname: {self._client.info.nickname} username: {self._client.info.username}"
+                    f"Can not find user with nickname: {
+                        self._client.info.nick_name} user_name: {self._client.info.user_name}"
                 )
 
     def handle(self) -> None:
@@ -43,33 +65,15 @@ class ChannelHandlerBase(PostLoginHandlerBase):
             if self.request.raw_request is None:
                 return
 
-            publish_message()
-            update_channel_cache()
+            self.publish_message()
+            self.update_channel_cache()
         except Exception as e:
             self._handle_exception(e)
 
     def publish_message(self):
+        raise NotImplementedError()
         meg = RemoteMessage(self._request, self._client.get_remote_client())
         self._channel.broker.publish_message(msg)
 
     def update_channel_cache(self):
         pass
-
-
-class ChannelRequestBase(RequestBase):
-    channel_name: str
-
-    def parse(self) -> None:
-        super().parse()
-        if self._cmd_params is None or len(self._cmd_params) < 1:
-            raise ChatException("Channel name is missing.")
-
-        self.channel_name = self._cmd_params[0]
-
-
-class ChannelResponseBase(ResponseBase):
-    _request: ChannelRequestBase
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        super().__init__(request, result)
-        assert isinstance(request, RequestBase)
-        assert isinstance(result, ResultBase)

@@ -1,7 +1,7 @@
 from library.src.abstractions.client import ClientBase
 
 # import servers.query_report.v1
-from servers.query_report.src.v2.applications.switcher import CmdSwitcher as V2CmdSwitcher
+from servers.query_report.src.v2.handlers.switcher import CmdSwitcher as V2CmdSwitcher
 
 
 class Client(ClientBase):

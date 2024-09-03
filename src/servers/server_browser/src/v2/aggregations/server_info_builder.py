@@ -2,7 +2,7 @@ from socket import inet_aton
 
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 
-from servers.query_report.src.applications.data import get_all_groups
+from backends.gamespy.protocols.query_report.data import get_all_groups
 from servers.server_browser.src.v2.abstractions.contracts import QUERY_REPORT_DEFAULT_PORT
 from servers.server_browser.src.v2.enums.general import GameServerFlags
 

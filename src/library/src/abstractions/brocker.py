@@ -1,5 +1,8 @@
 import abc
 
+from servers.chat.src.aggregates.channel import MIN_CHANNEL_NAME_LENGTH
+from servers.chat.src.exceptions.general import ChatException
+
 
 class BrockerBase:
     _subscriber: object
@@ -12,10 +15,13 @@ class BrockerBase:
 
     def __init__(self, name: str) -> None:
         assert isinstance(name, str)
+        if len(name) < MIN_CHANNEL_NAME_LENGTH:
+            raise ChatException(f"The channel name length must larget than {
+                                MIN_CHANNEL_NAME_LENGTH}")
         self._name = name
 
     @abc.abstractmethod
-    def _subscribe(self):
+    def subscribe(self):
         """
         define the brocker event binding
         """
@@ -33,6 +39,3 @@ class BrockerBase:
     @abc.abstractmethod
     def unsubscribe(self):
         pass
-
-    def __del__(self):
-        self.unsubscribe()
