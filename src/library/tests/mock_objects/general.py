@@ -41,6 +41,7 @@ class LogMock(LogWriter):
 
 
 def create_mock_url(client: ClientBase, handler: type[CmdHandlerBase], data: dict) -> None:
-    url = f"{
-        CONFIG.backend.url}/{client.server_config.server_name}/{handler.__name__}/"
+    # fmt: off
+    url = f"{CONFIG.backend.url}/GameSpy/{client.server_config.server_name}/{handler.__name__}/"
     responses.add(responses.POST, url, json=data, status=200)
+    # fmt: on

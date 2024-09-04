@@ -75,7 +75,7 @@ class CmdHandlerBase:
 
         # fmt: off
 
-        url = f"{CONFIG.backend.url}/gamespy/{self._client.server_config.server_name}/{self.__class__.__name__[:-len("Handler")]}/".lower()
+        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}/"
 
         # fmt: on
         data = self._request.to_serializable_dict()
