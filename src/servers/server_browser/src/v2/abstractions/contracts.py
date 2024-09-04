@@ -1,7 +1,6 @@
 from socket import inet_ntoa
 from typing import List, Optional
 import library.src.abstractions.contracts
-import abc
 
 from library.src.extentions.encoding import get_bytes
 from servers.server_browser.src.v2.aggregations.encryption import SERVER_CHALLENGE
@@ -47,20 +46,19 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
 
 
 class ServerListUpdateOptionRequestBase(RequestBase):
-    def __init__(self):
-        self.request_version: Optional[int] = None
-        self.protocol_version: Optional[int] = None
-        self.encoding_version: Optional[int] = None
-        self.game_version: Optional[int] = None
-        self.query_options: Optional[int] = None
-        self.dev_game_name: Optional[str] = None
-        self.game_name: Optional[str] = None
-        self.client_challenge: Optional[str] = None
-        self.update_option: Optional[ServerListUpdateOption] = None
-        self.keys: Optional[List[str]] = None
-        self.filter: Optional[str] = None
-        self.source_ip: str
-        self.max_servers: Optional[int] = None
+    request_version: Optional[int] = None
+    protocol_version: Optional[int] = None
+    encoding_version: Optional[int] = None
+    game_version: Optional[int] = None
+    query_options: Optional[int] = None
+    dev_game_name: Optional[str] = None
+    game_name: Optional[str] = None
+    client_challenge: Optional[str] = None
+    update_option: Optional[ServerListUpdateOption] = None
+    keys: Optional[List[str]] = None
+    filter: Optional[str] = None
+    source_ip: str
+    max_servers: Optional[int] = None
 
     def __init__(self, raw_request: bytes):
         assert isinstance(raw_request, bytes)

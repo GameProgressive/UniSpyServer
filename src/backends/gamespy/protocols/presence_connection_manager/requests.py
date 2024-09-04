@@ -11,7 +11,7 @@ from servers.presence_connection_manager.src.enums.general import (
     SdkRevisionType,
 )
 
-import backends.gamespy.library.abstractions.request_base as lib
+import backends.gamespy.library.abstractions.contracts as lib
 
 
 class RequestBase(BaseModel):

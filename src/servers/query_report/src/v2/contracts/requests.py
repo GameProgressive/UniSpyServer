@@ -39,7 +39,7 @@ class ClientMessageRequest(RequestBase):
     message_key: int
 
     @property
-    def cookie(self):
+    def cookie(self) -> int:
         return int.from_bytes(self.natneg_message[6:10], "little")
 
 
@@ -67,12 +67,12 @@ class HeartBeatRequest(RequestBase):
             self.parse_server_data(server_data_str)
 
             player_data_str = self.data_partition[
-                player_pos - 1 : player_pos - 1 + player_length - 2
+                player_pos - 1: player_pos - 1 + player_length - 2
             ]
             self.parse_player_data(player_data_str)
 
             team_data_str = self.data_partition[
-                team_pos - 1 : team_pos - 1 + team_length
+                team_pos - 1: team_pos - 1 + team_length
             ]
             self.parse_team_data(team_data_str)
 
@@ -82,7 +82,7 @@ class HeartBeatRequest(RequestBase):
             server_data_str = self.data_partition[: player_pos - 4]
             self.parse_server_data(server_data_str)
 
-            player_data_str = self.data_partition[player_pos - 1 :]
+            player_data_str = self.data_partition[player_pos - 1:]
             self.parse_player_data(player_data_str)
 
         elif player_pos == -1 and team_pos == -1:
@@ -132,7 +132,7 @@ class HeartBeatRequest(RequestBase):
         key_str = player_data_str[:index_of_key]
         keys = key_str.split("\0")
 
-        values_str = player_data_str[index_of_key + 2 :]
+        values_str = player_data_str[index_of_key + 2:]
         values = values_str.split("\0")
 
         for player_index in range(player_count):
@@ -158,7 +158,7 @@ class HeartBeatRequest(RequestBase):
         key_str = team_data_str[:end_key_index]
         keys = key_str.split("\0")
 
-        value_str = team_data_str[end_key_index + 2 :]
+        value_str = team_data_str[end_key_index + 2:]
         values = value_str.split("\0")
 
         for team_index in range(team_count):

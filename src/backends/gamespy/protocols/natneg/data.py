@@ -1,6 +1,6 @@
 # from servers.natneg.contracts.requests import InitRequest
 from backends.gamespy.protocols.natneg.requests import InitRequest
-from servers.natneg.src.aggregations.init_packet_info import InitPacketInfo
+from backends.gamespy.protocols.natneg.init_packet_info import InitPacketInfo
 from mongoengine import QuerySet
 
 def store_init_packet(request: InitRequest) -> None:

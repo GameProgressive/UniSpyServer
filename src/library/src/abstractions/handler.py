@@ -71,8 +71,13 @@ class CmdHandlerBase:
 
         # default use restapi to access to our backend service
         # get the http response and create it with this type
-        url = f"{
-            CONFIG.backend.url}/{self._client.server_config.server_name}/{self.__class__.__name__}/"
+        # http://127.0.0.1:8080/gamespy/pcm/login/
+
+        # fmt: off
+
+        url = f"{CONFIG.backend.url}/gamespy/{self._client.server_config.server_name}/{self.__class__.__name__[:-len("Handler")]}/".lower()
+
+        # fmt: on
         data = self._request.to_serializable_dict()
         data["server_id"] = str(self._client.server_config.server_id)
 

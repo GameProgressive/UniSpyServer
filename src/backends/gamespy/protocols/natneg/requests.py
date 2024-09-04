@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from servers.natneg.src.enums.general import (
     NatClientIndex,
     NatPortMappingScheme,
@@ -9,7 +8,7 @@ from servers.natneg.src.enums.general import (
 )
 from typing import Union
 
-import backends.gamespy.library.abstractions.request_base as lib
+import backends.gamespy.library.abstractions.contracts as lib
 
 
 class RequestBase(lib.RequestBase):

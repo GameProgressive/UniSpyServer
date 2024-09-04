@@ -1,14 +1,16 @@
-import abc
-from dataclasses import dataclass
-from backends.gamespy.library.abstractions.request_base import RequestBase as RB
-from servers.presence_connection_manager.src.enums.general import LoginType, SdkRevisionType
+from typing import Optional
+from backends.gamespy.library.abstractions.contracts import RequestBase as RB
+from servers.presence_search_player.src.enums.general import SearchType
 
 
 class RequestBase(RB):
-    operation_id: int = None
+    operation_id: int
 
+# general
 
 # we just need to recreate the requests and just put the property inside it. The result we can use the results inside servers.
+
+
 class CheckRequest(RequestBase):
     nick: str
     password: str
@@ -39,22 +41,40 @@ class NicksRequest(RequestBase):
     is_require_uniquenicks: bool
 
 
-class LoginRequest(RequestBase):
-    user_challenge: str
-    response: str
-    unique_nick: str
-    user_data: str
-    namespace_id: int
-    auth_token: str
-    nick: str
-    email: str
-    product_id: int
-    type: LoginType
-    sdk_revision_type: SdkRevisionType
-    game_port: int
-    user_id: int
+class OthersListRequest(RequestBase):
+    profile_ids: list[int] = []
+    namespace_id: int = 0
+
+
+class OthersRequest(RequestBase):
+    profile_id: Optional[int]
+    game_name: int
+
+
+class SearchRequest(RequestBase):
+    skip_num: int
+    request_type: SearchType
+    game_name: str
     profile_id: int
     partner_id: int
-    game_name: int
-    quiet_mode_flags: int
-    firewall: bool
+    email: str
+    nick: str
+    uniquenick: str
+    session_key: str
+    firstname: str
+    lastname: str
+    icquin: str
+
+
+class SearchUniqueRequest(RequestBase):
+    uniquenick: str
+    namespace_ids: list[int]
+
+
+class UniqueSearchRequest(RequestBase):
+    preferred_nick: str
+    game_name: str
+
+
+class ValidRequest(RequestBase):
+    email: str

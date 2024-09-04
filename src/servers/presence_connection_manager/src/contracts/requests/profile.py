@@ -154,7 +154,8 @@ class UpdateProfileRequest(RequestBase):
             if not self.request_dict["publicmask"].isdigit():
                 raise GPParseException("publicmask format is incorrect")
             self.has_public_mask_flag = True
-            self.public_mask = PublicMasks(int(self.request_dict["publicmask"]))
+            self.public_mask = PublicMasks(
+                int(self.request_dict["publicmask"]))
 
         if "sesskey" not in self.request_dict:
             raise GPParseException("sesskey is missing")
@@ -221,7 +222,7 @@ class UpdateProfileRequest(RequestBase):
             self.uniquenick = self.request_dict["uniquenick"]
 
 
-class UpdateUiRequest(RequestBase):
+class UpdateUserInfoRequest(RequestBase):
     cpubrandid: Optional[str] = None
     cpuspeed: Optional[str] = None
     memory: Optional[str] = None

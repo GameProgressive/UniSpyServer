@@ -119,7 +119,7 @@ class LoginRequest(RequestBase):
 
             profile_nick_index = self._longParam.index("@")
             self.nick_name = self._longParam[0:profile_nick_index]
-            self.email = self._longParam[profile_nick_index + 1 :]
+            self.email = self._longParam[profile_nick_index + 1:]
             return
 
         self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
@@ -145,7 +145,8 @@ class NickRequest(RequestBase):
                 raise NickNameInUseException(
                     self.nick_name,
                     self.nick_name,
-                    f"The nick name: {self.nick_name} contains invalid character.",
+                    f"The nick name: {
+                        self.nick_name} contains invalid character.",
                 )
 
 
@@ -187,7 +188,7 @@ class RegisterNickRequest(RequestBase):
 
 
 class SetKeyRequest(RequestBase):
-    key_values: Dict[str, str]
+    key_values: dict[str, str]
 
     def parse(self):
         super().parse()
