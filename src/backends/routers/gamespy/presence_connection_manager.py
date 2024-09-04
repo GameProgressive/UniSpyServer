@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from backends.gamespy.protocols.presence_search_player.requests import LoginRequest
+from backends.protocols.gamespy.presence_search_player.requests import LoginRequest
 from backends.urls import *
 import uvicorn
 

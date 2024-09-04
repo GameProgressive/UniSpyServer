@@ -1,5 +1,5 @@
 from typing import List, Optional
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 from servers.server_browser.src.v2.enums.general import RequestType, ServerListUpdateOption
 
 

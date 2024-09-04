@@ -1,5 +1,5 @@
 from typing import Optional
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 from servers.game_status.src.enums.general import AuthMethod, PersistStorageType
 
 

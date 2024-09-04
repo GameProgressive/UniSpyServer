@@ -1,4 +1,4 @@
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 from servers.chat.src.enums.general import LoginRequestType, WhoRequestType
 
 

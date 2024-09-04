@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 
 
 class RequestBase(lib.RequestBase):

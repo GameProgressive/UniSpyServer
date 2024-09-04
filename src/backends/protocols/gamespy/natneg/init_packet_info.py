@@ -10,6 +10,7 @@ from mongoengine import (
 from servers.natneg.src.enums.general import NatClientIndex, NatPortType
 import datetime
 
+
 class InitPacketInfo(Document):
     server_id = UUIDField(binary=False, required=True)
     cookie = IntField(required=True)
@@ -35,4 +36,4 @@ class NatFailInfo(Document):
 
 
 if __name__ == "__main__":
-    InitPacketInfo.objects
+    InitPacketInfo.objects()

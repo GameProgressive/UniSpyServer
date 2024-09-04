@@ -12,13 +12,14 @@ from mongoengine import (
 class ChannelInfo(Document):
     game_name = StringField(required=True)
     channel_name = StringField(required=True)
-    key_values = DictField(reqired=False)
+    key_values = DictField()
     max_num_user = IntField(max_value=200)
-    room_name = StringField(required=False)
-    topic = StringField(required=False)
-    password = StringField(required=False)
-    group_id = IntField(required=False)
+    room_name = StringField()
+    topic = StringField()
+    password = StringField()
+    group_id = IntField()
     create_time = DateTimeField(required=True)
+    previously_joined_channel = StringField()
 
 
 class ChannelUser(Document):

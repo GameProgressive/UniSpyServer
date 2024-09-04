@@ -1,5 +1,5 @@
 from typing import Optional
-from backends.gamespy.library.abstractions.contracts import RequestBase as RB
+from backends.library.abstractions.contracts import RequestBase as RB
 from servers.presence_search_player.src.enums.general import SearchType
 
 

@@ -8,7 +8,7 @@ from servers.natneg.src.enums.general import (
 )
 from typing import Union
 
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 
 
 class RequestBase(lib.RequestBase):

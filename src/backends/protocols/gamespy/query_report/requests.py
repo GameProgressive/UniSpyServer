@@ -1,6 +1,6 @@
 
 from pydantic import UUID4
-import backends.gamespy.library.abstractions.contracts as lib
+import backends.library.abstractions.contracts as lib
 
 from servers.query_report.src.v2.enums.general import GameServerStatus, RequestType
 
