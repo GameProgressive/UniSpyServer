@@ -31,6 +31,7 @@ from servers.server_browser.src.v2.applications.client import Client
 
 class AdHocHandler(CmdHandlerBase):
     _message: GameServerInfo
+    # !fix this
 
     def __init__(self, message: GameServerInfo) -> None:
         self._log_current_class()

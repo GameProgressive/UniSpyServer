@@ -1,3 +1,4 @@
+from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
 from library.src.abstractions.switcher import SwitcherBase
 import xml.etree.ElementTree as ET
@@ -12,6 +13,13 @@ from servers.web_services.src.modules.sake.handlers.general import CreateRecordH
 
 
 class Switcher(SwitcherBase):
+    _raw_request: str
+
+    def __init__(self, client: ClientBase, raw_request: str) -> None:
+        assert isinstance(raw_request, str)
+        # assert isinstance(client,Client)
+        super().__init__(client, raw_request)
+
     def _process_raw_request(self) -> None:
         name_node = ET.fromstring(self._raw_request)[0][0]
         if name_node is None:

@@ -30,6 +30,11 @@ class ClientInfo(ClientInfoBase):
 class Client(ClientBase):
     info: ClientInfo
 
-    def create_switcher(self, buffer:  HttpRequest) -> SwitcherBase:
+    def on_received(self, buffer: str) -> None:
+        assert isinstance(buffer, str)
+        super().on_received(buffer)
+
+    def create_switcher(self, buffer:  str) -> SwitcherBase:
+        assert isinstance(buffer, str)
         from servers.web_services.src.handlers.switcher import Switcher
         return Switcher(self, buffer)
