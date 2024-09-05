@@ -17,8 +17,8 @@ class GameTest(unittest.TestCase):
             pass
 
     def test_conflict_global_storm(self) -> None:
+            # "\\lc\\1\\challenge\\NRNUJLZMLX\\id\\1\\final\\",
         raw_requests = [
-            "\\lc\\1\\challenge\\NRNUJLZMLX\\id\\1\\final\\",
             "\\login\\\\challenge\\KMylyQbZfqzKn9otxx32q4076sOUnKif\\user\\cgs1@cgs1@rs.de\\response\\c1a6638bbcfe130e4287bfe4aa792949\\port\\-15737\\productid\\10469\\gamename\\conflictsopc\\namespaceid\\1\\id\\1\\final\\",
             "\\inviteto\\\\sesskey\\58366\\products\\1038\\final\\",
         ]

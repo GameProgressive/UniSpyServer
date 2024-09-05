@@ -10,7 +10,6 @@ from servers.presence_search_player.src.applications.client import Client
 
 
 class CmdSwitcher(SwitcherBase):
-    _raw_request: str
 
     def __init__(self, client: Client, raw_request: str):
         super().__init__(client, raw_request)

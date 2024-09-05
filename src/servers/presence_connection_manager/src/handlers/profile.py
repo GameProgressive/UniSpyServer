@@ -1,4 +1,4 @@
-from servers.chat.src.contracts.requests.general import RegisterNickRequest
+from typing import final
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
 from servers.presence_connection_manager.src.abstractions.handlers import CmdHandlerBase
 from servers.presence_connection_manager.src.applications.client import Client
@@ -7,6 +7,7 @@ from servers.presence_connection_manager.src.contracts.requests.profile import (
     GetProfileRequest,
     NewProfileRequest,
     RegisterCDKeyRequest,
+    RegisterNickRequest,
     UpdateProfileRequest,
 )
 from servers.presence_connection_manager.src.contracts.responses.profile import (
@@ -16,7 +17,7 @@ from servers.presence_connection_manager.src.contracts.responses.profile import 
 )
 from servers.presence_connection_manager.src.contracts.results.profile import NewProfileResult
 
-
+@final
 class AddBlockHandler(CmdHandlerBase):
     _request: AddBlockRequest
 
@@ -25,6 +26,7 @@ class AddBlockHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
+@final
 class GetProfileHandler(CmdHandlerBase):
     _request: GetProfileRequest
     _result: GetProfileResponse
@@ -37,6 +39,7 @@ class GetProfileHandler(CmdHandlerBase):
         self._response = GetProfileResponse(self._request, self._result)
 
 
+@final
 class NewProfileHandler(CmdHandlerBase):
     _request: NewProfileRequest
     _result: NewProfileResult
@@ -49,6 +52,7 @@ class NewProfileHandler(CmdHandlerBase):
         self._response = NewProfileResponse(self._request, self._result)
 
 
+@final
 class RegisterCDKeyHandler(CmdHandlerBase):
     _request: RegisterCDKeyRequest
 
@@ -57,8 +61,8 @@ class RegisterCDKeyHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
+@final
 class RegisterNickHandler(CmdHandlerBase):
-
     _request: RegisterNickRequest
 
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
@@ -69,13 +73,14 @@ class RegisterNickHandler(CmdHandlerBase):
         self._response = RegisterNickResponse(self._request, self._result)
 
 
+@final
 class RemoveBlockHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
+        super().__init__(client, request)
         raise NotImplementedError()
 
-        super().__init__(client, request)
 
-
+@final
 class UpdateProfileHandler(CmdHandlerBase):
     _request: UpdateProfileRequest
 
@@ -84,5 +89,8 @@ class UpdateProfileHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
+@final
 class UpdateUserInfoHandler(CmdHandlerBase):
-    raise NotImplementedError()
+    def __init__(self, client: Client, request: RequestBase) -> None:
+        super().__init__(client, request)
+        raise NotImplementedError()

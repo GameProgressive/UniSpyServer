@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+
+from pydantic import BaseModel
 
 
-class UserStatusInfo:
+class UserStatusInfo(BaseModel):
     status_state: str
     buddy_ip: str
     host_ip: str

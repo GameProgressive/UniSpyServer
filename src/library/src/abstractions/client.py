@@ -24,21 +24,23 @@ class ClientBase:
     server_config: ServerConfig
     connection: "ConnectionBase"
     logger: LogWriter
-    crypto: Optional["EncryptBase"] = None
+    crypto: Optional["EncryptBase"]
     info: "ClientInfoBase"
-    is_log_raw: bool = False
+    is_log_raw: bool
 
     def __init__(
         self, connection: "ConnectionBase", server_config: ServerConfig, logger: LogWriter
     ):
+        # fmt: off
         assert isinstance(server_config, ServerConfig)
-        # assert isinstance(logger, LogWriter)
+        assert isinstance(logger, LogWriter)
         self.server_config = server_config
-
         self.connection = connection
         self.logger = logger
-        self._log_prefix = f"[{self.connection.remote_ip}:{
-            self.connection.remote_port}]"
+        self._log_prefix = f"[{self.connection.remote_ip}:{self.connection.remote_port}]"
+        self.crypto = None
+        self.is_log_raw = False
+        # fmt: on
 
     def on_connected(self) -> None:
         pass
@@ -46,10 +48,10 @@ class ClientBase:
     def on_disconnected(self) -> None:
         pass
 
-    def create_switcher(self, buffer: "Optional[bytes | HttpRequest]") -> "SwitcherBase":
-        pass
+    def create_switcher(self, buffer: "bytes | HttpRequest") -> "SwitcherBase":
+        assert isinstance(buffer, bytes) or isinstance(buffer, HttpRequest)
 
-    def on_received(self, buffer: "Optional[bytes | HttpRequest]") -> None:
+    def on_received(self, buffer: "bytes | HttpRequest") -> None:
         if isinstance(buffer, bytes):
             if self.crypto is not None:
                 buffer = self.crypto.decrypt(buffer)

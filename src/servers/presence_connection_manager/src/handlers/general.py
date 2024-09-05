@@ -35,9 +35,9 @@ class KeepAliveHandler(servers.presence_connection_manager.src.abstractions.hand
 class LoginHandler(servers.presence_connection_manager.src.abstractions.handlers.CmdHandlerBase):
 
     _request: LoginRequest
-    _result: LoginResult
+    _result_cls: type[LoginResult] = LoginResult
 
-    def __init__(self, client: Client, request: LoginRequest) -> None:
+    def __init__(self, client: "Client", request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
 
@@ -48,7 +48,7 @@ class LoginHandler(servers.presence_connection_manager.src.abstractions.handlers
 class LogoutHandler(servers.presence_connection_manager.src.abstractions.handlers.LoginedHandlerBase):
     _request: LogoutRequest
 
-    def __init__(self, client: Client, request: LogoutRequest) -> None:
+    def __init__(self, client: "Client", request: LogoutRequest) -> None:
         assert isinstance(request, LogoutRequest)
         super().__init__(client, request)
 
@@ -62,7 +62,7 @@ class NewUserHandler(servers.presence_search_player.src.handlers.handlers.NewUse
 class SdkRevisionHandler(servers.presence_connection_manager.src.abstractions.handlers.CmdHandlerBase):
     _request: LoginRequest
 
-    def __init__(self, client: Client, request: LoginRequest) -> None:
+    def __init__(self, client: "Client", request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
 

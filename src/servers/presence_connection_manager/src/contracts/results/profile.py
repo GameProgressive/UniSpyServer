@@ -1,8 +1,10 @@
 from typing import Optional
+
+from pydantic import BaseModel
 from servers.presence_connection_manager.src.abstractions.contracts import ResultBase
 
 
-class GetProfileDataModel:
+class GetProfileDataModel(BaseModel):
     nick: Optional[str] = None
     profile_id: Optional[int] = None
     unique_nick: Optional[str] = None

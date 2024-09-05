@@ -1,7 +1,11 @@
 
 from library.src.unispy_server_config import CONFIG
 from library.tests.mock_objects.general import ConnectionMock, LogMock, RequestHandlerMock
-from servers.natneg.tests.mock_objects import ClientMock
+from servers.presence_connection_manager.src.applications.client import Client
+
+
+class ClientMock(Client):
+    pass
 
 
 def create_client():

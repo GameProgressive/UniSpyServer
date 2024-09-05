@@ -1,3 +1,4 @@
+from typing import final
 from library.src.extentions.gamespy_utils import is_email_format_correct
 from library.src.extentions.password_encoder import process_password
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
@@ -11,10 +12,12 @@ from servers.presence_search_player.src.exceptions.general import (
 )
 
 
+@final
 class KeepAliveRequest(RequestBase):
     pass
 
 
+@final
 class LoginRequest(RequestBase):
     user_challenge: str
     response: str
@@ -115,10 +118,12 @@ class LoginRequest(RequestBase):
             self.quiet_mode_flags = QuietModeType(quiet)
 
 
+@final
 class LogoutRequest(RequestBase):
     pass
 
 
+@final
 class NewUserRequest(RequestBase):
     product_id: int
     game_port: int

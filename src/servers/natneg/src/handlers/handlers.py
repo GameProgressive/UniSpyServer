@@ -1,6 +1,3 @@
-from copy import copy
-
-from servers.natneg.src.abstractions.contracts import RequestBase
 from servers.natneg.src.abstractions.handlers import CmdHandlerBase
 from servers.natneg.src.applications.client import Client
 from servers.natneg.src.contracts.requests import (
@@ -30,9 +27,8 @@ from servers.natneg.src.contracts.results import (
 
 
 class AddressCheckHandler(CmdHandlerBase):
-    _is_feaching = False
-
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(client, Client)
         assert isinstance(request, AddressCheckRequest)
@@ -42,11 +38,9 @@ class AddressCheckHandler(CmdHandlerBase):
         address check did not require restapi backend, \n
         just send the remote ip back to the client
         """
-        data = {
-            "public_ip_addr": copy(self._client.connection.remote_ip),
-            "public_port": copy(self._client.connection.remote_port),
-        }
-        self._result = AddressCheckResult(**data)
+        self._result = AddressCheckResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port)
         self._result.public_ip_addr = self._client.connection.remote_ip
         self._result.public_port = self._client.connection.remote_port
 
@@ -55,39 +49,38 @@ class AddressCheckHandler(CmdHandlerBase):
 
 
 class ConnectAckHandler(CmdHandlerBase):
-    _is_feaching = False
+    _request: ConnectAckRequest
 
     def __init__(self, client: Client, request: ConnectAckRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, ConnectAckRequest)
 
     def _data_operate(self) -> None:
         self._client.log_info(
-            f"client:{self._request.client_index} aknowledged connect request."
-        )
+            f"client:{self._request.client_index} aknowledged connect request.")
 
 
 class ConnectHandler(CmdHandlerBase):
-    _is_feaching = False
+    _result_cls: type[ConnectResult]
 
     def __init__(self, client: Client, request: ConnectRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, ConnectRequest)
+        self._result_cls = ConnectResult
 
 
 class ErtAckHandler(CmdHandlerBase):
-    _is_feaching = False
-
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, ErtAckRequest)
 
     def _data_operate(self) -> None:
-        data = {
-            "public_ip_addr": copy(self._client.connection.remote_ip),
-            "public_port": copy(self._client.connection.remote_port),
-        }
-        self._result = ErtAckResult(**data)
+        self._result = ErtAckResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port)
 
     def _response_construct(self) -> None:
         self._response = ErcAckResponse(self._request, self._result)
@@ -98,18 +91,15 @@ class InitHandler(CmdHandlerBase):
     In init process, we need response the initresponse first to make client not timeout
     """
 
-    _is_feaching = False
-
     def __init__(self, client: Client, request: InitRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, InitRequest)
 
     def _data_operate(self) -> None:
-        data = {
-            "public_ip_addr": copy(self._client.connection.remote_ip),
-            "public_port": copy(self._client.connection.remote_port),
-        }
-        self._result = InitResult(**data)
+        self._result = InitResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port)
 
     def _response_construct(self):
         self._response = InitResponse(self._request, self._result)
@@ -121,18 +111,15 @@ class InitHandler(CmdHandlerBase):
 
 
 class NatifyHandler(CmdHandlerBase):
-    _is_feaching = False
-
     def __init__(self, client: Client, request: NatifyRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, NatifyRequest)
 
     def _data_operate(self):
-        data = {
-            "public_ip_addr": copy(self._client.connection.remote_ip),
-            "public_port": copy(self._client.connection.remote_port),
-        }
-        self._result = NatifyResult(**data)
+        self._result = NatifyResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port)
 
     def _response_construct(self):
         self._response = NatifyResponse(self._request, self._result)

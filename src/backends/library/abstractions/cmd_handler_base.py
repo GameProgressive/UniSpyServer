@@ -1,4 +1,3 @@
-import abc
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -12,4 +11,10 @@ class CmdHandlerBase:
         self.request_check()
 
     def request_check(self):
+        pass
+
+    def data_fetch(self):
+        pass
+
+    def result_construct(self):
         pass

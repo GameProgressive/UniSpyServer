@@ -1,17 +1,13 @@
 from library.src.abstractions.switcher import SwitcherBase
-from servers.chat.src.contracts.requests.general import LoginRequest, RegisterNickRequest
-from servers.presence_connection_manager.src.handlers.general import LoginHandler
-
 from servers.presence_connection_manager.src.contracts.requests.buddy import StatusInfoRequest, StatusRequest
-from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest, LogoutRequest
-from servers.presence_connection_manager.src.contracts.requests.profile import AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, UpdateProfileRequest
+from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest, LoginRequest, LogoutRequest
+from servers.presence_connection_manager.src.contracts.requests.profile import AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, RegisterNickRequest, UpdateProfileRequest
 from servers.presence_connection_manager.src.handlers.buddy import StatusHandler, StatusInfoHandler
-from servers.presence_connection_manager.src.handlers.general import KeepAliveHandler, LogoutHandler, NewUserHandler
+from servers.presence_connection_manager.src.handlers.general import KeepAliveHandler, LoginHandler, LogoutHandler, NewUserHandler
 from servers.presence_connection_manager.src.handlers.profile import AddBlockHandler, GetProfileHandler, NewProfileHandler, RegisterCDKeyHandler, RegisterNickHandler, UpdateProfileHandler
 from servers.presence_search_player.src.contracts.requests import NewUserRequest
-from servers.presence_search_player.src.exceptions.general import (
-    GPParseException,
-)
+from servers.presence_search_player.src.exceptions.general import GPParseException
+
 from servers.presence_search_player.src.abstractions.handler import CmdHandlerBase
 from typing import Optional
 from servers.presence_connection_manager.src.applications.client import Client
@@ -28,7 +24,7 @@ class Switcher(SwitcherBase):
     def _process_raw_request(self) -> None:
         if self._raw_request[0] != "\\":
             raise GPParseException("Request format is invalid")
-        raw_requests = [r for r in self._raw_request.split("\\final\\") if r]
+        raw_requests = [r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\")[0]
             self._requests.append((name, raw_request))

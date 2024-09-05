@@ -98,7 +98,7 @@ class InviteToHandler(LoginedHandlerBase):
 
 class StatusHandler(CmdHandlerBase):
     _request: StatusRequest
-    _result: StatusResult = StatusResult()
+    _result: StatusResult
 
     def __init__(self, client: Client, request: StatusRequest) -> None:
         assert isinstance(request, StatusRequest)
@@ -111,7 +111,7 @@ class StatusHandler(CmdHandlerBase):
 
 class StatusInfoHandler(LoginedHandlerBase):
     _request: StatusInfoRequest
-    _result: StatusInfoResult = StatusInfoResult()
+    _result: StatusInfoResult
 
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)

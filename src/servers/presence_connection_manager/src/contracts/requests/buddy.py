@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, final
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
@@ -9,6 +9,7 @@ from servers.presence_connection_manager.src.enums.general import GPStatusCode
 from servers.presence_search_player.src.exceptions.general import GPParseException
 
 
+@final
 class AddBuddyRequest(RequestBase):
     friend_profile_id: int
     reason: str
@@ -29,6 +30,7 @@ class AddBuddyRequest(RequestBase):
         self.reason = self.request_dict["reason"]
 
 
+@final
 class DelBuddyRequest(RequestBase):
     friend_profile_id: int
 
@@ -43,6 +45,7 @@ class DelBuddyRequest(RequestBase):
             raise GPParseException("delprofileid format is incorrect.")
 
 
+@final
 class InviteToRequest(RequestBase):
     product_id: int
     profile_id: int
@@ -70,9 +73,10 @@ class InviteToRequest(RequestBase):
         self.session_key = self.request_dict["sesskey"]
 
 
+@final
 class StatusInfoRequest(RequestBase):
     namespace_id: Optional[int] = None
-    status_info: UserStatusInfo = UserStatusInfo()
+    status_info: UserStatusInfo
     profile_id: int = 0
 
     def __init__(self, raw_request: Optional[str] = None) -> None:
@@ -115,8 +119,9 @@ class StatusInfoRequest(RequestBase):
         self.status_info.game_map_name = self.request_dict["gamemapname"]
 
 
+@final
 class StatusRequest(RequestBase):
-    status: UserStatus = UserStatus()
+    status: UserStatus
     is_get_status: bool
 
     def parse(self):
@@ -134,7 +139,7 @@ class StatusRequest(RequestBase):
 
         try:
             status_code = int(self.request_dict["status"])
-            self.status.current_status = GPStatusCode(status_code)
+            self.status = UserStatus(current_status=GPStatusCode(status_code))
         except ValueError:
             raise GPParseException("status format is incorrect.")
 

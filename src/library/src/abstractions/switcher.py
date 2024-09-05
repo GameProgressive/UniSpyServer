@@ -1,29 +1,32 @@
-import abc
+from abc import abstractmethod
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
-from typing import List, Optional
+from typing import Optional
 
 
 class SwitcherBase:
-
-    _client: ClientBase
+    """
+    class member type hint can use class static member, but you can not initialize any class static member here! Init it in the __init__() function 
+    """
+    _handlers: list[CmdHandlerBase]
+    _requests: list[tuple]
     _raw_request: object
-    _handlers: List[CmdHandlerBase] = []
-    _requests: List[tuple] = []
-    """
-    [
-        (request_name,raw_request),
-        (request_name,raw_request),
-        (request_name,raw_request),
-        ...
-    ]
-
-    """
 
     def __init__(self, client: ClientBase, raw_request: Optional[bytes | str]) -> None:
         assert isinstance(client, ClientBase)
-        self._client = client
-        self._raw_request = raw_request
+        self._client: ClientBase = client
+        self._raw_request: object = raw_request
+        self._handlers: list[CmdHandlerBase] = []
+        self._requests: list[tuple[object, object]] = []
+        """
+        [
+            (request_name,raw_request),
+            (request_name,raw_request),
+            (request_name,raw_request),
+            ...
+        ]
+
+        """
 
     def handle(self):
         from library.src.exceptions.general import UniSpyException
@@ -46,10 +49,10 @@ class SwitcherBase:
         except Exception as e:
             UniSpyException.handle_exception(e, self._client)
 
-    @abc.abstractmethod
+    @abstractmethod
     def _process_raw_request(self) -> None:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def _create_cmd_handlers(self, name: object, raw_request: object) -> Optional[CmdHandlerBase]:
         pass

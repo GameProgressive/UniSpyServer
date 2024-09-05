@@ -17,7 +17,7 @@ class ClientInfo(ClientInfoBase):
 
 
 class Client(ClientBase):
-    info: ClientInfo
+    info: ClientInfo = ClientInfo()
 
     def on_connected(self) -> None:
         self.crypto = GSCrypt()

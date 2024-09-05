@@ -10,7 +10,6 @@ from library.src.abstractions.contracts import RequestBase, ResultBase, Response
 
 
 class CmdHandlerBase:
-
     _client: "ClientBase"
     _request: "RequestBase"
     _result: "ResultBase"
@@ -19,11 +18,11 @@ class CmdHandlerBase:
     """
     the result type class, use to deserialize json data from backend
     """
-    _is_uploading = True
+    _is_uploading: bool
     """
     whether need send data to backend
     """
-    _is_feaching = True
+    _is_feaching: bool
     """
     whether need get data from backend
     """
@@ -33,6 +32,10 @@ class CmdHandlerBase:
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
         # if some subclass do not need result, override the __init__() in that subclass
+        if not hasattr(self, "_is_feaching"):
+            self._is_feaching = True
+        if not hasattr(self, "_is_uploading"):
+            self._is_uploading = True
         if self._is_feaching:
             assert issubclass(self._result_cls, ResultBase)
 

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, final
 from library.src.extentions.gamespy_utils import is_valid_date
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
 from servers.presence_connection_manager.src.enums.general import PublicMasks
@@ -7,6 +7,7 @@ from servers.presence_search_player.src.exceptions.general import (
 )
 
 
+@final
 class AddBlockRequest(RequestBase):
     taget_id: int
 
@@ -22,6 +23,7 @@ class AddBlockRequest(RequestBase):
             raise GPParseException("profileid format is incorrect")
 
 
+@final
 class GetProfileRequest(RequestBase):
     profile_id: int
     session_key: str
@@ -43,6 +45,7 @@ class GetProfileRequest(RequestBase):
         self.session_key = self.request_dict["sesskey"]
 
 
+@final
 class NewProfileRequest(RequestBase):
     is_replace_nick_name: bool
     session_key: str
@@ -78,6 +81,7 @@ class NewProfileRequest(RequestBase):
             self.is_replace_nick_name = False
 
 
+@final
 class RegisterCDKeyRequest(RequestBase):
     session_key: str
     cdkey_enc: str
@@ -96,6 +100,7 @@ class RegisterCDKeyRequest(RequestBase):
         self.cdkey_enc = self.request_dict["cdkeyenc"]
 
 
+@final
 class RegisterNickRequest(RequestBase):
     unique_nick: str
     session_key: str
@@ -121,6 +126,7 @@ class RegisterNickRequest(RequestBase):
                 raise GPParseException("partnerid is missing")
 
 
+@final
 class UpdateProfileRequest(RequestBase):
     has_public_mask_flag: Optional[bool] = None
     public_mask: Optional[PublicMasks] = None
@@ -222,6 +228,7 @@ class UpdateProfileRequest(RequestBase):
             self.uniquenick = self.request_dict["uniquenick"]
 
 
+@final
 class UpdateUserInfoRequest(RequestBase):
     cpubrandid: Optional[str] = None
     cpuspeed: Optional[str] = None

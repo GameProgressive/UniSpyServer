@@ -8,9 +8,10 @@ from servers.game_status.src.exceptions.general import GSException
 
 
 class AuthGameHandler(CmdHandlerBase):
-    _is_feaching = False
+    _request: AuthGameRequest
 
     def __init__(self, client: Client, request: AuthGameRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, AuthGameRequest)
 
@@ -24,20 +25,22 @@ class AuthGameHandler(CmdHandlerBase):
 
 
 class AuthPlayerHandler(CmdHandlerBase):
-    _result_cls: type[AuthPlayerResult] = AuthPlayerResult
+    _result_cls: type[AuthPlayerResult]
 
     def __init__(self, client: Client, request: AuthPlayerRequest) -> None:
-        super().__init__(client, request)
         assert isinstance(request, AuthPlayerRequest)
+        self._result_cls = AuthPlayerResult
+        super().__init__(client, request)
 
     def _response_construct(self) -> None:
         self._response = AuthPlayerResponse(self._request, self._result)
 
 
 class GetPlayerDataHandler(CmdHandlerBase):
-    _result_cls: type[GetPlayerDataResult] = GetPlayerDataResult
+    _result_cls: type[GetPlayerDataResult]
 
     def __init__(self, client: Client, request: GetPlayerDataRequest) -> None:
+        self._result_cls = GetPlayerDataResult
         super().__init__(client, request)
         assert isinstance(request, GetPlayerDataRequest)
 
@@ -46,28 +49,27 @@ class GetPlayerDataHandler(CmdHandlerBase):
 
 
 class GetProfileIdHandler(CmdHandlerBase):
-    _result_cls: type[GetProfileIdResult] = GetProfileIdResult
+    _result_cls: type[GetProfileIdResult]
 
     def __init__(self, client: Client, request: GetProfileIdRequest) -> None:
-        super().__init__(client, request)
         assert isinstance(request, GetProfileIdRequest)
+        self._result_cls = GetProfileIdResult
+        super().__init__(client, request)
 
     def _response_construct(self) -> None:
         self._response = GetProfileIdResponse(self._request, self._result)
 
 
 class NewGameHandler(CmdHandlerBase):
-    _is_feaching = False
-
     def __init__(self, client: Client, request: NewGameRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, NewGameRequest)
 
 
 class SetPlayerDataHandler(CmdHandlerBase):
-    _is_feaching = False
-
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
+        self._is_feaching = False
         super().__init__(client, request)
         assert isinstance(request, SetPlayerDataRequest)
         raise NotImplementedError()
@@ -80,7 +82,6 @@ class UpdateGameHandler(CmdHandlerBase):
         new request "\\updgame\\\\sesskey\\%d\\connid\\%d\\done\\%d\\gamedata\\%s"
     """
     _request: UpdateGameRequest
-
     def __init__(self, client: Client, request: UpdateGameRequest) -> None:
         super().__init__(client, request)
         assert isinstance(request, UpdateGameRequest)

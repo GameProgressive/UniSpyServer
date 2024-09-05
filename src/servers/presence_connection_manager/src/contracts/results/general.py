@@ -1,7 +1,8 @@
+from pydantic import BaseModel
 from servers.presence_connection_manager.src.abstractions.contracts import ResultBase
 
 
-class LoginDataModel:
+class LoginDataModel(BaseModel):
     user_id: int
     profile_id: int
     nick: str

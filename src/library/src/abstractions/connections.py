@@ -3,7 +3,6 @@ import socketserver
 from typing import Optional
 from library.src.abstractions.client import ClientBase
 
-# from library.src.extentions.string_extentions import IPEndPoint
 from library.src.log.log_manager import LogWriter
 from library.src.unispy_server_config import ServerConfig
 

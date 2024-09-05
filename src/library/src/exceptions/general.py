@@ -16,21 +16,16 @@ class UniSpyException(Exception):
     @staticmethod
     # def handle_exception(e: Exception, client: ClientBase = None):
     def handle_exception(e: Exception, client: "ClientBase" = None):
-        if issubclass(type(e), UniSpyException):
-            ex: UniSpyException = e
-            if client is None:
-                # LogWriter.LogError(ex.Message);
-                pass
-            else:
-                client.log_error(ex.message)
-                pass
+        if client is None:
+            # LogWriter.LogError(ex.Message);
+            pass
         else:
-            if client is None:
-                # LogWriter.LogError(ex.ToString());
-                pass
+            if issubclass(type(e), UniSpyException):
+                ex: UniSpyException = e
+                client.log_error(ex.message)
             else:
-                # client.LogError(ex.ToString());
-                pass
+                client.log_error(e)
+            pass
 
     def __repr__(self) -> str:
         # return super().__repr__()

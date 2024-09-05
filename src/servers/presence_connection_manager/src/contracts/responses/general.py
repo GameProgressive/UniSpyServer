@@ -1,4 +1,4 @@
-from servers.presence_connection_manager.src.abstractions.contracts import RequestBase, ResponseBase, ResultBase
+from servers.presence_connection_manager.src.abstractions.contracts import ResponseBase
 from servers.presence_connection_manager.src.applications.client import (
     LOGIN_TICKET,
     SESSION_KEY,
