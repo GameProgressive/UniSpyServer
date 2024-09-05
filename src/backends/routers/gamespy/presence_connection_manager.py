@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
 
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
 from backends.protocols.gamespy.presence_connection_manager.requests import GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest
@@ -9,71 +9,69 @@ from servers.presence_connection_manager.src.contracts.requests.profile import A
 from servers.presence_search_player.src.contracts.requests import NewUserRequest
 
 
-app = FastAPI()
+router = APIRouter()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/LoginHandler")
-def login(request: LoginRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/LoginHandler")
+async def login(request: LoginRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/LogoutHandler")
-def logout(request: LogoutRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/LogoutHandler")
+async def logout(request: LogoutRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/KeepAliveHandler")
-def keep_alive(request: KeepAliveRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/KeepAliveHandler")
+async def keep_alive(request: KeepAliveRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/NewUserHandler")
-def new_user(request: NewUserRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/NewUserHandler")
+async def new_user(request: NewUserRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/AddBlockHandler")
-def add_block(request: AddBlockRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/AddBlockHandler")
+async def add_block(request: AddBlockRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/GetProfileHandler")
-def get_profile(request: GetProfileRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/GetProfileHandler")
+async def get_profile(request: GetProfileRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/NewProfileHandler")
-def new_proflie(request: NewProfileRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/NewProfileHandler")
+async def new_proflie(request: NewProfileRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/RegisterCDKeyHandler")
-def register_cdkey(request: RegisterCDKeyRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/RegisterCDKeyHandler")
+async def register_cdkey(request: RegisterCDKeyRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/RegisterNickHandler")
-def register_nick(request: RegisterNickRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/RegisterNickHandler")
+async def register_nick(request: RegisterNickRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/UpdateProfileHandler")
-def update_profile(request: UpdateProfileRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/UpdateProfileHandler")
+async def update_profile(request: UpdateProfileRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/StatusHandler")
-def status(request: StatusRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/StatusHandler")
+async def status(request: StatusRequest):
     raise NotImplementedError()
 
 
-@app.post(f"/{PRESENCE_CONNECTION_MANAGER}/StatusInfoHandler")
-def status_info(request: StatusInfoRequest):
+@router.post(f"/{PRESENCE_CONNECTION_MANAGER}/StatusInfoHandler")
+async def status_info(request: StatusInfoRequest):
     raise NotImplementedError()
-
-
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(router, host="0.0.0.0", port=8000)
