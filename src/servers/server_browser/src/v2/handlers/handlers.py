@@ -29,10 +29,6 @@ from servers.server_browser.src.v2.abstractions.handlers import CmdHandlerBase
 from servers.server_browser.src.v2.applications.client import Client
 
 
-def get_clients(ss):
-    raise NotImplementedError()
-
-
 class AdHocHandler(CmdHandlerBase):
     _message: GameServerInfo
 
@@ -69,7 +65,7 @@ class AdHocHandler(CmdHandlerBase):
             )
         ):
             client.log_info(
-                f"Sending AdHoc message {                    self._message.status} to client"
+                f"Sending AdHoc message {self._message.status} to client"
             )
             client.send(self.response)
 
@@ -121,12 +117,15 @@ class ServerListHandler(CmdHandlerBase):
                 ServerListUpdateOption.LIMIT_RESULT_COUNT,
                 ServerListUpdateOption.SERVER_FULL_INFO_LIST,
             ]:
-                self._response = ServerMainListResponse(self._request, self._result)
+                self._response = ServerMainListResponse(
+                    self._request, self._result)
             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-                self._response = P2PGroupRoomListResponse(self._request, self._result)
+                self._response = P2PGroupRoomListResponse(
+                    self._request, self._result)
             case ServerListUpdateOption.SERVER_FULL_INFO_LIST:
                 self._response = ServerNetworkInfoListResponse(
                     self._request, self._result
                 )
             case _:
-                raise ServerBrowserException("unknown serverlist update option type")
+                raise ServerBrowserException(
+                    "unknown serverlist update option type")
