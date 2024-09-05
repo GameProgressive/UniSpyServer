@@ -30,7 +30,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
 
     def handle(self) -> None:
         if self.conn is None:
-            self.conn = TcpConnection(self, *self.server.handler_params)  # type: ignore
+            self.conn = TcpConnection(self, *self.server.unispy_params)  # type: ignore
         self.conn.on_connected()
         while True:
             try:
@@ -53,7 +53,7 @@ class TcpServer(ServerBase):
             TcpHandler,
         )
         self._server.allow_reuse_address = True
-        self._server.handler_params = (self._config, self._client_cls, self._logger)  # type: ignore
+        self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
         self._server.serve_forever()
 
 

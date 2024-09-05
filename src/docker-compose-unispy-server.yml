@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  backends:
+    image: unispy-python
+      restart: always
+      ports:
+        - "8000:8000"
+      command: python backends/home.py
+  pcm:
+    image: unispy-python
+      restart: always
+      ports:
+        - "29900:29900"
+      command: python servers/presence_connection_manager/application/server_launcher.py
+  psp:
+    image: unispy-python
+      restart: always
+      ports:
+        - "29901:29901"
+      command: python servers/presence_search_player/application/server_launcher.py
+  natneg:
+    image: unispy-python
+      restart: always
+      ports:
+        - "27901:27901"
+      command: python servers/natneg/application/server_launcher.py
+  chat:
+    image: unispy-python
+      restart: always
+      ports:
+        - "6667:6667"
+      command: python servers/chat/application/server_launcher.py
+  gstats:
+    image: unispy-python
+      restart: always
+      ports:
+        - "29920:29920"
+      command: python servers/game_status/application/server_launcher.py
+  qr:
+    image: unispy-python
+      restart: always
+      ports:
+        - "27900:27900"
+      command: python servers/query_report/application/server_launcher.py
+  sbv2:
+    image: unispy-python
+      restart: always
+      ports:
+        - "28900:28900"
+      command: python servers/server_browser/application/server_launcher.py
+  web:
+    image: unispy-python
+      restart: always
+      ports:
+        - "80:80"
+      command: python servers/web_services/application/server_launcher.py

@@ -7,7 +7,7 @@ import requests
 
 VERSION = 0.45
 
-__server_name_mapping = {
+__SERVER_FULL_SHORT_NAME_MAPPING = {
     "PresenceConnectionManager": "PCM",
     "PresenceSearchPlayer": "PSP",
     "CDKey": "CDKey",
@@ -44,7 +44,10 @@ class ServerLauncherBase:
 
     def _connect_to_backend(self):
         try:
-            resp: requests.Response = requests.get(url=CONFIG.backend.url)
+            # post our server config to backends to register
+            resp: requests.Response = requests.post(
+                url=CONFIG.backend.url,
+                data=self.config.model_dump_json())
             if resp.status_code == 200:
                 data = resp.json()
                 if data["status"] != "online":
@@ -57,5 +60,5 @@ class ServerLauncherBase:
             # fmt: on
 
     def _create_logger(self):
-        short_name = __server_name_mapping[self.config.server_name]
+        short_name = __SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
         self.logger = LogManager.create(CONFIG.logging.path, short_name)

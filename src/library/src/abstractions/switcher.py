@@ -9,11 +9,12 @@ class SwitcherBase:
     class member type hint can use class static member, but you can not initialize any class static member here! Init it in the __init__() function 
     """
     _handlers: list[CmdHandlerBase]
-    _requests: list[tuple]
+    _requests: list[tuple[object, object]]
     _raw_request: object
 
-    def __init__(self, client: ClientBase, raw_request: Optional[bytes | str]) -> None:
+    def __init__(self, client: ClientBase, raw_request: bytes | str) -> None:
         assert isinstance(client, ClientBase)
+        assert isinstance(raw_request, bytes) or isinstance(raw_request, str)
         self._client: ClientBase = client
         self._raw_request: object = raw_request
         self._handlers: list[CmdHandlerBase] = []
