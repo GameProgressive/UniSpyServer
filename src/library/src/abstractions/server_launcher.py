@@ -22,6 +22,12 @@ __SERVER_FULL_SHORT_NAME_MAPPING = {
 }
 
 
+GLOBAL_LOGGER = LogManager.create(CONFIG.logging.path, "unispy")
+"""
+the global logger of unispy
+"""
+
+
 class ServerLauncherBase:
     config: ServerConfig
     logger: LogWriter

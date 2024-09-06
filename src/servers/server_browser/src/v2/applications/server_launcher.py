@@ -1,4 +1,4 @@
-from library.src.abstractions.server_launcher_base import ServerLauncherBase
+from library.src.abstractions.server_launcher import ServerLauncherBase
 from library.src.network.tcp_handler import TcpServer
 from library.src.unispy_server_config import CONFIG
 from servers.server_browser.src.v2.applications.client import Client

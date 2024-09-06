@@ -28,6 +28,9 @@ class ClientBase:
     info: "ClientInfoBase"
     is_log_raw: bool
     pool: dict[str, "ClientBase"]
+    """
+    Note: initialize in child class as class static member 
+    """
 
     def __init__(
         self, connection: "ConnectionBase", server_config: ServerConfig, logger: LogWriter

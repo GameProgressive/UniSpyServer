@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from library.src.unispy_server_config import ServerConfig
+from library.src.log.log_manager import LogManager
+from library.src.unispy_server_config import CONFIG, ServerConfig
 from backends.routers.gamespy import chat, gstats, natneg, presence_connection_manager, presence_search_player, query_report, server_browser, webservices
 app = FastAPI()
 
@@ -12,6 +13,8 @@ app.include_router(presence_search_player.router)
 app.include_router(query_report.router)
 app.include_router(server_browser.router)
 app.include_router(webservices.router)
+
+LogManager.create(CONFIG.logging.path, "backend")
 
 
 @app.post("/")

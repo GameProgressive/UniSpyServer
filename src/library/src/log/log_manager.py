@@ -2,7 +2,6 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 import os
 
-
 class LogWriter:
     original_logger: logging.Logger
 
@@ -69,3 +68,4 @@ class LogManager:
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
         return LogWriter(logger)
+

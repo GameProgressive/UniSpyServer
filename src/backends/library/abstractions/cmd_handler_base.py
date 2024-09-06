@@ -1,20 +1,47 @@
-from typing import TYPE_CHECKING
+from abc import abstractmethod
+from backends.library.abstractions.contracts import RequestBase
+from library.src.abstractions.contracts import ResultBase
 
-if TYPE_CHECKING:
-    from library.src.abstractions.contracts import RequestBase
+import logging
+
+from library.src.exceptions.general import UniSpyException
 
 
-class CmdHandlerBase:
+class HandlerBase:
+    """
+    The ultimate handler base of backend service
+    """
     _request: RequestBase
+    _result: ResultBase
+    _response: dict
+    """
+    the dict response which send to client
+    """
 
-    def handle(self):
-        self.request_check()
+    def __init__(self, request: RequestBase) -> None:
+        assert issubclass(type(request), RequestBase)
+        self._request = request
+        # decoupling the logging in home.py
+        self.logger = logging.getLogger("backend")
 
-    def request_check(self):
+    async def handle(self) -> None:
+        try:
+            await self.request_check()
+            await self.data_fetch()
+            await self.result_construct()
+        except UniSpyException as ex:
+            self.logger.error(ex.message)
+        except Exception as ex:
+            self.logger.error(ex)
+
+    @abstractmethod
+    async def request_check(self) -> None:
         pass
 
-    def data_fetch(self):
+    @abstractmethod
+    async def data_fetch(self) -> None:
         pass
 
-    def result_construct(self):
+    @abstractmethod
+    async def result_construct(self) -> None:
         pass
