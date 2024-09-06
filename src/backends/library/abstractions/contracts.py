@@ -7,4 +7,11 @@ class RequestBase(BaseModel):
     """
 
     server_id: UUID4
-    raw_request: object
+    raw_request: str
+    """
+    if the raw_request is bytes, we decode it to decode("ascii","backslashreplace") str
+    """
+
+
+class GeneralResponse(BaseModel):
+    message: str

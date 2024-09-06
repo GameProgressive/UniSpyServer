@@ -81,7 +81,7 @@ class CmdHandlerBase:
         url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}/"
 
         # fmt: on
-        data = self._request.to_serializable_dict()
+        data = self._request.to_json()
         data["server_id"] = str(self._client.server_config.server_id)
 
         response = requests.post(url, json=data)

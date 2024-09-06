@@ -26,14 +26,15 @@ def get_available_relay_serves() -> list[RelayServerInfo]:
     return result
 
 
-def get_init_infos(server_id: UUID, cookie: int) -> list[InitPacketInfo]:
-    result: list[InitPacketInfo] = InitPacketInfo.objects(
+async def get_init_infos(server_id: UUID, cookie: int) -> list[InitPacketInfo]:
+    result: list[InitPacketInfo] = await InitPacketInfo.objects(
         server_id=server_id, cookie=cookie)
     return result
 
 
-def update_init_info(info: InitPacketInfo) -> None:
-    info.save()
+async def update_init_info(info: InitPacketInfo) -> None:
+    assert isinstance(info, InitPacketInfo)
+    await info.save()
 
 
 def remove_init_info(info: InitPacketInfo) -> None:

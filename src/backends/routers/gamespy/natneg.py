@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.chat.requests import PingRequest
+from backends.protocols.gamespy.natneg.handlers import InitHandler
 from backends.protocols.gamespy.natneg.requests import ConnectRequest, ErtAckRequest, InitRequest, ReportRequest
 from backends.urls import NATNEG
 from servers.natneg.src.contracts.requests import AddressCheckRequest
@@ -26,7 +27,9 @@ async def ert_ack(request: ErtAckRequest):
 
 @router.post(f"{NATNEG}/InitHandler/")
 async def init(request: InitRequest):
-    raise NotImplementedError()
+    handler = InitHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{NATNEG}/PingHandler/")

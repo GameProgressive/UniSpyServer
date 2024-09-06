@@ -31,14 +31,14 @@ class RequestBase:
     def parse(self) -> None:
         pass
 
-    def to_serializable_dict(self) -> dict:
+    def to_json(self) -> dict:
         """
         create a json serializable dict of this class
         """
         result = deepcopy(self.__dict__)
         for key, value in result.items():
             if isinstance(value, bytes):
-                result[key] = list(value)
+                result[key] = value.decode("ascii", "backslashreplace")
             elif isinstance(value, enum.Enum):
                 result[key] = value.value
             elif isinstance(value, enum.IntEnum):
@@ -70,5 +70,3 @@ class ResponseBase:
     @abc.abstractmethod
     def build(self) -> None:
         pass
-
-

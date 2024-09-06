@@ -13,7 +13,7 @@ class HandlerBase:
     """
     _request: RequestBase
     _result: ResultBase
-    _response: dict
+    response: dict
     """
     the dict response which send to client
     """
@@ -31,8 +31,10 @@ class HandlerBase:
             await self.result_construct()
         except UniSpyException as ex:
             self.logger.error(ex.message)
+            self.response = {"message": ex.message}
         except Exception as ex:
             self.logger.error(ex)
+            self.response = {"message": str(ex)}
 
     @abstractmethod
     async def request_check(self) -> None:
