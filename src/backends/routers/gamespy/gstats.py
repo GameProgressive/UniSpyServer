@@ -4,32 +4,32 @@ from backends.urls import GAMESTATUS
 router = APIRouter()
 
 
-@router.post(f"{GAMESTATUS}/AuthGameHandler/")
+@router.post(f"{GAMESTATUS}/AuthGameHandler")
 async def update_item(request: AuthGameRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{GAMESTATUS}/AuthPlayerHandler/")
+@router.post(f"{GAMESTATUS}/AuthPlayerHandler")
 async def update_item(request: AuthPlayerRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{GAMESTATUS}/NewGameHandler/")
+@router.post(f"{GAMESTATUS}/NewGameHandler")
 async def update_item(request: NewGameRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{GAMESTATUS}/GetPlayerDataHandler/")
+@router.post(f"{GAMESTATUS}/GetPlayerDataHandler")
 async def update_item(request: GetPlayerDataRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{GAMESTATUS}/SetPlayerDataHandler/")
+@router.post(f"{GAMESTATUS}/SetPlayerDataHandler")
 async def update_item(request: SetPlayerDataRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{GAMESTATUS}/UpdateGameHandler/")
+@router.post(f"{GAMESTATUS}/UpdateGameHandler")
 async def update_item(request: UpdateGameRequest):
     raise NotImplementedError()
 
