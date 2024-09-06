@@ -7,8 +7,8 @@ from library.src.unispy_server_config import ServerConfig
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from library.src.abstractions.handler import CmdHandlerBase
     from library.src.abstractions.connections import ConnectionBase
+    from library.src.abstractions.handler import CmdHandlerBase
     from library.src.abstractions.switcher import SwitcherBase
     from library.src.abstractions.enctypt_base import EncryptBase
     from library.src.abstractions.contracts import ResponseBase
@@ -27,25 +27,31 @@ class ClientBase:
     crypto: Optional["EncryptBase"]
     info: "ClientInfoBase"
     is_log_raw: bool
+    pool: dict[str, "ClientBase"]
 
     def __init__(
         self, connection: "ConnectionBase", server_config: ServerConfig, logger: LogWriter
     ):
-        # fmt: off
         assert isinstance(server_config, ServerConfig)
         assert isinstance(logger, LogWriter)
+        from library.src.abstractions.connections import ConnectionBase
+        assert issubclass(type(connection), ConnectionBase)
         self.server_config = server_config
         self.connection = connection
         self.logger = logger
-        self._log_prefix = f"[{self.connection.remote_ip}:{self.connection.remote_port}]"
         self.crypto = None
         self.is_log_raw = False
+        # fmt: off
+        self._log_prefix = self.connection.ip_endpoint
         # fmt: on
 
     def on_connected(self) -> None:
+        # this operation will append the child client instance to the static member of childclass, if child class is overide the static member ClientBase.pool
+        self.pool[self.connection.ip_endpoint] = self
         pass
 
     def on_disconnected(self) -> None:
+        del self.pool[self.connection.ip_endpoint]
         pass
 
     def create_switcher(self, buffer: bytes | str) -> "SwitcherBase":

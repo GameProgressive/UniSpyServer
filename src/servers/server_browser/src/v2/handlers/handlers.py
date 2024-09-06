@@ -1,8 +1,7 @@
 from concurrent.futures import ProcessPoolExecutor
-import socket
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.query_report.src.v2.contracts.requests import ClientMessageRequest
-from servers.query_report.src.v2.enums.general import GameServerStatus
+from servers.query_report.src.v2.enums.general import GameServerStatus, RequestType
 from servers.server_browser.src.exceptions.general import ServerBrowserException
 from servers.server_browser.src.v2.contracts.requests import (
     SendMessageRequest,
@@ -21,12 +20,23 @@ from servers.server_browser.src.v2.contracts.results import (
     ServerMainListResult,
 )
 from servers.server_browser.src.v2.enums.general import (
-    RequestType,
+    # RequestType,
     ServerListUpdateOption,
 )
 from servers.server_browser.src.v2.abstractions.handlers import CmdHandlerBase
 
 from servers.server_browser.src.v2.applications.client import Client
+
+
+def get_clients(game_name: str):
+    client_list = []
+    assert isinstance(game_name, str)
+    for ip, c in Client.pool.items():
+        client: Client = c
+        if client.info.game_name == game_name:
+            client_list.append(client)
+
+    return client_list
 
 
 class AdHocHandler(CmdHandlerBase):
@@ -43,7 +53,9 @@ class AdHocHandler(CmdHandlerBase):
         match (self._message.status):
             case (
                 status
-            ) if status == GameServerStatus.NORMAL or status == GameServerStatus.UPDATE or status == GameServerStatus.PLAYING:
+            ) if status == GameServerStatus.NORMAL \
+                    or status == GameServerStatus.UPDATE \
+                    or status == GameServerStatus.PLAYING:
                 self.response = UpdateServerInfoResponse(result)
             case GameServerStatus.SHUTDOWN:
                 self.response = DeleteServerInfoResponse(result)
@@ -61,8 +73,7 @@ class AdHocHandler(CmdHandlerBase):
             and client.crypto is not None
             and (
                 client.info.search_type == ServerListUpdateOption.SERVER_MAIN_LIST
-                or client.info.search_type
-                == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
+                or client.info.search_type == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
             )
         ):
             client.log_info(

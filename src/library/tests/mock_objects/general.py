@@ -4,13 +4,12 @@ import responses
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase
 from library.src.abstractions.handler import CmdHandlerBase
-from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
-from library.src.unispy_server_config import CONFIG
-from servers.natneg.src.handlers.switcher import CmdSwitcher
+from library.src.unispy_server_config import CONFIG, ServerConfig
 
 
 class ConnectionMock(ConnectionBase):
+
     def send(self, data: bytes) -> None:
         pass
 

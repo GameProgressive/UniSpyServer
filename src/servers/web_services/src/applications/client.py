@@ -1,6 +1,8 @@
 from library.src.abstractions.client import ClientBase, ClientInfoBase
 from library.src.abstractions.switcher import SwitcherBase
-from library.src.network.http_handler import HttpRequest
+from library.src.log.log_manager import LogWriter
+from library.src.network.http_handler import HttpConnection
+from library.src.unispy_server_config import ServerConfig
 
 
 class ClientInfo(ClientInfoBase):
@@ -29,6 +31,11 @@ class ClientInfo(ClientInfoBase):
 
 class Client(ClientBase):
     info: ClientInfo
+    client_pool: dict[str, "Client"] = {}
+
+    def __init__(self, connection: HttpConnection, server_config: ServerConfig, logger: LogWriter):
+        super().__init__(connection, server_config, logger)
+        self.info = ClientInfo()
 
     def on_received(self, buffer: str) -> None:
         assert isinstance(buffer, str)

@@ -2,7 +2,7 @@ from pydantic import BaseModel
 import backends.library.abstractions.contracts as lib
 
 
-class RequestBase(lib.RequestBase):
+class SakeRequestBase(lib.RequestBase):
     game_id: int
     secret_key: str
     login_ticket: str
@@ -15,11 +15,11 @@ class CreateRecordData(BaseModel):
     value: str
 
 
-class CreateRecordRequest(RequestBase):
+class CreateRecordRequest(SakeRequestBase):
     values: list[CreateRecordData]
 
 
-class DeleteRecordRequest(RequestBase):
+class DeleteRecordRequest(SakeRequestBase):
     record_id: int
 
 
@@ -28,7 +28,7 @@ class GetMyRecordsData(BaseModel):
     value: str
 
 
-class GetMyRecordsRequest(RequestBase):
+class GetMyRecordsRequest(SakeRequestBase):
     fields: list[GetMyRecordsData]
 
 
@@ -37,12 +37,12 @@ class GetRandomRecordsData(BaseModel):
     value: str
 
 
-class GetRandomRecordsRequest(RequestBase):
+class GetRandomRecordsRequest(SakeRequestBase):
     max: int
     fields: list[GetRandomRecordsData]
 
 
-class GetRecordLimitRequest(RequestBase):
+class GetRecordLimitRequest(SakeRequestBase):
     pass
 
 
@@ -51,14 +51,13 @@ class GetSpecificRecordsData(BaseModel):
     type: str
 
 
-class GetSpecificRecordsRequest(RequestBase):
+class GetSpecificRecordsRequest(SakeRequestBase):
 
     record_ids: list[GetSpecificRecordsData]
     fields: list[GetSpecificRecordsData]
 
 
-
-class RateRecordRequest(RequestBase):
+class RateRecordRequest(SakeRequestBase):
     record_id: str
     rating: str
 
@@ -68,7 +67,7 @@ class SearchForRecordsData(BaseModel):
     type: str
 
 
-class SearchForRecordsRequest(RequestBase):
+class SearchForRecordsRequest(SakeRequestBase):
     filter: str
     sort: str
     offset: str
@@ -85,6 +84,71 @@ class UpdateRecordData(BaseModel):
     value: str
 
 
-class UpdateRecordRequest(RequestBase):
+class UpdateRecordRequest(SakeRequestBase):
     record_id: str
     values: list[UpdateRecordData]
+
+
+# Auth
+
+class AuthRequestBase(lib.RequestBase):
+    version: int
+    partner_code: int
+    namespace_id: int
+
+
+class LoginProfileRequest(AuthRequestBase):
+    email: str
+    uniquenick: str
+    cdkey: str
+    password: str
+
+
+class LoginProfileWithGameIdRequest(LoginProfileRequest):
+    game_id: int
+
+
+class LoginPs3CertRequest(AuthRequestBase):
+    ps3_cert: str
+    game_id: int
+    npticket: str
+
+
+class LoginPs3CertWithGameIdRequest(LoginPs3CertRequest):
+    game_id: int
+
+
+class LoginRemoteAuthRequest(AuthRequestBase):
+    auth_token: str
+    challenge: str
+
+
+class LoginRemoteAuthWithGameIdRequest(LoginRemoteAuthRequest):
+    game_id: int
+
+
+class LoginUniqueNickRequest(AuthRequestBase):
+    uniquenick: str
+    password: str
+
+
+class LoginUniqueNickWithGameIdRequest(LoginUniqueNickRequest):
+    game_id: int
+
+
+# D2G
+
+class Direct2GameRequestBase(lib.RequestBase):
+    pass
+
+class GetPurchaseHistoryRequest(Direct2GameRequestBase):
+    game_id: int
+    access_token: str
+    proof: str
+    certificate: str
+
+class GetStoreAvailabilityRequest(Direct2GameRequestBase):
+    game_id: int
+    version: int
+    region: str
+    access_token: str

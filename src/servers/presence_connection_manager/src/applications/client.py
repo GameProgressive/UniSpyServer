@@ -1,8 +1,8 @@
 from library.src.abstractions.client import ClientBase, ClientInfoBase
 
-from library.src.abstractions.connections import TcpConnectionBase
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
+from library.src.network.tcp_handler import TcpConnection
 from library.src.unispy_server_config import ServerConfig
 from servers.presence_connection_manager.src.aggregates.login_challenge import (
     SERVER_CHALLENGE,
@@ -21,18 +21,23 @@ class ClientInfo(ClientInfoBase):
     user_id: int
     profile_id: int
     sub_profile_id: int
-    login_status: LoginStatus = LoginStatus.CONNECTED
+    login_status: LoginStatus
     namespace_id: int
     sdk_revision: SdkRevision
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.login_status = LoginStatus.CONNECTED
 
 
 class Client(ClientBase):
     info: ClientInfo
-    connection: TcpConnectionBase
+    client_pool: dict[str, "Client"] = {}
+    connection: TcpConnection
 
     def __init__(
         self,
-        connection: TcpConnectionBase,
+        connection: TcpConnection,
         server_config: ServerConfig,
         logger: LogWriter,
     ):

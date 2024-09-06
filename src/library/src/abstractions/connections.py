@@ -15,13 +15,16 @@ if TYPE_CHECKING:
 class ConnectionBase:
     remote_ip: str
     remote_port: int
-    _is_started: bool = False
+    _is_started: bool
     config: ServerConfig
     t_client: type[ClientBase]
     logger: LogWriter
     handler: socketserver.BaseRequestHandler
     _client: ClientBase
-
+    ip_endpoint: str
+    """
+        ip endpoint format str \<ip:port\>
+    """
     def __init__(
         self,
         handler: socketserver.BaseRequestHandler,
@@ -36,10 +39,13 @@ class ConnectionBase:
         # assert issubclass(type(handler), socketserver.BaseRequestHandler)
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
+        self.ip_endpoint = f"{self.remote_ip}:{self.remote_port}"
+        
         self.config = config
         self.t_client = t_client
         self.logger = logger
         self._client = self.t_client(self, self.config, self.logger)
+        self._is_started = False
 
     def on_received(self, data: "Optional[bytes|HttpRequest]") -> None:
         self._client.on_received(data)

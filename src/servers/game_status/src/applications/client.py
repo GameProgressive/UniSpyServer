@@ -1,5 +1,8 @@
 from library.src.abstractions.client import ClientBase, ClientInfoBase
 from library.src.abstractions.switcher import SwitcherBase
+from library.src.log.log_manager import LogWriter
+from library.src.network.tcp_handler import TcpConnection
+from library.src.unispy_server_config import ServerConfig
 from servers.game_status.src.aggregations.gscrypt import GSCrypt
 
 
@@ -15,9 +18,24 @@ class ClientInfo(ClientInfoBase):
     profile_id: int = None
     game_session_key: str = None
 
+    def __init__(self) -> None:
+        super().__init__()
+        self.session_key: str = None
+        self.game_name: str = None
+        self.is_user_authenticated: bool = False
+        self.is_player_authenticated: bool = False
+        self.is_game_authenticated: bool = False
+        self.profile_id: int = None
+        self.game_session_key: str = None
+
 
 class Client(ClientBase):
-    info: ClientInfo = ClientInfo()
+    info: ClientInfo
+    client_pool: dict[str, "Client"] = {}
+
+    def __init__(self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter):
+        super().__init__(connection, server_config, logger)
+        self.info = ClientInfo()
 
     def on_connected(self) -> None:
         self.crypto = GSCrypt()
