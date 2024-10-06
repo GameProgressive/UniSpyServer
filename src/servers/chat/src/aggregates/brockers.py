@@ -13,7 +13,7 @@ class WebSocketBrocker(BrockerBase):
         super().__init__(name)
         url = f"{CONFIG.backend.url}/{name}"
         self._subscriber = \
-            websocket.WebSocketApp(self._backend_url,
+            websocket.WebSocketApp(url=url,
                                    on_message=self.receive_message,
                                    on_error=None, on_close=None)
 

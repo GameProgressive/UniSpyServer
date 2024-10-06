@@ -200,5 +200,5 @@ PG_SESSION = connect_to_db()
 
 if __name__ == "__main__":
     session = connect_to_db()
-    # session.query().filter
+    session.query(Users.userid == 0)
     pass

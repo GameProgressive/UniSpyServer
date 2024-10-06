@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 
 class RequestBase:
-    command_name: object = None
-    raw_request: object = None
+    command_name: object
+    raw_request: object
 
     def __init__(self, raw_request: object) -> None:
         """
@@ -27,6 +27,8 @@ class RequestBase:
                 raise Exception("Unsupported raw_request type")
             self.raw_request = raw_request
             return
+        # self.command_name = None
+        # self.raw_request = None
 
     def parse(self) -> None:
         pass
