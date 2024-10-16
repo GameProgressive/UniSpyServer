@@ -1,9 +1,11 @@
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from backends.protocols.gamespy.server_browser.requests import SendMessageRequest, ServerInfoRequest, ServerListRequest
 from backends.urls import SERVER_BROWSER_V1, SERVER_BROWSER_V2
 
 router = APIRouter()
 # todo maybe implement this in websocket way
+
+client_pool: dict[str, WebSocket] = {}
 
 
 @router.websocket(f"/{SERVER_BROWSER_V2}/AdHocHandler")
@@ -11,11 +13,15 @@ async def check(websocket: WebSocket):
     """
     notify every server browser to send message to its client
     """
+    raise NotImplementedError()
     await websocket.accept()
     while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"Message text was: {data}")
-    raise NotImplementedError()
+        try:
+            data = await websocket.receive_text()
+            client_pool[websocket.client.host] = websocket
+            await websocket.send_text(f"Message text was: {data}")
+        except WebSocketDisconnect:
+            del client_pool[websocket.client.host]
 
 
 @router.post(f"/{SERVER_BROWSER_V2}/SendMessageHandler")

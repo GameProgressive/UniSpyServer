@@ -1,9 +1,11 @@
 
+from typing import final
 from library.src.abstractions.contracts import ResponseBase
 from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, SetPlayerDataRequest
 from servers.game_status.src.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
 
 
+@final
 class AuthGameResponse(ResponseBase):
     _request: AuthGameRequest
     _result: AuthGameResult
@@ -14,6 +16,7 @@ class AuthGameResponse(ResponseBase):
         # fmt: on
 
 
+@final
 class AuthPlayerResponse(ResponseBase):
     _request: AuthPlayerRequest
     _result: AuthPlayerResult
@@ -24,6 +27,7 @@ class AuthPlayerResponse(ResponseBase):
         # fmt: on
 
 
+@final
 class GetPlayerDataResponse(ResponseBase):
     _request: GetPlayerDataRequest
     _result: GetPlayerDataResult
@@ -34,6 +38,7 @@ class GetPlayerDataResponse(ResponseBase):
         # fmt: on
 
 
+@final
 class GetProfileIdResponse(ResponseBase):
     _request: GetProfileIdRequest
     _result: GetProfileIdResult
@@ -44,6 +49,7 @@ class GetProfileIdResponse(ResponseBase):
         # fmt: on
 
 
+@final
 class SetPlayerDataResponse(ResponseBase):
     _request: SetPlayerDataRequest
     _result: GetPlayerDataResult

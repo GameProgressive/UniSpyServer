@@ -1,9 +1,7 @@
-# from servers.natneg.contracts.requests import InitRequest
 from uuid import UUID
-from backends.protocols.gamespy.natneg.relay_server_info import RelayServerInfo
+from backends.protocols.gamespy.game_traffic_relay.relay_server_info import RelayServerInfo
 from backends.protocols.gamespy.natneg.requests import InitRequest
 from backends.protocols.gamespy.natneg.init_packet_info import InitPacketInfo, NatFailInfo
-from mongoengine import QuerySet
 
 
 def store_init_packet(request: InitRequest) -> None:
@@ -16,25 +14,15 @@ def count_init_info(cookie: int, version: int) -> int:
     return result
 
 
-def get_available_relay_serves() -> list[RelayServerInfo]:
-    """
-    Return
-    ------
-        list of ip:port
-    """
-    result: list[RelayServerInfo] = list(RelayServerInfo.objects)
-    return result
-
-
-async def get_init_infos(server_id: UUID, cookie: int) -> list[InitPacketInfo]:
-    result: list[InitPacketInfo] = await InitPacketInfo.objects(
+def get_init_infos(server_id: UUID, cookie: int) -> list[InitPacketInfo]:
+    result: list[InitPacketInfo] = InitPacketInfo.objects(
         server_id=server_id, cookie=cookie)
     return result
 
 
-async def update_init_info(info: InitPacketInfo) -> None:
+def update_init_info(info: InitPacketInfo) -> None:
     assert isinstance(info, InitPacketInfo)
-    await info.save()
+    info.save()
 
 
 def remove_init_info(info: InitPacketInfo) -> None:

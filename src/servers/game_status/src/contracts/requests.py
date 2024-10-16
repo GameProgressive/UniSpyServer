@@ -1,9 +1,10 @@
+from typing import final
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.game_status.src.abstractions.contracts import RequestBase
 from servers.game_status.src.enums.general import AuthMethod, PersistStorageType
 from servers.game_status.src.exceptions.general import GSException
 
-
+@final
 class AuthGameRequest(RequestBase):
     game_name: str
 
@@ -27,6 +28,7 @@ class AuthGameRequest(RequestBase):
                 raise GSException("port format is incorrect")
 
 
+@final
 class AuthPlayerRequest(RequestBase):
     auth_type: AuthMethod
     profile_id: int
@@ -58,6 +60,7 @@ class AuthPlayerRequest(RequestBase):
             raise GSException("unknown authp request type")
 
 
+@final
 class GetPlayerDataRequest(RequestBase):
     profile_id: str
     storage_type: PersistStorageType
@@ -103,6 +106,7 @@ class GetPlayerDataRequest(RequestBase):
             self.is_get_all_data = False
 
 
+@final
 class GetProfileIdRequest(RequestBase):
     nick: str
     keyhash: str
@@ -121,6 +125,7 @@ class GetProfileIdRequest(RequestBase):
             self.keyhash = self.request_dict["keyhash"]
 
 
+@final
 class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
     challenge: str = None
@@ -145,6 +150,7 @@ class NewGameRequest(RequestBase):
             self.challenge = self.request_dict["challenge"]
 
 
+@final
 class SetPlayerDataRequest(RequestBase):
     profile_id: int
     storage_type: PersistStorageType
@@ -195,6 +201,7 @@ class SetPlayerDataRequest(RequestBase):
             self.data = self.request_dict["data"]
 
 
+@final
 class UpdateGameRequest(RequestBase):
     connection_id: int = None
     is_done: bool

@@ -1,24 +1,22 @@
 import abc
-
-from servers.chat.src.aggregates.channel import MIN_CHANNEL_NAME_LENGTH
-from servers.chat.src.exceptions.general import ChatException
+from typing import final
 
 
 class BrockerBase:
     _subscriber: object
     is_started: bool = False
     _name: str
-    call_backs: list
+    _call_back_func: "function"
     """
     brocker subscribe name
     """
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, call_back_func: "function") -> None:
         assert isinstance(name, str)
-        if len(name) < MIN_CHANNEL_NAME_LENGTH:
-            raise ChatException(f"The channel name length must larget than {
-                                MIN_CHANNEL_NAME_LENGTH}")
+        assert callable(call_back_func)
+
         self._name = name
+        self._call_back_func = call_back_func
 
     @abc.abstractmethod
     def subscribe(self):
@@ -27,13 +25,13 @@ class BrockerBase:
         """
         pass
 
-    @abc.abstractmethod
+    @final
     def receive_message(self, message):
+        self._call_back_func(message)
         pass
 
     @abc.abstractmethod
     def publish_message(self, message):
-
         pass
 
     @abc.abstractmethod
