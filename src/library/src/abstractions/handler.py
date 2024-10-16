@@ -26,6 +26,7 @@ class CmdHandlerBase:
     """
     whether need get data from backend
     """
+    _is_debugging: bool = False
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
 
@@ -103,7 +104,13 @@ class CmdHandlerBase:
         self._client.send(self._response)
 
     def _handle_exception(self, ex) -> None:
+        """
+        override in child class if there are different exception handling behavior
+        """
         UniSpyException.handle_exception(ex, self._client)
+        # if we are debugging the app we re-raise the exception
+        if CmdHandlerBase._is_debugging:
+            raise ex
 
     def _log_current_class(self) -> None:
         if self._client is None:

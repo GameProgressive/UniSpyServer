@@ -1,4 +1,6 @@
+from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import *
+from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.handler import PostLoginHandlerBase
 from servers.chat.src.aggregates.channel import Channel, ChannelManager
 from servers.chat.src.aggregates.channel_user import ChannelUser
@@ -30,12 +32,15 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _user: ChannelUser
     _request: ChannelRequestBase
 
+    def __init__(self, client: ClientBase, request: RequestBase):
+        super().__init__(client, request)
+
     def _request_check(self) -> None:
         if self._request.raw_request is None:
             return super()._request_check()
 
         if self._channel is None:
-            self._channel = ChannelManager.get_local_channel(
+            self._channel = ChannelManager.get_channel(
                 self._request.channel_name
             )
             if self._channel is None:
@@ -56,24 +61,14 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     def handle(self) -> None:
         super().handle()
         try:
-            # we do not publish message when the message is received from remote client
-            if self._client.is_remote_client:
-                return
-            if self._channel is None:
-                return
-
-            if self.request.raw_request is None:
-                return
-
-            self.publish_message()
-            self.update_channel_cache()
+            # todo check whether the broadcast message is same as responses
+            self._publish_message()
+            self._update_channel_cache()
         except Exception as e:
             self._handle_exception(e)
 
-    def publish_message(self):
-        raise NotImplementedError()
-        meg = RemoteMessage(self._request, self._client.get_remote_client())
-        self._channel.broker.publish_message(msg)
+    def _publish_message(self):
+        self._channel.send_message_to_brocker(self._response.sending_buffer)
 
-    def update_channel_cache(self):
+    def _update_channel_cache(self):
         pass

@@ -1,6 +1,4 @@
-
 import threading
-from time import sleep
 import websocket
 from redis import Redis
 from library.src.abstractions.brocker import BrockerBase
@@ -72,7 +70,7 @@ class WebsocketBrocker(BrockerBase):
 if __name__ == "__main__":
 
     ws = WebsocketBrocker(name="test_channel",
-                          url="ws://127.0.0.1:8000/chat", call_back_func=print)
+                          url="ws://127.0.0.1:8000/channel", call_back_func=print)
     ws.subscribe()
     ws.publish_message("hello")
     while True:

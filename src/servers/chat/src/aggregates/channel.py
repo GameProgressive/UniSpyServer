@@ -1,7 +1,9 @@
 import datetime
+from typing import overload
 from uuid import UUID
+from library.src.unispy_server_config import CONFIG
 from servers.chat.src.abstractions.contract import ResponseBase
-from servers.chat.src.aggregates.brockers import RedisBrocker
+from servers.chat.src.aggregates.channel_broker import ChannelBrocker
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.key_value_manager import KeyValueManager
 from servers.chat.src.aggregates.peer_room import PeerRoom
@@ -44,7 +46,9 @@ class Channel:
         self.previously_join_channel = client.info.previously_joined_channel
         self.room_type = PeerRoom.get_room_type(name)
         # setup the message broker
-        self._broker = None
+        self._broker = ChannelBrocker(
+            self.name, CONFIG.backend.url, self.get_message_from_brocker)
+        self._broker.subscribe()
 
         match self.room_type:
             case PeerRoomType.Group:
@@ -77,8 +81,6 @@ class Channel:
 
     def get_title_room_name(self):
         self.get_staging_room_name()
-
-    # from multiprocessing import Manager
 
     ban_list: dict[str, ChannelUser] = {}
     users: dict[str, ChannelUser] = {}
@@ -126,11 +128,12 @@ class Channel:
         user = self.users[nick_name]
         user.is_voiceable = enable
 
+    @overload
     def get_user(self, nick_name: str) -> ChannelUser:
         if nick_name in self.users:
             return self.users[nick_name]
         return None
-
+    @overload
     def get_user(self, client: Client) -> ChannelUser:
         for user in self.users.values():
             if (
@@ -148,13 +151,26 @@ class Channel:
         del leaver.channel.users[leaver.client.info.nick_name]
         del leaver.client.info.joined_channels[leaver.channel.name]
 
-    def multicast(self, sender: Client, message: ResponseBase, is_skip_snder=False):
+    def multicast(self, sender: Client, message: ResponseBase, is_skip_sender=False):
         for nick, user in self.users.items():
-            if is_skip_snder:
+            if is_skip_sender:
                 if sender.info.nick_name == nick:
                     continue
                 else:
                     user.client.send(message)
+
+    def get_message_from_brocker(self, message: str):
+        """
+        we directly send the message from brocker to all channel local user
+        """
+        for nick, user in self.users.items():
+            user.client.send(message)
+
+    def send_message_to_brocker(self, message: str):
+        data = {"channel_name": self.name, "message": message}
+        import json
+        data_str = json.dumps(data)
+        self._broker.publish_message(data_str)
 
     def remove_user(self, user: ChannelUser):
         user.client.info.previously_joined_channel
@@ -165,15 +181,15 @@ class ChannelManager:
     """The code blow is for channel manage"""
 
     @staticmethod
-    def get_local_channel(name: str) -> Channel:
+    def get_channel(name: str) -> Channel:
         if name in ChannelManager.local_channels:
             return ChannelManager.local_channels[name]
 
-    def add_local_channel(channel: Channel):
+    def add_channel(channel: Channel):
         if channel.name not in ChannelManager.local_channels:
             ChannelManager.local_channels[channel.name] = channel
 
     @staticmethod
-    def remove_local_channel(name: str) -> None:
+    def remove_channel(name: str) -> None:
         if name in ChannelManager.local_channels:
             del ChannelManager.local_channels[name]
