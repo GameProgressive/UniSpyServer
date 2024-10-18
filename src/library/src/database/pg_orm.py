@@ -184,7 +184,7 @@ class SakeStorage(Base):
 
 
 from sqlalchemy import create_engine
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 
 
 def connect_to_db() -> Session:

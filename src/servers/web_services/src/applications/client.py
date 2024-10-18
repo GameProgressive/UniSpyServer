@@ -2,7 +2,7 @@ from library.src.abstractions.client import ClientBase, ClientInfoBase
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
 from library.src.network.http_handler import HttpConnection
-from library.src.unispy_server_config import ServerConfig
+from library.src.configs import ServerConfig
 
 
 class ClientInfo(ClientInfoBase):

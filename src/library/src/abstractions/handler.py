@@ -3,7 +3,7 @@ from library.src.exceptions.general import UniSpyException
 from typing import Type
 import requests
 
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 
 # if TYPE_CHECKING:
 from library.src.abstractions.contracts import RequestBase, ResultBase, ResponseBase
@@ -26,7 +26,10 @@ class CmdHandlerBase:
     """
     whether need get data from backend
     """
-    _is_debugging: bool = False
+    _debug: bool = False
+    """
+    whether is in debug mode, if in debug mode exception will raise from handler
+    """
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
 
@@ -109,7 +112,7 @@ class CmdHandlerBase:
         """
         UniSpyException.handle_exception(ex, self._client)
         # if we are debugging the app we re-raise the exception
-        if CmdHandlerBase._is_debugging:
+        if CmdHandlerBase._debug:
             raise ex
 
     def _log_current_class(self) -> None:

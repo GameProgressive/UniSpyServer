@@ -4,7 +4,7 @@ from typing import Optional
 from library.src.abstractions.client import ClientBase
 
 from library.src.log.log_manager import LogWriter
-from library.src.unispy_server_config import ServerConfig
+from library.src.configs import ServerConfig
 
 from typing import TYPE_CHECKING
 

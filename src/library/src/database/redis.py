@@ -2,7 +2,7 @@ import asyncio
 # import redis
 import aioredis
 
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 
 
 # SESSION = redis.Redis.from_url(CONFIG.redis.url)

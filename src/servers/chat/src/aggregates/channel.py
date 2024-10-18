@@ -5,7 +5,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, field_validator
 from library.src.network.brockers import WebsocketBrocker
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 from servers.chat.src.abstractions.contract import ResponseBase
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.key_value_manager import KeyValueManager

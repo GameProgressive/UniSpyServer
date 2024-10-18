@@ -1,5 +1,6 @@
 import unittest
 
+from library.src.abstractions.handler import CmdHandlerBase
 from library.tests.mock_objects.general import create_mock_url
 from servers.natneg.src.contracts.requests import InitRequest
 from servers.natneg.src.handlers.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
@@ -19,6 +20,7 @@ from servers.natneg.src.enums.general import (
 )
 
 from servers.natneg.tests.mock_objects import create_client
+CmdHandlerBase._debug = True
 
 
 class HandlerTests(unittest.TestCase):
@@ -123,7 +125,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(False, request.use_game_port)
         self.assertEqual(NatPortType.NN1, request.port_type)
         client = create_client()
-        create_mock_url(client, AddressCheckHandler, {"message": "ok"})
+        create_mock_url(client, NatifyHandler, {"message": "ok"})
 
         handler = NatifyHandler(client, request)
         handler.handle()

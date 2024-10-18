@@ -5,6 +5,7 @@ import uuid
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
+from library.src.configs import ServerConfig
 from servers.chat.src.aggregates.channel import BrockerMessage
 
 router = APIRouter()
@@ -18,9 +19,8 @@ clients: dict[str, WebSocket] = {}
 """
 
 
-
 @router.post(f"{CHAT}/add_channel")
-def add_channel(channel_name: str, server_id: uuid.UUID, server_ip: str):
+def add_channel(channel_name: str, config: ServerConfig):
     # first validate the server_id server_ip etc. info
     # if server is valid we initialize the channel
 

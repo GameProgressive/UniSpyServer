@@ -3,7 +3,7 @@ import socketserver
 
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase, ServerBase
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 
 
 class UdpConnection(ConnectionBase):

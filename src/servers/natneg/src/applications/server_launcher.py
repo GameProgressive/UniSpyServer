@@ -1,6 +1,6 @@
 from library.src.abstractions.server_launcher import ServerLauncherBase
 from library.src.network.udp_handler import UdpServer
-from library.src.unispy_server_config import CONFIG, ServerConfig
+from library.src.configs import CONFIG, ServerConfig
 from servers.natneg.src.applications.client import Client
 
 

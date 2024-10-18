@@ -1,4 +1,4 @@
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 from library.tests.mock_objects.general import ConnectionMock, LogMock, RequestHandlerMock
 from servers.game_status.src.applications.client import Client
 

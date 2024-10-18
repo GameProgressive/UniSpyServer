@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from library.src.log.log_manager import LogManager
-from library.src.unispy_server_config import CONFIG, ServerConfig
+from library.src.configs import CONFIG, ServerConfig
 from backends.routers.gamespy import chat, gstats, natneg, presence_connection_manager, presence_search_player, query_report, server_browser, webservices
 app = FastAPI()
 

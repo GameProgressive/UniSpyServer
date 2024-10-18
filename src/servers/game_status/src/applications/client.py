@@ -2,7 +2,7 @@ from library.src.abstractions.client import ClientBase, ClientInfoBase
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
 from library.src.network.tcp_handler import TcpConnection
-from library.src.unispy_server_config import ServerConfig
+from library.src.configs import ServerConfig
 from servers.game_status.src.aggregations.gscrypt import GSCrypt
 
 

@@ -1,7 +1,7 @@
 from library.src.abstractions.client import ClientBase
 from library.src.log.log_manager import LogWriter
 from library.src.network.udp_handler import UdpConnection
-from library.src.unispy_server_config import ServerConfig
+from library.src.configs import ServerConfig
 
 
 class Client(ClientBase):

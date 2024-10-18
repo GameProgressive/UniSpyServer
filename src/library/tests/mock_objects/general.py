@@ -5,7 +5,7 @@ from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase
 from library.src.abstractions.handler import CmdHandlerBase
 from library.src.log.log_manager import LogWriter
-from library.src.unispy_server_config import CONFIG, ServerConfig
+from library.src.configs import CONFIG, ServerConfig
 
 
 class ConnectionMock(ConnectionBase):

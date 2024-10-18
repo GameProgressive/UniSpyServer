@@ -1,6 +1,6 @@
 from library.src.abstractions.server_launcher import ServerLauncherBase
 from library.src.network.http_handler import HttpServer
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 from servers.web_services.src.applications import client
 
 

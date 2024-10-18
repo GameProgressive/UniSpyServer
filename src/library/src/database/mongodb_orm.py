@@ -1,6 +1,6 @@
 from mongoengine import connect
 
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 
 
 def connect_to_db():

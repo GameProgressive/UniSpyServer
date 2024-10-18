@@ -1,7 +1,7 @@
 import abc
 from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogManager, LogWriter
-from library.src.unispy_server_config import CONFIG, ServerConfig
+from library.src.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
 

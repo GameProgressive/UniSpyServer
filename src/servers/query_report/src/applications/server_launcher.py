@@ -1,6 +1,6 @@
 from library.src.abstractions.server_launcher import ServerLauncherBase
 from library.src.network.udp_handler import UdpServer
-from library.src.unispy_server_config import CONFIG
+from library.src.configs import CONFIG
 from servers.presence_search_player.src.applications.client import Client
 
 

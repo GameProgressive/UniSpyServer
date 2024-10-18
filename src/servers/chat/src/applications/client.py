@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from library.src.log.log_manager import LogWriter
 from library.src.network.tcp_handler import TcpConnection
-from library.src.unispy_server_config import ServerConfig
+from library.src.configs import ServerConfig
 
 if TYPE_CHECKING:
     from servers.chat.src.aggregates.channel import Channel
