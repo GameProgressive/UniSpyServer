@@ -121,7 +121,8 @@ class ModeRequest(ChannelRequestBase):
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
             self.request_type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
-            modeFlags = [s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()]
+            modeFlags = [s for s in re.split(
+                r"(?=\+|\-)", self.mode_flag) if s.strip()]
             modeFlags = list(filter(None, modeFlags))
             for flag in modeFlags:
                 match flag:
@@ -167,7 +168,8 @@ class ModeRequest(ChannelRequestBase):
                             ModeOperationType.REMOVE_SECRET_CHANNEL_FLAG
                         )
                     case "+i":
-                        self.mode_operations.append(ModeOperationType.SET_INVITED_ONLY)
+                        self.mode_operations.append(
+                            ModeOperationType.SET_INVITED_ONLY)
                     case "-i":
                         self.mode_operations.append(
                             ModeOperationType.REMOVE_INVITED_ONLY
@@ -308,10 +310,12 @@ class SetCKeyRequest(ChannelRequestBase):
     def parse(self) -> None:
         super().parse()
         if self._cmd_params is None:
-            raise ChatException("The cmdParams from SETCKEY request are missing.")
+            raise ChatException(
+                "The cmdParams from SETCKEY request are missing.")
 
         if self._longParam is None:
-            raise ChatException("The longParam from SETCKEY request is missing.")
+            raise ChatException(
+                "The longParam from SETCKEY request is missing.")
 
         self.channel_name = self._cmd_params[0]
         self.nick_name = self._cmd_params[1]
@@ -346,3 +350,5 @@ class TopicRequest(ChannelRequestBase):
         else:
             self.request_type = TopicRequestType.SET_CHANNEL_TOPIC
             self.channel_topic = self._longParam
+
+

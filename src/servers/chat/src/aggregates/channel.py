@@ -1,9 +1,12 @@
+from dataclasses import dataclass
 import datetime
 from typing import overload
 from uuid import UUID
+
+from pydantic import BaseModel, field_validator
+from library.src.network.brockers import WebsocketBrocker
 from library.src.unispy_server_config import CONFIG
 from servers.chat.src.abstractions.contract import ResponseBase
-from servers.chat.src.aggregates.channel_broker import ChannelBrocker
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.key_value_manager import KeyValueManager
 from servers.chat.src.aggregates.peer_room import PeerRoom
@@ -46,7 +49,7 @@ class Channel:
         self.previously_join_channel = client.info.previously_joined_channel
         self.room_type = PeerRoom.get_room_type(name)
         # setup the message broker
-        self._broker = ChannelBrocker(
+        self._broker = WebsocketBrocker(
             self.name, CONFIG.backend.url, self.get_message_from_brocker)
         self._broker.subscribe()
 
@@ -133,6 +136,7 @@ class Channel:
         if nick_name in self.users:
             return self.users[nick_name]
         return None
+
     @overload
     def get_user(self, client: Client) -> ChannelUser:
         for user in self.users.values():
@@ -193,3 +197,19 @@ class ChannelManager:
     def remove_channel(name: str) -> None:
         if name in ChannelManager.local_channels:
             del ChannelManager.local_channels[name]
+
+
+class BrockerMessage(BaseModel):
+    channel_name: str
+    message: str
+
+    @field_validator("channel_name")
+    def validate_channel_name(cls, value):
+        if value is None or len(value) < 3:
+            raise ValueError("channel name is not valid")
+        return value
+
+    @field_validator("message")
+    def validate_message(cls, value):
+        if value is None or len(value) < 3:
+            raise ValueError("message length is not valid")

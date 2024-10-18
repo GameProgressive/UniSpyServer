@@ -45,8 +45,8 @@ class WebsocketBrocker(BrockerBase):
             url,
             on_message=lambda _, m: self.receive_message(m),
             on_error=print,
-            on_close=print,
-            on_open=self._on_open)
+            on_close=print)
+        self._subscriber.on_open = self._on_open
 
     def _on_open(self, ws):
         self._publisher: websocket.WebSocket = ws
@@ -55,23 +55,29 @@ class WebsocketBrocker(BrockerBase):
         self.receive_message(message)
 
     def subscribe(self):
-        threading.Thread(target=self._subscriber.run_forever).start()
-        # wait for connection establish
-        while self._publisher is not None:
-            break
+        t = threading.Thread(target=self._subscriber.run_forever)
+        t.start()
+        # # wait for connection establish
+        while True:
+            if self._publisher is not None:
+                break
 
     def unsubscribe(self):
         self._subscriber.close()
 
     def publish_message(self, message):
+        if self._publisher is None:
+            raise ValueError("websocket connection is not established")
         self._publisher.send(message)
 
 
 if __name__ == "__main__":
 
     ws = WebsocketBrocker(name="test_channel",
-                          url="ws://127.0.0.1:8000/channel", call_back_func=print)
+                          url="ws://127.0.0.1:8000/GameSpy/Chat/Channel", call_back_func=print)
     ws.subscribe()
-    ws.publish_message("hello")
+    import json
+    ws.publish_message(json.dumps(
+        {"channel_name": "test", "message": "hello"}))
     while True:
         pass

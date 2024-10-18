@@ -5,29 +5,18 @@ import uuid
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
+from servers.chat.src.aggregates.channel import BrockerMessage
+
 router = APIRouter()
-channels: dict[str, list[WebSocket]] = {}
+channels: dict[str, list[WebSocket]] = {"test": []}
 """
 {"channel_name" : "list of WebSocket"}
 """
-clients: dict[str, WebSocket] = []
+clients: dict[str, WebSocket] = {}
 """
 {"client ip and port" : WebSocket}
 """
 
-
-@dataclass
-class ChannelMessage:
-    channel_name: str
-    message: str
-
-    def __post_init__(self):
-        if self.channel_name is None or len(self.channel_name < 3):
-            raise ValueError("channel name is not valid")
-        if self.message is None or len(self.message) < 3:
-            raise ValueError("message length is not valid")
-        if self.channel_name not in channels:
-            raise ValueError("channel is not registered")
 
 
 @router.post(f"{CHAT}/add_channel")
@@ -40,35 +29,41 @@ def add_channel(channel_name: str, server_id: uuid.UUID, server_ip: str):
         channels[channel_name] = []
 
 
-def check_request(request: str) -> Optional[ChannelMessage]:
+def check_request(request: str) -> Optional[BrockerMessage]:
     ch_msg = None
     try:
         request_dict = json.loads(request)
-        ch_msg = ChannelMessage(**request_dict)
-    except:
+        ch_msg = BrockerMessage(**request_dict)
+    except Exception as e:
+        print(e)
         return None
     return ch_msg
 
 
-@router.websocket(f"{CHAT}/channel")
+async def multicast_message(ws: WebSocket):
+    pass
+
+
+@router.websocket(f"{CHAT}/Channel")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
     if isinstance(ws, WebSocket):
         client_key = f"{ws.client.host}:{ws.client.port}"
-        clients[client_key](ws)
+        clients[client_key] = ws
     try:
         while True:
             request = await ws.receive_text()
             msg = check_request(request)
             if msg is None:
                 return
-            channel_clients = channels[msg.channel_name]
+            channels[msg.channel_name].append(ws)
+            channel_clients: list[WebSocket] = channels[msg.channel_name]
+
             for client in channel_clients:
                 # we do not send data to the publisher
                 if client == ws:
                     continue
-
-                await client.send_text(msg.message)
+                await client.send_text(request)
 
     except WebSocketDisconnect:
         client_key = f"{ws.client.host}:{ws.client.port}"
