@@ -2,6 +2,7 @@ from typing import Type
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.handler import CmdHandlerBase, PostLoginHandlerBase
+from servers.chat.src.applications.client import Client
 from servers.chat.src.contracts.requests.channel import GetUdpRelayRequest
 from servers.chat.src.contracts.requests.general import (
     CdkeyRequest,
@@ -15,6 +16,7 @@ from servers.chat.src.contracts.requests.general import (
     QuitRequest,
     SetKeyRequest,
     UserIPRequest,
+    UserRequest,
     WhoIsRequest,
     WhoRequest,
 )
@@ -103,7 +105,7 @@ class ListHandler(PostLoginHandlerBase):
         super().__init__(client, request)
 
     def _response_construct(self) -> None:
-        self._response = ListResponse(self._request, self._result)
+        self._response = ListResponse(self._result)
 
 
 class LoginHandler(CmdHandlerBase):
@@ -127,7 +129,7 @@ class NickHandler(CmdHandlerBase):
         super().__init__(client, request)
 
     def _response_construct(self) -> None:
-        self._response = NickResponse(self._request, self._result)
+        self._response = NickResponse(self._result)
 
 
 class PingHandler(CmdHandlerBase):
@@ -159,10 +161,10 @@ class SetKeyHandler(PostLoginHandlerBase):
 
 
 class UserHandler(CmdHandlerBase):
-    _request: SetKeyRequest
+    _request: UserRequest
 
-    def __init__(self, client: ClientBase, request: SetKeyRequest):
-        assert isinstance(request, SetKeyRequest)
+    def __init__(self, client: ClientBase, request: UserRequest):
+        assert isinstance(request, UserRequest)
         super().__init__(client, request)
 
 

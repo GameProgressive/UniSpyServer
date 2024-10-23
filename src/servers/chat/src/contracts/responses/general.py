@@ -18,7 +18,7 @@ from servers.chat.src.enums.general import WhoRequestType
 
 class CdKeyResponse(ResponseBase):
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {CD_KEY} * 1 :Authenticated.\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {CD_KEY} * 1 :Authenticated.\r\n"  # noqa
 
 
 class CryptResponse(ResponseBase):
@@ -26,9 +26,7 @@ class CryptResponse(ResponseBase):
         pass
 
     def build(self) -> None:
-        self.sending_buffer = (
-            f":{SERVER_DOMAIN} {SECURE_KEY} * {CLIENT_KEY} {SERVER_KEY}\r\n"
-        )
+        self.sending_buffer = f":{SERVER_DOMAIN} {SECURE_KEY} * {CLIENT_KEY} {SERVER_KEY}\r\n"  # noqa
 
 
 class GetKeyResponse(ResponseBase):
@@ -44,9 +42,9 @@ class GetKeyResponse(ResponseBase):
         self.sending_buffer = ""
 
         for value in self._result.values:
-            self.sending_buffer += f":{SERVER_DOMAIN} {GET_KEY} * {self._result.nick_name} {self._request.cookie} {value}\r\n"
+            self.sending_buffer += f":{SERVER_DOMAIN} {GET_KEY} * {self._result.nick_name} {self._request.cookie} {value}\r\n"  # noqa
 
-        self.sending_buffer += f":{SERVER_DOMAIN} {END_GET_KEY} * {self._request.cookie} * :End Of GETKEY.\r\n"
+        self.sending_buffer += f":{SERVER_DOMAIN} {END_GET_KEY} * {self._request.cookie} * :End Of GETKEY.\r\n"  # noqa
 
 
 class ListResponse(ResponseBase):
@@ -54,7 +52,7 @@ class ListResponse(ResponseBase):
 
     def __init__(self, result: ListResult) -> None:
         assert isinstance(result, ListResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
         self.sending_buffer = ""
@@ -63,8 +61,8 @@ class ListResponse(ResponseBase):
             total_channel_user,
             channel_topic,
         ) in self._result.channel_info_list:
-            self.sending_buffer += f":{self._result.user_irc_prefix} {LIST_START} * {channel_name} {total_channel_user} {channel_topic}\r\n"
-        self.sending_buffer += f":{self._result.user_irc_prefix} {LIST_END}\r\n"
+            self.sending_buffer += f":{self._result.user_irc_prefix} {LIST_START} * {channel_name} {total_channel_user} {channel_topic}\r\n"  # noqa
+        self.sending_buffer += f":{self._result.user_irc_prefix} {LIST_END}\r\n"  # noqa
 
 
 class LoginResponse(ResponseBase):
@@ -72,10 +70,10 @@ class LoginResponse(ResponseBase):
 
     def __init__(self, result: LoginResult) -> None:
         assert isinstance(result, LoginResult)
-        super().__init__()
+        self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {LOGIN} * {self._result.user_id} {self._result.profile_id}\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {LOGIN} * {self._result.user_id} {self._result.profile_id}\r\n"  # noqa
 
 
 class NickResponse(ResponseBase):
@@ -83,10 +81,10 @@ class NickResponse(ResponseBase):
 
     def __init__(self, result: NickResult) -> None:
         assert isinstance(result, NickResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {WELCOME} {self._result.nick_name} :Welcome to UniSpy!\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {WELCOME} {self._result.nick_name} :Welcome to UniSpy!\r\n"  # noqa
 
 
 class PingResponse(ResponseBase):
@@ -94,10 +92,11 @@ class PingResponse(ResponseBase):
 
     def __init__(self, result: PingResult) -> None:
         assert isinstance(result, PingResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.requester_irc_prefix} {PONG}\r\n"
+        self.sending_buffer = f":{
+            self._result.requester_irc_prefix} {PONG}\r\n"
 
 
 class UserIPResponse(ResponseBase):
@@ -105,12 +104,10 @@ class UserIPResponse(ResponseBase):
 
     def __init__(self, result: UserIPResult) -> None:
         assert isinstance(result, UserIPResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = (
-            f":{SERVER_DOMAIN} {USER_IP} :@{self._result.remote_ip_address}\r\n"
-        )
+        self.sending_buffer = f":{SERVER_DOMAIN} {USER_IP} :@{self._result.remote_ip_address}\r\n"  # noqa
 
 
 class WhoIsResponse(ResponseBase):
@@ -118,19 +115,19 @@ class WhoIsResponse(ResponseBase):
 
     def __init__(self, result: WhoIsResult) -> None:
         assert isinstance(result, UserIPResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {WHO_IS_USER} {self._result.nick_name} {self._result.name} {self._result.user_name} {self._result.public_ip_address} * :{self._result.user_name}\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {WHO_IS_USER} {self._result.nick_name} {self._result.name} {self._result.user_name} {self._result.public_ip_address} * :{self._result.user_name}\r\n"  # noqa
 
         if len(self._result.joined_channel_name) != 0:
             channel_name = ""
             for name in self._result.joined_channel_name:
-                channel_name += f"@{name} "
+                channel_name += f"@{name} "  # noqa
 
-            self.sending_buffer += f":{SERVER_DOMAIN} {WHO_IS_CHANNELS} {self._result.nick_name} {self._result.name} :{channel_name}\r\n"
+            self.sending_buffer += f":{SERVER_DOMAIN} {WHO_IS_CHANNELS} {self._result.nick_name} {self._result.name} :{channel_name}\r\n"  # noqa
 
-        self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO_IS} {self._result.nick_name} {self._result.name} :End of WHOIS list. \r\n"
+        self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO_IS} {self._result.nick_name} {self._result.name} :End of WHOIS list. \r\n"  # noqa
 
 
 class WhoResponse(ResponseBase):
@@ -151,11 +148,11 @@ class WhoResponse(ResponseBase):
             nick_name,
             modes,
         ) in self._result.infos:
-            self.sending_buffer += f":{SERVER_DOMAIN} {WHO_REPLY} * {channel_name} {user_name} {public_ip_address} * {nick_name} {modes} *\r\n"
+            self.sending_buffer += f":{SERVER_DOMAIN} {WHO_REPLY} * {channel_name} {user_name} {public_ip_address} * {nick_name} {modes} *\r\n"  # noqa
 
         if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
             if len(self._result.infos) > 0:
-                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.channel_name} * :End of WHO.\r\n"
+                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.channel_name} * :End of WHO.\r\n"  # noqa
         elif self._request.request_type == WhoRequestType.GET_USER_INFO:
             if len(self._result.infos) > 0:
-                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.nick_name} * :End of WHO.\r\n"
+                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.nick_name} * :End of WHO.\r\n"  # noqa

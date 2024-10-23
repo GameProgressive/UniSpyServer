@@ -133,13 +133,13 @@ class OthersListRequest(RequestBase):
             self.profile_ids = [
                 int(opid) for opid in self.request_dict["opids"].strip("|").split("|")
             ]
-        except Exception as e:
-            raise GPParseException("opids is incorrect", e)
+        except:
+            raise GPParseException("opids is incorrect")
 
 
 class OthersRequest(RequestBase):
-    profile_id: int = None
-    game_name: int
+    profile_id: int
+    game_name: str
 
     def parse(self):
         super().parse()

@@ -1,3 +1,4 @@
+from typing import Optional
 from library.src.abstractions.client import ClientBase, ClientInfoBase
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
@@ -10,23 +11,23 @@ CHALLENGE_RESPONSE = "\\challenge\\00000000000000000000\\final\\"
 
 
 class ClientInfo(ClientInfoBase):
-    session_key: str = None
-    game_name: str = None
-    is_user_authenticated: bool = False
-    is_player_authenticated: bool = False
-    is_game_authenticated: bool = False
-    profile_id: int = None
-    game_session_key: str = None
+    session_key: Optional[str]
+    game_name: Optional[str]
+    is_user_authenticated: bool
+    is_player_authenticated: bool
+    is_game_authenticated: bool
+    profile_id: Optional[int]
+    game_session_key: Optional[str]
 
     def __init__(self) -> None:
         super().__init__()
-        self.session_key: str = None
-        self.game_name: str = None
-        self.is_user_authenticated: bool = False
-        self.is_player_authenticated: bool = False
-        self.is_game_authenticated: bool = False
-        self.profile_id: int = None
-        self.game_session_key: str = None
+        self.session_key = None
+        self.game_name = None
+        self.profile_id = None
+        self.game_session_key = None
+        self.is_user_authenticated = False
+        self.is_player_authenticated = False
+        self.is_game_authenticated = False
 
 
 class Client(ClientBase):

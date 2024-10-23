@@ -1,10 +1,10 @@
-from typing import Union
 
-from pydantic import BaseModel
+from dataclasses import dataclass
 from servers.presence_connection_manager.src.enums.general import GPStatusCode
 
 
-class UserStatus(BaseModel):
-    status_string: str = None
-    location_string: str = None
-    current_status: Union[GPStatusCode, int] = GPStatusCode.OFFLINE
+@dataclass
+class UserStatus:
+    status_string: str
+    location_string: str
+    current_status: GPStatusCode = GPStatusCode.OFFLINE

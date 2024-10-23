@@ -17,7 +17,7 @@ class KeyValueManager:
             flags += f"\\{key}\\{value}"
         return flags
 
-    def get_value_string(self, keys: list[str]) -> list[str]:
+    def get_value_string(self, keys: list[str]) -> str:
         values = ""
         for key in keys:
             if key in self.data:

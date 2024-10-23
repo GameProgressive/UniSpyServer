@@ -16,17 +16,17 @@ def update_player_data():
     raise NotImplementedError()
 
 
-def get_profile_id(token: str) -> int:
+def get_profile_id_by_token(token: str) -> int:
     result = PG_SESSION.query(SubProfiles.profileid).filter(
-        SubProfiles.authtoken == token).one()
+        SubProfiles.authtoken == token).first()
     if result is None:
         raise GSException("No records found in database")
     return result
 
 
-def get_profile_id(cdkey: str, nick_name: str) -> Optional[int]:
+def get_profile_id(cdkey: str, nick_name: str) -> int:
     result = PG_SESSION.query(SubProfiles.profileid).join(
-        SubProfiles, Profiles.profileid == SubProfiles.profileid).filter(SubProfiles.cdkeyenc == cdkey, Profiles.nick == nick_name).one()
+        SubProfiles, Profiles.profileid == SubProfiles.profileid).filter(SubProfiles.cdkeyenc == cdkey, Profiles.nick == nick_name).first()
     if result is None:
         raise GSException("No record found in database")
     return result

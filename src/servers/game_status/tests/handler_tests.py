@@ -1,4 +1,5 @@
 
+from typing import cast
 import unittest
 import responses
 
@@ -14,7 +15,7 @@ from servers.game_status.tests.mock_objects import create_client
 class HandlerTests(unittest.TestCase):
 
     @responses.activate
-    @unittest.skip
+    @unittest.skip("skiped")
     def test_set_player_data_20230329(self):
         raw = "\\setpd\\\\pid\\1\\ptype\\1\\dindex\\0\\kv\\1\\lid\\2\\length\\111\\data\\\\report\\|title||victories|0|timestamp|37155|league|Team17|winner||crc|-1|player_0|spyguy|ip_0||pid_0|0|auth_0|[00]\\final\\"
         client = create_client()
@@ -35,7 +36,7 @@ class HandlerTests(unittest.TestCase):
         handler = SetPlayerDataHandler(client, request)
         handler.handle()
 
-    @unittest.skip
+    @unittest.skip("skiped")
     def test_gamespysdk_update_game_20230329(self):
         raw1 = "\\updgame\\\\sesskey\\20298203\\connid\\0\\done\\0\\gamedata\\\u0001hostname\u0001My l33t Server\u0001mapname\u0001Level 33\u0001gametype\u0001hunter\u0001gamever\u00011.230000\u0001player_0\u0001Bob!\u0001points_0\u00014\u0001deaths_0\u00012\u0001pid_0\u000132432423\u0001auth_0\u00017cca8e60a13781eebc820a50754f57cd\u0001player_1\u0001Joey\u0001points_1\u00012\u0001deaths_1\u00014\u0001pid_1\u0001643423\u0001auth_1\u000119ea14d9d92a7fcc635cf5716944d9bc\\final\\"
         raw2 = "\\updgame\\\\sesskey\\20298203\\connid\\0\\done\\1\\gamedata\\\u0001hostname\u0001My l33t Server\u0001mapname\u0001Level 33\u0001gametype\u0001hunter\u0001gamever\u00011.230000\u0001player_0\u0001Bob!\u0001points_0\u00016\u0001deaths_0\u00013\u0001pid_0\u000132432423\u0001auth_0\u00017cca8e60a13781eebc820a50754f57cd\u0001player_1\u0001Joey\u0001points_1\u00013\u0001deaths_1\u00016\u0001pid_1\u0001643423\u0001auth_1\u000119ea14d9d92a7fcc635cf5716944d9bc\\final\\"
@@ -43,14 +44,15 @@ class HandlerTests(unittest.TestCase):
         create_mock_url(client, UpdateGameHandler, {"message": "ok"})
         switcher = Switcher(client, raw1)
         switcher.handle()
-        request: UpdateGameRequest = switcher._handlers[0]._request
+        request: UpdateGameRequest = cast(
+            UpdateGameRequest, switcher._handlers[0]._request)
         response = switcher._handlers[0]._response
         self.assertEqual("20298203", request.session_key)
         self.assertEqual(1, request.connection_id)
         self.assertEqual(False, request.is_done)
         self.assertEqual("\u0001hostname\u0001My l33t Server\u0001mapname\u0001Level 33\u0001gametype\u0001hunter\u0001gamever\u00011.230000\u0001player_0\u0001Bob!\u0001points_0\u00014\u0001deaths_0\u00012\u0001pid_0\u000132432423\u0001auth_0\u00017cca8e60a13781eebc820a50754f57cd\u0001player_1\u0001Joey\u0001points_1\u00012\u0001deaths_1\u00014\u0001pid_1\u0001643423\u0001auth_1\u000119ea14d9d92a7fcc635cf5716944d9bc", request.game_data)
 
-    @unittest.skip
+    @unittest.skip("")
     def test_worm3d_auth_player(self):
         raw = "2\x0F\x16\x10]%+=veKaB3a(UC`b$\x1CO\x11VZX\x09w\x1Cu\x08L@\x13=X!\x1E{\x0EL\x1DLf[qN \x04G\x130[#N'\x09(IC`b$\\final\\"
         plaintext = GSCrypt().decrypt(raw.encode("ascii"))
@@ -60,7 +62,7 @@ class HandlerTests(unittest.TestCase):
         handler = AuthPlayerHandler(client, request)
         handler.handle()
 
-        self.assertEqual()
+        # self.assertEqual()
 
     def test_auth(self):
         raw = "\\auth\\\\gamename\\crysis2\\response\\xxxxx\\port\\30\\id\\1\\final\\"

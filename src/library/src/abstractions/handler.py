@@ -14,6 +14,9 @@ class CmdHandlerBase:
     _request: "RequestBase"
     _result: "ResultBase"
     _response: "ResponseBase"
+    """
+    the response instance, initialize as None in __init__
+    """
     _result_cls: "Type[ResultBase]"
     """
     the result type class, use to deserialize json data from backend
@@ -106,7 +109,7 @@ class CmdHandlerBase:
         """
         self._client.send(self._response)
 
-    def _handle_exception(self, ex) -> None:
+    def _handle_exception(self, ex: Exception) -> None:
         """
         override in child class if there are different exception handling behavior
         """
@@ -118,7 +121,6 @@ class CmdHandlerBase:
     def _log_current_class(self) -> None:
         if self._client is None:
             # todo
-            # self._client.log_current_class(self)
             print(self)
         else:
             self._client.log_current_class(self)

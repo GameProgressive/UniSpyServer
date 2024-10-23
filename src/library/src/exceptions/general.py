@@ -1,5 +1,7 @@
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
+
+from library.src.log.log_manager import GLOBAL_LOGGER
 
 
 if TYPE_CHECKING:
@@ -15,16 +17,16 @@ class UniSpyException(Exception):
 
     @staticmethod
     # def handle_exception(e: Exception, client: ClientBase = None):
-    def handle_exception(e: Exception, client: "ClientBase" = None):
+    def handle_exception(e: Exception, client: Optional["ClientBase"] = None):
         if client is None:
-            # LogWriter.LogError(ex.Message);
+            GLOBAL_LOGGER.info(str(e))
             pass
         else:
             if issubclass(type(e), UniSpyException):
-                ex: UniSpyException = e
+                ex: UniSpyException = e  # type:ignore
                 client.log_error(ex.message)
             else:
-                client.log_error(e)
+                client.log_error(str(e))
             pass
 
     def __repr__(self) -> str:

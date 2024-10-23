@@ -1,6 +1,4 @@
-from servers.presence_connection_manager.src.contracts.requests.general import (
-    KeepAliveRequest,
-)
+
 from servers.query_report.src.applications.client import Client
 from servers.query_report.src.v2.abstractions.cmd_handler_base import CmdHandlerBase
 from servers.query_report.src.v2.contracts.requests import (
@@ -10,6 +8,7 @@ from servers.query_report.src.v2.contracts.requests import (
     ClientMessageRequest,
     EchoRequest,
     HeartBeatRequest,
+    KeepAliveRequest,
 )
 from servers.query_report.src.v2.contracts.responses import (
     AvaliableResponse,
@@ -17,7 +16,7 @@ from servers.query_report.src.v2.contracts.responses import (
     ClientMessageResponse,
     HeartBeatResponse,
 )
-from servers.query_report.src.v2.contracts.results import ChallengeResult
+from servers.query_report.src.v2.contracts.results import ChallengeResult, HeartBeatResult
 
 
 class AvailableHandler(CmdHandlerBase):
@@ -53,6 +52,8 @@ class ClientMessageAckHandler(CmdHandlerBase):
 
 
 class ClientMessageHandler(CmdHandlerBase):
+    _request: ClientMessageRequest
+
     def __init__(self, client: Client, request: ClientMessageRequest) -> None:
         assert isinstance(request, ClientMessageRequest)
         super().__init__(client, request)
@@ -68,15 +69,22 @@ class EchoHandler(CmdHandlerBase):
 
 
 class HeartBeatHandler(CmdHandlerBase):
+    _request: HeartBeatRequest
+    _result: HeartBeatResult
+    _result_cls: type[HeartBeatResult]
+
     def __init__(self, client: Client, request: HeartBeatRequest) -> None:
         assert isinstance(request, HeartBeatRequest)
         super().__init__(client, request)
+        self._result_cls = HeartBeatResult
 
     def _response_construct(self) -> None:
         self._response = HeartBeatResponse(self._request, self._result)
 
 
 class KeepAliveHandler(CmdHandlerBase):
+    _request: KeepAliveRequest
+
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import datetime
-from typing import overload
+from typing import Optional, overload
 from uuid import UUID
 
 from pydantic import BaseModel, field_validator
@@ -31,17 +31,17 @@ class Channel:
         datetime.timezone.utc)
     kv_manager: KeyValueManager = KeyValueManager()
     room_type: PeerRoomType
-    password: str
-    topic: str = None
-    group_id: int = None
-    room_name: str = None
-    previously_join_channel: str = None
+    password: Optional[str]
+    topic: Optional[str] = None
+    group_id: Optional[int] = None
+    room_name: Optional[str] = None
+    previously_join_channel: Optional[str] = None
 
     @property
     def is_valid_peer_room(self) -> bool:
         return self.group_id is not None and self.room_name is not None
 
-    def __init__(self, name: str, client: Client, password: str = None) -> None:
+    def __init__(self, name: str, client: Client, password: Optional[str] = None) -> None:
         self.server_id = client.server_config.server_id
         self.name = name
         self.password = password
@@ -90,7 +90,7 @@ class Channel:
     _creator_nick_name: str
 
     @property
-    def creator(self) -> ChannelUser:
+    def creator(self) -> Optional[ChannelUser]:
         if self._creator_nick_name in self.users:
             return self.users[self._creator_nick_name]
         else:
@@ -108,7 +108,7 @@ class Channel:
 
     def _remove_ban_user(self, nick_name: str):
         if nick_name in self.ban_list:
-            del self.ban_list[nick_name:str]
+            del self.ban_list[nick_name]
 
     def _add_channel_operator(self, nick_name: str):
         if nick_name not in self.users:
@@ -131,14 +131,12 @@ class Channel:
         user = self.users[nick_name]
         user.is_voiceable = enable
 
-    @overload
-    def get_user(self, nick_name: str) -> ChannelUser:
+    def get_user_by_nick(self, nick_name: str) -> Optional[ChannelUser]:
         if nick_name in self.users:
             return self.users[nick_name]
         return None
 
-    @overload
-    def get_user(self, client: Client) -> ChannelUser:
+    def get_user_by_client(self, client: Client) -> Optional[ChannelUser]:
         for user in self.users.values():
             if (
                 client.connection.remote_ip == user.remote_ip
@@ -147,11 +145,11 @@ class Channel:
                 return user
         return None
 
-    def add_bind_on_user_and_channel(joiner: ChannelUser):
+    def add_bind_on_user_and_channel(self, joiner: ChannelUser):
         joiner.channel.users[joiner.client.info.nick_name]
         joiner.client.info.joined_channels[joiner.channel.name] = joiner.channel
 
-    def remove_bind_on_user_and_channel(leaver: ChannelUser):
+    def remove_bind_on_user_and_channel(self, leaver: ChannelUser):
         del leaver.channel.users[leaver.client.info.nick_name]
         del leaver.client.info.joined_channels[leaver.channel.name]
 
@@ -168,7 +166,7 @@ class Channel:
         we directly send the message from brocker to all channel local user
         """
         for nick, user in self.users.items():
-            user.client.send(message)
+            user.client.connection.send(message.encode())
 
     def send_message_to_brocker(self, message: str):
         data = {"channel_name": self.name, "message": message}
@@ -185,10 +183,12 @@ class ChannelManager:
     """The code blow is for channel manage"""
 
     @staticmethod
-    def get_channel(name: str) -> Channel:
+    def get_channel(name: str) -> Optional[Channel]:
         if name in ChannelManager.local_channels:
             return ChannelManager.local_channels[name]
+        return None
 
+    @staticmethod
     def add_channel(channel: Channel):
         if channel.name not in ChannelManager.local_channels:
             ChannelManager.local_channels[channel.name] = channel

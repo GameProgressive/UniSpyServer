@@ -2,7 +2,7 @@ import socket
 import socketserver
 from typing import Optional
 from library.src.abstractions.client import ClientBase
-from library.src.abstractions.connections import ConnectionBase, ServerBase
+from library.src.abstractions.connections import ConnectionBase, NetworkServerBase
 
 from library.src.network import DATA_SIZE
 from library.src.configs import CONFIG
@@ -46,7 +46,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
         pass
 
 
-class TcpServer(ServerBase):
+class TcpServer(NetworkServerBase):
     def start(self) -> None:
         self._server = socketserver.ThreadingTCPServer(
             (self._config.public_address, self._config.listening_port),

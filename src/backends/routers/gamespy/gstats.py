@@ -5,32 +5,32 @@ router = APIRouter()
 
 
 @router.post(f"{GAMESTATUS}/AuthGameHandler")
-async def update_item(request: AuthGameRequest):
+async def auth_game(request: AuthGameRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{GAMESTATUS}/AuthPlayerHandler")
-async def update_item(request: AuthPlayerRequest):
+async def auth_player(request: AuthPlayerRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{GAMESTATUS}/NewGameHandler")
-async def update_item(request: NewGameRequest):
+async def new_game(request: NewGameRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{GAMESTATUS}/GetPlayerDataHandler")
-async def update_item(request: GetPlayerDataRequest):
+async def get_player_data(request: GetPlayerDataRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{GAMESTATUS}/SetPlayerDataHandler")
-async def update_item(request: SetPlayerDataRequest):
+async def set_player_data(request: SetPlayerDataRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{GAMESTATUS}/UpdateGameHandler")
-async def update_item(request: UpdateGameRequest):
+async def updaet_game(request: UpdateGameRequest):
     raise NotImplementedError()
 
 

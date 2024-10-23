@@ -54,7 +54,7 @@ class BuddyListHandler(LoginedHandlerBase):
         request = StatusInfoRequest()
         request.profile_id = profile_id
         request.namespace_id = int(self._client.info.namespace_id)
-        request.is_get_status_info = True
+        # request.is_get_status_info = True
 
         StatusInfoHandler(self._client, request).handle()
 
@@ -65,7 +65,7 @@ class BuddyListHandler(LoginedHandlerBase):
             return
 
         with Pool() as pool:
-            pool.map(self.handle_status_info, self._result.profile_id_list)
+            pool.map(self.handle_status_info, self._result.profile_ids)
 
 
 class BuddyStatusInfoHandler(CmdHandlerBase):
@@ -118,6 +118,6 @@ class StatusInfoHandler(LoginedHandlerBase):
         super().__init__(client, request)
 
     def _response_send(self) -> None:
-        if self._request.is_get_status_info:
+        if self._request is not None:
             self._response = StatusInfoResponse(self._request, self._result)
-        super()._response_send()
+            super()._response_send()

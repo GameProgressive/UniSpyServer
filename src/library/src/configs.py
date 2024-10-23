@@ -99,13 +99,14 @@ class UniSpyServerConfig:
     logging: LoggingConfig
 
     def __post_init__(self):
-        self.postgresql = PostgreSql(**self.postgresql)
-        self.redis = RedisConfig(**self.redis)
-        self.backend = BackendConfig(**self.backend)
+
+        self.postgresql = PostgreSql(**self.postgresql)  # type: ignore
+        self.redis = RedisConfig(**self.redis)  # type: ignore
+        self.backend = BackendConfig(**self.backend)  # type: ignore
         for key, value in self.servers.items():
-            self.servers[key] = ServerConfig(**value)
-        self.mongodb = MongoDbConfig(**self.mongodb)
-        self.logging = LoggingConfig(**self.logging)
+            self.servers[key] = ServerConfig(**value)  # type: ignore
+        self.mongodb = MongoDbConfig(**self.mongodb)  # type: ignore
+        self.logging = LoggingConfig(**self.logging)  # type: ignore
 
 
 unispy_config = os.environ.get("UNISPY_CONFIG")

@@ -78,7 +78,7 @@ class ListRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if self._cmd_params is None or self._cmd_params.count() == 0:
+        if self._cmd_params is None or len(self._cmd_params) == 0:
             raise ChatException("The Search filter is missing.")
 
         self.is_searching_channel = True

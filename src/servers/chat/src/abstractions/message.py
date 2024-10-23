@@ -16,7 +16,6 @@ class MessageRequestBase(ChannelRequestBase):
             self.type = MessageType.CHANNEL_MESSAGE
         else:
             self.type = MessageType.USER_MESSAGE
-            self.channel_name = None
             self.nick_name = self._cmd_params[0]
 
         self.message = self._longParam

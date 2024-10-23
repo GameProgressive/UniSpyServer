@@ -18,7 +18,7 @@ class IRCException(ChatException):
         self.error_code = error_code
 
     def build(self):
-        pass
+        raise ChatException("IRCException is abstracted class, should not be initialized")
 
 
 class IRCChannelException(IRCException):
@@ -28,7 +28,7 @@ class IRCChannelException(IRCException):
         super().__init__(message, error_code)
 
     def build(self):
-        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code} * {self.channel_name} :{self.message}\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code} * {self.channel_name} :{self.message}\r\n"  # noqa: E501
 
 
 class ErrOneUSNickNameException(IRCException):
@@ -74,9 +74,7 @@ class NickNameInUseException(IRCException):
         self.new_nick = new_nick
 
     def build(self):
-        self.sending_buffer = (
-            f"{SERVER_DOMAIN} {self.error_code} {self.old_nick} {self.new_nick} *\r\n"
-        )
+        self.sending_buffer = f"{SERVER_DOMAIN} {self.error_code} {self.old_nick} {self.new_nick} *\r\n"  # noqa: E501
 
 
 class NoSuchNickException(IRCException):
@@ -92,7 +90,6 @@ class NoUniqueNickException(IRCException):
     ) -> None:
         super().__init__(message, error_code)
 
-
 class RegisterNickFaildException(IRCException):
     def __init__(
         self, message: str, error_code: IRCErrorCode = IRCErrorCode.REGISTER_NICK_FAILED
@@ -102,7 +99,7 @@ class RegisterNickFaildException(IRCException):
 
 class TooManyChannelsException(IRCException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode.TOO_MANY_CHANNELS
+        self, message: str, error_code: IRCErrorCode = IRCErrorCode.TOO_MANY_CHANNELS
     ) -> None:
         super().__init__(message, error_code)
 

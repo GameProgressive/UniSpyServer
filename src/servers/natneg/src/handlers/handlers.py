@@ -27,6 +27,9 @@ from servers.natneg.src.contracts.results import (
 
 
 class AddressCheckHandler(CmdHandlerBase):
+    _request: AddressCheckRequest
+    _result: AddressCheckResult
+
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
         self._is_feaching = False
         super().__init__(client, request)
@@ -72,6 +75,9 @@ class ConnectHandler(CmdHandlerBase):
 
 
 class ErtAckHandler(CmdHandlerBase):
+    _request: ErtAckRequest
+    _result: ErtAckResult
+
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         self._is_feaching = False
         super().__init__(client, request)
@@ -90,6 +96,8 @@ class InitHandler(CmdHandlerBase):
     """
     In init process, we need response the initresponse first to make client not timeout
     """
+    _request: InitRequest
+    _result: InitResult
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         self._is_feaching = False
@@ -111,6 +119,9 @@ class InitHandler(CmdHandlerBase):
 
 
 class NatifyHandler(CmdHandlerBase):
+    _request: NatifyRequest
+    _result: NatifyResult
+
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         self._is_feaching = False
         super().__init__(client, request)

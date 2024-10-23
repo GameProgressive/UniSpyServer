@@ -74,7 +74,7 @@ class OthersListResponse(ResponseBase):
 
     def __init__(self, result: OthersListResult) -> None:
         assert isinstance(result, OthersListResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self):
         self.sending_buffer = "\\otherslist\\"
@@ -89,7 +89,7 @@ class OthersResponse(ResponseBase):
 
     def __init__(self, result: OthersResult) -> None:
         assert isinstance(result, OthersResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self):
         self.sending_buffer = "\\others\\"
@@ -108,7 +108,7 @@ class SearchResponse(ResponseBase):
 
     def __init__(self, result: SearchResult) -> None:
         assert isinstance(result, SearchResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self):
         self.sending_buffer = f"\\bsr\\"
@@ -128,7 +128,7 @@ class SearchUniqueResponse(ResponseBase):
 
     def __init__(self, result: SearchUniqueResult) -> None:
         assert isinstance(result, SearchUniqueResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self):
         self.sending_buffer = "\\bsr"

@@ -9,7 +9,7 @@ services:
     command: redis-server --requirepass 123456
 
   mongodb:
-    image: mongo
+    image: mongodb/mongodb-community-server:latest
     restart: always
     ports:
       - "27017:27017"

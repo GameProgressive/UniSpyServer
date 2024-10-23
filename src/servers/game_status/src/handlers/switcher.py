@@ -1,3 +1,4 @@
+from typing import Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
 from servers.game_status.src.abstractions.handlers import CmdHandlerBase
 from servers.game_status.src.applications.client import Client
@@ -23,8 +24,8 @@ class Switcher(SwitcherBase):
             name = raw_request.strip("\\").split("\\", 1)[0]
             self._requests.append((name, raw_request))
 
-    def _create_cmd_handlers(self, name: object, raw_request: str) -> CmdHandlerBase | None:
-
+    def _create_cmd_handlers(self, name: object, raw_request: str) -> Optional[CmdHandlerBase]:
+        self._client = cast(Client, self._client)
         match name:
             case "auth":
                 return AuthGameHandler(self._client, AuthGameRequest(raw_request))

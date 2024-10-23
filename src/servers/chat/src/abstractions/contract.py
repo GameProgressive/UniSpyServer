@@ -1,4 +1,5 @@
 import abc
+from typing import Optional
 import library.src.abstractions.contracts
 from servers.chat.src.exceptions.general import ChatException
 
@@ -59,17 +60,16 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _result: ResultBase
     _request: RequestBase
 
-    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
+    def __init__(self, request: RequestBase, result: Optional[ResultBase]) -> None:
         super().__init__(request, result)
         if result is not None:
             assert issubclass(type(result), ResultBase)
-        assert issubclass(request, RequestBase)
-
+        assert issubclass(type(request), RequestBase)
 
 
 if __name__ == "__main__":
     # Example usage:
-    request = RequestBase()
+    request = RequestBase("")
     request.raw_request = "your_raw_request_here"
     request.parse()
     print(request.command_name)

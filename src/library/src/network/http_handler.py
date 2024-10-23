@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from library.src.abstractions.client import ClientBase
-from library.src.abstractions.connections import ConnectionBase, ServerBase
+from library.src.abstractions.connections import ConnectionBase, NetworkServerBase
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from library.src.configs import CONFIG
 
@@ -53,7 +53,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         self.conn.on_received(data)
 
 
-class HttpServer(ServerBase):
+class HttpServer(NetworkServerBase):
     def start(self) -> None:
         self._server = ThreadingHTTPServer(
             (self._config.public_address, self._config.listening_port), HttpHandler

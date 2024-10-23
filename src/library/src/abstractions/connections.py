@@ -23,8 +23,9 @@ class ConnectionBase:
     _client: ClientBase
     ip_endpoint: str
     """
-        ip endpoint format str \<ip:port\>
+        ip endpoint format str \\<ip:port\\>
     """
+
     def __init__(
         self,
         handler: socketserver.BaseRequestHandler,
@@ -40,14 +41,14 @@ class ConnectionBase:
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
         self.ip_endpoint = f"{self.remote_ip}:{self.remote_port}"
-        
+
         self.config = config
         self.t_client = t_client
         self.logger = logger
         self._client = self.t_client(self, self.config, self.logger)
         self._is_started = False
 
-    def on_received(self, data: "Optional[bytes|HttpRequest]") -> None:
+    def on_received(self, data: "bytes|str") -> None:
         self._client.on_received(data)
 
     @abc.abstractmethod
@@ -79,7 +80,7 @@ class HttpConnectionBase(TcpConnectionBase):
     pass
 
 
-class ServerBase:
+class NetworkServerBase:
     _config: ServerConfig
     _client_cls: type[ClientBase]
     _logger: LogWriter

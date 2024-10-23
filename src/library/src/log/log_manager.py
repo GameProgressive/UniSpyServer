@@ -2,6 +2,9 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 import os
 
+from library.src.configs import CONFIG
+
+
 class LogWriter:
     original_logger: logging.Logger
 
@@ -33,18 +36,19 @@ def create_dir(path):
 class LogManager:
 
     @staticmethod
-    def create(log_file_path: str, logger_name: str) -> "LogWriter":
+    def create(logger_name: str) -> "LogWriter":
+        log_file_path = CONFIG.logging.path
         create_dir(log_file_path)
-
+        file_name = f"{log_file_path}/{logger_name}.log"
         logging.basicConfig(
-            filename=log_file_path,
+            filename=file_name,
             level=logging.INFO,
             format=f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         # 滚动日志文件
         file_handler = TimedRotatingFileHandler(
-            log_file_path,
+            file_name,
             when="midnight",
             interval=1,
             backupCount=7,
@@ -69,3 +73,8 @@ class LogManager:
         logger.addHandler(console_handler)
         return LogWriter(logger)
 
+
+GLOBAL_LOGGER = LogManager.create("unispy")
+"""
+the global logger of unispy
+"""

@@ -11,7 +11,7 @@ from mongoengine import (
     DictField,
 )
 
-from library.src.database.mongodb_orm import connect_to_db, get_ttl_param
+# from library.src.database.mongodb_orm import connect_to_db, get_ttl_param
 from servers.query_report.src.v2.enums.general import GameServerStatus
 
 

@@ -50,12 +50,6 @@ class PartResult(ResultBase):
     channel_name: str
 
 
-class GetChannelKeyResult(ResultBase):
-    channel_user_irc_prefix: str
-    channel_name: str
-    values: str
-
-
 class TopicResult(ResultBase):
     channel_name: str
     channel_topic: str

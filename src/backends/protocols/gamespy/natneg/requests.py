@@ -6,7 +6,7 @@ from servers.natneg.src.enums.general import (
     PreInitState,
     RequestType,
 )
-from typing import Union
+from typing import Optional, Union
 
 import backends.library.abstractions.contracts as lib
 
@@ -45,8 +45,8 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: str = None
-    private_ip_address: str = None
+    game_name: Optional[str]
+    private_ip_address: Optional[str]
 
 
 class NatifyRequest(CommonRequestBase):

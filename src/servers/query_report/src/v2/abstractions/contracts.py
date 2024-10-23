@@ -1,3 +1,4 @@
+from servers.query_report.src.v2.enums.general import PacketType
 import library.src.abstractions.contracts
 from servers.query_report.src.exceptions.exceptions import QRException
 from servers.query_report.src.v2.enums.general import RequestType
@@ -21,17 +22,8 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         self.instant_key = int(self.raw_request[1:5])
 
 
-import abc
-import library.src.abstractions.contracts
-from servers.query_report.src.v2.enums.general import PacketType
-
-
 class ResultBase(library.src.abstractions.contracts.ResultBase):
     packet_type: PacketType
-
-
-import abc
-import library.src.abstractions.contracts
 
 
 class ResponseBase(library.src.abstractions.contracts.ResponseBase):

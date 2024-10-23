@@ -1,3 +1,4 @@
+from typing import cast
 import unittest
 
 from library.src.extentions.password_encoder import process_password
@@ -19,7 +20,8 @@ class GameTest(unittest.TestCase):
 
         switcher = CmdSwitcher(client, raw)
         switcher.handle()
-        request: CheckRequest = switcher._handlers[0]._request
+        request: CheckRequest = cast(
+            CheckRequest, switcher._handlers[0]._request)
         response = switcher._handlers[0]._response
         self.assertEqual("spyguy", request.nick)
         self.assertEqual("spyguy@gamespy.com", request.email)

@@ -1,10 +1,8 @@
-from servers.game_status.src.abstractions.contracts import RequestBase
 from servers.game_status.src.abstractions.handlers import CmdHandlerBase
 from servers.game_status.src.applications.client import Client
 from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
 from servers.game_status.src.contracts.responses import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse
 from servers.game_status.src.contracts.results import AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
-from servers.game_status.src.exceptions.general import GSException
 
 
 class AuthGameHandler(CmdHandlerBase):

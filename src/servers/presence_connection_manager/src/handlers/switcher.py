@@ -5,11 +5,11 @@ from servers.presence_connection_manager.src.contracts.requests.profile import A
 from servers.presence_connection_manager.src.handlers.buddy import StatusHandler, StatusInfoHandler
 from servers.presence_connection_manager.src.handlers.general import KeepAliveHandler, LoginHandler, LogoutHandler, NewUserHandler
 from servers.presence_connection_manager.src.handlers.profile import AddBlockHandler, GetProfileHandler, NewProfileHandler, RegisterCDKeyHandler, RegisterNickHandler, UpdateProfileHandler
-from servers.presence_search_player.src.contracts.requests import NewUserRequest
+from servers.presence_connection_manager.src.contracts.requests import NewUserRequest
 from servers.presence_search_player.src.exceptions.general import GPParseException
 
-from servers.presence_search_player.src.abstractions.handler import CmdHandlerBase
-from typing import Optional
+from servers.presence_connection_manager.src.abstractions.handlers import CmdHandlerBase
+from typing import TYPE_CHECKING, Optional, cast
 from servers.presence_connection_manager.src.applications.client import Client
 
 
@@ -24,12 +24,15 @@ class Switcher(SwitcherBase):
     def _process_raw_request(self) -> None:
         if self._raw_request[0] != "\\":
             raise GPParseException("Request format is invalid")
-        raw_requests = [r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
+        raw_requests = [
+            r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\")[0]
             self._requests.append((name, raw_request))
 
     def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+        if TYPE_CHECKING:
+            self._client = cast(Client, self._client)
         match name:
             case "ka":
                 return KeepAliveHandler(self._client, KeepAliveRequest(raw_request))

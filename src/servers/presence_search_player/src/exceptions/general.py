@@ -15,8 +15,9 @@ class GPException(UniSpyException, ResponseBase):
         UniSpyException.__init__(self, message)
         self.error_code = error_code
 
-    def build(self) -> str:
-        self.sending_buffer = f"\\error\\\\err\\{int(self.error_code)}\\fatal\\\\errmsg\\{self.message}\\final\\"
+    def build(self) -> None:
+        self.sending_buffer = f"\\error\\\\err\\{int(self.error_code)}\\fatal\\\\errmsg\\{
+            self.message}\\final\\"
 
 
 class GPParseException(GPException):
@@ -189,7 +190,7 @@ class CheckException(GPException):
     ) -> None:
         super().__init__(message, error_code)
 
-    def build(self) -> str:
+    def build(self) -> None:
         self.sending_buffer = f"\\cur\\{int(self.error_code)}\\final\\"
 
 
@@ -428,6 +429,6 @@ class GPUpdateUIBadEmailException(GPException):
 
 
 MAPPING = {
-    "GPException":GPException,
-    
+    "GPException": GPException,
+
 }

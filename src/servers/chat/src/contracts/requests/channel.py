@@ -1,5 +1,5 @@
 import re
-from typing import List
+from typing import List, Optional
 from servers.chat.src.abstractions.channel import ChannelRequestBase
 from servers.chat.src.enums.general import (
     GetKeyRequestType,
@@ -117,7 +117,7 @@ class ModeRequest(ChannelRequestBase):
             return
         super().parse()
         if len(self._cmd_params) == 1:
-            self.request_type == ModeRequestType.GET_CHANNEL_MODES
+            self.request_type = ModeRequestType.GET_CHANNEL_MODES
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
             self.request_type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
@@ -266,7 +266,7 @@ class ModeRequest(ChannelRequestBase):
 class NamesRequest(ChannelRequestBase):
     channel_name: str
 
-    def __init__(self, raw_request: str = None) -> None:
+    def __init__(self, raw_request: Optional[str] = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 
@@ -275,7 +275,7 @@ class PartRequest(ChannelRequestBase):
     channel_name: str
     reason: str = "Unknown reason"
 
-    def __init__(self, raw_request: str = None) -> None:
+    def __init__(self, raw_request: Optional[str] = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 
@@ -350,5 +350,3 @@ class TopicRequest(ChannelRequestBase):
         else:
             self.request_type = TopicRequestType.SET_CHANNEL_TOPIC
             self.channel_topic = self._longParam
-
-

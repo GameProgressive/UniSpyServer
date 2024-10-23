@@ -11,7 +11,7 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["PresenceConnectionManager"]
 
     def _launch_server(self):
-        UdpServer(self.config, Client).start()
+        UdpServer(self.config, Client, self.logger).start()
 
 
 if __name__ == "__main__":

@@ -27,6 +27,7 @@ from servers.chat.src.contracts.results.channel import (
     ModeResult,
     NamesResult,
     PartResult,
+    SetChannelKeyResult,
     TopicResult,
 )
 from servers.chat.src.enums.general import ModeRequestType
@@ -129,13 +130,13 @@ class PartResponse(ResponseBase):
 
 class SetChannelKeyResponse(ChannelResponseBase):
     _request: SetChannelKeyRequest
-    _result: GetChannelKeyResult
+    _result: SetChannelKeyResult
 
     def __init__(
-        self, request: SetChannelKeyRequest, result: GetChannelKeyResult
+        self, request: SetChannelKeyRequest, result: SetChannelKeyResult
     ) -> None:
         assert isinstance(request, SetChannelKeyRequest)
-        assert isinstance(result, GetChannelKeyResult)
+        assert isinstance(result, SetChannelKeyResult)
         super().__init__(request, result)
 
     def build(self) -> None:

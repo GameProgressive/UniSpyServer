@@ -1,7 +1,7 @@
 from uuid import UUID
 
 
-{
+dd = {
     "groupid": "groupid",
     "hostname": "hostname",
     "number_of_waiting_player": "numwaiting",
@@ -20,8 +20,8 @@ class PeerRoomInfo:
     game_name: str
     group_id: int
     room_name: str
-
-    raw_key_values: dict[str, str]
+    # todo change to dict[str, object]
+    raw_key_values: dict
 
     def __init__(self, game_name, group_id, room_name) -> None:
         self.game_name = game_name

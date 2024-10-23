@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 
 
 class ClientInfo:
-    previously_joined_channel: "Channel"
-    joined_channels: list["Channel"]
+    previously_joined_channel: str
+    joined_channels: dict[str, "Channel"]
     nick_name: str
     gamename: str
     user_name: str

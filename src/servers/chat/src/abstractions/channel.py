@@ -1,3 +1,4 @@
+from typing import Optional
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import *
 from servers.chat.src.abstractions.contract import RequestBase
@@ -9,7 +10,7 @@ from servers.chat.src.exceptions.general import ChatException, NoSuchNickExcepti
 
 
 class ChannelRequestBase(RequestBase):
-    channel_name: str = None
+    channel_name: str
 
     def parse(self) -> None:
         super().parse()
@@ -31,32 +32,36 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _channel: Channel
     _user: ChannelUser
     _request: ChannelRequestBase
+    _response: ResponseBase
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
+        # self._channel = None
+        # self._response = None
 
     def _request_check(self) -> None:
         if self._request.raw_request is None:
             return super()._request_check()
 
         if self._channel is None:
-            self._channel = ChannelManager.get_channel(
+            channel = ChannelManager.get_channel(
                 self._request.channel_name
             )
-            if self._channel is None:
-                raise NoSuchChannelException(
-                    f"No such channel {self._request.channel_name}",
-                    self._request.channel_name,
-                )
-
+        if channel is None:
+            raise NoSuchChannelException(
+                f"No such channel {self._request.channel_name}",
+            )
+        self._channel = channel
         if self._user is None:
-            self._user = self._channel.get_user(self._client)
+            user = self._channel.get_user_by_nick(
+                self._client.info.nick_name)
 
-            if self._user is None:
-                raise NoSuchNickException(
-                    f"Can not find user with nickname: {
-                        self._client.info.nick_name} user_name: {self._client.info.user_name}"
-                )
+        if user is None:
+            raise NoSuchNickException(
+                f"Can not find user with nickname: {
+                    self._client.info.nick_name} user_name: {self._client.info.user_name}"
+            )
+        self._user = user
 
     def handle(self) -> None:
         super().handle()
@@ -66,8 +71,15 @@ class ChannelHandlerBase(PostLoginHandlerBase):
             self._update_channel_cache()
         except Exception as e:
             self._handle_exception(e)
+            if ChannelHandlerBase._debug:
+                raise e
 
     def _publish_message(self):
+        if self._response is None:
+            self._client.log_warn("response is not constructed.")
+        if self._channel is None:
+            self._client.log_warn("channel is not assined")
+            return
         self._channel.send_message_to_brocker(self._response.sending_buffer)
 
     def _update_channel_cache(self):

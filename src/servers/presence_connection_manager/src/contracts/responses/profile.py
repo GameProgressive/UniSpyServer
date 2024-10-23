@@ -39,8 +39,8 @@ class GetProfileResponse(ResponseBase):
 
         birth_str = (
             (self._result.user_profile.birthday << 24)
-            | (self._result.user_profile.birthmonth << 16)
-            | self._result.user_profile.birthyear
+            or (self._result.user_profile.birthmonth << 16)
+            or self._result.user_profile.birthyear
         )
         self.sending_buffer += (
             f"\\birthday\\{birth_str}"
@@ -71,7 +71,9 @@ class NewProfileResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self):
+        # fmt: off
         self.sending_buffer = f"\\npr\\\\profileid\\{self.sending_buffer}\\id\\{self._request.operation_id}\\final\\"
+        # fmt: on
 
 
 class RegisterCDKeyResposne(ResponseBase):
@@ -90,4 +92,6 @@ class RegisterNickResponse(ResponseBase):
         self._request = request
 
     def build(self) -> None:
-        self.sending_buffer = f"\\rn\\\\id\\{self._request.operation_id}\\final\\"
+        # fmt: off
+        self.sending_buffer = f"\\rn\\\\id\\{self._request.operation_id}\\final\\" 
+        # fmt: on

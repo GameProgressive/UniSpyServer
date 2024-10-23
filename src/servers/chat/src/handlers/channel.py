@@ -1,8 +1,8 @@
+from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.channel import ChannelHandlerBase
 from servers.chat.src.aggregates.channel import Channel, ChannelManager
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.response_name import *
-from servers.chat.src.applications.client import Client
 from servers.chat.src.contracts.requests.channel import (
     GetCKeyRequest,
     GetChannelKeyRequest,
@@ -45,7 +45,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
     _request: GetChannelKeyRequest
     _result: GetChannelKeyResult
 
-    def __init__(self, client: Client, request: GetChannelKeyRequest):
+    def __init__(self, client: ClientBase, request: GetChannelKeyRequest):
         assert isinstance(request, GetChannelKeyRequest)
         self._is_fetching_data = True
         super().__init__(client, request)
@@ -61,7 +61,7 @@ class GetCKeyHandler(ChannelHandlerBase):
     _request: GetCKeyRequest
     _result: GetCKeyResult
 
-    def __init__(self, client: Client, request: GetCKeyRequest):
+    def __init__(self, client: ClientBase, request: GetCKeyRequest):
         assert isinstance(request, GetCKeyRequest)
         super().__init__(client, request)
 
@@ -79,7 +79,7 @@ class JoinHandler(ChannelHandlerBase):
     _request: JoinRequest
     _result: JoinResult
 
-    def __init__(self, client: Client, request: JoinRequest):
+    def __init__(self, client: ClientBase, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
 
@@ -90,22 +90,21 @@ class JoinHandler(ChannelHandlerBase):
         pass
 
     def _check_user_in_local(self):
-        self._channel = ChannelManager.get_channel(
+        channel = ChannelManager.get_channel(
             self._request.channel_name)
-        if self._channel is not None:
-            if self._client.info.nick_name in self._channel.users:
-                raise ChatException("user is already in channel")
-        # if channel still none we create the channel
-        if self._channel is None:
+        if channel is None:
             self._channel = Channel(
                 self._request.channel_name, self._client, self._request.password)
             ChannelManager.add_channel(self._channel)
+        else:
+            self._channel = channel
+            if self._client.info.nick_name in self._channel.users:
+                raise ChatException("user is already in channel")
 
     def _request_check(self) -> None:
         # todo check if user already in local channel
         # self._check_user_in_remote()
         self._check_user_in_local()
-
         self._user = ChannelUser(self._client, self._channel)
         self._channel.add_bind_on_user_and_channel(self._user)
 
@@ -123,7 +122,7 @@ class KickHandler(ChannelHandlerBase):
     _request: KickRequest
     _result: KickResult
 
-    def __init__(self, client: Client, request: KickRequest):
+    def __init__(self, client: ClientBase, request: KickRequest):
         assert isinstance(request, KickRequest)
         super().__init__(client, request)
 
@@ -138,7 +137,7 @@ class ModeHandler(ChannelHandlerBase):
     _request: ModeRequest
     _result: ModeResult
 
-    def __init__(self, client: Client, request: ModeRequest):
+    def __init__(self, client: ClientBase, request: ModeRequest):
         assert isinstance(request, ModeRequest)
         super().__init__(client, request)
 
@@ -170,7 +169,7 @@ class NamesHandler(ChannelHandlerBase):
     _request: NamesRequest
     _result: NamesResult
 
-    def __init__(self, client: Client, request: NamesRequest):
+    def __init__(self, client: ClientBase, request: NamesRequest):
         assert isinstance(request, NamesRequest)
         self._is_fetching_data = True
         super().__init__(client, request)
@@ -183,7 +182,7 @@ class PartHandler(ChannelHandlerBase):
     _request: PartRequest
     _result: PartResult
 
-    def __init__(self, client: Client, request: PartRequest):
+    def __init__(self, client: ClientBase, request: PartRequest):
         assert isinstance(request, PartRequest)
         super().__init__(client, request)
 
@@ -198,7 +197,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
     _request: SetChannelKeyRequest
     _result: SetChannelKeyResult
 
-    def __init__(self, client: Client, request: SetChannelKeyRequest):
+    def __init__(self, client: ClientBase, request: SetChannelKeyRequest):
         assert isinstance(self._request, SetChannelKeyRequest)
         super().__init__(client, request)
 
@@ -212,7 +211,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
 class SetCKeyHandler(ChannelHandlerBase):
     _request: SetCKeyRequest
 
-    def __init__(self, client: Client, request: SetCKeyRequest):
+    def __init__(self, client: ClientBase, request: SetCKeyRequest):
         assert isinstance(request, SetCKeyRequest)
         super().__init__(client, request)
 
@@ -227,7 +226,7 @@ class TopicHandler(ChannelHandlerBase):
     _request: TopicRequest
     _result: TopicResult
 
-    def __init__(self, client: Client, request: TopicRequest):
+    def __init__(self, client: ClientBase, request: TopicRequest):
         assert isinstance(request, TopicRequest)
         super().__init__(client, request)
 

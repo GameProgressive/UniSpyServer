@@ -57,8 +57,11 @@ class ClientBase:
         del self.pool[self.connection.ip_endpoint]
         pass
 
-    def create_switcher(self, buffer: bytes | str) -> "SwitcherBase":
-        assert isinstance(buffer, bytes) or isinstance(buffer, HttpRequest)
+    def create_switcher(self, buffer: bytes | str) -> "SwitcherBase":  # type: ignore
+        """
+        virtual method helps verify buffer type
+        """
+        assert isinstance(buffer, bytes) or isinstance(buffer, str)
 
     def on_received(self, buffer: bytes | str) -> None:
         if isinstance(buffer, bytes):

@@ -75,9 +75,9 @@ class InviteToRequest(RequestBase):
 
 @final
 class StatusInfoRequest(RequestBase):
-    namespace_id: Optional[int] = None
+    namespace_id: Optional[int]
     status_info: UserStatusInfo
-    profile_id: int = 0
+    profile_id: int
 
     def __init__(self, raw_request: Optional[str] = None) -> None:
         if raw_request is not None:
@@ -139,9 +139,7 @@ class StatusRequest(RequestBase):
 
         try:
             status_code = int(self.request_dict["status"])
-            self.status = UserStatus(current_status=GPStatusCode(status_code))
+            self.status = UserStatus(
+                location_string=self.request_dict["locstring"], status_string=self.request_dict['statstring'], current_status=GPStatusCode(status_code))
         except ValueError:
             raise GPParseException("status format is incorrect.")
-
-        self.status.location_string = self.request_dict["locstring"]
-        self.status.status_string = self.request_dict["statstring"]

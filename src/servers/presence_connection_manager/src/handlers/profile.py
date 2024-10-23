@@ -15,7 +15,8 @@ from servers.presence_connection_manager.src.contracts.responses.profile import 
     NewProfileResponse,
     RegisterNickResponse,
 )
-from servers.presence_connection_manager.src.contracts.results.profile import NewProfileResult
+from servers.presence_connection_manager.src.contracts.results.profile import GetProfileResult, NewProfileResult
+
 
 @final
 class AddBlockHandler(CmdHandlerBase):
@@ -29,7 +30,7 @@ class AddBlockHandler(CmdHandlerBase):
 @final
 class GetProfileHandler(CmdHandlerBase):
     _request: GetProfileRequest
-    _result: GetProfileResponse
+    _result: GetProfileResult
 
     def __init__(self, client: Client, request: GetProfileRequest) -> None:
         assert isinstance(request, GetProfileRequest)
@@ -64,13 +65,12 @@ class RegisterCDKeyHandler(CmdHandlerBase):
 @final
 class RegisterNickHandler(CmdHandlerBase):
     _request: RegisterNickRequest
-
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
         assert isinstance(request, RegisterNickRequest)
         super().__init__(client, request)
 
     def _response_construct(self) -> None:
-        self._response = RegisterNickResponse(self._request, self._result)
+        self._response = RegisterNickResponse(self._request)
 
 
 @final

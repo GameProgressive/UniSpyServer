@@ -1,17 +1,17 @@
+from typing import TYPE_CHECKING, Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.exceptions.general import UniSpyException
-from servers.presence_connection_manager.src.contracts.requests.general import (
-    KeepAliveRequest,
-)
 from servers.query_report.src.applications.client import Client
 from servers.query_report.src.v2.abstractions.cmd_handler_base import CmdHandlerBase
 
 from servers.query_report.src.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
+    ClientMessageAckRequest,
     ClientMessageRequest,
     EchoRequest,
     HeartBeatRequest,
+    KeepAliveRequest,
 )
 from servers.query_report.src.v2.enums.general import RequestType
 from servers.query_report.src.v2.handlers.handlers import (
@@ -25,6 +25,8 @@ from servers.query_report.src.v2.handlers.handlers import (
 
 
 class CmdSwitcher(SwitcherBase):
+    _raw_request: bytes
+
     def __init__(self, client: Client, raw_request: bytes):
         super().__init__(client, raw_request)
 
@@ -36,8 +38,10 @@ class CmdSwitcher(SwitcherBase):
         raw_request = self._raw_request
         self._requests.append((name, raw_request))
 
-    def _create_cmd_handlers(self, name: int, raw_request: bytes) -> CmdHandlerBase:
+    def _create_cmd_handlers(self, name: int, raw_request: bytes) -> Optional[CmdHandlerBase]:
         req = raw_request
+        if TYPE_CHECKING:
+            self._client = cast(Client, self._client)
         match name:
             case RequestType.HEARTBEAT:
                 return HeartBeatHandler(self._client, HeartBeatRequest(req))
@@ -46,7 +50,7 @@ class CmdSwitcher(SwitcherBase):
             case RequestType.AVALIABLE_CHECK:
                 return AvailableHandler(self._client, AvaliableRequest(req))
             case RequestType.CLIENT_MESSAGE_ACK:
-                return ClientMessageAckHandler(self._client, ClientMessageRequest(req))
+                return ClientMessageAckHandler(self._client, ClientMessageAckRequest(req))
             case RequestType.ECHO:
                 return EchoHandler(self._client, EchoRequest(req))
             case RequestType.KEEP_ALIVE:

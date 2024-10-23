@@ -1,8 +1,9 @@
-from typing import final
+from typing import Optional, final
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.game_status.src.abstractions.contracts import RequestBase
 from servers.game_status.src.enums.general import AuthMethod, PersistStorageType
 from servers.game_status.src.exceptions.general import GSException
+
 
 @final
 class AuthGameRequest(RequestBase):
@@ -62,7 +63,7 @@ class AuthPlayerRequest(RequestBase):
 
 @final
 class GetPlayerDataRequest(RequestBase):
-    profile_id: str
+    profile_id: int
     storage_type: PersistStorageType
     data_index: int
     is_get_all_data: bool = False
@@ -128,9 +129,9 @@ class GetProfileIdRequest(RequestBase):
 @final
 class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
-    challenge: str = None
-    connection_id: int = None
-    session_key: str = None
+    challenge: str
+    connection_id: int
+    session_key: str
 
     def parse(self) -> None:
         super().parse()
@@ -203,7 +204,7 @@ class SetPlayerDataRequest(RequestBase):
 
 @final
 class UpdateGameRequest(RequestBase):
-    connection_id: int = None
+    connection_id: int
     is_done: bool
     is_client_local_storage_available: bool
     game_data: str

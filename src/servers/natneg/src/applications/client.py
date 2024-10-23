@@ -5,7 +5,7 @@ from library.src.configs import ServerConfig
 
 
 class Client(ClientBase):
-    client_pool: dict[str, "Client"] = []
+    client_pool: dict[str, "Client"] = {}
 
     def __init__(self, connection: UdpConnection, server_config: ServerConfig, logger: LogWriter):
         super().__init__(connection, server_config, logger)

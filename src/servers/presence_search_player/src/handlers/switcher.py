@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
 from servers.presence_search_player.src.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
@@ -10,6 +10,7 @@ from servers.presence_search_player.src.applications.client import Client
 
 
 class CmdSwitcher(SwitcherBase):
+    _raw_request: str
 
     def __init__(self, client: Client, raw_request: str):
         super().__init__(client, raw_request)
@@ -27,6 +28,9 @@ class CmdSwitcher(SwitcherBase):
             self._requests.append((name, raw_request))
 
     def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+        if TYPE_CHECKING:
+            self._client = cast(Client, self._client)
+
         match name:
             case "check":
                 return CheckHandler(self._client, CheckRequest(raw_request))

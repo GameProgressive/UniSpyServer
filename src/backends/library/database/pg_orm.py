@@ -1,3 +1,6 @@
+from library.src.configs import CONFIG
+from sqlalchemy import Enum, create_engine
+from sqlalchemy.orm.session import Session
 from datetime import datetime
 from sqlalchemy import (
     Boolean,
@@ -11,13 +14,16 @@ from sqlalchemy import (
     ForeignKey,
     DateTime,
     text,
+    UUID
 )
 from sqlalchemy.dialects.postgresql import JSONB, INET
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+from servers.natneg.src.enums.general import NatClientIndex, NatPortType
+from servers.query_report.src.v2.enums.general import GameServerStatus
+
 Base: DeclarativeMeta = declarative_base()
-from sqlalchemy.orm.session import Session
 
 
 class Users(Base):
@@ -104,9 +110,11 @@ class AddRequest(Base):
     __tablename__ = "addrequests"
 
     addrequestid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
-    targetid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    targetid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     reason = Column(String, nullable=False)
     syncrequested = Column(String, nullable=False)
 
@@ -115,7 +123,8 @@ class Blocked(Base):
     __tablename__ = "blocked"
 
     blockid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
 
@@ -124,7 +133,8 @@ class Friends(Base):
     __tablename__ = "friends"
 
     friendid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
 
@@ -170,7 +180,8 @@ class PStorage(Base):
     __tablename__ = "pstorage"
 
     pstorageid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
     data = Column(JSONB)
@@ -183,8 +194,78 @@ class SakeStorage(Base):
     tableid = Column(String, nullable=False)
 
 
-from sqlalchemy import create_engine
-from library.src.configs import CONFIG
+class InitPacketCaches(Base):
+    __tablename__ = "init_packet_caches"
+
+    server_id = Column(UUID, nullable=False)
+    cookie = Column(Integer, nullable=False)
+    version = Column(Integer, nullable=False)
+    port_type = Column(Enum(NatPortType), nullable=False)
+    client_index = Column(Enum(NatClientIndex), nullable=False)
+    game_name = Column(String, nullable=False)
+    use_game_port = Column(Boolean, nullable=False)
+    public_ip = Column(String, nullable=False)
+    public_port = Column(Integer, nullable=False)
+    private_ip = Column(String, nullable=False)
+    private_port = Column(Integer, nullable=False)
+    update_time = Column(DateTime, nullable=False)
+
+
+class NatFailCaches(Base):
+    __tablename__ = "nat_fail_Cachess"
+    public_ip_address1 = Column(INET, nullable=False)
+    public_ip_address2 = Column(INET, nullable=False)
+    update_time = Column(DateTime, nullable=False)
+
+# class ReportPackets(Base):
+#     __tablename__ = "report_packets"
+#     public_ip_address1 = Column(String, nullable=False)
+#     public_ip_address2 = Column(String, nullable=False)
+#     update_time = Column(DateTime, nullable=False)
+
+
+class ChatChannelCaches(Base):
+    __tablename__ = "chat_channel_Caches"
+    server_id = Column(UUID, nullable=False)
+    channel_name = Column(String, primary_key=True, nullable=False)
+    game_name = Column(String, nullable=False)
+    room_name = Column(String, nullable=False)
+    topic = Column(String, nullable=False)
+    password = Column(String, nullable=True)
+    group_id = Column(Integer, nullable=False)
+    max_num_user = Column(Integer, nullable=False)
+    key_values = Column(JSONB)
+    update_time = Column(DateTime, nullable=False)
+
+
+class ChatUserCaches(Base):
+    __tablename__ = "chat_user_caches"
+    nick_name = Column(String, primary_key=True, nullable=False)
+    channel_name = Column(String, ForeignKey(
+        "chat_channel_caches.channel_name"), nullable=False)
+    server_id = Column(UUID, nullable=False)
+    user_name = Column(String, nullable=False)
+    update_time = Column(DateTime, nullable=False)
+    is_voiceable = Column(Boolean, nullable=False)
+    is_channel_operator = Column(Boolean, nullable=False)
+    is_channel_creator = Column(Boolean, nullable=False)
+    remote_ip_address = Column(INET, nullable=False)
+    remote_port = Column(Integer, nullable=False)
+    key_values = Column(JSONB)
+
+
+class GameServerCaches(Base):
+    __tablename__ = "game_server_caches"
+    server_id = Column(UUID, nullable=False)
+    host_ip_address = Column(INET, nullable=False)
+    instant_key = Column(Integer, nullable=False)
+    game_name = Column(String, nullable=False)
+    query_report_port = Column(Integer, nullable=False)
+    update_time = Column(DateTime, nullable=False)
+    status = Column(Enum(GameServerStatus))
+    player_data = Column(JSONB, nullable=False)
+    server_data = Column(JSONB, nullable=False)
+    team_data = Column(JSONB, nullable=False)
 
 
 def connect_to_db() -> Session:

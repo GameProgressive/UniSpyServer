@@ -1,3 +1,4 @@
+from typing import Optional
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
 from library.src.abstractions.switcher import SwitcherBase
@@ -83,7 +84,7 @@ class Switcher(SwitcherBase):
             name = raw_request.strip(" ").split(" ")[0]
             self._requests.append((name, raw_request))
 
-    def _create_cmd_handlers(self, name: str, rawRequest: str) -> CmdHandlerBase:
+    def _create_cmd_handlers(self, name: str, rawRequest: str) -> Optional[CmdHandlerBase]:
         request = rawRequest
         assert isinstance(name, str)
         match name:
@@ -114,7 +115,7 @@ class Switcher(SwitcherBase):
                 return WhoHandler(self._client, WhoRequest(request))
             case "WHOIS":
                 return WhoIsHandler(self._client, WhoIsRequest(request))
-            # endregion
+            # endregionCmdHandlerBase
 
             # region Channel
             case "GETCHANKEY":
@@ -149,4 +150,4 @@ class Switcher(SwitcherBase):
                 return UTMHandler(self._client, UTMRequest(request))
             case _:
                 return None
-                # endregion
+            # endregion

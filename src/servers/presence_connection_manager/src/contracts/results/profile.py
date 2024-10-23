@@ -5,38 +5,38 @@ from servers.presence_connection_manager.src.abstractions.contracts import Resul
 
 
 class GetProfileDataModel(BaseModel):
-    nick: Optional[str] = None
-    profile_id: Optional[int] = None
-    unique_nick: Optional[str] = None
-    email: Optional[str] = None
-    firstname: Optional[str] = None
-    lastname: Optional[str] = None
-    icquin: Optional[int] = None
-    homepage: Optional[str] = None
-    zipcode: Optional[str] = None
-    countrycode: Optional[str] = None
-    longitude: Optional[float] = None
-    latitude: Optional[float] = None
-    location: Optional[str] = None
-    birthday: Optional[int] = None
-    birthmonth: Optional[int] = None
-    birthyear: Optional[int] = None
-    sex: Optional[int] = None
-    publicmask: Optional[int] = None
-    aim: Optional[str] = None
-    picture: Optional[int] = None
-    occupationid: Optional[int] = None
-    industryid: Optional[int] = None
-    incomeid: Optional[int] = None
-    marriedid: Optional[int] = None
-    childcount: Optional[int] = None
-    interests1: Optional[int] = None
-    ownership1: Optional[int] = None
-    connectiontype: Optional[int] = None
+    nick: str
+    profile_id: int
+    unique_nick: str
+    email: str
+    firstname: str
+    lastname: str
+    icquin: int
+    homepage: str
+    zipcode: str
+    countrycode: str
+    longitude: float
+    latitude: float
+    location: str
+    birthday: int
+    birthmonth: int
+    birthyear: int
+    sex: int
+    publicmask: int
+    aim: str
+    picture: int
+    occupationid: int
+    industryid: int
+    incomeid: int
+    marriedid: int
+    childcount: int
+    interests1: int
+    ownership1: int
+    connectiontype: int
 
 
 class GetProfileResult(ResultBase):
-    user_profile: Optional[GetProfileDataModel] = None
+    user_profile: GetProfileDataModel
 
 
 class NewProfileResult(ResultBase):

@@ -2,7 +2,7 @@ import socket
 import socketserver
 
 from library.src.abstractions.client import ClientBase
-from library.src.abstractions.connections import ConnectionBase, ServerBase
+from library.src.abstractions.connections import ConnectionBase, NetworkServerBase
 from library.src.configs import CONFIG
 
 
@@ -26,7 +26,7 @@ class UdpHandler(socketserver.BaseRequestHandler):
         conn.sendto(data, self.client_address)
 
 
-class UdpServer(ServerBase):
+class UdpServer(NetworkServerBase):
     def start(self) -> None:
         self._server = socketserver.ThreadingUDPServer(
             (self._config.public_address, self._config.listening_port),

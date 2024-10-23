@@ -47,7 +47,7 @@ async def multicast_message(ws: WebSocket):
 @router.websocket(f"{CHAT}/Channel")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
-    if isinstance(ws, WebSocket):
+    if isinstance(ws, WebSocket) and ws.client is not None:
         client_key = f"{ws.client.host}:{ws.client.port}"
         clients[client_key] = ws
     try:
@@ -66,9 +66,11 @@ async def websocket_endpoint(ws: WebSocket):
                 await client.send_text(request)
 
     except WebSocketDisconnect:
-        client_key = f"{ws.client.host}:{ws.client.port}"
-        del clients[client_key]
-        channels[msg.channel_name].remove(ws)
+        if ws.client is not None:
+            client_key = f"{ws.client.host}:{ws.client.port}"
+            del clients[client_key]
+            if msg is not None:
+                channels[msg.channel_name].remove(ws)
         print("Client disconnected")
 
 

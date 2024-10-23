@@ -109,10 +109,6 @@ class HeartBeatRequest(RequestBase):
             temp_key = key_value_array[i]
             temp_value = key_value_array[i + 1]
 
-            if temp_key == "":
-                LogWriter.debug("Skipping empty key value")
-                continue
-
             if temp_key in self.server_data:
                 self.server_data[temp_key] = temp_value
             else:

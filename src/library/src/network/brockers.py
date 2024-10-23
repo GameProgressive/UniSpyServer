@@ -1,4 +1,5 @@
 import threading
+from typing import Optional
 import websocket
 from redis import Redis
 from library.src.abstractions.brocker import BrockerBase
@@ -20,7 +21,7 @@ class RedisBrocker(BrockerBase):
         threading.Thread(target=self.get_message).start()
 
     def get_message(self):
-        for message in self._subscriber.get_message():
+        for message in self._subscriber.listen():
             if not self.is_started:
                 break
             if message["type"] == "message":
@@ -36,8 +37,8 @@ class RedisBrocker(BrockerBase):
 
 
 class WebsocketBrocker(BrockerBase):
-    _publisher: websocket.WebSocket = None
     _subscriber: websocket.WebSocketApp
+    _publisher: Optional[websocket.WebSocket] = None
 
     def __init__(self, name: str, url: str, call_back_func: "function") -> None:
         super().__init__(name, call_back_func)
@@ -49,7 +50,7 @@ class WebsocketBrocker(BrockerBase):
         self._subscriber.on_open = self._on_open
 
     def _on_open(self, ws):
-        self._publisher: websocket.WebSocket = ws
+        self._publisher = ws
 
     def _on_message(self, _, message):
         self.receive_message(message)

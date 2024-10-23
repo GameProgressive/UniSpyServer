@@ -11,7 +11,7 @@ class InitHandler(HandlerBase):
         assert isinstance(request, InitRequest)
 
     async def data_fetch(self) -> None:
-        info = InitPacketInfo(**self._request.model_dump_json())
+        info = InitPacketInfo(**self._request.model_dump())
         await update_init_info(info)
 
     async def result_construct(self) -> None:
