@@ -1,4 +1,4 @@
-from servers.web_services.src.exceptions.general import WebExceptions
+from servers.web_services.src.exceptions.general import WebException
 from servers.web_services.src.modules.direct2game.abstractions.contracts import (
     NAMESPACE,
     RequestBase,
@@ -14,21 +14,28 @@ class GetPurchaseHistoryRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         game_id = self._content_element.find(f".//{{{NAMESPACE}}}gameid")
-        if game_id is None:
-            raise WebExceptions("gameid is missing from the request.")
-        self.game_id = int(game_id)
+        if game_id is None or game_id.text is None:
+            raise WebException("gameid is missing from the request.")
+        self.game_id = int(game_id.text)
 
-        self.proof = self._content_element.find(f".//{{{NAMESPACE}}}proof")
-        if self.proof is None:
-            raise WebExceptions("proof is missing from the request.")
-        self.access_token = self._content_element.find(
+        proof = self._content_element.find(f".//{{{NAMESPACE}}}proof")
+        if proof is None or proof.text is None:
+            raise WebException("proof is missing from the request.")
+        self.proof = proof.text
+
+        access_token = self._content_element.find(
             f".//{{{NAMESPACE}}}access_token"
         )
-        if self.access_token is None:
-            raise WebExceptions("access_token is missing from the request.")
-        self.certificate = self._content_element.find(f".//{{{NAMESPACE}}}certificate")
-        if self.certificate is None:
-            raise WebExceptions("certificate is missing from the request.")
+
+        if access_token is None or access_token.text is None:
+            raise WebException("access_token is missing from the request.")
+        self.access_token = access_token.text
+
+        certificate = self._content_element.find(
+            f".//{{{NAMESPACE}}}certificate")
+        if certificate is None or certificate.text is None:
+            raise WebException("certificate is missing from the request.")
+        self.certificate = certificate.text
 
 
 class GetStoreAvailabilityRequest(RequestBase):
@@ -40,16 +47,21 @@ class GetStoreAvailabilityRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         game_id = self._content_element.find(f".//{{{NAMESPACE}}}gameid")
-        if game_id is None:
-            raise WebExceptions("gameid is missing from the request.")
-        self.game_id = int(game_id)
+        if game_id is None or game_id.text is None:
+            raise WebException("gameid is missing from the request.")
+        self.game_id = int(game_id.text)
         version = self._content_element.find(f".//{{{NAMESPACE}}}version")
-        if version is None:
-            raise WebExceptions("version is missing from the request.")
-        self.version = int(version)
-        self.region = self._content_element.find(f".//{{{NAMESPACE}}}region")
-        if self.region is None:
-            raise WebExceptions("region is missing from the request.")
-        self.access_token = self._content_element.find(f".//{{{NAMESPACE}}}accesstoken")
-        if self.access_token is None:
-            raise WebExceptions("accesstoken is missing from the request.")
+        if version is None or version.text is None:
+            raise WebException("version is missing from the request.")
+        self.version = int(version.text)
+        region = self._content_element.find(f".//{{{NAMESPACE}}}region")
+        if region is None or region.text is None:
+            raise WebException("region is missing from the request.")
+        self.region = region.text
+
+        access_token = self._content_element.find(
+            f".//{{{NAMESPACE}}}accesstoken")
+
+        if access_token is None or access_token.text is None:
+            raise WebException("accesstoken is missing from the request.")
+        self.access_token = access_token.text

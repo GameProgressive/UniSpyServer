@@ -136,7 +136,7 @@ class RateRecordRequest(RequestBase):
         super().parse()
         record_id = self._content_element.find(
             f".//{{{NAMESPACE}}}recordid")
-        if record_id is None:
+        if record_id is None or record_id.text is None:
             raise SakeException("No record id found.")
         self.record_id = record_id.text
 
@@ -155,7 +155,7 @@ class SearchForRecordsRequest(RequestBase):
     surrounding: str
     owner_ids: str
     cache_flag: str
-    fields: list[tuple[str, str]] = []
+    fields: list[tuple[str, str]]
     """
     [
     (field_name,field_type),
@@ -170,58 +170,60 @@ class SearchForRecordsRequest(RequestBase):
         super().parse()
         filter = self._content_element.find(
             f".//{{{NAMESPACE}}}filter")
-        if filter is None:
+        if filter is None or filter.text is None:
             raise SakeException("No filter found.")
         self.filter = filter.text
 
         sort = self._content_element.find(
             f".//{{{NAMESPACE}}}sort")
-        if sort is None:
+        if sort is None or sort.text is None:
             raise SakeException("No sort found.")
         self.sort = sort.text
 
         offset = self._content_element.find(
             f".//{{{NAMESPACE}}}offset")
-        if offset is None:
+        if offset is None or offset.text is None:
             raise SakeException("No offset found.")
         self.offset = offset.text
 
-        max = self._content_element.find(
+        vmax = self._content_element.find(
             f".//{{{NAMESPACE}}}max")
-        if max is None:
+        if vmax is None or vmax.text is None:
             raise SakeException("No max found.")
-        self.max = max.text
+        self.max = vmax.text
 
         surrounding = self._content_element.find(
             f".//{{{NAMESPACE}}}surrounding")
-        if surrounding is None:
+        if surrounding is None or surrounding.text is None:
             raise SakeException("No surrounding found.")
         self.surrounding = surrounding.text
 
         owner_ids = self._content_element.find(
             f".//{{{NAMESPACE}}}ownerids")
-        if owner_ids is None:
+        if owner_ids is None or owner_ids.text is None:
             raise SakeException("No ownderids found.")
         self.owner_ids = owner_ids.text
 
         cache_flag = self._content_element.find(
             f".//{{{NAMESPACE}}}cacheFlag")
-        if cache_flag is None:
+        if cache_flag is None or cache_flag.text is None:
             raise SakeException("No cache flag found.")
         self.cache_flag = cache_flag.text
 
         fields = self._content_element.find(
             f".//{{{NAMESPACE}}}fields")
+        self.fields = []
         if fields is None:
             raise SakeException("No record id found.")
         for e in fields:
             data = (e.text, e.tag.split("}")[1])
-            self.fields.append(data)
+            if data is not None:
+                self.fields.append(data)
 
 
 class UpdateRecordRequest(RequestBase):
     record_id: str
-    values: OrderedDict[str, object]
+    values: list
     """
     [
     (field_name,field_type,field_value),
@@ -236,11 +238,12 @@ class UpdateRecordRequest(RequestBase):
         super().parse()
         record_id = self._content_element.find(
             f".//{{{NAMESPACE}}}recordid")
-        if record_id is None:
+        if record_id is None or record_id.text is None:
             raise SakeException("No record id found.")
         self.record_id = record_id.text
         values_node = self._content_element.find(
             f".//{{{NAMESPACE}}}values")
+        # todo fix this
         temp_str = ET.tostring(
-            values_node, encoding="unicode").replace("ns0:", "")
+            element=values_node, encoding="unicode").replace("ns0:", "")
         self.values = xmltodict.parse(temp_str)['values']["RecordField"]

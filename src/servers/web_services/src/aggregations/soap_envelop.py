@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 
+from servers.web_services.src.exceptions.general import WebException
+
 
 class SoapEnvelop:
     soap_envelop_namespace = "http://schemas.xmlsoap.org/soap/envelope/"
@@ -15,11 +17,15 @@ class SoapEnvelop:
         self.current_element = self.body
 
     def finish_add_sub_element(self):
-        self.current_element = ET.SubElement(self.current_element,)
+        self.current_element = ET.SubElement(
+            self.current_element, self._body_namespace)
 
     def change_to_element(self, name: str):
-        self.current_element = self.body.find(
+        current_element = self.body.find(
             f".//{{{self._body_namespace}}}{name}")
+        if current_element is None:
+            raise WebException("can not find the node")
+        self.current_element = current_element
 
     def back_to_parent_element(self):
         self.current_element = self.body
@@ -30,7 +36,7 @@ class SoapEnvelop:
         )
 
         if value is not None:
-            new_element.text = value
+            new_element.text = str(value)
             self.current_element = new_element
 
     def __str__(self) -> str:

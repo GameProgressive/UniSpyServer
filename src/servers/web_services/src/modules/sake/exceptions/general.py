@@ -1,5 +1,5 @@
-from servers.web_services.src.exceptions.general import WebExceptions
+from servers.web_services.src.exceptions.general import WebException
 
 
-class SakeException(WebExceptions):
+class SakeException(WebException):
     pass

@@ -22,6 +22,7 @@ from servers.web_services.src.modules.auth.contracts.results import (
     LoginProfileResult,
     LoginPs3CertResult,
     LoginRemoteAuthResult,
+    LoginUniqueNickResult,
 )
 
 
@@ -38,7 +39,8 @@ class LoginProfileWithGameIdHandler(CmdHandlerBase):
     _result: LoginProfileResult
 
     def _response_construct(self) -> None:
-        self._response = LoginProfileWithGameIdResponse(self._request, self._result)
+        self._response = LoginProfileWithGameIdResponse(
+            self._request, self._result)
 
 
 class LoginPs3CertHandler(CmdHandlerBase):
@@ -61,13 +63,16 @@ class LoginRemoteAuthHandler(CmdHandlerBase):
 
 class LoginRemoteAuthWithGameIdHandler(CmdHandlerBase):
     _request: LoginRemoteAuthWithGameIdRequest
+    _result: LoginRemoteAuthResult
 
     def _response_construct(self) -> None:
-        self._response = LoginRemoteAuthWithGameIdResponse(self._request, self._result)
+        self._response = LoginRemoteAuthWithGameIdResponse(
+            self._request, self._result)
 
 
 class LoginUniqueNickHandler(CmdHandlerBase):
     _request: LoginUniqueNickRequest
+    _result: LoginUniqueNickResult
 
     def _response_construct(self) -> None:
         self._response = LoginUniqueNickResponse(self._request, self._result)
@@ -75,6 +80,7 @@ class LoginUniqueNickHandler(CmdHandlerBase):
 
 class LoginUniqueNickWithGameIdHandler(CmdHandlerBase):
     _request: LoginUniqueNickWithGameIdRequest
-
+    _result: LoginUniqueNickResult
     def _response_construct(self) -> None:
-        self._response = LoginUniqueNickWithGameIdResponse(self._request, self._result)
+        self._response = LoginUniqueNickWithGameIdResponse(
+            self._request, self._result)

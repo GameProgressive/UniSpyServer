@@ -1,9 +1,11 @@
+from typing import TYPE_CHECKING, Optional, cast
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.handler import CmdHandlerBase
 from library.src.abstractions.switcher import SwitcherBase
 import xml.etree.ElementTree as ET
 
-from servers.web_services.src.exceptions.general import WebExceptions
+from servers.web_services.src.applications.client import Client
+from servers.web_services.src.exceptions.general import WebException
 from servers.web_services.src.modules.auth.contracts.requests import LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest
 from servers.web_services.src.modules.auth.handlers.general import LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
 from servers.web_services.src.modules.direct2game.contracts.requests import GetPurchaseHistoryRequest, GetStoreAvailabilityRequest
@@ -23,17 +25,19 @@ class Switcher(SwitcherBase):
     def _process_raw_request(self) -> None:
         name_node = ET.fromstring(self._raw_request)[0][0]
         if name_node is None:
-            raise WebExceptions("name node is missing from soap request")
-
+            raise WebException("name node is missing from soap request")
+        if name_node.text is None:
+            raise WebException(
+                "name node text field is missing from soap request")
         name = name_node.text.split("}")[1]
 
         if len(name) < 4:
-            raise WebExceptions("request name invalid")
+            raise WebException("request name invalid")
         self._requests.append((name, self._raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
-        assert isinstance(name, str)
-        assert isinstance(raw_request, str)
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+        if TYPE_CHECKING:
+            self._client = cast(Client, self._client)
 
         match name:
             # Altas services
@@ -57,7 +61,7 @@ class Switcher(SwitcherBase):
                 return LoginRemoteAuthHandler(self._client, LoginRemoteAuthRequest(raw_request))
 
             case "LoginRemoteAuthWithGameId":
-                return LoginRemoteAuthWithGameIdHandler(self._client, LoginRemoteAuthWithGameIdRequest)
+                return LoginRemoteAuthWithGameIdHandler(self._client, LoginRemoteAuthWithGameIdRequest(raw_request))
 
             case "LoginUniqueNick":
                 return LoginUniqueNickHandler(self._client, LoginUniqueNickRequest(raw_request))
@@ -105,7 +109,7 @@ class Switcher(SwitcherBase):
             case "DeleteRecord":
                 raise NotImplementedError()
             case "GetMyRecords":
-                raise GetMyRecordsHandler(
+                return GetMyRecordsHandler(
                     self._client, GetMyRecordsRequest(raw_request))
             case "GetRandomRecords":
                 raise NotImplementedError()

@@ -3,7 +3,7 @@ import os
 from typing import Literal, Optional
 from uuid import UUID
 
-from library.src.exceptions.general import UniSpyException
+# from library.src.exceptions.general import UniSpyException
 
 
 @dataclass
@@ -112,7 +112,7 @@ class UniSpyServerConfig:
 unispy_config = os.environ.get("UNISPY_CONFIG")
 if unispy_config is None:
 
-    raise UniSpyException(
+    raise Exception(
         "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     )
 with open(unispy_config, "r") as f:
