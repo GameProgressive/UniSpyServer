@@ -133,40 +133,40 @@ class RegisterNickRequest(RequestBase):
 class UpdateProfileRequest(RequestBase):
     has_public_mask_flag: Optional[bool] = None
     public_mask: Optional[PublicMasks] = None
-    session_key: str = None
-    partner_id: int = None
-    nick: str = None
-    uniquenick: str = None
-    has_first_name_flag: bool = None
-    first_name: str = None
-    has_last_name_flag: bool = None
-    last_name: str = None
-    has_icq_flag: bool = None
-    icq_uin: int = None
-    has_home_page_flag: bool = None
-    home_page: str = None
-    has_birthday_flag: bool = False
-    birth_day: int = None
-    birth_month: int = None
-    birth_year: int = None
-    has_sex_flag: bool = False
-    sex: bool = None
-    has_zip_code: bool = False
-    zip_code: str = None
-    has_country_code: bool = False
-    country_code: str = None
+    session_key: Optional[str] = None
+    partner_id: Optional[int] = None
+    nick: Optional[str] = None
+    uniquenick: Optional[str] = None
+    has_first_name_flag: Optional[bool] = None
+    first_name: Optional[str] = None
+    has_last_name_flag: Optional[bool] = None
+    last_name: Optional[str] = None
+    has_icq_flag: Optional[bool] = None
+    icq_uin: Optional[int] = None
+    has_home_page_flag: Optional[bool] = None
+    home_page: Optional[str] = None
+    has_birthday_flag: Optional[bool] = False
+    birth_day: Optional[int] = None
+    birth_month: Optional[int] = None
+    birth_year: Optional[int] = None
+    has_sex_flag: Optional[bool] = False
+    sex: Optional[bool] = None
+    has_zip_code: Optional[bool] = False
+    zip_code: Optional[str] = None
+    has_country_code: Optional[bool] = False
+    country_code: Optional[str] = None
 
 
 class UpdateUiRequest(RequestBase):
-    cpubrandid: str = None
-    cpuspeed: str = None
-    memory: str = None
-    videocard1ram: str = None
-    videocard2ram: str = None
-    connectionid: str = None
-    connectionspeed: str = None
-    hasnetwork: str = None
-    pic: str = None
+    cpubrandid: Optional[str] = None
+    cpuspeed: Optional[str] = None
+    memory: Optional[str] = None
+    videocard1ram: Optional[str] = None
+    videocard2ram: Optional[str] = None
+    connectionid: Optional[str] = None
+    connectionspeed: Optional[str] = None
+    hasnetwork: Optional[str] = None
+    pic: Optional[str] = None
 
 
 if __name__ == "__main__":

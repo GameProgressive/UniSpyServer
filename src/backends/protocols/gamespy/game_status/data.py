@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, cast
 from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles
 from servers.game_status.src.enums.general import PersistStorageType
 from servers.game_status.src.exceptions.general import GSException
@@ -20,21 +21,30 @@ def get_profile_id_by_token(token: str) -> int:
         SubProfiles.authtoken == token).first()
     if result is None:
         raise GSException("No records found in database")
+    if TYPE_CHECKING:
+        result = cast(int, result)
     return result
 
 
 def get_profile_id(cdkey: str, nick_name: str) -> int:
     result = PG_SESSION.query(SubProfiles.profileid).join(
-        SubProfiles, Profiles.profileid == SubProfiles.profileid).filter(SubProfiles.cdkeyenc == cdkey, Profiles.nick == nick_name).first()
+        SubProfiles, Profiles.profileid == SubProfiles.profileid)\
+        .filter(SubProfiles.cdkeyenc == cdkey,
+                Profiles.nick == nick_name)\
+        .first()
     if result is None:
         raise GSException("No record found in database")
+    if TYPE_CHECKING:
+        result = cast(int, result)
     return result
 
 
-def get_player_data(profile_id: int, storage_type: PersistStorageType, data_index: int) -> dict[str, str]:
+def get_player_data(profile_id: int, storage_type: PersistStorageType, data_index: int) -> dict:
     result = PG_SESSION.query(PStorage.data).filter(PStorage.ptype == storage_type.value,
                                                     PStorage.dindex == data_index,
-                                                    PStorage.profileid == profile_id)
+                                                    PStorage.profileid == profile_id).first()
     if result is None:
         raise GSException("No records found in database")
+    if TYPE_CHECKING:
+        result = cast(dict, result)
     return result

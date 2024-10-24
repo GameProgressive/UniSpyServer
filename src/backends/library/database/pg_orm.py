@@ -226,6 +226,14 @@ class NatFailCaches(Base):
 #     update_time = Column(DateTime, nullable=False)
 
 
+class RelayServerCaches(Base):
+    __tablename__ = "relay_server_caches"
+    server_id = Column(UUID, primary_key=True, nullable=False)
+    public_ip_address = Column(String, nullable=False)
+    public_port = Column(Integer, nullable=False)
+    client_count = Column(Integer, nullable=False)
+
+
 class ChatChannelCaches(Base):
     __tablename__ = "chat_channel_caches"
     channel_name = Column(String, primary_key=True, nullable=False)

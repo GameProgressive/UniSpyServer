@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING, Optional, cast
-from backends.protocols.gamespy.chat.storage_infos import ChannelInfo
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, GroupList, Games, GameServerCaches
 from servers.chat.src.aggregates.peer_room import PeerRoom
 
