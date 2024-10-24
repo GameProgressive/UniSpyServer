@@ -74,8 +74,8 @@ class LoginHandler(CmdHandlerBase):
 
     def __init__(self, client: "Client", request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
-        super().__init__(client, request)
         self._result_cls = LoginResult
+        super().__init__(client, request)
 
     def _response_construct(self) -> None:
         self._response = LoginResponse(self._request, self._result)
@@ -95,6 +95,10 @@ class NewUserHandler(CmdHandlerBase):
     _result_cls: type[NewUserResult]
     _result: NewUserResult
     # todo create seperate request and result
+
+    def __init__(self, client: Client, request: RequestBase) -> None:
+        self._result_cls = NewUserResult
+        super().__init__(client, request)
 
     def _response_construct(self):
         self._response = NewUserResponse(self._request, self._result)

@@ -160,12 +160,12 @@ class RateRecordRequest(RequestBase):
 
 
 class SearchForRecordsRequest(RequestBase):
-    filter: str
-    sort: str
+    filter: Optional[str]
+    sort: Optional[str]
     offset: str
     max: str
     surrounding: str
-    owner_ids: str
+    owner_ids: Optional[str]
     cache_flag: str
     fields: list[tuple[Optional[str], str]]
     """
@@ -182,13 +182,13 @@ class SearchForRecordsRequest(RequestBase):
         super().parse()
         filter = self._content_element.find(
             f".//{{{NAMESPACE}}}filter")
-        if filter is None or filter.text is None:
+        if filter is None:
             raise SakeException("No filter found.")
         self.filter = filter.text
 
         sort = self._content_element.find(
             f".//{{{NAMESPACE}}}sort")
-        if sort is None or sort.text is None:
+        if sort is None:
             raise SakeException("No sort found.")
         self.sort = sort.text
 
@@ -212,7 +212,7 @@ class SearchForRecordsRequest(RequestBase):
 
         owner_ids = self._content_element.find(
             f".//{{{NAMESPACE}}}ownerids")
-        if owner_ids is None or owner_ids.text is None:
+        if owner_ids is None:
             raise SakeException("No ownderids found.")
         self.owner_ids = owner_ids.text
 

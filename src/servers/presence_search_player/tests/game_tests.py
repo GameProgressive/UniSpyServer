@@ -1,4 +1,4 @@
-from typing import cast
+from typing import TYPE_CHECKING, cast
 import unittest
 
 from library.src.extentions.password_encoder import process_password
@@ -20,8 +20,9 @@ class GameTest(unittest.TestCase):
 
         switcher = CmdSwitcher(client, raw)
         switcher.handle()
-        request: CheckRequest = cast(
-            CheckRequest, switcher._handlers[0]._request)
+        request = switcher._handlers[0]._request
+        if TYPE_CHECKING:
+            request = cast(CheckRequest, request)
         response = switcher._handlers[0]._response
         self.assertEqual("spyguy", request.nick)
         self.assertEqual("spyguy@gamespy.com", request.email)

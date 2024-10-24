@@ -1,29 +1,57 @@
 import unittest
 
+from library.tests.mock_objects.general import create_mock_url
+from servers.presence_connection_manager.src.applications.handlers import LoginHandler, NewUserHandler
 from servers.presence_connection_manager.src.contracts.requests import StatusRequest
 from servers.presence_connection_manager.tests.mock_objects import create_client
-
+import responses
 
 class GameTest(unittest.TestCase):
+    @responses.activate
     def test_civilization_4(self) -> None:
         raw_requests = [
             "\\newuser\\\\email\\civ4@unispy.org\\nick\\civ4-tk\\passwordenc\\JMHGwQ__\\productid\\10435\\gamename\\civ4\\namespaceid\\17\\uniquenick\\civ4-tk\\id\\1\\final\\",
             "\\login\\\\challenge\\xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT\\uniquenick\\civ4-tk\\userid\\25\\profileid\\26\\response\\7f2c9c6685570ea18b7207d2cbd72452\\firewall\\1\\port\\0\\productid\\10435\\gamename\\civ4\\namespaceid\\17\\sdkrevision\\1\\id\\1\\final\\",
         ]
         client = create_client()
+        create_mock_url(client, NewUserHandler, {
+                        "user_id": 0, "profile_id": 0})
+        create_mock_url(client, LoginHandler, {"response_proof": "7f2c9c6685570ea18b7207d2cbd72452", "data": {
+            "user_id": 0,
+            "profile_id": 0,
+            "nick": "test",
+            "email": "test@gamespy.com",
+            "unique_nick": "test_unique",
+            "password_hash": "password",
+            "email_verified_flag": True,
+            "namespace_id": 0,
+            "sub_profile_id": 0,
+            "banned_flag": False
+        }})
 
         for x in raw_requests:
             client.on_received(x.encode("ascii"))
             pass
-
+    @responses.activate
     def test_conflict_global_storm(self) -> None:
-            # "\\lc\\1\\challenge\\NRNUJLZMLX\\id\\1\\final\\",
+        # "\\lc\\1\\challenge\\NRNUJLZMLX\\id\\1\\final\\",
         raw_requests = [
             "\\login\\\\challenge\\KMylyQbZfqzKn9otxx32q4076sOUnKif\\user\\cgs1@cgs1@rs.de\\response\\c1a6638bbcfe130e4287bfe4aa792949\\port\\-15737\\productid\\10469\\gamename\\conflictsopc\\namespaceid\\1\\id\\1\\final\\",
             "\\inviteto\\\\sesskey\\58366\\products\\1038\\final\\",
         ]
         client = create_client()
-
+        create_mock_url(client, LoginHandler, {"response_proof": "7f2c9c6685570ea18b7207d2cbd72452", "data": {
+            "user_id": 0,
+            "profile_id": 0,
+            "nick": "test",
+            "email": "test@gamespy.com",
+            "unique_nick": "test_unique",
+            "password_hash": "password",
+            "email_verified_flag": True,
+            "namespace_id": 0,
+            "sub_profile_id": 0,
+            "banned_flag": False
+        }})
         for x in raw_requests:
             client.on_received(x.encode("ascii"))
             pass

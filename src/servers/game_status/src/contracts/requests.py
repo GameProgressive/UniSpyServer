@@ -204,16 +204,19 @@ class SetPlayerDataRequest(RequestBase):
 
 @final
 class UpdateGameRequest(RequestBase):
-    connection_id: int
+    connection_id: Optional[int]
     is_done: bool
     is_client_local_storage_available: bool
     game_data: str
     game_data_dict: dict[str, str]
     session_key: str
 
+    def __init__(self, raw_request: object) -> None:
+        super().__init__(raw_request)
+        self.connection_id = None
+
     def parse(self) -> None:
         super().parse()
-
         if "gamedata" not in self.request_dict:
             raise GSException("gamedata is missing")
         self.game_data = self.request_dict["gamedata"]
