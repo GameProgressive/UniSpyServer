@@ -1,3 +1,4 @@
+from typing import Optional
 from library.src.configs import CONFIG
 from sqlalchemy import Enum, create_engine
 from sqlalchemy.orm.session import Session
@@ -197,8 +198,8 @@ class SakeStorage(Base):
 class InitPacketCaches(Base):
     __tablename__ = "init_packet_caches"
 
+    cookie = Column(Integer, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
-    cookie = Column(Integer, nullable=False)
     version = Column(Integer, nullable=False)
     port_type = Column(Enum(NatPortType), nullable=False)
     client_index = Column(Enum(NatClientIndex), nullable=False)
@@ -212,7 +213,8 @@ class InitPacketCaches(Base):
 
 
 class NatFailCaches(Base):
-    __tablename__ = "nat_fail_Cachess"
+    __tablename__ = "nat_fail_cachess"
+    record_id = Column(Integer, primary_key=True, autoincrement=True)
     public_ip_address1 = Column(INET, nullable=False)
     public_ip_address2 = Column(INET, nullable=False)
     update_time = Column(DateTime, nullable=False)
@@ -225,9 +227,9 @@ class NatFailCaches(Base):
 
 
 class ChatChannelCaches(Base):
-    __tablename__ = "chat_channel_Caches"
-    server_id = Column(UUID, nullable=False)
+    __tablename__ = "chat_channel_caches"
     channel_name = Column(String, primary_key=True, nullable=False)
+    server_id = Column(UUID, nullable=False)
     game_name = Column(String, nullable=False)
     room_name = Column(String, nullable=False)
     topic = Column(String, nullable=False)
@@ -256,9 +258,9 @@ class ChatUserCaches(Base):
 
 class GameServerCaches(Base):
     __tablename__ = "game_server_caches"
+    instant_key = Column(Integer, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
     host_ip_address = Column(INET, nullable=False)
-    instant_key = Column(Integer, nullable=False)
     game_name = Column(String, nullable=False)
     query_report_port = Column(Integer, nullable=False)
     update_time = Column(DateTime, nullable=False)

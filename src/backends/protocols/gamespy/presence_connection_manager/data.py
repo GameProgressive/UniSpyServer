@@ -1,4 +1,5 @@
-from library.src.database.pg_orm import (
+from typing import TYPE_CHECKING, cast
+from backends.library.database.pg_orm import (
     Blocked,
     Friends,
     Profiles,
@@ -17,7 +18,8 @@ def is_email_exist(email: str) -> bool:
 
 
 def delete_friend_by_profile_id(profile_id: int):
-    friend = PG_SESSION.query(Friends).filter(Friends.friendid == profile_id).first()
+    friend = PG_SESSION.query(Friends).filter(
+        Friends.friendid == profile_id).first()
     if friend is None:
         raise GPDatabaseException(
             f"friend deletion have errors on profile id:{profile_id}"
@@ -33,6 +35,8 @@ def get_blocked_profile_id_list(profile_id: int, namespace_id: int) -> list[int]
         .filter(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[int], result)
     return result
 
 
@@ -42,6 +46,8 @@ def get_friend_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
         .filter(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[int], result)
     return result
 
 
@@ -81,18 +87,22 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
         of users that match the provided email and nickname in the database.
     """
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid,
+                         SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[tuple[int, int, int]], result)
     return result
 
 
 def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid,
+                         SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
@@ -101,12 +111,15 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
         )
         .first()
     )
+    if TYPE_CHECKING:
+        result = cast(tuple[int, int, int], result)
     return result
 
 
 def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, int]]:
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid, Profiles.profileid,
+                         SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
@@ -115,6 +128,8 @@ def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, 
         )
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[tuple[int, int, int]], result)
     return result
 
 
@@ -129,7 +144,8 @@ def update_block_info_list(target_id: int, profile_id: int, namespace_id: int) -
         .count()
     )
     if result == 0:
-        b = Blocked(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
+        b = Blocked(targetid=target_id, namespaceid=namespace_id,
+                    profileid=profile_id)
         PG_SESSION.add(b)
         PG_SESSION.commit()
 
@@ -144,7 +160,8 @@ def update_friend_info(target_id: int, profile_id: int, namespace_id: int):
         )
         .count()
     )
-    f = Friends(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
+    f = Friends(targetid=target_id, namespaceid=namespace_id,
+                profileid=profile_id)
 
     if result == 0:
         PG_SESSION.add(f)
@@ -152,7 +169,9 @@ def update_friend_info(target_id: int, profile_id: int, namespace_id: int):
 
 
 def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
-
+    assert isinstance(profile_id, int)
+    assert isinstance(old_nick, str)
+    assert isinstance(new_nick, str)
     result = (
         PG_SESSION.query(Profiles)
         .filter(Profiles.profileid == profile_id, Profiles.nick == old_nick)
@@ -162,7 +181,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
     if result is None:
         raise GPDatabaseException("No user infomation found in database.")
 
-    result.nick = new_nick
+    result.nick = new_nick  # type:ignore
     PG_SESSION.commit()
 
 
@@ -177,7 +196,7 @@ def update_unique_nick(subprofile_id: int, unique_nick: str):
         .filter(SubProfiles.subprofileid == subprofile_id)
         .first()
     )
-    result.uniquenick = unique_nick
+    result.uniquenick = unique_nick  # type:ignore
     PG_SESSION.commit()
 
 

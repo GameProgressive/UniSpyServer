@@ -1,5 +1,6 @@
+from typing import TYPE_CHECKING, Optional, cast
 from sqlalchemy import insert
-from library.src.database.pg_orm import (
+from backends.library.database.pg_orm import (
     Friends,
     Profiles,
     SubProfiles,
@@ -81,16 +82,17 @@ def get_user(email: str):
 def get_profile(user_id: int, nick_name: str) -> Profiles:
     result = PG_SESSION.query(Profiles).filter(
         Profiles.userid == user_id, Profiles.nick == nick_name
-    )
+    ).first()
     return result
 
 
 def get_sub_profile(profile_id: int, namespace_id: int, product_id: int) -> SubProfiles:
-    PG_SESSION.query(SubProfiles).filter(
+    result = PG_SESSION.query(SubProfiles).filter(
         SubProfiles.profileid == profile_id,
         SubProfiles.namespaceid == namespace_id,
         SubProfiles.namespaceid == product_id,
-    )
+    ).first()
+    return result
 
 
 def get_nick_and_unique_nick_list(email: str, password: str, namespace_id: int):
@@ -129,7 +131,8 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str):
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
-            Profiles.profileid.in_(PG_SESSION.query(Friends.profileid == profile_id)),
+            Profiles.profileid.in_(PG_SESSION.query(
+                Friends.profileid == profile_id)),
             SubProfiles.namespaceid == namespace_id,
             SubProfiles.gamename == game_name,
         )
@@ -140,7 +143,7 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str):
 
 def get_matched_profile_info_list(
     profile_ids: list[int], namespace_id: int
-) -> list[tuple[int, str]]:
+) -> Optional[list[tuple[int, str]]]:
     """
     return [(profileid,uniquenick)]
 
@@ -153,12 +156,14 @@ def get_matched_profile_info_list(
         )
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(Optional[list[tuple[int, str]]], result)
     return result
 
 
 def get_matched_info_by_nick(
     nick_name: str,
-) -> list[tuple[int, str, str, str, str, int]]:
+) -> Optional[list[tuple[int, str, str, str, str, int]]]:
     result = (
         PG_SESSION.query(
             Profiles.profileid,
@@ -173,6 +178,9 @@ def get_matched_info_by_nick(
         .filter(Profiles.nick == nick_name)
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(
+            Optional[list[tuple[int, str, str, str, str, int]]], result)
     return result
 
 
@@ -193,6 +201,8 @@ def get_matched_info_by_email(
         .filter(Users.email == email)
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[tuple[int, str, str, str, str, int]], result)
     return result
 
 
@@ -234,10 +244,12 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         )
         .all()
     )
+    if TYPE_CHECKING:
+        result = cast(list[tuple[int, str, str, str, str, int]], result)
     return result
 
 
-def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str):
+def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str) -> bool:
     result = (
         PG_SESSION.query(Profiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -246,15 +258,19 @@ def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str):
             SubProfiles.gamename == game_name,
             SubProfiles.namespaceid == namespace_id,
         )
-        .all()
+        .count()
     )
 
-    return result
+    if result == 0:
+        return False
+    else:
+        return True
 
 
-def is_email_exist(email: str):
-    result = PG_SESSION.query(Users.userid).filter(Users.email == email).count()
-    #! According to FSW partnerid is not nessesary
+def is_email_exist(email: str) -> bool:
+    result = PG_SESSION.query(Users.userid).filter(
+        Users.email == email).count()
+    # According to game <FSW> partnerid is not nessesary
     if result == 0:
         return False
     return True

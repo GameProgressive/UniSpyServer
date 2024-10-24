@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, cast
 from backends.protocols.gamespy.chat.storage_infos import ChannelInfo, ChannelUser
 from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
 from servers.chat.src.aggregates.channel import Channel
@@ -15,6 +16,8 @@ def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tupl
         Profiles.nick == nick_name,
         Users.password == password_hash
     ).first()
+    if TYPE_CHECKING:
+        result = cast(tuple[int, int, bool, bool], result)
     if result is None:
         # fmt: off
         raise ChatException(f"Can not find user with nickname:{nick_name} in database.")

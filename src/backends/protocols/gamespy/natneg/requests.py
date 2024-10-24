@@ -16,11 +16,11 @@ class RequestBase(lib.RequestBase):
     version: int
     cookie: int
     port_type: NatPortType
-    command_name: Union[RequestType, int]
+    command_name: RequestType
 
 
 class CommonRequestBase(RequestBase):
-    client_index: Union[NatClientIndex, int]
+    client_index: NatClientIndex
     use_game_port: bool
 
 
@@ -29,7 +29,7 @@ class AddressCheckRequest(CommonRequestBase):
 
 
 class ConnectAckRequest(RequestBase):
-    client_index: Union[NatClientIndex, int]
+    client_index: NatClientIndex
 
 
 class ConnectRequest(RequestBase):
@@ -37,7 +37,7 @@ class ConnectRequest(RequestBase):
     Server will send this request to client to let them connect to each other
     """
 
-    client_index: Union[NatClientIndex, int]
+    client_index: NatClientIndex
 
 
 class ErtAckRequest(CommonRequestBase):

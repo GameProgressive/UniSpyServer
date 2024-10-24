@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from pydantic import UUID4, BaseModel
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
@@ -58,6 +58,23 @@ class KeepAliveRequest(RequestBase):
     pass
 
 
+class NewUserRequest(RequestBase):
+    product_id: int
+    game_port: int
+    cd_key: str
+    has_game_name: bool
+    has_product_id: bool
+    has_cdkey: bool
+    has_partner_id: bool
+    has_game_port: bool
+    nick: str
+    email: str
+    password: str
+    partner_id: int
+    game_name: str
+    uniquenick: str
+
+
 class LoginRequest(RequestBase):
     user_challenge: str
     response: str
@@ -114,8 +131,8 @@ class RegisterNickRequest(RequestBase):
 
 
 class UpdateProfileRequest(RequestBase):
-    has_public_mask_flag: bool = None
-    public_mask: Union[PublicMasks, int] = None
+    has_public_mask_flag: Optional[bool] = None
+    public_mask: Optional[PublicMasks] = None
     session_key: str = None
     partner_id: int = None
     nick: str = None
