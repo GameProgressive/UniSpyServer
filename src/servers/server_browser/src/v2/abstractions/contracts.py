@@ -6,7 +6,7 @@ from library.src.extentions.encoding import get_bytes
 from servers.server_browser.src.v2.aggregations.encryption import SERVER_CHALLENGE
 from servers.server_browser.src.v2.aggregations.string_flags import STRING_SPLITER
 from servers.server_browser.src.v2.contracts.results import AdHocResult
-from servers.server_browser.src.v2.enums.general import (
+from servers.server_browser.src.v2.aggregations.enums import (
     DataKeyType,
     GameServerFlags,
     RequestType,
@@ -26,7 +26,8 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        self.request_length = int.from_bytes(self.raw_request[:2], byteorder="little")
+        self.request_length = int.from_bytes(
+            self.raw_request[:2], byteorder="little")
         self.command_name = RequestType(self.raw_request[2])
 
 
@@ -46,19 +47,19 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
 
 
 class ServerListUpdateOptionRequestBase(RequestBase):
-    request_version: Optional[int] = None
-    protocol_version: Optional[int] = None
-    encoding_version: Optional[int] = None
-    game_version: Optional[int] = None
-    query_options: Optional[int] = None
-    dev_game_name: Optional[str] = None
-    game_name: Optional[str] = None
-    client_challenge: Optional[str] = None
-    update_option: Optional[ServerListUpdateOption] = None
-    keys: Optional[List[str]] = None
-    filter: Optional[str] = None
+    request_version: int
+    protocol_version: int
+    encoding_version: int
+    game_version: int
+    query_options: int
+    dev_game_name: str
+    game_name: str
+    client_challenge: str
+    update_option: ServerListUpdateOption
+    keys: list[str]
+    filter: str
     source_ip: str
-    max_servers: Optional[int] = None
+    max_servers: int
 
     def __init__(self, raw_request: bytes):
         assert isinstance(raw_request, bytes)
@@ -74,7 +75,7 @@ class ServerListUpdateOptionResultBase(ResultBase):
 class ServerListUpdateOptionResponseBase(ResponseBase):
     _request: ServerListUpdateOptionRequestBase
     _result: ServerListUpdateOptionResultBase
-    _servers_info_buffers: list = []
+    _servers_info_buffers: bytearray
 
     def __init__(
         self,
@@ -84,6 +85,7 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
         assert issubclass(type(request), ServerListUpdateOptionRequestBase)
         assert issubclass(type(result), ServerListUpdateOptionResultBase)
         super().__init__(request, result)
+        self._servers_info_buffers = bytearray()
 
     def build(self) -> None:
         crypt_header = self.build_crypt_header()
@@ -107,15 +109,15 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
         for key in self._request.keys:
             self._servers_info_buffers.append(DataKeyType.STRING)
             self._servers_info_buffers.extend(get_bytes(key))
-            self._servers_info_buffers.append(STRING_SPLITER)
+            self._servers_info_buffers.extend(STRING_SPLITER)
 
     def build_unique_value(self):
         self._servers_info_buffers.append(0)
 
 
 class AdHocRequestBase(RequestBase):
-    game_server_public_ip: bytes
-    game_server_public_port: bytes
+    game_server_public_ip: str
+    game_server_public_port: int
 
     def parse(self) -> None:
         super().parse()
@@ -127,4 +129,4 @@ class AdHocRequestBase(RequestBase):
 
 class AdHocResponseBase(ResponseBase):
     _result: AdHocResult
-    _buffer: list[int] = []
+    _buffer: bytearray

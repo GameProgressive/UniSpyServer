@@ -115,6 +115,10 @@ if unispy_config is None:
     raise Exception(
         "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     )
+if not os.path.exists(unispy_config):
+    raise Exception(
+        "Unispy server config file not exist, check UNISPY_CONFIG path."
+    )
 with open(unispy_config, "r") as f:
     import json
 

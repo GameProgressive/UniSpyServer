@@ -1,4 +1,4 @@
-from servers.presence_connection_manager.src.enums.general import SdkRevisionType
+from servers.presence_connection_manager.src.aggregates.enums import SdkRevisionType
 
 
 class SdkRevision:

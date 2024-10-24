@@ -1,6 +1,6 @@
 import hashlib
 
-from servers.presence_connection_manager.src.enums.general import GPPartnerId, LoginType
+from servers.presence_connection_manager.src.aggregates.enums import GPPartnerId, LoginType
 
 SERVER_CHALLENGE = "0000000000"
 

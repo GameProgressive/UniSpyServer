@@ -1,5 +1,5 @@
 from backends.protocols.gamespy.chat.storage_infos import ChannelInfo, ChannelUser
-from library.src.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
+from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
 from servers.chat.src.aggregates.channel import Channel
 from servers.chat.src.exceptions.general import ChatException
 
@@ -10,7 +10,7 @@ def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tupl
         userid, profileid, emailverified, banned
     """
     result = PG_SESSION.query(Users.userid, Profiles.profileid,
-                              Users.emailverified, Users.banned).join(Profiles, (Users.userid, Profiles.userid)).where(
+                              Users.emailverified, Users.banned).join(Profiles, (Users.userid == Profiles.userid)).where(
         Users.email == email,
         Profiles.nick == nick_name,
         Users.password == password_hash
@@ -27,7 +27,7 @@ def uniquenick_login(uniquenick:str,namespace_id:int)-> tuple[int, int, bool, bo
     return
         userid, profileid, emailverified, banned
     """
-    result = PG_SESSION.query(Users.userid, Profiles.profileid,Users.emailverified, Users.banned).join(Profiles,(Users.userid,Profiles.userid)).join(Profiles,(Profiles.profileid,SubProfiles.profileid)).where(SubProfiles.namespaceid == namespace_id,SubProfiles.uniquenick == uniquenick).first()
+    result = PG_SESSION.query(Users.userid, Profiles.profileid,Users.emailverified, Users.banned).join(Profiles,(Users.userid == Profiles.userid)).join(Profiles,(Profiles.profileid == SubProfiles.profileid)).where(SubProfiles.namespaceid == namespace_id,SubProfiles.uniquenick == uniquenick).first()
     if result is None:
         # fmt: off
         raise ChatException(f"Can not find user with uniquenick:{uniquenick} in database.")

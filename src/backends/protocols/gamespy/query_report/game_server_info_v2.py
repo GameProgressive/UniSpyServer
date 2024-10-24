@@ -12,7 +12,8 @@ from mongoengine import (
 )
 
 # from library.src.database.mongodb_orm import connect_to_db, get_ttl_param
-from servers.query_report.src.v2.enums.general import GameServerStatus
+from backends.library.database.mongodb_orm import get_ttl_param
+from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 
 
 class GameServerInfoV2(Document):

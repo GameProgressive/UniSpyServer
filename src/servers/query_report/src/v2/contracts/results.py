@@ -1,5 +1,5 @@
 from servers.query_report.src.v2.abstractions.contracts import ResultBase
-from servers.query_report.src.v2.enums.general import PacketType
+from servers.query_report.src.v2.aggregates.enums import PacketType
 
 
 class ChallengeResult(ResultBase):

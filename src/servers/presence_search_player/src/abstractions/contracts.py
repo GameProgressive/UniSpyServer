@@ -1,7 +1,7 @@
 from typing import Dict
 import library.src.abstractions.contracts
 from library.src.extentions.gamespy_utils import convert_to_key_value
-from servers.presence_search_player.src.exceptions.general import (
+from servers.presence_search_player.src.aggregates.exceptions import (
     GPParseException,
 )
 

@@ -4,7 +4,7 @@ from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 
 from backends.protocols.gamespy.query_report.data import get_all_groups
 from servers.server_browser.src.v2.abstractions.contracts import QUERY_REPORT_DEFAULT_PORT
-from servers.server_browser.src.v2.enums.general import GameServerFlags
+from servers.server_browser.src.v2.aggregations.enums import GameServerFlags
 
 PEER_GROUP_LIST = get_all_groups()
 

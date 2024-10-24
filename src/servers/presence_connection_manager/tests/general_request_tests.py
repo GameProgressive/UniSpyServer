@@ -1,6 +1,6 @@
 import unittest
-from servers.presence_connection_manager.src.contracts.requests.general import LoginRequest
-from servers.presence_connection_manager.src.enums.general import (
+from servers.presence_connection_manager.src.contracts.requests import LoginRequest
+from servers.presence_connection_manager.src.aggregates.enums import (
     LoginType,
     QuietModeType,
     SdkRevisionType,

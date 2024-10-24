@@ -11,7 +11,7 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["ServerBrowserV2"]
 
     def _launch_server(self):
-        TcpServer(self.config, Client).start()
+        TcpServer(self.config, Client, self.logger).start()
 
 
 if __name__ == "__main__":

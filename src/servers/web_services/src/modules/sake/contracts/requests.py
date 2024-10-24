@@ -1,8 +1,8 @@
 from copy import copy, deepcopy
+from typing import Optional
 import xml.etree.ElementTree as ET
-from typing import OrderedDict
 
-from pydantic import BaseModel
+from servers.web_services.src.exceptions.general import WebException
 from servers.web_services.src.modules.sake.abstractions.general import (
     RequestBase,
     NAMESPACE,
@@ -27,8 +27,12 @@ class CreateRecordRequest(RequestBase):
         for f in record_fields:
             temp = []
             name = f.find(f".//{{{NAMESPACE}}}name")
+            if name is None or name.text is None:
+                raise WebException("name can not be None")
             temp.append(name.text)
             value = f.find(f".//{{{NAMESPACE}}}value")
+            if value is None or value.text is None:
+                raise WebException("value can not be None")
             for v in value:
                 temp.append(v.tag.split("}")[1])
                 for i in v:
@@ -44,14 +48,18 @@ class DeleteRecordRequest(RequestBase):
         super().parse()
         record_id = self._content_element.find(f".//{{{NAMESPACE}}}recordid")
 
-        if record_id is None:
+        if record_id is None or record_id.text is None:
             raise SakeException("recordid is missing from request")
 
         self.record_id = int(record_id.text)
 
 
 class GetMyRecordsRequest(RequestBase):
-    fields: list[tuple[str, str]] = []
+    fields: list[tuple[Optional[str], str]]
+
+    def __init__(self, raw_request: str) -> None:
+        super().__init__(raw_request)
+        self.fields = []
 
     def parse(self) -> None:
         super().parse()
@@ -60,17 +68,19 @@ class GetMyRecordsRequest(RequestBase):
             raise SakeException("fields is missing from request")
         for e in fields:
             data = (e.text, e.tag.split("}")[1])
+            if data is None:
+                raise WebException("data can not be None")
             self.fields.append(data)
 
 
 class GetRandomRecordsRequest(RequestBase):
     max: int
-    fields: list[tuple[str, str]] = []
+    fields: list[tuple[Optional[str], str]] = []
 
     def parse(self) -> None:
         super().parse()
         max = self._content_element.find(f".//{{{NAMESPACE}}}max")
-        if max is None:
+        if max is None or max.text is None:
             raise SakeException("max is missing from request")
         self.max = int(max.text)
 
@@ -79,6 +89,8 @@ class GetRandomRecordsRequest(RequestBase):
             raise SakeException("fields is missing from request")
         for e in fields:
             data = (e.text, e.tag.split("}")[1])
+            if data is None:
+                raise WebException("data can not be None")
             self.fields.append(data)
 
 
@@ -155,7 +167,7 @@ class SearchForRecordsRequest(RequestBase):
     surrounding: str
     owner_ids: str
     cache_flag: str
-    fields: list[tuple[str, str]]
+    fields: list[tuple[Optional[str], str]]
     """
     [
     (field_name,field_type),
@@ -244,6 +256,8 @@ class UpdateRecordRequest(RequestBase):
         values_node = self._content_element.find(
             f".//{{{NAMESPACE}}}values")
         # todo fix this
+        if values_node is None:
+            raise WebException("value node can not be none")
         temp_str = ET.tostring(
             element=values_node, encoding="unicode").replace("ns0:", "")
         self.values = xmltodict.parse(temp_str)['values']["RecordField"]

@@ -1,7 +1,7 @@
 
 from servers.presence_connection_manager.src.applications.client import Client
-from servers.presence_connection_manager.src.enums.general import LoginStatus
-from servers.presence_search_player.src.exceptions.general import GPException
+from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
+from servers.presence_search_player.src.aggregates.exceptions import GPException
 
 from servers.presence_connection_manager.src.abstractions.contracts import (
     RequestBase,

@@ -21,7 +21,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 from servers.natneg.src.enums.general import NatClientIndex, NatPortType
-from servers.query_report.src.v2.enums.general import GameServerStatus
+from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 
 Base: DeclarativeMeta = declarative_base()
 

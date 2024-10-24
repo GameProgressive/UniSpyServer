@@ -1,16 +1,13 @@
 from library.src.abstractions.switcher import SwitcherBase
-from servers.presence_connection_manager.src.contracts.requests.buddy import StatusInfoRequest, StatusRequest
-from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest, LoginRequest, LogoutRequest
-from servers.presence_connection_manager.src.contracts.requests.profile import AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, RegisterNickRequest, UpdateProfileRequest
-from servers.presence_connection_manager.src.handlers.buddy import StatusHandler, StatusInfoHandler
-from servers.presence_connection_manager.src.handlers.general import KeepAliveHandler, LoginHandler, LogoutHandler, NewUserHandler
-from servers.presence_connection_manager.src.handlers.profile import AddBlockHandler, GetProfileHandler, NewProfileHandler, RegisterCDKeyHandler, RegisterNickHandler, UpdateProfileHandler
-from servers.presence_connection_manager.src.contracts.requests import NewUserRequest
-from servers.presence_search_player.src.exceptions.general import GPParseException
+from servers.presence_connection_manager.src.contracts.requests import KeepAliveRequest, LoginRequest, LogoutRequest, StatusInfoRequest, StatusRequest, AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, NewUserRequest, RegisterNickRequest, UpdateProfileRequest
+from servers.presence_connection_manager.src.applications.handlers import AddBlockHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
+from servers.presence_search_player.src.aggregates.exceptions import GPParseException
 
 from servers.presence_connection_manager.src.abstractions.handlers import CmdHandlerBase
 from typing import TYPE_CHECKING, Optional, cast
-from servers.presence_connection_manager.src.applications.client import Client
+
+if TYPE_CHECKING:
+    from servers.presence_connection_manager.src.applications.client import Client
 
 
 class Switcher(SwitcherBase):

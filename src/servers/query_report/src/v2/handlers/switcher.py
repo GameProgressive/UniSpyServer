@@ -13,7 +13,7 @@ from servers.query_report.src.v2.contracts.requests import (
     HeartBeatRequest,
     KeepAliveRequest,
 )
-from servers.query_report.src.v2.enums.general import RequestType
+from servers.query_report.src.v2.aggregates.enums import RequestType
 from servers.query_report.src.v2.handlers.handlers import (
     AvailableHandler,
     ChallengeHanler,

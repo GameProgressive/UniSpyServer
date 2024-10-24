@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from backends.protocols.gamespy.query_report.requests import ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest
 from backends.urls import QUERY_REPORT
-from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest
+from servers.presence_connection_manager.src.contracts.requests import KeepAliveRequest
 from servers.query_report.src.v2.contracts.requests import AvaliableRequest
 
 router = APIRouter()

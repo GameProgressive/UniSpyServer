@@ -1,6 +1,6 @@
 from typing import Optional
 from backends.library.abstractions.contracts import RequestBase as RB
-from servers.presence_search_player.src.enums.general import SearchType
+from servers.presence_search_player.src.aggregates.enums import SearchType
 
 
 class RequestBase(RB):

@@ -1,7 +1,7 @@
 from backends.protocols.gamespy.chat.storage_infos import ChannelInfo
 from library.src.database.pg_orm import PG_SESSION, GroupList, Games
 from servers.chat.src.aggregates.peer_room import PeerRoom
-from servers.query_report.src.v2.aggregates.game_server_info_v2 import GameServerInfoV2
+from backends.protocols.gamespy.query_report.game_server_info_v2 import GameServerInfoV2
 
 
 def get_all_groups():

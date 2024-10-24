@@ -6,7 +6,7 @@ from library.src.database.pg_orm import (
     Users,
     PG_SESSION,
 )
-from servers.presence_search_player.src.exceptions.general import GPDatabaseException
+from servers.presence_search_player.src.aggregates.exceptions import GPDatabaseException
 
 
 def is_email_exist(email: str) -> bool:

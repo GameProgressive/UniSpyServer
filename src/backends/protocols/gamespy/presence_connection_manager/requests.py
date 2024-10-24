@@ -5,7 +5,7 @@ from servers.presence_connection_manager.src.aggregates.user_status import UserS
 from servers.presence_connection_manager.src.aggregates.user_status_info import (
     UserStatusInfo,
 )
-from servers.presence_connection_manager.src.enums.general import (
+from servers.presence_connection_manager.src.aggregates.enums import (
     LoginType,
     PublicMasks,
     SdkRevisionType,

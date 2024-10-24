@@ -1,7 +1,8 @@
 from concurrent.futures import ProcessPoolExecutor
+from typing import TYPE_CHECKING, cast
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.query_report.src.v2.contracts.requests import ClientMessageRequest
-from servers.query_report.src.v2.enums.general import GameServerStatus, RequestType
+from servers.query_report.src.v2.aggregates.enums import GameServerStatus, RequestType
 from servers.server_browser.src.exceptions.general import ServerBrowserException
 from servers.server_browser.src.v2.contracts.requests import (
     SendMessageRequest,
@@ -19,7 +20,7 @@ from servers.server_browser.src.v2.contracts.results import (
     AdHocResult,
     ServerMainListResult,
 )
-from servers.server_browser.src.v2.enums.general import (
+from servers.server_browser.src.v2.aggregations.enums import (
     # RequestType,
     ServerListUpdateOption,
 )
@@ -31,8 +32,9 @@ from servers.server_browser.src.v2.applications.client import Client
 def get_clients(game_name: str):
     client_list = []
     assert isinstance(game_name, str)
-    for ip, c in Client.pool.items():
-        client: Client = c
+    for ip, client in Client.pool.items():
+        if TYPE_CHECKING:
+            client = cast(Client, client)
         if client.info.game_name == game_name:
             client_list.append(client)
 
@@ -48,8 +50,7 @@ class AdHocHandler(CmdHandlerBase):
         self._message = message
 
     def handle(self) -> None:
-        result = AdHocResult()
-        result.game_server_info = self._message
+        result = AdHocResult(game_server_info=self._message)
         match (self._message.status):
             case (
                 status

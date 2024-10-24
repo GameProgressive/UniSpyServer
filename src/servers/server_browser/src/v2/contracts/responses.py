@@ -14,7 +14,7 @@ from servers.server_browser.src.v2.contracts.results import (
     ServerMainListResult,
 )
 
-from servers.server_browser.src.v2.enums.general import GameServerFlags, ResponseType
+from servers.server_browser.src.v2.aggregations.enums import GameServerFlags, ResponseType
 
 
 class DeleteServerInfoResponse(AdHocResponseBase):
@@ -22,7 +22,7 @@ class DeleteServerInfoResponse(AdHocResponseBase):
 
     def __init__(self, result: AdHocResult) -> None:
         assert isinstance(result, AdHocResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self):
         buffer = bytearray()
@@ -34,13 +34,14 @@ class DeleteServerInfoResponse(AdHocResponseBase):
 class UpdateServerInfoResponse(AdHocResponseBase):
     def __init__(self, result: AdHocResult) -> None:
         assert isinstance(result, AdHocResult)
-        super().__init__(None, result)
+        self._result = result
 
     def build(self) -> None:
         self._buffer.append(ResponseType.PUSH_SERVER_MESSAGE)
         self.__build_single_server_full_info()
-        msg_leng = len(self._buffer).to_bytes(2, "big")
-        self._buffer.insert(0, msg_leng)
+        msg_leng = bytearray(len(self._buffer).to_bytes(2, "big"))
+        # make sure the msg_leng is at first 2 bytes
+        self._buffer = msg_leng+self._buffer
         self.sending_buffer = bytes(self._buffer)
 
     def __build_single_server_full_info(self):
@@ -49,15 +50,19 @@ class UpdateServerInfoResponse(AdHocResponseBase):
         )
         self._buffer.extend(header)
         if self._result.game_server_info.server_data is not None:
-            server_data = UpdateServerInfoResponse._build_kv()
+            server_data = UpdateServerInfoResponse._build_kv(
+                self._result.game_server_info.server_data)
             self._buffer.extend(server_data)
         if self._result.game_server_info.player_data is not None:
-            server_data = UpdateServerInfoResponse._build_kv()
-            self._buffer.extend(server_data)
+            for pd in self._result.game_server_info.player_data:
+                player_data = UpdateServerInfoResponse._build_kv(pd)
+                self._buffer.extend(player_data)
         if self._result.game_server_info.team_data is not None:
-            server_data = UpdateServerInfoResponse._build_kv()
-            self._buffer.extend(server_data)
+            for td in self._result.game_server_info.team_data:
+                team_data = UpdateServerInfoResponse._build_kv(td)
+                self._buffer.extend(team_data)
 
+    @staticmethod
     def _build_kv(data: dict):
         buffer = []
         for k, v in data.items():
@@ -82,18 +87,18 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
     def _build_servers_full_info(self):
         for room in self._result.peer_room_infos:
             self._servers_info_buffers.append(GameServerFlags.HAS_KEYS_FLAG)
-            group_id_bytes = room.group_id.to_bytes("big")
+            group_id_bytes = room.group_id.to_bytes()
             self._servers_info_buffers.extend(group_id_bytes)
             for key in self._request.keys:
-                self._servers_info_buffers.append(NTS_STRING_FLAG)
+                self._servers_info_buffers.extend(NTS_STRING_FLAG)
                 value = (
                     room.raw_key_values[key]
                     if key in room.raw_key_values.keys()
                     else ""
                 )
                 self._servers_info_buffers.extend(get_bytes(value))
-                self._servers_info_buffers.append(STRING_SPLITER)
-        end_flag = int(0).to_bytes("little")
+                self._servers_info_buffers.extend(STRING_SPLITER)
+        end_flag = b"\x00"
         self._servers_info_buffers.extend(end_flag)
 
 
@@ -106,10 +111,11 @@ class ServerMainListResponse(ServerListUpdateOptionResponseBase):
             header = build_server_info_header(self._result.flag, info)
             self._servers_info_buffers.extend(header)
             for key in self._request.keys:
-                self._servers_info_buffers.append(NTS_STRING_FLAG)
+                self._servers_info_buffers.extend(NTS_STRING_FLAG)
                 if key in info.server_data.keys():
-                    self._servers_info_buffers.extend(get_bytes(info.server_data[key]))
-                self._servers_info_buffers.append(STRING_SPLITER)
+                    self._servers_info_buffers.extend(
+                        get_bytes(info.server_data[key]))
+                self._servers_info_buffers.extend(STRING_SPLITER)
 
             self._servers_info_buffers.extend(ALL_SERVER_END_FLAG)
 

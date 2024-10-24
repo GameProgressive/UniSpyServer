@@ -1,9 +1,10 @@
+from typing import Optional
 from uuid import UUID
 from library.src.extentions.encoding import get_string
 from library.src.log.log_manager import LogWriter
 from servers.query_report.src.exceptions.exceptions import QRException
 from servers.query_report.src.v2.abstractions.contracts import RequestBase
-from servers.query_report.src.v2.enums.general import GameServerStatus
+from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 
 
 PREFIX = bytes([0x09, 0x00, 0x00, 0x00, 0x00])
@@ -33,14 +34,18 @@ class ClientMessageAckRequest(RequestBase):
 
 class ClientMessageRequest(RequestBase):
     server_browser_sender_id: UUID
-    natneg_message: list[int]
+    natneg_message: bytes
     target_ip_address: str
-    target_port: str
+    target_port: int
     message_key: int
 
     @property
     def cookie(self) -> int:
         return int.from_bytes(self.natneg_message[6:10], "little")
+
+    def __init__(self, raw_request: Optional[bytes] = None) -> None:
+        if raw_request is not None:
+            super().__init__(raw_request)
 
 
 class HeartBeatRequest(RequestBase):

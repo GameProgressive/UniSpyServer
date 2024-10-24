@@ -1,12 +1,8 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
-from backends.protocols.gamespy.presence_connection_manager.requests import GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest
+from backends.protocols.gamespy.presence_connection_manager.requests import GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
 from backends.urls import *
-
-from servers.presence_connection_manager.src.contracts.requests.general import KeepAliveRequest
-from servers.presence_connection_manager.src.contracts.requests.profile import AddBlockRequest
-from servers.presence_search_player.src.contracts.requests import NewUserRequest
 
 
 router = APIRouter()

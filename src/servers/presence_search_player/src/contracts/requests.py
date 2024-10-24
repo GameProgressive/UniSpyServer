@@ -1,8 +1,8 @@
 from library.src.extentions.gamespy_utils import is_email_format_correct
 from library.src.extentions.password_encoder import process_password
 from servers.presence_search_player.src.abstractions.contracts import RequestBase
-from servers.presence_search_player.src.enums.general import SearchType
-from servers.presence_search_player.src.exceptions.general import (
+from servers.presence_search_player.src.aggregates.enums import SearchType
+from servers.presence_search_player.src.aggregates.exceptions import (
     GPParseException,
 )
 

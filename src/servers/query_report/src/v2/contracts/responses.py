@@ -1,20 +1,18 @@
 import socket
 from library.src.extentions.encoding import get_bytes
-from servers.presence_connection_manager.src.contracts.requests.general import (
-    KeepAliveRequest,
-)
 from servers.query_report.src.v2.abstractions.contracts import ResponseBase
 from servers.query_report.src.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
     ClientMessageRequest,
     HeartBeatRequest,
+    KeepAliveRequest
 )
 from servers.query_report.src.v2.contracts.results import (
     ChallengeResult,
     HeartBeatResult,
 )
-from servers.query_report.src.v2.enums.general import ServerAvailability
+from servers.query_report.src.v2.aggregates.enums import ServerAvailability
 from library.src.extentions.bytes_extentions import ip_to_4_bytes, port_to_2_bytes
 
 RESPONSE_PREFIX = bytes([0xFE, 0xFD, 0x09, 0x00, 0x00, 0x00])

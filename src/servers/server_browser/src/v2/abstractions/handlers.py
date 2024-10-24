@@ -51,4 +51,4 @@ class ServerListUpdateOptionHandlerBase(CmdHandlerBase):
         encrypted_body_buffer = self._client.crypto.encrypt(body_buffer)
         buffer = head_buffer + encrypted_body_buffer
         self._client.log_network_sending(buffer)
-        self._client.send(buffer)
+        self._client.connection.send(buffer)

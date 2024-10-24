@@ -14,7 +14,7 @@ app.include_router(query_report.router)
 app.include_router(server_browser.router)
 app.include_router(webservices.router)
 
-LogManager.create(CONFIG.logging.path, "backend")
+LogManager.create("backend")
 
 
 @app.post("/")

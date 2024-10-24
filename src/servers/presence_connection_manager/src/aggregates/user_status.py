@@ -1,6 +1,6 @@
 
 from dataclasses import dataclass
-from servers.presence_connection_manager.src.enums.general import GPStatusCode
+from servers.presence_connection_manager.src.aggregates.enums import GPStatusCode
 
 
 @dataclass

@@ -1,7 +1,7 @@
-from servers.query_report.src.v2.enums.general import PacketType
+from servers.query_report.src.v2.aggregates.enums import PacketType
 import library.src.abstractions.contracts
 from servers.query_report.src.exceptions.exceptions import QRException
-from servers.query_report.src.v2.enums.general import RequestType
+from servers.query_report.src.v2.aggregates.enums import RequestType
 
 MAGIC_DATA = [0xFE, 0xFD]
 

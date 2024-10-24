@@ -7,11 +7,9 @@ from library.src.configs import ServerConfig
 from servers.presence_connection_manager.src.aggregates.login_challenge import (
     SERVER_CHALLENGE,
 )
-from servers.presence_connection_manager.src.enums.general import LoginStatus
-
-
+from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
 from servers.presence_connection_manager.src.aggregates.sdk_revision import SdkRevision
-from servers.presence_connection_manager.src.enums.general import LoginStatus
+from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
 
 LOGIN_TICKET = "0000000000000000000000__"
 SESSION_KEY = 1111
@@ -59,5 +57,5 @@ class Client(ClientBase):
         self.connection.send(buffer)
 
     def create_switcher(self, buffer: bytes) -> SwitcherBase:
-        from servers.presence_connection_manager.src.handlers.switcher import Switcher
+        from servers.presence_connection_manager.src.applications.switcher import Switcher
         return Switcher(self, buffer.decode())
