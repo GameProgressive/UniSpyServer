@@ -1,12 +1,16 @@
-from typing import Optional
+from typing import TYPE_CHECKING
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import *
 from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.handler import PostLoginHandlerBase
-from servers.chat.src.aggregates.channel import Channel, ChannelManager
-from servers.chat.src.aggregates.channel_user import ChannelUser
+from servers.chat.src.aggregates.managers import ChannelManager
+
 from servers.chat.src.exceptions.channel import NoSuchChannelException
 from servers.chat.src.exceptions.general import ChatException, NoSuchNickException
+
+if TYPE_CHECKING:
+    from servers.chat.src.aggregates.channel import Channel
+    from servers.chat.src.aggregates.channel_user import ChannelUser
 
 
 class ChannelRequestBase(RequestBase):
@@ -29,8 +33,8 @@ class ChannelResponseBase(ResponseBase):
 
 
 class ChannelHandlerBase(PostLoginHandlerBase):
-    _channel: Channel
-    _user: ChannelUser
+    _channel: "Channel"
+    _user: "ChannelUser"
     _request: ChannelRequestBase
     _response: ResponseBase
 

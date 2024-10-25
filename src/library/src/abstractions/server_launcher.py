@@ -5,10 +5,10 @@ from library.src.log.log_manager import LogManager, LogWriter
 from library.src.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
-
+from prettytable import PrettyTable
 VERSION = 0.45
 
-__SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
+_SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
     "PresenceConnectionManager": "PCM",
     "PresenceSearchPlayer": "PSP",
     "CDKey": "CDKey",
@@ -26,7 +26,7 @@ __SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
 class ServerLauncherBase:
     config: ServerConfig
     logger: LogWriter
-    
+
     def start(self):
         self.__show_unispy_logo()
         self._connect_to_backend()
@@ -38,17 +38,22 @@ class ServerLauncherBase:
         print(pyfiglet.Figlet().renderText("UniSpy.Server"))
         # display version info
         print(f"version {VERSION}")
+        table = PrettyTable()
+        table.field_names = ["Server Name",
+                             "Listening Address", "Listening Port"]
+        table.add_row([self.config.server_name,
+                      self.config.public_address, self.config.listening_port])
+        print(table)
 
-    @abc.abstractmethod
     def _launch_server(self) -> None:
-        pass
+        raise NotImplementedError("Override this function in child class")
 
     def _connect_to_backend(self):
         try:
             # post our server config to backends to register
-            resp: requests.Response = requests.post(
-                url=CONFIG.backend.url,
-                data=self.config.__dict__)
+            resp = requests.post(
+                url=CONFIG.backend.url+"/",
+                data=self.config.model_dump_json())
             if resp.status_code == 200:
                 data = resp.json()
                 if data["status"] != "online":
@@ -61,5 +66,5 @@ class ServerLauncherBase:
             # fmt: on
 
     def _create_logger(self):
-        short_name = __SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
+        short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
         self.logger = LogManager.create(short_name)

@@ -170,7 +170,7 @@ class BuddyStatusInfoHandler(CmdHandlerBase):
     """
     This is what the message should look like.  Its broken up for easy viewing.
 
-    \bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\\qport\\hport\\sessflags\\rstatus\\gameType\\gameVnt\\gameMn\\product\\qmodeflags\
+    \\bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\\qport\\hport\\sessflags\\rstatus\\gameType\\gameVnt\\gameMn\\product\\qmodeflags\
     """
 
     def __init__(self, client: Client, request: RequestBase) -> None:
@@ -183,6 +183,7 @@ class DelBuddyHandler(LoginedHandlerBase):
 
     def __init__(self, client: Client, request: DelBuddyRequest) -> None:
         assert isinstance(request, DelBuddyRequest)
+        self._is_uploading = False
         super().__init__(client, request)
 
 

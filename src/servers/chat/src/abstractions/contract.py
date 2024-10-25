@@ -1,7 +1,5 @@
-import abc
 from typing import Optional
 import library.src.abstractions.contracts
-from servers.chat.src.exceptions.general import ChatException
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
@@ -15,7 +13,6 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
 
-    @abc.abstractmethod
     def parse(self) -> None:
         # at most 2 colon character
         # we do not sure about all command

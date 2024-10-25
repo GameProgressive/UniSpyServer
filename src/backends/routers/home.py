@@ -1,7 +1,8 @@
 from fastapi import FastAPI
+import uvicorn
 
 from library.src.log.log_manager import LogManager
-from library.src.configs import CONFIG, ServerConfig
+from library.src.configs import ServerConfig
 from backends.routers.gamespy import chat, gstats, natneg, presence_connection_manager, presence_search_player, query_report, server_browser, webservices
 app = FastAPI()
 
@@ -21,3 +22,8 @@ LogManager.create("backend")
 def home(request: ServerConfig):
     # todo add the server config to our database
     return {"status": "online"}
+
+
+if __name__ == "__main__":
+    uvicorn.run("backends.routers.home:app",
+                host="127.0.0.1", port=8080, reload=True)

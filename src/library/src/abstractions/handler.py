@@ -19,7 +19,8 @@ class CmdHandlerBase:
     """
     _result_cls: "Type[ResultBase]"
     """
-    the result type class, use to deserialize json data from backend
+    the result type class, use to deserialize json data from backend\n
+    the initialization of _result_cls must before call super().__init__()
     """
     _is_uploading: bool
     """

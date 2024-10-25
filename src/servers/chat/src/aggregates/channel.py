@@ -1,6 +1,5 @@
-from dataclasses import dataclass
 import datetime
-from typing import Optional, overload
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, field_validator
@@ -8,7 +7,7 @@ from library.src.network.brockers import WebsocketBrocker
 from library.src.configs import CONFIG
 from servers.chat.src.abstractions.contract import ResponseBase
 from servers.chat.src.aggregates.channel_user import ChannelUser
-from servers.chat.src.aggregates.key_value_manager import KeyValueManager
+from servers.chat.src.aggregates.managers import KeyValueManager
 from servers.chat.src.aggregates.peer_room import PeerRoom
 from servers.chat.src.applications.client import Client
 from servers.chat.src.contracts.requests.channel import ModeRequest
@@ -177,26 +176,6 @@ class Channel:
     def remove_user(self, user: ChannelUser):
         user.client.info.previously_joined_channel
 
-
-class ChannelManager:
-    local_channels: dict = {}
-    """The code blow is for channel manage"""
-
-    @staticmethod
-    def get_channel(name: str) -> Optional[Channel]:
-        if name in ChannelManager.local_channels:
-            return ChannelManager.local_channels[name]
-        return None
-
-    @staticmethod
-    def add_channel(channel: Channel):
-        if channel.name not in ChannelManager.local_channels:
-            ChannelManager.local_channels[channel.name] = channel
-
-    @staticmethod
-    def remove_channel(name: str) -> None:
-        if name in ChannelManager.local_channels:
-            del ChannelManager.local_channels[name]
 
 
 class BrockerMessage(BaseModel):

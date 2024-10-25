@@ -71,7 +71,7 @@ class ClientBase:
             pass
         else:
             raise UniSpyException("buffer type is invalid")
-
+        self.log_network_receving(buffer)
         switcher: "SwitcherBase" = self.create_switcher(buffer)
         switcher.handle()
 

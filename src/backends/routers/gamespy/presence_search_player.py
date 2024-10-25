@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
-from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
+from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 from backends.urls import PRESENCE_SEARCH_PLAYER
-from servers.presence_search_player.src.contracts.requests import NewUserRequest
 
 router = APIRouter()
 

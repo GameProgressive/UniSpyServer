@@ -16,11 +16,46 @@
             "justMyCode": true
         },
         {
+            "name": "backend",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "backends.routers.home:app", // Replace with your module name if different
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8080",
+                "--reload" // Optional: enables auto-reload on code changes
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
             "name": "pcm",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workSpace}/servers/presence_connection_manager.py",
-            "console": "integratedTerminal"
-        }
-    ]
+            "program": "servers/presence_connection_manager/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "psp",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/presence_search_player/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+    ],
+    "compounds": []
 }

@@ -13,7 +13,6 @@ from servers.server_browser.src.v2.aggregations.enums import (
     ServerListUpdateOption,
 )
 
-QUERY_REPORT_DEFAULT_PORT = 6500
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):

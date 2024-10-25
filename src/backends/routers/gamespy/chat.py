@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 import json
 from typing import Optional
-import uuid
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 

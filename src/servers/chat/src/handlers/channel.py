@@ -1,7 +1,8 @@
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.channel import ChannelHandlerBase
-from servers.chat.src.aggregates.channel import Channel, ChannelManager
+from servers.chat.src.aggregates.channel import Channel
 from servers.chat.src.aggregates.channel_user import ChannelUser
+from servers.chat.src.aggregates.managers import ChannelManager
 from servers.chat.src.aggregates.response_name import *
 from servers.chat.src.contracts.requests.channel import (
     GetCKeyRequest,

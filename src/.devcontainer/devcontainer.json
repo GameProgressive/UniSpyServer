@@ -3,6 +3,12 @@
 {
 	"name": "Python 3",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	// "initializeCommand":"docker build --network unispy --tag mcr.microsoft.com/devcontainers/python:1-3.12-bullseye .", 
+	// "containerName": "unispy_server_dev",
+	"runArgs": [
+		"--network=unispy",
+		"--name=unispy_server_dev"
+	],
 	"image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -21,7 +27,8 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r requirements.txt"
+	"postCreateCommand": "pip3 config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple  && pip3 install --user -r requirements.txt"
+	// "postCreateCommand": "pip3 install --user -r requirements.txt"
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

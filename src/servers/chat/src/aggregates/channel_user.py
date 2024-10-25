@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from servers.chat.src.aggregates.key_value_manager import KeyValueManager
+from servers.chat.src.aggregates.managers import KeyValueManager
 from servers.chat.src.applications.client import Client
 from typing import TYPE_CHECKING
 
