@@ -24,29 +24,23 @@ class XorEncoding(EncryptBase):
         seed_2 = b"Industries"
         seed_3 = b"ProjectAphex"
         temp_plaintext = list(plaintext)
-        length = len(temp_plaintext)
         index = 0
-        temp = seed_0
-
+        key = seed_0
         if enc_type == XorType.TYPE_0:
-            temp = seed_0
+            key = seed_0
         elif enc_type == XorType.TYPE_1:
-            temp = seed_1
+            key = seed_1
         elif enc_type == XorType.TYPE_2:
-            temp = seed_2
+            key = seed_2
         elif enc_type == XorType.TYPE_3:
-            temp = seed_3
+            key = seed_3
+        result = []
+        for index in range(len(plaintext)):
+            key_index = index % len(key)
+            enc_byte = ((plaintext[index] ^ key[key_index])) % 255
+            result.append(enc_byte)
 
-        temp_length = len(temp)
-
-        for i in range(length):
-            if i >= temp_length:
-                i = 0
-
-            temp_plaintext[index] ^= temp[i]
-            index += 1
-
-        return bytes(temp_plaintext)
+        return bytes(result)
 
     def encrypt(self, data: bytes):
         super().encrypt(data)

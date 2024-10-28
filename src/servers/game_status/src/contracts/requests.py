@@ -45,7 +45,7 @@ class AuthPlayerRequest(RequestBase):
             raise GSException("localid is missing from auth game request")
         if "pid" in self.request_dict and "resp" in self.request_dict:
             try:
-                self.profile_id = int(self.request_dict["profile_id"])
+                self.profile_id = int(self.request_dict["pid"])
             except:
                 raise GSException("profile id format is incorrect")
             self.auth_type = AuthMethod.PROFILE_ID_AUTH

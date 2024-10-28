@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, cast
 import unittest
 
 from library.src.extentions.password_encoder import process_password
-from library.tests.mock_objects.general import create_mock_url
+from library.tests.mock_objects import create_mock_url
 from servers.presence_search_player.src.contracts.requests import CheckRequest
 from servers.presence_search_player.src.applications.handlers import CheckHandler
 from servers.presence_search_player.src.applications.switcher import CmdSwitcher
@@ -16,7 +16,6 @@ class GameTest(unittest.TestCase):
     def test_check(self):
         raw = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
         client = create_client()
-        create_mock_url(client, CheckHandler, {"profile_id": 0})
 
         switcher = CmdSwitcher(client, raw)
         switcher.handle()

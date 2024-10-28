@@ -2,7 +2,7 @@ import unittest
 
 import responses
 
-from library.tests.mock_objects.general import create_mock_url
+from library.tests.mock_objects import create_mock_url
 from servers.presence_search_player.src.contracts.requests import SearchRequest
 from servers.presence_search_player.src.applications.handlers import SearchHandler
 from servers.presence_search_player.tests.mock_objects import create_client
@@ -62,8 +62,7 @@ class HandlerTests(unittest.TestCase):
         request.parse()
         self.assertEqual("spyguy@unispy.org", request.email)
 
-        create_mock_url(client, SearchHandler, {"result": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
-                        "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]})
+
         handler = SearchHandler(client, request)
         handler.handle()
         self.assertEqual("\\bsr\\0\\nick\\spyguy\\uniquenick\\spyguy\\namespaceid\\0\\firstname\\spy\\lastname\\guy\\email\\spyguy@unispy.org\\bsrdone\\\\more\\0\\final\\",

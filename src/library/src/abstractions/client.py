@@ -45,7 +45,7 @@ class ClientBase:
         self.crypto = None
         self.is_log_raw = False
         # fmt: off
-        self._log_prefix = self.connection.ip_endpoint
+        self._log_prefix = f"[{self.connection.ip_endpoint}]"
         # fmt: on
 
     def on_connected(self) -> None:

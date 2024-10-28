@@ -31,10 +31,10 @@ class AddressCheckHandler(CmdHandlerBase):
     _result: AddressCheckResult
 
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(client, Client)
         assert isinstance(request, AddressCheckRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
     def _data_operate(self) -> None:
         """
@@ -55,9 +55,9 @@ class ConnectAckHandler(CmdHandlerBase):
     _request: ConnectAckRequest
 
     def __init__(self, client: Client, request: ConnectAckRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, ConnectAckRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
     def _data_operate(self) -> None:
         self._client.log_info(
@@ -68,10 +68,10 @@ class ConnectHandler(CmdHandlerBase):
     _result_cls: type[ConnectResult]
 
     def __init__(self, client: Client, request: ConnectRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, ConnectRequest)
+        super().__init__(client, request)
         self._result_cls = ConnectResult
+        self._is_feaching = False
 
 
 class ErtAckHandler(CmdHandlerBase):
@@ -79,9 +79,9 @@ class ErtAckHandler(CmdHandlerBase):
     _result: ErtAckResult
 
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, ErtAckRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
     def _data_operate(self) -> None:
         self._result = ErtAckResult(
@@ -100,9 +100,9 @@ class InitHandler(CmdHandlerBase):
     _result: InitResult
 
     def __init__(self, client: Client, request: InitRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, InitRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
     def _data_operate(self) -> None:
         self._result = InitResult(
@@ -123,9 +123,9 @@ class NatifyHandler(CmdHandlerBase):
     _result: NatifyResult
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, NatifyRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
     def _data_operate(self):
         self._result = NatifyResult(

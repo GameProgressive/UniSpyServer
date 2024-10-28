@@ -50,8 +50,8 @@ class GetProfileIdHandler(CmdHandlerBase):
 
     def __init__(self, client: Client, request: GetProfileIdRequest) -> None:
         assert isinstance(request, GetProfileIdRequest)
-        self._result_cls = GetProfileIdResult
         super().__init__(client, request)
+        self._result_cls = GetProfileIdResult
 
     def _response_construct(self) -> None:
         self._response = GetProfileIdResponse(self._request, self._result)
@@ -59,17 +59,22 @@ class GetProfileIdHandler(CmdHandlerBase):
 
 class NewGameHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: NewGameRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, NewGameRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
+
+    def _response_construct(self) -> None:
+        self._response = None
 
 
 class SetPlayerDataHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
-        self._is_feaching = False
-        super().__init__(client, request)
         assert isinstance(request, SetPlayerDataRequest)
-        raise NotImplementedError()
+        super().__init__(client, request)
+        self._is_feaching = False
+
+    def _response_construct(self) -> None:
+        self._response = None
 
 
 class UpdateGameHandler(CmdHandlerBase):
@@ -81,11 +86,9 @@ class UpdateGameHandler(CmdHandlerBase):
     _request: UpdateGameRequest
 
     def __init__(self, client: Client, request: UpdateGameRequest) -> None:
-        super().__init__(client, request)
         assert isinstance(request, UpdateGameRequest)
+        super().__init__(client, request)
+        self._is_feaching = False
 
-    def _data_operate(self) -> None:
-        if not self._request.game_data:
-            return
-        super()._data_operate()
-        raise NotImplementedError()
+    def _response_construct(self) -> None:
+        self._response = None

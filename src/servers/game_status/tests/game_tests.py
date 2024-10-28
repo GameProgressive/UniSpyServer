@@ -2,10 +2,13 @@
 
 import unittest
 
+import responses
+
 from servers.game_status.tests.mock_objects import create_client
 
 
 class GameTest(unittest.TestCase):
+    @responses.activate
     def test_worm3d_20230331(self):
         raws1 = [
             "\\auth\\\\gamename\\worms3\\response\\bc3ca727a7825879eb9f13d9fd51bbb9\\port\\0\\id\\1\\final\\",
@@ -17,10 +20,11 @@ class GameTest(unittest.TestCase):
         for raw in raws1:
             client.on_received(raw.encode())
 
+    @responses.activate
     def test_gmtest(self):
         raws = [
             "\\auth\\\\gamename\\crysis2\\response\\xxxxx\\port\\30\\id\\1\\final\\",
-            "\\getpd\\\\pid\\0\\ptype\\0\\dindex\\1\\keys\\hello\\x1hi\\lid\\1\\final\\",
+            "\\getpd\\\\pid\\0\\ptype\\0\\dindex\\1\\keys\\hello\x01hi\\lid\\1\\final\\",
             "\\getpid\\\\nick\\xiaojiuwo\\keyhash\\00000\\lid\\1\\final\\",
             "\\newgame\\\\connid\\123\\sesskey\\123456\\lid\\1\\final\\",
             "\\newgame\\\\connid\\123\\sesskey\\2020\\lid\\1\\final\\",

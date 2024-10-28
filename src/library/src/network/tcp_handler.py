@@ -70,7 +70,7 @@ class TestClient(ClientBase):
 
 
 if __name__ == "__main__":
-    from tests.mock_objects.general import LogMock
+    from library.tests.mock_objects import LogMock
 
     s = TcpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
     s.start()

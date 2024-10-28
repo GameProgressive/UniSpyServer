@@ -2,8 +2,8 @@ from typing import Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
 from servers.game_status.src.abstractions.handlers import CmdHandlerBase
 from servers.game_status.src.applications.client import Client
-from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
-from servers.game_status.src.applications.handlers import AuthGameHandler, AuthPlayerHandler, GetPlayerDataHandler, NewGameHandler, SetPlayerDataHandler, UpdateGameHandler
+from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
+from servers.game_status.src.applications.handlers import AuthGameHandler, AuthPlayerHandler, GetPlayerDataHandler, GetProfileIdHandler, NewGameHandler, SetPlayerDataHandler, UpdateGameHandler
 
 
 class Switcher(SwitcherBase):
@@ -39,5 +39,7 @@ class Switcher(SwitcherBase):
                 return SetPlayerDataHandler(self._client, SetPlayerDataRequest(raw_request))
             case "updgame":
                 return UpdateGameHandler(self._client, UpdateGameRequest(raw_request))
+            case "getpid":
+                return GetProfileIdHandler(self._client, GetProfileIdRequest(raw_request))
             case _:
                 return None

@@ -1,6 +1,6 @@
 from library.src.abstractions.client import ClientBase
 from library.src.exceptions.general import UniSpyException
-from typing import Type
+from typing import Optional, Type
 import requests
 
 from library.src.configs import CONFIG
@@ -13,7 +13,7 @@ class CmdHandlerBase:
     _client: "ClientBase"
     _request: "RequestBase"
     _result: "ResultBase"
-    _response: "ResponseBase"
+    _response: Optional["ResponseBase"]
     """
     the response instance, initialize as None in __init__
     """
@@ -40,13 +40,8 @@ class CmdHandlerBase:
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
         # if some subclass do not need result, override the __init__() in that subclass
-        if not hasattr(self, "_is_feaching"):
-            self._is_feaching = True
-        if not hasattr(self, "_is_uploading"):
-            self._is_uploading = True
-        if self._is_feaching:
-            assert issubclass(self._result_cls, ResultBase)
-
+        self._is_feaching = True
+        self._is_uploading = True
         self._client = client
         self._request = request
 
@@ -79,7 +74,8 @@ class CmdHandlerBase:
         # we check whether we need fetch data
         if not self._is_uploading:
             return
-
+        if self._is_feaching:
+            assert issubclass(self._result_cls, ResultBase)
         # default use restapi to access to our backend service
         # get the http response and create it with this type
         # http://127.0.0.1:8080/gamespy/pcm/login/
@@ -108,6 +104,8 @@ class CmdHandlerBase:
         virtual function, can be override
         Send response back to client, this is a virtual function which can be override only by child class
         """
+        if self._response is None:
+            return
         self._client.send(self._response)
 
     def _handle_exception(self, ex: Exception) -> None:

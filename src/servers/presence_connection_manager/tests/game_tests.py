@@ -1,6 +1,6 @@
 import unittest
 
-from library.tests.mock_objects.general import create_mock_url
+from library.tests.mock_objects import create_mock_url
 from servers.presence_connection_manager.src.applications.handlers import LoginHandler, NewUserHandler
 from servers.presence_connection_manager.src.contracts.requests import StatusRequest
 from servers.presence_connection_manager.tests.mock_objects import create_client
@@ -15,20 +15,7 @@ class GameTest(unittest.TestCase):
             "\\login\\\\challenge\\xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT\\uniquenick\\civ4-tk\\userid\\25\\profileid\\26\\response\\7f2c9c6685570ea18b7207d2cbd72452\\firewall\\1\\port\\0\\productid\\10435\\gamename\\civ4\\namespaceid\\17\\sdkrevision\\1\\id\\1\\final\\",
         ]
         client = create_client()
-        create_mock_url(client, NewUserHandler, {
-                        "user_id": 0, "profile_id": 0})
-        create_mock_url(client, LoginHandler, {"response_proof": "7f2c9c6685570ea18b7207d2cbd72452", "data": {
-            "user_id": 0,
-            "profile_id": 0,
-            "nick": "test",
-            "email": "test@gamespy.com",
-            "unique_nick": "test_unique",
-            "password_hash": "password",
-            "email_verified_flag": True,
-            "namespace_id": 0,
-            "sub_profile_id": 0,
-            "banned_flag": False
-        }})
+
 
         for x in raw_requests:
             client.on_received(x.encode("ascii"))
@@ -43,18 +30,6 @@ class GameTest(unittest.TestCase):
             "\\inviteto\\\\sesskey\\58366\\products\\1038\\final\\",
         ]
         client = create_client()
-        create_mock_url(client, LoginHandler, {"response_proof": "7f2c9c6685570ea18b7207d2cbd72452", "data": {
-            "user_id": 0,
-            "profile_id": 0,
-            "nick": "test",
-            "email": "test@gamespy.com",
-            "unique_nick": "test_unique",
-            "password_hash": "password",
-            "email_verified_flag": True,
-            "namespace_id": 0,
-            "sub_profile_id": 0,
-            "banned_flag": False
-        }})
         for x in raw_requests:
             client.on_received(x.encode("ascii"))
             pass

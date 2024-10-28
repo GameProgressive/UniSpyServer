@@ -39,7 +39,8 @@ class SwitcherBase:
             for request in self._requests:
                 handler = self._create_cmd_handlers(request[0], request[1])
                 if handler is None:
-                    self._client.log_warn("Request ignored.")
+                    self._client.log_warn(
+                        f"Request: <{request[0]}> is ignored.")
                     continue
                 self._handlers.append(handler)
             if len(self._handlers) == 0:

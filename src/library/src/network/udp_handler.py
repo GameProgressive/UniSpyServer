@@ -55,7 +55,7 @@ class TestClient(ClientBase):
 
 if __name__ == "__main__":
     # create_udp_server(list(CONFIG.servers.values())[0], ClientBase)
-    from tests.mock_objects.general import LogMock
+    from library.tests.mock_objects import LogMock
 
     s = UdpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
     s.start()

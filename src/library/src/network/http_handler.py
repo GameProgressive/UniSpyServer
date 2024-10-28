@@ -76,6 +76,6 @@ class TestClient(ClientBase):
 
 if __name__ == "__main__":
     # create_http_server(list(CONFIG.servers.values())[0], ClientBase)
-    from library.tests.mock_objects.general import LogMock
+    from library.tests.mock_objects import LogMock
 
     s = HttpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
