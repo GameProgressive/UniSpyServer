@@ -1,8 +1,8 @@
-from servers.chat.src.enums.peer_room import PeerRoomType
+from servers.chat.src.aggregates.enums import PeerRoomType
 
 
 class PeerRoom:
-    
+
     TitleRoomPrefix = "#GSP"
     """ When game connects to the server, the player will enter the default channel for communicating with other players."""
     StagingRoomPrefix = "#GSP"

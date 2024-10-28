@@ -1,7 +1,7 @@
 from typing import Optional
 import library.src.abstractions.contracts
 from library.src.extentions.gamespy_utils import convert_to_key_value
-from servers.game_status.src.exceptions.general import GSException
+from servers.game_status.src.aggregations.exceptions import GSException
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):

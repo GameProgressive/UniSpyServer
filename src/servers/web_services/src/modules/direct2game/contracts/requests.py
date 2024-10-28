@@ -1,4 +1,4 @@
-from servers.web_services.src.exceptions.general import WebException
+from servers.web_services.src.aggregations.exceptions import WebException
 from servers.web_services.src.modules.direct2game.abstractions.contracts import (
     NAMESPACE,
     RequestBase,

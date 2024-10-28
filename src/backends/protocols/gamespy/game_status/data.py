@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, cast
 from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles
-from servers.game_status.src.enums.general import PersistStorageType
-from servers.game_status.src.exceptions.general import GSException
+from servers.game_status.src.aggregations.enums import PersistStorageType
+from servers.game_status.src.aggregations.exceptions import GSException
 
 
 def create_new_game_data():

@@ -4,8 +4,8 @@ import unittest
 from library.src.extentions.password_encoder import process_password
 from library.tests.mock_objects.general import create_mock_url
 from servers.presence_search_player.src.contracts.requests import CheckRequest
-from servers.presence_search_player.src.handlers.handlers import CheckHandler
-from servers.presence_search_player.src.handlers.switcher import CmdSwitcher
+from servers.presence_search_player.src.applications.handlers import CheckHandler
+from servers.presence_search_player.src.applications.switcher import CmdSwitcher
 import responses
 
 from servers.presence_search_player.tests.mock_objects import create_client

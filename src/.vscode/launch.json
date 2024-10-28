@@ -56,6 +56,114 @@
             },
             "justMyCode": true
         },
+        {
+            "name": "chat",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/chat/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "gs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/game_status/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "natneg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/natneg/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "qr",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/query_report/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "sb",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/server_browser/src/v2/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "web",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "servers/web_services/src/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
     ],
-    "compounds": []
+    // "compounds": [
+    //     {
+    //         "name": "pcm",
+    //         "configurations": [
+    //             "backend",
+    //             "_pcm"
+    //         ]
+    //     },
+    //     {
+    //         "name": "psp",
+    //         "configurations": [
+    //             "backend",
+    //             "_psp"
+    //         ]
+    //     },
+    //     {
+    //         "name": "qr",
+    //         "configurations": [
+    //             "backend",
+    //             "_qr"
+    //         ]
+    //     },
+    //     {
+    //         "name": "sb",
+    //         "configurations": [
+    //             "backend",
+    //             "_sb"
+    //         ]
+    //     },
+    //     {
+    //         "name": "all",
+    //         "configurations": [
+    //             "_psp",
+    //             "_pcm",
+    //             "backend",
+    //             "_natneg",
+    //             "_gs",
+    //             "_sb",
+    //             "_qr",
+    //             "_web"
+    //         ]
+    //     },
+    // ]
 }

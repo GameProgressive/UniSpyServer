@@ -5,8 +5,7 @@ from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.handler import PostLoginHandlerBase
 from servers.chat.src.aggregates.managers import ChannelManager
 
-from servers.chat.src.exceptions.channel import NoSuchChannelException
-from servers.chat.src.exceptions.general import ChatException, NoSuchNickException
+from servers.chat.src.aggregates.exceptions import ChatException, NoSuchNickException, NoSuchChannelException
 
 if TYPE_CHECKING:
     from servers.chat.src.aggregates.channel import Channel

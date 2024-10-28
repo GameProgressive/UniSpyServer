@@ -1,4 +1,4 @@
-from servers.natneg.src.enums.general import (
+from servers.natneg.src.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
     NatPortType,

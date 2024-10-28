@@ -4,7 +4,7 @@ import responses
 
 from library.tests.mock_objects.general import create_mock_url
 from servers.presence_search_player.src.contracts.requests import SearchRequest
-from servers.presence_search_player.src.handlers.handlers import SearchHandler
+from servers.presence_search_player.src.applications.handlers import SearchHandler
 from servers.presence_search_player.tests.mock_objects import create_client
 
 
@@ -66,7 +66,8 @@ class HandlerTests(unittest.TestCase):
                         "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]})
         handler = SearchHandler(client, request)
         handler.handle()
-        self.assertEqual("\\bsr\\0\\nick\\spyguy\\uniquenick\\spyguy\\namespaceid\\0\\firstname\\spy\\lastname\\guy\\email\\spyguy@unispy.org\\bsrdone\\\\more\\0\\final\\", handler._response.sending_buffer)
+        self.assertEqual("\\bsr\\0\\nick\\spyguy\\uniquenick\\spyguy\\namespaceid\\0\\firstname\\spy\\lastname\\guy\\email\\spyguy@unispy.org\\bsrdone\\\\more\\0\\final\\",
+                         handler._response.sending_buffer)
 
 
 if __name__ == "__main__":

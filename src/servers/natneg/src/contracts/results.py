@@ -1,6 +1,6 @@
 from typing import Any
 from servers.natneg.src.abstractions.contracts import CommonResultBase, ResultBase
-from servers.natneg.src.enums.general import (
+from servers.natneg.src.aggregations.enums import (
     ConnectPacketStatus,
     PreInitState,
     ResponseType,

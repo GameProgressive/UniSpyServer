@@ -1,8 +1,8 @@
 from typing import Optional, final
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.game_status.src.abstractions.contracts import RequestBase
-from servers.game_status.src.enums.general import AuthMethod, PersistStorageType
-from servers.game_status.src.exceptions.general import GSException
+from servers.game_status.src.aggregations.enums import AuthMethod, PersistStorageType
+from servers.game_status.src.aggregations.exceptions import GSException
 
 
 @final

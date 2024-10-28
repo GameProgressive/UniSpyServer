@@ -1,4 +1,4 @@
-from servers.web_services.src.modules.sake.abstractions.general import ResponseBase
+from servers.web_services.src.modules.sake.abstractions.generals import ResponseBase
 from servers.web_services.src.modules.sake.contracts.requests import CreateRecordRequest, SearchForRecordsRequest
 from servers.web_services.src.modules.sake.contracts.results import CreateRecordResult, SearchForRecordsResult
 

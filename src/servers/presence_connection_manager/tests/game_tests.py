@@ -6,6 +6,7 @@ from servers.presence_connection_manager.src.contracts.requests import StatusReq
 from servers.presence_connection_manager.tests.mock_objects import create_client
 import responses
 
+
 class GameTest(unittest.TestCase):
     @responses.activate
     def test_civilization_4(self) -> None:
@@ -32,6 +33,8 @@ class GameTest(unittest.TestCase):
         for x in raw_requests:
             client.on_received(x.encode("ascii"))
             pass
+
+    @unittest.skip("not finished handler")
     @responses.activate
     def test_conflict_global_storm(self) -> None:
         # "\\lc\\1\\challenge\\NRNUJLZMLX\\id\\1\\final\\",

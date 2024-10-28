@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   redis:
     image: redis
@@ -8,15 +6,8 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --requirepass 123456
-
-  # mongodb:
-  #   image: mongodb/mongodb-community-server:latest
-  #   restart: always
-  #   ports:
-  #     - "27017:27017"
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: unispy
-  #     MONGO_INITDB_ROOT_PASSWORD: 123456
+    networks:
+      - unispy
 
   postgresql:
     image: postgres:14
@@ -30,3 +21,10 @@ services:
       POSTGRES_DB: unispy
     volumes:
       - ./common/UniSpy_pg.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - unispy
+
+networks:
+  unispy:
+    name: unispy
+    driver: bridge

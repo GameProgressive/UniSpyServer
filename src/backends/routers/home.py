@@ -19,7 +19,7 @@ LogManager.create("backend")
 
 
 @app.post("/")
-def home(request: ServerConfig):
+async def home(request: ServerConfig) -> dict:
     # todo add the server config to our database
     return {"status": "online"}
 

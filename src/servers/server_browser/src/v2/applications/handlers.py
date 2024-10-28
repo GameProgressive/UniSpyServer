@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, cast
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.query_report.src.v2.contracts.requests import ClientMessageRequest
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus, RequestType
-from servers.server_browser.src.exceptions.general import ServerBrowserException
+from servers.server_browser.src.aggregates.exceptions import ServerBrowserException
 from servers.server_browser.src.v2.contracts.requests import (
     SendMessageRequest,
     ServerInfoRequest,

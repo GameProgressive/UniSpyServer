@@ -2,7 +2,7 @@ import abc
 import socket
 from typing import Optional
 import library.src.abstractions.contracts
-from servers.natneg.src.enums.general import (
+from servers.natneg.src.aggregations.enums import (
     NatClientIndex,
     NatPortType,
     RequestType,

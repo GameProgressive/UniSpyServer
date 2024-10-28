@@ -1,7 +1,7 @@
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import RequestBase, ResultBase
 from servers.chat.src.applications.client import Client
-from servers.chat.src.exceptions.general import IRCException
+from servers.chat.src.aggregates.exceptions import IRCException
 import library.src.abstractions.handler
 from typing import cast
 

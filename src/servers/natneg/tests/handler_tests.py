@@ -3,7 +3,7 @@ import unittest
 from library.src.abstractions.handler import CmdHandlerBase
 from library.tests.mock_objects.general import create_mock_url
 from servers.natneg.src.contracts.requests import InitRequest
-from servers.natneg.src.handlers.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
+from servers.natneg.src.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
 import responses
 from servers.natneg.src.contracts.requests import (
     AddressCheckRequest,
@@ -12,7 +12,7 @@ from servers.natneg.src.contracts.requests import (
     NatifyRequest,
     PreInitRequest,
 )
-from servers.natneg.src.enums.general import (
+from servers.natneg.src.aggregations.enums import (
     NatClientIndex,
     NatPortType,
     PreInitState,

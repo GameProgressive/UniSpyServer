@@ -10,9 +10,9 @@ from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.managers import KeyValueManager
 from servers.chat.src.aggregates.peer_room import PeerRoom
 from servers.chat.src.applications.client import Client
-from servers.chat.src.contracts.requests.channel import ModeRequest
-from servers.chat.src.enums.peer_room import PeerRoomType
-from servers.chat.src.exceptions.general import ChatException
+from servers.chat.src.contracts.requests import ModeRequest
+from servers.chat.src.aggregates.enums import PeerRoomType
+from servers.chat.src.aggregates.exceptions import ChatException
 from servers.server_browser.src.v2.aggregations.server_info_builder import PEER_GROUP_LIST
 
 MIN_CHANNEL_NAME_LENGTH = 4
@@ -175,7 +175,6 @@ class Channel:
 
     def remove_user(self, user: ChannelUser):
         user.client.info.previously_joined_channel
-
 
 
 class BrockerMessage(BaseModel):

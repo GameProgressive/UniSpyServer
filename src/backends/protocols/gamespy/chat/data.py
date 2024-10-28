@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, cast
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, Users, Profiles, SubProfiles
 from servers.chat.src.aggregates.channel import Channel
-from servers.chat.src.exceptions.general import ChatException
+from servers.chat.src.aggregates.exceptions import ChatException
 
 
 def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tuple[int, int, bool, bool]:

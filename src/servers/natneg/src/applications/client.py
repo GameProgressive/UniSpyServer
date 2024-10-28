@@ -13,6 +13,6 @@ class Client(ClientBase):
 
     def create_switcher(self, buffer: bytes):
         assert isinstance(buffer, bytes)
-        from servers.natneg.src.handlers.switcher import CmdSwitcher
+        from servers.natneg.src.applications.switcher import CmdSwitcher
 
         return CmdSwitcher(self, buffer)

@@ -2,7 +2,7 @@
 
 from library.src.abstractions.enctypt_base import EncryptBase
 from library.src.encryption.xor_encryption import XorEncoding, XorType
-from servers.game_status.src.exceptions.general import GSException
+from servers.game_status.src.aggregations.exceptions import GSException
 
 
 class GSCrypt(EncryptBase):

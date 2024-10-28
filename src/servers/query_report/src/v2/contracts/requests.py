@@ -2,7 +2,7 @@ from typing import Optional
 from uuid import UUID
 from library.src.extentions.encoding import get_string
 from library.src.log.log_manager import LogWriter
-from servers.query_report.src.exceptions.exceptions import QRException
+from servers.query_report.src.aggregates.exceptions import QRException
 from servers.query_report.src.v2.abstractions.contracts import RequestBase
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 

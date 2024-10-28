@@ -1,7 +1,7 @@
 from typing import OrderedDict
 
 from pydantic import BaseModel
-from servers.web_services.src.modules.sake.abstractions.general import ResultBase
+from servers.web_services.src.modules.sake.abstractions.generals import ResultBase
 
 
 class CreateRecordResult(ResultBase):

@@ -6,9 +6,9 @@ import responses
 from library.tests.mock_objects.general import create_mock_url
 from servers.game_status.src.aggregations.gscrypt import GSCrypt
 from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
-from servers.game_status.src.enums.general import PersistStorageType
-from servers.game_status.src.handlers.handlers import AuthPlayerHandler, SetPlayerDataHandler, UpdateGameHandler
-from servers.game_status.src.handlers.switcher import Switcher
+from servers.game_status.src.aggregations.enums import PersistStorageType
+from servers.game_status.src.applications.handlers import AuthPlayerHandler, SetPlayerDataHandler, UpdateGameHandler
+from servers.game_status.src.applications.switcher import Switcher
 from servers.game_status.tests.mock_objects import create_client
 
 

@@ -2,8 +2,8 @@ from copy import copy, deepcopy
 from typing import Optional
 import xml.etree.ElementTree as ET
 
-from servers.web_services.src.exceptions.general import WebException
-from servers.web_services.src.modules.sake.abstractions.general import (
+from servers.web_services.src.aggregations.exceptions import WebException
+from servers.web_services.src.modules.sake.abstractions.generals import (
     RequestBase,
     NAMESPACE,
 )

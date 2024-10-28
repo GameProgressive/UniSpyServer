@@ -1,6 +1,6 @@
 from pydantic import BaseModel, UUID4
 
-from servers.natneg.src.enums.general import NatClientIndex, NatPortType
+from servers.natneg.src.aggregations.enums import NatClientIndex, NatPortType
 
 
 class InitPacketInfo(BaseModel):

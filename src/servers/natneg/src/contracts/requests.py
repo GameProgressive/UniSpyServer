@@ -3,7 +3,7 @@ import struct
 
 # from library.src.extentions.string_extentions import IPEndPoint
 from servers.natneg.src.abstractions.contracts import CommonRequestBase, RequestBase
-from servers.natneg.src.enums.general import (
+from servers.natneg.src.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
     NatPortType,

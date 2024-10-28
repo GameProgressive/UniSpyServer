@@ -1,5 +1,5 @@
 import backends.library.abstractions.contracts as lib
-from servers.chat.src.enums.general import LoginRequestType, WhoRequestType
+from servers.chat.src.aggregates.enums import LoginRequestType, WhoRequestType
 
 
 class RequestBase(lib.RequestBase):
