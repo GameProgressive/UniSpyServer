@@ -14,7 +14,7 @@ class GameServerInfo(BaseModel):
     game_name: str
     query_report_port: int
 
-    last_heart_beart_received_time: datetime
+    last_heart_beat_received_time: datetime
     status: GameServerStatus
     server_data: dict[str, str]
     player_data: list[dict[str, str]]
@@ -22,7 +22,7 @@ class GameServerInfo(BaseModel):
 
     @property
     def query_report_port_bytes(self) -> bytes:
-        return self.query_report_port.to_bytes(2, "big")
+        return self.query_report_port.to_bytes(2)
 
     @property
     def host_ip_address_bytes(self) -> bytes:

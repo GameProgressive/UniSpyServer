@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import library.src.abstractions.contracts
 
 from library.src.extentions.encoding import get_bytes
+from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.server_browser.src.v2.aggregations.encryption import SERVER_CHALLENGE
 from servers.server_browser.src.v2.aggregations.string_flags import STRING_SPLITER
 from servers.server_browser.src.v2.aggregations.enums import (
@@ -11,8 +12,6 @@ from servers.server_browser.src.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
-if TYPE_CHECKING:
-    from servers.server_browser.src.v2.contracts.results import AdHocResult
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
@@ -114,6 +113,10 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
         self._servers_info_buffers.append(0)
 
 
+class AdHocResultBase(ResultBase):
+    game_server_info: GameServerInfo
+
+
 class AdHocRequestBase(RequestBase):
     game_server_public_ip: str
     game_server_public_port: int
@@ -127,5 +130,9 @@ class AdHocRequestBase(RequestBase):
 
 
 class AdHocResponseBase(ResponseBase):
-    _result: "AdHocResult"
+    _result: AdHocResultBase
     _buffer: bytearray
+
+    def __init__(self, request: RequestBase, result: ResultBase) -> None:
+        super().__init__(request, result)
+        self._buffer = bytearray()

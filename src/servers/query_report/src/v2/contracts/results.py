@@ -18,6 +18,6 @@ class EchoResult(ResultBase):
 
 
 class HeartBeatResult(ResultBase):
+    packet_type: PacketType = PacketType.HEARTBEAT
     remote_ip_address:str
     remote_port:int
-    packet_type: PacketType = PacketType.HEARTBEAT

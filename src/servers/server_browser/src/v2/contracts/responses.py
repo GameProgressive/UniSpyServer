@@ -9,8 +9,8 @@ from servers.server_browser.src.v2.aggregations.server_info_builder import (
 from servers.server_browser.src.v2.aggregations.string_flags import *
 from servers.server_browser.src.v2.contracts.requests import ServerListRequest
 from servers.server_browser.src.v2.contracts.results import (
-    AdHocResult,
     P2PGroupRoomListResult,
+    ServerInfoResult,
     ServerMainListResult,
 )
 
@@ -18,10 +18,10 @@ from servers.server_browser.src.v2.aggregations.enums import GameServerFlags, Re
 
 
 class DeleteServerInfoResponse(AdHocResponseBase):
-    _result: AdHocResult
+    _result: ServerInfoResult
 
-    def __init__(self, result: AdHocResult) -> None:
-        assert isinstance(result, AdHocResult)
+    def __init__(self, result: ServerInfoResult) -> None:
+        assert isinstance(result, ServerInfoResult)
         self._result = result
 
     def build(self):
@@ -32,9 +32,10 @@ class DeleteServerInfoResponse(AdHocResponseBase):
 
 
 class UpdateServerInfoResponse(AdHocResponseBase):
-    def __init__(self, result: AdHocResult) -> None:
-        assert isinstance(result, AdHocResult)
+    def __init__(self, result: ServerInfoResult) -> None:
+        assert isinstance(result, ServerInfoResult)
         self._result = result
+        self._buffer = bytearray()
 
     def build(self) -> None:
         self._buffer.append(ResponseType.PUSH_SERVER_MESSAGE)
@@ -63,13 +64,13 @@ class UpdateServerInfoResponse(AdHocResponseBase):
                 self._buffer.extend(team_data)
 
     @staticmethod
-    def _build_kv(data: dict):
-        buffer = []
+    def _build_kv(data: dict)->bytearray:
+        buffer = bytearray()
         for k, v in data.items():
             buffer.extend(get_bytes(k))
-            buffer.append(STRING_SPLITER)
+            buffer.extend(STRING_SPLITER)
             buffer.extend(get_bytes(v))
-            buffer.append(STRING_SPLITER)
+            buffer.extend(STRING_SPLITER)
         return buffer
 
 

@@ -4,6 +4,7 @@ from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.query_report.src.v2.contracts.requests import ClientMessageRequest
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus, RequestType
 from servers.server_browser.src.aggregates.exceptions import ServerBrowserException
+from servers.server_browser.src.v2.abstractions.contracts import RequestBase
 from servers.server_browser.src.v2.contracts.requests import (
     SendMessageRequest,
     ServerInfoRequest,
@@ -17,7 +18,7 @@ from servers.server_browser.src.v2.contracts.responses import (
     UpdateServerInfoResponse,
 )
 from servers.server_browser.src.v2.contracts.results import (
-    AdHocResult,
+    ServerInfoResult,
     ServerMainListResult,
 )
 from servers.server_browser.src.v2.aggregations.enums import (
@@ -44,13 +45,14 @@ def get_clients(game_name: str):
 class AdHocHandler(CmdHandlerBase):
     _message: GameServerInfo
     # !fix this
+    _result: ServerInfoResult
 
     def __init__(self, message: GameServerInfo) -> None:
         self._log_current_class()
         self._message = message
 
     def handle(self) -> None:
-        result = AdHocResult(game_server_info=self._message)
+        result = ServerInfoResult(game_server_info=self._message)
         match (self._message.status):
             case (
                 status
@@ -111,7 +113,11 @@ class SendMessageHandler(CmdHandlerBase):
 
 class ServerInfoHandler(CmdHandlerBase):
     _request: ServerInfoRequest
-    _result: AdHocResult
+    _result: ServerInfoResult
+
+    def __init__(self, client: Client, request: RequestBase) -> None:
+        super().__init__(client, request)
+        self._result_cls = ServerInfoResult
 
     def _response_construct(self) -> None:
         if self._result.game_server_info is not None:
