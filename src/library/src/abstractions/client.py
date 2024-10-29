@@ -57,7 +57,7 @@ class ClientBase:
         del self.pool[self.connection.ip_endpoint]
         pass
 
-    def create_switcher(self, buffer: bytes | str) -> "SwitcherBase":  # type: ignore
+    def _create_switcher(self, buffer: bytes | str) -> "SwitcherBase":  # type: ignore
         """
         virtual method helps verify buffer type
         """
@@ -72,7 +72,7 @@ class ClientBase:
         else:
             raise UniSpyException("buffer type is invalid")
         self.log_network_receving(buffer)
-        switcher: "SwitcherBase" = self.create_switcher(buffer)
+        switcher: "SwitcherBase" = self._create_switcher(buffer)
         switcher.handle()
 
     def decrypt_message(self, buffer: bytes) -> bytes:

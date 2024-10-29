@@ -76,7 +76,16 @@ class HeartBeatHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: HeartBeatRequest) -> None:
         assert isinstance(request, HeartBeatRequest)
         super().__init__(client, request)
-        self._result_cls = HeartBeatResult
+
+    def _request_check(self) -> None:
+        super()._request_check()
+        self._request.remote_ip_address = self._client.connection.remote_ip
+        self._request.remote_port = self._client.connection.remote_port
+
+    def _feach_data(self):
+        self._result = HeartBeatResult(
+            remote_ip_address=self._request.remote_ip_address,
+            remote_port=self._request.remote_port)
 
     def _response_construct(self) -> None:
         self._response = HeartBeatResponse(self._request, self._result)

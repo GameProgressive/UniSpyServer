@@ -42,7 +42,7 @@ class UdpServer(NetworkServerBase):
 
 
 class TestClient(ClientBase):
-    def create_switcher(self, buffer) -> None:
+    def _create_switcher(self, buffer) -> None:
         # return super().create_switcher(buffer)
         print(buffer)
         pass

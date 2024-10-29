@@ -15,12 +15,11 @@ class AvaliableRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        for i in range(len(PREFIX)):
-            if self.raw_request[i] != PREFIX[i]:
-                raise QRException("Avaliable request prefix is invalid.")
 
+        if self.raw_request[:len(PREFIX)] != PREFIX:
+            raise QRException("Avaliable request prefix is invalid.")
         # postfix check
-        if self.raw_request[len(self.raw_request) - 1] != POSTFIX:
+        if self.raw_request[len(self.raw_request)-1].to_bytes() != POSTFIX:
             raise QRException("Avaliable request postfix is invalid.")
 
 
@@ -54,6 +53,9 @@ class HeartBeatRequest(RequestBase):
     team_data: list[dict[str, str]]
     server_status: GameServerStatus
     group_id: int
+    remote_ip_address: str
+    remote_port: int
+    game_name: str
 
     def parse(self):
         super().parse()
@@ -61,8 +63,19 @@ class HeartBeatRequest(RequestBase):
         player_length, team_length = 0, 0
         self.data_partition = get_string(self.raw_request[5:])
 
-        player_pos = self.data_partition.index("player_\0", 0)
-        team_pos = self.data_partition.index("team_t\0", 0)
+        game_key_val = self.data_partition.split("\x00")
+        index_gn = game_key_val.index("gamename")
+        self.game_name = game_key_val[index_gn+1]
+
+        try:
+            player_pos = self.data_partition.index("player_\0", 0)
+        except ValueError:
+            player_pos = -1
+
+        try:
+            team_pos = self.data_partition.index("team_t\0", 0)
+        except ValueError:
+            team_pos = -1
 
         if player_pos != -1 and team_pos != -1:
             player_length = team_pos - player_pos
@@ -122,11 +135,12 @@ class HeartBeatRequest(RequestBase):
         if "statechanged" not in self.server_data:
             self.server_status = GameServerStatus.NORMAL
         else:
-            self.server_status = GameServerStatus[self.server_data["statechanged"]]
+            self.server_status = GameServerStatus(
+                int(self.server_data["statechanged"]))
 
     def parse_player_data(self, player_data_str: str):
         self.player_data = []
-        player_count = int(player_data_str[0])
+        player_count = int.from_bytes(player_data_str[0].encode())
         player_data_str = player_data_str[1:]
 
         index_of_key = player_data_str.index("\0\0", 0)
@@ -152,7 +166,7 @@ class HeartBeatRequest(RequestBase):
 
     def parse_team_data(self, team_data_str: str):
         self.team_data = []
-        team_count = int(team_data_str[0])
+        team_count = int.from_bytes(team_data_str[0].encode())
         team_data_str = team_data_str[1:]
 
         end_key_index = team_data_str.index("\0\0", 0)

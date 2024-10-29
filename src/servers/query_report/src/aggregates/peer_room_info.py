@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from pydantic import BaseModel
+
 
 dd = {
     "groupid": "groupid",
@@ -15,7 +17,7 @@ dd = {
 }
 
 
-class PeerRoomInfo:
+class PeerRoomInfo(BaseModel):
     server_id: UUID
     game_name: str
     group_id: int

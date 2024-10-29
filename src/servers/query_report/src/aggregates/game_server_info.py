@@ -1,12 +1,13 @@
 from datetime import datetime
-import socket
 from uuid import UUID
+
+from pydantic import BaseModel
 
 from library.src.extentions.bytes_extentions import ip_to_4_bytes
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 
 
-class GameServerInfo:
+class GameServerInfo(BaseModel):
     server_id: UUID
     host_ip_address: str
     instant_key: int

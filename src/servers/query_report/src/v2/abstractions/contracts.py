@@ -19,7 +19,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         if len(self.raw_request) < 3:
             raise QRException("request length not valid")
         self.command_name = RequestType(self.raw_request[0])
-        self.instant_key = int(self.raw_request[1:5])
+        self.instant_key = int.from_bytes(self.raw_request[1:5])
 
 
 class ResultBase(library.src.abstractions.contracts.ResultBase):
@@ -30,3 +30,10 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
     _result: ResultBase
     _request: RequestBase
     sending_buffer: bytes
+
+    def build(self) -> None:
+        data = bytearray()
+        data.extend(MAGIC_DATA)
+        data.append(self._request.command_name.value)
+        data.extend(self._request.instant_key.to_bytes(4))
+        self.sending_buffer = bytes(data)

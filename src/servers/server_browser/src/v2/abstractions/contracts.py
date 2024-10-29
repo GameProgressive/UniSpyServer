@@ -1,18 +1,18 @@
 from socket import inet_ntoa
-from typing import List, Optional
+from typing import TYPE_CHECKING
 import library.src.abstractions.contracts
 
 from library.src.extentions.encoding import get_bytes
 from servers.server_browser.src.v2.aggregations.encryption import SERVER_CHALLENGE
 from servers.server_browser.src.v2.aggregations.string_flags import STRING_SPLITER
-from servers.server_browser.src.v2.contracts.results import AdHocResult
 from servers.server_browser.src.v2.aggregations.enums import (
     DataKeyType,
     GameServerFlags,
     RequestType,
     ServerListUpdateOption,
 )
-
+if TYPE_CHECKING:
+    from servers.server_browser.src.v2.contracts.results import AdHocResult
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
@@ -127,5 +127,5 @@ class AdHocRequestBase(RequestBase):
 
 
 class AdHocResponseBase(ResponseBase):
-    _result: AdHocResult
+    _result: "AdHocResult"
     _buffer: bytearray

@@ -11,7 +11,8 @@ class Client(ClientBase):
 
     def __init__(self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter):
         super().__init__(connection, server_config, logger)
-
-    def _create_switcher(self, buffer) -> SwitcherBase:
+    
+    def _create_switcher(self, buffer: bytes) -> SwitcherBase:
         from servers.presence_search_player.src.applications.switcher import CmdSwitcher
-        return CmdSwitcher(self, buffer)
+        temp_buffer = buffer.decode()
+        return CmdSwitcher(self, temp_buffer)

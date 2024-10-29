@@ -58,6 +58,6 @@ class Client(ClientBase):
 
         return self.crypto.decrypt(buffer)
 
-    def create_switcher(self, buffer: bytes) -> SwitcherBase:
+    def _create_switcher(self, buffer: bytes) -> SwitcherBase:
         from servers.game_status.src.applications.switcher import Switcher
         return Switcher(self, buffer.decode())

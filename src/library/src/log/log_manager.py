@@ -41,7 +41,7 @@ class LogManager:
         create_dir(log_file_path)
         file_name = f"{log_file_path}/{logger_name}.log"
         logging.basicConfig(
-            filename=file_name,
+            filename=logger_name,
             level=logging.INFO,
             format=f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
@@ -68,7 +68,7 @@ class LogManager:
         console_handler.setLevel(logging.DEBUG)
         console_handler.setFormatter(formatter)
 
-        logger = logging.getLogger(log_file_path)
+        logger = logging.getLogger(logger_name)
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
         return LogWriter(logger)

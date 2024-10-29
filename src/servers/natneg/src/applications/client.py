@@ -11,7 +11,7 @@ class Client(ClientBase):
         super().__init__(connection, server_config, logger)
         self.is_log_raw = True
 
-    def create_switcher(self, buffer: bytes):
+    def _create_switcher(self, buffer: bytes):
         assert isinstance(buffer, bytes)
         from servers.natneg.src.applications.switcher import CmdSwitcher
 
