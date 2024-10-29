@@ -34,7 +34,9 @@ class AddressCheckHandler(CmdHandlerBase):
         assert isinstance(client, Client)
         assert isinstance(request, AddressCheckRequest)
         super().__init__(client, request)
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
     def _data_operate(self) -> None:
         """
@@ -57,7 +59,9 @@ class ConnectAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ConnectAckRequest) -> None:
         assert isinstance(request, ConnectAckRequest)
         super().__init__(client, request)
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
     def _data_operate(self) -> None:
         self._client.log_info(
@@ -71,7 +75,9 @@ class ConnectHandler(CmdHandlerBase):
         assert isinstance(request, ConnectRequest)
         super().__init__(client, request)
         self._result_cls = ConnectResult
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
 
 class ErtAckHandler(CmdHandlerBase):
@@ -81,7 +87,9 @@ class ErtAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         assert isinstance(request, ErtAckRequest)
         super().__init__(client, request)
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
     def _data_operate(self) -> None:
         self._result = ErtAckResult(
@@ -102,7 +110,9 @@ class InitHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
         super().__init__(client, request)
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
     def _data_operate(self) -> None:
         self._result = InitResult(
@@ -125,7 +135,9 @@ class NatifyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         assert isinstance(request, NatifyRequest)
         super().__init__(client, request)
-        self._is_feaching = False
+
+    def _feach_data(self):
+        pass
 
     def _data_operate(self):
         self._result = NatifyResult(

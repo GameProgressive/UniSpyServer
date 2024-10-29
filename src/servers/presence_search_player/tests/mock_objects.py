@@ -6,7 +6,6 @@ from servers.presence_search_player.src.applications.handlers import CheckHandle
 
 
 class ClientMock(Client):
-
     pass
 
 
@@ -17,11 +16,9 @@ def create_client() -> Client:
         handler=handler,
         config=CONFIG.servers["PresenceSearchPlayer"], t_client=ClientMock,
         logger=logger)
+    config = CONFIG.servers["PresenceSearchPlayer"]
+    create_mock_url(config, CheckHandler, {"profile_id": 0})
+    create_mock_url(config, SearchHandler, {"result": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
+                                                        "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]})
 
     return cast(Client, conn._client)
-
-
-config = CONFIG.servers["PresenceSearchPlayer"]
-create_mock_url(config, CheckHandler, {"profile_id": 0})
-create_mock_url(config, SearchHandler, {"result": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
-                                                    "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]})

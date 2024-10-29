@@ -43,7 +43,6 @@ class HandlerTests(unittest.TestCase):
         switcher.handle()
         request: UpdateGameRequest = cast(
             UpdateGameRequest, switcher._handlers[0]._request)
-        response = switcher._handlers[0]._response
         self.assertEqual("20298203", request.session_key)
         self.assertEqual(0, request.connection_id)
         self.assertEqual(False, request.is_done)

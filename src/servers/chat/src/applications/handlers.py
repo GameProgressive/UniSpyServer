@@ -269,7 +269,6 @@ class GetChannelKeyHandler(ChannelHandlerBase):
 
     def __init__(self, client: ClientBase, request: GetChannelKeyRequest):
         assert isinstance(request, GetChannelKeyRequest)
-        self._is_fetching_data = True
         super().__init__(client, request)
 
     def _publish_message(self):
@@ -393,7 +392,6 @@ class NamesHandler(ChannelHandlerBase):
 
     def __init__(self, client: ClientBase, request: NamesRequest):
         assert isinstance(request, NamesRequest)
-        self._is_fetching_data = True
         super().__init__(client, request)
 
     def _response_construct(self):

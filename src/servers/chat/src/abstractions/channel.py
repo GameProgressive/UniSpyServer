@@ -40,7 +40,6 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         # self._channel = None
-        # self._response = None
 
     def _request_check(self) -> None:
         if self._request.raw_request is None:

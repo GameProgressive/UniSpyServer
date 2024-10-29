@@ -6,6 +6,7 @@ from typing import cast
 from servers.natneg.src.applications.handlers import AddressCheckHandler, InitHandler, NatifyHandler
 
 
+
 class ClientMock(Client):
 
     pass
@@ -18,12 +19,11 @@ def create_client() -> Client:
         handler=handler,
         config=CONFIG.servers["NatNegotiation"], t_client=ClientMock,
         logger=logger)
+    
+    config = CONFIG.servers["NatNegotiation"]
+    create_mock_url(config, InitHandler, {"message": "ok"})
+    create_mock_url(config, AddressCheckHandler, {"message": "ok"})
+    create_mock_url(config, AddressCheckHandler, {"message": "ok"})
+    create_mock_url(config, NatifyHandler, {"message": "ok"})
 
     return cast(Client, conn._client)
-
-
-config = CONFIG.servers["NatNegotiation"]
-create_mock_url(config, InitHandler, {"message": "ok"})
-create_mock_url(config, AddressCheckHandler, {"message": "ok"})
-create_mock_url(config, AddressCheckHandler, {"message": "ok"})
-create_mock_url(config, NatifyHandler, {"message": "ok"})

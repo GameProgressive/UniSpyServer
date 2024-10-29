@@ -1,4 +1,3 @@
-from servers.chat.src.aggregates.exceptions import IRCChannelException
 from servers.chat.src.abstractions.contract import SERVER_DOMAIN
 from servers.chat.src.aggregates.enums import IRCErrorCode
 

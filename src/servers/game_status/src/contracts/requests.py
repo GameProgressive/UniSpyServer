@@ -67,7 +67,11 @@ class GetPlayerDataRequest(RequestBase):
     storage_type: PersistStorageType
     data_index: int
     is_get_all_data: bool = False
-    keys: list[str] = []
+    keys: list[str]
+
+    def __init__(self, raw_request: object) -> None:
+        super().__init__(raw_request)
+        self.keys = []
 
     def parse(self) -> None:
         super().parse()

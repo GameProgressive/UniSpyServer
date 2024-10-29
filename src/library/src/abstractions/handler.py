@@ -13,7 +13,7 @@ class CmdHandlerBase:
     _client: "ClientBase"
     _request: "RequestBase"
     _result: "ResultBase"
-    _response: Optional["ResponseBase"]
+    _response: "ResponseBase"
     """
     the response instance, initialize as None in __init__
     """
@@ -23,13 +23,9 @@ class CmdHandlerBase:
     the initialization of _result_cls must before call super().__init__()
     """
     _is_uploading: bool
-    """
-    whether need send data to backend
-    """
+
     _is_feaching: bool
-    """
-    whether need get data from backend
-    """
+
     _debug: bool = False
     """
     whether is in debug mode, if in debug mode exception will raise from handler
@@ -39,9 +35,6 @@ class CmdHandlerBase:
 
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
-        # if some subclass do not need result, override the __init__() in that subclass
-        self._is_feaching = True
-        self._is_uploading = True
         self._client = client
         self._request = request
 
@@ -53,7 +46,7 @@ class CmdHandlerBase:
             self._request_check()
             self._data_operate()
             self._response_construct()
-            if self._response is None:
+            if not hasattr(self, "_response"):
                 return
             self._response_send()
         except Exception as ex:
@@ -71,29 +64,38 @@ class CmdHandlerBase:
         """
         virtual function, can be override
         """
-        # we check whether we need fetch data
-        if not self._is_uploading:
-            return
-        if self._is_feaching:
-            assert issubclass(self._result_cls, ResultBase)
-        # default use restapi to access to our backend service
-        # get the http response and create it with this type
-        # http://127.0.0.1:8080/gamespy/pcm/login/
+        self._upload_data()
+        self._feach_data()
 
-        # fmt: off
-
-        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}/"
+    def _upload_data(self):
+        """
+        whether need send data to backend
+        if child class do not require feach, overide this function to do nothing
+        """
+        url = f"{CONFIG.backend.url}/GameSpy/{
+            self._client.server_config.server_name}/{self.__class__.__name__}/"
 
         # fmt: on
         data = self._request.to_json()
         data["server_id"] = str(self._client.server_config.server_id)
 
         response = requests.post(url, json=data)
-        result = response.json()
-        # if the result cls is not declared, we do not parse the response values
+        self._http_result = response.json()
 
-        if self._is_feaching:
-            self._result = self._result_cls(**result)
+    def _feach_data(self):
+        """
+        whether need get data from backend.
+        if child class do not require feach, overide this function to do nothing
+        """
+        if not hasattr(self, "_result_cls"):
+            raise UniSpyException(
+                "_result should be initialized when feach data")
+
+        if self._result_cls is None:
+            raise UniSpyException("_result should not be null when feach data")
+
+        assert issubclass(self._result_cls, ResultBase)
+        self._result = self._result_cls(**self._http_result)
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""
@@ -104,8 +106,6 @@ class CmdHandlerBase:
         virtual function, can be override
         Send response back to client, this is a virtual function which can be override only by child class
         """
-        if self._response is None:
-            return
         self._client.send(self._response)
 
     def _handle_exception(self, ex: Exception) -> None:

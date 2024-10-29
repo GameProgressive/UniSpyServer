@@ -1,6 +1,7 @@
 import unittest
 
 from library.src.abstractions.handler import CmdHandlerBase
+from library.src.configs import CONFIG
 from library.tests.mock_objects import create_mock_url
 from servers.natneg.src.contracts.requests import InitRequest
 from servers.natneg.src.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler

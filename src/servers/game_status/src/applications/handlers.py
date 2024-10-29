@@ -61,20 +61,19 @@ class NewGameHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: NewGameRequest) -> None:
         assert isinstance(request, NewGameRequest)
         super().__init__(client, request)
-        self._is_feaching = False
 
-    def _response_construct(self) -> None:
-        self._response = None
+    def _feach_data(self):
+        pass
+
 
 
 class SetPlayerDataHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
         assert isinstance(request, SetPlayerDataRequest)
         super().__init__(client, request)
-        self._is_feaching = False
 
-    def _response_construct(self) -> None:
-        self._response = None
+    def _feach_data(self):
+        pass
 
 
 class UpdateGameHandler(CmdHandlerBase):
@@ -88,7 +87,7 @@ class UpdateGameHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: UpdateGameRequest) -> None:
         assert isinstance(request, UpdateGameRequest)
         super().__init__(client, request)
-        self._is_feaching = False
 
-    def _response_construct(self) -> None:
-        self._response = None
+    def _feach_data(self):
+        pass
+

@@ -31,13 +31,13 @@ OTHERS_BUDDY_LIST = "\\otherlist\\\\sesskey\\123456\\profileid\\0\\numopids\\2\\
 SUGGEST_UNIQUE = "\\uniquesearch\\\\preferrednick\\xiaojiuwo\\namespaceid\\0\\gamename\\gmtest\\final\\"
 
 
-client = create_client()
 
 
 class HandlerTests(unittest.TestCase):
 
     @responses.activate
     def test_profile(self):
+        client = create_client()
         request = SearchRequest(SEARCH_1)
         request.parse()
         self.assertEqual("xxxx", request.session_key)

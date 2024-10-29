@@ -23,7 +23,6 @@ class XorEncoding(EncryptBase):
         seed_1 = b"GameSpy3D"
         seed_2 = b"Industries"
         seed_3 = b"ProjectAphex"
-        temp_plaintext = list(plaintext)
         index = 0
         key = seed_0
         if enc_type == XorType.TYPE_0:
