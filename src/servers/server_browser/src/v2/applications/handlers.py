@@ -127,8 +127,13 @@ class ServerInfoHandler(CmdHandlerBase):
 class ServerListHandler(CmdHandlerBase):
     _request: ServerListRequest
     _result: ServerMainListResult
+    _result_cls: type[ServerMainListResult]
 
-    def response_construct(self):
+    def __init__(self, client: Client, request: RequestBase) -> None:
+        super().__init__(client, request)
+        self._result_cls = ServerMainListResult
+
+    def _response_construct(self) -> None:
         match self._request.update_option:
             case option if option in [
                 ServerListUpdateOption.SERVER_MAIN_LIST,

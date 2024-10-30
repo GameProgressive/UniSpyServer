@@ -64,7 +64,7 @@ class UpdateServerInfoResponse(AdHocResponseBase):
                 self._buffer.extend(team_data)
 
     @staticmethod
-    def _build_kv(data: dict)->bytearray:
+    def _build_kv(data: dict) -> bytearray:
         buffer = bytearray()
         for k, v in data.items():
             buffer.extend(get_bytes(k))
@@ -90,11 +90,13 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
             self._servers_info_buffers.append(GameServerFlags.HAS_KEYS_FLAG)
             group_id_bytes = room.group_id.to_bytes()
             self._servers_info_buffers.extend(group_id_bytes)
+            # get gamespy format dict
+            gamespy_dict = room.get_gamespy_dict()
             for key in self._request.keys:
                 self._servers_info_buffers.extend(NTS_STRING_FLAG)
                 value = (
-                    room.raw_key_values[key]
-                    if key in room.raw_key_values.keys()
+                    gamespy_dict[key]
+                    if key in gamespy_dict.keys()
                     else ""
                 )
                 self._servers_info_buffers.extend(get_bytes(value))

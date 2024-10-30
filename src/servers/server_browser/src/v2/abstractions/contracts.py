@@ -2,6 +2,7 @@ from socket import inet_ntoa
 from typing import TYPE_CHECKING
 import library.src.abstractions.contracts
 
+from library.src.extentions.bytes_extentions import ip_to_4_bytes
 from library.src.extentions.encoding import get_bytes
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 from servers.server_browser.src.v2.aggregations.encryption import SERVER_CHALLENGE
@@ -12,6 +13,8 @@ from servers.server_browser.src.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
+
+QUERY_REPORT_DEFAULT_PORT: int = int(6500)
 
 
 class RequestBase(library.src.abstractions.contracts.RequestBase):
@@ -65,7 +68,7 @@ class ServerListUpdateOptionRequestBase(RequestBase):
 
 
 class ServerListUpdateOptionResultBase(ResultBase):
-    client_remote_ip: bytes
+    client_remote_ip: str
     flag: GameServerFlags
     game_secret_key: str
 
@@ -88,8 +91,10 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
     def build(self) -> None:
         crypt_header = self.build_crypt_header()
         self._servers_info_buffers.extend(crypt_header)
-        self._servers_info_buffers.extend(self._result.client_remote_ip)
-        self._servers_info_buffers.extend(bytes(6500))
+        self._servers_info_buffers.extend(
+            ip_to_4_bytes(self._result.client_remote_ip))
+        self._servers_info_buffers.extend(
+            QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
 
     def build_crypt_header(self) -> list:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes

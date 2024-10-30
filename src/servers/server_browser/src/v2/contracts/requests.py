@@ -14,7 +14,7 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         self.request_version = int(self.raw_request[2])
         self.protocol_version = int(self.raw_request[3])
         self.encoding_version = int(self.raw_request[4])
-        self.game_version = int(self.raw_request[5:9])
+        self.game_version = int.from_bytes(self.raw_request[5:9], "little")
 
         remain_data = self.raw_request[9:]
         dev_game_name_index = remain_data.index(0)
@@ -35,8 +35,9 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         self.keys = remain_data[:keys_index].decode().split("\\")
         remain_data = remain_data[keys_index + 1:]
 
-        byte_update_options = remain_data[:4][::-1]
-        self.update_option = ServerListUpdateOption(int(byte_update_options))
+        byte_update_options = remain_data[:4]
+        self.update_option = ServerListUpdateOption(
+            int.from_bytes(byte_update_options))
         remain_data = remain_data[4:]
 
         if self.update_option & ServerListUpdateOption.ALTERNATE_SOURCE_IP:
