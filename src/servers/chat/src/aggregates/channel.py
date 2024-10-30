@@ -3,6 +3,7 @@ from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, field_validator
+from library.src.abstractions.brocker import BrockerBase
 from library.src.network.brockers import WebsocketBrocker
 from library.src.configs import CONFIG
 from servers.chat.src.abstractions.contract import ResponseBase
@@ -25,32 +26,46 @@ class Channel:
     server_id: UUID
     game_name: str
     name: str
-    max_num_user: int = 200
-    create_time: datetime.datetime = datetime.datetime.now(
-        datetime.timezone.utc)
-    kv_manager: KeyValueManager = KeyValueManager()
+    max_num_user: int
+    create_time: datetime.datetime
+    kv_manager: KeyValueManager
     room_type: PeerRoomType
     password: Optional[str]
-    topic: Optional[str] = None
-    group_id: Optional[int] = None
-    room_name: Optional[str] = None
-    previously_join_channel: Optional[str] = None
+    topic: Optional[str]
+    group_id: Optional[int]
+    room_name: Optional[str]
+    previously_join_channel: Optional[str]
+    ban_list: dict[str, ChannelUser]
+    users: dict[str, ChannelUser]
+    _creator_nick_name: str
 
     @property
     def is_valid_peer_room(self) -> bool:
         return self.group_id is not None and self.room_name is not None
 
-    def __init__(self, name: str, client: Client, password: Optional[str] = None) -> None:
+    def __init__(self, name: str, client: Client, password: Optional[str] = None, brocker_cls: type[BrockerBase] = WebsocketBrocker) -> None:
+        # region channel init
         self.server_id = client.server_config.server_id
         self.name = name
         self.password = password
         self.game_name = client.info.gamename
         self.previously_join_channel = client.info.previously_joined_channel
         self.room_type = PeerRoom.get_room_type(name)
+        self.create_time = datetime.datetime.now()
+        self.topic = None
+        self.group_id = None
+        self.room_name = None
+        self.previously_join_channel = None
+        self.kv_manager = KeyValueManager()
+        self.max_num_user = 200
         # setup the message broker
-        self._broker = WebsocketBrocker(
+        self._broker = brocker_cls(
             self.name, CONFIG.backend.url, self.get_message_from_brocker)
+        # channel user init
         self._broker.subscribe()
+        self.ban_list = {}
+        self.users = {}
+        self._creator_nick_name = client.info.nick_name
 
         match self.room_type:
             case PeerRoomType.Group:
@@ -83,10 +98,6 @@ class Channel:
 
     def get_title_room_name(self):
         self.get_staging_room_name()
-
-    ban_list: dict[str, ChannelUser] = {}
-    users: dict[str, ChannelUser] = {}
-    _creator_nick_name: str
 
     @property
     def creator(self) -> Optional[ChannelUser]:
@@ -145,12 +156,14 @@ class Channel:
         return None
 
     def add_bind_on_user_and_channel(self, joiner: ChannelUser):
-        joiner.channel.users[joiner.client.info.nick_name]
-        joiner.client.info.joined_channels[joiner.channel.name] = joiner.channel
+        if joiner.client.info.nick_name not in joiner.channel.users:
+            joiner.client.info.joined_channels[joiner.channel.name] = joiner.channel
 
     def remove_bind_on_user_and_channel(self, leaver: ChannelUser):
-        del leaver.channel.users[leaver.client.info.nick_name]
-        del leaver.client.info.joined_channels[leaver.channel.name]
+        if leaver.client.info.nick_name in leaver.channel.users:
+            del leaver.channel.users[leaver.client.info.nick_name]
+        if leaver.channel.name in leaver.client.info.joined_channels:
+            del leaver.client.info.joined_channels[leaver.channel.name]
 
     def multicast(self, sender: Client, message: ResponseBase, is_skip_sender=False):
         for nick, user in self.users.items():

@@ -1,9 +1,12 @@
+import asyncio
 import threading
 from typing import Optional
 import websocket
 from redis import Redis
 from library.src.abstractions.brocker import BrockerBase
 from redis.client import PubSub
+
+from servers.chat.src.aggregates.exceptions import ChatException
 websocket.enableTrace(True)
 
 
@@ -11,8 +14,9 @@ class RedisBrocker(BrockerBase):
     _client: Redis
     _subscriber: PubSub
 
-    def __init__(self, name: str, call_back_func: "function") -> None:
-        super().__init__(name, call_back_func)
+    def __init__(self, name: str, url: str, call_back_func: "function") -> None:
+        super().__init__(name, url, call_back_func)
+        self._client = Redis.from_url(url)
         self._subscriber = self._client.pubsub()
 
     def subscribe(self):
@@ -25,7 +29,9 @@ class RedisBrocker(BrockerBase):
             if not self.is_started:
                 break
             if message["type"] == "message":
-                self.receive_message(message['data'].decode('utf-8'))
+                msg = message['data'].decode('utf-8')
+                # run receive message in background do not block receiving
+                threading.Thread(target=self.receive_message, args=msg)
 
     def unsubscribe(self):
         self.is_started = False
@@ -41,7 +47,7 @@ class WebsocketBrocker(BrockerBase):
     _publisher: Optional[websocket.WebSocket] = None
 
     def __init__(self, name: str, url: str, call_back_func: "function") -> None:
-        super().__init__(name, call_back_func)
+        super().__init__(name, url, call_back_func)
         self._subscriber = websocket.WebSocketApp(
             url,
             on_message=lambda _, m: self.receive_message(m),
@@ -53,15 +59,13 @@ class WebsocketBrocker(BrockerBase):
         self._publisher = ws
 
     def _on_message(self, _, message):
-        self.receive_message(message)
+        threading.Thread(target=self.receive_message, args=message).start()
 
     def subscribe(self):
-        t = threading.Thread(target=self._subscriber.run_forever)
-        t.start()
+        threading.Thread(target=self._subscriber.run_forever).start()
         # # wait for connection establish
-        while True:
-            if self._publisher is not None:
-                break
+        if self._publisher is None:
+            raise ChatException("brocker backend is not available")
 
     def unsubscribe(self):
         self._subscriber.close()
@@ -75,7 +79,7 @@ class WebsocketBrocker(BrockerBase):
 if __name__ == "__main__":
 
     ws = WebsocketBrocker(name="test_channel",
-                          url="ws://127.0.0.1:8000/GameSpy/Chat/Channel", call_back_func=print)
+                          url="ws://127.0.0.1:8080/GameSpy/Chat/Channel", call_back_func=print)
     ws.subscribe()
     import json
     ws.publish_message(json.dumps(

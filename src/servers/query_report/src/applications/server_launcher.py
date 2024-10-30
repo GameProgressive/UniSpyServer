@@ -5,13 +5,15 @@ from servers.presence_search_player.src.applications.client import Client
 
 
 class ServerLauncher(ServerLauncherBase):
+    natneg_channel: object
 
     def __init__(self) -> None:
         super().__init__()
         self.config = CONFIG.servers["QueryReport"]
 
     def _launch_server(self):
-        UdpServer(self.config, Client, self.logger).start()
+        self.server = UdpServer(self.config, Client, self.logger)
+        self.server.start()
 
 
 if __name__ == "__main__":

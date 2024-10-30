@@ -1,5 +1,5 @@
-import abc
 from types import MappingProxyType
+from library.src.abstractions.connections import NetworkServerBase
 from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogManager, LogWriter
 from library.src.configs import CONFIG, ServerConfig
@@ -26,6 +26,7 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
 class ServerLauncherBase:
     config: ServerConfig
     logger: LogWriter
+    server: NetworkServerBase
 
     def start(self):
         self.__show_unispy_logo()

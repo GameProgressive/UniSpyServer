@@ -4,6 +4,7 @@ from library.src.abstractions.client import ClientBase
 
 
 class Client(ClientBase):
+    pool: dict[str, "Client"]
     is_log_raw: bool = True
 
     def _create_switcher(self, buffer: bytes):

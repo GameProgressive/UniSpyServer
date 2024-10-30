@@ -1,4 +1,3 @@
-import socket
 from library.src.extentions.encoding import get_bytes
 from servers.query_report.src.v2.abstractions.contracts import ResponseBase
 from servers.query_report.src.v2.contracts.requests import (

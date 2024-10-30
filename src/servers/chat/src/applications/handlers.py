@@ -176,6 +176,7 @@ class NickHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: NickRequest):
         assert isinstance(request, NickRequest)
         super().__init__(client, request)
+        self._result_cls = NickResult
 
     def _response_construct(self) -> None:
         self._response = NickResponse(self._result)
@@ -231,6 +232,9 @@ class UserIPHandler(CmdHandlerBase):
             f"{self._client.connection.remote_ip}:{
                 self._client.connection.remote_port}"
         )
+
+    def _feach_data(self):
+        pass
 
     def _response_construct(self) -> None:
         self._response = UserIPResponse(self._result)

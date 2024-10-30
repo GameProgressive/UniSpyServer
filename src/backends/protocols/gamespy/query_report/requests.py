@@ -25,7 +25,7 @@ class ClientMessageAckRequest(RequestBase):
 
 class ClientMessageRequest(RequestBase):
     server_browser_sender_id: UUID4
-    natneg_message: list[int]
+    natneg_message: bytes
     target_ip_address: str
     target_port: str
     message_key: int

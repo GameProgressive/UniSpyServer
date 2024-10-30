@@ -1,7 +1,6 @@
 import unittest
 
 import responses
-# from servers.server_browser.tests.mock_objects import create_v2_client
 from servers.query_report.tests.mock_objects import create_client
 from servers.server_browser.tests.mock_objects import create_v2_client
 
@@ -16,6 +15,7 @@ class GameTest(unittest.TestCase):
         sb_client = create_v2_client()
         sb_client.on_received(sb_raw)
 
+    @responses.activate
     def test_anno1701_20220620(self):
         qr_raws = [
             # available request

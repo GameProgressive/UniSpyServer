@@ -1,6 +1,7 @@
 import socketserver
 
 import responses
+from library.src.abstractions.brocker import BrockerBase
 from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase
 from library.src.abstractions.handler import CmdHandlerBase
@@ -38,6 +39,16 @@ class LogMock(LogWriter):
     def warn(self, message):
         print(message)
 
+
+class BrokerMock(BrockerBase):
+    def subscribe(self):
+        pass
+
+    def publish_message(self, message):
+        pass
+
+    def unsubscribe(self):
+        pass
 
 def create_mock_url(config: ServerConfig, handler: type[CmdHandlerBase], data: dict) -> None:
     # fmt: off

@@ -26,6 +26,9 @@ class AvailableHandler(CmdHandlerBase):
         assert isinstance(request, AvaliableRequest)
         super().__init__(client, request)
 
+    def _feach_data(self):
+        pass
+
     def _response_construct(self):
         self._response = AvaliableResponse(self._request)
 
@@ -57,6 +60,9 @@ class ClientMessageHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ClientMessageRequest) -> None:
         assert isinstance(request, ClientMessageRequest)
         super().__init__(client, request)
+
+    def _request_check(self) -> None:
+        pass
 
     def _response_construct(self):
         self._response = ClientMessageResponse(self._request)

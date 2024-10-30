@@ -1,6 +1,7 @@
 from library.src.abstractions.client import ClientBase
 from typing import TYPE_CHECKING
 
+from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
 from library.src.network.tcp_handler import TcpConnection
 from library.src.configs import ServerConfig
@@ -16,11 +17,18 @@ class ClientInfo:
     gamename: str
     user_name: str
 
+    def __init__(self) -> None:
+        self.joined_channels = {}
+
 
 class Client(ClientBase):
     info: ClientInfo
-    client_pool: dict[str, "Client"] = {}
+    client_pool: dict[str, "Client"]
 
     def __init__(self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter):
         super().__init__(connection, server_config, logger)
         self.info = ClientInfo()
+
+    def _create_switcher(self, buffer: bytes) -> SwitcherBase:
+        from servers.chat.src.applications.switcher import Switcher
+        return Switcher(self, buffer.decode())

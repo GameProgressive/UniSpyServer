@@ -21,7 +21,6 @@ class ConnectionBase:
     logger: LogWriter
     handler: socketserver.BaseRequestHandler
     _client: ClientBase
-
     def __init__(
         self,
         handler: socketserver.BaseRequestHandler,

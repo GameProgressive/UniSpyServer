@@ -3,7 +3,7 @@ from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogWriter
 from library.src.log.log_manager import LogWriter
 from library.src.configs import ServerConfig
-
+import threading
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from library.src.abstractions.enctypt_base import EncryptBase
     from library.src.abstractions.contracts import ResponseBase
     from library.src.abstractions.client import ClientInfoBase
-    from library.src.network.http_handler import HttpRequest
 
 
 class ClientInfoBase:
@@ -27,7 +26,7 @@ class ClientBase:
     crypto: Optional["EncryptBase"]
     info: "ClientInfoBase"
     is_log_raw: bool
-    pool: dict[str, "ClientBase"]
+    pool: dict[str, "ClientBase"] = {}
     """
     Note: initialize in child class as class static member 
     """
@@ -49,13 +48,14 @@ class ClientBase:
         # fmt: on
 
     def on_connected(self) -> None:
-        # this operation will append the child client instance to the static member of childclass, if child class is overide the static member ClientBase.pool
-        self.pool[self.connection.ip_endpoint] = self
-        pass
+        lock = threading.Lock()
+        with lock:
+            ClientBase.pool[self.connection.ip_endpoint] = self
 
     def on_disconnected(self) -> None:
-        del self.pool[self.connection.ip_endpoint]
-        pass
+        lock = threading.Lock()
+        with lock:
+            del ClientBase.pool[self.connection.ip_endpoint]
 
     def _create_switcher(self, buffer: bytes | str) -> "SwitcherBase":  # type: ignore
         """

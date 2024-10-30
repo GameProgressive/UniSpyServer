@@ -1,3 +1,63 @@
 2024-10-29 02:29:48 [unispy] [INFO]: [172.19.0.5:35003] [recv]: b'Hello, UDP!\n'
 2024-10-29 02:33:53 [unispy] [INFO]: [172.19.0.5:47697] [recv]: b'Hello, UDP!\n'
 2024-10-29 02:33:59 [unispy] [INFO]: [172.19.0.5:47697]: Invalid request received!
+2024-10-30 05:48:28 [unispy] [ERROR]: [Errno 111] Connection refused - goodbye
+2024-10-30 05:48:58 [unispy] [DEBUG]: --- request header ---
+2024-10-30 05:48:58 [unispy] [DEBUG]: GET /GameSpy/Chat/Channel HTTP/1.1
+Upgrade: websocket
+Host: 127.0.0.1:8080
+Origin: http://127.0.0.1:8080
+Sec-WebSocket-Key: PG0nOCrh8mpemVL2zR+POg==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2024-10-30 05:48:58 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:48:58 [unispy] [DEBUG]: --- response header ---
+2024-10-30 05:48:58 [unispy] [DEBUG]: HTTP/1.1 404 Not Found
+2024-10-30 05:48:58 [unispy] [DEBUG]: date: Wed, 30 Oct 2024 05:48:57 GMT
+2024-10-30 05:48:58 [unispy] [DEBUG]: server: uvicorn
+2024-10-30 05:48:58 [unispy] [DEBUG]: content-length: 22
+2024-10-30 05:48:58 [unispy] [DEBUG]: content-type: application/json
+2024-10-30 05:48:58 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:48:58 [unispy] [ERROR]: Handshake status 404 Not Found -+-+- {'date': 'Wed, 30 Oct 2024 05:48:57 GMT', 'server': 'uvicorn', 'content-length': '22', 'content-type': 'application/json'} -+-+- b'{"detail":"Not Found"}' - goodbye
+2024-10-30 05:49:45 [unispy] [ERROR]: [Errno 111] Connection refused - goodbye
+2024-10-30 05:50:23 [unispy] [DEBUG]: --- request header ---
+2024-10-30 05:50:23 [unispy] [DEBUG]: GET /GameSpy/Chat/Channel HTTP/1.1
+Upgrade: websocket
+Host: 127.0.0.1:8080
+Origin: http://127.0.0.1:8080
+Sec-WebSocket-Key: 0usGdjTC0jytMHzSo/EsKA==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2024-10-30 05:50:23 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:50:23 [unispy] [DEBUG]: --- response header ---
+2024-10-30 05:50:23 [unispy] [DEBUG]: HTTP/1.1 404 Not Found
+2024-10-30 05:50:23 [unispy] [DEBUG]: date: Wed, 30 Oct 2024 05:50:22 GMT
+2024-10-30 05:50:23 [unispy] [DEBUG]: server: uvicorn
+2024-10-30 05:50:23 [unispy] [DEBUG]: content-length: 9
+2024-10-30 05:50:23 [unispy] [DEBUG]: content-type: text/plain; charset=utf-8
+2024-10-30 05:50:23 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:50:23 [unispy] [ERROR]: Handshake status 404 Not Found -+-+- {'date': 'Wed, 30 Oct 2024 05:50:22 GMT', 'server': 'uvicorn', 'content-length': '9', 'content-type': 'text/plain; charset=utf-8'} -+-+- b'Not Found' - goodbye
+2024-10-30 05:51:24 [unispy] [DEBUG]: --- request header ---
+2024-10-30 05:51:24 [unispy] [DEBUG]: GET /GameSpy/Chat/Channel HTTP/1.1
+Upgrade: websocket
+Host: 127.0.0.1:8080
+Origin: http://127.0.0.1:8080
+Sec-WebSocket-Key: U/5/wTk/QDGKhj1GM+g/tA==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2024-10-30 05:51:24 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:51:24 [unispy] [DEBUG]: --- response header ---
+2024-10-30 05:51:24 [unispy] [DEBUG]: HTTP/1.1 101 Switching Protocols
+2024-10-30 05:51:24 [unispy] [DEBUG]: Upgrade: websocket
+2024-10-30 05:51:24 [unispy] [DEBUG]: Connection: Upgrade
+2024-10-30 05:51:24 [unispy] [DEBUG]: Sec-WebSocket-Accept: ybgaKobanY3o8V/gxbVYsaX79wE=
+2024-10-30 05:51:24 [unispy] [DEBUG]: date: Wed, 30 Oct 2024 05:51:24 GMT
+2024-10-30 05:51:24 [unispy] [DEBUG]: server: uvicorn
+2024-10-30 05:51:24 [unispy] [DEBUG]: -----------------------
+2024-10-30 05:51:24 [unispy] [INFO]: Websocket connected
