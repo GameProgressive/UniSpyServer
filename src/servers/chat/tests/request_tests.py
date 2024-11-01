@@ -1,4 +1,7 @@
 import unittest
+
+from servers.chat.src.aggregates.enums import MessageType
+from servers.chat.src.contracts.requests import *
 # region General
 CD_KEY = "CDKEY XXXX-XXXX-XXXX-XXXX\r\n"
 CRYPT = "CRYPT des 1 gmtest\r\n"
@@ -48,19 +51,126 @@ TOPIC_SET_CHANNEL_TOPIC = "TOPIC #GSP!room!test :This is a topic message.\r\n"
 
 
 class ChannelRequestTests(unittest.TestCase):
-    def test_get_chann_key(self):
-        pass
+    def test_get_channel_key(self):
+        request = GetChannelKeyRequest(GET_CHANNEL_KEY)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.cookie, "0000")
+        self.assertEqual(request.keys[0], "username")
+        self.assertEqual(request.keys[1], "nickname")
+
+    def test_get_ckey_channel_specific_user(self):
+        request = GetCKeyRequest(GET_CKEY_CHANNEL_SPECIFIC_USER)
+        request.parse()
+        self.assertEqual(request.request_type,
+                         GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE)
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.nick_name, "spyguy")
+        self.assertEqual(request.cookie, "0000")
+        self.assertEqual(request.keys[0], "username")
+        self.assertEqual(request.keys[1], "nickname")
+
+    def test_get_ckey_channel_all_user(self):
+        request = GetCKeyRequest(GET_CKEY_CHANNEL_ALL_USER)
+        request.parse()
+        self.assertEqual(request.request_type,
+                         GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE)
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.cookie, "0000")
+        self.assertEqual(request.keys[0], "username")
+        self.assertEqual(request.keys[1], "nickname")
+
+    def test_join(self):
+        request = JoinRequest(JOIN)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+
+        request = JoinRequest(JOIN_WITH_PASS)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.password, "pass123")
+
+    def test_kick(self):
+        request = KickRequest(KICK)
+        request.parse()
+        self.assertEqual(request.kickee_nick_name, "spyguy")
+        self.assertEqual(request.reason, "Spam")
+
+    def test_mode(self):
+        request = ModeRequest(MODE_CHANNEL)
+        request.parse()
+        self.assertEqual(
+            request.mode_operations[0], ModeOperationType.REMOVE_CHANNEL_PASSWORD)
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.mode_flag, "+l")
+        self.assertEqual(request.limit_number, 2)
+
+        request = ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2")
+        request.parse()
+
+    def test_part(self):
+        request = PartRequest(PART)
+        request.parse()
+        self.assertEqual(request.reason, "test")
+
+    def test_set_channel_key(self):
+        request = SetChannelKeyRequest(SET_CHANNEL_KEY)
+        request.parse()
+        # Add assertions as needed
+
+    def test_set_ckey(self):
+        request = SetCKeyRequest(SET_CKEY)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.nick_name, "spyguy")
+        self.assertEqual(request.key_values, {"b_flags": "sh"})
+
+    def test_topic_get_channel_topic(self):
+        request = TopicRequest(TOPIC_GET_CHANNEL_TOPIC)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+
+    def test_topic_set_channel_topic(self):
+        request = TopicRequest(TOPIC_SET_CHANNEL_TOPIC)
+        request.parse()
+        self.assertEqual(request.channel_name, "#GSP!room!test")
+        self.assertEqual(request.channel_topic, "This is a topic message.")
 
 # region Message
 
 
 ABOVE_THE_TABLE_MSG = "ATM #GSP!room!test :hello this is a test.\r\n"
-NOTICE = "NOTICE #GSP!room!test :hello this is a test.\r\n"
+NOTICE_MSG = "NOTICE #GSP!room!test :hello this is a test.\r\n"
 PRIVATE_MSG = "PRIVMSG #GSP!room!test :hello this is a test.\r\n"
 UNDER_THE_TABLE_MSG = "UTM #GSP!room!test :hello this is a test.\r\n"
 ACTION_MSG = "PRIVMSG #GSP!room!test :\001ACTION hello this is a test.\001\r\n"
 
 
 class MessageRequestTests(unittest.TestCase):
-    def test_get_chann_key(self):
-        pass
+    def test_atm(self):
+        request = ATMRequest(ABOVE_THE_TABLE_MSG)
+        request.parse()
+        self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
+        self.assertEqual(False, hasattr(request, "nick_name"))
+        self.assertEqual("#GSP!room!test", request.channel_name)
+
+    def test_notice(self):
+        request = NoticeRequest(NOTICE_MSG)
+        request.parse()
+        self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
+        self.assertEqual(False, hasattr(request, "nick_name"))
+        self.assertEqual("#GSP!room!test", request.channel_name)
+
+    def test_private(self):
+        request = PrivateRequest(PRIVATE_MSG)
+        request.parse()
+        self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
+        self.assertEqual(False, hasattr(request, "nick_name"))
+        self.assertEqual("#GSP!room!test", request.channel_name)
+
+    def test_utm(self):
+        request = UTMRequest(UNDER_THE_TABLE_MSG)
+        request.parse()
+        self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
+        self.assertEqual(False, hasattr(request, "nick_name"))
+        self.assertEqual("#GSP!room!test", request.channel_name)

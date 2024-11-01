@@ -1,3 +1,4 @@
+import json
 from library.src.abstractions.client import ClientBase
 from library.src.exceptions.general import UniSpyException
 from typing import Type
@@ -7,6 +8,7 @@ from library.src.configs import CONFIG
 
 # if TYPE_CHECKING:
 from library.src.abstractions.contracts import RequestBase, ResultBase, ResponseBase
+from library.src.extentions.encoding import UniSpyJsonEncoder
 
 
 class CmdHandlerBase:
@@ -69,9 +71,12 @@ class CmdHandlerBase:
         self._feach_data()
 
     def _prepare_data(self):
-        self._temp_data = self._request.to_json()
-        self._temp_data["server_id"] = str(
-            self._client.server_config.server_id)
+        self._temp_data = self._request.to_dict()
+        if "server_id" in self._temp_data:
+            raise UniSpyException("server_id name collision in dict")
+        self._temp_data["server_id"] = self._client.server_config.server_id
+        if "client_ip_endpoint" in self._temp_data:
+            raise UniSpyException("client_ip_endpoint name collision in dict")
         self._temp_data["client_ip_endpoint"] = self._client.connection.ip_endpoint
 
     def _upload_data(self):
@@ -81,8 +86,10 @@ class CmdHandlerBase:
         """
         url = f"{CONFIG.backend.url}/GameSpy/{
             self._client.server_config.server_name}/{self.__class__.__name__}/"
-
-        response = requests.post(url, json=self._temp_data)
+        json_str = json.dumps(
+            self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False)
+        response = requests.post(url, data=json_str, headers={
+                                 "Content-Type": "application/json"})
         if response.status_code != 200:
             raise UniSpyException("Upload data to background failed.")
         self._http_result = response.json()
@@ -98,8 +105,8 @@ class CmdHandlerBase:
 
         if self._result_cls is None:
             raise UniSpyException("_result should not be null when feach data")
-
         assert issubclass(self._result_cls, ResultBase)
+
         self._result = self._result_cls(**self._http_result)
 
     def _response_construct(self) -> None:

@@ -50,7 +50,7 @@ class ChannelRequestBase(RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        if self._cmd_params is None or len(self._cmd_params) < 1:
+        if not hasattr(self, "_cmd_params") or len(self._cmd_params) < 1:
             raise ChatException("Channel name is missing.")
         self.channel_name = self._cmd_params[0]
 
@@ -105,13 +105,16 @@ class MessageRequestBase(ChannelRequestBase):
 
     def parse(self):
         super().parse()
+        if not hasattr(self, "channel_name"):
+            raise NoSuchNickException(
+                "the channel name is missing from the request")
         if "#" in self.channel_name:
             self.type = MessageType.CHANNEL_MESSAGE
         else:
             self.type = MessageType.USER_MESSAGE
             self.nick_name = self._cmd_params[0]
 
-        self.message = self._longParam
+        self.message = self._long_param
 
 
 class MessageResultBase(ResultBase):

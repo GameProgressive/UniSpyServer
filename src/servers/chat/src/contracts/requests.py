@@ -121,12 +121,12 @@ class LoginRequest(RequestBase):
         if self._cmd_params[1] == "*":
             self.request_type = LoginRequestType.NICK_AND_EMAIL_LOGIN
             self.password_hash = self._cmd_params[2]
-            if self._longParam.count("@") != 2:
+            if self._long_param.count("@") != 2:
                 raise ChatException("The profile nick format is incorrect.")
 
-            profile_nick_index = self._longParam.index("@")
-            self.nick_name = self._longParam[0:profile_nick_index]
-            self.email = self._longParam[profile_nick_index + 1:]
+            profile_nick_index = self._long_param.index("@")
+            self.nick_name = self._long_param[0:profile_nick_index]
+            self.email = self._long_param[profile_nick_index + 1:]
             return
 
         self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
@@ -142,8 +142,8 @@ class NickRequest(RequestBase):
         super().parse()
         if len(self._cmd_params) == 1:
             self.nick_name = self._cmd_params[0]
-        elif self._longParam is None:
-            self.nick_name = self._longParam
+        elif self._long_param is None:
+            self.nick_name = self._long_param
         else:
             raise ChatException("NICK request is invalid.")
 
@@ -166,9 +166,9 @@ class PongRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("Echo message is missing.")
-        self.echo_message = self._longParam
+        self.echo_message = self._long_param
 
 
 class QuitRequest(RequestBase):
@@ -176,10 +176,10 @@ class QuitRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("Quit reason is missing.")
 
-        self.reason = self._longParam
+        self.reason = self._long_param
 
 
 class RegisterNickRequest(RequestBase):
@@ -199,10 +199,10 @@ class SetKeyRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("The keys and values are missing.")
 
-        self.key_values = convert_kvstring_to_dictionary(self._longParam)
+        self.key_values = convert_kvstring_to_dictionary(self._long_param)
 
 
 class UserIPRequest(RequestBase):
@@ -226,7 +226,7 @@ class UserRequest(RequestBase):
             self.host_name = self._cmd_params[0]
             self.server_name = self._cmd_params[1]
 
-        self.name = self._longParam
+        self.name = self._long_param
 
 
 class WhoIsRequest(RequestBase):
@@ -277,7 +277,7 @@ class GetKeyRequest(RequestBase):
                 "The number of IRC cmd params in GETKEY request is incorrect."
             )
 
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException(
                 "The number of IRC cmd params in GETKEY request is incorrect."
             )
@@ -286,11 +286,11 @@ class GetKeyRequest(RequestBase):
         self.cookie = self._cmd_params[1]
         self.unknown_cmd_param = self._cmd_params[2]
 
-        self._longParam = self._longParam[: len(self._longParam)]
+        self._long_param = self._long_param[: len(self._long_param)]
         if self.nick_name == "*":
             self.is_get_all_user = True
 
-        self.keys = convert_keystr_to_list(self._longParam)
+        self.keys = convert_keystr_to_list(self._long_param)
 
 
 # region Channel
@@ -306,14 +306,14 @@ class GetChannelKeyRequest(ChannelRequestBase):
         if len(self._cmd_params) != 3:
             raise ChatException("The cmdParams number is invalid.")
 
-        if self._longParam is None or self._longParam[-1] != "\0":
+        if self._long_param is None or self._long_param[-1] != "\0":
             raise ChatException("The longParam number is invalid.")
-        self.cookie = self._cmd_params[0]
-        self.keys = self._longParam.strip("\\").rstrip("\0").split("\\")
+        self.cookie = self._cmd_params[1]
+        self.keys = self._long_param.strip("\\").rstrip("\0").split("\\")
 
 
 class GetCKeyRequest(ChannelRequestBase):
-    nick_name: str
+    nick_name: Optional[str]
     cookie: str
     keys: list
     request_type: GetKeyRequestType
@@ -322,7 +322,7 @@ class GetCKeyRequest(ChannelRequestBase):
         super().parse()
         if len(self._cmd_params) != 4:
             raise ChatException("The number of IRC parameters are incorrect.")
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("The IRC long parameter is incorrect.")
 
         self.nick_name = self._cmd_params[1]
@@ -333,11 +333,11 @@ class GetCKeyRequest(ChannelRequestBase):
 
         self.cookie = self._cmd_params[2]
 
-        if "\0" not in self._longParam and "\\" not in self._longParam:
+        if "\0" not in self._long_param and "\\" not in self._long_param:
 
             raise ChatException("The key provide is incorrect.")
 
-        self.keys = self._longParam.strip("\\").rstrip("\0").split("\\")
+        self.keys = self._long_param.strip("\\").rstrip("\0").split("\\")
 
 
 class GetUdpRelayRequest(ChannelRequestBase):
@@ -366,10 +366,10 @@ class KickRequest(ChannelRequestBase):
             raise ChatException("The number of IRC parameters are incorrect.")
         self.kickee_nick_name = self._cmd_params[1]
 
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("The IRC long parameters is missing.")
 
-        self.reason = self._longParam
+        self.reason = self._long_param
 
 
 class ModeRequest(ChannelRequestBase):
@@ -390,7 +390,7 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_operations: list
+    mode_operations: list[ModeOperationType]
     nick_name: str
     user_name: str
     limit_number: int
@@ -568,9 +568,9 @@ class PartRequest(ChannelRequestBase):
     def parse(self):
         super().parse()
 
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("The reason of living channel is missing.")
-        self.reason = self._longParam
+        self.reason = self._long_param
 
 
 class SetChannelKeyRequest(ChannelRequestBase):
@@ -579,10 +579,10 @@ class SetChannelKeyRequest(ChannelRequestBase):
 
     def parse(self):
         super().parse()
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException("Channel keys and values are missing.")
-        self._longParam = self._longParam[1:]
-        self.key_value_string = self._longParam
+        self._long_param = self._long_param[1:]
+        self.key_value_string = self._long_param
         self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
 
 
@@ -599,13 +599,13 @@ class SetCKeyRequest(ChannelRequestBase):
             raise ChatException(
                 "The cmdParams from SETCKEY request are missing.")
 
-        if self._longParam is None:
+        if self._long_param is None:
             raise ChatException(
                 "The longParam from SETCKEY request is missing.")
 
         self.channel_name = self._cmd_params[0]
         self.nick_name = self._cmd_params[1]
-        self.key_value_string = self._longParam[1:]
+        self.key_value_string = self._long_param[1:]
         self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
 
         if "b_" in self.key_values:
@@ -631,11 +631,11 @@ class TopicRequest(ChannelRequestBase):
 
     def parse(self) -> None:
         super().parse()
-        if self._longParam is None:
+        if not hasattr(self, "_long_param"):
             self.request_type = TopicRequestType.GET_CHANNEL_TOPIC
         else:
             self.request_type = TopicRequestType.SET_CHANNEL_TOPIC
-            self.channel_topic = self._longParam
+            self.channel_topic = self._long_param
 
 #  region Message
 

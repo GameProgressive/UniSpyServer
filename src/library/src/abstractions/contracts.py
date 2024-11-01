@@ -1,8 +1,9 @@
 import abc
 from copy import deepcopy
+from datetime import datetime
 import enum
 from typing import Optional
-
+from uuid import UUID
 from pydantic import BaseModel
 
 
@@ -32,20 +33,14 @@ class RequestBase:
     def parse(self) -> None:
         pass
 
-    def to_json(self) -> dict:
+    def to_dict(self) -> dict:
         """
         create a json serializable dict of this class
         """
-        result = deepcopy(self.__dict__)
-        for key, value in result.items():
-            if isinstance(value, bytes):
-                result[key] = value.decode("ascii", "backslashreplace")
-            elif isinstance(value, enum.Enum):
-                result[key] = value.value
-            elif isinstance(value, enum.IntEnum):
-                result[key] = value.value
-            else:
-                result[key] = str(value)
+        result = {}
+        for key, value in self.__dict__.items():
+            if key[0] != "_":
+                result[key] = value
         return result
 
 

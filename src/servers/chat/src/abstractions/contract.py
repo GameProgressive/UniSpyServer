@@ -7,7 +7,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
     command_name: str
     _prefix: str
     _cmd_params: list
-    _longParam: str
+    _long_param: str
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
@@ -23,25 +23,25 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
         if self.raw_request.count(":") > 2:
             raise Exception(f"IRC request is invalid {self.raw_request}")
         if ":" not in self.raw_request:
-            index_of_colon = 0
+            index_of_colon = -1
         else:
             index_of_colon = self.raw_request.index(":")
 
         raw = self.raw_request
         if index_of_colon == 0 and index_of_colon != -1:
             if " " not in raw:
-                prefixIndex = 0
+                prefixIndex = -1
             else:
                 prefixIndex = raw.index(" ")
             self._prefix = raw[index_of_colon:prefixIndex]
             raw = raw[prefixIndex:]
 
-        if ":" not in self.raw_request:
+        if ":" not in raw:
             index_of_colon = 0
         else:
-            index_of_colon = self.raw_request.index(":")
+            index_of_colon = raw.index(":")
         if index_of_colon != 0 and index_of_colon != -1:
-            self._longParam = raw[index_of_colon + 1:]
+            self._long_param = raw[index_of_colon + 1:]
             # reset the request string
             raw = raw[:index_of_colon]
 
