@@ -8,7 +8,7 @@ router = APIRouter()
 client_pool: dict[str, WebSocket] = {}
 
 
-@router.websocket(f"/{SERVER_BROWSER_V2}/AdHocHandler")
+@router.websocket(f"{SERVER_BROWSER_V2}/AdHocHandler")
 async def check(websocket: WebSocket):
     """
     notify every server browser to send message to its client
@@ -24,17 +24,17 @@ async def check(websocket: WebSocket):
             del client_pool[websocket.client.host]
 
 
-@router.post(f"/{SERVER_BROWSER_V2}/SendMessageHandler")
+@router.post(f"{SERVER_BROWSER_V2}/SendMessageHandler")
 async def send_message(request: SendMessageRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{SERVER_BROWSER_V2}/ServerInfoHandler")
+@router.post(f"{SERVER_BROWSER_V2}/ServerInfoHandler")
 async def server_info(request: ServerInfoRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{SERVER_BROWSER_V2}/ServerListHandler")
+@router.post(f"{SERVER_BROWSER_V2}/ServerListHandler")
 async def server_list(request: ServerListRequest):
     raise NotImplementedError()
 

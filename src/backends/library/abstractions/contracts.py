@@ -13,5 +13,5 @@ class RequestBase(BaseModel):
     """
 
 
-class GeneralResponse(BaseModel):
+class ErrorResponse(BaseModel):
     message: str

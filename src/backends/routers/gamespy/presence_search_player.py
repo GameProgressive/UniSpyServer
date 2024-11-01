@@ -6,52 +6,52 @@ from backends.urls import PRESENCE_SEARCH_PLAYER
 router = APIRouter()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/CheckHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/CheckHandler")
 async def check(request: CheckRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/NewUserHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/NewUserHandler")
 async def new_user(request: NewUserRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/NicksHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/NicksHandler")
 async def nicks(request: NicksRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/OthersHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersHandler")
 async def others(request: OthersRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/OthersListHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersListHandler")
 async def others_list(request: OthersListRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/PMatchHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/PMatchHandler")
 async def player_match(request: object):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/SearchHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchHandler")
 async def search(request: SearchRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/SearchUniqueHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchUniqueHandler")
 async def search_unique(request: SearchUniqueRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/UniqueSearchHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/UniqueSearchHandler")
 async def unique_search(request: UniqueSearchRequest):
     raise NotImplementedError()
 
 
-@router.post(f"/{PRESENCE_SEARCH_PLAYER}/ValidHandler")
+@router.post(f"{PRESENCE_SEARCH_PLAYER}/ValidHandler")
 async def valid(request: ValidRequest):
     raise NotImplementedError()
 

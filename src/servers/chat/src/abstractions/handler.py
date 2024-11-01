@@ -3,7 +3,6 @@ from servers.chat.src.abstractions.contract import ResultBase
 from typing import TYPE_CHECKING
 from servers.chat.src.aggregates.exceptions import ChatException, NoSuchNickException, NoSuchChannelException
 from servers.chat.src.aggregates.managers import ChannelManager
-from servers.chat.src.abstractions.handler import PostLoginHandlerBase
 from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.contract import *
 from library.src.abstractions.client import ClientBase
@@ -13,10 +12,14 @@ from servers.chat.src.aggregates.exceptions import IRCException
 import library.src.abstractions.handler
 from typing import cast
 
+if TYPE_CHECKING:
+    from servers.chat.src.aggregates.channel import Channel
+    from servers.chat.src.aggregates.channel_user import ChannelUser
+
 
 class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
-    _request: RequestBase
     _client: Client
+    _request: RequestBase
     _result: ResultBase
 
     def __init__(self, client: ClientBase, request: RequestBase):
@@ -62,8 +65,8 @@ class ChannelResponseBase(ResponseBase):
 
 
 class ChannelHandlerBase(PostLoginHandlerBase):
-    _channel: Channel
-    _user: ChannelUser
+    _channel: "Channel"
+    _user: "ChannelUser"
     _request: ChannelRequestBase
     _response: ResponseBase
 
@@ -119,7 +122,7 @@ class MessageResultBase(ResultBase):
 class MessageHandlerBase(ChannelHandlerBase):
     _request: MessageRequestBase
     _result: MessageResultBase
-    _receiver: ChannelUser
+    _receiver: "ChannelUser"
 
     def __init__(self, client: ClientBase, request: MessageRequestBase):
         assert isinstance(request, MessageRequestBase)

@@ -1,5 +1,5 @@
-from abc import abstractmethod
-from backends.library.abstractions.contracts import RequestBase
+from abc import abstractmethod, ABC
+from backends.library.abstractions.contracts import ErrorResponse, RequestBase
 from library.src.abstractions.contracts import ResultBase
 
 import logging
@@ -26,24 +26,24 @@ class HandlerBase:
 
     async def handle(self) -> None:
         try:
-            await self.request_check()
-            await self.data_fetch()
-            await self.result_construct()
+            await self._request_check()
+            await self._data_fetch()
+            await self._result_construct()
         except UniSpyException as ex:
             self.logger.error(ex.message)
-            self.response = {"message": ex.message}
+            self.response = ErrorResponse(message=ex.message).model_dump()
         except Exception as ex:
             self.logger.error(ex)
-            self.response = {"message": str(ex)}
+            self.response = ErrorResponse(message=str(ex)).model_dump()
 
     @abstractmethod
-    async def request_check(self) -> None:
+    async def _request_check(self) -> None:
         pass
 
     @abstractmethod
-    async def data_fetch(self) -> None:
+    async def _data_fetch(self) -> None:
         pass
 
     @abstractmethod
-    async def result_construct(self) -> None:
+    async def _result_construct(self) -> None:
         pass

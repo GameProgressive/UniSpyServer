@@ -131,6 +131,7 @@ class GetCKeyRequest(ChannelRequestBase):
 
 class JoinRequest(ChannelRequestBase):
     password: str
+    game_name: str
 
 
 class KickRequest(ChannelRequestBase):
