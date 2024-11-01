@@ -1,6 +1,6 @@
 from library.src.abstractions.client import ClientBase
 from library.src.exceptions.general import UniSpyException
-from typing import Optional, Type
+from typing import Type
 import requests
 
 from library.src.configs import CONFIG
@@ -64,8 +64,15 @@ class CmdHandlerBase:
         """
         virtual function, can be override
         """
+        self._prepare_data()
         self._upload_data()
         self._feach_data()
+
+    def _prepare_data(self):
+        self._temp_data = self._request.to_json()
+        self._temp_data["server_id"] = str(
+            self._client.server_config.server_id)
+        self._temp_data["client_ip_endpoint"] = self._client.connection.ip_endpoint
 
     def _upload_data(self):
         """
@@ -75,11 +82,9 @@ class CmdHandlerBase:
         url = f"{CONFIG.backend.url}/GameSpy/{
             self._client.server_config.server_name}/{self.__class__.__name__}/"
 
-        # fmt: on
-        data = self._request.to_json()
-        data["server_id"] = str(self._client.server_config.server_id)
-
-        response = requests.post(url, json=data)
+        response = requests.post(url, json=self._temp_data)
+        if response.status_code != 200:
+            raise UniSpyException("Upload data to background failed.")
         self._http_result = response.json()
 
     def _feach_data(self):

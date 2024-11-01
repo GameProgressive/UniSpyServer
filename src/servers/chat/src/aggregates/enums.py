@@ -88,3 +88,33 @@ class PeerRoomType(IntEnum):
     Staging = 1
     Title = 2
     Normal = 3
+
+
+class RequestType(Enum):
+    CRYPT = "CRYPT"
+    CDKEY = "CDKEY"
+    GETKEY = "GETKEY"
+    LIST = "LIST"
+    LOGIN = "LOGIN"
+    NICK = "NICK"
+    PING = "PING"
+    QUIT = "QUIT"
+    SETKEY = "SETKEY"
+    USER = "USER"
+    USRIP = "USRIP"
+    WHO = "WHO"
+    WHOIS = "WHOIS"
+    GETCHANKEY = "GETCHANKEY"
+    GETCKEY = "GETCKEY"
+    JOIN = "JOIN"
+    KICK = "KICK"
+    MODE = "MODE"
+    NAMES = "NAMES"
+    PART = "PART"
+    SETCHANKEY = "SETCHANKEY"
+    SETCKEY = "SETCKEY"
+    TOPIC = "TOPIC"
+    ATM = "ATM"
+    NOTICE = "NOTICE"
+    PRIVMSG = "PRIVMSG"
+    UTM = "UTM"

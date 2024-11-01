@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum, IntEnum
 
 
 class SearchType(IntEnum):
@@ -123,3 +123,17 @@ class GPErrorCode(IntEnum):
     # RemoveBlock.
     REMOVE_BLOCK = 0x1300
     REMOVE_BLOCK_NOT_BLOCKED = 0x1301
+
+
+
+class RequestType(Enum):
+    CHECK = "check"
+    NEWUSER = "newuser"
+    NICKS = "nicks"
+    OTHERS = "others"
+    OTHERSLIST = "otherslist"
+    PMATCH = "pmatch"
+    SEARCH = "search"
+    SEARCHUNIQUE = "searchunique"
+    UNIQUESearch = "uniquesearch"
+    VALID = "valid"

@@ -60,7 +60,7 @@ class Channel:
         self.max_num_user = 200
         # setup the message broker
         self._broker = brocker_cls(
-            self.name, CONFIG.backend.url, self.get_message_from_brocker)
+            self.name, CONFIG.backend.url, self._get_message_from_brocker)
         # channel user init
         self._broker.subscribe()
         self.ban_list = {}
@@ -173,18 +173,12 @@ class Channel:
                 else:
                     user.client.send(message)
 
-    def get_message_from_brocker(self, message: str):
+    def _get_message_from_brocker(self, message: str):
         """
         we directly send the message from brocker to all channel local user
         """
         for nick, user in self.users.items():
             user.client.connection.send(message.encode())
-
-    def send_message_to_brocker(self, message: str):
-        data = {"channel_name": self.name, "message": message}
-        import json
-        data_str = json.dumps(data)
-        self._broker.publish_message(data_str)
 
     def remove_user(self, user: ChannelUser):
         user.client.info.previously_joined_channel

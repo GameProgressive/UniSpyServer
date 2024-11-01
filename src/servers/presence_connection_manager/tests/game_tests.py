@@ -18,7 +18,7 @@ class GameTest(unittest.TestCase):
 
 
         for x in raw_requests:
-            client.on_received(x.encode("ascii"))
+            client.on_received(x.encode())
             pass
 
     @unittest.skip("not finished handler")

@@ -1,5 +1,5 @@
 import backends.library.abstractions.contracts as lib
-from servers.chat.src.aggregates.enums import LoginRequestType, WhoRequestType
+from servers.chat.src.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeRequestType, TopicRequestType, WhoRequestType
 
 
 class RequestBase(lib.RequestBase):
@@ -8,6 +8,8 @@ class RequestBase(lib.RequestBase):
     _prefix: str
     _cmd_params: list
     _longParam: str
+
+# region General
 
 
 class CdkeyRequest(RequestBase):
@@ -107,3 +109,94 @@ class GetKeyRequest(RequestBase):
     cookie: str
     unknown_cmd_param: str
     keys: list[str]
+
+# region Channel
+
+
+class ChannelRequestBase(RequestBase):
+    channel_name: str
+
+
+class GetChannelKeyRequest(ChannelRequestBase):
+    cookie: str
+    keys: list
+
+
+class GetCKeyRequest(ChannelRequestBase):
+    nick_name: str
+    cookie: str
+    keys: list
+    request_type: GetKeyRequestType
+
+
+class JoinRequest(ChannelRequestBase):
+    password: str
+
+
+class KickRequest(ChannelRequestBase):
+    kickee_nick_name: str
+    reason: str
+
+
+class ModeRequest(ChannelRequestBase):
+    request_type: ModeRequestType
+    mode_operations: list = []
+    nick_name: str
+    user_name: str
+    limit_number: int
+    mode_flag: str
+    password: str
+
+
+class NamesRequest(ChannelRequestBase):
+    pass
+
+
+class PartRequest(ChannelRequestBase):
+    reason: str
+
+
+class SetChannelKeyRequest(ChannelRequestBase):
+    key_value_string: str
+    key_values: dict[str, str]
+
+
+class SetCKeyRequest(ChannelRequestBase):
+    nick_name: str
+    cookie: str
+    is_broadcast: bool
+    key_value_string: str
+    key_values: dict[str, str]
+
+
+class SetGroupRequest(ChannelRequestBase):
+    group_name: str
+
+
+class TopicRequest(ChannelRequestBase):
+    channel_topic: str
+    request_type: TopicRequestType
+
+
+class MessageRequestBase(ChannelRequestBase):
+    type: MessageType
+    nick_name: str
+    message: str
+
+# region Message
+
+
+class ATMRequest(MessageRequestBase):
+    pass
+
+
+class NoticeRequest(MessageRequestBase):
+    pass
+
+
+class PrivateRequest(MessageRequestBase):
+    pass
+
+
+class UTMRequest(MessageRequestBase):
+    pass

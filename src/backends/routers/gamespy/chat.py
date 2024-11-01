@@ -1,5 +1,7 @@
 import json
 from typing import Optional
+from backends.protocols.gamespy.chat.requests import (ATMRequest, CdkeyRequest, GetCKeyRequest, GetChannelKeyRequest, GetKeyRequest, GetUdpRelayRequest, InviteRequest, JoinRequest, KickRequest,
+                                                      ListRequest, LoginRequest, ModeRequest, NamesRequest, NickRequest, NoticeRequest, PartRequest, PrivateRequest, QuitRequest, SetChannelKeyRequest, SetGroupRequest, SetKeyRequest, TopicRequest, UTMRequest, UserIPRequest, UserRequest, WhoIsRequest, WhoRequest)
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
@@ -70,6 +72,141 @@ async def websocket_endpoint(ws: WebSocket):
             if msg is not None:
                 channels[msg.channel_name].remove(ws)
         print("Client disconnected")
+
+
+@router.post(f"{CHAT}/CdKeyHandler")
+def cdkey(request: CdkeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/GetKeyHandler")
+def getkey(request: GetKeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/GetUdpRelayHandler")
+def get_udp_relay(request: GetUdpRelayRequest):
+    pass
+
+@router.post(f"{CHAT}/InviteHandler")
+def invite(request: InviteRequest):
+    pass
+
+
+@router.post(f"{CHAT}/ListHandler")
+def list_data(request: ListRequest):
+    pass
+
+
+@router.post(f"{CHAT}/LoginHandler")
+def login(request: LoginRequest):
+    pass
+
+
+@router.post(f"{CHAT}/NickHandler")
+def nick(request: NickRequest):
+    pass
+
+
+@router.post(f"{CHAT}/QuitHandler")
+def quit(request: QuitRequest):
+    pass
+
+
+@router.post(f"{CHAT}/SetKeyHandler")
+def set_key(request: SetKeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/UserHandler")
+def user(request: UserRequest):
+    pass
+
+
+@router.post(f"{CHAT}/UserIPHandler")
+def user_ip(request: UserIPRequest):
+    pass
+
+
+@router.post(f"{CHAT}/WhoHandler")
+def who(request: WhoRequest):
+    pass
+
+
+@router.post(f"{CHAT}/WhoIsHandler")
+def whois(request: WhoIsRequest):
+    pass
+
+
+# region channel
+@router.post(f"{CHAT}/GetChannelKeyHandler")
+def get_channel_key(request: GetChannelKeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/GetCKeyHandler")
+def get_ckey(request: GetCKeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/JoinHandler")
+def join(request: JoinRequest):
+    pass
+
+
+@router.post(f"{CHAT}/KickHandler")
+def kick(request: KickRequest):
+    pass
+
+
+@router.post(f"{CHAT}/ModeHandler")
+def mode(request: ModeRequest):
+    pass
+
+
+@router.post(f"{CHAT}/NamesHandler")
+def names(request: NamesRequest):
+    pass
+
+
+@router.post(f"{CHAT}/PartHandler")
+def part(request: PartRequest):
+    pass
+
+
+@router.post(f"{CHAT}/SetChannelKeyHandler")
+def set_channel_key(request: SetChannelKeyRequest):
+    pass
+
+
+@router.post(f"{CHAT}/SetGroupHandler")
+def set_group(request: SetGroupRequest):
+    pass
+
+
+@router.post(f"{CHAT}/TopicHandler")
+def topic(request: TopicRequest):
+    pass
+
+
+@router.post(f"{CHAT}/ATMHandler")
+def atm(request: ATMRequest):
+    pass
+
+
+@router.post(f"{CHAT}/NoticeHandler")
+def notice(request: NoticeRequest):
+    pass
+
+
+@router.post(f"{CHAT}/PrivateHandler")
+def private(request: PrivateRequest):
+    pass
+
+
+@router.post(f"{CHAT}/UTMHandler")
+def utm(request: UTMRequest):
+    pass
 
 
 if __name__ == "__main__":

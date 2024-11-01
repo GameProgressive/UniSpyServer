@@ -1,3 +1,11 @@
+from servers.chat.src.aggregates.enums import MessageType
+from servers.chat.src.abstractions.contract import ResultBase
+from typing import TYPE_CHECKING
+from servers.chat.src.aggregates.exceptions import ChatException, NoSuchNickException, NoSuchChannelException
+from servers.chat.src.aggregates.managers import ChannelManager
+from servers.chat.src.abstractions.handler import PostLoginHandlerBase
+from servers.chat.src.abstractions.contract import RequestBase
+from servers.chat.src.abstractions.contract import *
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import RequestBase, ResultBase
 from servers.chat.src.applications.client import Client
@@ -25,3 +33,98 @@ class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
 
 class PostLoginHandlerBase(CmdHandlerBase):
     pass
+
+
+if TYPE_CHECKING:
+    from servers.chat.src.aggregates.channel import Channel
+    from servers.chat.src.aggregates.channel_user import ChannelUser
+
+# region Channel
+
+
+class ChannelRequestBase(RequestBase):
+    channel_name: str
+
+    def parse(self) -> None:
+        super().parse()
+        if self._cmd_params is None or len(self._cmd_params) < 1:
+            raise ChatException("Channel name is missing.")
+        self.channel_name = self._cmd_params[0]
+
+
+class ChannelResponseBase(ResponseBase):
+    _request: ChannelRequestBase
+
+    def __init__(self, request: RequestBase, result: ResultBase) -> None:
+        super().__init__(request, result)
+        assert isinstance(request, RequestBase)
+        assert isinstance(result, ResultBase)
+
+
+class ChannelHandlerBase(PostLoginHandlerBase):
+    _channel: Channel
+    _user: ChannelUser
+    _request: ChannelRequestBase
+    _response: ResponseBase
+
+    def __init__(self, client: ClientBase, request: RequestBase):
+        super().__init__(client, request)
+        # self._channel = None
+
+    def _request_check(self) -> None:
+        if self._request.raw_request is None:
+            return super()._request_check()
+
+        if self._channel is None:
+            channel = ChannelManager.get_channel(
+                self._request.channel_name
+            )
+        if channel is None:
+            raise NoSuchChannelException(
+                f"No such channel {self._request.channel_name}",
+            )
+        self._channel = channel
+        if self._user is None:
+            user = self._channel.get_user_by_nick(
+                self._client.info.nick_name)
+
+        if user is None:
+            raise NoSuchNickException(f"Can not find user with nickname: {self._client.info.nick_name} user_name: {self._client.info.user_name}")  # noqa
+        self._user = user
+
+# region Message
+
+
+class MessageRequestBase(ChannelRequestBase):
+    type: MessageType
+    nick_name: str
+    message: str
+
+    def parse(self):
+        super().parse()
+        if "#" in self.channel_name:
+            self.type = MessageType.CHANNEL_MESSAGE
+        else:
+            self.type = MessageType.USER_MESSAGE
+            self.nick_name = self._cmd_params[0]
+
+        self.message = self._longParam
+
+
+class MessageResultBase(ResultBase):
+    user_irc_prefix: str
+    target_name: str
+
+
+class MessageHandlerBase(ChannelHandlerBase):
+    _request: MessageRequestBase
+    _result: MessageResultBase
+    _receiver: ChannelUser
+
+    def __init__(self, client: ClientBase, request: MessageRequestBase):
+        assert isinstance(request, MessageRequestBase)
+        super().__init__(client, request)
+
+    def _update_channel_cache(self):
+        """we do nothing here, channel message do not need to update channel cache"""
+        pass

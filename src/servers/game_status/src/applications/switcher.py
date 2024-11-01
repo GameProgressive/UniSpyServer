@@ -1,6 +1,7 @@
 from typing import Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
 from servers.game_status.src.abstractions.handlers import CmdHandlerBase
+from servers.game_status.src.aggregations.enums import RequestType
 from servers.game_status.src.applications.client import Client
 from servers.game_status.src.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
 from servers.game_status.src.applications.handlers import AuthGameHandler, AuthPlayerHandler, GetPlayerDataHandler, GetProfileIdHandler, NewGameHandler, SetPlayerDataHandler, UpdateGameHandler
@@ -22,24 +23,29 @@ class Switcher(SwitcherBase):
             r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\", 1)[0]
-            self._requests.append((name, raw_request))
+            if name not in RequestType:
+                self._client.log_debug(
+                    f"Request: {name} is not a valid request.")
+                return
+            self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: object, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+        assert isinstance(name, RequestType)
         self._client = cast(Client, self._client)
         match name:
-            case "auth":
+            case RequestType.AUTH:
                 return AuthGameHandler(self._client, AuthGameRequest(raw_request))
-            case "authp":
+            case RequestType.AUTHP:
                 return AuthPlayerHandler(self._client, AuthPlayerRequest(raw_request))
-            case "newgame":
+            case RequestType.NEWGAME:
                 return NewGameHandler(self._client, NewGameRequest(raw_request))
-            case "getpd":
+            case RequestType.GETPD:
                 return GetPlayerDataHandler(self._client, GetPlayerDataRequest(raw_request))
-            case "setpd":
+            case RequestType.SETPD:
                 return SetPlayerDataHandler(self._client, SetPlayerDataRequest(raw_request))
-            case "updgame":
+            case RequestType.UPDGAME:
                 return UpdateGameHandler(self._client, UpdateGameRequest(raw_request))
-            case "getpid":
+            case RequestType.GETPID:
                 return GetProfileIdHandler(self._client, GetProfileIdRequest(raw_request))
             case _:
                 return None

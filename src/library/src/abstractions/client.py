@@ -57,22 +57,20 @@ class ClientBase:
         with lock:
             del ClientBase.pool[self.connection.ip_endpoint]
 
-    def _create_switcher(self, buffer: bytes | str) -> "SwitcherBase":  # type: ignore
+    def _create_switcher(self, buffer: bytes) -> "SwitcherBase":  # type: ignore
         """
         virtual method helps verify buffer type
         """
         assert isinstance(buffer, bytes) or isinstance(buffer, str)
 
-    def on_received(self, buffer: bytes | str) -> None:
-        if isinstance(buffer, bytes):
-            if self.crypto is not None:
-                buffer = self.crypto.decrypt(buffer)
-        elif isinstance(buffer, str):
-            pass
-        else:
+    def on_received(self, buffer: bytes) -> None:
+        if not isinstance(buffer, bytes):
             raise UniSpyException("buffer type is invalid")
+
+        if self.crypto is not None:
+            buffer = self.crypto.decrypt(buffer)
         self.log_network_receving(buffer)
-        switcher: "SwitcherBase" = self._create_switcher(buffer)
+        switcher = self._create_switcher(buffer)
         switcher.handle()
 
     def decrypt_message(self, buffer: bytes) -> bytes:

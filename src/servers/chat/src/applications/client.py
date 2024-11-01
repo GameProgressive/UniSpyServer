@@ -1,11 +1,11 @@
 from library.src.abstractions.client import ClientBase
-from typing import TYPE_CHECKING
 
 from library.src.abstractions.switcher import SwitcherBase
 from library.src.log.log_manager import LogWriter
 from library.src.network.tcp_handler import TcpConnection
 from library.src.configs import ServerConfig
 
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from servers.chat.src.aggregates.channel import Channel
 

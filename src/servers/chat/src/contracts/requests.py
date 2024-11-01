@@ -1,13 +1,12 @@
-from servers.chat.src.abstractions.message import MessageRequestBase
 from library.src.extentions.string_extentions import convert_kvstring_to_dictionary
+from servers.chat.src.abstractions.handler import ChannelRequestBase, MessageRequestBase
 from servers.chat.src.aggregates.enums import (
     GetKeyRequestType,
     ModeOperationType,
     ModeRequestType,
     TopicRequestType,
 )
-from servers.chat.src.abstractions.channel import ChannelRequestBase
-from typing import List, Optional
+from typing import Optional
 import re
 from library.src.extentions.string_extentions import (
     convert_keystr_to_list,
@@ -299,7 +298,7 @@ class GetKeyRequest(RequestBase):
 
 class GetChannelKeyRequest(ChannelRequestBase):
     cookie: str
-    keys: List
+    keys: list
 
     def parse(self):
         super().parse()
@@ -316,7 +315,7 @@ class GetChannelKeyRequest(ChannelRequestBase):
 class GetCKeyRequest(ChannelRequestBase):
     nick_name: str
     cookie: str
-    keys: List
+    keys: list
     request_type: GetKeyRequestType
 
     def parse(self):
@@ -391,12 +390,16 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_operations: list = []
+    mode_operations: list
     nick_name: str
     user_name: str
     limit_number: int
     mode_flag: str
     password: str
+
+    def __init__(self, raw_request: str) -> None:
+        super().__init__(raw_request)
+        self.mode_operations = []
 
     def parse(self):
         if self.raw_request is None:
@@ -550,15 +553,12 @@ class ModeRequest(ChannelRequestBase):
 
 
 class NamesRequest(ChannelRequestBase):
-    channel_name: str
-
     def __init__(self, raw_request: Optional[str] = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 
 
 class PartRequest(ChannelRequestBase):
-    channel_name: str
     reason: str = "Unknown reason"
 
     def __init__(self, raw_request: Optional[str] = None) -> None:

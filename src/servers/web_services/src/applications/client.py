@@ -37,11 +37,6 @@ class Client(ClientBase):
         super().__init__(connection, server_config, logger)
         self.info = ClientInfo()
 
-    def on_received(self, buffer: str) -> None:
-        assert isinstance(buffer, str)
-        super().on_received(buffer)
-
-    def _create_switcher(self, buffer:  str) -> SwitcherBase:
-        assert isinstance(buffer, str)
+    def _create_switcher(self, buffer:  bytes) -> SwitcherBase:
         from servers.web_services.src.applications.switcher import Switcher
-        return Switcher(self, buffer)
+        return Switcher(self, buffer.decode())

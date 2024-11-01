@@ -27,33 +27,33 @@ from servers.query_report.src.v2.applications.handlers import (
 class CmdSwitcher(SwitcherBase):
     _raw_request: bytes
 
-    def __init__(self, client: Client, raw_request: bytes):
-        super().__init__(client, raw_request)
-
     def _process_raw_request(self) -> None:
         if len(self._raw_request) < 4:
             raise UniSpyException("Invalid request")
-
-        name = RequestType(self._raw_request[0])
+        name = self._raw_request[0]
+        if name not in RequestType:
+            self._client.log_debug(
+                f"Request: {name} is not a valid request.")
+            return
         raw_request = self._raw_request
-        self._requests.append((name, raw_request))
+        self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: int, raw_request: bytes) -> Optional[CmdHandlerBase]:
-        req = raw_request
+    def _create_cmd_handlers(self, name: RequestType, raw_request: bytes) -> Optional[CmdHandlerBase]:
+        assert isinstance(name, RequestType)
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)
         match name:
             case RequestType.HEARTBEAT:
-                return HeartBeatHandler(self._client, HeartBeatRequest(req))
+                return HeartBeatHandler(self._client, HeartBeatRequest(raw_request))
             case RequestType.CHALLENGE:
-                return ChallengeHanler(self._client, ChallengeRequest(req))
+                return ChallengeHanler(self._client, ChallengeRequest(raw_request))
             case RequestType.AVALIABLE_CHECK:
-                return AvailableHandler(self._client, AvaliableRequest(req))
+                return AvailableHandler(self._client, AvaliableRequest(raw_request))
             case RequestType.CLIENT_MESSAGE_ACK:
-                return ClientMessageAckHandler(self._client, ClientMessageAckRequest(req))
+                return ClientMessageAckHandler(self._client, ClientMessageAckRequest(raw_request))
             case RequestType.ECHO:
-                return EchoHandler(self._client, EchoRequest(req))
+                return EchoHandler(self._client, EchoRequest(raw_request))
             case RequestType.KEEP_ALIVE:
-                return KeepAliveHandler(self._client, KeepAliveRequest(req))
+                return KeepAliveHandler(self._client, KeepAliveRequest(raw_request))
             case _:
                 return None

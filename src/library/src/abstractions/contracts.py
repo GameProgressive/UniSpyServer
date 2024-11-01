@@ -2,7 +2,6 @@ import abc
 from copy import deepcopy
 import enum
 from typing import Optional
-from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -45,7 +44,7 @@ class RequestBase:
                 result[key] = value.value
             elif isinstance(value, enum.IntEnum):
                 result[key] = value.value
-            elif isinstance(value, UUID):
+            else:
                 result[key] = str(value)
         return result
 

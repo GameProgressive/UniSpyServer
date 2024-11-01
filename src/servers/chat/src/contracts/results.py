@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 from pydantic import BaseModel
 from servers.chat.src.abstractions.contract import ResultBase
+from servers.chat.src.abstractions.handler import MessageResultBase
 
 # region General
 
@@ -153,7 +154,6 @@ if __name__ == "__main__":
     pass
 
 # region Message
-from servers.chat.src.abstractions.message import MessageResultBase
 
 
 class ATMResult(MessageResultBase):

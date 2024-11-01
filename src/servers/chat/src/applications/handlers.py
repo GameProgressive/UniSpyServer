@@ -79,18 +79,16 @@ from servers.chat.src.contracts.requests import (
     WhoRequest,
     GetUdpRelayRequest
 )
-from servers.chat.src.abstractions.message import MessageHandlerBase, MessageRequestBase
 from servers.chat.src.aggregates.exceptions import ChatException
 from servers.chat.src.aggregates.enums import ModeRequestType, TopicRequestType
 from servers.chat.src.aggregates.response_name import *
 from servers.chat.src.aggregates.managers import ChannelManager
 from servers.chat.src.aggregates.channel_user import ChannelUser
 from servers.chat.src.aggregates.channel import Channel
-from servers.chat.src.abstractions.channel import ChannelHandlerBase
 from typing import Type
 from library.src.abstractions.client import ClientBase
 from servers.chat.src.abstractions.contract import RequestBase
-from servers.chat.src.abstractions.handler import CmdHandlerBase, PostLoginHandlerBase
+from servers.chat.src.abstractions.handler import ChannelHandlerBase, CmdHandlerBase, MessageHandlerBase, PostLoginHandlerBase
 # region General
 
 
@@ -226,15 +224,9 @@ class UserIPHandler(CmdHandlerBase):
         assert isinstance(request, UserIPRequest)
         super().__init__(client, request)
 
-    def _request_check(self) -> None:
-        super()._request_check()
-        self._request.remote_ip_address = (
-            f"{self._client.connection.remote_ip}:{
-                self._client.connection.remote_port}"
-        )
-
     def _feach_data(self):
-        pass
+        self._result = UserIPResult(
+            remote_ip_address=self._client.connection.remote_ip)
 
     def _response_construct(self) -> None:
         self._response = UserIPResponse(self._result)
@@ -378,13 +370,13 @@ class ModeHandler(ChannelHandlerBase):
             case _:
                 raise ChatException("Unknown mode request type")
 
-    def _publish_message(self):
-        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-            super()._publish_message()
+    # def _publish_message(self):
+    #     if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
+    #         super()._publish_message()
 
-    def _update_channel_cache(self):
-        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-            super()._update_channel_cache()
+    # def _update_channel_cache(self):
+    #     if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
+    #         super()._update_channel_cache()
 
     def _response_send(self):
         self._channel.multicast(self._user.client, self._response, True)

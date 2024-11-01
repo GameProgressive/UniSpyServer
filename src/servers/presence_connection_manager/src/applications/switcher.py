@@ -1,4 +1,5 @@
 from library.src.abstractions.switcher import SwitcherBase
+from servers.presence_connection_manager.src.aggregates.enums import RequestType
 from servers.presence_connection_manager.src.contracts.requests import KeepAliveRequest, LoginRequest, LogoutRequest, StatusInfoRequest, StatusRequest, AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, NewUserRequest, RegisterNickRequest, UpdateProfileRequest
 from servers.presence_connection_manager.src.applications.handlers import AddBlockHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
 from servers.presence_search_player.src.aggregates.exceptions import GPParseException
@@ -24,37 +25,44 @@ class Switcher(SwitcherBase):
             r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\")[0]
-            self._requests.append((name, raw_request))
+            if name not in RequestType:
+                self._client.log_debug(
+                    f"Request: {name} is not a valid request.")
+                continue
+            self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+        assert isinstance(name, RequestType)
+        assert isinstance(raw_request, str)
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)
         match name:
-            case "ka":
+            case RequestType.KA:
                 return KeepAliveHandler(self._client, KeepAliveRequest(raw_request))
-            case "login":
+            case RequestType.LOGIN:
                 return LoginHandler(self._client, LoginRequest(raw_request))
-            case "logout":
+            case RequestType.LOGOUT:
                 return LogoutHandler(self._client, LogoutRequest(raw_request))
-            case "newuser":
+            case RequestType.NEWUSER:
                 return NewUserHandler(self._client, NewUserRequest(raw_request))
-            case "addblock":
+            case RequestType.ADDBLOCK:
                 return AddBlockHandler(self._client, AddBlockRequest(raw_request))
-            case "getprofile":
+            case RequestType.GETPROFILE:
                 return GetProfileHandler(self._client, GetProfileRequest(raw_request))
-            case "newprofile":
+            case RequestType.NEWPROFILE:
                 return NewProfileHandler(self._client, NewProfileRequest(raw_request))
-            case "registercdkey":
+            case RequestType.REGISTERCDKEY:
                 return RegisterCDKeyHandler(self._client, RegisterCDKeyRequest(raw_request))
-            case "registernick":
+            case RequestType.REGISTERNICK:
                 return RegisterNickHandler(self._client, RegisterNickRequest(raw_request))
-            case "updatepro":
+            case RequestType.UPDATEPRO:
                 return UpdateProfileHandler(self._client, UpdateProfileRequest(raw_request))
-            case "status":
+            case RequestType.STATUS:
                 return StatusHandler(self._client, StatusRequest(raw_request))
-            case "statusinfo":
+            case RequestType.STATUSINFO:
                 return StatusInfoHandler(self._client, StatusInfoRequest(raw_request))
-            case "inviteto":
-                raise NotImplementedError()
+            case RequestType.INVITETO:
+                raise NotImplementedError(
+                    "InviteToHandler is not implemented.")
             case _:
                 return None

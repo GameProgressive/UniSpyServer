@@ -1,4 +1,4 @@
-from enum import IntEnum, IntFlag
+from enum import Enum, IntEnum, IntFlag
 
 
 class BuddyMessageType(IntEnum):
@@ -238,3 +238,19 @@ class PublicMasks(IntEnum):
     SEX = 0x00000010
     EMAIL = 0x00000020
     ALL = 0xFFFFFFFF
+
+
+class RequestType(Enum):
+    KA = "ka"
+    LOGIN = "login"
+    LOGOUT = "logout"
+    NEWUSER = "newuser"
+    ADDBLOCK = "addblock"
+    GETPROFILE = "getprofile"
+    NEWPROFILE = "newprofile"
+    REGISTERCDKEY = "registercdkey"
+    REGISTERNICK = "registernick"
+    UPDATEPRO = "updatepro"
+    STATUS = "status"
+    STATUSINFO = "statusinfo"
+    INVITETO = "inviteto"

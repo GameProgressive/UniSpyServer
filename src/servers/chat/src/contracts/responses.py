@@ -1,3 +1,4 @@
+from servers.chat.src.abstractions.handler import ChannelResponseBase
 from servers.chat.src.aggregates.enums import ModeRequestType, WhoRequestType
 from servers.chat.src.contracts.results import (
     GetCKeyResult,
@@ -45,7 +46,6 @@ from servers.chat.src.abstractions.contract import (
     SERVER_DOMAIN,
     ResponseBase,
 )
-from servers.chat.src.abstractions.channel import ChannelResponseBase
 from library.src.encryption.gs_encryption import CLIENT_KEY, SERVER_KEY
 from servers.chat.src.aggregates.response_name import *
 

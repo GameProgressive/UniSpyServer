@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum, IntEnum
 
 
 class AuthMethod(IntEnum):
@@ -20,3 +20,13 @@ class GSErrorCode(IntEnum):
     PARSE = 1
     DATABASE = 2
     NOERROR = 3
+
+
+class RequestType(Enum):
+    AUTH = "auth"
+    AUTHP = "authp"
+    NEWGAME = "newgame"
+    GETPD = "getpd"
+    SETPD = "setpd"
+    UPDGAME = "updgame"
+    GETPID = "getpid"

@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Optional, cast
 from library.src.abstractions.switcher import SwitcherBase
+from servers.presence_search_player.src.aggregates.enums import RequestType
 from servers.presence_search_player.src.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
 from servers.presence_search_player.src.applications.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler, OthersListHandler, SearchHandler, SearchUniqueHandler, UniqueSearchHandler, ValidHandler
@@ -25,37 +26,39 @@ class CmdSwitcher(SwitcherBase):
             r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
             name = raw_request.strip("\\").split("\\", 1)[0]
-            self._requests.append((name, raw_request))
+            if name not in RequestType:
+                self._client.log_debug(
+                    f"Request: {name} is not a valid request.")
+                continue
+            self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+        assert isinstance(name, RequestType)
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)
 
         match name:
-            case "check":
+            case RequestType.CHECK:
                 return CheckHandler(self._client, CheckRequest(raw_request))
-            case "newuser":
+            case RequestType.NEWUSER:
                 return NewUserHandler(self._client, NewUserRequest(raw_request))
-            case "nicks":
+            case RequestType.NICKS:
                 return NicksHandler(self._client, NicksRequest(raw_request))
-            case "others":
+            case RequestType.OTHERS:
                 return OthersHandler(self._client, OthersRequest(raw_request))
-            case "otherslist":
+            case RequestType.OTHERSLIST:
                 return OthersListHandler(self._client, OthersListRequest(raw_request))
-            case "pmatch":
+            case RequestType.PMATCH:
+                # Uncomment the line below when PMatchHandler is implemented
                 # return PMatchHandler(self._client, PMatchRequest(raw_request))
-                raise NotImplementedError()
-            case "search":
+                raise NotImplementedError("PMatchHandler is not implemented.")
+            case RequestType.SEARCH:
                 return SearchHandler(self._client, SearchRequest(raw_request))
-            case "searchunique":
-                return SearchUniqueHandler(
-                    self._client, SearchUniqueRequest(raw_request)
-                )
-            case "uniquesearch":
-                return UniqueSearchHandler(
-                    self._client, UniqueSearchRequest(raw_request)
-                )
-            case "valid":
+            case RequestType.SEARCHUNIQUE:
+                return SearchUniqueHandler(self._client, SearchUniqueRequest(raw_request))
+            case RequestType.UNIQUESearch:
+                return UniqueSearchHandler(self._client, UniqueSearchRequest(raw_request))
+            case RequestType.VALID:
                 return ValidHandler(self._client, ValidRequest(raw_request))
             case _:
                 return None

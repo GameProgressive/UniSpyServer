@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, cast
 from library.src.configs import CONFIG
-from library.tests.mock_objects import ConnectionMock, LogMock, RequestHandlerMock
+from library.tests.mock_objects import ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
 from servers.chat.src.applications.client import Client
+from servers.chat.src.applications.handlers import UserIPHandler
 
 
 class ClientMock(Client):
@@ -18,4 +19,6 @@ def create_client() -> Client:
         logger=logger)
     if TYPE_CHECKING:
         conn._client = cast(Client, conn._client)
+    create_mock_url(config, UserIPHandler, {"message": "ok"})
+    
     return conn._client

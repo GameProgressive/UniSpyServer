@@ -31,8 +31,13 @@ class CmdSwitcher(SwitcherBase):
         assert isinstance(raw_request, bytes)
 
     def _process_raw_request(self) -> None:
-        name = RequestType(self._raw_request[7])
-        self._requests.append((name, self._raw_request))
+
+        name = self._raw_request[7]
+        if name not in RequestType:
+            self._client.log_debug(
+                f"Request: {name} is not a valid request.")
+            return
+        self._requests.append((RequestType(name), self._raw_request))
 
     def _create_cmd_handlers(
         self, name: RequestType, raw_request: bytes

@@ -22,22 +22,30 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
 
         if self.raw_request.count(":") > 2:
             raise Exception(f"IRC request is invalid {self.raw_request}")
+        if ":" not in self.raw_request:
+            index_of_colon = 0
+        else:
+            index_of_colon = self.raw_request.index(":")
 
-        indexOfColon = self.raw_request.index(":")
+        raw = self.raw_request
+        if index_of_colon == 0 and index_of_colon != -1:
+            if " " not in raw:
+                prefixIndex = 0
+            else:
+                prefixIndex = raw.index(" ")
+            self._prefix = raw[index_of_colon:prefixIndex]
+            raw = raw[prefixIndex:]
 
-        rawRequest = self.raw_request
-        if indexOfColon == 0 and indexOfColon != -1:
-            prefixIndex = rawRequest.index(" ")
-            self._prefix = rawRequest[indexOfColon:prefixIndex]
-            rawRequest = rawRequest[prefixIndex:]
-
-        indexOfColon = rawRequest.index(":")
-        if indexOfColon != 0 and indexOfColon != -1:
-            self._longParam = rawRequest[indexOfColon + 1:]
+        if ":" not in self.raw_request:
+            index_of_colon = 0
+        else:
+            index_of_colon = self.raw_request.index(":")
+        if index_of_colon != 0 and index_of_colon != -1:
+            self._longParam = raw[index_of_colon + 1:]
             # reset the request string
-            rawRequest = rawRequest[:indexOfColon]
+            raw = raw[:index_of_colon]
 
-        dataFrag = rawRequest.strip(" ").split(" ")
+        dataFrag = raw.strip(" ").split(" ")
 
         self.command_name = dataFrag[0]
 

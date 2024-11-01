@@ -49,8 +49,9 @@ class HttpHandler(BaseHTTPRequestHandler):
         data = self.rfile.read(content_length).decode()
         # request = HttpRequest(parsed_url, dict(self.headers), data)
         if self.conn is None:
-            self.conn = HttpConnection(self, *self.server.unispy_params)  # type: ignore
-        self.conn.on_received(data)
+            self.conn = HttpConnection(
+                self, *self.server.unispy_params)  # type: ignore
+        self.conn.on_received(data.encode())
 
 
 class HttpServer(NetworkServerBase):
@@ -58,7 +59,9 @@ class HttpServer(NetworkServerBase):
         self._server = ThreadingHTTPServer(
             (self._config.public_address, self._config.listening_port), HttpHandler
         )
-        self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
+        # fmt: off
+        self._server.unispy_params = (self._config, self._client_cls, self._logger)# type: ignore  
+        # fmt: on
         self._server.serve_forever()
 
 

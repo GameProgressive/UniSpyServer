@@ -21,6 +21,7 @@ class ConnectionBase:
     logger: LogWriter
     handler: socketserver.BaseRequestHandler
     _client: ClientBase
+
     def __init__(
         self,
         handler: socketserver.BaseRequestHandler,
@@ -43,7 +44,7 @@ class ConnectionBase:
         self._client = self.t_client(self, self.config, self.logger)
         self._is_started = False
 
-    def on_received(self, data: "bytes|str") -> None:
+    def on_received(self, data: bytes) -> None:
         self._client.on_received(data)
 
     @abc.abstractmethod
