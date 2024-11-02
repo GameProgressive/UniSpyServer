@@ -111,6 +111,9 @@ class CryptHandler(CmdHandlerBase):
         assert isinstance(request, CryptRequest)
         super().__init__(client, request)
 
+    def _data_operate(self):
+        pass
+
     def _response_construct(self) -> None:
         self._response = CryptResponse()
 

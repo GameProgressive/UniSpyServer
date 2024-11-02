@@ -1,3 +1,4 @@
+from typing import Optional
 import unittest
 
 from library.tests.mock_objects import BrokerMock
@@ -15,4 +16,7 @@ class RoomTests(unittest.TestCase):
         channel = Channel("test", client, brocker_cls=BrokerMock)
         user = ChannelUser(client, channel)
         channel.add_bind_on_user_and_channel(user)
+        pass
+
+    def test_single_join(self, user_name="unispy", nick_name="unispy", channel_name="#GSP!room!test"):
         pass

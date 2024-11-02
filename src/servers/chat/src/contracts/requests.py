@@ -631,7 +631,7 @@ class TopicRequest(ChannelRequestBase):
 
     def parse(self) -> None:
         super().parse()
-        if not hasattr(self, "_long_param"):
+        if self._long_param is None:
             self.request_type = TopicRequestType.GET_CHANNEL_TOPIC
         else:
             self.request_type = TopicRequestType.SET_CHANNEL_TOPIC

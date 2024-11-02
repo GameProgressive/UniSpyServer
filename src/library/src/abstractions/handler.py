@@ -1,7 +1,7 @@
 import json
 from library.src.abstractions.client import ClientBase
 from library.src.exceptions.general import UniSpyException
-from typing import Type
+from typing import Optional, Type
 import requests
 
 from library.src.configs import CONFIG
@@ -14,20 +14,16 @@ from library.src.extentions.encoding import UniSpyJsonEncoder
 class CmdHandlerBase:
     _client: "ClientBase"
     _request: "RequestBase"
-    _result: "ResultBase"
-    _response: "ResponseBase"
+    _result: Optional["ResultBase"]
+    _response: Optional["ResponseBase"]
     """
     the response instance, initialize as None in __init__
     """
-    _result_cls: "Type[ResultBase]"
+    _result_cls: Optional["Type[ResultBase]"]
     """
     the result type class, use to deserialize json data from backend\n
-    the initialization of _result_cls must before call super().__init__()
+    the initialization of _result_cls must after call super().__init__()
     """
-    _is_uploading: bool
-
-    _is_feaching: bool
-
     _debug: bool = False
     """
     whether is in debug mode, if in debug mode exception will raise from handler
@@ -39,6 +35,9 @@ class CmdHandlerBase:
         assert issubclass(type(request), RequestBase)
         self._client = client
         self._request = request
+        self._response = None
+        self._result_cls = None
+        self._result = None
 
     def handle(self) -> None:
         try:
@@ -48,7 +47,7 @@ class CmdHandlerBase:
             self._request_check()
             self._data_operate()
             self._response_construct()
-            if not hasattr(self, "_response"):
+            if self._response is None:
                 return
             self._response_send()
         except Exception as ex:
@@ -99,10 +98,6 @@ class CmdHandlerBase:
         whether need get data from backend.
         if child class do not require feach, overide this function to do nothing
         """
-        if not hasattr(self, "_result_cls"):
-            raise UniSpyException(
-                "_result should be initialized when feach data")
-
         if self._result_cls is None:
             raise UniSpyException("_result should not be null when feach data")
         assert issubclass(self._result_cls, ResultBase)

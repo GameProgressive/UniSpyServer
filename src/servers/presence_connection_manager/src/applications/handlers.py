@@ -74,8 +74,8 @@ class LoginHandler(CmdHandlerBase):
 
     def __init__(self, client: "Client", request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
-        self._result_cls = LoginResult
         super().__init__(client, request)
+        self._result_cls = LoginResult
 
     def _response_construct(self) -> None:
         self._response = LoginResponse(self._request, self._result)
@@ -96,9 +96,10 @@ class NewUserHandler(CmdHandlerBase):
     _result: NewUserResult
     # todo create seperate request and result
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
-        self._result_cls = NewUserResult
+    def __init__(self, client: Client, request: NewUserRequest) -> None:
+        assert isinstance(request, NewUserRequest)
         super().__init__(client, request)
+        self._result_cls = NewUserResult
 
     def _response_construct(self):
         self._response = NewUserResponse(self._request, self._result)
@@ -110,6 +111,9 @@ class SdkRevisionHandler(CmdHandlerBase):
     def __init__(self, client: "Client", request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
+
+    def _data_operate(self):
+        pass
 
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = SdkRevision(
@@ -139,11 +143,11 @@ class BlockListHandler(CmdHandlerBase):
 
 class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
-    _result_cls = BuddyListResult
+    _result_cls: type[BuddyListResult]
 
-    def __init__(self, client: Client):
-        assert isinstance(client, Client)
-        self._client = client
+    def __init__(self, client, request):
+        super().__init__(client, request)
+        
 
     def response_construct(self):
         self._response = BuddyListResponse(self._request, self._result)

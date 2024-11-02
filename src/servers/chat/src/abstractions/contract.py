@@ -5,13 +5,16 @@ import library.src.abstractions.contracts
 class RequestBase(library.src.abstractions.contracts.RequestBase):
     raw_request: str
     command_name: str
-    _prefix: str
-    _cmd_params: list
-    _long_param: str
+    _prefix: Optional[str]
+    _cmd_params: Optional[list[str]]
+    _long_param: Optional[str]
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
+        self._prefix = None
+        self._cmd_params = None
+        self._long_param = None
 
     def parse(self) -> None:
         # at most 2 colon character

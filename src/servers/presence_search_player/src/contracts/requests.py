@@ -14,9 +14,6 @@ class CheckRequest(RequestBase):
     email: str
     partner_id: int
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-
     def parse(self):
         super().parse()
         self.password = process_password(self.request_dict)
