@@ -28,3 +28,8 @@ This project is licensed under the [GNU Affero General Public License v3.0](../L
 ## Why rewrite C# to python
 * The vscode extensions for C# development is become more and more hard to use, and microsoft abandoned the open-source OmniSharp project and replacing it with it's own closed source language server.
 * The c# project seems hard to run by users, it require a lot of deploy knowledge and hard for collaborations, for the future of the gamespy emulator, I choose to rewrite this into a opensource and easy high level language - python.
+
+
+## How to run
+* Run ```docker compose up -f docker-compose-unispy-env.yml -d```
+* Use vscode to open the src folder and reopen in devcontainer (make sure your vscode have devcontainer extension)
