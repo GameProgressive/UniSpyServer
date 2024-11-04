@@ -6,14 +6,14 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
     raw_request: str
     command_name: str
     _prefix: Optional[str]
-    _cmd_params: Optional[list[str]]
+    _cmd_params: list[str]
     _long_param: Optional[str]
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
         self._prefix = None
-        self._cmd_params = None
+        self._cmd_params = []
         self._long_param = None
 
     def parse(self) -> None:

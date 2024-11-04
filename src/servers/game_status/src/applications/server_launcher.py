@@ -12,7 +12,11 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["GameStatus"]
 
     def _launch_server(self):
-        TcpServer(self.config, Client, self.logger).start()
+        assert self.config is not None
+        assert self.logger is not None
+        self.server = TcpServer(self.config, Client, self.logger)
+        super()._launch_server()
+
 
 
 if __name__ == "__main__":

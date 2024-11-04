@@ -145,9 +145,9 @@ class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
     _result_cls: type[BuddyListResult]
 
-    def __init__(self, client, request):
-        super().__init__(client, request)
-        
+    def __init__(self, client):
+        assert isinstance(client, Client)
+        self._client = client
 
     def response_construct(self):
         self._response = BuddyListResponse(self._request, self._result)

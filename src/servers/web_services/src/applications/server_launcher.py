@@ -12,7 +12,10 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["WebServices"]
 
     def _launch_server(self):
-        HttpServer(self.config, Client, self.logger).start()
+        assert self.config is not None
+        assert self.logger is not None
+        self.server = HttpServer(self.config, Client, self.logger)
+        super()._launch_server()
 
 
 if __name__ == "__main__":

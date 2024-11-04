@@ -53,6 +53,9 @@ from servers.chat.src.aggregates.response_name import *
 
 
 class CdKeyResponse(ResponseBase):
+    def __init__(self) -> None:
+        pass
+
     def build(self) -> None:
         self.sending_buffer = f":{SERVER_DOMAIN} {CD_KEY} * 1 :Authenticated.\r\n"  # noqa
 
@@ -218,11 +221,9 @@ class GetCKeyResponse(ResponseBase):
     def build(self) -> None:
         self.sending_buffer = ""
         for nick_name, user_values in self._result.infos:
-            self.sending_buffer += f":{SERVER_DOMAIN} {GET_CKEY} * {
-                self._request.channel_name} {nick_name} {self._request.cookie} {user_values}\r\n"
+            self.sending_buffer += f":{SERVER_DOMAIN} {GET_CKEY} * {self._request.channel_name} {nick_name} {self._request.cookie} {user_values}\r\n"  # noqa
 
-        self.sending_buffer += f"{SERVER_DOMAIN} {END_GET_CKEY} * {
-            self._request.channel_name} {self._request.cookie} :End Of GETCKEY.\r\n"
+        self.sending_buffer += f"{SERVER_DOMAIN} {END_GET_CKEY} * {self._request.channel_name} {self._request.cookie} :End Of GETCKEY.\r\n"  # noqa
 
 
 class JoinResponse(ResponseBase):
@@ -265,7 +266,7 @@ class ModeResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
+        if self._request.type == ModeRequestType.GET_CHANNEL_MODES:
             self.sending_buffer = f":{SERVER_DOMAIN} {
                 CHANNEL_MODELS} * {self._result.channel_modes} {self._result.channel_modes}\r\n"
 

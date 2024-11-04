@@ -28,6 +28,8 @@ class CmdHandlerBase:
     """
     whether is in debug mode, if in debug mode exception will raise from handler
     """
+    _is_uploading: bool
+    _is_fetching: bool
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
 
@@ -38,6 +40,8 @@ class CmdHandlerBase:
         self._response = None
         self._result_cls = None
         self._result = None
+        self._is_uploading = True
+        self._is_fetching = True
 
     def handle(self) -> None:
         try:
@@ -66,8 +70,10 @@ class CmdHandlerBase:
         virtual function, can be override
         """
         self._prepare_data()
-        self._upload_data()
-        self._feach_data()
+        if self._is_uploading:
+            self._upload_data()
+        if self._is_fetching:
+            self._feach_data()
 
     def _prepare_data(self):
         self._temp_data = self._request.to_dict()
@@ -113,6 +119,7 @@ class CmdHandlerBase:
         virtual function, can be override
         Send response back to client, this is a virtual function which can be override only by child class
         """
+        assert isinstance(self._response, ResponseBase)
         self._client.send(self._response)
 
     def _handle_exception(self, ex: Exception) -> None:

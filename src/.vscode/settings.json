@@ -1,5 +1,5 @@
 {
-    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.typeCheckingMode": "basic",
     "workbench.iconTheme": "material-icon-theme",
     "python.testing.unittestArgs": [
         "-v",

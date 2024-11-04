@@ -29,14 +29,13 @@ from servers.natneg.src.contracts.results import (
 class AddressCheckHandler(CmdHandlerBase):
     _request: AddressCheckRequest
     _result: AddressCheckResult
+    _response: AddressCheckResponse
 
     def __init__(self, client: Client, request: AddressCheckRequest) -> None:
         assert isinstance(client, Client)
         assert isinstance(request, AddressCheckRequest)
         super().__init__(client, request)
-
-    def _feach_data(self):
-        pass
+        self._is_fetching = False
 
     def _data_operate(self) -> None:
         """
@@ -59,9 +58,7 @@ class ConnectAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ConnectAckRequest) -> None:
         assert isinstance(request, ConnectAckRequest)
         super().__init__(client, request)
-
-    def _feach_data(self):
-        pass
+        self._is_fetching = False
 
     def _data_operate(self) -> None:
         self._client.log_info(
@@ -74,24 +71,19 @@ class ConnectHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ConnectRequest) -> None:
         assert isinstance(request, ConnectRequest)
         super().__init__(client, request)
-        self._result_cls = ConnectResult
-
-    def _feach_data(self):
-        pass
+        self._is_fetching = False
 
 
 class ErtAckHandler(CmdHandlerBase):
     _request: ErtAckRequest
     _result: ErtAckResult
+    _response: ErcAckResponse
 
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         assert isinstance(request, ErtAckRequest)
         super().__init__(client, request)
 
-    def _feach_data(self):
-        pass
-
-    def _data_operate(self) -> None:
+    def _feach_data(self) -> None:
         self._result = ErtAckResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port)
@@ -106,15 +98,13 @@ class InitHandler(CmdHandlerBase):
     """
     _request: InitRequest
     _result: InitResult
+    _response: InitResponse
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
         super().__init__(client, request)
 
-    def _feach_data(self):
-        pass
-
-    def _data_operate(self) -> None:
+    def _feach_data(self) -> None:
         self._result = InitResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port)
@@ -131,15 +121,13 @@ class InitHandler(CmdHandlerBase):
 class NatifyHandler(CmdHandlerBase):
     _request: NatifyRequest
     _result: NatifyResult
+    _response: NatifyResponse
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         assert isinstance(request, NatifyRequest)
         super().__init__(client, request)
 
     def _feach_data(self):
-        pass
-
-    def _data_operate(self):
         self._result = NatifyResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port)

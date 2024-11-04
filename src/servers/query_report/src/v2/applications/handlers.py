@@ -25,9 +25,9 @@ class AvailableHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AvaliableRequest) -> None:
         assert isinstance(request, AvaliableRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
-    def _feach_data(self):
-        pass
+
 
     def _response_construct(self):
         self._response = AvaliableResponse(self._request)
@@ -98,6 +98,6 @@ class KeepAliveHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
-    def _feach_data(self):
-        pass
+

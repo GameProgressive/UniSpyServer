@@ -121,6 +121,7 @@ class LoginRequest(RequestBase):
         if self._cmd_params[1] == "*":
             self.request_type = LoginRequestType.NICK_AND_EMAIL_LOGIN
             self.password_hash = self._cmd_params[2]
+            assert isinstance(self._long_param, str)
             if self._long_param.count("@") != 2:
                 raise ChatException("The profile nick format is incorrect.")
 
@@ -143,6 +144,7 @@ class NickRequest(RequestBase):
         if len(self._cmd_params) == 1:
             self.nick_name = self._cmd_params[0]
         elif self._long_param is None:
+            assert isinstance(self._long_param, str)
             self.nick_name = self._long_param
         else:
             raise ChatException("NICK request is invalid.")
@@ -189,7 +191,8 @@ class RegisterNickRequest(RequestBase):
 
     def parse(self):
         super().parse()
-        self.namespace_id = self._cmd_params[0]
+        assert isinstance(self._cmd_params, list)
+        self.namespace_id = int(self._cmd_params[0])
         self.unique_nick = self._cmd_params[1]
         self.cdkey = self._cmd_params[2]
 
@@ -226,6 +229,7 @@ class UserRequest(RequestBase):
             self.host_name = self._cmd_params[0]
             self.server_name = self._cmd_params[1]
 
+        assert isinstance(self._long_param, str)
         self.name = self._long_param
 
 
@@ -345,7 +349,11 @@ class GetUdpRelayRequest(ChannelRequestBase):
 
 
 class JoinRequest(ChannelRequestBase):
-    password: str
+    password: Optional[str]
+
+    def __init__(self, raw_request):
+        super().__init__(raw_request)
+        self.password = None
 
     def parse(self):
         super().parse()
@@ -389,7 +397,7 @@ class ModeRequest(ChannelRequestBase):
 
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
-    request_type: ModeRequestType
+    type: ModeRequestType
     mode_operations: list[ModeOperationType]
     nick_name: str
     user_name: str
@@ -406,9 +414,9 @@ class ModeRequest(ChannelRequestBase):
             return
         super().parse()
         if len(self._cmd_params) == 1:
-            self.request_type = ModeRequestType.GET_CHANNEL_MODES
+            self.type = ModeRequestType.GET_CHANNEL_MODES
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
-            self.request_type = ModeRequestType.SET_CHANNEL_MODES
+            self.type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
             modeFlags = [s for s in re.split(
                 r"(?=\+|\-)", self.mode_flag) if s.strip()]

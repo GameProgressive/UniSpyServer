@@ -6,6 +6,7 @@ from servers.presence_search_player.src.applications.handlers import CheckHandle
 from servers.presence_search_player.src.applications.switcher import CmdSwitcher
 import responses
 
+from servers.presence_search_player.src.contracts.responses import CheckResponse
 from servers.presence_search_player.tests.mock_objects import create_client
 
 
@@ -21,6 +22,8 @@ class GameTest(unittest.TestCase):
         if TYPE_CHECKING:
             request = cast(CheckRequest, request)
         response = switcher._handlers[0]._response
+        if TYPE_CHECKING:
+            response = cast(CheckResponse, response)
         self.assertEqual("spyguy", request.nick)
         self.assertEqual("spyguy@gamespy.com", request.email)
         self.assertEqual("4a7d1ed414474e4033ac29ccb8653d9b", request.password)

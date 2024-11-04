@@ -1,4 +1,6 @@
+import signal
 from types import MappingProxyType
+from typing import Optional
 from library.src.abstractions.connections import NetworkServerBase
 from library.src.exceptions.general import UniSpyException
 from library.src.log.log_manager import LogManager, LogWriter
@@ -6,6 +8,8 @@ from library.src.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
 from prettytable import PrettyTable
+import keyboard
+
 VERSION = 0.45
 
 _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
@@ -24,15 +28,22 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
 
 
 class ServerLauncherBase:
-    config: ServerConfig
-    logger: LogWriter
-    server: NetworkServerBase
+    config: Optional[ServerConfig]
+    logger: Optional[LogWriter]
+    server: Optional[NetworkServerBase]
+
+    def __init__(self):
+        self.server = None
+        self.logger = None
+        self.config = None
 
     def start(self):
         self.__show_unispy_logo()
         self._connect_to_backend()
         self._create_logger()
         self._launch_server()
+        print("Server successfully launched.")
+        self.__keep_running()
 
     def __show_unispy_logo(self):
         # display logo
@@ -42,16 +53,24 @@ class ServerLauncherBase:
         table = PrettyTable()
         table.field_names = ["Server Name",
                              "Listening Address", "Listening Port"]
+        assert self.config is not None
         table.add_row([self.config.server_name,
                       self.config.public_address, self.config.listening_port])
         print(table)
 
     def _launch_server(self) -> None:
-        raise NotImplementedError("Override this function in child class")
+        if self.server is None:
+            raise UniSpyException("Create network server in child class")
+        import threading
+        th = threading.Thread(target=self.server.start)
+        key = input('Press Q to Quit')
+        th.join()
+        
 
     def _connect_to_backend(self):
         try:
             # post our server config to backends to register
+            assert self.config is not None
             resp = requests.post(
                 url=CONFIG.backend.url+"/",
                 data=self.config.model_dump_json())
@@ -67,5 +86,9 @@ class ServerLauncherBase:
             # fmt: on
 
     def _create_logger(self):
+        assert self.config is not None
         short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
         self.logger = LogManager.create(short_name)
+
+    def __keep_running(self):
+        key = input('Press Q to Quit')

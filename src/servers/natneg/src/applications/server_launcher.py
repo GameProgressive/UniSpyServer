@@ -12,7 +12,10 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["NatNegotiation"]
 
     def _launch_server(self):
-        UdpServer(self.config, Client, self.logger).start()
+        assert self.config is not None
+        assert self.logger is not None
+        self.server = UdpServer(self.config, Client, self.logger)
+        super()._launch_server()
 
 
 if __name__ == "__main__":

@@ -91,6 +91,7 @@ class SearchHandler(CmdHandlerBase):
     """
     _result_cls: type[SearchResult]
     _result: SearchResult
+    _response: SearchResponse
 
     def __init__(self, client: Client, request: SearchRequest) -> None:
         assert isinstance(request, SearchRequest)

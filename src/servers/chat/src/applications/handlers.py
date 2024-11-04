@@ -98,9 +98,10 @@ class CdKeyHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: CdkeyRequest):
         assert isinstance(request, CdkeyRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
-        self._response = CdKeyResponse(self._request, self._result)
+        self._response = CdKeyResponse()
 
 
 class CryptHandler(CmdHandlerBase):
@@ -217,6 +218,7 @@ class UserHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: UserRequest):
         assert isinstance(request, UserRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
 
 class UserIPHandler(CmdHandlerBase):
@@ -285,12 +287,6 @@ class GetCKeyHandler(ChannelHandlerBase):
         assert isinstance(request, GetCKeyRequest)
         super().__init__(client, request)
 
-    def _publish_message(self):
-        pass
-
-    def _update_channel_cache(self):
-        pass
-
     def _response_construct(self):
         self._response = GetCKeyResponse(self._request, self._result)
 
@@ -303,39 +299,41 @@ class JoinHandler(ChannelHandlerBase):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
 
-    def _check_user_in_remote(self):
-        """
-        todo maybe do not need because there are nick handler?
-        """
-        pass
+    # def _check_user_in_remote(self):
+    #     """
+    #     todo maybe do not need because there are nick handler?
+    #     """
+    #     pass
 
-    def _check_user_in_local(self):
-        channel = ChannelManager.get_channel(
-            self._request.channel_name)
-        if channel is None:
-            self._channel = Channel(
-                self._request.channel_name, self._client, self._request.password)
-            ChannelManager.add_channel(self._channel)
-        else:
-            self._channel = channel
-            if self._client.info.nick_name in self._channel.users:
-                raise ChatException("user is already in channel")
+    # def _check_user_in_local(self):
+    #     channel = ChannelManager.get_channel(
+    #         self._request.channel_name)
+    #     if channel is None:
+    #         self._channel = Channel(
+    #             self._request.channel_name, self._client, self._request.password)
+    #         ChannelManager.add_channel(self._channel)
+    #     else:
+    #         self._channel = channel
+    #         if self._client.info.nick_name in self._channel.users:
+    #             raise ChatException("user is already in channel")
 
-    def _request_check(self) -> None:
-        # todo check if user already in local channel
-        # self._check_user_in_remote()
-        self._check_user_in_local()
-        self._user = ChannelUser(self._client, self._channel)
-        self._channel.add_bind_on_user_and_channel(self._user)
-
-        super()._request_check()
+    # def _request_check(self) -> None:
+    #     # todo check if user already in local channel
+    #     # self._check_user_in_remote()
+    #     self._request.parse()
+    #     self._check_user_in_local()
+    #     self._user = ChannelUser(self._client, self._channel)
+    #     self._channel.add_bind_on_user_and_channel(self._user)
+    #     super()._request_check()
 
     def _response_construct(self):
         self._response = JoinResponse(self._request, self._result)
 
+    # def _response_send(self):
+    #     # for join request we need to send to our self
+    #     self._channel.multicast(self._user.client, self._response, False)
     def _response_send(self):
-        # for join request we need to send to our self
-        self._channel.multicast(self._user.client, self._response, False)
+        super()._response_send()
 
 
 class KickHandler(ChannelHandlerBase):
@@ -349,9 +347,6 @@ class KickHandler(ChannelHandlerBase):
     def _response_construct(self):
         self._response = KickResponse(self._request, self._result)
 
-    def _response_send(self):
-        self._channel.multicast(self._user.client, self._response, True)
-
 
 class ModeHandler(ChannelHandlerBase):
     _request: ModeRequest
@@ -361,28 +356,15 @@ class ModeHandler(ChannelHandlerBase):
         assert isinstance(request, ModeRequest)
         super().__init__(client, request)
 
+    def _request_check(self) -> None:
+        super()._request_check()
+        if self._request.type == ModeRequestType.SET_CHANNEL_MODES:
+            self._is_fetching = False
+
     def _response_construct(self):
-        match self._request.request_type:
-            case (
-                ModeRequestType.GET_CHANNEL_AND_USER_MODES,
-                ModeRequestType.GET_CHANNEL_MODES,
-            ):
-                self._response = ModeResponse(self._request, self._result)
-            case ModeRequestType.SET_CHANNEL_MODES:
-                pass
-            case _:
-                raise ChatException("Unknown mode request type")
-
-    # def _publish_message(self):
-    #     if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-    #         super()._publish_message()
-
-    # def _update_channel_cache(self):
-    #     if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-    #         super()._update_channel_cache()
-
-    def _response_send(self):
-        self._channel.multicast(self._user.client, self._response, True)
+        if self._request.type in [ModeRequestType.GET_CHANNEL_AND_USER_MODES,
+                                  ModeRequestType.GET_CHANNEL_MODES]:
+            self._response = ModeResponse(self._request, self._result)
 
 
 class NamesHandler(ChannelHandlerBase):
@@ -408,9 +390,6 @@ class PartHandler(ChannelHandlerBase):
     def _response_construct(self):
         self._response = PartResponse(self._request, self._result)
 
-    def _response_send(self):
-        self._channel.multicast(self._user.client, self._response, True)
-
 
 class SetChannelKeyHandler(ChannelHandlerBase):
     _request: SetChannelKeyRequest
@@ -423,9 +402,6 @@ class SetChannelKeyHandler(ChannelHandlerBase):
     def _response_construct(self):
         self._response = SetChannelKeyResponse(self._request, self._result)
 
-    def _response_send(self):
-        self._channel.multicast(self._user.client, self._response, True)
-
 
 class SetCKeyHandler(ChannelHandlerBase):
     _request: SetCKeyRequest
@@ -436,9 +412,6 @@ class SetCKeyHandler(ChannelHandlerBase):
 
     def _response_construct(self) -> None:
         self._response = SetCKeyResponse(self._request)
-
-    def _response_send(self):
-        self._channel.multicast(self._user.client, self._response, True)
 
 
 class TopicHandler(ChannelHandlerBase):
@@ -457,7 +430,7 @@ class TopicHandler(ChannelHandlerBase):
             case TopicRequestType.GET_CHANNEL_TOPIC:
                 self._client.send(self._response)
             case TopicRequestType.SET_CHANNEL_TOPIC:
-                self._channel.multicast(self._client, self._response)
+                self._publish_to_brocker()
 # region Message
 
 

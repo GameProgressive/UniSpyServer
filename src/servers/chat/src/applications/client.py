@@ -5,21 +5,25 @@ from library.src.log.log_manager import LogWriter
 from library.src.network.tcp_handler import TcpConnection
 from library.src.configs import ServerConfig
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from servers.chat.src.aggregates.channel import Channel
 
 
 class ClientInfo:
-    previously_joined_channel: str
+    previously_joined_channel: Optional[str]
     joined_channels: dict[str, "Channel"]
-    nick_name: str
-    gamename: str
-    user_name: str
+    nick_name: Optional[str]
+    gamename: Optional[str]
+    user_name: Optional[str]
 
     def __init__(self) -> None:
         self.joined_channels = {}
-
+        self.nick_name = None
+        self.gamename = None
+        self.user_name = None
+        self.previously_joined_channel = None
+    
 
 class Client(ClientBase):
     info: ClientInfo

@@ -70,7 +70,7 @@ class WebsocketBrocker(BrockerBase):
     def unsubscribe(self):
         self._subscriber.close()
 
-    def publish_message(self, message):
+    def publish_message(self, message: str):
         if self._publisher is None:
             raise ValueError("websocket connection is not established")
         self._publisher.send(message)

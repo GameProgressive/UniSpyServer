@@ -1,3 +1,6 @@
+from library.src.configs import CONFIG
+from library.src.extentions.encoding import UniSpyJsonEncoder
+from library.src.network.brockers import WebsocketBrocker
 from servers.chat.src.aggregates.enums import MessageType
 from servers.chat.src.abstractions.contract import ResultBase
 from typing import TYPE_CHECKING
@@ -11,6 +14,8 @@ from servers.chat.src.applications.client import Client
 from servers.chat.src.aggregates.exceptions import IRCException
 import library.src.abstractions.handler
 from typing import cast
+
+from servers.chat.src.applications.server_launcher import ServerLauncher
 
 if TYPE_CHECKING:
     from servers.chat.src.aggregates.channel import Channel
@@ -68,36 +73,49 @@ class ChannelResponseBase(ResponseBase):
         assert isinstance(result, ResultBase)
 
 
+def handle_brocker_message(message: str):
+    raise NotImplementedError()
+
+
 class ChannelHandlerBase(PostLoginHandlerBase):
-    _channel: "Channel"
-    _user: "ChannelUser"
     _request: ChannelRequestBase
     _response: ResponseBase
+    _result: ResultBase
+    _b_msg: dict
+    """
+    broadcast message
+    """
+    _brocker: WebsocketBrocker = WebsocketBrocker(
+        "channel", CONFIG.backend.url, handle_brocker_message)
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         # self._channel = None
 
-    def _request_check(self) -> None:
-        if self._request.raw_request is None:
-            return super()._request_check()
+    def _message_construct(self):
+        """
+        broadcast message construct
+        """
+        self._b_msg = {
+            "server_id": self._client.server_config.server_id,
+            "sender_ip_end_point": self._client.connection.ip_endpoint,
+            "message": self._response.sending_buffer,
+            "channel_name": self._request.channel_name,
+        }
 
-        if self._channel is None:
-            channel = ChannelManager.get_channel(
-                self._request.channel_name
-            )
-        if channel is None:
-            raise NoSuchChannelException(
-                f"No such channel {self._request.channel_name}",
-            )
-        self._channel = channel
-        if self._user is None:
-            user = self._channel.get_user_by_nick(
-                self._client.info.nick_name)
+    def _publish_to_brocker(self):
+        """
+        send message to backend, let backend to broadcast for us
+        """
+        import json
+        self._message_construct()
+        j_str = json.dumps(self._b_msg, cls=UniSpyJsonEncoder)
+        ChannelHandlerBase._brocker.publish_message(j_str)
 
-        if user is None:
-            raise NoSuchNickException(f"Can not find user with nickname: {self._client.info.nick_name} user_name: {self._client.info.user_name}")  # noqa
-        self._user = user
+    def _response_send(self) -> None:
+        super()._response_send()
+        self._publish_to_brocker()
+
 
 # region Message
 

@@ -12,8 +12,11 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["QueryReport"]
 
     def _launch_server(self):
+        assert self.config is not None
+        assert self.logger is not None
         self.server = UdpServer(self.config, Client, self.logger)
-        self.server.start()
+        super()._launch_server()
+
 
 
 if __name__ == "__main__":

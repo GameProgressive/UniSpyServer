@@ -20,6 +20,7 @@ from servers.natneg.src.aggregations.enums import (
     RequestType,
 )
 
+from servers.natneg.src.contracts.responses import InitResponse
 from servers.natneg.tests.mock_objects import create_client
 CmdHandlerBase._debug = True
 
@@ -36,7 +37,6 @@ class HandlerTests(unittest.TestCase):
         )  # fmt: skip
 
         client = create_client()
-
 
         # test request parsing
         request = InitRequest(raw)

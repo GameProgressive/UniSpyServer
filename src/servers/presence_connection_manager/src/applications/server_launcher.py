@@ -1,5 +1,5 @@
 from library.src.abstractions.server_launcher import ServerLauncherBase
-from library.src.network.udp_handler import UdpServer
+from library.src.network.tcp_handler import TcpServer
 from library.src.configs import CONFIG
 from servers.presence_connection_manager.src.applications.client import Client
 
@@ -11,7 +11,10 @@ class ServerLauncher(ServerLauncherBase):
         self.config = CONFIG.servers["PresenceConnectionManager"]
 
     def _launch_server(self):
-        UdpServer(self.config, Client, self.logger).start()
+        assert self.config is not None
+        assert self.logger is not None
+        self.server = TcpServer(self.config, Client, self.logger)
+        super()._launch_server()
 
 
 if __name__ == "__main__":

@@ -6,8 +6,8 @@ from servers.chat.tests.mock_objects import create_client
 
 
 class GameTests(unittest.TestCase):
-    responses.activate
 
+    @responses.activate
     def test_civilization4(self):
         raws = ["USRIP",
                 "USER X419pGl4sX|18 127.0.0.1 peerchat.gamespy.com :aa3041ada9385b28fc4d4e47db288769",
@@ -29,6 +29,7 @@ class GameTests(unittest.TestCase):
         for raw in raws:
             client.on_received(raw.encode())
 
+    @responses.activate
     def test_worm3d(self):
         raws = [
             "CRYPT des 1 worms3\r\n",

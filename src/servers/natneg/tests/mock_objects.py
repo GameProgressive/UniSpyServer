@@ -3,8 +3,7 @@ from library.src.configs import CONFIG
 from servers.natneg.src.applications.client import Client
 from typing import cast
 
-from servers.natneg.src.applications.handlers import AddressCheckHandler, InitHandler, NatifyHandler
-
+from servers.natneg.src.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
 
 
 class ClientMock(Client):
@@ -19,11 +18,11 @@ def create_client() -> Client:
         handler=handler,
         config=CONFIG.servers["NatNegotiation"], t_client=ClientMock,
         logger=logger)
-    
+
     config = CONFIG.servers["NatNegotiation"]
     create_mock_url(config, InitHandler, {"message": "ok"})
     create_mock_url(config, AddressCheckHandler, {"message": "ok"})
     create_mock_url(config, AddressCheckHandler, {"message": "ok"})
     create_mock_url(config, NatifyHandler, {"message": "ok"})
-
+    create_mock_url(config, ErtAckHandler, {"message": "ok"})
     return cast(Client, conn._client)
