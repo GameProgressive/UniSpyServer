@@ -27,7 +27,7 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple  && pip3 install --user -r requirements.txt"
+	"postCreateCommand": "pip3 install --user -r requirements.txt"
 	// "postCreateCommand": "pip3 install --user -r requirements.txt"
 	// Configure tool-specific properties.
 	// "customizations": {},

@@ -1,6 +1,9 @@
+import asyncio
+import threading
+from time import sleep
 from typing import TYPE_CHECKING, cast
 from library.src.configs import CONFIG
-from library.tests.mock_objects import ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
+from library.tests.mock_objects import BrokerMock, ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
 from servers.chat.src.applications.client import Client
 from servers.chat.src.applications.handlers import *
 
@@ -18,7 +21,8 @@ def create_client() -> Client:
         config=config, t_client=ClientMock,
         logger=logger)
     create_mock_url(config, UserIPHandler, {"message": "ok"})
-    create_mock_url(config, JoinHandler, {"message": "ok"})
+    create_mock_url(config, JoinHandler, JoinResult(
+        joiner_nick_name="unispy", joiner_prefix="xiaojiuwo!unispy@UNISPYSERVER", all_channel_user_nicks="test", channel_modes="+q").model_dump())
     create_mock_url(config, UserHandler, {"message": "ok"})
     create_mock_url(config, CdKeyHandler, {"message": "ok"})
     create_mock_url(config, GetCKeyHandler, GetCKeyResult.model_validate(
@@ -32,6 +36,12 @@ def create_client() -> Client:
         leaver_irc_prefix="test_prefix", is_channel_creator=False, channel_name="test_chan").model_dump())
     create_mock_url(config, NickHandler, NickResult(
         nick_name="test").model_dump())
+    ChannelHandlerBase._brocker = BrokerMock()
     if TYPE_CHECKING:
         conn._client = cast(Client, conn._client)
+
     return conn._client
+
+
+if __name__ == "__main__":
+    create_client()

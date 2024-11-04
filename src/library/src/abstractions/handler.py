@@ -105,7 +105,8 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         if self._result_cls is None:
-            raise UniSpyException("_result should not be null when feach data")
+            raise UniSpyException(
+                f"_result in {self.__class__.__name__} should not be null when feach data")
         assert issubclass(self._result_cls, ResultBase)
 
         self._result = self._result_cls(**self._http_result)

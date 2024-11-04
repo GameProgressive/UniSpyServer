@@ -1,3 +1,4 @@
+from library.src.abstractions.brocker import BrockerBase
 from library.src.configs import CONFIG
 from library.src.extentions.encoding import UniSpyJsonEncoder
 from library.src.network.brockers import WebsocketBrocker
@@ -85,7 +86,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     """
     broadcast message
     """
-    _brocker: WebsocketBrocker = WebsocketBrocker(
+    _brocker: BrockerBase = WebsocketBrocker(
         "channel", CONFIG.backend.url, handle_brocker_message)
 
     def __init__(self, client: ClientBase, request: RequestBase):

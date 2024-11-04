@@ -41,14 +41,18 @@ class LogMock(LogWriter):
 
 
 class BrokerMock(BrockerBase):
+    def __init__(self) -> None:
+        pass
+
     def subscribe(self):
         pass
 
     def publish_message(self, message):
-        pass
+        print(f"[multi] {message}")
 
     def unsubscribe(self):
         pass
+
 
 def create_mock_url(config: ServerConfig, handler: type[CmdHandlerBase], data: dict) -> None:
     # fmt: off

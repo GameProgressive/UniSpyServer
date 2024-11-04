@@ -298,42 +298,10 @@ class JoinHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
-
-    # def _check_user_in_remote(self):
-    #     """
-    #     todo maybe do not need because there are nick handler?
-    #     """
-    #     pass
-
-    # def _check_user_in_local(self):
-    #     channel = ChannelManager.get_channel(
-    #         self._request.channel_name)
-    #     if channel is None:
-    #         self._channel = Channel(
-    #             self._request.channel_name, self._client, self._request.password)
-    #         ChannelManager.add_channel(self._channel)
-    #     else:
-    #         self._channel = channel
-    #         if self._client.info.nick_name in self._channel.users:
-    #             raise ChatException("user is already in channel")
-
-    # def _request_check(self) -> None:
-    #     # todo check if user already in local channel
-    #     # self._check_user_in_remote()
-    #     self._request.parse()
-    #     self._check_user_in_local()
-    #     self._user = ChannelUser(self._client, self._channel)
-    #     self._channel.add_bind_on_user_and_channel(self._user)
-    #     super()._request_check()
+        self._result_cls = JoinResult
 
     def _response_construct(self):
         self._response = JoinResponse(self._request, self._result)
-
-    # def _response_send(self):
-    #     # for join request we need to send to our self
-    #     self._channel.multicast(self._user.client, self._response, False)
-    def _response_send(self):
-        super()._response_send()
 
 
 class KickHandler(ChannelHandlerBase):
@@ -343,6 +311,7 @@ class KickHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: KickRequest):
         assert isinstance(request, KickRequest)
         super().__init__(client, request)
+        self._result_cls = KickResult
 
     def _response_construct(self):
         self._response = KickResponse(self._request, self._result)
@@ -355,6 +324,7 @@ class ModeHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: ModeRequest):
         assert isinstance(request, ModeRequest)
         super().__init__(client, request)
+        self._result_cls = ModeResult
 
     def _request_check(self) -> None:
         super()._request_check()

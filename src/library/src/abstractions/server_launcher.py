@@ -8,7 +8,6 @@ from library.src.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
 from prettytable import PrettyTable
-import keyboard
 
 VERSION = 0.45
 
