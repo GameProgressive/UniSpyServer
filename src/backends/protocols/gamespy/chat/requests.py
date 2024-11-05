@@ -5,9 +5,6 @@ from servers.chat.src.aggregates.enums import GetKeyRequestType, LoginRequestTyp
 class RequestBase(lib.RequestBase):
     raw_request: str
     command_name: str
-    _prefix: str
-    _cmd_params: list
-    _longParam: str
 
 # region General
 

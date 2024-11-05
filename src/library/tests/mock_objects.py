@@ -48,7 +48,7 @@ class BrokerMock(BrockerBase):
         pass
 
     def publish_message(self, message):
-        print(f"[multi] {message}")
+        pass
 
     def unsubscribe(self):
         pass

@@ -190,10 +190,10 @@ class WhoResponse(ResponseBase):
             self.sending_buffer += f":{SERVER_DOMAIN} {WHO_REPLY} * {channel_name} {user_name} {public_ip_address} * {nick_name} {modes} *\r\n"  # noqa
 
         if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
-            if len(self._result.infos) > 0:
+            # if len(self._result.infos) > 0:
                 self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.channel_name} * :End of WHO.\r\n"  # noqa
         elif self._request.request_type == WhoRequestType.GET_USER_INFO:
-            if len(self._result.infos) > 0:
+            # if len(self._result.infos) > 0:
                 self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.nick_name} * :End of WHO.\r\n"  # noqa
 
 

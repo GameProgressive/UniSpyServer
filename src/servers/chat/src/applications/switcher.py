@@ -72,7 +72,8 @@ class Switcher(SwitcherBase):
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
-        splited_raw_requests = self._raw_request.replace("\r", "").split("\n")
+        splited_raw_requests = [
+            req for req in self._raw_request.replace("\r", "").split("\n") if req]
         for raw_request in splited_raw_requests:
             name = raw_request.strip(" ").split(" ")[0]
             if name not in RequestType:

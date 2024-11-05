@@ -36,6 +36,14 @@ def create_client() -> Client:
         leaver_irc_prefix="test_prefix", is_channel_creator=False, channel_name="test_chan").model_dump())
     create_mock_url(config, NickHandler, NickResult(
         nick_name="test").model_dump())
+    create_mock_url(config, WhoHandler, WhoResult(infos=[]).model_dump())
+    create_mock_url(config, SetChannelKeyHandler, SetChannelKeyResult(
+        channel_user_irc_prefix="unispy!unispy@unispyserver", channel_name="test").model_dump())
+    create_mock_url(config, GetKeyHandler, GetKeyResult(
+        nick_name="unispy", values=[]).model_dump())
+    create_mock_url(config, UTMHandler, UTMResult(
+        user_irc_prefix="unispy!unispy@unispy", target_name="spyguy").model_dump())
+
     ChannelHandlerBase._brocker = BrokerMock()
     if TYPE_CHECKING:
         conn._client = cast(Client, conn._client)

@@ -615,8 +615,12 @@ class SetCKeyRequest(ChannelRequestBase):
         self.nick_name = self._cmd_params[1]
         self.key_value_string = self._long_param[1:]
         self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
-
-        if "b_" in self.key_values:
+        is_broadcast = False
+        for key in self.key_values:
+            if "b_" in key:
+                is_broadcast = True
+                break
+        if is_broadcast:
             self.cookie = "BCAST"
             self.is_broadcast = True
 

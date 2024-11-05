@@ -59,6 +59,9 @@ class GameTests(unittest.TestCase):
             "UTM #GSP!worms3!Ml4lz344lM :SDM ASFE.Scheme.StandardCUnAACADCBBCACBBFFBKBB8C/C3C!A!A*C*C<D*B*B*B*B*B*B3C*B<A*C3CEC!A-C5C-C3C<C*A*B*B*C*B<CEC*B*C<B<D!A*B*B3B3C<D!A<D/C<C<D*C*A\r\n",
             "UTM worms20 :APE [01]privateip[02]192.168.0.60[01]publicip[02]255.255.255.255\r\n"
         ]
+        client = create_client()
+        for raw in raws:
+            client.on_received(raw.encode())
 
     def test_crysis2_20230926(self):
         raws = ["CRYPT des 1 capricorn\r\n",

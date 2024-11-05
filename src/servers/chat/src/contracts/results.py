@@ -13,7 +13,7 @@ class CryptResult(ResultBase):
 
 class GetKeyResult(ResultBase):
     nick_name: str
-    values: list = []
+    values: list
 
 
 class ListResult(ResultBase):

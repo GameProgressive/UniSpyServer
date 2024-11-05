@@ -6,7 +6,7 @@ from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
 from library.src.configs import ServerConfig
-from servers.chat.src.aggregates.channel import BrockerMessage
+from servers.chat.src.abstractions.contract import BrockerMessage
 
 router = APIRouter()
 channels: dict[str, list[WebSocket]] = {"test": []}
@@ -87,6 +87,7 @@ def getkey(request: GetKeyRequest):
 @router.post(f"{CHAT}/GetUdpRelayHandler")
 def get_udp_relay(request: GetUdpRelayRequest):
     pass
+
 
 @router.post(f"{CHAT}/InviteHandler")
 def invite(request: InviteRequest):

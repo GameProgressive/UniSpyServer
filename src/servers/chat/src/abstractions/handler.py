@@ -1,12 +1,9 @@
 from library.src.abstractions.brocker import BrockerBase
 from library.src.configs import CONFIG
-from library.src.extentions.encoding import UniSpyJsonEncoder
 from library.src.network.brockers import WebsocketBrocker
 from servers.chat.src.aggregates.enums import MessageType
 from servers.chat.src.abstractions.contract import ResultBase
-from typing import TYPE_CHECKING
 from servers.chat.src.aggregates.exceptions import ChatException, NoSuchNickException, NoSuchChannelException
-from servers.chat.src.aggregates.managers import ChannelManager
 from servers.chat.src.abstractions.contract import RequestBase
 from servers.chat.src.abstractions.contract import *
 from library.src.abstractions.client import ClientBase
@@ -15,12 +12,6 @@ from servers.chat.src.applications.client import Client
 from servers.chat.src.aggregates.exceptions import IRCException
 import library.src.abstractions.handler
 from typing import cast
-
-from servers.chat.src.applications.server_launcher import ServerLauncher
-
-if TYPE_CHECKING:
-    from servers.chat.src.aggregates.channel import Channel
-    from servers.chat.src.aggregates.channel_user import ChannelUser
 
 
 class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
@@ -43,10 +34,6 @@ class CmdHandlerBase(library.src.abstractions.handler.CmdHandlerBase):
 class PostLoginHandlerBase(CmdHandlerBase):
     pass
 
-
-if TYPE_CHECKING:
-    from servers.chat.src.aggregates.channel import Channel
-    from servers.chat.src.aggregates.channel_user import ChannelUser
 
 # region Channel
 
@@ -82,7 +69,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _request: ChannelRequestBase
     _response: ResponseBase
     _result: ResultBase
-    _b_msg: dict
+    _b_msg: BrockerMessage
     """
     broadcast message
     """
@@ -97,20 +84,18 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         """
         broadcast message construct
         """
-        self._b_msg = {
-            "server_id": self._client.server_config.server_id,
-            "sender_ip_end_point": self._client.connection.ip_endpoint,
-            "message": self._response.sending_buffer,
-            "channel_name": self._request.channel_name,
-        }
+        assert self._request.channel_name is not None
+        self._response.build()
+        self._b_msg = BrockerMessage(server_id=self._client.server_config.server_id, channel_name=self._request.channel_name,
+                                     sender_ip_end_point=self._client.connection.ip_endpoint, message=self._response.sending_buffer)
 
     def _publish_to_brocker(self):
         """
         send message to backend, let backend to broadcast for us
         """
-        import json
         self._message_construct()
-        j_str = json.dumps(self._b_msg, cls=UniSpyJsonEncoder)
+        j_str = self._b_msg.model_dump_json()
+        self._client.log_network_broadcast(j_str)
         ChannelHandlerBase._brocker.publish_message(j_str)
 
     def _response_send(self) -> None:
@@ -151,7 +136,6 @@ class MessageResultBase(ResultBase):
 class MessageHandlerBase(ChannelHandlerBase):
     _request: MessageRequestBase
     _result: MessageResultBase
-    _receiver: "ChannelUser"
 
     def __init__(self, client: ClientBase, request: MessageRequestBase):
         assert isinstance(request, MessageRequestBase)

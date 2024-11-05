@@ -113,6 +113,9 @@ class ClientBase:
     def log_network_sending(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [send]: {data}")
 
+    def log_network_broadcast(self, data: object) -> None:
+        self.logger.info(f"{self._log_prefix} [cast]: {data}")
+
     def log_network_receving(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [recv]: {data}")
 

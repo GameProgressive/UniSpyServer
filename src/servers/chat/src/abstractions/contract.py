@@ -1,4 +1,7 @@
 from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel
 import library.src.abstractions.contracts
 
 
@@ -73,6 +76,15 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
         if result is not None:
             assert issubclass(type(result), ResultBase)
         assert issubclass(type(request), RequestBase)
+
+# region Brocker
+
+
+class BrockerMessage(BaseModel):
+    server_id: UUID
+    channel_name: str
+    sender_ip_end_point: str
+    message: str
 
 
 if __name__ == "__main__":
