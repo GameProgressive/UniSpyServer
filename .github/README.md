@@ -31,5 +31,10 @@ This project is licensed under the [GNU Affero General Public License v3.0](../L
 
 
 ## How to run
-* Run ```docker compose up -f docker-compose-unispy-env.yml -d```
-* Use vscode to open the src folder and reopen in devcontainer (make sure your vscode have devcontainer extension)
+* Run ```docker compose up -f docker-compose-unispy-env.yml -d``` to setup postgresql and redis
+* Run ```export UNISPY_CONFIG='<path of config.json>'``` to setup env config file path, remember replace symbol ```<path of config.json>``` with config file path
+* Open with vscode:
+  * Use vscode to open the src folder and reopen in devcontainer (make sure your vscode have devcontainer extension)
+* open with github codespace:
+  * add ```unispy_config = "<path of config.json>"``` after the line of ```unispy_config = os.environ.get("UNISPY_CONFIG")``` in config.py  (for unittest working)
+  * github codespace vscode web can not install devcontainer, the project can not running in docker network ```unispy```. Therefore, replace ```"server": "unispy_postgresql"``` and ```"server": "unispy_redis"``` to ```"server": "localhost"``` in config.json to use localhost postgres and redis in docker (we already setup)
