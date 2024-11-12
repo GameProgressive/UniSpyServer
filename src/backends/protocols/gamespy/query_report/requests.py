@@ -38,6 +38,7 @@ class HeartBeatRequest(RequestBase):
     team_data: list[dict[str, str]]
     server_status: GameServerStatus
     group_id: int
+    game_name: str
 
 
 class EchoRequest(RequestBase):

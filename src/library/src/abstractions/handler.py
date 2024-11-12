@@ -80,10 +80,13 @@ class CmdHandlerBase:
         if "server_id" in self._temp_data:
             raise UniSpyException("server_id name collision in dict")
         self._temp_data["server_id"] = self._client.server_config.server_id
-        if "client_ip_endpoint" in self._temp_data:
-            raise UniSpyException("client_ip_endpoint name collision in dict")
-        self._temp_data["client_ip_endpoint"] = self._client.connection.ip_endpoint
-
+        if "client_ip" in self._temp_data:
+            raise UniSpyException("client_ip name collision in dict")
+        self._temp_data["client_ip"] = self._client.connection.remote_ip
+        if "client_port" in self._temp_data:
+            raise UniSpyException("client_port name collision in dict")
+        self._temp_data["client_port"] = self._client.connection.remote_port
+        
     def _upload_data(self):
         """
         whether need send data to backend

@@ -9,7 +9,7 @@ class InitHandler(HandlerBase):
         super().__init__(request)
         assert isinstance(request, InitRequest)
 
-    async def _data_fetch(self) -> None:
+    async def _data_operate(self) -> None:
         info = InitPacketCaches(**self._request.model_dump())
         update_init_info(info)
 

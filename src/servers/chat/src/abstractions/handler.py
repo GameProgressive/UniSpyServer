@@ -86,8 +86,11 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         """
         assert self._request.channel_name is not None
         self._response.build()
-        self._b_msg = BrockerMessage(server_id=self._client.server_config.server_id, channel_name=self._request.channel_name,
-                                     sender_ip_end_point=self._client.connection.ip_endpoint, message=self._response.sending_buffer)
+        self._b_msg = BrockerMessage(server_id=self._client.server_config.server_id,
+                                     channel_name=self._request.channel_name,
+                                     sender_ip_address=self._client.connection.remote_ip,
+                                     sender_port=self._client.connection.remote_port,
+                                     message=self._response.sending_buffer)
 
     def _publish_to_brocker(self):
         """

@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING, cast
-from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles
+
+from sqlalchemy import Column
+from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles, Users
 from servers.game_status.src.aggregations.enums import PersistStorageType
 from servers.game_status.src.aggregations.exceptions import GSException
 
@@ -17,6 +19,10 @@ def update_player_data():
 
 
 def get_profile_id_by_token(token: str) -> int:
+    if TYPE_CHECKING:
+        assert isinstance(SubProfiles.profileid, Column)
+        assert isinstance(SubProfiles.authtoken, Column)
+
     result = PG_SESSION.query(SubProfiles.profileid).filter(
         SubProfiles.authtoken == token).first()
     if result is None:
@@ -27,6 +33,14 @@ def get_profile_id_by_token(token: str) -> int:
 
 
 def get_profile_id(cdkey: str, nick_name: str) -> int:
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.profileid, Column)
+        assert isinstance(SubProfiles.cdkeyenc, Column)
     result = PG_SESSION.query(SubProfiles.profileid).join(
         SubProfiles, Profiles.profileid == SubProfiles.profileid)\
         .filter(SubProfiles.cdkeyenc == cdkey,

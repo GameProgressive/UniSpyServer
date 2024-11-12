@@ -30,63 +30,68 @@ Base: DeclarativeMeta = declarative_base()
 class Users(Base):
     __tablename__ = "users"
 
-    userid = Column(Integer, primary_key=True, autoincrement=True)
-    email = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    emailverified = Column(Boolean, default=True, nullable=False)
-    lastip = Column(INET)
-    lastonline = Column(DateTime, default=datetime.now())
-    createddate = Column(DateTime, default=datetime.now(), nullable=False)
-    banned = Column(Boolean, default=False, nullable=False)
-    deleted = Column(Boolean, default=False, nullable=False)
+    userid: Column | int = Column(
+        Integer, primary_key=True, autoincrement=True)
+    email: Column | str = Column(String, nullable=False)
+    password: Column | str = Column(String, nullable=False)
+    emailverified: Column | bool = Column(
+        Boolean, default=True, nullable=False)
+    lastip: Column | str = Column(INET)
+    lastonline: Column | datetime = Column(DateTime, default=datetime.now())
+    createddate: Column | datetime = Column(
+        DateTime, default=datetime.now(), nullable=False)
+    banned: Column | bool = Column(Boolean, default=False, nullable=False)
+    deleted: Column | bool = Column(Boolean, default=False, nullable=False)
 
 
 class Profiles(Base):
     __tablename__ = "profiles"
 
-    profileid = Column(Integer, primary_key=True, autoincrement=True)
-    userid = Column(Integer, ForeignKey("users.userid"), nullable=False)
-    nick = Column(String, nullable=False)
-    serverflag = Column(Integer, nullable=False, default=0)
-    status = Column(SmallInteger, default=0)
-    statstring = Column(String, default="I love UniSpy")
-    location = Column(String)
-    firstname = Column(String)
-    lastname = Column(String)
-    publicmask = Column(Integer, default=0)
-    latitude = Column(Double, default=0)
-    longitude = Column(Double, default=0)
-    aim = Column(String, default="")
-    picture = Column(Integer, default=0)
-    occupationid = Column(Integer, default=0)
-    incomeid = Column(Integer, default=0)
-    industryid = Column(Integer, default=0)
-    marriedid = Column(Integer, default=0)
-    childcount = Column(Integer, default=0)
-    interests1 = Column(Integer, default=0)
-    ownership1 = Column(Integer, default=0)
-    connectiontype = Column(Integer, default=0)
-    sex = Column(SmallInteger, default=0)
-    zipcode = Column(String, default="00000")
-    countrycode = Column(String, default="1")
-    homepage = Column(String, default="unispy.org")
-    birthday = Column(Integer, default=0)
-    birthmonth = Column(Integer, default=0)
-    birthyear = Column(Integer, default=0)
-    icquin = Column(Integer, default=0)
-    quietflags = Column(SmallInteger, nullable=False, default=0)
-    streetaddr = Column(Text)
-    streeaddr = Column(Text)
-    city = Column(Text)
-    cpubrandid = Column(Integer, default=0)
-    cpuspeed = Column(Integer, default=0)
-    memory = Column(SmallInteger, default=0)
-    videocard1string = Column(Text)
-    videocard1ram = Column(SmallInteger, default=0)
-    videocard2string = Column(Text)
-    videocard2ram = Column(SmallInteger, default=0)
-    subscription = Column(Integer, default=0)
-    adminrights = Column(Integer, default=0)
+    profileid: Column | int = Column(
+        Integer, primary_key=True, autoincrement=True)
+    userid: Column | int = Column(
+        Integer, ForeignKey("users.userid"), nullable=False)
+    nick: Column | str = Column(String, nullable=False)
+    serverflag: Column | int = Column(Integer, nullable=False, default=0)
+    status: Column | int = Column(SmallInteger, default=0)
+    statstring: Column | str = Column(String, default="I love UniSpy")
+    location: Column | str = Column(String)
+    firstname: Column | str = Column(String)
+    lastname: Column | str = Column(String)
+    publicmask: Column | int = Column(Integer, default=0)
+    latitude: Column | float = Column(Double, default=0)
+    longitude: Column | float = Column(Double, default=0)
+    aim: Column | str = Column(String, default="")
+    picture: Column | int = Column(Integer, default=0)
+    occupationid: Column | int = Column(Integer, default=0)
+    incomeid: Column | int = Column(Integer, default=0)
+    industryid: Column | int = Column(Integer, default=0)
+    marriedid: Column | int = Column(Integer, default=0)
+    childcount: Column | int = Column(Integer, default=0)
+    interests1: Column | int = Column(Integer, default=0)
+    ownership1: Column | int = Column(Integer, default=0)
+    connectiontype: Column | int = Column(Integer, default=0)
+    sex: Column | int = Column(SmallInteger, default=0)
+    zipcode: Column | str = Column(String, default="00000")
+    countrycode: Column | str = Column(String, default="1")
+    homepage: Column | str = Column(String, default="unispy.org")
+    birthday: Column | int = Column(Integer, default=0)
+    birthmonth: Column | int = Column(Integer, default=0)
+    birthyear: Column | int = Column(Integer, default=0)
+    icquin: Column | int = Column(Integer, default=0)
+    quietflags: Column | int = Column(SmallInteger, nullable=False, default=0)
+    streetaddr: Column | str = Column(Text)
+    streeaddr: Column | str = Column(Text)
+    city: Column | str = Column(Text)
+    cpubrandid: Column | int = Column(Integer, default=0)
+    cpuspeed: Column | int = Column(Integer, default=0)
+    memory: Column | int = Column(SmallInteger, default=0)
+    videocard1string: Column | str = Column(Text)
+    videocard1ram: Column | int = Column(SmallInteger, default=0)
+    videocard2string: Column | str = Column(Text)
+    videocard2ram: Column | int = Column(SmallInteger, default=0)
+    subscription: Column | int = Column(Integer, default=0)
+    adminrights: Column | int = Column(Integer, default=0)
 
 
 class SubProfiles(Base):
@@ -95,16 +100,16 @@ class SubProfiles(Base):
     subprofileid = Column(
         Integer, ForeignKey("profiles.profileid"), primary_key=True, autoincrement=True
     )
-    profileid = Column(Integer, nullable=False)
-    uniquenick = Column(String)
-    namespaceid = Column(Integer, nullable=False, default=0)
-    partnerid = Column(Integer, nullable=False, default=0)
-    productid = Column(Integer)
-    gamename = Column(Text)
-    cdkeyenc = Column(String)
-    firewall = Column(SmallInteger, default=0)
-    port = Column(Integer, default=0)
-    authtoken = Column(String)
+    profileid: Column | int = Column(Integer, nullable=False)
+    uniquenick: Column | str = Column(String)
+    namespaceid: Column | int = Column(Integer, nullable=False, default=0)
+    partnerid: Column | int = Column(Integer, nullable=False, default=0)
+    productid: Column | int = Column(Integer)
+    gamename: Column | str = Column(Text)
+    cdkeyenc: Column | str = Column(String)
+    firewall: Column | int = Column(SmallInteger, default=0)
+    port: Column | int = Column(Integer, default=0)
+    authtoken: Column | str = Column(String)
 
 
 class AddRequest(Base):
@@ -240,11 +245,24 @@ class ChatChannelCaches(Base):
     server_id = Column(UUID, nullable=False)
     game_name = Column(String, nullable=False)
     room_name = Column(String, nullable=False)
-    topic = Column(String, nullable=False)
+    topic = Column(String, nullable=True)
     password = Column(String, nullable=True)
     group_id = Column(Integer, nullable=False)
     max_num_user = Column(Integer, nullable=False)
     key_values = Column(JSONB)
+    invited_nicks = Column(JSONB)
+    update_time = Column(DateTime, nullable=False)
+
+
+class ChatNickCaches(Base):
+    __tablename__ = "chat_nick_caches"
+    server_id = Column(UUID, nullable=False)
+    nick_name = Column(String, primary_key=True, nullable=False)
+    game_name = Column(String, nullable=True)
+    user_name = Column(String, nullable=True)
+    remote_ip_address = Column(INET, nullable=False)
+    remote_port = Column(Integer, nullable=False)
+    key_value = Column(JSONB)
     update_time = Column(DateTime, nullable=False)
 
 
@@ -276,6 +294,7 @@ class GameServerCaches(Base):
     player_data = Column(JSONB, nullable=False)
     server_data = Column(JSONB, nullable=False)
     team_data = Column(JSONB, nullable=False)
+    avaliable = Column(Boolean, nullable=True)
 
 
 def connect_to_db() -> Session:
@@ -291,5 +310,5 @@ PG_SESSION = connect_to_db()
 
 if __name__ == "__main__":
     session = connect_to_db()
-    session.query(Users.userid == 0)
+    session.query(Users.userid == 0)  # type:ignore
     pass

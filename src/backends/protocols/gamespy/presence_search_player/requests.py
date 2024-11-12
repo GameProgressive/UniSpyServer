@@ -33,12 +33,14 @@ class NewUserRequest(RequestBase):
     partner_id: int
     game_name: str
     uniquenick: str
+    namespace_id: int
 
 
 class NicksRequest(RequestBase):
     password: str
     email: str
     is_require_uniquenicks: bool
+    namespace_id: int
 
 
 class OthersListRequest(RequestBase):

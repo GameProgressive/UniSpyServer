@@ -1,23 +1,31 @@
+from typing import final
 from servers.query_report.src.v2.abstractions.contracts import ResultBase
 from servers.query_report.src.v2.aggregates.enums import PacketType
 
 
+@final
 class ChallengeResult(ResultBase):
     packet_type: PacketType = PacketType.CHALLENGE
 
 
+@final
 class ClientMessageResult(ResultBase):
     natneg_message: bytes
     message_key: int
     packet_type: PacketType = PacketType.CLIENT_MESSAGE
 
 
+@final
 class EchoResult(ResultBase):
     info: dict
     packet_type: PacketType = PacketType.ECHO
 
 
+@final
 class HeartBeatResult(ResultBase):
+    """
+    this result is replied in unispy server
+    """
     packet_type: PacketType = PacketType.HEARTBEAT
-    remote_ip_address:str
-    remote_port:int
+    remote_ip_address: str
+    remote_port: int

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.presence_connection_manager.requests import KeepAliveRequest
+from backends.protocols.gamespy.query_report.handlers import AvaliableHandler
 from backends.protocols.gamespy.query_report.requests import AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest
 from backends.urls import QUERY_REPORT
 
@@ -19,7 +20,9 @@ async def challenge(request: ChallengeRequest):
 
 @router.post(f"{QUERY_REPORT}/AvailableHandler")
 async def available(request: AvaliableRequest):
-    raise NotImplementedError()
+    handler = AvaliableHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{QUERY_REPORT}/ClientMessageAckHandler")

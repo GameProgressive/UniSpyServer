@@ -1,4 +1,6 @@
 from typing import TYPE_CHECKING, cast
+
+from sqlalchemy import Column
 from backends.library.database.pg_orm import (
     Blocked,
     Friends,
@@ -11,6 +13,8 @@ from servers.presence_search_player.src.aggregates.exceptions import GPDatabaseE
 
 
 def is_email_exist(email: str) -> bool:
+    if TYPE_CHECKING:
+        assert isinstance(Users.email, Column)
     if PG_SESSION.query(Users).filter(Users.email == email).count() == 1:
         return True
     else:
@@ -62,6 +66,10 @@ def get_profile_info_list(profile_id: int, namespace_id: int):
     Returns:
         tuple: A tuple containing the profile information, sub-profile information, and user information.
     """
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
     result = (
         PG_SESSION.query(Profiles, SubProfiles, Users)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -86,6 +94,13 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
         List[Tuple[int, int, int]]: A list of tuples containing the userid, profileid, and subprofileid
         of users that match the provided email and nickname in the database.
     """
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
+
     result = (
         PG_SESSION.query(Users.userid, Profiles.profileid,
                          SubProfiles.subprofileid)
@@ -100,6 +115,15 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
 
 
 def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
+
     result = (
         PG_SESSION.query(Users.userid, Profiles.profileid,
                          SubProfiles.subprofileid)
@@ -117,6 +141,15 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
 
 
 def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, int]]:
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
+
     result = (
         PG_SESSION.query(Users.userid, Profiles.profileid,
                          SubProfiles.subprofileid)
@@ -172,6 +205,12 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
     assert isinstance(profile_id, int)
     assert isinstance(old_nick, str)
     assert isinstance(new_nick, str)
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
     result = (
         PG_SESSION.query(Profiles)
         .filter(Profiles.profileid == profile_id, Profiles.nick == old_nick)

@@ -11,10 +11,8 @@ class RequestBase(BaseModel):
     """
     if the raw_request is bytes, we decode it to decode("ascii","backslashreplace") str
     """
-    client_ip_endpoint: str
-    """
-    ip:port
-    """
+    client_ip: str
+    client_port: int
 
 
 class ErrorResponse(BaseModel):

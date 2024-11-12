@@ -83,7 +83,8 @@ class ResponseBase(library.src.abstractions.contracts.ResponseBase):
 class BrockerMessage(BaseModel):
     server_id: UUID
     channel_name: str
-    sender_ip_end_point: str
+    sender_ip_address: str
+    sender_port: int
     message: str
 
 

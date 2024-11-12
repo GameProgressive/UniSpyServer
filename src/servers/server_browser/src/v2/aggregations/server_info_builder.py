@@ -2,10 +2,10 @@ from socket import inet_aton
 
 from servers.query_report.src.aggregates.game_server_info import GameServerInfo
 
-from backends.protocols.gamespy.query_report.data import get_all_groups
+# from backends.protocols.gamespy.query_report.data import get_all_groups
 from servers.server_browser.src.v2.aggregations.enums import GameServerFlags
 
-PEER_GROUP_LIST = get_all_groups()
+# PEER_GROUP_LIST = get_all_groups()
 QUERY_REPORT_DEFAULT_PORT = 6500
 
 
@@ -51,8 +51,8 @@ def check_unsolicited_udp(header: list[int], server_info: GameServerInfo):
 def check_private_ip(header: list[int], server_info: GameServerInfo):
     #!when game create a channel chat, it will use both the public ip and private ip to build the name.
     #!known game: Worm3d
-
-    if server_info.game_name in PEER_GROUP_LIST:
+    # todo
+    # if server_info.game_name in PEER_GROUP_LIST:
         if "localip0" in server_info.server_data:
             header[0] ^= GameServerFlags.PRIVATE_IP_FLAG.value
             bytes_address = inet_aton(server_info.server_data["localip0"])

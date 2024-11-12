@@ -2,7 +2,6 @@ import socketserver
 
 import responses
 from library.src.abstractions.brocker import BrockerBase
-from library.src.abstractions.client import ClientBase
 from library.src.abstractions.connections import ConnectionBase
 from library.src.abstractions.handler import CmdHandlerBase
 from library.src.log.log_manager import LogWriter

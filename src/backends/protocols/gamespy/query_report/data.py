@@ -3,6 +3,7 @@ from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, Grou
 from servers.chat.src.aggregates.peer_room import PeerRoom
 
 
+
 def get_all_groups() -> dict:
     result = (
         PG_SESSION.query(Games, GroupList)
@@ -31,6 +32,7 @@ def get_all_groups() -> dict:
     # Convert the grouped result to the desired format
     return grouped_result
 
+PEER_GROUP_LIST = get_all_groups()
 
 def get_peer_staging_channels(game_name: str, group_id: int) -> list[ChatChannelCaches]:
     assert isinstance(game_name, str)
