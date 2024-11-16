@@ -31,7 +31,7 @@ This project is licensed under the [GNU Affero General Public License v3.0](../L
 
 
 ## How to run
-* Run ```docker compose up -f docker-compose-unispy-env.yml -d``` to setup postgresql and redis
+* Run ```docker compose -f docker-compose-unispy-env.yml up -d``` to setup postgresql and redis
 * Run ```export UNISPY_CONFIG='<path of config.json>'``` to setup env config file path, remember replace symbol ```<path of config.json>``` with config file path
 * Open with vscode:
   * Use vscode to open the src folder and reopen in devcontainer (make sure your vscode have devcontainer extension)
