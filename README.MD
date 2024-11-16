@@ -4,7 +4,7 @@
 ![platforms](https://img.shields.io/badge/platform-win32%20%7C%20win64%20%7C%20linux%20%7C%20osx-brightgreen.svg)
 ![CIPass](https://github.com/GameProgressive/RetroSpyServer/workflows/CI/badge.svg)
 
-
+x
 
 UniSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
 
