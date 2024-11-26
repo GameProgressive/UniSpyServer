@@ -62,6 +62,12 @@ class KeepAliveHandler(CmdHandlerBase):
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
 
+    def _data_operate(self) -> None:
+        # we set ip and data to request
+        self._request.client_ip = self._client.connection.remote_ip
+        self._request.client_port = self._client.connection.remote_port
+        super()._data_operate()
+
     def _response_construct(self) -> None:
         self._response = KeepAliveResponse(self._request)
 

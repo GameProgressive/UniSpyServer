@@ -9,9 +9,10 @@ from servers.presence_connection_manager.src.abstractions.contracts import Resul
 # region General
 
 
-class LoginDataModel(BaseModel):
+class LoginData(BaseModel):
     user_id: int
     profile_id: int
+    sub_profile_id: int
     nick: str
     email: str
     unique_nick: str
@@ -19,12 +20,10 @@ class LoginDataModel(BaseModel):
     email_verified_flag: bool
     banned_flag: bool
     namespace_id: int
-    sub_profile_id: int
 
 
 class LoginResult(ResultBase):
-    response_proof: str
-    data: LoginDataModel
+    data: LoginData
 
 
 class NewUserResult(ResultBase):

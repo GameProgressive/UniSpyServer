@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column
@@ -9,7 +10,20 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
+from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
+from servers.presence_connection_manager.src.contracts.results import LoginData
 from servers.presence_search_player.src.aggregates.exceptions import GPDatabaseException
+
+
+def update_online_time(ip: str, port: int):
+    if TYPE_CHECKING:
+        assert isinstance(Users.lastip, Column)
+
+    result = PG_SESSION.query(Users).where(Users.lastip == ip).first()
+    if result is None:
+        return False
+    result.lastonline = datetime.now()
+    PG_SESSION.commit()
 
 
 def is_email_exist(email: str) -> bool:
@@ -140,7 +154,7 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
     return result
 
 
-def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, int]]:
+def get_user_infos_by_uniquenick_namespace_id(unique_nick: str, namespace_id: int) -> LoginData | None:
     if TYPE_CHECKING:
         assert isinstance(Profiles.profileid, Column)
         assert isinstance(Profiles.userid, Column)
@@ -149,21 +163,115 @@ def get_user_infos(unique_nick: str, namespace_id: int) -> list[tuple[int, int, 
         assert isinstance(Profiles.nick, Column)
         assert isinstance(SubProfiles.uniquenick, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
+        assert isinstance(Users.password, Column)
+        assert isinstance(Users.emailverified, Column)
+        assert isinstance(Users.banned, Column)
 
     result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid,
-                         SubProfiles.subprofileid)
+        PG_SESSION.query(Users.userid,
+                         Profiles.profileid,
+                         SubProfiles.subprofileid,
+                         Profiles.nick,
+                         Users.email,
+                         SubProfiles.uniquenick,
+                         Users.password,
+                         Users.emailverified,
+                         Users.banned,
+                         SubProfiles.namespaceid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .filter(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
         )
-        .all()
+        .first()
     )
-    if TYPE_CHECKING:
-        result = cast(list[tuple[int, int, int]], result)
+
     return result
+
+
+def get_user_infos_by_nick_email(nick: str, email: str) -> LoginData | None:
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Users.password, Column)
+        assert isinstance(Users.emailverified, Column)
+        assert isinstance(Users.banned, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
+
+    result = (
+        PG_SESSION.query(Users.userid,
+                         Profiles.profileid,
+                         SubProfiles.subprofileid,
+                         Profiles.nick,
+                         Users.email,
+                         SubProfiles.uniquenick,
+                         Users.password,
+                         Users.emailverified,
+                         Users.banned,
+                         SubProfiles.namespaceid
+                         )
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .filter(
+            Users.email == email,
+            Profiles.nick == nick
+        )
+        .first()
+    )
+    if result is not None:
+        return LoginData(*result)  # type: ignore
+    else:
+        return None
+
+
+def update_online_status(user_id: int, status: LoginStatus):
+    if TYPE_CHECKING:
+        assert isinstance(Users.userid, Column)
+    result = PG_SESSION.query(Users).where(Users.userid == user_id).first()
+    raise NotImplementedError("implement sesskey")
+
+
+def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Users.password, Column)
+        assert isinstance(Users.emailverified, Column)
+        assert isinstance(Users.banned, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
+        assert isinstance(SubProfiles.authtoken, Column)
+
+    result = (
+        PG_SESSION.query(Users.userid,
+                         Profiles.profileid,
+                         SubProfiles.subprofileid,
+                         Profiles.nick,
+                         Users.email,
+                         SubProfiles.uniquenick,
+                         Users.password,
+                         Users.emailverified,
+                         Users.banned,
+                         SubProfiles.namespaceid)
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .filter(
+            SubProfiles.authtoken == auth_token
+        )
+        .first()
+    )
+    if result is not None:
+        return LoginData(*result)  # type: ignore
+    else:
+        return None
 
 
 def update_block_info_list(target_id: int, profile_id: int, namespace_id: int) -> None:

@@ -7,6 +7,7 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
+from servers.presence_search_player.src.contracts.results import *
 
 
 def verify_email(email: str):
@@ -151,7 +152,7 @@ def get_nick_and_unique_nick_list(email: str, password: str, namespace_id: int) 
     return result
 
 
-def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str):
+def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> list:
     """
     return [(profileid, nick, uniquenick, lastname, firstname, userid, email)]
     """
@@ -193,7 +194,7 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str):
 
 def get_matched_profile_info_list(
     profile_ids: list[int], namespace_id: int
-) -> Optional[list[tuple[int, str]]]:
+) -> list[tuple[int, str]]:
     """
     return [(profileid,uniquenick)]
 
@@ -210,15 +211,18 @@ def get_matched_profile_info_list(
         )
         .all()
     )
+    if result is None:
+        result = []
     if TYPE_CHECKING:
-        result = cast(Optional[list[tuple[int, str]]], result)
+        result = cast(list[tuple[int, str]], result)
     return result
 
 
 def get_matched_info_by_nick(
     nick_name: str,
-) -> Optional[list[tuple[int, str, str, str, str, int]]]:
+) -> list[SearchResultData]:
     if TYPE_CHECKING:
+        assert isinstance(Users.email, Column)
         assert isinstance(Profiles.profileid, Column)
         assert isinstance(Profiles.nick, Column)
         assert isinstance(Profiles.userid, Column)
@@ -229,6 +233,7 @@ def get_matched_info_by_nick(
         assert isinstance(Users.userid, Column)
     result = (
         PG_SESSION.query(
+            Users.email,
             Profiles.profileid,
             Profiles.nick,
             Profiles.firstname,
@@ -241,15 +246,17 @@ def get_matched_info_by_nick(
         .filter(Profiles.nick == nick_name)
         .all()
     )
-    if TYPE_CHECKING:
-        result = cast(
-            Optional[list[tuple[int, str, str, str, str, int]]], result)
-    return result
+    temp: list[SearchResultData] = []
+    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
+        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
+                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+
+    return temp
 
 
 def get_matched_info_by_email(
     email: str,
-) -> list[tuple[int, str, str, str, str, int]]:
+) -> list[SearchResultData]:
     if TYPE_CHECKING:
         assert isinstance(Profiles.profileid, Column)
         assert isinstance(Profiles.nick, Column)
@@ -273,9 +280,11 @@ def get_matched_info_by_email(
         .filter(Users.email == email)
         .all()
     )
-    if TYPE_CHECKING:
-        result = cast(list[tuple[int, str, str, str, str, int]], result)
-    return result
+    temp: list[SearchResultData] = []
+    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
+        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
+                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    return temp
 
 
 def get_matched_info_by_nick_and_email(nick_name: str, email: str):
@@ -290,6 +299,7 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str):
         assert isinstance(Users.email, Column)
     result = (
         PG_SESSION.query(
+            Users.email,
             Profiles.profileid,
             Profiles.nick,
             Profiles.firstname,
@@ -302,12 +312,16 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str):
         .filter(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
-    return result
+    temp: list[SearchResultData] = []
+    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
+        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
+                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    return temp
 
 
 def get_matched_info_by_uniquenick_and_namespaceid(
     unique_nick: str, namespace_id: int
-) -> list[tuple[int, str, str, str, str, int]]:
+) -> list[SearchResultData]:
     if TYPE_CHECKING:
         assert isinstance(Profiles.profileid, Column)
         assert isinstance(Profiles.nick, Column)
@@ -334,9 +348,50 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         )
         .all()
     )
+    temp: list[SearchResultData] = []
+    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
+        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
+                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+
+    return temp
+
+
+def get_matched_info_by_uniquenick_and_namespaceids(
+    unique_nick: str, namespace_ids: list[int]
+) -> list[SearchResultData]:
     if TYPE_CHECKING:
-        result = cast(list[tuple[int, str, str, str, str, int]], result)
-    return result
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(Profiles.firstname, Column)
+        assert isinstance(Profiles.lastname, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.email, Column)
+
+    result = (
+        PG_SESSION.query(
+            Profiles.profileid,
+            Profiles.nick,
+            Profiles.firstname,
+            Profiles.lastname,
+            SubProfiles.uniquenick,
+            SubProfiles.namespaceid,
+        )
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .filter(
+            SubProfiles.uniquenick == unique_nick,
+            SubProfiles.namespaceid.in_(namespace_ids)
+        )
+        .all()
+    )
+    data: list[SearchResultData] = []
+    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
+        data.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
+                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+
+    return data
 
 
 def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str) -> bool:

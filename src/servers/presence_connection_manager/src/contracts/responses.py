@@ -1,4 +1,5 @@
 from servers.presence_connection_manager.src.abstractions.contracts import ResponseBase
+from servers.presence_connection_manager.src.aggregates.login_challenge import SERVER_CHALLENGE, LoginChallengeProof
 from servers.presence_connection_manager.src.applications.client import (
     LOGIN_TICKET,
     SESSION_KEY,
@@ -34,10 +35,14 @@ class LoginResponse(ResponseBase):
         assert isinstance(result, LoginResult)
 
     def build(self):
-        # string checkSumStr = _result.DatabaseResults.Nick + _result.DatabaseResults.UniqueNick + _result.DatabaseResults.NamespaceID;
-        # _connection.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
-        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{self._result.response_proof}\\userid\\{
+        response_proof = LoginChallengeProof(self._request.user_data,
+                                             self._request.type,
+                                             self._request.partner_id,
+                                             self._request.user_challenge,
+                                             SERVER_CHALLENGE,
+                                             self._result.data.password_hash).generate_proof()
+        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{response_proof}\\userid\\{
             self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
 
         if self._result.data.unique_nick is not None:

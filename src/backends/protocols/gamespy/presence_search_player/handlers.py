@@ -3,8 +3,9 @@ from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
 import backends.protocols.gamespy.presence_search_player.data as data
 from backends.protocols.gamespy.presence_search_player.requests import *
+from library.src.exceptions.general import UniSpyException
 from servers.presence_search_player.src.aggregates.exceptions import CheckException
-from servers.presence_search_player.src.contracts.results import CheckResult, NewUserResult, NickResultData, NicksResult
+from servers.presence_search_player.src.contracts.results import CheckResult, NewUserResult, NickResultData, NicksResult, OthersListData, OthersListResult, OthersResult, OthersResultData, SearchResult, SearchUniqueResult, UniqueSearchResult, ValidResult
 
 
 class CheckHandler(HandlerBase):
@@ -94,3 +95,91 @@ class NicksHandler(HandlerBase):
 
     async def _result_construct(self) -> None:
         self._result = NicksResult(data=self.result_data)
+
+
+class OthersHandler(HandlerBase):
+    _request: OthersRequest
+
+    async def _data_operate(self) -> None:
+        self._data = data.get_friend_info_list(
+            self._request.profile_id, self._request.namespace_id, self._request.game_name)
+
+    async def _result_construct(self) -> None:
+        temp_list = []
+        for item in self._data:
+            temp_list.append(OthersResultData(
+                profile_id=item[0], nick=item[1], uniquenick=item[2], lastname=item[3], firstname=item[4], user_id=item[5], email=item[6]
+            ))
+        self._result = OthersResult(data=temp_list)
+
+
+class OthersListHandler(HandlerBase):
+    _request: OthersListRequest
+
+    async def _data_operate(self) -> None:
+        self._data = data.get_matched_profile_info_list(
+            self._request.profile_ids, self._request.namespace_id)
+
+    async def _result_construct(self) -> None:
+        temp = []
+        for profile_id, uniquenick in self._data:
+            temp.append(OthersListData(
+                profile_id=profile_id, unique_nick=uniquenick))
+        self._result = OthersListResult(data=temp)
+
+
+# class PlayerMatchHandler(HandlerBase):
+#     _request: playermatchrequest
+
+class SearchHandler(HandlerBase):
+    _request: SearchRequest
+
+    async def _data_operate(self) -> None:
+        if self._request.request_type == SearchType.NICK_SEARCH:
+            self._data = data.get_matched_info_by_nick(self._request.nick)
+
+        elif self._request.request_type == SearchType.NICK_EMAIL_SEARCH:
+            data.get_matched_info_by_nick_and_email(
+                self._request.nick, self._request.email)
+        elif self._request.request_type == SearchType.UNIQUENICK_NAMESPACEID_SEARCH:
+            self._data = data.get_matched_info_by_uniquenick_and_namespaceid(
+                self._request.uniquenick, self._request.namespace_id)
+        elif self._request.request_type == SearchType.EMAIL_SEARCH:
+            self._data = data.get_matched_info_by_email(self._request.email)
+        else:
+            raise UniSpyException("search type invalid")
+
+    async def _result_construct(self) -> None:
+        self._result = SearchResult(result=self._data)
+
+
+class SearchUniqueHandler(HandlerBase):
+    _request: SearchUniqueRequest
+
+    async def _data_operate(self) -> None:
+        self._data = data.get_matched_info_by_uniquenick_and_namespaceids(
+            self._request.uniquenick, self._request.namespace_ids)
+
+    async def _result_construct(self) -> None:
+        self._result = SearchUniqueResult(data=self._data)
+
+
+class UniqueSearchHandler(HandlerBase):
+    _request: UniqueSearchRequest
+
+    async def _data_operate(self) -> None:
+        self._is_exist = data.is_uniquenick_exist(
+            self._request.preferred_nick, self._request.namespace_id, self._request.game_name)
+
+    async def _result_construct(self) -> None:
+        self._result = UniqueSearchResult(is_uniquenick_exist=self._is_exist)
+
+
+class ValidHandler(HandlerBase):
+    _request: ValidRequest
+
+    async def _data_operate(self) -> None:
+        self._is_exist = data.is_email_exist(self._request.email)
+
+    async def _result_construct(self) -> None:
+        self._result = ValidResult(is_account_valid=self._is_exist)

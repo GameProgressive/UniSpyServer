@@ -74,18 +74,8 @@ class SearchResult(ResultBase):
     result: list[SearchResultData]
 
 
-class SearchUniqueResultData(BaseModel):
-    profile_id: int
-    nick: str
-    uniquenick: str
-    email: str
-    firstname: str
-    lastname: str
-    namespace_id: int
-
-
 class SearchUniqueResult(ResultBase):
-    data: list[SearchUniqueResultData]
+    data: list[SearchResultData]
 
 
 class UniqueSearchResult(ResultBase):

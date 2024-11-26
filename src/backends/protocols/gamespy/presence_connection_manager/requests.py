@@ -55,6 +55,8 @@ class StatusRequest(RequestBase):
 
 
 class KeepAliveRequest(RequestBase):
+    client_ip: str
+    client_port: int
     pass
 
 
@@ -157,16 +159,8 @@ class UpdateProfileRequest(RequestBase):
     country_code: Optional[str] = None
 
 
-class UpdateUiRequest(RequestBase):
-    cpubrandid: Optional[str] = None
-    cpuspeed: Optional[str] = None
-    memory: Optional[str] = None
-    videocard1ram: Optional[str] = None
-    videocard2ram: Optional[str] = None
-    connectionid: Optional[str] = None
-    connectionspeed: Optional[str] = None
-    hasnetwork: Optional[str] = None
-    pic: Optional[str] = None
+class UpdateUIRequest(RequestBase):
+    extra_info: dict
 
 
 if __name__ == "__main__":

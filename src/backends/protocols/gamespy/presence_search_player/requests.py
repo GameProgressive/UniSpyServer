@@ -1,4 +1,3 @@
-from typing import Optional
 from backends.library.abstractions.contracts import RequestBase as RB
 from servers.presence_search_player.src.aggregates.enums import SearchType
 
@@ -49,8 +48,9 @@ class OthersListRequest(RequestBase):
 
 
 class OthersRequest(RequestBase):
-    profile_id: Optional[int]
-    game_name: int
+    profile_id: int
+    game_name: str
+    namespace_id: int
 
 
 class SearchRequest(RequestBase):
@@ -66,6 +66,7 @@ class SearchRequest(RequestBase):
     firstname: str
     lastname: str
     icquin: str
+    namespace_id: int
 
 
 class SearchUniqueRequest(RequestBase):
@@ -76,6 +77,7 @@ class SearchUniqueRequest(RequestBase):
 class UniqueSearchRequest(RequestBase):
     preferred_nick: str
     game_name: str
+    namespace_id: int
 
 
 class ValidRequest(RequestBase):

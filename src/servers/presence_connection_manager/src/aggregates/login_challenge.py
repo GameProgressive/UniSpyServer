@@ -8,7 +8,7 @@ SERVER_CHALLENGE = "0000000000"
 class LoginChallengeProof:
 
     def __init__(
-        self, userData, loginType, partnerID, challenge1, challenge2, passwordHash
+        self, userData: str, loginType: LoginType, partnerID: int, challenge1: str, challenge2: str, passwordHash: str
     ):
         self.userData = userData
         self.loginType = loginType
@@ -17,19 +17,17 @@ class LoginChallengeProof:
         self.challenge2 = challenge2
         self.passwordHash = passwordHash
 
+    def generate_proof(self):
+        tempUserData = self.userData
 
-@staticmethod
-def generate_proof(data: LoginChallengeProof):
-    tempUserData = data.userData
+        if self.partnerID is not None:
+            if (
+                self.partnerID != GPPartnerId.GAMESPY.value
+                and self.loginType != LoginType.AUTH_TOKEN
+            ):
+                tempUserData = f"{self.partnerID}@{self.userData}"
 
-    if data.partnerID is not None:
-        if (
-            data.partnerID != GPPartnerId.GAMESPY.value
-            and data.loginType != LoginType.AUTH_TOKEN
-        ):
-            tempUserData = f"{data.partnerID}@{data.userData}"
-
-    responseString = f"{data.passwordHash} {' ' * 48}{tempUserData}{data.challenge1}{data.challenge2}{data.passwordHash}"
-    hashString = hashlib.md5(responseString.encode()).hexdigest()
-
-    return hashString
+        responseString = f"{self.passwordHash} {
+            ' ' * 48}{tempUserData}{self.challenge1}{self.challenge2}{self.passwordHash}"
+        hashString = hashlib.md5(responseString.encode()).hexdigest()
+        return hashString
