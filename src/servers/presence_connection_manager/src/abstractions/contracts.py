@@ -40,8 +40,7 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
                 self.operation_id = int(self.request_dict["id"])
             except:
                 raise GPParseException("namespaceid is invalid.")
-
-
+    
 class ResultBase(library.src.abstractions.contracts.ResultBase):
     pass
 

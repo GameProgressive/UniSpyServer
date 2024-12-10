@@ -4,15 +4,17 @@ from typing import TYPE_CHECKING, cast
 from sqlalchemy import Column
 from backends.library.database.pg_orm import (
     Blocked,
+    FriendAddRequest,
     Friends,
     Profiles,
     SubProfiles,
     Users,
     PG_SESSION,
 )
-from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
-from servers.presence_connection_manager.src.contracts.results import LoginData
-from servers.presence_search_player.src.aggregates.exceptions import GPDatabaseException
+from servers.presence_connection_manager.src.aggregates.enums import GPStatusCode, LoginStatus
+from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
+from servers.presence_connection_manager.src.contracts.results import GetProfileData, LoginData
+from servers.presence_search_player.src.aggregates.exceptions import GPAddBuddyException, GPDatabaseException, GPStatusException, GPException
 
 
 def update_online_time(ip: str, port: int):
@@ -69,7 +71,7 @@ def get_friend_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
     return result
 
 
-def get_profile_info_list(profile_id: int, namespace_id: int):
+def get_profile_infos(profile_id: int, session_key: str) -> GetProfileData:
     """
     Retrieve profile information based on profile_id and namespace_id.
 
@@ -84,16 +86,42 @@ def get_profile_info_list(profile_id: int, namespace_id: int):
         assert isinstance(Profiles.profileid, Column)
         assert isinstance(Profiles.userid, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
+        assert isinstance(SubProfiles.session_key, Column)
+
+    namespace_id = PG_SESSION.query(SubProfiles.namespaceid).where(
+        SubProfiles.session_key == session_key).first()
+    if namespace_id is None:
+        raise GPException("namespace not found")
+
     result = (
-        PG_SESSION.query(Profiles, SubProfiles, Users)
+        PG_SESSION.query(Users, Profiles, SubProfiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .join(Users, Profiles.userid == Users.userid)
-        .filter(
+        .where(
             Profiles.profileid == profile_id, SubProfiles.namespaceid == namespace_id
         )
         .first()
     )
-    return result
+    if result is None:
+        raise GPException("no profile found")
+
+    if TYPE_CHECKING:
+        result = cast(tuple, result)
+
+    user: Users = result[0]
+    profile: Profiles = result[1]
+    subprofile: SubProfiles = result[3]
+    if TYPE_CHECKING:
+        assert isinstance(profile.nick, str)
+        assert isinstance(profile.profileid, int)
+        assert isinstance(subprofile.uniquenick, str)
+        assert isinstance(user.email, str)
+        assert isinstance(Profiles.extra_info, dict)
+
+    data = GetProfileData(nick=profile.nick, profile_id=profile.profileid,
+                          unique_nick=subprofile.uniquenick, email=user.email, extra_infos=Profiles.extra_info)
+
+    return data
 
 
 def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]:
@@ -274,10 +302,41 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
         return None
 
 
-def update_block_info_list(target_id: int, profile_id: int, namespace_id: int) -> None:
+def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
+    result = (
+        PG_SESSION.query(Blocked.targetid)
+        .filter(
+            Blocked.namespaceid == namespace_id,
+            Blocked.profileid == profile_id,
+        ).all()
+    )
+    if TYPE_CHECKING:
+        result = cast(list[int], result)
+    return result
+
+
+def get_buddy_list(profile_id: int, namespace_id: int) -> list[int]:
+    result = (
+        PG_SESSION.query(Friends.targetid)
+        .filter(
+            Blocked.namespaceid == namespace_id,
+            Blocked.profileid == profile_id,
+        ).all()
+    )
+    # assert isinstance(result, list)
+    if TYPE_CHECKING:
+        result = cast(list[int], result)
+    return result
+
+
+def update_block(profile_id: int, target_id: int, session_key: str) -> None:
+    if TYPE_CHECKING:
+        assert isinstance(SubProfiles.session_key, Column)
+    namespace_id = PG_SESSION.query(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
     result = (
         PG_SESSION.query(Blocked)
-        .filter(
+        .where(
             Blocked.targetid == target_id,
             Blocked.namespaceid == namespace_id,
             Blocked.profileid == profile_id,
@@ -350,3 +409,56 @@ def update_unique_nick(subprofile_id: int, unique_nick: str):
 def update_subprofile_info(subprofile: SubProfiles):
     PG_SESSION.add(subprofile)
     PG_SESSION.commit()
+
+
+def add_friend_request(profileid: int, targetid: int, namespace_id: int, reason: str) -> None:
+    data = PG_SESSION.query(FriendAddRequest).where(FriendAddRequest.profileid ==
+                                                    profileid,
+                                                    FriendAddRequest.targetid == targetid,
+                                                    FriendAddRequest.namespaceid == namespace_id).first()
+    if data is not None:
+        raise GPAddBuddyException("Request is existed, add friend ignored")
+    request = FriendAddRequest(profileid=profileid, targetid=targetid,
+                               namespaceid=namespace_id, reason=reason)
+    PG_SESSION.add(request)
+    PG_SESSION.commit()
+
+
+def get_status(session_key: str) -> UserStatus:
+    if TYPE_CHECKING:
+        assert isinstance(SubProfiles.session_key, Column)
+
+    result = PG_SESSION.query(Profiles).join(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if result is None:
+        raise GPStatusException(
+            "No profile found with the provided session key")
+
+    if TYPE_CHECKING:
+        assert isinstance(result.statstring, str)
+        assert isinstance(result.location, str)
+        assert isinstance(result.status, GPStatusCode)
+
+    data = UserStatus(status_string=result.statstring,
+                      location_string=result.location, current_status=result.status)
+    return data
+
+
+def update_status(session_key: str, status: UserStatus):
+    if TYPE_CHECKING:
+        assert isinstance(SubProfiles.session_key, Column)
+    result = PG_SESSION.query(Profiles).join(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if result is None:
+        raise GPStatusException(
+            "No profile found with the provided session key")
+
+    result.statstring = status.status_string
+    result.status = status.current_status
+    result.location = status.location_string
+
+    PG_SESSION.commit()
+
+
+if __name__ == "__main__":
+    result = get_block_list(1, 1)

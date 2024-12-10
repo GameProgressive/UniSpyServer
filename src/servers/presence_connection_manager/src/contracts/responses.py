@@ -176,37 +176,12 @@ class GetProfileResponse(ResponseBase):
             + f"\\nick\\{self._result.user_profile.nick}"
             + f"\\uniquenick\\{self._result.user_profile.unique_nick}"
             + f"\\email\\{self._result.user_profile.email}"
-            + f"\\firstname\\{self._result.user_profile.firstname}"
-            + f"\\lastname\\{self._result.user_profile.lastname}"
-            + f"\\icquin\\{self._result.user_profile.icquin}"
-            + f"\\homepage\\{self._result.user_profile.homepage}"
-            + f"\\zipcode\\{self._result.user_profile.zipcode}"
-            + f"\\countrycode\\{self._result.user_profile.countrycode}"
-            + f"\\lon\\{self._result.user_profile.longitude}"
-            + f"\\lat\\{self._result.user_profile.latitude}"
-            + f"\\loc\\{self._result.user_profile.location}"
         )
+        for key,value in self._result.user_profile.extra_infos.items():
+            self.sending_buffer += f"\\{key}\\{value}"
 
-        birth_str = (
-            (self._result.user_profile.birthday << 24)
-            or (self._result.user_profile.birthmonth << 16)
-            or self._result.user_profile.birthyear
-        )
         self.sending_buffer += (
-            f"\\birthday\\{birth_str}"
-            f"\\sex\\{self._result.user_profile.sex}"
-            + f"\\publicmask\\{self._result.user_profile.publicmask}"
-            + f"\\aim\\{self._result.user_profile.aim}"
-            + f"\\picture\\{self._result.user_profile.picture}"
-            + f"\\ooc{self._result.user_profile.occupationid}"
-            + f"\\ind\\{self._result.user_profile.industryid}"
-            + f"\\inc\\{self._result.user_profile.incomeid}"
-            + f"\\mar\\{self._result.user_profile.marriedid}"
-            + f"\\chc\\{self._result.user_profile.childcount}"
-            + f"\\i1\\{self._result.user_profile.interests1}"
-            + f"\\o1\\{self._result.user_profile.ownership1}"
-            + f"\\conn\\{self._result.user_profile.connectiontype}"
-            + f"\\sig\\+{generate_random_string(10, StringType.HEX)}"
+            f"\\sig\\+{generate_random_string(10, StringType.HEX)}"
             + f"\\id\\{self._request.operation_id}\\final\\"
         )
 

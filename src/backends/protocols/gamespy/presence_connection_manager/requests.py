@@ -1,35 +1,50 @@
 from typing import Optional, Union
 
 from pydantic import UUID4, BaseModel
-from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
-from servers.presence_connection_manager.src.aggregates.user_status_info import (
-    UserStatusInfo,
-)
+
 from servers.presence_connection_manager.src.aggregates.enums import (
     LoginType,
     PublicMasks,
     SdkRevisionType,
 )
 
-import backends.library.abstractions.contracts as lib
-
-
-class RequestBase(BaseModel):
-    server_id: UUID4
+from backends.library.abstractions.contracts import RequestBase
+from servers.presence_connection_manager.src.aggregates.user_status import UserStatus, UserStatusInfo
 
 
 class ErrorOnParse(RequestBase):
     raw_request: str
 
 
+class AddBlockRequest(RequestBase):
+    taget_id: int
+    profile_id: int
+    session_key: str
+
 # region buddy
+
+
+class BuddyListRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+
+class BlockListRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+
 class AddBuddyRequest(RequestBase):
-    friend_profile_id: int
+    profile_id: int
+    target_id: int
+    namespace_id: int
     reason: str
 
 
 class DelBuddyRequest(RequestBase):
-    friend_profile_id: int
+    profile_id: int
+    target_id: int
+    namespace_id: int
 
 
 class InviteToRequest(RequestBase):
@@ -40,15 +55,16 @@ class InviteToRequest(RequestBase):
 
 
 class StatusInfoRequest(RequestBase):
-    is_get_status_info: bool
+    is_get: bool
     profile_id: int
     namespace_id: int
     status_info: UserStatusInfo
 
 
 class StatusRequest(RequestBase):
+    session_key: str
     status: UserStatus
-    is_get_status: bool
+    is_get: bool
 
 
 # region general
@@ -103,10 +119,6 @@ class LogoutRequest(RequestBase):
 
 
 # region profile
-
-
-class AddBlockRequest(RequestBase):
-    taget_id: int
 
 
 class GetProfileRequest(RequestBase):

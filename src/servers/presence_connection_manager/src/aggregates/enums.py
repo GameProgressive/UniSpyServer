@@ -254,3 +254,9 @@ class RequestType(Enum):
     STATUS = "status"
     STATUSINFO = "statusinfo"
     INVITETO = "inviteto"
+
+
+class FriendRequestStatus(Enum):
+    PENDING = 0
+    ACCEPTED = 1
+    REJECTED = 2

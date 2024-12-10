@@ -22,9 +22,9 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 from servers.natneg.src.aggregations.enums import NatClientIndex, NatPortType
+from servers.presence_connection_manager.src.aggregates.enums import FriendRequestStatus, GPStatusCode
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 from sqlalchemy.orm.decl_api import DeclarativeBase
-
 
 
 Base: DeclarativeMeta = declarative_base()
@@ -56,46 +56,10 @@ class Profiles(Base):
         Integer, ForeignKey("users.userid"), nullable=False)
     nick: Column | str = Column(String, nullable=False)
     serverflag: Column | int = Column(Integer, nullable=False, default=0)
-    status: Column | int = Column(SmallInteger, default=0)
+    status: Column | GPStatusCode = Column(Enum(GPStatusCode), default=0)
     statstring: Column | str = Column(String, default="I love UniSpy")
     location: Column | str = Column(String)
     extra_info = Column(JSONB)
-    # firstname: Column | str = Column(String)
-    # lastname: Column | str = Column(String)
-    # publicmask: Column | int = Column(Integer, default=0)
-    # latitude: Column | float = Column(Double, default=0)
-    # longitude: Column | float = Column(Double, default=0)
-    # aim: Column | str = Column(String, default="")
-    # picture: Column | int = Column(Integer, default=0)
-    # occupationid: Column | int = Column(Integer, default=0)
-    # incomeid: Column | int = Column(Integer, default=0)
-    # industryid: Column | int = Column(Integer, default=0)
-    # marriedid: Column | int = Column(Integer, default=0)
-    # childcount: Column | int = Column(Integer, default=0)
-    # interests1: Column | int = Column(Integer, default=0)
-    # ownership1: Column | int = Column(Integer, default=0)
-    # connectiontype: Column | int = Column(Integer, default=0)
-    # sex: Column | int = Column(SmallInteger, default=0)
-    # zipcode: Column | str = Column(String, default="00000")
-    # countrycode: Column | str = Column(String, default="1")
-    # homepage: Column | str = Column(String, default="unispy.org")
-    # birthday: Column | int = Column(Integer, default=0)
-    # birthmonth: Column | int = Column(Integer, default=0)
-    # birthyear: Column | int = Column(Integer, default=0)
-    # icquin: Column | int = Column(Integer, default=0)
-    # quietflags: Column | int = Column(SmallInteger, nullable=False, default=0)
-    # streetaddr: Column | str = Column(Text)
-    # streeaddr: Column | str = Column(Text)
-    # city: Column | str = Column(Text)
-    # cpubrandid: Column | int = Column(Integer, default=0)
-    # cpuspeed: Column | int = Column(Integer, default=0)
-    # memory: Column | int = Column(SmallInteger, default=0)
-    # videocard1string: Column | str = Column(Text)
-    # videocard1ram: Column | int = Column(SmallInteger, default=0)
-    # videocard2string: Column | str = Column(Text)
-    # videocard2ram: Column | int = Column(SmallInteger, default=0)
-    # subscription: Column | int = Column(Integer, default=0)
-    # adminrights: Column | int = Column(Integer, default=0)
 
 
 class SubProfiles(Base):
@@ -114,19 +78,7 @@ class SubProfiles(Base):
     firewall: Column | int = Column(SmallInteger, default=0)
     port: Column | int = Column(Integer, default=0)
     authtoken: Column | str = Column(String)
-
-
-class AddRequest(Base):
-    __tablename__ = "addrequests"
-
-    addrequestid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
-    namespaceid = Column(Integer, nullable=False)
-    targetid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
-    reason = Column(String, nullable=False)
-    syncrequested = Column(String, nullable=False)
+    session_key: Column | str = Column(String)
 
 
 class Blocked(Base):
@@ -145,8 +97,22 @@ class Friends(Base):
     friendid = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
         "profiles.profileid"), nullable=False)
-    namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
+    namespaceid = Column(Integer, nullable=False)
+
+
+class FriendAddRequest(Base):
+    __tablename__ = "addrequests"
+
+    addrequestid = Column(Integer, primary_key=True, autoincrement=True)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
+    targetid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
+    namespaceid = Column(Integer, nullable=False)
+    reason = Column(String, nullable=False)
+    status = Column(Enum(FriendRequestStatus), nullable=False,
+                    default=FriendRequestStatus.PENDING)
 
 
 class Games(Base):
@@ -171,7 +137,7 @@ class Messages(Base):
     __tablename__ = "messages"
 
     messageid = Column(Integer, primary_key=True, autoincrement=True)
-    namespaceid = Column(Integer)
+    namespaceid = Column(Integer, nullable=False)
     type = Column(Integer)
     from_user = Column(Integer, nullable=False)
     to_user = Column(Integer, nullable=False)

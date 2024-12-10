@@ -441,7 +441,8 @@ CREATE TABLE unispy.subprofiles (
     cdkeyenc character varying,
     firewall smallint DEFAULT 0,
     port integer DEFAULT 0,
-    authtoken character varying
+    authtoken character varying,
+    session_key character varying
 );
 
 

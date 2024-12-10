@@ -1,5 +1,4 @@
-from typing import Optional
-from servers.presence_connection_manager.src.aggregates.user_status_info import (
+from servers.presence_connection_manager.src.aggregates.user_status import (
     UserStatusInfo,
 )
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
@@ -61,39 +60,16 @@ class StatusResult(ResultBase):
 
 # region Profile
 
-class GetProfileDataModel(BaseModel):
+class GetProfileData(BaseModel):
     nick: str
     profile_id: int
     unique_nick: str
     email: str
-    firstname: str
-    lastname: str
-    icquin: int
-    homepage: str
-    zipcode: str
-    countrycode: str
-    longitude: float
-    latitude: float
-    location: str
-    birthday: int
-    birthmonth: int
-    birthyear: int
-    sex: int
-    publicmask: int
-    aim: str
-    picture: int
-    occupationid: int
-    industryid: int
-    incomeid: int
-    marriedid: int
-    childcount: int
-    interests1: int
-    ownership1: int
-    connectiontype: int
+    extra_infos: dict
 
 
 class GetProfileResult(ResultBase):
-    user_profile: GetProfileDataModel
+    user_profile: GetProfileData
 
 
 class NewProfileResult(ResultBase):

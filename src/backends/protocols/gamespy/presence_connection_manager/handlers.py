@@ -1,9 +1,10 @@
+from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.presence_connection_manager.requests import *
 import backends.protocols.gamespy.presence_connection_manager.data as data
-from servers.presence_connection_manager.src.aggregates.enums import LoginStatus
-from servers.presence_connection_manager.src.contracts.results import LoginResult
+from servers.presence_connection_manager.src.contracts.results import BlockListResult, BuddyListResult, GetProfileResult, LoginResult, StatusResult
 from servers.presence_search_player.src.aggregates.exceptions import GPLoginBadEmailException
+# region General
 
 
 class KeepAliveHandler(HandlerBase):
@@ -54,3 +55,124 @@ class LogoutHandler(HandlerBase):
     async def _data_operate(self) -> None:
         # data.update_online_status(user_id=, status=LoginStatus.DISCONNECTED)
         raise NotImplementedError()
+
+
+class NewUserHandler(HandlerBase):
+    def __init__(self, request: NewUserRequest) -> None:
+        raise NotImplementedError("Use presence search player newuser router")
+        super().__init__(request)
+        # region Profile
+
+        # region Buddy
+
+
+class BuddyListHandler(HandlerBase):
+    _request: BuddyListRequest
+
+    async def _data_operate(self) -> None:
+        self.data = data.get_buddy_list(
+            self._request.profile_id, self._request.namespace_id)
+
+    async def _result_construct(self) -> None:
+        self._result = BuddyListResult(profile_ids=self.data)
+
+
+class BlockListHandler(HandlerBase):
+    _request: BlockListRequest
+
+    async def _data_operate(self) -> None:
+        self.data = data.get_block_list(
+            self._request.profile_id, self._request.namespace_id)
+
+    async def _result_construct(self) -> None:
+        self._result = BlockListResult(profile_ids=self.data)
+
+
+class BuddyStatusInfoHandler(HandlerBase):
+    """
+    This is what the message should look like.  Its broken up for easy viewing.
+
+    "\\bsi\\\\state\\\\profile\\\\bip\\\\bport\\\\hostip\\\\hprivip\\"
+    "\\qport\\\\hport\\\\sessflags\\\\rstatus\\\\gameType\\"
+    "\\gameVnt\\\\gameMn\\\\product\\\\qmodeflags\\"
+    """
+
+    def __init__(self, request: RequestBase) -> None:
+        super().__init__(request)
+        raise NotImplementedError()
+
+
+class DelBuddyHandler(HandlerBase):
+    _request: DelBuddyRequest
+
+    async def _data_operate(self) -> None:
+        self.data = data.delete_friend_by_profile_id(
+            self._request.target_id)
+
+
+class AddBuddyHandler(HandlerBase):
+    _request: AddBuddyRequest
+
+    async def _data_operate(self) -> None:
+        data.add_friend_request(
+            self._request.profile_id,
+            self._request.target_id,
+            self._request.namespace_id,
+            self._request.reason)
+
+
+class AddBlockHandler(HandlerBase):
+    _request: AddBlockRequest
+
+    async def _data_operate(self) -> None:
+        data.update_block(self._request.profile_id,
+                          self._request.taget_id, self._request.session_key)
+
+
+class InviteToHandler(HandlerBase):
+    _request: InviteToRequest
+
+    async def _data_operate(self) -> None:
+        # user is offline
+        # if (client is null)
+        # {
+        #     return;
+        # }
+        # else
+        # {
+
+        # }
+        # TODO
+        # parse user to buddy message system
+        raise NotImplementedError()
+
+
+class StatusHandler(HandlerBase):
+    _request: StatusRequest
+
+    async def _data_operate(self) -> None:
+        if self._request.is_get:
+            self.data = data.get_status(
+                self._request.session_key)
+        else:
+            data.update_status(self._request.session_key, self._request.status)
+
+    async def _result_construct(self) -> None:
+
+        if self._request.is_get:
+            assert isinstance(self.data, UserStatus)
+            self._result = StatusResult(status=self.data)
+
+
+# region Profile
+
+class GetProfileHandler(HandlerBase):
+    _request: GetProfileRequest
+
+    async def _data_operate(self) -> None:
+        self.data = data.get_profile_infos(
+            profile_id=self._request.profile_id, session_key=self._request.session_key)
+
+    async def _result_construct(self) -> None:
+        self._result = GetProfileResult(user_profile=self.data)
+

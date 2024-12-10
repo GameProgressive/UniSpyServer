@@ -1,12 +1,10 @@
+from pydantic import BaseModel
 from library.src.exceptions.general import UniSpyException
 from servers.presence_connection_manager.src.aggregates.enums import PublicMasks
 from typing import Optional, final
 from library.src.extentions.gamespy_utils import convert_to_key_value
 from servers.presence_connection_manager.src.abstractions.contracts import RequestBase
-from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
-from servers.presence_connection_manager.src.aggregates.user_status_info import (
-    UserStatusInfo,
-)
+from servers.presence_connection_manager.src.aggregates.user_status import UserStatus, UserStatusInfo
 from servers.presence_connection_manager.src.aggregates.enums import GPStatusCode
 from servers.presence_search_player.src.aggregates.exceptions import GPParseException
 from typing import final
@@ -69,7 +67,7 @@ def validate_extra_infos(info_dict: dict) -> dict:
     """
     assert isinstance(info_dict, dict)
     extra_infos = {}
-    for key, value in info_dict.values():
+    for key, value in info_dict.items():
         if key in EXTRA_INFO_DICT and key not in extra_infos:
             if not isinstance(value, EXTRA_INFO_DICT[key]):
                 converted_value = value
@@ -167,6 +165,8 @@ class LoginRequest(RequestBase):
         if "partnerid" in self.request_dict:
             partner_id = int(self.request_dict["partnerid"])
             self.partner_id = partner_id
+        else:
+            self.partner_id = 0
 
         if "sdkrevision" in self.request_dict:
             sdk_revision_type = int(self.request_dict["sdkrevision"])
@@ -243,6 +243,8 @@ class NewUserRequest(RequestBase):
                 self.has_partner_id_flag = True
             except ValueError:
                 raise GPParseException("partnerid is incorrect.")
+        else:
+            self.partner_id = 0  # set default partner id to 0 means gamespy
 
         if "productid" in self.request_dict:
             try:
@@ -335,7 +337,7 @@ class InviteToRequest(RequestBase):
 
 @final
 class StatusInfoRequest(RequestBase):
-    namespace_id: Optional[int]
+    namespace_id: int
     status_info: UserStatusInfo
     profile_id: int
 
@@ -373,6 +375,11 @@ class StatusInfoRequest(RequestBase):
             raise GPParseException(
                 "qport, hport, or sessflags format is incorrect.")
 
+        if "namespace_id" in self.request_dict:
+            self.namespace_id = int(self.request_dict["namespaceid"])
+        else:
+            self.namespace_id = 0
+
         self.status_info.rich_status = self.request_dict["rechstatus"]
         self.status_info.game_type = self.request_dict["gametype"]
         self.status_info.game_variant = self.request_dict["gamevariant"]
@@ -382,7 +389,7 @@ class StatusInfoRequest(RequestBase):
 @final
 class StatusRequest(RequestBase):
     status: UserStatus
-    is_get_status: bool
+    is_get: bool
 
     def parse(self):
         self.request_dict = convert_to_key_value(self.raw_request)
