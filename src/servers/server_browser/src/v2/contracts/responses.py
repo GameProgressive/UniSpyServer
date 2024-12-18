@@ -86,7 +86,7 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
         self.sending_buffer = bytes(self._servers_info_buffers)
 
     def _build_servers_full_info(self):
-        for room in self._result.peer_room_infos:
+        for room in self._result.peer_room_info:
             self._servers_info_buffers.append(GameServerFlags.HAS_KEYS_FLAG)
             group_id_bytes = room.group_id.to_bytes()
             self._servers_info_buffers.extend(group_id_bytes)

@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 
 from backends.urls import WEB_SERVICES
-from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, GetMyRecordsRequest, LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest, SearchForRecordsRequest
+from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest
 
 router = APIRouter()
 
 # Altas services
+
 @router.post(f"{WEB_SERVICES}/Altas/CreateRecordHandler")
 async def create_matchless_session(request):
     raise NotImplementedError()
@@ -32,28 +33,13 @@ async def login_profile(request: LoginProfileRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{WEB_SERVICES}/Auth/LoginProfileWithGameIdHandler")
-async def login_profile_with_game_id(request: LoginProfileWithGameIdRequest):
-    raise NotImplementedError()
-
-
 @router.post(f"{WEB_SERVICES}/Auth/LoginRemoteAuthHandler")
 async def login_remote_auth(request: LoginRemoteAuthRequest):
     raise NotImplementedError()
 
 
-@router.post(f"{WEB_SERVICES}/Auth/LoginRemoteAuthWithGameIdHandler")
-async def login_remote_auth_with_game_id(request: LoginRemoteAuthWithGameIdRequest):
-    raise NotImplementedError()
-
-
 @router.post(f"{WEB_SERVICES}/Auth/LoginUniqueNickHandler")
 async def login_uniquenick(request: LoginUniqueNickRequest):
-    raise NotImplementedError()
-
-
-@router.post(f"{WEB_SERVICES}/Auth/LoginUniqueNickWithGameIdHandler")
-async def login_uniquenick_with_game_id(request: LoginUniqueNickWithGameIdRequest):
     raise NotImplementedError()
 
 

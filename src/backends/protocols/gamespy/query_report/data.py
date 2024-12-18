@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING, Optional, cast
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, GroupList, Games, GameServerCaches
 from servers.chat.src.aggregates.peer_room import PeerRoom
-
+from servers.query_report.src.aggregates.game_server_info import GameServerInfo
+from servers.query_report.src.aggregates.peer_room_info import PeerRoomInfo
+from servers.server_browser.src.aggregates.exceptions import ServerBrowserException
 
 
 def get_all_groups() -> dict:
@@ -32,47 +34,66 @@ def get_all_groups() -> dict:
     # Convert the grouped result to the desired format
     return grouped_result
 
+
 PEER_GROUP_LIST = get_all_groups()
 
-def get_peer_staging_channels(game_name: str, group_id: int) -> list[ChatChannelCaches]:
+
+def get_peer_staging_channels(game_name: str, group_id: int) -> list[GameServerInfo]:
     assert isinstance(game_name, str)
     assert isinstance(group_id, int)
     staging_name = f"{PeerRoom.StagingRoomPrefix}!{game_name}!*"
     result = PG_SESSION.query(ChatChannelCaches).filter(
         ChatChannelCaches.channel_name == staging_name).all()
-    return result
+    data = []
+    for s in result:
+        data.append(GameServerInfo(**s))
+    return data
 
 
-def get_peer_group_channel(group_id: int) -> list[ChatChannelCaches]:
+def get_peer_group_channel(group_id: int) -> list[GameServerInfo]:
     assert isinstance(group_id, int)
     group_name = f"{PeerRoom.GroupRoomPrefix}!{group_id}"
 
     result = PG_SESSION.query(ChatChannelCaches).filter(
         ChatChannelCaches.channel_name == group_name).all()
-    return result
+    data = []
+    for s in result:
+        data.append(PeerRoomInfo(**s))
+    return data
 
 
-def get_server_info_with_instant_key(instant_key: int) -> Optional[GameServerCaches]:
+def get_server_info_with_instant_key(instant_key: int) -> Optional[GameServerInfo]:
     assert isinstance(instant_key, int)
     result = PG_SESSION.query(GameServerCaches).filter(
         GameServerCaches.instant_key == instant_key).first()
     return result
 
 
-def get_server_info_with_game_name(game_name: str) -> Optional[GameServerCaches]:
+def get_server_info_with_game_name(game_name: str) -> Optional[GameServerInfo]:
     assert isinstance(game_name, str)
-    result = PG_SESSION.query(GameServerCaches).filter(
+    result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.game_name == game_name).first()
     return result
 
 
-def get_server_info_with_ip_and_port(ip: str, port: int) -> GameServerCaches:
+def get_server_info_list_with_game_name(game_name: str) -> list[GameServerInfo]:
+    result = PG_SESSION.query(GameServerCaches).where(
+        GameServerCaches.game_name == game_name).all()
+    data = []
+    for s in result:
+        data.append(GameServerInfo(**s))
+    return data
+
+
+def get_server_info_with_ip_and_port(ip: str, port: int) -> GameServerInfo:
     assert isinstance(ip, str)
     assert isinstance(port, int)
     result = PG_SESSION.query(GameServerCaches).filter(
         GameServerCaches.host_ip_address == ip, GameServerCaches.query_report_port == port).first()
-
-    return result
+    if result is None:
+        raise ServerBrowserException("game server not found")
+    data = GameServerInfo(**result)
+    return data
 
 
 def remove_server_info(info: GameServerCaches) -> None:

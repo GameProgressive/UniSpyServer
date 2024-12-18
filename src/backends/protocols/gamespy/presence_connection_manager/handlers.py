@@ -176,3 +176,52 @@ class GetProfileHandler(HandlerBase):
     async def _result_construct(self) -> None:
         self._result = GetProfileResult(user_profile=self.data)
 
+
+class NewProfileHandler(HandlerBase):
+    """
+    update a exist profile
+    """
+    _request: NewProfileRequest
+
+    async def _data_operate(self) -> None:
+        data.update_new_nick(
+            self._request.session_key, self._request.old_nick, self._request.new_nick)
+
+
+class RegisterCDKeyHandler(HandlerBase):
+    _request: RegisterCDKeyRequest
+
+    async def _data_operate(self):
+        data.update_cdkey(self._request.session_key, self._request.cdkey_enc)
+
+
+class RegisterNickHandler(HandlerBase):
+    """
+    some game will not register uniquenick when create a new account, it will update its uniquenick later
+    """
+    _request: RegisterNickRequest
+
+    async def _data_operate(self):
+        data.update_uniquenick(self._request.session_key,
+                               self._request.unique_nick)
+
+
+class RemoveBlockHandler(HandlerBase):
+    async def _data_operate(self):
+        raise NotImplementedError()
+
+
+class UpdateProfileHandler(HandlerBase):
+    _request: UpdateProfileRequest
+
+    async def _data_operate(self):
+        data.update_profiles(self._request.session_key,
+                             self._request.extra_infos)
+
+
+class UpdateUserInfoHandler(HandlerBase):
+    _request: UpdateUserInfoRequest
+
+    async def _data_operate(self):
+        data.update_profiles(self._request.session_key,
+                             self._request.extra_infos)

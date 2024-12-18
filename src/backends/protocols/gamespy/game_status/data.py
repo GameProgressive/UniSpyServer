@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, cast, overload
 
 from sqlalchemy import Column
 from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles, Users
@@ -18,7 +18,8 @@ def update_player_data():
     raise NotImplementedError()
 
 
-def get_profile_id_by_token(token: str) -> int:
+@overload
+def get_profile_id(token: str) -> int:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.profileid, Column)
         assert isinstance(SubProfiles.authtoken, Column)
@@ -32,6 +33,15 @@ def get_profile_id_by_token(token: str) -> int:
     return result
 
 
+@overload
+def get_profile_id(profile_id: int):
+    result = PG_SESSION.query(SubProfiles.profileid).where(
+        SubProfiles.profileid == profile_id).count()
+    if result != 1:
+        raise GSException(f"There is no profile_id {profile_id} existed")
+
+
+@overload
 def get_profile_id(cdkey: str, nick_name: str) -> int:
     if TYPE_CHECKING:
         assert isinstance(Profiles.profileid, Column)

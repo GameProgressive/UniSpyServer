@@ -59,7 +59,7 @@ class Profiles(Base):
     status: Column | GPStatusCode = Column(Enum(GPStatusCode), default=0)
     statstring: Column | str = Column(String, default="I love UniSpy")
     location: Column | str = Column(String)
-    extra_info = Column(JSONB)
+    extra_info: Column[JSONB] = Column(JSONB)
 
 
 class SubProfiles(Base):
@@ -68,8 +68,8 @@ class SubProfiles(Base):
     subprofileid = Column(
         Integer, ForeignKey("profiles.profileid"), primary_key=True, autoincrement=True
     )
-    profileid: Column | int = Column(Integer, nullable=False)
-    uniquenick: Column | str = Column(String)
+    profileid: Column[Integer] = Column(Integer, nullable=False)
+    uniquenick: Column[str] = Column(String)
     namespaceid: Column | int = Column(Integer, nullable=False, default=0)
     partnerid: Column | int = Column(Integer, nullable=False, default=0)
     productid: Column | int = Column(Integer)
@@ -167,7 +167,8 @@ class SakeStorage(Base):
     __tablename__ = "sakestorage"
 
     sakestorageid = Column(Integer, primary_key=True, autoincrement=True)
-    tableid = Column(String, nullable=False)
+    tableid = Column(Integer, nullable=False)
+    data: Column[JSONB] = Column(JSONB)
 
 
 class InitPacketCaches(Base):

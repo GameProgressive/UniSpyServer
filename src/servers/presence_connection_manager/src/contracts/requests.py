@@ -565,8 +565,8 @@ class UpdateProfileRequest(RequestBase):
 
 @final
 class UpdateUserInfoRequest(RequestBase):
-    extra_info: dict[str, str]
+    extra_infos: dict[str, str]
 
     def parse(self):
         super().parse()
-        self.extra_info = validate_extra_infos(self.request_dict)
+        self.extra_infos = validate_extra_infos(self.request_dict)

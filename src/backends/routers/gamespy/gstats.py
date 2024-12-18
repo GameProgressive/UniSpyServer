@@ -1,13 +1,13 @@
 from fastapi import APIRouter
-from backends.protocols.gamespy.game_status.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
+from backends.protocols.gamespy.game_status.requests import *
 from backends.urls import GAMESTATUS
+
 router = APIRouter()
 
 
 @router.post(f"{GAMESTATUS}/AuthGameHandler")
 async def auth_game(request: AuthGameRequest):
     raise NotImplementedError()
-
 
 @router.post(f"{GAMESTATUS}/AuthPlayerHandler")
 async def auth_player(request: AuthPlayerRequest):

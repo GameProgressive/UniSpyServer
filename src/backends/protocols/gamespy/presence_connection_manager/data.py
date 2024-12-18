@@ -1,3 +1,4 @@
+# type:ignore
 from datetime import datetime
 from typing import TYPE_CHECKING, cast
 
@@ -15,6 +16,8 @@ from servers.presence_connection_manager.src.aggregates.enums import GPStatusCod
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
 from servers.presence_connection_manager.src.contracts.results import GetProfileData, LoginData
 from servers.presence_search_player.src.aggregates.exceptions import GPAddBuddyException, GPDatabaseException, GPStatusException, GPException
+
+# region General
 
 
 def update_online_time(ip: str, port: int):
@@ -69,6 +72,8 @@ def get_friend_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
     if TYPE_CHECKING:
         result = cast(list[int], result)
     return result
+
+# region Profile
 
 
 def get_profile_infos(profile_id: int, session_key: str) -> GetProfileData:
@@ -314,6 +319,8 @@ def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
         result = cast(list[int], result)
     return result
 
+# region Buddy
+
 
 def get_buddy_list(profile_id: int, namespace_id: int) -> list[int]:
     result = (
@@ -391,9 +398,9 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
     PG_SESSION.commit()
 
 
-def update_profile_info(profile: Profiles):
-    PG_SESSION.add(profile)
-    PG_SESSION.commit()
+# def update_profile_info(profile: Profiles):
+#     PG_SESSION.add(profile)
+#     PG_SESSION.commit()
 
 
 def update_unique_nick(subprofile_id: int, unique_nick: str):
@@ -458,6 +465,53 @@ def update_status(session_key: str, status: UserStatus):
     result.location = status.location_string
 
     PG_SESSION.commit()
+
+
+def update_new_nick(session_key: str, old_nick: str, new_nick: str):
+    result = PG_SESSION.query(Profiles).join(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if result.nick == old_nick and result.nick != new_nick:
+        result.nick = new_nick
+    PG_SESSION.commit()
+
+
+def update_cdkey(session_key: str, cdkey: str):
+    subprofile = PG_SESSION.query(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if subprofile is None:
+        raise GPDatabaseException(
+            f"no subprofile found with session key:{session_key}")
+
+    subprofile.cdkeyenc = cdkey
+
+    PG_SESSION.commit()
+
+
+def update_uniquenick(session_key: str, uniquenick: str):
+    subprofile = PG_SESSION.query(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if subprofile is None:
+        raise GPDatabaseException(
+            f"no subprofile found with session key:{session_key}")
+
+    subprofile.uniquenick = uniquenick
+    PG_SESSION.commit()
+
+
+def update_profiles(session_key: str, extra_info: dict):
+    profile = PG_SESSION.query(Profiles).join(SubProfiles).where(
+        SubProfiles.session_key == session_key).first()
+    if profile is None:
+        raise GPDatabaseException(
+            f"no profile found with session key:{session_key}")
+    for key, value in extra_info.items():
+        profile.extra_info[key] = value
+
+    PG_SESSION.commit()
+
+
+def update_user(session_key):
+    raise NotImplementedError()
 
 
 if __name__ == "__main__":

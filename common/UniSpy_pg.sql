@@ -300,7 +300,7 @@ CREATE TABLE unispy.profiles (
     serverflag integer DEFAULT 0 NOT NULL,
     status smallint DEFAULT 0,
     statstring character varying DEFAULT 'I love UniSpy'::character varying,
-    extra_info jsonb
+    extra_info JSONB
 );
 
 
@@ -346,7 +346,7 @@ CREATE TABLE unispy.pstorage (
     profileid integer NOT NULL,
     ptype integer NOT NULL,
     dindex integer NOT NULL,
-    data jsonb
+    data JSONB
 );
 
 
@@ -388,8 +388,9 @@ ALTER SEQUENCE unispy.pstorage_pstorageid_seq OWNED BY unispy.pstorage.pstoragei
 --
 
 CREATE TABLE unispy.sakestorage (
-    sakestorageid integer NOT NULL,
-    tableid character varying NOT NULL
+    sakestorageid integer NOT NULL
+    tableid integer NOT NULL
+    data JSONB
 );
 
 

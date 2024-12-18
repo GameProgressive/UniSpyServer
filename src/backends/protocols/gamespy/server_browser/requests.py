@@ -11,18 +11,18 @@ class RequestBase(lib.RequestBase):
 
 class ServerListUpdateOptionRequestBase(RequestBase):
     source_ip: str
-    request_version: Optional[int] = None
-    protocol_version: Optional[int] = None
-    encoding_version: Optional[int] = None
-    game_version: Optional[int] = None
-    query_options: Optional[int] = None
-    dev_game_name: Optional[str] = None
-    game_name: Optional[str] = None
-    client_challenge: Optional[str] = None
-    update_option: Optional[ServerListUpdateOption] = None
-    keys: Optional[List[str]] = None
-    filter: Optional[str] = None
-    max_servers: Optional[int] = None
+    request_version: int
+    protocol_version: int
+    encoding_version: int
+    game_version: int
+    query_options: int
+    dev_game_name: str
+    game_name: str
+    client_challenge: str
+    update_option: ServerListUpdateOption
+    keys: list[str]
+    filter: list[str]
+    max_servers: int
 
 
 class ServerListRequest(ServerListUpdateOptionRequestBase):
@@ -30,13 +30,13 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
 
 
 class AdHocRequestBase(RequestBase):
-    game_server_public_ip: list[int]
-    game_server_public_port: list[int]
+    game_server_public_ip: str
+    game_server_public_port: int
 
 
 class SendMessageRequest(AdHocRequestBase):
-    prefix_message: list[int]
-    client_message: list[int]
+    prefix_message: str
+    client_message: str
 
 
 class ServerInfoRequest(AdHocRequestBase):

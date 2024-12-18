@@ -34,7 +34,7 @@ class GetPlayerDataRequest(RequestBase):
 
 class GetProfileIdRequest(RequestBase):
     nick: str
-    keyhash: str
+    cdkey: str
 
 
 class NewGameRequest(RequestBase):
