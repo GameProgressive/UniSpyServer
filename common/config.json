@@ -1,6 +1,9 @@
 {
   "backend": {
-    "url": "http://localhost:8080"
+    "url": "http://localhost:8080",
+    "token_secret_key": "I love UniSpy",
+    "token_algorithm": "HS256",
+    "token_expire_time": 30
   },
   "logging": {
     "path": "~/Downloads/unispy_server/log/",
