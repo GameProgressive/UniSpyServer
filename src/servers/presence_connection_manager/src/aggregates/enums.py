@@ -256,7 +256,12 @@ class RequestType(Enum):
     INVITETO = "inviteto"
 
 
-class FriendRequestStatus(Enum):
+class FriendRequestStatus(IntEnum):
     PENDING = 0
     ACCEPTED = 1
     REJECTED = 2
+
+
+if __name__ == "__main__":
+    
+    pass

@@ -22,6 +22,7 @@ from servers.presence_search_player.src.aggregates.exceptions import (
 
 # region General
 EXTRA_INFO_DICT: dict[str, type] = {
+    "location": str,
     "firstname": str,
     "lastname": str,
     "publicmask": int,

@@ -2,8 +2,7 @@ import os
 from typing import Literal, Optional
 from uuid import UUID
 
-from pydantic import BaseModel,field_validator
-
+from pydantic import BaseModel, field_validator
 
 
 class PostgreSql(BaseModel):
@@ -63,7 +62,9 @@ class LoggingConfig(BaseModel):
 
 class BackendConfig(BaseModel):
     url: str
-
+    token_secret_key: str
+    token_algorithm: str
+    token_expire_time: int = 30
 
 
 class UniSpyServerConfig(BaseModel):
@@ -72,6 +73,7 @@ class UniSpyServerConfig(BaseModel):
     backend: BackendConfig
     servers: dict[str, ServerConfig]
     logging: LoggingConfig
+
 
 unispy_config = os.environ.get("UNISPY_CONFIG")
 default_config = "../common/config.json"
