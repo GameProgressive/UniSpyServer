@@ -17,7 +17,6 @@ class AuthGameRequest(RequestBase):
 class AuthPlayerRequest(RequestBase):
     auth_type: AuthMethod
     profile_id: int
-
     auth_token: str
     response: str
     cdkey_hash: str
@@ -25,7 +24,7 @@ class AuthPlayerRequest(RequestBase):
 
 
 class GetPlayerDataRequest(RequestBase):
-    profile_id: str
+    profile_id: int
     storage_type: PersistStorageType
     data_index: int
     is_get_all_data: bool = False

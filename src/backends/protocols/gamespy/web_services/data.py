@@ -10,20 +10,37 @@ from servers.web_services.src.modules.sake.exceptions.general import SakeExcepti
 
 
 def is_user_exist(uniquenick: str, cdkey: str, partner_id: int, namespace_id: int, email: str, password: str) -> None:
-    result = PG_SESSION.query(Profiles).join(Users).join(SubProfiles).where(SubProfiles.uniquenick == uniquenick,
-                                                                            SubProfiles.cdkeyenc == cdkey, SubProfiles.partnerid == partner_id, SubProfiles.namespaceid == namespace_id, Users.email == email, Users.password == password).first()
+    result = PG_SESSION.query(Profiles)\
+        .join(Users)\
+        .join(SubProfiles)\
+        .where(SubProfiles.uniquenick == uniquenick,
+               SubProfiles.cdkeyenc == cdkey,
+               SubProfiles.partnerid == partner_id,
+               SubProfiles.namespaceid == namespace_id,
+               Users.email == email,
+               Users.password == password).first()
     if result is None:
         raise AuthException(
             "No account exists with the provided email address.")
 
 
-@overload
-def get_info(uniquenick: str, namespace_id: int, cdkey: str, email: str) -> tuple[int, int, str, str, str]:
+def get_info_by_cdkey_email(uniquenick: str, namespace_id: int, cdkey: str, email: str) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
-    result = PG_SESSION.query(Users, Profiles, SubProfiles).join(Users, (Users.userid, Profiles.userid)).join(
-        Profiles, (Profiles.profileid, SubProfiles.profileid)).where(SubProfiles.uniquenick == uniquenick, SubProfiles.namespaceid == namespace_id, SubProfiles.cdkeyenc == cdkey, Users.email == email).first()
+    assert isinstance(uniquenick, str)
+    assert isinstance(namespace_id, int)
+    assert isinstance(cdkey, str)
+    assert isinstance(email, str)
+
+    result = PG_SESSION.query(Users, Profiles, SubProfiles)\
+        .join(Users)\
+        .join(Profiles,)\
+        .join(SubProfiles)\
+        .where(SubProfiles.uniquenick == uniquenick,
+               SubProfiles.namespaceid == namespace_id,
+               SubProfiles.cdkeyenc == cdkey,
+               Users.email == email).first()
 
     if result is None:
         raise AuthException(
@@ -31,32 +48,45 @@ def get_info(uniquenick: str, namespace_id: int, cdkey: str, email: str) -> tupl
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
+    assert isinstance(user.userid, int)
+    assert isinstance(profile.profileid, int)
+    assert isinstance(profile.nick, str)
+    assert isinstance(subprofile.uniquenick, str)
+    assert isinstance(subprofile.cdkeyenc, str)
+
     return user.userid, profile.profileid, profile.nick, subprofile.uniquenick, subprofile.cdkeyenc
 
 
-@overload
-def get_info(auth_token: str) -> tuple[int, int, str, str, str]:
+def get_info_by_authtoken(auth_token: str) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
-    result = PG_SESSION.query(Users, Profiles, SubProfiles).join(Users, (Users.userid, Profiles.userid)).join(
-        Profiles, (Profiles.profileid, SubProfiles.profileid)).where(SubProfiles.authtoken == auth_token).first()
+    result = PG_SESSION.query(Users, Profiles, SubProfiles)\
+        .join(Users, Users.userid == Profiles.userid).join(
+        Profiles, Profiles.profileid == SubProfiles.profileid)\
+        .where(SubProfiles.authtoken == auth_token).first()
     if result is None:
         raise AuthException(
             "No account exists with the provided authtoken.")
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
+    assert isinstance(user.userid, int)
+    assert isinstance(profile.profileid, int)
+    assert isinstance(profile.nick, str)
+    assert isinstance(subprofile.uniquenick, str)
+    assert isinstance(subprofile.cdkeyenc, str)
     return user.userid, profile.profileid, profile.nick, subprofile.uniquenick, subprofile.cdkeyenc
 
 
-@overload
-def get_info(uniquenick: str, namespace_id: int) -> tuple[int, int, str, str, str]:
+def get_info_by_uniquenick(uniquenick: str, namespace_id: int) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
-    result = PG_SESSION.query(Users, Profiles, SubProfiles).join(Users, (Users.userid, Profiles.userid)).join(
-        Profiles, (Profiles.profileid, SubProfiles.profileid)).where(SubProfiles.uniquenick == uniquenick, SubProfiles.namespaceid == namespace_id).first()
+    result = PG_SESSION.query(Users, Profiles, SubProfiles)\
+        .join(Users, Users.userid == Profiles.userid)\
+        .join(Profiles, Profiles.profileid == SubProfiles.profileid)\
+        .where(SubProfiles.uniquenick == uniquenick, SubProfiles.namespaceid == namespace_id).first()
 
     if result is None:
         raise AuthException(
@@ -64,6 +94,12 @@ def get_info(uniquenick: str, namespace_id: int) -> tuple[int, int, str, str, st
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
+    assert isinstance(user.userid, int)
+    assert isinstance(profile.profileid, int)
+    assert isinstance(profile.nick, str)
+    assert isinstance(subprofile.uniquenick, str)
+    assert isinstance(subprofile.cdkeyenc, str)
+
     return user.userid, profile.profileid, profile.nick, subprofile.uniquenick, subprofile.cdkeyenc
 
 # region d2g
@@ -89,10 +125,12 @@ def get_user_data(table_id: int,) -> dict:
 def update_user_data(table_id: int, data: dict) -> None:
     result = PG_SESSION.query(SakeStorage).where(
         SakeStorage.tableid == table_id).first()
-
+    if result is None:
+        raise SakeException("user data not found")
+    assert isinstance(result.data, dict)
     for key, value in result.data.items():
         if key in data:
-            if data[key] is None or data[key] is "":
+            if data[key] is None or data[key] == "":
                 raise SakeException(f"the value of {key} should not be None.")
             if value == data[key]:
                 continue
@@ -100,6 +138,8 @@ def update_user_data(table_id: int, data: dict) -> None:
 
 
 def create_records(table_id: int, data: dict) -> None:
+    assert isinstance(table_id, int)
+    assert isinstance(data, dict)
     result = PG_SESSION.query(SakeStorage).where(
         SakeStorage.tableid == table_id).count()
 
@@ -110,3 +150,10 @@ def create_records(table_id: int, data: dict) -> None:
 
     PG_SESSION.add(sake)
     PG_SESSION.commit()
+
+
+if __name__ == "__main__":
+    result = PG_SESSION.query(Users, Profiles, SubProfiles)\
+        .join(Profiles, Users.userid == Profiles.userid)\
+        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)\
+        .where(Users.userid == 1).first()

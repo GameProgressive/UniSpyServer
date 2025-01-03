@@ -91,17 +91,15 @@ def update_subprofile(subprofile: SubProfiles):
     PG_SESSION.commit()
 
 
-def get_user(email: str):
-    if TYPE_CHECKING:
-        Users.email = cast(Column, Users.email)
+def get_user(email: str) -> Users | None:
+    assert isinstance(email, str)
     result = PG_SESSION.query(Users).filter(Users.email == email).first()
     return result
 
 
 def get_profile(user_id: int, nick_name: str) -> Profiles:
-    if TYPE_CHECKING:
-        Profiles.userid = cast(Column, Profiles.userid)
-        Profiles.nick = cast(Column, Profiles.nick)
+    assert isinstance(user_id, int)
+    assert isinstance(nick_name, str)
     result = PG_SESSION.query(Profiles).filter(
         Profiles.userid == user_id, Profiles.nick == nick_name
     ).first()

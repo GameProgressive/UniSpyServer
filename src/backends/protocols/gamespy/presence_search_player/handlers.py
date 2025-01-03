@@ -32,16 +32,14 @@ class NewUserHandler(HandlerBase):
         if self.user is None:
             self._create_user()
 
-        if TYPE_CHECKING:
-            assert self.user
-            self.user.userid = cast(int, self.user.userid)
+        assert self.user != None
+        assert isinstance(self.user.userid, int)
 
         self.profile = data.get_profile(self.user.userid, self._request.nick)
         if self.profile is None:
             self._create_profile()
 
-        if TYPE_CHECKING:
-            self.profile.profileid = cast(int, self.profile.profileid)
+        assert isinstance(self.profile.profileid, int)
 
         self.subprofile = data.get_sub_profile(
             profile_id=self.profile.profileid, namespace_id=self._request.namespace_id, product_id=self._request.product_id)

@@ -17,12 +17,12 @@ class AuthPlayerHandler(HandlerBase):
     async def _data_operate(self):
         match self._request.auth_type:
             case AuthMethod.PARTNER_ID_AUTH:
-                self.data = data.get_profile_id(token=self._request.auth_token)
+                self.data = data.get_profile_id_by_token(token=self._request.auth_token)
             case AuthMethod.PROFILE_ID_AUTH:
-                self.data = data.get_profile_id(
+                self.data = data.get_profile_id_by_profile_id(
                     profile_id=self._request.profile_id)
             case AuthMethod.CDKEY_AUTH:
-                self.data = data.get_profile_id(
+                self.data = data.get_profile_id_by_cdkey(
                     cdkey=self._request.cdkey_hash, nick_name=self._request.nick)
             case _:
                 raise GSException("Invalid auth type")
@@ -48,7 +48,7 @@ class GetProfileIdHandler(HandlerBase):
     _request: GetProfileIdRequest
 
     async def _data_operate(self):
-        self.data = data.get_profile_id(
+        self.data = data.get_profile_id_by_cdkey(
             cdkey=self._request.cdkey, nick_name=self._request.nick)
 
     async def _result_construct(self):

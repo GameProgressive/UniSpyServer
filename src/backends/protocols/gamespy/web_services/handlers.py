@@ -13,10 +13,10 @@ class LoginProfileHandler(HandlerBase):
     _request: LoginProfileRequest
 
     async def _data_operate(self) -> None:
-        self.data = data.get_info(uniquenick=self._request.uniquenick,
-                                  namespace_id=self._request.namespace_id,
-                                  cdkey=self._request.cdkey,
-                                  email=self._request.email)
+        self.data = data.get_info_by_cdkey_email(uniquenick=self._request.uniquenick,
+                                                 namespace_id=self._request.namespace_id,
+                                                 cdkey=self._request.cdkey,
+                                                 email=self._request.email)
 
     async def _result_construct(self) -> None:
         self._result = LoginProfileResult(
@@ -38,7 +38,8 @@ class LoginRemoteAuthHandler(HandlerBase):
     _request: LoginRemoteAuthRequest
 
     async def _data_operate(self) -> None:
-        self.data = data.get_info(auth_token=self._request.auth_token)
+        self.data = data.get_info_by_authtoken(
+            auth_token=self._request.auth_token)
 
     async def _result_construct(self) -> None:
         self._result = LoginProfileResult(
@@ -53,8 +54,8 @@ class LoginUniqueNickHandler(HandlerBase):
     _request: LoginUniqueNickRequest
 
     async def _data_operate(self) -> None:
-        self.data = data.get_info(uniquenick=self._request.uniquenick,
-                                  namespace_id=self._request.namespace_id)
+        self.data = data.get_info_by_uniquenick(uniquenick=self._request.uniquenick,
+                                                namespace_id=self._request.namespace_id)
 
     async def _result_construct(self) -> None:
         self._result = LoginProfileResult(

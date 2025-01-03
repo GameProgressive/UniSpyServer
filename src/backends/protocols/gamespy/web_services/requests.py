@@ -7,7 +7,7 @@ class SakeRequestBase(lib.RequestBase):
     game_id: int
     secret_key: str
     login_ticket: str
-    table_id: str
+    table_id: int
 
 
 class CreateRecordData(BaseModel):

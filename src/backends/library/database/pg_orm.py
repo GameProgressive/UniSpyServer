@@ -1,11 +1,7 @@
-from typing import Optional
 from library.src.configs import CONFIG
-from sqlalchemy import Enum, create_engine
-from sqlalchemy.orm.session import Session
 from datetime import datetime
 from sqlalchemy import (
     Boolean,
-    Double,
     SmallInteger,
     Text,
     create_engine,
@@ -15,16 +11,33 @@ from sqlalchemy import (
     ForeignKey,
     DateTime,
     text,
-    UUID
+    UUID,
+    create_engine
 )
+from sqlalchemy.orm.session import Session
 from sqlalchemy.dialects.postgresql import JSONB, INET
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker, declarative_base
-
+from sqlalchemy.types import TypeDecorator
 from servers.natneg.src.aggregations.enums import NatClientIndex, NatPortType
 from servers.presence_connection_manager.src.aggregates.enums import FriendRequestStatus, GPStatusCode
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus
-from sqlalchemy.orm.decl_api import DeclarativeBase
+import sqlalchemy as sa
+import enum
+
+
+class IntEnum(TypeDecorator):
+    impl = sa.Integer
+
+    def __init__(self, enumtype, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._enumtype = enumtype
+
+    def process_bind_param(self, value: enum.Enum, dialect):
+        return value.value
+
+    def process_result_value(self, value, dialect):
+        return self._enumtype(value)
 
 
 Base: DeclarativeMeta = declarative_base()
@@ -33,32 +46,32 @@ Base: DeclarativeMeta = declarative_base()
 class Users(Base):
     __tablename__ = "users"
 
-    userid: Column | int = Column(
+    userid: Column[int] = Column(
         Integer, primary_key=True, autoincrement=True)
-    email: Column | str = Column(String, nullable=False)
-    password: Column | str = Column(String, nullable=False)
-    emailverified: Column | bool = Column(
+    email: Column[str] = Column(String, nullable=False)
+    password: Column[str] = Column(String, nullable=False)
+    emailverified: Column[bool] = Column(
         Boolean, default=True, nullable=False)
-    lastip: Column | str = Column(INET)
-    lastonline: Column | datetime = Column(DateTime, default=datetime.now())
-    createddate: Column | datetime = Column(
+    lastip: Column[str] = Column(INET)
+    lastonline: Column[datetime] = Column(DateTime, default=datetime.now())
+    createddate: Column[datetime] = Column(
         DateTime, default=datetime.now(), nullable=False)
-    banned: Column | bool = Column(Boolean, default=False, nullable=False)
-    deleted: Column | bool = Column(Boolean, default=False, nullable=False)
+    banned: Column[bool] = Column(Boolean, default=False, nullable=False)
+    deleted: Column[bool] = Column(Boolean, default=False, nullable=False)
 
 
 class Profiles(Base):
     __tablename__ = "profiles"
 
-    profileid: Column | int = Column(
+    profileid: Column[int] = Column(
         Integer, primary_key=True, autoincrement=True)
-    userid: Column | int = Column(
+    userid: Column[int] = Column(
         Integer, ForeignKey("users.userid"), nullable=False)
-    nick: Column | str = Column(String, nullable=False)
-    serverflag: Column | int = Column(Integer, nullable=False, default=0)
-    status: Column | GPStatusCode = Column(Enum(GPStatusCode), default=0)
-    statstring: Column | str = Column(String, default="I love UniSpy")
-    location: Column | str = Column(String)
+    nick: Column[str] = Column(String, nullable=False)
+    serverflag: Column[int] = Column(Integer, nullable=False, default=0)
+    status = Column(
+        IntEnum(GPStatusCode), default=GPStatusCode.OFFLINE)
+    statstring: Column[str] = Column(String, default="I love UniSpy")
     extra_info: Column[JSONB] = Column(JSONB)
 
 
@@ -68,17 +81,17 @@ class SubProfiles(Base):
     subprofileid = Column(
         Integer, ForeignKey("profiles.profileid"), primary_key=True, autoincrement=True
     )
-    profileid: Column[Integer] = Column(Integer, nullable=False)
+    profileid: Column[int] = Column(Integer, nullable=False)
     uniquenick: Column[str] = Column(String)
-    namespaceid: Column | int = Column(Integer, nullable=False, default=0)
-    partnerid: Column | int = Column(Integer, nullable=False, default=0)
-    productid: Column | int = Column(Integer)
-    gamename: Column | str = Column(Text)
-    cdkeyenc: Column | str = Column(String)
-    firewall: Column | int = Column(SmallInteger, default=0)
-    port: Column | int = Column(Integer, default=0)
-    authtoken: Column | str = Column(String)
-    session_key: Column | str = Column(String)
+    namespaceid: Column[int] = Column(Integer, nullable=False, default=0)
+    partnerid: Column[int] = Column(Integer, nullable=False, default=0)
+    productid: Column[int] = Column(Integer)
+    gamename: Column[str] = Column(Text)
+    cdkeyenc: Column[str] = Column(String)
+    firewall: Column[int] = Column(SmallInteger, default=0)
+    port: Column[int] = Column(Integer, default=0)
+    authtoken: Column[str] = Column(String)
+    session_key: Column[str] = Column(String)
 
 
 class Blocked(Base):
@@ -111,7 +124,7 @@ class FriendAddRequest(Base):
         "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     reason = Column(String, nullable=False)
-    status = Column(Enum(FriendRequestStatus), nullable=False,
+    status = Column(IntEnum(FriendRequestStatus), nullable=False,
                     default=FriendRequestStatus.PENDING)
 
 
@@ -168,7 +181,7 @@ class SakeStorage(Base):
 
     sakestorageid = Column(Integer, primary_key=True, autoincrement=True)
     tableid = Column(Integer, nullable=False)
-    data: Column[JSONB] = Column(JSONB)
+    data: Column[JSONB] = Column(JSONB, nullable=False)
 
 
 class InitPacketCaches(Base):
@@ -177,8 +190,8 @@ class InitPacketCaches(Base):
     cookie = Column(Integer, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
     version = Column(Integer, nullable=False)
-    port_type = Column(Enum(NatPortType), nullable=False)
-    client_index = Column(Enum(NatClientIndex), nullable=False)
+    port_type = Column(IntEnum(NatPortType), nullable=False)
+    client_index = Column(IntEnum(NatClientIndex), nullable=False)
     game_name = Column(String, nullable=False)
     use_game_port = Column(Boolean, nullable=False)
     public_ip = Column(String, nullable=False)
@@ -261,7 +274,7 @@ class GameServerCaches(Base):
     game_name = Column(String, nullable=False)
     query_report_port = Column(Integer, nullable=False)
     update_time = Column(DateTime, nullable=False)
-    status = Column(Enum(GameServerStatus))
+    status = Column(IntEnum(GameServerStatus))
     player_data = Column(JSONB, nullable=False)
     server_data = Column(JSONB, nullable=False)
     team_data = Column(JSONB, nullable=False)
@@ -271,9 +284,9 @@ class GameServerCaches(Base):
 def connect_to_db() -> Session:
     ENGINE = create_engine(CONFIG.postgresql.url)
     session = sessionmaker(bind=ENGINE)()
-    # Base.metadata.create_all(ENGINE)
+    Base.metadata.create_all(ENGINE)
     with ENGINE.connect() as conn:
-        conn.execute(text("SELECT 1"))
+        conn.execute(text("SELECT 1")).first()
     return session
 
 
@@ -282,4 +295,7 @@ PG_SESSION = connect_to_db()
 if __name__ == "__main__":
     session = connect_to_db()
     session.query(Users.userid == 0)  # type:ignore
+    profile = Profiles(userid=1,nick="spyguy",extra_info={},status=GPStatusCode.OFFLINE)
+    PG_SESSION.add(profile)
+    PG_SESSION.commit()
     pass
