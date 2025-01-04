@@ -20,7 +20,7 @@ def update_player_data():
 
 def get_profile_id_by_token(token: str) -> int:
     assert isinstance(token, str)
-    result = PG_SESSION.query(SubProfiles.profileid).filter(
+    result = PG_SESSION.query(SubProfiles.profileid).where(
         SubProfiles.authtoken == token).first()
     if result is None:
         raise GSException("No records found in database")
@@ -50,7 +50,7 @@ def get_profile_id_by_cdkey(cdkey: str, nick_name: str) -> int:
         assert isinstance(SubProfiles.cdkeyenc, Column)
     result = PG_SESSION.query(SubProfiles.profileid).join(
         SubProfiles, Profiles.profileid == SubProfiles.profileid)\
-        .filter(SubProfiles.cdkeyenc == cdkey,
+        .where(SubProfiles.cdkeyenc == cdkey,
                 Profiles.nick == nick_name)\
         .first()
     if result is None:
@@ -61,7 +61,7 @@ def get_profile_id_by_cdkey(cdkey: str, nick_name: str) -> int:
 
 
 def get_player_data(profile_id: int, storage_type: PersistStorageType, data_index: int) -> dict:
-    result = PG_SESSION.query(PStorage.data).filter(PStorage.ptype == storage_type.value,
+    result = PG_SESSION.query(PStorage.data).where(PStorage.ptype == storage_type.value,
                                                     PStorage.dindex == data_index,
                                                     PStorage.profileid == profile_id).first()
     if result is None:

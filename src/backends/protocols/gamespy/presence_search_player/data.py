@@ -7,26 +7,25 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
+from servers.presence_search_player.src.aggregates.exceptions import CheckException
 from servers.presence_search_player.src.contracts.results import *
 
 
 def verify_email(email: str):
-    if TYPE_CHECKING:
-        Users.email = cast(Column, Users.email)
-        Users.password = cast(Column, Users.password)
-    if PG_SESSION.query(Users).filter(Users.email == email).count() == 1:
+    assert isinstance(email, str)
+    if PG_SESSION.query(Users).where(Users.email == email).count() == 1:
         return True
     else:
         return False
 
 
 def verify_email_and_password(email: str, password: str):
-    if TYPE_CHECKING:
-        assert isinstance(Users.email, Column)
-        assert isinstance(Users.password, Column)
+    assert isinstance(email, str)
+    assert isinstance(password, str)
+
     result = (
         PG_SESSION.query(Users)
-        .filter(Users.email == email, Users.password == password)
+        .where(Users.email == email, Users.password == password)
         .count()
     )
     if result == 1:
@@ -34,31 +33,22 @@ def verify_email_and_password(email: str, password: str):
     return False
 
 
-def get_profile_id(email: str, password: str, nick_name: str, partner_id: int) -> int:
-    if TYPE_CHECKING:
-        assert isinstance(Users.email, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.partnerid, Column)
-
-    pid = (
+def get_profile_id(email: str, password: str, nick_name: str, partner_id: int) -> int | None:
+    result = (
         PG_SESSION.query(Profiles.profileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             Users.email == email,
             Users.password == password,
             Profiles.nick == nick_name,
             SubProfiles.partnerid == partner_id,
-        )
-        .first()
+        ).first()
     )
-    if TYPE_CHECKING:
-        pid = cast(int, pid)
-    return pid
+    if result is not None:
+        result = result[0]
+        assert isinstance(result, int)
+    return result
 
 
 def add_user(user: Users):
@@ -93,14 +83,14 @@ def update_subprofile(subprofile: SubProfiles):
 
 def get_user(email: str) -> Users | None:
     assert isinstance(email, str)
-    result = PG_SESSION.query(Users).filter(Users.email == email).first()
+    result = PG_SESSION.query(Users).where(Users.email == email).first()
     return result
 
 
 def get_profile(user_id: int, nick_name: str) -> Profiles:
     assert isinstance(user_id, int)
     assert isinstance(nick_name, str)
-    result = PG_SESSION.query(Profiles).filter(
+    result = PG_SESSION.query(Profiles).where(
         Profiles.userid == user_id, Profiles.nick == nick_name
     ).first()
     return result
@@ -111,7 +101,7 @@ def get_sub_profile(profile_id: int, namespace_id: int, product_id: int) -> SubP
         assert isinstance(SubProfiles.profileid, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
-    result = PG_SESSION.query(SubProfiles).filter(
+    result = PG_SESSION.query(SubProfiles).where(
         SubProfiles.profileid == profile_id,
         SubProfiles.namespaceid == namespace_id,
         SubProfiles.namespaceid == product_id,
@@ -123,30 +113,20 @@ def get_nick_and_unique_nick_list(email: str, password: str, namespace_id: int) 
     """
     return [(nick, uniquenick)]
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
     result = (
         PG_SESSION.query(Profiles.nick, SubProfiles.uniquenick)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             Users.email == email,
             Users.password == password,
             SubProfiles.namespaceid == namespace_id,
         )
         .all()
     )
+    assert isinstance(result, list)
     if TYPE_CHECKING:
-        result = cast(list, result)
+        result = cast(list[tuple[str, str]], result)
     return result
 
 
@@ -179,7 +159,7 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> 
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             Profiles.profileid.in_(PG_SESSION.query(
                 Friends.profileid == profile_id)),
             SubProfiles.namespaceid == namespace_id,
@@ -203,7 +183,7 @@ def get_matched_profile_info_list(
         assert isinstance(SubProfiles.namespaceid, Column)
     result = (
         PG_SESSION.query(SubProfiles.profileid, SubProfiles.uniquenick)
-        .filter(
+        .where(
             SubProfiles.profileid.in_(profile_ids),
             SubProfiles.namespaceid == namespace_id,
         )
@@ -241,7 +221,7 @@ def get_matched_info_by_nick(
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(Profiles.nick == nick_name)
+        .where(Profiles.nick == nick_name)
         .all()
     )
     temp: list[SearchResultData] = []
@@ -275,7 +255,7 @@ def get_matched_info_by_email(
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(Users.email == email)
+        .where(Users.email == email)
         .all()
     )
     temp: list[SearchResultData] = []
@@ -307,7 +287,7 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str):
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(Users.email == email, Profiles.nick == nick_name)
+        .where(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
     temp: list[SearchResultData] = []
@@ -340,7 +320,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
         )
@@ -378,7 +358,7 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid.in_(namespace_ids)
         )
@@ -401,7 +381,7 @@ def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str) -> 
     result = (
         PG_SESSION.query(Profiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.gamename == game_name,
             SubProfiles.namespaceid == namespace_id,
@@ -419,7 +399,7 @@ def is_email_exist(email: str) -> bool:
     if TYPE_CHECKING:
         Users.userid = cast(Column, Users.userid)
         Users.email = cast(Column, Users.email)
-    result = PG_SESSION.query(Users.userid).filter(
+    result = PG_SESSION.query(Users.userid).where(
         Users.email == email).count()
     # According to game <FSW> partnerid is not nessesary
     if result == 0:

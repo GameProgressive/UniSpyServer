@@ -22,7 +22,7 @@ def delete_relay_server(server_id: UUID, ip_address: str, port: int):
     assert isinstance(server_id, UUID)
     assert isinstance(ip_address, str)
     assert isinstance(port, int)
-    info = PG_SESSION.query(RelayServerCaches).filter(
+    info = PG_SESSION.query(RelayServerCaches).where(
         RelayServerCaches.server_id == server_id, RelayServerCaches.public_ip_address == ip_address, RelayServerCaches.public_port == port).first()
     PG_SESSION.delete(info)
     PG_SESSION.commit()

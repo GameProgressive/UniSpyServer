@@ -12,7 +12,7 @@ def store_init_packet(info: InitPacketCaches) -> None:
 
 def count_init_info(cookie: int, version: int) -> int:
     time = datetime.now()-timedelta(seconds=30)
-    result = PG_SESSION.query(InitPacketCaches).filter(
+    result = PG_SESSION.query(InitPacketCaches).where(
         InitPacketCaches.cookie == cookie,
         InitPacketCaches.version == version,
         InitPacketCaches.update_time >= time).count()
@@ -22,7 +22,7 @@ def count_init_info(cookie: int, version: int) -> int:
 def get_init_infos(server_id: UUID, cookie: int, client_index: NatClientIndex) -> list[InitPacketCaches]:
     # query the latest init info with in 30 seconds
     time = datetime.now()-timedelta(seconds=30)
-    result = PG_SESSION.query(InitPacketCaches).filter(
+    result = PG_SESSION.query(InitPacketCaches).where(
         InitPacketCaches.server_id == server_id,
         InitPacketCaches.cookie == cookie,
         InitPacketCaches.client_index == client_index,
@@ -69,6 +69,6 @@ def get_nat_fail_info(info: NatFailCaches):
 
 
 def get_nat_fail_info_by_ip(public_ip1: str, public_ip2: str) -> list[NatFailCaches]:
-    result = PG_SESSION.query(NatFailCaches).filter(NatFailCaches.public_ip_address1 == public_ip1,
+    result = PG_SESSION.query(NatFailCaches).where(NatFailCaches.public_ip_address1 == public_ip1,
                                                     NatFailCaches.public_ip_address2 == public_ip2).all()
     return result

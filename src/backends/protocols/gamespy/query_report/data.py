@@ -42,7 +42,7 @@ def get_peer_staging_channels(game_name: str, group_id: int) -> list[GameServerI
     assert isinstance(game_name, str)
     assert isinstance(group_id, int)
     staging_name = f"{PeerRoom.StagingRoomPrefix}!{game_name}!*"
-    result = PG_SESSION.query(ChatChannelCaches).filter(
+    result = PG_SESSION.query(ChatChannelCaches).where(
         ChatChannelCaches.channel_name == staging_name).all()
     data = []
     for s in result:
@@ -54,7 +54,7 @@ def get_peer_group_channel(group_id: int) -> list[GameServerInfo]:
     assert isinstance(group_id, int)
     group_name = f"{PeerRoom.GroupRoomPrefix}!{group_id}"
 
-    result = PG_SESSION.query(ChatChannelCaches).filter(
+    result = PG_SESSION.query(ChatChannelCaches).where(
         ChatChannelCaches.channel_name == group_name).all()
     data = []
     for s in result:
@@ -64,7 +64,7 @@ def get_peer_group_channel(group_id: int) -> list[GameServerInfo]:
 
 def get_server_info_with_instant_key(instant_key: int) -> Optional[GameServerInfo]:
     assert isinstance(instant_key, int)
-    result = PG_SESSION.query(GameServerCaches).filter(
+    result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.instant_key == instant_key).first()
     return result
 
@@ -88,7 +88,7 @@ def get_server_info_list_with_game_name(game_name: str) -> list[GameServerInfo]:
 def get_server_info_with_ip_and_port(ip: str, port: int) -> GameServerInfo:
     assert isinstance(ip, str)
     assert isinstance(port, int)
-    result = PG_SESSION.query(GameServerCaches).filter(
+    result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.host_ip_address == ip, GameServerCaches.query_report_port == port).first()
     if result is None:
         raise ServerBrowserException("game server not found")

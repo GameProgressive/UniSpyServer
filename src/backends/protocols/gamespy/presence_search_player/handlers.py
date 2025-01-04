@@ -9,6 +9,9 @@ from servers.presence_search_player.src.contracts.results import CheckResult, Ne
 
 
 class CheckHandler(HandlerBase):
+    """
+    todo: whether need check the partner id, which means whether we need to check subprofiles
+    """
     _request: CheckRequest
 
     async def _data_operate(self) -> None:
@@ -18,6 +21,9 @@ class CheckHandler(HandlerBase):
             raise CheckException("The password is incorrect")
         profile_id = data.get_profile_id(
             self._request.email, self._request.password, self._request.nick, self._request.partner_id)
+        if profile_id is None:
+            raise CheckException(f"No pid found with email{
+                                 self._request.email}")
 
         self._result = CheckResult(profile_id=profile_id)
 

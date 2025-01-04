@@ -28,6 +28,9 @@ class CheckRequest(RequestBase):
 
         if "partner_id" in self.request_dict.keys():
             self.partner_id = int(self.request_dict["partner_id"])
+        else:
+            raise GPParseException(
+                "no partner id found, check whether need implement the default partnerid")
 
 
 class NewUserRequest(RequestBase):

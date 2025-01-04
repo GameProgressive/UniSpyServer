@@ -5440,6 +5440,7 @@ COPY unispy.sakestorage (sakestorageid, tableid, data) FROM stdin;
 --
 
 COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
+1	1	spyguy_test	0	1	1	gmtests	encrypted_cdkey	0	8080	auth_token_example	session_key_example
 \.
 
 

@@ -20,3 +20,8 @@
 
 #     def test_single_join(self, user_name="unispy", nick_name="unispy", channel_name="#GSP!room!test"):
 #         pass
+
+
+from fastapi import testclient
+
+# testclient.TestClient.get()

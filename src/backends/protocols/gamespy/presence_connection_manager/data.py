@@ -34,14 +34,14 @@ def update_online_time(ip: str, port: int):
 def is_email_exist(email: str) -> bool:
     if TYPE_CHECKING:
         assert isinstance(Users.email, Column)
-    if PG_SESSION.query(Users).filter(Users.email == email).count() == 1:
+    if PG_SESSION.query(Users).where(Users.email == email).count() == 1:
         return True
     else:
         return False
 
 
 def delete_friend_by_profile_id(profile_id: int):
-    friend = PG_SESSION.query(Friends).filter(
+    friend = PG_SESSION.query(Friends).where(
         Friends.friendid == profile_id).first()
     if friend is None:
         raise GPDatabaseException(
@@ -55,7 +55,7 @@ def delete_friend_by_profile_id(profile_id: int):
 def get_blocked_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
     result = (
         PG_SESSION.query(Blocked.targetid)
-        .filter(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
+        .where(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
         .all()
     )
     if TYPE_CHECKING:
@@ -66,7 +66,7 @@ def get_blocked_profile_id_list(profile_id: int, namespace_id: int) -> list[int]
 def get_friend_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
     result = (
         PG_SESSION.query(Friends.targetid)
-        .filter(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
+        .where(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
         .all()
     )
     if TYPE_CHECKING:
@@ -153,7 +153,7 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
                          SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(Users.email == email, Profiles.nick == nick_name)
+        .where(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
     if TYPE_CHECKING:
@@ -176,7 +176,7 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
                          SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
         )
@@ -213,7 +213,7 @@ def get_user_infos_by_uniquenick_namespace_id(unique_nick: str, namespace_id: in
                          SubProfiles.namespaceid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
         )
@@ -250,7 +250,7 @@ def get_user_infos_by_nick_email(nick: str, email: str) -> LoginData | None:
                          )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             Users.email == email,
             Profiles.nick == nick
         )
@@ -296,7 +296,7 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
                          SubProfiles.namespaceid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .filter(
+        .where(
             SubProfiles.authtoken == auth_token
         )
         .first()
@@ -310,7 +310,7 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
 def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
     result = (
         PG_SESSION.query(Blocked.targetid)
-        .filter(
+        .where(
             Blocked.namespaceid == namespace_id,
             Blocked.profileid == profile_id,
         ).all()
@@ -325,7 +325,7 @@ def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
 def get_buddy_list(profile_id: int, namespace_id: int) -> list[int]:
     result = (
         PG_SESSION.query(Friends.targetid)
-        .filter(
+        .where(
             Blocked.namespaceid == namespace_id,
             Blocked.profileid == profile_id,
         ).all()
@@ -360,7 +360,7 @@ def update_block(profile_id: int, target_id: int, session_key: str) -> None:
 def update_friend_info(target_id: int, profile_id: int, namespace_id: int):
     result = (
         PG_SESSION.query(Friends)
-        .filter(
+        .where(
             Friends.targetid == target_id,
             Friends.namespaceid == namespace_id,
             Friends.profileid == profile_id,
@@ -387,7 +387,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
         assert isinstance(Profiles.nick, Column)
     result = (
         PG_SESSION.query(Profiles)
-        .filter(Profiles.profileid == profile_id, Profiles.nick == old_nick)
+        .where(Profiles.profileid == profile_id, Profiles.nick == old_nick)
         .first()
     )
 
@@ -406,7 +406,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
 def update_unique_nick(subprofile_id: int, unique_nick: str):
     result = (
         PG_SESSION.query(SubProfiles)
-        .filter(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.subprofileid == subprofile_id)
         .first()
     )
     result.uniquenick = unique_nick  # type:ignore

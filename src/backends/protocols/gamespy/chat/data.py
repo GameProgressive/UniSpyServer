@@ -89,7 +89,7 @@ def uniquenick_login(uniquenick:str,namespace_id:int)-> tuple[int, int, bool, bo
 
 def is_channel_exist(channel_name:str,game_name:str)->bool:
     channel_count = PG_SESSION.query(ChatChannelCaches)\
-        .filter(ChatChannelCaches.channel_name == channel_name,
+        .where(ChatChannelCaches.channel_name == channel_name,
                 ChatChannelCaches.game_name == game_name,
                 ChatChannelCaches.update_time >= datetime.now()-timedelta(minutes=10))\
                 .count()
@@ -103,7 +103,7 @@ def add_channel(channel:ChatChannelCaches):
 
 def get_channel_cache(channel_name:str,game_name:str)->ChatChannelCaches:
     channel = PG_SESSION.query(ChatChannelCaches)\
-        .filter(ChatChannelCaches.channel_name == channel_name,
+        .where(ChatChannelCaches.channel_name == channel_name,
                 ChatChannelCaches.game_name == game_name)\
                 .first()
     return channel
@@ -114,7 +114,7 @@ def update_channel(channel:ChatChannelCaches):
 
 
 def get_user_cache_by_nick_name(nick_name:str)->ChatUserCaches:
-    result = PG_SESSION.query(ChatUserCaches).filter(ChatUserCaches.nick_name == nick_name).first()
+    result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.nick_name == nick_name).first()
     return result
 
 def remove_channel(cache:ChatChannelCaches)->None:
@@ -128,7 +128,7 @@ def remove_user(cache:ChatUserCaches):
     PG_SESSION.commit()
 
 def is_user_exist(ip:str,port:int)->bool:
-    user_count= PG_SESSION.query(ChatUserCaches).filter(ChatUserCaches.remote_ip_address==ip,
+    user_count= PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.remote_ip_address==ip,
                                                         ChatUserCaches.remote_port==port).count()
     if user_count ==1:
         return True
