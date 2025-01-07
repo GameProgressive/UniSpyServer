@@ -16,7 +16,7 @@ from servers.presence_connection_manager.src.aggregates.enums import GPStatusCod
 from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
 from servers.presence_connection_manager.src.contracts.results import GetProfileData, LoginData
 from servers.presence_search_player.src.aggregates.exceptions import GPAddBuddyException, GPDatabaseException, GPStatusException, GPException
-
+from backends.protocols.gamespy.presence_search_player.data import is_email_exist
 # region General
 
 
@@ -29,15 +29,6 @@ def update_online_time(ip: str, port: int):
         return False
     result.lastonline = datetime.now()
     PG_SESSION.commit()
-
-
-def is_email_exist(email: str) -> bool:
-    if TYPE_CHECKING:
-        assert isinstance(Users.email, Column)
-    if PG_SESSION.query(Users).where(Users.email == email).count() == 1:
-        return True
-    else:
-        return False
 
 
 def delete_friend_by_profile_id(profile_id: int):

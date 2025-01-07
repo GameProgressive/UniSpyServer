@@ -34,10 +34,10 @@ class ConnectionBase:
         assert issubclass(t_client, ClientBase)
         # assert isinstance(logger, LogWriter)
         # assert issubclass(type(handler), socketserver.BaseRequestHandler)
+        self.handler = handler
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
         self.ip_endpoint = f"{self.remote_ip}:{self.remote_port}"
-
         self.config = config
         self.t_client = t_client
         self.logger = logger

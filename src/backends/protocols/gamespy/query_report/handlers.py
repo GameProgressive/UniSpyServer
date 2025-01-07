@@ -3,6 +3,7 @@ from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, GameServerCaches
 from backends.protocols.gamespy.query_report.requests import *
 from servers.query_report.src.aggregates.exceptions import QRException
+import backends.protocols.gamespy.query_report.data as data
 
 
 class AvaliableHandler(HandlerBase):
@@ -26,8 +27,8 @@ class Heartbeathandler(HandlerBase):
     _request: HeartBeatRequest
 
     async def _data_operate(self) -> None:
-        cache = PG_SESSION.query(GameServerCaches).where(
-            GameServerCaches.instant_key == self._request.instant_key).first()
+        cache = data.get_server_info_with_instant_key(
+            self._request.instant_key)
         if cache is None:
             cache = GameServerCaches(instant_key=self._request.instant_key,
                                      server_id=self._request.server_id,
@@ -40,6 +41,7 @@ class Heartbeathandler(HandlerBase):
                                      server_data=self._request.server_data,
                                      team_data=self._request.team_data,
                                      avaliable=True)
+            data.create_game_server(cache)
         else:
             cache.instant_key = self._request.instant_key  # type: ignore
             cache.server_id = self._request.server_id  # type: ignore
@@ -52,8 +54,7 @@ class Heartbeathandler(HandlerBase):
             cache.server_data = self._request.server_data  # type: ignore
             cache.team_data = self._request.team_data  # type: ignore
             cache.avaliable = True  # type: ignore
-
-        PG_SESSION.commit()
+            data.update_game_server()
 
 
 class KeepAliveHandler(HandlerBase):

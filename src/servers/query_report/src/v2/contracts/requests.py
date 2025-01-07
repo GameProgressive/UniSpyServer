@@ -55,7 +55,7 @@ class HeartBeatRequest(RequestBase):
     player_data: list[dict[str, str]]
     team_data: list[dict[str, str]]
     server_status: GameServerStatus
-    group_id: int
+    group_id: int | None
     remote_ip_address: str
     remote_port: int
     game_name: str
@@ -118,6 +118,8 @@ class HeartBeatRequest(RequestBase):
             if not int(self.server_data["groupid"], group_id):
                 raise QRException("GroupId is invalid.")
             self.group_id = group_id
+        else:
+            self.group_id = None
 
     def parse_server_data(self, server_data_str: str):
         self.server_data = {}

@@ -233,8 +233,8 @@ class ChatChannelCaches(Base):
     password = Column(String, nullable=True)
     group_id = Column(Integer, nullable=False)
     max_num_user = Column(Integer, nullable=False)
-    key_values = Column(JSONB)
-    invited_nicks = Column(JSONB)
+    key_values = Column(JSONB, default={})
+    invited_nicks = Column(JSONB, default=[])
     update_time = Column(DateTime, nullable=False)
 
 
@@ -268,7 +268,7 @@ class ChatUserCaches(Base):
 
 class GameServerCaches(Base):
     __tablename__ = "game_server_caches"
-    instant_key = Column(Integer, primary_key=True, nullable=False)
+    instant_key = Column(String, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
     host_ip_address = Column(INET, nullable=False)
     game_name = Column(String, nullable=False)
@@ -295,7 +295,8 @@ PG_SESSION = connect_to_db()
 if __name__ == "__main__":
     session = connect_to_db()
     session.query(Users.userid == 0)  # type:ignore
-    profile = Profiles(userid=1,nick="spyguy",extra_info={},status=GPStatusCode.OFFLINE)
+    profile = Profiles(userid=1, nick="spyguy",
+                       extra_info={}, status=GPStatusCode.OFFLINE)
     PG_SESSION.add(profile)
     PG_SESSION.commit()
     pass

@@ -125,35 +125,22 @@ def get_nick_and_unique_nick_list(email: str, password: str, namespace_id: int) 
         .all()
     )
     assert isinstance(result, list)
-    if TYPE_CHECKING:
-        result = cast(list[tuple[str, str]], result)
-    return result
+    data = []
+    for r in result:
+        # convert to tuple
+        data.append(tuple(r))
+    return data
 
 
 def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> list:
     """
     return [(profileid, nick, uniquenick, lastname, firstname, userid, email)]
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(SubProfiles.gamename, Column)
-        assert isinstance(Friends.profileid, Column)
     result = (
         PG_SESSION.query(
             Profiles.profileid,
             Profiles.nick,
             SubProfiles.uniquenick,
-            Profiles.lastname,
-            Profiles.firstname,
             Users.userid,
             Users.email,
         )
@@ -189,35 +176,23 @@ def get_matched_profile_info_list(
         )
         .all()
     )
-    if result is None:
-        result = []
-    if TYPE_CHECKING:
-        result = cast(list[tuple[int, str]], result)
-    return result
+    data = []
+    for r in result:
+        data.append(tuple(r))
+    return data
 
 
 def get_matched_info_by_nick(
     nick_name: str,
 ) -> list[SearchResultData]:
-    if TYPE_CHECKING:
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Users.userid, Column)
     result = (
         PG_SESSION.query(
             Users.email,
             Profiles.profileid,
             Profiles.nick,
-            Profiles.firstname,
-            Profiles.lastname,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
+            Profiles.extra_info
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -225,9 +200,18 @@ def get_matched_info_by_nick(
         .all()
     )
     temp: list[SearchResultData] = []
-    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
-        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
-                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+        if TYPE_CHECKING:
+            extra_info = cast(dict, extra_info)
+        firstname = extra_info.get("firstname", "")
+        lastname = extra_info.get("lastname", "")
+        t = SearchResultData(profile_id=profile_id,
+                             nick=nick,
+                             uniquenick=uniquenick,
+                             email=email,
+                             namespace_id=namespace_id, firstname=firstname,
+                             lastname=lastname)
+        temp.append(t)
 
     return temp
 
@@ -235,23 +219,14 @@ def get_matched_info_by_nick(
 def get_matched_info_by_email(
     email: str,
 ) -> list[SearchResultData]:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.userid, Column)
     result = (
         PG_SESSION.query(
+            Users.email,
             Profiles.profileid,
             Profiles.nick,
-            Profiles.firstname,
-            Profiles.lastname,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
+            Profiles.extra_info
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -259,31 +234,31 @@ def get_matched_info_by_email(
         .all()
     )
     temp: list[SearchResultData] = []
-    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
-        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
-                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+        if TYPE_CHECKING:
+            extra_info = cast(dict, extra_info)
+        firstname = extra_info.get("firstname", "")
+        lastname = extra_info.get("lastname", "")
+        t = SearchResultData(profile_id=profile_id,
+                             nick=nick,
+                             uniquenick=uniquenick,
+                             email=email,
+                             namespace_id=namespace_id, firstname=firstname,
+                             lastname=lastname)
+        temp.append(t)
     return temp
 
 
 def get_matched_info_by_nick_and_email(nick_name: str, email: str):
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.email, Column)
+
     result = (
         PG_SESSION.query(
             Users.email,
             Profiles.profileid,
             Profiles.nick,
-            Profiles.firstname,
-            Profiles.lastname,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
+            Profiles.extra_info
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -291,32 +266,31 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str):
         .all()
     )
     temp: list[SearchResultData] = []
-    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
-        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
-                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+        if TYPE_CHECKING:
+            extra_info = cast(dict, extra_info)
+        firstname = extra_info.get("firstname", "")
+        lastname = extra_info.get("lastname", "")
+        t = SearchResultData(profile_id=profile_id,
+                             nick=nick,
+                             uniquenick=uniquenick,
+                             email=email,
+                             namespace_id=namespace_id, firstname=firstname,
+                             lastname=lastname)
+        temp.append(t)
     return temp
 
 
 def get_matched_info_by_uniquenick_and_namespaceid(
     unique_nick: str, namespace_id: int
 ) -> list[SearchResultData]:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.email, Column)
     result = (
         PG_SESSION.query(
             Profiles.profileid,
             Profiles.nick,
-            Profiles.firstname,
-            Profiles.lastname,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
+            Profiles.extra_info
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -327,9 +301,18 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         .all()
     )
     temp: list[SearchResultData] = []
-    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
-        temp.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
-                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+        if TYPE_CHECKING:
+            extra_info = cast(dict, extra_info)
+        firstname = extra_info.get("firstname", "")
+        lastname = extra_info.get("lastname", "")
+        t = SearchResultData(profile_id=profile_id,
+                             nick=nick,
+                             uniquenick=uniquenick,
+                             email=email,
+                             namespace_id=namespace_id, firstname=firstname,
+                             lastname=lastname)
+        temp.append(t)
 
     return temp
 
@@ -337,22 +320,10 @@ def get_matched_info_by_uniquenick_and_namespaceid(
 def get_matched_info_by_uniquenick_and_namespaceids(
     unique_nick: str, namespace_ids: list[int]
 ) -> list[SearchResultData]:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Profiles.firstname, Column)
-        assert isinstance(Profiles.lastname, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.email, Column)
-
     result = (
         PG_SESSION.query(
             Profiles.profileid,
             Profiles.nick,
-            Profiles.firstname,
-            Profiles.lastname,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
         )
@@ -365,19 +336,23 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         .all()
     )
     data: list[SearchResultData] = []
-    for email, profile_id, nick, first_name, last_name, uniquenick, namespace_id in result:
-        data.append(SearchResultData(profile_id=profile_id, nick=nick, uniquenick=uniquenick,
-                    email=email, namespace_id=namespace_id, firstname=first_name, lastname=last_name))
+    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+        if TYPE_CHECKING:
+            extra_info = cast(dict, extra_info)
+        firstname = extra_info.get("firstname", "")
+        lastname = extra_info.get("lastname", "")
+        t = SearchResultData(profile_id=profile_id,
+                             nick=nick,
+                             uniquenick=uniquenick,
+                             email=email,
+                             namespace_id=namespace_id, firstname=firstname,
+                             lastname=lastname)
+        data.append(t)
 
     return data
 
 
 def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str) -> bool:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.gamename, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
     result = (
         PG_SESSION.query(Profiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)

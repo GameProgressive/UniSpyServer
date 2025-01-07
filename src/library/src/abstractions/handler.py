@@ -93,13 +93,15 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         url = f"{CONFIG.backend.url}/GameSpy/{
-            self._client.server_config.server_name}/{self.__class__.__name__}/"
+            self._client.server_config.server_name}/{self.__class__.__name__}"
         json_str = json.dumps(
             self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False)
+        self._client.log_info(f"Send json to {url}")
         response = requests.post(url, data=json_str, headers={
                                  "Content-Type": "application/json"})
+        
         if response.status_code != 200:
-            raise UniSpyException("Upload data to background failed.")
+            raise UniSpyException("failed to upload data to background.")
         self._http_result = response.json()
 
     def _feach_data(self):

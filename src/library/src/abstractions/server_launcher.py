@@ -61,9 +61,8 @@ class ServerLauncherBase:
         if self.server is None:
             raise UniSpyException("Create network server in child class")
         import threading
-        th = threading.Thread(target=self.server.start)
-        key = input('Press Q to Quit')
-        th.join()
+        print("Press Ctrl+C to Quit")
+        self.server.start()
         
 
     def _connect_to_backend(self):

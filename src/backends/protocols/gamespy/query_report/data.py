@@ -39,6 +39,9 @@ PEER_GROUP_LIST = get_all_groups()
 
 
 def get_peer_staging_channels(game_name: str, group_id: int) -> list[GameServerInfo]:
+    """
+    todo check where use this function
+    """
     assert isinstance(game_name, str)
     assert isinstance(group_id, int)
     staging_name = f"{PeerRoom.StagingRoomPrefix}!{game_name}!*"
@@ -46,11 +49,12 @@ def get_peer_staging_channels(game_name: str, group_id: int) -> list[GameServerI
         ChatChannelCaches.channel_name == staging_name).all()
     data = []
     for s in result:
-        data.append(GameServerInfo(**s))
+        t = {k: v for k, v in s.__dict__.items() if k != '_sa_instance_state'}
+        data.append(GameServerInfo(**t))
     return data
 
 
-def get_peer_group_channel(group_id: int) -> list[GameServerInfo]:
+def get_peer_group_channel(group_id: int) -> list[PeerRoomInfo]:
     assert isinstance(group_id, int)
     group_name = f"{PeerRoom.GroupRoomPrefix}!{group_id}"
 
@@ -62,8 +66,8 @@ def get_peer_group_channel(group_id: int) -> list[GameServerInfo]:
     return data
 
 
-def get_server_info_with_instant_key(instant_key: int) -> Optional[GameServerInfo]:
-    assert isinstance(instant_key, int)
+def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerInfo]:
+    assert isinstance(instant_key, str)
     result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.instant_key == instant_key).first()
     return result
@@ -103,10 +107,14 @@ def remove_server_info(info: GameServerCaches) -> None:
 # todo finish the GameServerCaches creation
 
 
-def update_game_server(info: GameServerCaches) -> None:
-    from datetime import datetime
-    info.update_time = datetime.now()  # type:ignore
+def create_game_server(info: GameServerCaches) -> None:
     PG_SESSION.add(info)
+    update_game_server()
+
+
+def update_game_server() -> None:
+    from datetime import datetime
+    # info.update_time = datetime.now()  # type:ignore
     PG_SESSION.commit()
 
 

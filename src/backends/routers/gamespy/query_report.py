@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.presence_connection_manager.requests import KeepAliveRequest
-from backends.protocols.gamespy.query_report.handlers import AvaliableHandler
+from backends.protocols.gamespy.query_report.handlers import AvaliableHandler, Heartbeathandler
 from backends.protocols.gamespy.query_report.requests import AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest
 from backends.urls import QUERY_REPORT
 
@@ -10,7 +10,9 @@ router = APIRouter()
 
 @router.post(f"{QUERY_REPORT}/HeartBeatHandler")
 async def heartbeat(request: HeartBeatRequest):
-    raise NotImplementedError()
+    handler = Heartbeathandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{QUERY_REPORT}/ChallengeHanler")

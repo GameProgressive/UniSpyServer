@@ -1,14 +1,14 @@
 
-from pydantic import UUID4
+from pydantic import UUID4, Field, constr
 import backends.library.abstractions.contracts as lib
 
 from servers.query_report.src.v2.aggregates.enums import GameServerStatus, RequestType
 
 
 class RequestBase(lib.RequestBase):
-    instant_key: int
+    instant_key: str = Field(..., max_length=10)
     command_name: RequestType
-    raw_request: bytes
+    raw_request: str
 
 
 class AvaliableRequest(RequestBase):
@@ -33,11 +33,11 @@ class ClientMessageRequest(RequestBase):
 
 
 class HeartBeatRequest(RequestBase):
-    server_data: dict[str, str]
-    player_data: list[dict[str, str]]
-    team_data: list[dict[str, str]]
+    server_data: dict[str, object]
+    player_data: list[dict[str, object]]
+    team_data: list[dict[str, object]]
     server_status: GameServerStatus
-    group_id: int
+    group_id: int | None
     game_name: str
 
 

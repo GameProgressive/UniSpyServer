@@ -32,73 +32,6 @@ ALTER SCHEMA unispy OWNER TO unispy;
 COMMENT ON SCHEMA unispy IS 'standard public schema';
 
 
---
--- Name: friendrequeststatus; Type: TYPE; Schema: unispy; Owner: unispy
---
-
-CREATE TYPE unispy.friendrequeststatus AS ENUM (
-    'PENDING',
-    'ACCEPTED',
-    'REJECTED'
-);
-
-
-ALTER TYPE unispy.friendrequeststatus OWNER TO unispy;
-
---
--- Name: gameserverstatus; Type: TYPE; Schema: unispy; Owner: unispy
---
-
-CREATE TYPE unispy.gameserverstatus AS ENUM (
-    'NORMAL',
-    'UPDATE',
-    'SHUTDOWN',
-    'PLAYING'
-);
-
-
-ALTER TYPE unispy.gameserverstatus OWNER TO unispy;
-
---
--- Name: gpstatuscode; Type: TYPE; Schema: unispy; Owner: unispy
---
-
-CREATE TYPE unispy.gpstatuscode AS ENUM (
-    'OFFLINE',
-    'ONLINE',
-    'PLAYING',
-    'STAGING',
-    'CHATTING',
-    'AWAY'
-);
-
-
-ALTER TYPE unispy.gpstatuscode OWNER TO unispy;
-
---
--- Name: natclientindex; Type: TYPE; Schema: unispy; Owner: unispy
---
-
-CREATE TYPE unispy.natclientindex AS ENUM (
-    'GAME_CLIENT',
-    'GAME_SERVER'
-);
-
-
-ALTER TYPE unispy.natclientindex OWNER TO unispy;
-
---
--- Name: natporttype; Type: TYPE; Schema: unispy; Owner: unispy
---
-
-CREATE TYPE unispy.natporttype AS ENUM (
-    'GP',
-    'NN1',
-    'NN2',
-    'NN3'
-);
-
-
 ALTER TYPE unispy.natporttype OWNER TO unispy;
 
 SET default_tablespace = '';
@@ -115,7 +48,7 @@ CREATE TABLE unispy.addrequests (
     targetid integer NOT NULL,
     namespaceid integer NOT NULL,
     reason character varying NOT NULL,
-    status unispy.friendrequeststatus NOT NULL
+    status smallint NOT NULL
 );
 
 
@@ -280,13 +213,13 @@ ALTER SEQUENCE unispy.friends_friendid_seq OWNED BY unispy.friends.friendid;
 --
 
 CREATE TABLE unispy.game_server_caches (
-    instant_key integer NOT NULL,
+    instant_key character varying(10) NOT NULL,
     server_id uuid NOT NULL,
     host_ip_address inet NOT NULL,
     game_name character varying NOT NULL,
     query_report_port integer NOT NULL,
     update_time timestamp without time zone NOT NULL,
-    status unispy.gameserverstatus,
+    status smallint not NULL,
     player_data jsonb NOT NULL,
     server_data jsonb NOT NULL,
     team_data jsonb NOT NULL,
@@ -507,7 +440,7 @@ CREATE TABLE unispy.profiles (
     userid integer NOT NULL,
     nick character varying NOT NULL,
     serverflag integer NOT NULL,
-    status integer,
+    status smallint not NULL,
     statstring character varying,
     extra_info jsonb
 );
