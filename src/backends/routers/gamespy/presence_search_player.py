@@ -32,7 +32,7 @@ async def others_list(request: OthersListRequest):
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/PMatchHandler")
-async def player_match(request: object):
+async def player_match(request: dict):
     raise NotImplementedError()
 
 

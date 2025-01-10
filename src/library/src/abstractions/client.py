@@ -119,6 +119,9 @@ class ClientBase:
     def log_network_receving(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [recv]: {data}")
 
+    def log_network_upload(self, data: object) -> None:
+        self.logger.info(f"{self._log_prefix} [upload]: {data}")
+
     def log_current_class(self, object: "CmdHandlerBase") -> None:
         self.logger.debug(f"{self._log_prefix} [=>] <{
                           object.__class__.__name__}>")

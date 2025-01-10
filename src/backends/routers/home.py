@@ -1,6 +1,7 @@
 from ipaddress import IPv4Address
 from uuid import UUID
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 import uvicorn
 
@@ -18,7 +19,15 @@ app.include_router(query_report.router)
 app.include_router(server_browser.router)
 app.include_router(webservices.router)
 
-LogManager.create("backend")
+logger = LogManager.create("backend")
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    logger.error(str(exc))
+
+@app.exception_handler(Exception)
+async def handle_unispy_exception(request, exc):
+    logger.error(str(exc))
 
 
 @app.post("/")

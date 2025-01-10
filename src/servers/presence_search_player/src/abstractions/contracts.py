@@ -16,6 +16,8 @@ class RequestBase(library.src.abstractions.contracts.RequestBase):
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
+        self.operation_id = 0
+        self.namespace_id = 0
 
     def parse(self) -> None:
         self.request_dict = convert_to_key_value(self.raw_request)

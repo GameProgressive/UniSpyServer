@@ -106,12 +106,12 @@ class LoginRequest(RequestBase):
     user_id: int
     profile_id: int
     partner_id: int
+    """
+    partner id default is 0
+    """
     game_name: str
     quiet_mode_flags: int
     firewall: bool
-
-    def __init__(self, raw_request):
-        super().__init__(raw_request)
 
     def parse(self):
         super().parse()

@@ -10,7 +10,7 @@ from servers.query_report.src.v2.aggregates.enums import GameServerStatus
 class GameServerInfo(BaseModel):
     server_id: UUID
     host_ip_address: str
-    instant_key: int
+    instant_key: str
     game_name: str
     query_report_port: int
 

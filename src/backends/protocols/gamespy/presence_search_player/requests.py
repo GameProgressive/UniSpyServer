@@ -43,8 +43,8 @@ class NicksRequest(RequestBase):
 
 
 class OthersListRequest(RequestBase):
-    profile_ids: list[int] = []
-    namespace_id: int = 0
+    profile_ids: list[int]
+    namespace_id: int
 
 
 class OthersRequest(RequestBase):
@@ -57,15 +57,15 @@ class SearchRequest(RequestBase):
     skip_num: int
     request_type: SearchType
     game_name: str
-    profile_id: int
+    profile_id: int| None = None
     partner_id: int
-    email: str
-    nick: str
-    uniquenick: str
-    session_key: str
-    firstname: str
-    lastname: str
-    icquin: str
+    email: str | None = None
+    nick: str | None = None
+    uniquenick: str | None = None
+    session_key: str | None = None
+    firstname: str | None = None
+    lastname: str | None = None
+    icquin: str | None = None
     namespace_id: int
 
 

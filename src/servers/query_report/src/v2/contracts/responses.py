@@ -25,7 +25,7 @@ class AvaliableResponse(ResponseBase):
     def build(self):
         data = bytearray()
         data.extend(RESPONSE_PREFIX)
-        data.append(ServerAvailability.AVAILABLE)
+        data.append(ServerAvailability.AVAILABLE.value)
         self.sending_buffer = bytes(data)
 
 

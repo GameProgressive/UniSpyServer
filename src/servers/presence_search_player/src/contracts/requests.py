@@ -27,10 +27,13 @@ class CheckRequest(RequestBase):
         self.email = self.request_dict["email"]
 
         if "partner_id" in self.request_dict.keys():
-            self.partner_id = int(self.request_dict["partner_id"])
+            try:
+                self.partner_id = int(self.request_dict["partner_id"])
+            except:
+                raise GPParseException(
+                    "no partner id found, check whether need implement the default partnerid")
         else:
-            raise GPParseException(
-                "no partner id found, check whether need implement the default partnerid")
+            self.partner_id = 0
 
 
 class NewUserRequest(RequestBase):
@@ -79,7 +82,8 @@ class NewUserRequest(RequestBase):
                 self.has_partner_id_flag = True
             except ValueError:
                 raise GPParseException("partnerid is incorrect.")
-
+        else:
+            self.partner_id = 0
         if "productid" in self.request_dict:
             try:
                 self.product_id = int(self.request_dict["productid"])
@@ -177,6 +181,10 @@ class SearchRequest(RequestBase):
     firstname: str
     lastname: str
     icquin: str
+
+    def __init__(self, raw_request: str) -> None:
+        super().__init__(raw_request)
+        self.skip_num = 0
 
     def parse(self) -> None:
         super().parse()

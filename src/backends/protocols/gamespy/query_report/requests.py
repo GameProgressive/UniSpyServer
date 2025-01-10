@@ -6,7 +6,7 @@ from servers.query_report.src.v2.aggregates.enums import GameServerStatus, Reque
 
 
 class RequestBase(lib.RequestBase):
-    instant_key: str = Field(..., max_length=10)
+    instant_key: str
     command_name: RequestType
     raw_request: str
 

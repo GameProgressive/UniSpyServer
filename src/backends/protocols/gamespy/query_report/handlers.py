@@ -28,7 +28,7 @@ class Heartbeathandler(HandlerBase):
 
     async def _data_operate(self) -> None:
         cache = data.get_server_info_with_instant_key(
-            self._request.instant_key)
+            str(self._request.instant_key))
         if cache is None:
             cache = GameServerCaches(instant_key=self._request.instant_key,
                                      server_id=self._request.server_id,

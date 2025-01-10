@@ -86,7 +86,7 @@ class CmdHandlerBase:
         if "client_port" in self._temp_data:
             raise UniSpyException("client_port name collision in dict")
         self._temp_data["client_port"] = self._client.connection.remote_port
-        
+
     def _upload_data(self):
         """
         whether need send data to backend
@@ -96,10 +96,10 @@ class CmdHandlerBase:
             self._client.server_config.server_name}/{self.__class__.__name__}"
         json_str = json.dumps(
             self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False)
-        self._client.log_info(f"Send json to {url}")
+        self._client.log_network_upload(f"[{url}] {json_str}")
         response = requests.post(url, data=json_str, headers={
                                  "Content-Type": "application/json"})
-        
+
         if response.status_code != 200:
             raise UniSpyException("failed to upload data to background.")
         self._http_result = response.json()
