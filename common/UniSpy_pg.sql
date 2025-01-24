@@ -32,8 +32,6 @@ ALTER SCHEMA unispy OWNER TO unispy;
 COMMENT ON SCHEMA unispy IS 'standard public schema';
 
 
-ALTER TYPE unispy.natporttype OWNER TO unispy;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -157,7 +155,7 @@ ALTER TABLE unispy.chat_nick_caches OWNER TO unispy;
 
 CREATE TABLE unispy.chat_user_caches (
     nick_name character varying NOT NULL,
-    channel_name character varying NOT NULL,
+    channel_name character varying NOT NULL UNIQUE,
     server_id uuid NOT NULL,
     user_name character varying NOT NULL,
     update_time timestamp without time zone NOT NULL,
@@ -301,8 +299,8 @@ CREATE TABLE unispy.init_packet_caches (
     cookie integer NOT NULL,
     server_id uuid NOT NULL,
     version integer NOT NULL,
-    port_type unispy.natporttype NOT NULL,
-    client_index unispy.natclientindex NOT NULL,
+    port_type smallint NOT NULL,
+    client_index smallint NOT NULL,
     game_name character varying NOT NULL,
     use_game_port boolean NOT NULL,
     public_ip character varying NOT NULL,
@@ -417,7 +415,7 @@ ALTER SEQUENCE unispy.nat_fail_cachess_record_id_seq OWNED BY unispy.nat_fail_ca
 --
 
 CREATE TABLE unispy.partner (
-    partnerid integer NOT NULL,
+    partnerid serial primary key,
     partnername character varying NOT NULL
 );
 
@@ -436,9 +434,9 @@ COMMENT ON TABLE unispy.partner IS 'Partner information, these information are u
 --
 
 CREATE TABLE unispy.profiles (
-    profileid integer NOT NULL,
+    profileid SERIAL PRIMARY KEY NOT NULL,
     userid integer NOT NULL,
-    nick character varying NOT NULL,
+    nick character varying NOT NULL UNIQUE,
     serverflag integer NOT NULL,
     status smallint not NULL,
     statstring character varying,
@@ -612,8 +610,8 @@ ALTER SEQUENCE unispy.subprofiles_subprofileid_seq OWNED BY unispy.subprofiles.s
 --
 
 CREATE TABLE unispy.users (
-    userid integer NOT NULL,
-    email character varying NOT NULL,
+    userid serial primary key,
+    email character varying NOT NULL UNIQUE,
     password character varying NOT NULL,
     emailverified boolean DEFAULT true NOT NULL,
     lastip inet,
