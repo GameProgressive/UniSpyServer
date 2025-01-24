@@ -115,7 +115,7 @@ ALTER SEQUENCE unispy.blocked_blockid_seq OWNED BY unispy.blocked.blockid;
 --
 
 CREATE TABLE unispy.chat_channel_caches (
-    channel_name character varying NOT NULL,
+    channel_name character varying NOT NULL UNIQUE,
     server_id uuid NOT NULL,
     game_name character varying NOT NULL,
     room_name character varying NOT NULL,
@@ -137,7 +137,7 @@ ALTER TABLE unispy.chat_channel_caches OWNER TO unispy;
 
 CREATE TABLE unispy.chat_nick_caches (
     server_id uuid NOT NULL,
-    nick_name character varying NOT NULL,
+    nick_name character varying NOT NULL UNIQUE,
     game_name character varying,
     user_name character varying,
     remote_ip_address inet NOT NULL,
@@ -154,7 +154,7 @@ ALTER TABLE unispy.chat_nick_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.chat_user_caches (
-    nick_name character varying NOT NULL,
+    nick_name character varying NOT NULL UNIQUE,
     channel_name character varying NOT NULL UNIQUE,
     server_id uuid NOT NULL,
     user_name character varying NOT NULL,
