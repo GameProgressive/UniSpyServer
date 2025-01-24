@@ -41,7 +41,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE unispy.addrequests (
-    addrequestid integer NOT NULL,
+    addrequestid SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     targetid integer NOT NULL,
     namespaceid integer NOT NULL,
@@ -56,13 +56,13 @@ ALTER TABLE unispy.addrequests OWNER TO unispy;
 -- Name: addrequests_addrequestid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.addrequests_addrequestid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.addrequests_addrequestid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.addrequests_addrequestid_seq OWNER TO unispy;
@@ -79,7 +79,7 @@ ALTER SEQUENCE unispy.addrequests_addrequestid_seq OWNED BY unispy.addrequests.a
 --
 
 CREATE TABLE unispy.blocked (
-    blockid integer NOT NULL,
+    blockid SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     namespaceid integer NOT NULL,
     targetid integer NOT NULL
@@ -92,13 +92,13 @@ ALTER TABLE unispy.blocked OWNER TO unispy;
 -- Name: blocked_blockid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.blocked_blockid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.blocked_blockid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.blocked_blockid_seq OWNER TO unispy;
@@ -175,7 +175,7 @@ ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.friends (
-    friendid integer NOT NULL,
+    friendid SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     targetid integer NOT NULL,
     namespaceid integer NOT NULL
@@ -188,13 +188,13 @@ ALTER TABLE unispy.friends OWNER TO unispy;
 -- Name: friends_friendid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.friends_friendid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.friends_friendid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.friends_friendid_seq OWNER TO unispy;
@@ -211,7 +211,7 @@ ALTER SEQUENCE unispy.friends_friendid_seq OWNED BY unispy.friends.friendid;
 --
 
 CREATE TABLE unispy.game_server_caches (
-    instant_key character varying(10) NOT NULL,
+    instant_key character varying(10) PRIMARY KEY NOT NULL UNIQUE,
     server_id uuid NOT NULL,
     host_ip_address inet NOT NULL,
     game_name character varying NOT NULL,
@@ -231,22 +231,22 @@ ALTER TABLE unispy.game_server_caches OWNER TO unispy;
 -- Name: game_server_caches_instant_key_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.game_server_caches_instant_key_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.game_server_caches_instant_key_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
-ALTER TABLE unispy.game_server_caches_instant_key_seq OWNER TO unispy;
+-- ALTER TABLE unispy.game_server_caches_instant_key_seq OWNER TO unispy;
 
 --
 -- Name: game_server_caches_instant_key_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.game_server_caches_instant_key_seq OWNED BY unispy.game_server_caches.instant_key;
+-- ALTER SEQUENCE unispy.game_server_caches_instant_key_seq OWNED BY unispy.game_server_caches.instant_key;
 
 
 --
@@ -276,7 +276,7 @@ COMMENT ON TABLE unispy.games IS 'Game list.';
 --
 
 CREATE TABLE unispy.grouplist (
-    groupid integer NOT NULL,
+    groupid integer NOT NULL UNIQUE,
     gameid integer NOT NULL,
     roomname text NOT NULL
 );
@@ -317,22 +317,22 @@ ALTER TABLE unispy.init_packet_caches OWNER TO unispy;
 -- Name: init_packet_caches_cookie_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.init_packet_caches_cookie_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.init_packet_caches_cookie_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
-ALTER TABLE unispy.init_packet_caches_cookie_seq OWNER TO unispy;
+-- ALTER TABLE unispy.init_packet_caches_cookie_seq OWNER TO unispy;
 
 --
 -- Name: init_packet_caches_cookie_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.init_packet_caches_cookie_seq OWNED BY unispy.init_packet_caches.cookie;
+-- ALTER SEQUENCE unispy.init_packet_caches_cookie_seq OWNED BY unispy.init_packet_caches.cookie;
 
 
 --
@@ -340,7 +340,7 @@ ALTER SEQUENCE unispy.init_packet_caches_cookie_seq OWNED BY unispy.init_packet_
 --
 
 CREATE TABLE unispy.messages (
-    messageid integer NOT NULL,
+    messageid SERIAL PRIMARY KEY NOT NULL,
     namespaceid integer NOT NULL,
     type integer,
     from_user integer NOT NULL,
@@ -356,13 +356,13 @@ ALTER TABLE unispy.messages OWNER TO unispy;
 -- Name: messages_messageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.messages_messageid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.messages_messageid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.messages_messageid_seq OWNER TO unispy;
@@ -379,7 +379,7 @@ ALTER SEQUENCE unispy.messages_messageid_seq OWNED BY unispy.messages.messageid;
 --
 
 CREATE TABLE unispy.nat_fail_cachess (
-    record_id integer NOT NULL,
+    record_id SERIAL NOT NULL,
     public_ip_address1 inet NOT NULL,
     public_ip_address2 inet NOT NULL,
     update_time timestamp without time zone NOT NULL
@@ -392,13 +392,13 @@ ALTER TABLE unispy.nat_fail_cachess OWNER TO unispy;
 -- Name: nat_fail_cachess_record_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.nat_fail_cachess_record_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.nat_fail_cachess_record_id_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.nat_fail_cachess_record_id_seq OWNER TO unispy;
@@ -415,7 +415,7 @@ ALTER SEQUENCE unispy.nat_fail_cachess_record_id_seq OWNED BY unispy.nat_fail_ca
 --
 
 CREATE TABLE unispy.partner (
-    partnerid serial primary key,
+    partnerid SERIAL PRIMARY KEY,
     partnername character varying NOT NULL
 );
 
@@ -450,13 +450,13 @@ ALTER TABLE unispy.profiles OWNER TO unispy;
 -- Name: profiles_profileid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.profiles_profileid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.profiles_profileid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.profiles_profileid_seq OWNER TO unispy;
@@ -473,7 +473,7 @@ ALTER SEQUENCE unispy.profiles_profileid_seq OWNED BY unispy.profiles.profileid;
 --
 
 CREATE TABLE unispy.pstorage (
-    pstorageid integer NOT NULL,
+    pstorageid SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     ptype integer NOT NULL,
     dindex integer NOT NULL,
@@ -487,13 +487,13 @@ ALTER TABLE unispy.pstorage OWNER TO unispy;
 -- Name: pstorage_pstorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.pstorage_pstorageid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.pstorage_pstorageid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.pstorage_pstorageid_seq OWNER TO unispy;
@@ -524,7 +524,7 @@ ALTER TABLE unispy.relay_server_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.sakestorage (
-    sakestorageid integer NOT NULL,
+    sakestorageid SERIAL PRIMARY KEY NOT NULL,
     tableid integer NOT NULL,
     data jsonb
 );
@@ -543,13 +543,13 @@ COMMENT ON TABLE unispy.sakestorage IS 'Sake storage system.';
 -- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.sakestorage_sakestorageid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.sakestorage_sakestorageid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.sakestorage_sakestorageid_seq OWNER TO unispy;
@@ -566,7 +566,7 @@ ALTER SEQUENCE unispy.sakestorage_sakestorageid_seq OWNED BY unispy.sakestorage.
 --
 
 CREATE TABLE unispy.subprofiles (
-    subprofileid integer NOT NULL,
+    subprofileid SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     uniquenick character varying,
     namespaceid integer NOT NULL,
@@ -587,13 +587,13 @@ ALTER TABLE unispy.subprofiles OWNER TO unispy;
 -- Name: subprofiles_subprofileid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.subprofiles_subprofileid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.subprofiles_subprofileid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.subprofiles_subprofileid_seq OWNER TO unispy;
@@ -635,13 +635,13 @@ COMMENT ON TABLE unispy.users IS 'User account information.';
 -- Name: users_userid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
-CREATE SEQUENCE unispy.users_userid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+-- CREATE SEQUENCE unispy.users_userid_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
 
 
 ALTER TABLE unispy.users_userid_seq OWNER TO unispy;
@@ -671,21 +671,21 @@ ALTER TABLE ONLY unispy.blocked ALTER COLUMN blockid SET DEFAULT nextval('unispy
 -- Name: friends friendid; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.friends ALTER COLUMN friendid SET DEFAULT nextval('unispy.friends_friendid_seq'::regclass);
+-- ALTER TABLE ONLY unispy.friends ALTER COLUMN friendid SET DEFAULT nextval('unispy.friends_friendid_seq'::regclass);
 
 
 --
 -- Name: game_server_caches instant_key; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.game_server_caches ALTER COLUMN instant_key SET DEFAULT nextval('unispy.game_server_caches_instant_key_seq'::regclass);
+-- ALTER TABLE ONLY unispy.game_server_caches ALTER COLUMN instant_key SET DEFAULT nextval('unispy.game_server_caches_instant_key_seq'::regclass);
 
 
 --
 -- Name: init_packet_caches cookie; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.init_packet_caches ALTER COLUMN cookie SET DEFAULT nextval('unispy.init_packet_caches_cookie_seq'::regclass);
+-- ALTER TABLE ONLY unispy.init_packet_caches ALTER COLUMN cookie SET DEFAULT nextval('unispy.init_packet_caches_cookie_seq'::regclass);
 
 
 --
@@ -5413,14 +5413,14 @@ SELECT pg_catalog.setval('unispy.friends_friendid_seq', 1, false);
 -- Name: game_server_caches_instant_key_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.game_server_caches_instant_key_seq', 1, false);
+-- SELECT pg_catalog.setval('unispy.game_server_caches_instant_key_seq', 1, false);
 
 
 --
 -- Name: init_packet_caches_cookie_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.init_packet_caches_cookie_seq', 1, false);
+-- SELECT pg_catalog.setval('unispy.init_packet_caches_cookie_seq', 1, false);
 
 
 --
@@ -5471,159 +5471,6 @@ SELECT pg_catalog.setval('unispy.subprofiles_subprofileid_seq', 1, false);
 
 SELECT pg_catalog.setval('unispy.users_userid_seq', 5, true);
 
-
---
--- Name: addrequests addrequests_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.addrequests
-    ADD CONSTRAINT addrequests_pkey PRIMARY KEY (addrequestid);
-
-
---
--- Name: blocked blocked_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.blocked
-    ADD CONSTRAINT blocked_pkey PRIMARY KEY (blockid);
-
-
---
--- Name: chat_channel_caches chat_channel_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.chat_channel_caches
-    ADD CONSTRAINT chat_channel_caches_pkey PRIMARY KEY (channel_name);
-
-
---
--- Name: chat_nick_caches chat_nick_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.chat_nick_caches
-    ADD CONSTRAINT chat_nick_caches_pkey PRIMARY KEY (nick_name);
-
-
---
--- Name: chat_user_caches chat_user_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.chat_user_caches
-    ADD CONSTRAINT chat_user_caches_pkey PRIMARY KEY (nick_name);
-
-
---
--- Name: friends friends_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.friends
-    ADD CONSTRAINT friends_pkey PRIMARY KEY (friendid);
-
-
---
--- Name: game_server_caches game_server_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.game_server_caches
-    ADD CONSTRAINT game_server_caches_pkey PRIMARY KEY (instant_key);
-
-
---
--- Name: games games_pk; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.games
-    ADD CONSTRAINT games_pk PRIMARY KEY (gameid);
-
-
---
--- Name: grouplist grouplist_pk; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.grouplist
-    ADD CONSTRAINT grouplist_pk PRIMARY KEY (groupid);
-
-
---
--- Name: init_packet_caches init_packet_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.init_packet_caches
-    ADD CONSTRAINT init_packet_caches_pkey PRIMARY KEY (cookie);
-
-
---
--- Name: messages messages_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.messages
-    ADD CONSTRAINT messages_pkey PRIMARY KEY (messageid);
-
-
---
--- Name: nat_fail_cachess nat_fail_cachess_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.nat_fail_cachess
-    ADD CONSTRAINT nat_fail_cachess_pkey PRIMARY KEY (record_id);
-
-
---
--- Name: partner partner_pk; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.partner
-    ADD CONSTRAINT partner_pk PRIMARY KEY (partnerid);
-
-
---
--- Name: profiles profiles_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.profiles
-    ADD CONSTRAINT profiles_pkey PRIMARY KEY (profileid);
-
-
---
--- Name: pstorage pstorage_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.pstorage
-    ADD CONSTRAINT pstorage_pkey PRIMARY KEY (pstorageid);
-
-
---
--- Name: relay_server_caches relay_server_caches_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.relay_server_caches
-    ADD CONSTRAINT relay_server_caches_pkey PRIMARY KEY (server_id);
-
-
---
--- Name: sakestorage sakestorage_pk; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.sakestorage
-    ADD CONSTRAINT sakestorage_pk PRIMARY KEY (sakestorageid);
-
-
---
--- Name: subprofiles subprofiles_pkey; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.subprofiles
-    ADD CONSTRAINT subprofiles_pkey PRIMARY KEY (subprofileid);
-
-
---
--- Name: users users_pk; Type: CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.users
-    ADD CONSTRAINT users_pk PRIMARY KEY (userid);
-
-
 --
 -- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
 --
@@ -5648,7 +5495,7 @@ ALTER TABLE ONLY unispy.profiles
     ADD CONSTRAINT profiles_userid_fkey FOREIGN KEY (userid) REFERENCES unispy.users(userid);
 
 
---
--- PostgreSQL database dump complete
---
+
+PostgreSQL database dump complete
+
 

@@ -54,15 +54,30 @@ def get_peer_staging_channels(game_name: str, group_id: int) -> list[GameServerI
     return data
 
 
-def get_peer_group_channel(group_id: int) -> list[PeerRoomInfo]:
-    assert isinstance(group_id, int)
-    group_name = f"{PeerRoom.GroupRoomPrefix}!{group_id}"
+def get_group_data_list_by_gamename(game_name: str) -> list[dict]:
+    assert isinstance(game_name, str)
+    if game_name not in PEER_GROUP_LIST:
+        raise ValueError(f"game name: {game_name} not in PEER_GROUP_LIST")
+    # the group id list length can not be 0
+    result = PEER_GROUP_LIST[game_name]
+    assert len(result) != 0
+    return result
 
-    result = PG_SESSION.query(ChatChannelCaches).where(
-        ChatChannelCaches.channel_name == group_name).all()
-    data = []
-    for s in result:
-        data.append(PeerRoomInfo(**s))
+
+def get_peer_group_channel(group_data: list[dict]) -> list[PeerRoomInfo]:
+    assert isinstance(group_data, list) and all(
+        isinstance(id, dict) for id in group_data)
+    # Construct the group names based on the provided group_ids
+    group_names = [f"{PeerRoom.GroupRoomPrefix}!{item['group_id']}" for item in group_data]
+
+    # Query the database for channels matching the constructed group names
+    result = PG_SESSION.query(ChatChannelCaches).filter(
+        ChatChannelCaches.channel_name.in_(group_names)
+    ).all()
+
+    # Convert the result to a list of PeerRoomInfo objects
+    data = [PeerRoomInfo(**s) for s in result]
+    
     return data
 
 

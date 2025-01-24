@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.server_browser.requests import *
 import backends.protocols.gamespy.query_report.data as data
@@ -12,6 +13,7 @@ from servers.server_browser.src.v2.contracts.results import P2PGroupRoomListResu
 
 class ServerListHandler(HandlerBase):
     _request: ServerListRequest
+    _caches: list[PeerRoomInfo] | list[GameServerInfo]
 
     async def _data_operate(self):
         if self._request.update_option in\
@@ -20,11 +22,13 @@ class ServerListHandler(HandlerBase):
              ServerListUpdateOption.LIMIT_RESULT_COUNT,
              ServerListUpdateOption.SERVER_FULL_INFO_LIST,]:
 
-            self.data = data.get_server_info_list_with_game_name(
+            self._caches = data.get_server_info_list_with_game_name(
                 self._request.game_name)
 
         elif self._request.update_option == ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-            self.data = data.get_peer_group_channel
+            group_data = data.get_group_data_list_by_gamename(
+                self._request.game_name)
+            self._caches = data.get_peer_group_channel(group_data)
         else:
             raise ServerBrowserException(
                 "invalid server browser update option")
@@ -35,13 +39,19 @@ class ServerListHandler(HandlerBase):
              ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
              ServerListUpdateOption.LIMIT_RESULT_COUNT,
              ServerListUpdateOption.SERVER_FULL_INFO_LIST,]:
-            assert isinstance(self.data, GameServerInfo)
+            assert isinstance(self._caches, list) and all(
+                isinstance(item, GameServerInfo) for item in self._caches)
+            if TYPE_CHECKING:
+                self._caches = cast(list[GameServerInfo], self._caches)
             self._result = ServerMainListResult(client_remote_ip=self._request.client_ip,
-                                                flag=GameServerFlags.HAS_KEYS_FLAG, game_secret_key="", servers_info=self.data)
+                                                flag=GameServerFlags.HAS_KEYS_FLAG, game_secret_key="", servers_info=self._caches)
         elif self._request.update_option == ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-            assert isinstance(self.data, PeerRoomInfo)
+            assert isinstance(self._caches, list) and all(
+                isinstance(item, PeerRoomInfo) for item in self._caches)
+            if TYPE_CHECKING:
+                self._caches = cast(list[PeerRoomInfo], self._caches)
             self._result = P2PGroupRoomListResult(
-                client_remote_ip=self._request.client_ip, flag=GameServerFlags.HAS_KEYS_FLAG, game_secret_key="", peer_room_info=self.data)
+                client_remote_ip=self._request.client_ip, flag=GameServerFlags.HAS_KEYS_FLAG, game_secret_key="", peer_room_info=self._caches)
         else:
             raise ServerBrowserException(
                 "invalid server browser update option")
