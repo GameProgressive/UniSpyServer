@@ -1,2 +1,3 @@
 
 class IntegrationTest:
+    pass

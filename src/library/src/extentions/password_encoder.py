@@ -10,7 +10,7 @@ def process_password(request: dict):
     if "passwordenc" in request:
         md5_password = get_md5_hash(decode(request["passwordenc"]))
     elif "passenc" in request:
-        md5_password = get_md5_hash(decode(request["passenc"]))
+        md5_password = get_md5_hash(request["passenc"])
     elif "pass" in request:
         md5_password = get_md5_hash(request["pass"])
     elif "password" in request:

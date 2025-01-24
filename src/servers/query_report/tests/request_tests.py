@@ -14,7 +14,7 @@ class RequestTest(unittest.TestCase):
         request = AvaliableRequest(raw)
         request.parse()
         self.assertEqual(RequestType.AVALIABLE_CHECK, request.command_name)
-        self.assertEqual(0, request.instant_key)
+        self.assertEqual("0", request.instant_key)
 
     def test_challenge(self):
         raw = bytes([
@@ -26,7 +26,7 @@ class RequestTest(unittest.TestCase):
         request = ChallengeRequest(raw)
         request.parse()
         self.assertEqual(RequestType.CHALLENGE, request.command_name)
-        self.assertEqual(0, request.instant_key)
+        self.assertEqual("0", request.instant_key)
 
     def test_echo_request(self):
         raw = bytes([
@@ -38,7 +38,7 @@ class RequestTest(unittest.TestCase):
         request = EchoRequest(raw)
         request.parse()
         self.assertEqual(RequestType.ECHO, request.command_name)
-        self.assertEqual(0, request.instant_key)
+        self.assertEqual("0", request.instant_key)
 
     def test_heartbeat(self):
         raw = bytes([
@@ -46,7 +46,7 @@ class RequestTest(unittest.TestCase):
         request = HeartBeatRequest(raw)
         request.parse()
         self.assertEqual("gmtest", request.game_name)
-        self.assertEqual(2921297764, request.instant_key)
+        self.assertEqual("2921297764", request.instant_key)
         self.assertEqual(6, len(request.player_data))
         self.assertEqual(19, len(request.server_data))
         self.assertEqual(2, len(request.team_data))

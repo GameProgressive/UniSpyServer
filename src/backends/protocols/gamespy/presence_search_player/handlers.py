@@ -140,15 +140,19 @@ class SearchHandler(HandlerBase):
 
     async def _data_operate(self) -> None:
         if self._request.request_type == SearchType.NICK_SEARCH:
+            assert self._request.nick
             self._data = data.get_matched_info_by_nick(self._request.nick)
-
         elif self._request.request_type == SearchType.NICK_EMAIL_SEARCH:
+            assert self._request.email
+            assert self._request.nick
             data.get_matched_info_by_nick_and_email(
                 self._request.nick, self._request.email)
         elif self._request.request_type == SearchType.UNIQUENICK_NAMESPACEID_SEARCH:
+            assert self._request.uniquenick
             self._data = data.get_matched_info_by_uniquenick_and_namespaceid(
                 self._request.uniquenick, self._request.namespace_id)
         elif self._request.request_type == SearchType.EMAIL_SEARCH:
+            assert self._request.email
             self._data = data.get_matched_info_by_email(self._request.email)
         else:
             raise UniSpyException("search type invalid")

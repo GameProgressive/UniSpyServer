@@ -110,10 +110,11 @@ class NewUserRequest(RequestBase):
 class NicksRequest(RequestBase):
     password: str
     email: str
-    is_require_uniquenicks: bool = True
+    is_require_uniquenicks: bool
 
     def parse(self):
         super().parse()
+        self.is_require_uniquenicks = True
         self.password = process_password(self.request_dict)
         if "email" not in self.request_dict.keys():
             raise GPParseException("email is missing.")
@@ -185,6 +186,7 @@ class SearchRequest(RequestBase):
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.skip_num = 0
+        self.partner_id = 0
 
     def parse(self) -> None:
         super().parse()
@@ -250,11 +252,11 @@ class SearchRequest(RequestBase):
 
 class SearchUniqueRequest(RequestBase):
     uniquenick: str
-    namespace_ids: list[int] = []
+    namespace_ids: list[int]
 
     def parse(self):
         super().parse()
-
+        self.namespace_ids = []
         if (
             "uniquenick" not in self.request_dict
             or "namespaces" not in self.request_dict

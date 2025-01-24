@@ -38,8 +38,8 @@ class NewUserRequest(RequestBase):
 class NicksRequest(RequestBase):
     password: str
     email: str
-    is_require_uniquenicks: bool
     namespace_id: int
+    is_require_uniquenicks: bool
 
 
 class OthersListRequest(RequestBase):

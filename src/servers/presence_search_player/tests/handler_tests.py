@@ -6,7 +6,7 @@ from library.tests.mock_objects import create_mock_url
 from servers.presence_search_player.src.contracts.requests import SearchRequest
 from servers.presence_search_player.src.applications.handlers import SearchHandler
 from servers.presence_search_player.tests.mock_objects import create_client
-
+CHECK1 = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
 
 SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\namespaceid\\0\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\email\\spyguy@unispy.org\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
@@ -29,8 +29,6 @@ OTHER_BUDDY = "\\others\\\\sesskey\\123456\\profileid\\0\\namespaceid\\0\\gamena
 OTHERS_BUDDY_LIST = "\\otherlist\\\\sesskey\\123456\\profileid\\0\\numopids\\2\\opids\\1|2\\namespaceid\\0\\gamename\\gmtest\\final\\"
 
 SUGGEST_UNIQUE = "\\uniquesearch\\\\preferrednick\\xiaojiuwo\\namespaceid\\0\\gamename\\gmtest\\final\\"
-
-
 
 
 class HandlerTests(unittest.TestCase):
@@ -61,7 +59,6 @@ class HandlerTests(unittest.TestCase):
         request = SearchRequest(SEARCH_4)
         request.parse()
         self.assertEqual("spyguy@unispy.org", request.email)
-
 
         handler = SearchHandler(client, request)
         handler.handle()

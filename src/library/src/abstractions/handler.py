@@ -79,12 +79,13 @@ class CmdHandlerBase:
         self._temp_data = self._request.to_dict()
         if "server_id" in self._temp_data:
             raise UniSpyException("server_id name collision in dict")
-        self._temp_data["server_id"] = self._client.server_config.server_id
         if "client_ip" in self._temp_data:
             raise UniSpyException("client_ip name collision in dict")
-        self._temp_data["client_ip"] = self._client.connection.remote_ip
         if "client_port" in self._temp_data:
             raise UniSpyException("client_port name collision in dict")
+        # add the server info to json request dict
+        self._temp_data["client_ip"] = self._client.connection.remote_ip
+        self._temp_data["server_id"] = self._client.server_config.server_id
         self._temp_data["client_port"] = self._client.connection.remote_port
 
     def _upload_data(self):
