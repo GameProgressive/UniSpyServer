@@ -40,11 +40,6 @@ class NewUserRequest(RequestBase):
     product_id: int
     game_port: int
     cd_key: str
-    has_game_name: bool
-    has_product_id: bool
-    has_cdkey: bool
-    has_partner_id: bool
-    has_game_port: bool
     nick: str
     email: str
     password: str
@@ -79,7 +74,6 @@ class NewUserRequest(RequestBase):
         if "partnerid" in self.request_dict:
             try:
                 self.partner_id = int(self.request_dict["partnerid"])
-                self.has_partner_id_flag = True
             except ValueError:
                 raise GPParseException("partnerid is incorrect.")
         else:
@@ -87,23 +81,22 @@ class NewUserRequest(RequestBase):
         if "productid" in self.request_dict:
             try:
                 self.product_id = int(self.request_dict["productid"])
-                self.has_product_id_flag = True
             except ValueError:
                 raise GPParseException("productid is incorrect.")
+        else:
+            # we give default product id here
+            self.product_id = 0
 
         if "gamename" in self.request_dict:
-            self.has_game_name_flag = True
             self.game_name = self.request_dict["gamename"]
 
         if "port" in self.request_dict:
             try:
                 self.game_port = int(self.request_dict["port"])
-                self.has_game_port_flag = True
             except ValueError:
                 raise GPParseException("port is incorrect.")
 
         if "cdkey" in self.request_dict:
-            self.has_cd_key_enc_flag = True
             self.cd_key = self.request_dict["cdkey"]
 
 

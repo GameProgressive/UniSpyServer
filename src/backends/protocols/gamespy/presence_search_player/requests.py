@@ -1,3 +1,4 @@
+from typing import Optional
 from backends.library.abstractions.contracts import RequestBase as RB
 from servers.presence_search_player.src.aggregates.enums import SearchType
 
@@ -18,21 +19,16 @@ class CheckRequest(RequestBase):
 
 
 class NewUserRequest(RequestBase):
-    product_id: int
-    game_port: int
-    cd_key: str
-    has_game_name: bool
-    has_product_id: bool
-    has_cdkey: bool
-    has_partner_id: bool
-    has_game_port: bool
     nick: str
     email: str
     password: str
-    partner_id: int
-    game_name: str
     uniquenick: str
     namespace_id: int
+    product_id: int
+    game_port: Optional[int] = None
+    cd_key: Optional[str] = None
+    partner_id: Optional[int] = None
+    game_name: Optional[str] = None
 
 
 class NicksRequest(RequestBase):
@@ -57,7 +53,7 @@ class SearchRequest(RequestBase):
     skip_num: int
     request_type: SearchType
     game_name: str
-    profile_id: int| None = None
+    profile_id: int | None = None
     partner_id: int
     email: str | None = None
     nick: str | None = None
