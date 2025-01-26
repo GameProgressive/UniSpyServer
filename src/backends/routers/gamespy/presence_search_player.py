@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from backends.library.abstractions.contracts import Response
+from backends.protocols.gamespy.presence_search_player.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler
 from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 from backends.urls import PRESENCE_SEARCH_PLAYER
 
@@ -8,22 +10,30 @@ router = APIRouter()
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/CheckHandler")
 async def check(request: CheckRequest):
-    raise NotImplementedError()
+    handler = CheckHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/NewUserHandler")
 async def new_user(request: NewUserRequest):
-    raise NotImplementedError()
+    handler = NewUserHandler(request)
+    await handler.handle()
+    handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/NicksHandler")
 async def nicks(request: NicksRequest):
-    raise NotImplementedError()
+    handler = NicksHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersHandler")
 async def others(request: OthersRequest):
-    raise NotImplementedError()
+    handler = OthersHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersListHandler")
@@ -59,7 +69,6 @@ async def valid(request: ValidRequest):
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
-
     app = FastAPI()
     app.include_router(router)
-    uvicorn.run(router, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

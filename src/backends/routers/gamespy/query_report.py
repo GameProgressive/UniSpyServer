@@ -12,7 +12,7 @@ router = APIRouter()
 async def heartbeat(request: HeartBeatRequest):
     handler = Heartbeathandler(request)
     await handler.handle()
-    return handler.response
+    return handler._response
 
 
 @router.post(f"{QUERY_REPORT}/ChallengeHanler")
@@ -24,7 +24,7 @@ async def challenge(request: ChallengeRequest):
 async def available(request: AvaliableRequest):
     handler = AvaliableHandler(request)
     await handler.handle()
-    return handler.response
+    return handler._response
 
 
 @router.post(f"{QUERY_REPORT}/ClientMessageAckHandler")
@@ -45,7 +45,6 @@ async def keep_alive(request: KeepAliveRequest):
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
-
     app = FastAPI()
     app.include_router(router)
-    uvicorn.run(router, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

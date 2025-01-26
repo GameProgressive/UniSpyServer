@@ -11,4 +11,4 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         req = HeartBeatRequest(**request)
         handler = Heartbeathandler(req)
         await handler.handle()
-        handler.response
+        handler._response

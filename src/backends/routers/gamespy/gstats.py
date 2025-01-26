@@ -9,38 +9,47 @@ router = APIRouter()
 async def auth_game(request: AuthGameRequest):
     handler = AuthGameHandler(request)
     await handler.handle()
-    return handler.response
+    return handler._response
 
 
 @router.post(f"{GAMESTATUS}/AuthPlayerHandler")
 async def auth_player(request: AuthPlayerRequest):
-    raise NotImplementedError()
+    handler = AuthPlayerHandler(request)
+    await handler.handle()
+    return handler._response
 
 
 @router.post(f"{GAMESTATUS}/NewGameHandler")
 async def new_game(request: NewGameRequest):
-    raise NotImplementedError()
+    handler = NewGameHandler(request)
+    await handler.handle()
+    return handler._response
 
 
 @router.post(f"{GAMESTATUS}/GetPlayerDataHandler")
 async def get_player_data(request: GetPlayerDataRequest):
-    raise NotImplementedError()
+    handler = GetPlayerDataHandler(request)
+    await handler.handle()
+    return handler._response
 
 
 @router.post(f"{GAMESTATUS}/SetPlayerDataHandler")
 async def set_player_data(request: SetPlayerDataRequest):
-    raise NotImplementedError()
+    handler = SetPlayerDataHandler(request)
+    await handler.handle()
+    return handler._response
 
 
 @router.post(f"{GAMESTATUS}/UpdateGameHandler")
 async def updaet_game(request: UpdateGameRequest):
-    raise NotImplementedError()
+    handler = UpdateGameHandler(request)
+    await handler.handle()
+    return handler._response
 
 
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
-
     app = FastAPI()
     app.include_router(router)
-    uvicorn.run(router, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

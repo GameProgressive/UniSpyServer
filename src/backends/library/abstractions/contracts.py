@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic import BaseModel, UUID4
 
 
@@ -15,5 +16,22 @@ class RequestBase(BaseModel):
     client_port: int
 
 
-class ErrorResponse(BaseModel):
+class Response(BaseModel):
     message: str
+
+    def to_json_dict(self) -> dict:
+        return self.model_dump(mode="json")
+
+
+class OKResponse(Response):
+    message: str = "ok"
+
+
+class DataResponse(OKResponse):
+    result: object
+    pass
+
+
+class ErrorResponse(Response):
+    # code: int
+    pass

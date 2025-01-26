@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING, Optional, cast
-from sqlalchemy import Column
+from sqlalchemy import Column, and_
 from backends.library.database.pg_orm import (
     Friends,
     Profiles,
@@ -146,12 +146,12 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> 
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Friends, Profiles.profileid == Friends.friendid)
+        # todo check whether friends table join is correct
         .where(
-            Profiles.profileid.in_(PG_SESSION.query(
-                Friends.profileid == profile_id)),
+            Friends.profileid == profile_id,
             SubProfiles.namespaceid == namespace_id,
-            SubProfiles.gamename == game_name,
-        )
+            SubProfiles.gamename == game_name,)
         .all()
     )
     return result

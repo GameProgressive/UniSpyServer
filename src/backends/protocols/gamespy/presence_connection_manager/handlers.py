@@ -164,7 +164,15 @@ class StatusHandler(HandlerBase):
             self._result = StatusResult(status=self.data)
 
 
+class StatusInfoHandler(HandlerBase):
+    _request: StatusInfoRequest
+
+    async def _data_operate(self) -> None:
+        raise NotImplementedError()
+    
+    
 # region Profile
+
 
 class GetProfileHandler(HandlerBase):
     _request: GetProfileRequest

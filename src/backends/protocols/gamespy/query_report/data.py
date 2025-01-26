@@ -68,7 +68,8 @@ def get_peer_group_channel(group_data: list[dict]) -> list[PeerRoomInfo]:
     assert isinstance(group_data, list) and all(
         isinstance(id, dict) for id in group_data)
     # Construct the group names based on the provided group_ids
-    group_names = [f"{PeerRoom.GroupRoomPrefix}!{item['group_id']}" for item in group_data]
+    group_names = [f"{PeerRoom.GroupRoomPrefix}!{
+        item['group_id']}" for item in group_data]
 
     # Query the database for channels matching the constructed group names
     result = PG_SESSION.query(ChatChannelCaches).filter(
@@ -77,11 +78,11 @@ def get_peer_group_channel(group_data: list[dict]) -> list[PeerRoomInfo]:
 
     # Convert the result to a list of PeerRoomInfo objects
     data = [PeerRoomInfo(**s) for s in result]
-    
+
     return data
 
 
-def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerInfo]:
+def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerCaches]:
     assert isinstance(instant_key, str)
     result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.instant_key == instant_key).first()
