@@ -3,9 +3,9 @@ from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
 import backends.protocols.gamespy.presence_search_player.data as data
 from backends.protocols.gamespy.presence_search_player.requests import *
-from library.src.exceptions.general import UniSpyException
-from servers.presence_search_player.src.aggregates.exceptions import CheckException
-from servers.presence_search_player.src.contracts.results import CheckResult, NewUserResult, NickResultData, NicksResult, OthersListData, OthersListResult, OthersResult, OthersResultData, SearchResult, SearchUniqueResult, UniqueSearchResult, ValidResult
+from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import CheckException
+from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, NewUserResult, NickResultData, NicksResult, OthersListData, OthersListResult, OthersResult, OthersResultData, SearchResult, SearchResultData, SearchUniqueResult, UniqueSearchResult, ValidResult
 
 
 class CheckHandler(HandlerBase):
@@ -19,13 +19,15 @@ class CheckHandler(HandlerBase):
             raise CheckException("The email is not existed")
         if data.verify_email_and_password(self._request.email, self._request.password):
             raise CheckException("The password is incorrect")
-        profile_id = data.get_profile_id(
+        self._profile_id = data.get_profile_id(
             self._request.email, self._request.password, self._request.nick, self._request.partner_id)
-        if profile_id is None:
+        if self._profile_id is None:
             raise CheckException(f"No pid found with email{
                                  self._request.email}")
 
-        self._result = CheckResult(profile_id=profile_id)
+    async def _result_construct(self) -> None:
+        assert self._profile_id is not None
+        self._result = CheckResult(profile_id=self._profile_id)
 
 
 class NewUserHandler(HandlerBase):
@@ -105,7 +107,7 @@ class OthersHandler(HandlerBase):
     _request: OthersRequest
 
     async def _data_operate(self) -> None:
-        self._data = data.get_friend_info_list(
+        self._data: list = data.get_friend_info_list(
             self._request.profile_id, self._request.namespace_id, self._request.game_name)
 
     async def _result_construct(self) -> None:
@@ -121,7 +123,7 @@ class OthersListHandler(HandlerBase):
     _request: OthersListRequest
 
     async def _data_operate(self) -> None:
-        self._data = data.get_matched_profile_info_list(
+        self._data: list = data.get_matched_profile_info_list(
             self._request.profile_ids, self._request.namespace_id)
 
     async def _result_construct(self) -> None:
@@ -145,7 +147,7 @@ class SearchHandler(HandlerBase):
         elif self._request.request_type == SearchType.NICK_EMAIL_SEARCH:
             assert self._request.email
             assert self._request.nick
-            data.get_matched_info_by_nick_and_email(
+            self._data = data.get_matched_info_by_nick_and_email(
                 self._request.nick, self._request.email)
         elif self._request.request_type == SearchType.UNIQUENICK_NAMESPACEID_SEARCH:
             assert self._request.uniquenick
@@ -158,7 +160,11 @@ class SearchHandler(HandlerBase):
             raise UniSpyException("search type invalid")
 
     async def _result_construct(self) -> None:
-        self._result = SearchResult(result=self._data)
+        data = []
+        for d in self._data:
+            dd = SearchResultData(**d)
+        data.append(dd)
+        self._result = SearchResult(data=data)
 
 
 class SearchUniqueHandler(HandlerBase):
@@ -169,7 +175,11 @@ class SearchUniqueHandler(HandlerBase):
             self._request.uniquenick, self._request.namespace_ids)
 
     async def _result_construct(self) -> None:
-        self._result = SearchUniqueResult(data=self._data)
+        data = []
+        for d in self._data:
+            dd = SearchResultData(**d)
+            data.append(dd)
+        self._result = SearchUniqueResult(data=data)
 
 
 class UniqueSearchHandler(HandlerBase):

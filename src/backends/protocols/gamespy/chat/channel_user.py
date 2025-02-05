@@ -1,11 +1,11 @@
 # from uuid import UUID
 
 # from backends.protocols.gamespy.chat.managers import KeyValueManager
-# from servers.chat.src.applications.client import Client
+# from frontends.gamespy.protocols.chat.applications.client import Client
 # from typing import TYPE_CHECKING
 
 # if TYPE_CHECKING:
-#     from servers.chat.src.aggregates.channel import Channel
+#     from frontends.gamespy.protocols.chat.aggregates.channel import Channel
 
 
 # class ChannelUser:

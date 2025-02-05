@@ -2,14 +2,14 @@ from typing import Optional, Union
 
 from pydantic import UUID4, BaseModel
 
-from servers.presence_connection_manager.src.aggregates.enums import (
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginType,
     PublicMasks,
     SdkRevisionType,
 )
 
 from backends.library.abstractions.contracts import RequestBase
-from servers.presence_connection_manager.src.aggregates.user_status import UserStatus, UserStatusInfo
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.user_status import UserStatus, UserStatusInfo
 
 
 class ErrorOnParse(RequestBase):

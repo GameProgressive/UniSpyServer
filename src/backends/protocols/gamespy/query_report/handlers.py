@@ -2,7 +2,7 @@ from datetime import datetime
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, GameServerCaches
 from backends.protocols.gamespy.query_report.requests import *
-from servers.query_report.src.aggregates.exceptions import QRException
+from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 import backends.protocols.gamespy.query_report.data as data
 
 

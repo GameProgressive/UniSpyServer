@@ -1,11 +1,11 @@
 from typing import Optional, final
 from backends.library.abstractions.contracts import DataResponse, ErrorResponse, OKResponse, RequestBase, Response
 from backends.library.database.pg_orm import PG_SESSION
-from library.src.abstractions.contracts import ResultBase
+from frontends.gamespy.library.abstractions.contracts import ResultBase
 
 import logging
 
-from library.src.exceptions.general import UniSpyException
+from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 class HandlerBase:
@@ -17,6 +17,10 @@ class HandlerBase:
     _response: Response
     """
     the response using to wrap data
+    """
+    # _data: object
+    """
+    the data get from database, can be any type
     """
     @property
     def response(self) -> dict:

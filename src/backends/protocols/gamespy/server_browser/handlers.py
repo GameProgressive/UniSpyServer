@@ -2,11 +2,11 @@ from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.server_browser.requests import *
 import backends.protocols.gamespy.query_report.data as data
-from servers.query_report.src.aggregates.game_server_info import GameServerInfo
-from servers.query_report.src.aggregates.peer_room_info import PeerRoomInfo
-from servers.server_browser.src.aggregates.exceptions import ServerBrowserException
-from servers.server_browser.src.v2.aggregations.enums import GameServerFlags, ServerListUpdateOption
-from servers.server_browser.src.v2.contracts.results import P2PGroupRoomListResult, SendMessageResult, ServerInfoResult, ServerMainListResult
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
+from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import PeerRoomInfo
+from frontends.gamespy.protocols.server_browser.aggregates.exceptions import ServerBrowserException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags, ServerListUpdateOption
+from frontends.gamespy.protocols.server_browser.v2.contracts.results import P2PGroupRoomListResult, SendMessageResult, ServerInfoResult, ServerMainListResult
 
 # region Server list
 

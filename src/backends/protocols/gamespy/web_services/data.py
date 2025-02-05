@@ -4,9 +4,9 @@
 
 from typing import TYPE_CHECKING, cast, overload
 from backends.library.database.pg_orm import PG_SESSION, Profiles, SubProfiles, Users, SakeStorage
-from servers.web_services.src.aggregations.exceptions import WebException
-from servers.web_services.src.modules.auth.exceptions.general import AuthException
-from servers.web_services.src.modules.sake.exceptions.general import SakeException
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
+from frontends.gamespy.protocols.web_services.modules.auth.exceptions.general import AuthException
+from frontends.gamespy.protocols.web_services.modules.sake.exceptions.general import SakeException
 
 
 def is_user_exist(uniquenick: str, cdkey: str, partner_id: int, namespace_id: int, email: str, password: str) -> None:

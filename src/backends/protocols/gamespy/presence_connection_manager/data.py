@@ -12,10 +12,10 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
-from servers.presence_connection_manager.src.aggregates.enums import GPStatusCode, LoginStatus
-from servers.presence_connection_manager.src.aggregates.user_status import UserStatus
-from servers.presence_connection_manager.src.contracts.results import GetProfileData, LoginData
-from servers.presence_search_player.src.aggregates.exceptions import GPAddBuddyException, GPDatabaseException, GPStatusException, GPException
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPStatusCode, LoginStatus
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.user_status import UserStatus
+from frontends.gamespy.protocols.presence_connection_manager.contracts.results import GetProfileData, LoginData
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPAddBuddyException, GPDatabaseException, GPStatusException, GPException
 from backends.protocols.gamespy.presence_search_player.data import is_email_exist
 # region General
 

@@ -11,4 +11,7 @@
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
     "python.analysis.enablePytestSupport": false,
+    "python.analysis.extraPaths": [
+        "./frontends/gamespy"
+    ],
 }

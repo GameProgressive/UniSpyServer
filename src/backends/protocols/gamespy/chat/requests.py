@@ -1,5 +1,5 @@
 import backends.library.abstractions.contracts as lib
-from servers.chat.src.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeRequestType, TopicRequestType, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeRequestType, TopicRequestType, WhoRequestType
 
 
 class RequestBase(lib.RequestBase):
@@ -24,7 +24,7 @@ class GetUdpRelayRequest(RequestBase):
 
 class InviteRequest(RequestBase):
     channel_name: str
-    nick_name: str
+    nick_name:str
 
 
 class ListLimitRequest(RequestBase):
@@ -38,7 +38,7 @@ class ListRequest(RequestBase):
     filter: str
 
 
-class LoginPreAuth(RequestBase):
+class LoginPreAuthRequest(RequestBase):
     auth_token: str
     partner_challenge: str
 

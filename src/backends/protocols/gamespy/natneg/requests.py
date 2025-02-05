@@ -1,4 +1,4 @@
-from servers.natneg.src.aggregations.enums import (
+from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
     NatPortType,

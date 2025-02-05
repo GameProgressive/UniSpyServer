@@ -2,8 +2,8 @@ from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.presence_connection_manager.requests import *
 import backends.protocols.gamespy.presence_connection_manager.data as data
-from servers.presence_connection_manager.src.contracts.results import BlockListResult, BuddyListResult, GetProfileResult, LoginResult, StatusResult
-from servers.presence_search_player.src.aggregates.exceptions import GPLoginBadEmailException
+from frontends.gamespy.protocols.presence_connection_manager.contracts.results import BlockListResult, BuddyListResult, GetProfileResult, LoginResult, StatusResult
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPLoginBadEmailException
 # region General
 
 

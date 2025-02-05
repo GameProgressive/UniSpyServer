@@ -36,7 +36,7 @@
 
 
 # if TYPE_CHECKING:
-#     from servers.chat.src.aggregates.channel import Channel
+#     from frontends.gamespy.protocols.chat.aggregates.channel import Channel
 
 
 # class ChannelManager:

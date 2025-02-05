@@ -1,6 +1,6 @@
 from typing import List, Optional
 import backends.library.abstractions.contracts as lib
-from servers.server_browser.src.v2.aggregations.enums import RequestType, ServerListUpdateOption
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import RequestType, ServerListUpdateOption
 
 
 class RequestBase(lib.RequestBase):

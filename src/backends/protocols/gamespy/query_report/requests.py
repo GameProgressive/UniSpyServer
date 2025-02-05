@@ -2,7 +2,7 @@
 from pydantic import UUID4, Field, constr
 import backends.library.abstractions.contracts as lib
 
-from servers.query_report.src.v2.aggregates.enums import GameServerStatus, RequestType
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus, RequestType
 
 
 class RequestBase(lib.RequestBase):

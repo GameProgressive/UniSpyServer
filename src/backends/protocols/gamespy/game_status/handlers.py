@@ -3,8 +3,8 @@
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.game_status.requests import *
 import backends.protocols.gamespy.game_status.data as data
-from servers.game_status.src.aggregations.exceptions import GSException
-from servers.game_status.src.contracts.results import AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
+from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
+from frontends.gamespy.protocols.game_status.contracts.results import AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
 
 
 class AuthGameHandler(HandlerBase):

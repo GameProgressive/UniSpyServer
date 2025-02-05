@@ -7,8 +7,12 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
-from servers.presence_search_player.src.aggregates.exceptions import CheckException
-from servers.presence_search_player.src.contracts.results import *
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import CheckException
+from frontends.gamespy.protocols.presence_search_player.contracts.results import *
+
+
+def db_commit() -> None:
+    PG_SESSION.commit()
 
 
 def verify_email(email: str):
@@ -184,7 +188,7 @@ def get_matched_profile_info_list(
 
 def get_matched_info_by_nick(
     nick_name: str,
-) -> list[SearchResultData]:
+) -> list[dict]:
     result = (
         PG_SESSION.query(
             Users.email,
@@ -199,18 +203,19 @@ def get_matched_info_by_nick(
         .where(Profiles.nick == nick_name)
         .all()
     )
-    temp: list[SearchResultData] = []
+    temp: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = SearchResultData(profile_id=profile_id,
-                             nick=nick,
-                             uniquenick=uniquenick,
-                             email=email,
-                             namespace_id=namespace_id, firstname=firstname,
-                             lastname=lastname)
+        t = {"profile_id": profile_id,
+             "nick": nick,
+             "uniquenick": uniquenick,
+             "email": email,
+             "namespace_id": namespace_id,
+             "firstname": firstname,
+             "lastname": lastname}
         temp.append(t)
 
     return temp
@@ -218,7 +223,7 @@ def get_matched_info_by_nick(
 
 def get_matched_info_by_email(
     email: str,
-) -> list[SearchResultData]:
+) -> list[dict]:
     result = (
         PG_SESSION.query(
             Users.email,
@@ -233,23 +238,24 @@ def get_matched_info_by_email(
         .where(Users.email == email)
         .all()
     )
-    temp: list[SearchResultData] = []
+    temp: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = SearchResultData(profile_id=profile_id,
-                             nick=nick,
-                             uniquenick=uniquenick,
-                             email=email,
-                             namespace_id=namespace_id, firstname=firstname,
-                             lastname=lastname)
+        t = {"profile_id": profile_id,
+             "nick": nick,
+             "uniquenick": uniquenick,
+             "email": email,
+             "namespace_id": namespace_id,
+             "firstname": firstname,
+             "lastname": lastname}
         temp.append(t)
     return temp
 
 
-def get_matched_info_by_nick_and_email(nick_name: str, email: str):
+def get_matched_info_by_nick_and_email(nick_name: str, email: str)->list[dict]:
 
     result = (
         PG_SESSION.query(
@@ -265,25 +271,26 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str):
         .where(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
-    temp: list[SearchResultData] = []
+    data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = SearchResultData(profile_id=profile_id,
-                             nick=nick,
-                             uniquenick=uniquenick,
-                             email=email,
-                             namespace_id=namespace_id, firstname=firstname,
-                             lastname=lastname)
-        temp.append(t)
-    return temp
+        t = {"profile_id": profile_id,
+             "nick": nick,
+             "uniquenick": uniquenick,
+             "email": email,
+             "namespace_id": namespace_id,
+             "firstname": firstname,
+             "lastname": lastname}
+        data.append(t)
+    return data
 
 
 def get_matched_info_by_uniquenick_and_namespaceid(
     unique_nick: str, namespace_id: int
-) -> list[SearchResultData]:
+) -> list[dict]:
     result = (
         PG_SESSION.query(
             Profiles.profileid,
@@ -300,26 +307,27 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         )
         .all()
     )
-    temp: list[SearchResultData] = []
+    data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = SearchResultData(profile_id=profile_id,
-                             nick=nick,
-                             uniquenick=uniquenick,
-                             email=email,
-                             namespace_id=namespace_id, firstname=firstname,
-                             lastname=lastname)
-        temp.append(t)
+        t = {"profile_id": profile_id,
+             "nick": nick,
+             "uniquenick": uniquenick,
+             "email": email,
+             "namespace_id": namespace_id,
+             "firstname": firstname,
+             "lastname": lastname}
+        data.append(t)
 
-    return temp
+    return data
 
 
 def get_matched_info_by_uniquenick_and_namespaceids(
     unique_nick: str, namespace_ids: list[int]
-) -> list[SearchResultData]:
+) -> list[dict]:
     result = (
         PG_SESSION.query(
             Profiles.profileid,
@@ -335,18 +343,19 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         )
         .all()
     )
-    data: list[SearchResultData] = []
+    data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = SearchResultData(profile_id=profile_id,
-                             nick=nick,
-                             uniquenick=uniquenick,
-                             email=email,
-                             namespace_id=namespace_id, firstname=firstname,
-                             lastname=lastname)
+        t = {"profile_id": profile_id,
+             "nick": nick,
+             "uniquenick": uniquenick,
+             "email": email,
+             "namespace_id": namespace_id,
+             "firstname": firstname,
+             "lastname": lastname}
         data.append(t)
 
     return data

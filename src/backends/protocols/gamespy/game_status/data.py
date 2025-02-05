@@ -2,8 +2,8 @@ from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column
 from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles, Users
-from servers.game_status.src.aggregations.enums import PersistStorageType
-from servers.game_status.src.aggregations.exceptions import GSException
+from frontends.gamespy.protocols.game_status.aggregations.enums import PersistStorageType
+from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 
 
 def create_new_game_data():

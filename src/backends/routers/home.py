@@ -5,8 +5,8 @@ from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 import uvicorn
 
-from library.src.log.log_manager import LogManager
-from library.src.configs import ServerConfig
+from frontends.gamespy.library.log.log_manager import LogManager
+from frontends.gamespy.library.configs import ServerConfig
 from backends.routers.gamespy import chat, gstats, natneg, presence_connection_manager, presence_search_player, query_report, server_browser, webservices
 app = FastAPI()
 

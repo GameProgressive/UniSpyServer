@@ -1,6 +1,6 @@
 from typing import Optional
 import backends.library.abstractions.contracts as lib
-from servers.game_status.src.aggregations.enums import AuthMethod, PersistStorageType
+from frontends.gamespy.protocols.game_status.aggregations.enums import AuthMethod, PersistStorageType
 
 
 class RequestBase(lib.RequestBase):

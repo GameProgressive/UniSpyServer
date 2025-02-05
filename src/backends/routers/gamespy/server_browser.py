@@ -1,4 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from backends.protocols.gamespy.server_browser.handlers import ServerInfoHandler, ServerListHandler
 from backends.protocols.gamespy.server_browser.requests import SendMessageRequest, ServerInfoRequest, ServerListRequest
 from backends.urls import SERVER_BROWSER_V1, SERVER_BROWSER_V2
 
@@ -31,12 +32,16 @@ async def send_message(request: SendMessageRequest):
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerInfoHandler")
 async def server_info(request: ServerInfoRequest):
-    raise NotImplementedError()
+    handler = ServerInfoHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerListHandler")
 async def server_list(request: ServerListRequest):
-    raise NotImplementedError()
+    handler = ServerListHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 if __name__ == "__main__":

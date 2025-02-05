@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import Response
-from backends.protocols.gamespy.presence_search_player.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler
+from backends.protocols.gamespy.presence_search_player.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler, OthersListHandler, SearchHandler, SearchUniqueHandler, UniqueSearchHandler, ValidHandler
 from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 from backends.urls import PRESENCE_SEARCH_PLAYER
 
@@ -38,7 +38,9 @@ async def others(request: OthersRequest):
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersListHandler")
 async def others_list(request: OthersListRequest):
-    raise NotImplementedError()
+    handler = OthersListHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/PMatchHandler")
@@ -48,22 +50,30 @@ async def player_match(request: dict):
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchHandler")
 async def search(request: SearchRequest):
-    raise NotImplementedError()
+    handler = SearchHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchUniqueHandler")
 async def search_unique(request: SearchUniqueRequest):
-    raise NotImplementedError()
+    handler = SearchUniqueHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/UniqueSearchHandler")
 async def unique_search(request: UniqueSearchRequest):
-    raise NotImplementedError()
+    handler = UniqueSearchHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/ValidHandler")
 async def valid(request: ValidRequest):
-    raise NotImplementedError()
+    handler = ValidHandler(request)
+    await handler.handle()
+    return handler.response
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, Optional, cast
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, GroupList, Games, GameServerCaches
-from servers.chat.src.aggregates.peer_room import PeerRoom
-from servers.query_report.src.aggregates.game_server_info import GameServerInfo
-from servers.query_report.src.aggregates.peer_room_info import PeerRoomInfo
-from servers.server_browser.src.aggregates.exceptions import ServerBrowserException
+from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
+from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import PeerRoomInfo
+from frontends.gamespy.protocols.server_browser.aggregates.exceptions import ServerBrowserException
 
 
 def get_all_groups() -> dict:

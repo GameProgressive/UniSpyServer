@@ -1,6 +1,6 @@
 import redis
 
-from library.src.configs import CONFIG
+from frontends.gamespy.library.configs import CONFIG
 
 
 # SESSION = redis.Redis.from_url(CONFIG.redis.url)

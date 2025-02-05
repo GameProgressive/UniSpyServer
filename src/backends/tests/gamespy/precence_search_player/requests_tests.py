@@ -1,8 +1,8 @@
 # the total requests tests
 import unittest
 
-import servers.presence_search_player.src.contracts.requests as psp
-from servers.presence_search_player.tests.handler_tests import (
+import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
+from frontends.tests.gamespy.presence_search_player.handler_tests import (
     NICKS, SEARCH_1, SEARCH_2, SEARCH_3, SEARCH_4, CHECK1, NEWUSER, SEARCH_UNIQUENICK, SUGGEST_UNIQUE, VALID)
 import backends.protocols.gamespy.presence_search_player.requests as bk
 

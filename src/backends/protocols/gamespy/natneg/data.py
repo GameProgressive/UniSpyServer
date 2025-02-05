@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from uuid import UUID
 from backends.library.database.pg_orm import PG_SESSION, InitPacketCaches, NatFailCaches
-from servers.natneg.src.aggregations.enums import NatClientIndex
+from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex
 
 
 def store_init_packet(info: InitPacketCaches) -> None:

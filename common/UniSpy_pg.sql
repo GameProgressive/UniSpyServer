@@ -135,29 +135,29 @@ ALTER TABLE unispy.chat_channel_caches OWNER TO unispy;
 -- Name: chat_nick_caches; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.chat_nick_caches (
+CREATE TABLE unispy.chat_user_caches (
+    user_id SERIAL PRIMARY KEY,
     server_id uuid NOT NULL,
     nick_name character varying NOT NULL UNIQUE,
     game_name character varying,
     user_name character varying,
     remote_ip_address inet NOT NULL,
-    remote_port integer NOT NULL,
+    remote_port INTEGER NOT NULL,
     key_value jsonb,
     update_time timestamp without time zone NOT NULL
 );
 
 
-ALTER TABLE unispy.chat_nick_caches OWNER TO unispy;
+ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
 
 --
 -- Name: chat_user_caches; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.chat_user_caches (
-    nick_name character varying NOT NULL UNIQUE,
-    channel_name character varying NOT NULL UNIQUE,
+CREATE TABLE unispy.chat_channel_user_caches (
+    userid INTEGER NOT NULL,
+    channel_name character varying NOT NULL,
     server_id uuid NOT NULL,
-    user_name character varying NOT NULL,
     update_time timestamp without time zone NOT NULL,
     is_voiceable boolean NOT NULL,
     is_channel_operator boolean NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE unispy.chat_user_caches (
 );
 
 
-ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
+ALTER TABLE unispy.chat_channel_user_caches OWNER TO unispy;
 
 --
 -- Name: friends; Type: TABLE; Schema: unispy; Owner: unispy
@@ -441,6 +441,7 @@ CREATE TABLE unispy.profiles (
     status smallint not NULL,
     statstring character varying,
     extra_info jsonb
+    FOREIGN key (userid) REFERENCES unispy.users (user_id) on delete cascade
 );
 
 
@@ -765,7 +766,7 @@ COPY unispy.chat_channel_caches (channel_name, server_id, game_name, room_name, 
 -- Data for Name: chat_nick_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.chat_nick_caches (server_id, nick_name, game_name, user_name, remote_ip_address, remote_port, key_value, update_time) FROM stdin;
+COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote_ip_address, remote_port, key_value, update_time) FROM stdin;
 \.
 
 
@@ -773,7 +774,7 @@ COPY unispy.chat_nick_caches (server_id, nick_name, game_name, user_name, remote
 -- Data for Name: chat_user_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.chat_user_caches (nick_name, channel_name, server_id, user_name, update_time, is_voiceable, is_channel_operator, is_channel_creator, remote_ip_address, remote_port, key_values) FROM stdin;
+COPY unispy.chat_channel_user_caches (nick_name, channel_name, server_id, user_name, update_time, is_voiceable, is_channel_operator, is_channel_creator, remote_ip_address, remote_port, key_values) FROM stdin;
 \.
 
 
@@ -5475,7 +5476,7 @@ SELECT pg_catalog.setval('unispy.users_userid_seq', 5, true);
 -- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.chat_user_caches
+ALTER TABLE ONLY unispy.chat_channel_user_caches
     ADD CONSTRAINT chat_user_caches_channel_name_fkey FOREIGN KEY (channel_name) REFERENCES unispy.chat_channel_caches(channel_name);
 
 
@@ -5494,7 +5495,11 @@ ALTER TABLE ONLY unispy.grouplist
 ALTER TABLE ONLY unispy.profiles
     ADD CONSTRAINT profiles_userid_fkey FOREIGN KEY (userid) REFERENCES unispy.users(userid);
 
+ALTER TABLE ONLY unispy.chat_channel_user_caches
+    ADD CONSTRAINT chat_channel_user_caches_userid_fkey FOREGIN KEY(userid) unispy.chat_user_caches(userid)
 
+ALTER TABLE ONLY unispy.chat_channel_user_caches
+    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREGIN KEY(channel_name) unispy.chat_channel_caches(channel_name)
 
 PostgreSQL database dump complete
 

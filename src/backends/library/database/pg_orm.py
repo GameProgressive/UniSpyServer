@@ -1,4 +1,4 @@
-from library.src.configs import CONFIG
+from frontends.gamespy.library.configs import CONFIG
 from datetime import datetime
 from sqlalchemy import (
     Boolean,
@@ -19,9 +19,9 @@ from sqlalchemy.dialects.postgresql import JSONB, INET
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.types import TypeDecorator
-from servers.natneg.src.aggregations.enums import NatClientIndex, NatPortType
-from servers.presence_connection_manager.src.aggregates.enums import FriendRequestStatus, GPStatusCode
-from servers.query_report.src.v2.aggregates.enums import GameServerStatus
+from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex, NatPortType
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import FriendRequestStatus, GPStatusCode
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 import sqlalchemy as sa
 import enum
 
@@ -238,8 +238,12 @@ class ChatChannelCaches(Base):
     update_time = Column(DateTime, nullable=False)
 
 
-class ChatNickCaches(Base):
+class ChatUserCaches(Base):
+    """
+    each user only have a unique nick caches, but have multiple user caches
+    """
     __tablename__ = "chat_nick_caches"
+    user_id = Column(Integer, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
     nick_name = Column(String, primary_key=True, nullable=False)
     game_name = Column(String, nullable=True)
@@ -250,13 +254,12 @@ class ChatNickCaches(Base):
     update_time = Column(DateTime, nullable=False)
 
 
-class ChatUserCaches(Base):
+class ChatChannelUserCaches(Base):
     __tablename__ = "chat_user_caches"
-    nick_name = Column(String, primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(
+        "chat_channel_caches.user_id"), primary_key=True, nullable=False)
     channel_name = Column(String, ForeignKey(
         "chat_channel_caches.channel_name"), nullable=False)
-    server_id = Column(UUID, nullable=False)
-    user_name = Column(String, nullable=False)
     update_time = Column(DateTime, nullable=False)
     is_voiceable = Column(Boolean, nullable=False)
     is_channel_operator = Column(Boolean, nullable=False)

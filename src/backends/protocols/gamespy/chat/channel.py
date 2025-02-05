@@ -3,18 +3,18 @@
 # from uuid import UUID
 
 # from pydantic import BaseModel, field_validator
-# from library.src.abstractions.brocker import BrockerBase
-# from library.src.network.brockers import WebsocketBrocker
-# from library.src.configs import CONFIG
-# from servers.chat.src.abstractions.contract import ResponseBase
-# from servers.chat.src.aggregates.channel_user import ChannelUser
+# from frontends.gamespy.library.abstractions.brocker import BrockerBase
+# from frontends.gamespy.library.network.brockers import WebsocketBrocker
+# from frontends.gamespy.library.configs import CONFIG
+# from frontends.gamespy.protocols.chat.abstractions.contract import ResponseBase
+# from frontends.gamespy.protocols.chat.aggregates.channel_user import ChannelUser
 # from backends.protocols.gamespy.chat.managers import KeyValueManager
-# from servers.chat.src.aggregates.peer_room import PeerRoom
-# from servers.chat.src.applications.client import Client
-# from servers.chat.src.contracts.requests import ModeRequest
-# from servers.chat.src.aggregates.enums import PeerRoomType
-# from servers.chat.src.aggregates.exceptions import ChatException
-# from servers.server_browser.src.v2.aggregations.server_info_builder import PEER_GROUP_LIST
+# from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
+# from frontends.gamespy.protocols.chat.applications.client import Client
+# from frontends.gamespy.protocols.chat.contracts.requests import ModeRequest
+# from frontends.gamespy.protocols.chat.aggregates.enums import PeerRoomType
+# from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException
+# from frontends.gamespy.protocols.server_browser.v2.aggregations.server_info_builder import PEER_GROUP_LIST
 
 # MIN_CHANNEL_NAME_LENGTH = 4
 

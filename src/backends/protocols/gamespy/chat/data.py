@@ -1,32 +1,21 @@
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, cast
 
-from sqlalchemy import Column
-from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatNickCaches, ChatUserCaches, Users, Profiles, SubProfiles
-from servers.chat.src.aggregates.exceptions import ChatException
-
-
-def is_cdkey_valid(cdkey: str) -> bool:
-    if TYPE_CHECKING:
-        assert isinstance(SubProfiles.cdkeyenc, Column)
-    result = PG_SESSION.query(SubProfiles).where(
-        SubProfiles.cdkeyenc == cdkey).count()
-    if result == 0:
-        return False
-
-    else:
-        return True
+from sqlalchemy import Column, func
+from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, ChatChannelUserCaches, Users, Profiles, SubProfiles
+from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, NoSuchNickException
+from frontends.gamespy.protocols.chat.contracts.results import ListResult
 
 
 def is_nick_exist(nick_name: str) -> bool:
-    c = PG_SESSION.query(ChatNickCaches.nick_name).count()
+    c = PG_SESSION.query(ChatUserCaches.nick_name).count()
     if c == 1:
         return True
     else:
         return False
 
 
-def add_nick_cache(cache: ChatNickCaches):
+def add_nick_cache(cache: ChatUserCaches):
     PG_SESSION.add(cache)
     PG_SESSION.commit()
 
@@ -36,15 +25,9 @@ def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tupl
     return
         userid, profileid, emailverified, banned
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Users.emailverified, Column)
-        assert isinstance(Users.banned, Column)
-        assert isinstance(Users.password, Column)
+    assert isinstance(nick_name, str)
+    assert isinstance(email, str)
+    assert isinstance(password_hash, str)
 
     result = PG_SESSION.query(Users.userid, Profiles.profileid,
                               Users.emailverified, Users.banned).join(Profiles, (Users.userid == Profiles.userid)).where(
@@ -66,17 +49,8 @@ def uniquenick_login(uniquenick:str,namespace_id:int)-> tuple[int, int, bool, bo
     return
         userid, profileid, emailverified, banned
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(Users.emailverified, Column)
-        assert isinstance(Users.banned, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(SubProfiles.uniquenick ,Column)
+    assert isinstance(uniquenick, str)
+    assert isinstance(namespace_id, int)
     result = PG_SESSION.query(Users.userid, Profiles.profileid,Users.emailverified, Users.banned).join(Profiles,(Users.userid == Profiles.userid)).join(Profiles,(Profiles.profileid == SubProfiles.profileid)).where(SubProfiles.namespaceid == namespace_id,SubProfiles.uniquenick == uniquenick).first()
     if result is None:
         # fmt: off
@@ -86,6 +60,22 @@ def uniquenick_login(uniquenick:str,namespace_id:int)-> tuple[int, int, bool, bo
         result = cast(tuple[int, int, bool, bool],result)
     return result
 
+
+# region User
+
+
+def is_cdkey_valid(cdkey: str) -> bool:
+    if TYPE_CHECKING:
+        assert isinstance(SubProfiles.cdkeyenc, Column)
+    result = PG_SESSION.query(SubProfiles).where(
+        SubProfiles.cdkeyenc == cdkey).count()
+    if result == 0:
+        return False
+
+    else:
+        return True
+
+# region Channel
 
 def is_channel_exist(channel_name:str,game_name:str)->bool:
     channel_count = PG_SESSION.query(ChatChannelCaches)\
@@ -101,42 +91,112 @@ def add_channel(channel:ChatChannelCaches):
     PG_SESSION.add(channel)
     PG_SESSION.commit()
 
-def get_channel_cache(channel_name:str,game_name:str)->ChatChannelCaches:
+def get_channel_by_name_and_game(channel_name:str,game_name:str)->ChatChannelCaches:
     channel = PG_SESSION.query(ChatChannelCaches)\
         .where(ChatChannelCaches.channel_name == channel_name,
                 ChatChannelCaches.game_name == game_name)\
                 .first()
     return channel
 
-def update_channel(channel:ChatChannelCaches):
+def get_channel_by_name_and_ip_port(channel_name:str,ip:str,port:int)->ChatChannelCaches|None:
+    assert isinstance(channel_name,str)
+    assert isinstance(ip,str)
+    assert isinstance(port,int)
+    result = PG_SESSION.query(ChatChannelCaches).join(ChatChannelUserCaches).where(
+            ChatChannelUserCaches.channel_name == channel_name, ChatChannelUserCaches.remote_ip_address == ip, ChatChannelUserCaches.remote_port == port).first()
+    return result
+def update_channel_time(channel:ChatChannelCaches):
     channel.update_time = datetime.now() # type: ignore
     PG_SESSION.commit()
 
+def db_commit():
+    PG_SESSION.commit()
 
 def get_user_cache_by_nick_name(nick_name:str)->ChatUserCaches:
     result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.nick_name == nick_name).first()
     return result
+def get_user_cache_by_ip_port(ip:str,port:int)->ChatUserCaches|None:
+    result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.remote_ip_address == ip, ChatUserCaches.remote_port == port).first()
+    assert isinstance(result,ChatUserCaches)
+    return result
+
+def get_whois_result(nick:str)->tuple:
+    """
+    nick is unique in chat
+    """
+    info = PG_SESSION.query(ChatUserCaches).first()
+
+    if info is None:
+        raise NoSuchNickException(f"User not find by nick name:{nick}.")
+    channels = PG_SESSION.query(ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatChannelUserCaches.user_id == ChatUserCaches.user_id).where(ChatChannelUserCaches.user_id == info.user_id).all()
+    return info.nick_name,info.user_name,info.nick_name,info.remote_ip_address,channels # type:ignore
+
+
+
+def remove_user_caches_by_ip_port(ip:str,port:int):
+    assert isinstance(ip,str)
+    assert isinstance(port,int)
+    PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.remote_ip_address==ip,ChatChannelUserCaches.remote_port == port).delete()
+
 
 def remove_channel(cache:ChatChannelCaches)->None:
     assert isinstance(cache,ChatChannelCaches)
     PG_SESSION.delete(cache)
     PG_SESSION.commit()
 
-def remove_user(cache:ChatUserCaches):
-    assert isinstance(cache,ChatUserCaches)
+def remove_user(cache:ChatChannelUserCaches):
+    assert isinstance(cache,ChatChannelUserCaches)
     PG_SESSION.delete(cache)
     PG_SESSION.commit()
 
 def is_user_exist(ip:str,port:int)->bool:
-    user_count= PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.remote_ip_address==ip,
-                                                        ChatUserCaches.remote_port==port).count()
+    user_count= PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.remote_ip_address==ip,
+                                                        ChatChannelUserCaches.remote_port==port).count()
     if user_count ==1:
         return True
     else:
         return False
 
-def update_client(cache:ChatUserCaches):
-    assert isinstance(cache,ChatUserCaches)
+def update_client(cache:ChatChannelUserCaches):
+    assert isinstance(cache,ChatChannelUserCaches)
     PG_SESSION.commit()
 
 
+def add_invited(channel_name:str,client_ip:str,client_port:int):
+    pass
+
+
+
+def find_channel_by_substring(channel_name:str)->list[dict]:
+    assert isinstance(channel_name,str)
+
+    names,topics = PG_SESSION.query(ChatChannelCaches.channel_name,ChatChannelCaches.topic).where(ChatChannelCaches.channel_name.like(f"%{channel_name}%")).all()
+    users = PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name.like(f"%{channel_name}%")).all()
+    data: list[dict] =[]
+    for name,topic,count in zip(names,topics,users):
+        d = {
+            "channel_name":name,
+            "total_channel_user":count,
+            "channel_topic":topic
+        }
+        data.append(d)
+    return data
+
+def find_user_by_substring(user_name:str)->list[dict]:
+    assert isinstance(user_name,str)
+    names,topics,users = PG_SESSION.query(ChatChannelCaches.channel_name,ChatChannelCaches.topic,func.count(ChatChannelUserCaches.channel_name)).join(ChatUserCaches,ChatUserCaches.user_id==ChatChannelUserCaches.user_id).join(ChatChannelCaches,ChatChannelCaches.channel_name==ChatChannelUserCaches.channel_name).where(ChatUserCaches.user_name.like(f"%{user_name}%")).all()
+    data: list[dict] =[]
+
+    for name,topic,count in zip(names,topics,users):
+        d = {
+            "channel_name":name,
+            "total_channel_user":count,
+            "channel_topic":topic
+        }
+        data.append(d)
+    return data
+
+def get_channel_user_cache(channel_name:str)->list[dict]:
+    pass
+def get_user_cache(user_name:str)->list[dict]:
+    pass

@@ -1,10 +1,10 @@
 # from typing import Optional
 # import unittest
 
-# from library.tests.mock_objects import BrokerMock
-# from servers.chat.src.aggregates.channel import Channel
-# from servers.chat.src.aggregates.channel_user import ChannelUser
-# from servers.chat.tests.mock_objects import create_client
+# from frontends.gamespy.library.tests.mock_objects import BrokerMock
+# from frontends.gamespy.protocols.chat.aggregates.channel import Channel
+# from frontends.gamespy.protocols.chat.aggregates.channel_user import ChannelUser
+# from frontends.gamespy.protocols.chat.tests.mock_objects import create_client
 
 
 # class RoomTests(unittest.TestCase):

@@ -5,8 +5,8 @@ from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.web_services.requests import *
 import backends.protocols.gamespy.web_services.data as data
-from servers.web_services.src.modules.auth.contracts.results import LoginProfileResult
-from servers.web_services.src.modules.direct2game.contracts.results import GetPurchaseHistoryResult, GetStoreAvailabilityResult
+from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import LoginProfileResult
+from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import GetPurchaseHistoryResult, GetStoreAvailabilityResult
 
 
 class LoginProfileHandler(HandlerBase):
