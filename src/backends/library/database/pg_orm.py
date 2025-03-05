@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.configs import CONFIG
 from datetime import datetime
 from sqlalchemy import (
@@ -24,6 +25,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 import sqlalchemy as sa
 import enum
+from sqlalchemy.orm.decl_api import DeclarativeBase
 
 
 class IntEnum(TypeDecorator):
@@ -40,8 +42,11 @@ class IntEnum(TypeDecorator):
         return self._enumtype(value)
 
 
-Base: DeclarativeMeta = declarative_base()
-
+# Base: DeclarativeMeta = declarative_base()
+# if TYPE_CHECKING:
+#     Base = cast(DeclarativeMeta, Base)
+class Base(DeclarativeBase):
+    pass
 
 class Users(Base):
     __tablename__ = "users"
@@ -225,8 +230,8 @@ class RelayServerCaches(Base):
 
 class ChatChannelCaches(Base):
     __tablename__ = "chat_channel_caches"
-    channel_name = Column(String, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
+    channel_name = Column(String, primary_key=True, nullable=False)
     game_name = Column(String, nullable=False)
     room_name = Column(String, nullable=False)
     topic = Column(String, nullable=True)
@@ -242,12 +247,11 @@ class ChatUserCaches(Base):
     """
     each user only have a unique nick caches, but have multiple user caches
     """
-    __tablename__ = "chat_nick_caches"
-    user_id = Column(Integer, primary_key=True, nullable=False)
+    __tablename__ = "chat_user_caches"
     server_id = Column(UUID, nullable=False)
     nick_name = Column(String, primary_key=True, nullable=False)
-    game_name = Column(String, nullable=True)
     user_name = Column(String, nullable=True)
+    game_name = Column(String, nullable=True)
     remote_ip_address = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
     key_value = Column(JSONB)
@@ -255,18 +259,22 @@ class ChatUserCaches(Base):
 
 
 class ChatChannelUserCaches(Base):
-    __tablename__ = "chat_user_caches"
-    user_id = Column(Integer, ForeignKey(
-        "chat_channel_caches.user_id"), primary_key=True, nullable=False)
+    __tablename__ = "chat_channel_user_caches"
+    nick_name = Column(String, ForeignKey(
+        "chat_user_caches.nick_name"), primary_key=True, nullable=False)
+    user_name = Column(String, ForeignKey(
+        "chat_user_caches.user_name"), primary_key=True, nullable=False)
     channel_name = Column(String, ForeignKey(
         "chat_channel_caches.channel_name"), nullable=False)
     update_time = Column(DateTime, nullable=False)
+    # can we directly store the flags?
     is_voiceable = Column(Boolean, nullable=False)
     is_channel_operator = Column(Boolean, nullable=False)
     is_channel_creator = Column(Boolean, nullable=False)
     remote_ip_address = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
     key_values = Column(JSONB)
+    modes = Column(String)
 
 
 class GameServerCaches(Base):
@@ -296,10 +304,9 @@ def connect_to_db() -> Session:
 PG_SESSION = connect_to_db()
 
 if __name__ == "__main__":
-    session = connect_to_db()
-    session.query(Users.userid == 0)  # type:ignore
-    profile = Profiles(userid=1, nick="spyguy",
-                       extra_info={}, status=GPStatusCode.OFFLINE)
-    PG_SESSION.add(profile)
-    PG_SESSION.commit()
+    PG_SESSION.query(Users.userid == 0).all()  # type:ignore
+    # profile = Profiles(userid=1, nick="spyguy",
+    #                    extra_info={}, status=GPStatusCode.OFFLINE)
+    # PG_SESSION.add(profile)
+    # PG_SESSION.commit()
     pass
