@@ -19,10 +19,10 @@ class PeerRoomInfo(BaseModel):
     number_of_games: int = Field(default=0, alias="numgames")
     number_of_playing: int = Field(default=0, alias="numplaying")
 
-    def __init__(self, game_name, group_id, room_name) -> None:
-        self.game_name = game_name
-        self.group_id = group_id
-        self.room_name = room_name
+    # def __init__(self, game_name, group_id, room_name) -> None:
+    #     self.game_name = game_name
+    #     self.group_id = group_id
+    #     self.room_name = room_name
 
     def get_gamespy_dict(self) -> MappingProxyType:
         """

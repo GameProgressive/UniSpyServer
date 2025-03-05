@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, cast
 from sqlalchemy import Column, func
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, ChatChannelUserCaches, Users, Profiles, SubProfiles
 from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, NoSuchNickException
-from frontends.gamespy.protocols.chat.contracts.results import ListResult
 
 
 def is_nick_exist(nick_name: str) -> bool:
@@ -91,7 +90,7 @@ def add_channel(channel:ChatChannelCaches):
     PG_SESSION.add(channel)
     PG_SESSION.commit()
 
-def get_channel_by_name_and_game(channel_name:str,game_name:str)->ChatChannelCaches:
+def get_channel_by_name_and_game(channel_name:str,game_name:str)->ChatChannelCaches|None:
     channel = PG_SESSION.query(ChatChannelCaches)\
         .where(ChatChannelCaches.channel_name == channel_name,
                 ChatChannelCaches.game_name == game_name)\
@@ -103,8 +102,23 @@ def get_channel_by_name_and_ip_port(channel_name:str,ip:str,port:int)->ChatChann
     assert isinstance(ip,str)
     assert isinstance(port,int)
     result = PG_SESSION.query(ChatChannelCaches).join(ChatChannelUserCaches).where(
-            ChatChannelUserCaches.channel_name == channel_name, ChatChannelUserCaches.remote_ip_address == ip, ChatChannelUserCaches.remote_port == port).first()
+            ChatChannelUserCaches.channel_name == channel_name, 
+            ChatChannelUserCaches.remote_ip_address == ip, 
+            ChatChannelUserCaches.remote_port == port).first()
     return result
+
+def get_channel_user_cache_by_name(channel_name:str,nick_name:str)->ChatChannelUserCaches|None:
+    assert isinstance(channel_name,str)
+    assert isinstance(nick_name,str)
+    result = PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name == channel_name,ChatChannelUserCaches.nick_name == nick_name).first()
+    return result
+
+def get_channel_user_cache_by_name_and_ip_port(channel_name:str,ip:str,port:int)->ChatChannelUserCaches|None:
+    result = PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name == channel_name,
+    ChatChannelUserCaches.remote_ip_address == ip,
+    ChatChannelUserCaches.remote_port == port).first()
+    return result
+
 def update_channel_time(channel:ChatChannelCaches):
     channel.update_time = datetime.now() # type: ignore
     PG_SESSION.commit()
@@ -112,10 +126,11 @@ def update_channel_time(channel:ChatChannelCaches):
 def db_commit():
     PG_SESSION.commit()
 
-def get_user_cache_by_nick_name(nick_name:str)->ChatUserCaches:
+def get_user_cache_by_nick_name(nick_name:str)->ChatUserCaches|None:
     result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.nick_name == nick_name).first()
     return result
-def get_user_cache_by_ip_port(ip:str,port:int)->ChatUserCaches|None:
+
+def get_user_cache_by_ip_port(ip:str,port:int)->ChatUserCaches:
     result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.remote_ip_address == ip, ChatUserCaches.remote_port == port).first()
     assert isinstance(result,ChatUserCaches)
     return result
@@ -128,7 +143,7 @@ def get_whois_result(nick:str)->tuple:
 
     if info is None:
         raise NoSuchNickException(f"User not find by nick name:{nick}.")
-    channels = PG_SESSION.query(ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatChannelUserCaches.user_id == ChatUserCaches.user_id).where(ChatChannelUserCaches.user_id == info.user_id).all()
+    channels = PG_SESSION.query(ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name).where(ChatChannelUserCaches.nick_name == info.nick_name).all()
     return info.nick_name,info.user_name,info.nick_name,info.remote_ip_address,channels # type:ignore
 
 
@@ -184,7 +199,9 @@ def find_channel_by_substring(channel_name:str)->list[dict]:
 
 def find_user_by_substring(user_name:str)->list[dict]:
     assert isinstance(user_name,str)
-    names,topics,users = PG_SESSION.query(ChatChannelCaches.channel_name,ChatChannelCaches.topic,func.count(ChatChannelUserCaches.channel_name)).join(ChatUserCaches,ChatUserCaches.user_id==ChatChannelUserCaches.user_id).join(ChatChannelCaches,ChatChannelCaches.channel_name==ChatChannelUserCaches.channel_name).where(ChatUserCaches.user_name.like(f"%{user_name}%")).all()
+    names,topics,users = PG_SESSION.query(
+        ChatChannelCaches.channel_name,
+        ChatChannelCaches.topic,func.count(ChatChannelUserCaches.channel_name)).join(ChatUserCaches,ChatUserCaches.nick_name==ChatChannelUserCaches.nick_name).join(ChatChannelCaches,ChatChannelCaches.channel_name==ChatChannelUserCaches.channel_name).where(ChatUserCaches.user_name.like(f"%{user_name}%")).all()
     data: list[dict] =[]
 
     for name,topic,count in zip(names,topics,users):
@@ -196,7 +213,29 @@ def find_user_by_substring(user_name:str)->list[dict]:
         data.append(d)
     return data
 
-def get_channel_user_cache(channel_name:str)->list[dict]:
-    pass
-def get_user_cache(user_name:str)->list[dict]:
-    pass
+def get_channel_user_caches(channel_name:str)->list[dict]:
+    result:list[ChatChannelUserCaches] = PG_SESSION.query(ChatChannelUserCaches).join(ChatChannelCaches,ChatChannelCaches.channel_name == ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatUserCaches.user_name == ChatChannelUserCaches.user_name).where(ChatChannelUserCaches.channel_name == channel_name).all()
+    data = []
+    for r in result:
+        temp = {}
+        temp["channel_name"] = r.channel_name
+        temp["user_name"] = r.user_name
+        temp["public_ip_addr"] = r.remote_ip_address
+        temp["nick_name"] = r.nick_name
+        temp["modes"] = r.modes
+        data.append(temp)
+    return data
+
+def get_channel_user_cache_by_ip(ip:str,port:int)->list[dict]:
+
+    result:list[ChatChannelUserCaches] = PG_SESSION.query(ChatChannelUserCaches).join(ChatChannelCaches,ChatChannelCaches.channel_name == ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatUserCaches.user_name == ChatChannelUserCaches.user_name).where(ChatUserCaches.remote_ip_address==ip,ChatUserCaches.remote_port == port).all()
+    data = []
+    for r in result:
+        temp = {}
+        temp["channel_name"] = r.channel_name
+        temp["user_name"] = r.user_name
+        temp["public_ip_addr"] = r.remote_ip_address
+        temp["nick_name"] = r.nick_name
+        temp["modes"] = r.modes
+        data.append(temp)
+    return data

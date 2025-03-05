@@ -111,6 +111,21 @@ ALTER SEQUENCE unispy.blocked_blockid_seq OWNED BY unispy.blocked.blockid;
 
 
 --
+-- Name: chat_nick_caches; Type: TABLE; Schema: unispy; Owner: unispy
+--
+
+CREATE TABLE unispy.chat_user_caches (
+    server_id uuid NOT NULL,
+    nick_name character varying primary key NOT NULL UNIQUE ,
+    game_name character varying,
+    user_name character varying,
+    remote_ip_address inet NOT NULL,
+    remote_port INTEGER NOT NULL,
+    key_value jsonb,
+    update_time timestamp without time zone NOT NULL
+);
+
+--
 -- Name: chat_channel_caches; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
@@ -131,21 +146,6 @@ CREATE TABLE unispy.chat_channel_caches (
 
 ALTER TABLE unispy.chat_channel_caches OWNER TO unispy;
 
---
--- Name: chat_nick_caches; Type: TABLE; Schema: unispy; Owner: unispy
---
-
-CREATE TABLE unispy.chat_user_caches (
-    user_id SERIAL PRIMARY KEY,
-    server_id uuid NOT NULL,
-    nick_name character varying NOT NULL UNIQUE,
-    game_name character varying,
-    user_name character varying,
-    remote_ip_address inet NOT NULL,
-    remote_port INTEGER NOT NULL,
-    key_value jsonb,
-    update_time timestamp without time zone NOT NULL
-);
 
 
 ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
@@ -155,7 +155,8 @@ ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.chat_channel_user_caches (
-    userid INTEGER NOT NULL,
+    nick_name character varying NOT NULL
+    user_name character varying NOT NULL
     channel_name character varying NOT NULL,
     server_id uuid NOT NULL,
     update_time timestamp without time zone NOT NULL,
@@ -441,9 +442,9 @@ CREATE TABLE unispy.profiles (
     status smallint not NULL,
     statstring character varying,
     extra_info jsonb
-    FOREIGN key (userid) REFERENCES unispy.users (user_id) on delete cascade
 );
 
+-- FOREIGN key (userid) REFERENCES unispy.users (user_id) on delete cascade
 
 ALTER TABLE unispy.profiles OWNER TO unispy;
 
@@ -5472,13 +5473,6 @@ SELECT pg_catalog.setval('unispy.subprofiles_subprofileid_seq', 1, false);
 
 SELECT pg_catalog.setval('unispy.users_userid_seq', 5, true);
 
---
--- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_user_caches_channel_name_fkey FOREIGN KEY (channel_name) REFERENCES unispy.chat_channel_caches(channel_name);
-
 
 --
 -- Name: grouplist grouplist_fk; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
@@ -5495,11 +5489,13 @@ ALTER TABLE ONLY unispy.grouplist
 ALTER TABLE ONLY unispy.profiles
     ADD CONSTRAINT profiles_userid_fkey FOREIGN KEY (userid) REFERENCES unispy.users(userid);
 
-ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_channel_user_caches_userid_fkey FOREGIN KEY(userid) unispy.chat_user_caches(userid)
 
+--
+-- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
+--
 ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREGIN KEY(channel_name) unispy.chat_channel_caches(channel_name)
+    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREIGN KEY(channel_name) unispy.chat_channel_caches(channel_name)
+    ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) unispy.chat_user_caches(nick_name)
 
 PostgreSQL database dump complete
 

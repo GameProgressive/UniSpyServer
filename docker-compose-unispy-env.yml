@@ -26,5 +26,6 @@ services:
 
 networks:
   unispy:
+    external: true
     name: unispy
     driver: bridge

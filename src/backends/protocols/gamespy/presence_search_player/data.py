@@ -91,7 +91,7 @@ def get_user(email: str) -> Users | None:
     return result
 
 
-def get_profile(user_id: int, nick_name: str) -> Profiles:
+def get_profile(user_id: int, nick_name: str) -> Profiles | None:
     assert isinstance(user_id, int)
     assert isinstance(nick_name, str)
     result = PG_SESSION.query(Profiles).where(
@@ -100,7 +100,7 @@ def get_profile(user_id: int, nick_name: str) -> Profiles:
     return result
 
 
-def get_sub_profile(profile_id: int, namespace_id: int, product_id: int) -> SubProfiles:
+def get_sub_profile(profile_id: int, namespace_id: int, product_id: int) -> SubProfiles | None:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.profileid, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
@@ -255,7 +255,7 @@ def get_matched_info_by_email(
     return temp
 
 
-def get_matched_info_by_nick_and_email(nick_name: str, email: str)->list[dict]:
+def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]:
 
     result = (
         PG_SESSION.query(

@@ -6,7 +6,7 @@ from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, Chat
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import *
 from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
-from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetKeyResult, ListResult, NickResult, WhoIsResult
+from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetKeyResult, ListResult, NickResult, WhoIsResult, WhoResult
 
 # region General
 
@@ -24,8 +24,8 @@ class CryptHandler(HandlerBase):
     _request: CryptRequest
 
     async def _data_operate(self) -> None:
-        result = PG_SESSION.query(ChatUserCaches).where(ChatUserCaches.remote_ip_address ==
-                                                        self._request.client_ip, ChatUserCaches.remote_port == self._request.client_port).first()
+        result = data.get_user_cache_by_ip_port(
+            self._request.client_ip, self._request.client_port)
         if result is None:
             raise NoSuchNickException(
                 f"No nick found for {self._request.client_ip}")
@@ -40,8 +40,7 @@ class GetKeyHandler(HandlerBase):
     _request: GetKeyRequest
 
     async def _data_operate(self) -> None:
-        caches = PG_SESSION.query(ChatUserCaches.key_value).where(
-            ChatUserCaches.nick_name == self._request.nick_name).first()
+        caches = data.get_user_cache_by_nick_name(self._request.nick_name)
 
         if caches is None:
             raise NoSuchNickException("nick not found")
@@ -128,6 +127,7 @@ class NickHandler(HandlerBase):
             cache = ChatUserCaches(nick_name=self._request.nick_name,
                                    server_id=self._request.server_id,
                                    update_time=datetime.now())
+            ChatUserCaches()
             data.add_nick_cache(cache)
 
     async def _result_construct(self) -> None:
@@ -170,6 +170,30 @@ class UserHandler(HandlerBase):
         raise NotImplementedError("maybe update the user caches")
 
 
+class WhoHandler(HandlerBase):
+    _request: WhoRequest
+
+    async def _data_operate(self) -> None:
+        if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
+            self._get_channel_user_info()
+        else:
+            self._get_user_info()
+
+    def _get_channel_user_info(self) -> None:
+        self._data = data.get_channel_user_caches(self._request.channel_name)
+
+    def _get_user_info(self) -> None:
+        self._data = data.get_channel_user_cache_by_ip(
+            self._request.client_ip, self._request.client_port)
+
+    async def _result_construct(self) -> None:
+        infos = []
+        for d in self._data:
+            info = WhoResult.WhoInfo(**d)
+            infos.append(info)
+        self._result = WhoResult(infos=infos)
+
+
 class WhoIsHandler(HandlerBase):
     _request: WhoIsRequest
 
@@ -184,21 +208,6 @@ class WhoIsHandler(HandlerBase):
                                    joined_channel_name=self._data[4])
 
 
-class WhoHandler(HandlerBase):
-    _request: WhoRequest
-
-    async def _data_operate(self) -> None:
-        if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
-            self._get_channel_user_info()
-        else:
-            self._get_user_info()
-
-    def _get_channel_user_info(self) -> None:
-        pass
-
-    def _get_user_info(self) -> None:
-        pass
-    
 # class JoinHandler(HandlerBase):
 #     _request: JoinRequest
 

@@ -77,7 +77,7 @@ def get_peer_group_channel(group_data: list[dict]) -> list[PeerRoomInfo]:
     ).all()
 
     # Convert the result to a list of PeerRoomInfo objects
-    data = [PeerRoomInfo(**s) for s in result]
+    data = [PeerRoomInfo(**s.__dict__) for s in result]
 
     return data
 
@@ -89,7 +89,7 @@ def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerCac
     return result
 
 
-def get_server_info_with_game_name(game_name: str) -> Optional[GameServerInfo]:
+def get_server_info_with_game_name(game_name: str) -> Optional[GameServerCaches]:
     assert isinstance(game_name, str)
     result = PG_SESSION.query(GameServerCaches).where(
         GameServerCaches.game_name == game_name).first()
@@ -101,7 +101,7 @@ def get_server_info_list_with_game_name(game_name: str) -> list[GameServerInfo]:
         GameServerCaches.game_name == game_name).all()
     data = []
     for s in result:
-        data.append(GameServerInfo(**s))
+        data.append(GameServerInfo(**s.__dict__))
     return data
 
 
@@ -112,7 +112,7 @@ def get_server_info_with_ip_and_port(ip: str, port: int) -> GameServerInfo:
         GameServerCaches.host_ip_address == ip, GameServerCaches.query_report_port == port).first()
     if result is None:
         raise ServerBrowserException("game server not found")
-    data = GameServerInfo(**result)
+    data = GameServerInfo(**result.__dict__)
     return data
 
 

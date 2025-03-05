@@ -46,9 +46,8 @@ class NewUserHandler(HandlerBase):
         self.profile = data.get_profile(self.user.userid, self._request.nick)
         if self.profile is None:
             self._create_profile()
-
+        assert self.profile is not None
         assert isinstance(self.profile.profileid, int)
-
         self.subprofile = data.get_sub_profile(
             profile_id=self.profile.profileid, namespace_id=self._request.namespace_id, product_id=self._request.product_id)
         if self.subprofile is None:

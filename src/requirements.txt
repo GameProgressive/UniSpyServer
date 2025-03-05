@@ -3,7 +3,6 @@ psycopg2-binary == 2.9.10
 sqlalchemy == 2.0.36
 jsonpickle == 3.0.3
 email_validator == 2.1.1
-attrs
 requests == 2.32.3
 fastapi == 0.115.4
 xmltodict == 0.14.2
@@ -13,3 +12,5 @@ redis == 5.2.0
 websocket-client ==1.8.0
 uvicorn == 0.32.0
 prettytable == 3.11.0
+responses == 0.25.6
+pydantic ==2.10.6
