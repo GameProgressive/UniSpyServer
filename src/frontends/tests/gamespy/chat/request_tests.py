@@ -100,7 +100,7 @@ class ChannelRequestTests(unittest.TestCase):
         request = ModeRequest(MODE_CHANNEL)
         request.parse()
         self.assertEqual(
-            request.mode_operations[0], ModeOperationType.REMOVE_CHANNEL_PASSWORD)
+            request.mode_operations[0], ModeOperationType.ADD_CHANNEL_USER_LIMITS)
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.mode_flag, "+l")
         self.assertEqual(request.limit_number, 2)

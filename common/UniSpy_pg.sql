@@ -140,7 +140,9 @@ CREATE TABLE unispy.chat_channel_caches (
     max_num_user integer NOT NULL,
     key_values jsonb,
     invited_nicks jsonb,
-    update_time timestamp without time zone NOT NULL
+    update_time timestamp without time zone NOT NULL,
+    modes character varying NOT NULL,
+    banned_nicks jsonb
 );
 
 

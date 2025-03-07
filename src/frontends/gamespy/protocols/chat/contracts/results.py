@@ -16,9 +16,6 @@ class GetKeyResult(ResultBase):
     values: list
 
 
-
-
-
 class ListResult(ResultBase):
     class ListInfo(BaseModel):
         channel_name: str
@@ -90,7 +87,7 @@ class GetChannelKeyResult(ResultBase):
 class GetCKeyResult(ResultBase):
     class GetCKeyInfos(BaseModel):
         nick_name: str
-        user_values: str
+        user_values: list
 
     infos: list[GetCKeyInfos]
     """ nick_name:str, user_values:str"""

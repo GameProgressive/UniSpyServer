@@ -17,8 +17,8 @@ class ChannelHandlerBase(HandlerBase):
             self._request.client_ip, self._request.client_port)
 
     def _get_channel(self):
-        self._channel = data.get_channel_by_name_and_ip_port(
-            self._request.channel_name, self._request.client_ip, self._request.client_port)
+        self._channel = data.get_channel_by_name(
+            self._request.channel_name)
 
     def _get_channel_user(self):
         self._channel_user = data.get_channel_user_cache_by_name_and_ip_port(
@@ -50,9 +50,3 @@ class ChannelHandlerBase(HandlerBase):
 
         self._get_channel_user()
         self._check_channel_user()
-
-
-class GetChannelKeyHandler(ChannelHandlerBase):
-    def _get_key_values(self):
-        assert isinstance(self._channel, ChatChannelCaches)
-        self._key_values = self._channel.key_values

@@ -48,6 +48,7 @@ class IntEnum(TypeDecorator):
 class Base(DeclarativeBase):
     pass
 
+
 class Users(Base):
     __tablename__ = "users"
 
@@ -241,6 +242,9 @@ class ChatChannelCaches(Base):
     key_values = Column(JSONB, default={})
     invited_nicks = Column(JSONB, default=[])
     update_time = Column(DateTime, nullable=False)
+    creator = Column(String, nullable=True)
+    modes = Column(JSONB, default=[])
+    banned_nicks = Column(JSONB, default=[])
 
 
 class ChatUserCaches(Base):
@@ -273,8 +277,7 @@ class ChatChannelUserCaches(Base):
     is_channel_creator = Column(Boolean, nullable=False)
     remote_ip_address = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
-    key_values = Column(JSONB)
-    modes = Column(String)
+    key_values = Column(JSONB, default={})
 
 
 class GameServerCaches(Base):

@@ -3,10 +3,13 @@ from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, ChatChannelUserCaches
+from backends.protocols.gamespy.chat.abstractions import ChannelHandlerBase
+from backends.protocols.gamespy.chat.channel import ChannelUserHelper
 import backends.protocols.gamespy.chat.data as data
+from backends.protocols.gamespy.chat.managers import KeyValueManager
 from backends.protocols.gamespy.chat.requests import *
 from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
-from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetKeyResult, ListResult, NickResult, WhoIsResult, WhoResult
+from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetCKeyResult, GetKeyResult, ListResult, NickResult, WhoIsResult, WhoResult
 
 # region General
 
@@ -208,24 +211,83 @@ class WhoIsHandler(HandlerBase):
                                    joined_channel_name=self._data[4])
 
 
-# class JoinHandler(HandlerBase):
-#     _request: JoinRequest
-
-#     async def _data_fetch(self) -> None:
-#         is_chan_exist = data.is_channel_exist(self._request.channel_name,
-#                                               self._request.game_name)
-#         # group_id =
-#         if is_chan_exist:
-#             is_user_exist = data.is_user_exist(
-#                 self._request.client_ip, self._request.client_port)
-#         else:
-#             # create channel
-#             # create user
-#             is_peer_room =
-#             chan = ChatChannelCaches(channel_name=self._request.channel_name, server_id=self._request.server_id, game_name, room_name, topic,
-#                                      password=self._request.password, group_id, max_num_user=200, key_values=None, update_time=datetime.now())
-
-
 # region Channel
+class GetChannelKeyHandler(ChannelHandlerBase):
+    def _get_key_values(self):
+        assert isinstance(self._channel, ChatChannelCaches)
+        self._key_values = self._channel.key_values
+
+    async def _request_check(self) -> None:
+        await super()._request_check()
+        self._get_key_values()
+
+
+class GetCKeyHandler(ChannelHandlerBase):
+    _request: GetCKeyRequest
+
+    async def _data_operate(self) -> None:
+        match self._request.request_type:
+            case GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE:
+                self.get_channel_all_user_key_value()
+            case GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE:
+                self.get_channel_specific_user_key_value()
+
+    def get_channel_all_user_key_value(self):
+        self._data = data.get_channel_user_caches_by_name(
+            self._request.channel_name)
+
+    def get_channel_specific_user_key_value(self):
+        d = data.get_channel_user_cache_by_name(
+            self._request.channel_name, self._request.nick_name)
+        if d is not None:
+            self._data = [d]
+
+    async def _result_construct(self) -> None:
+        if self._data is None:
+            return
+        infos = []
+        for d in self._data:
+            assert isinstance(d, ChatChannelUserCaches)
+            assert isinstance(d.nick_name, str)
+            assert isinstance(d.key_values, dict)
+            info = GetCKeyResult.GetCKeyInfos(
+                nick_name=d.nick_name,
+                user_values=list(d.key_values.values()))
+            infos.append(info)
+
+        self._result = GetCKeyResult(infos=infos,
+                                     channel_name=self._request.channel_name)
+
+
+class JoinHandler(ChannelHandlerBase):
+    _request: JoinRequest
+
+    async def _request_check(self) -> None:
+        self._get_user()
+        self._check_user()
+
+        self._get_channel()
+        self._check_channel()
+
+        self._get_channel_user()
+
+    async def _data_operate(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert self._channel is not None
+        assert isinstance(self._channel.channel_name, str)
+
+        if self._channel_user is None:
+            cache = ChatChannelUserCaches(
+                nick_name=self._user.nick_name,
+                user_name=self._user.user_name,
+                channel_name=self._channel.channel_name,
+                update_time=datetime.now(),
+                is_voiceable=True,
+                is_channel_operator=False,
+                is_channel_creator=False,
+                remote_ip_address=self._user.remote_ip_address,
+                remote_port=self._user.remote_port,
+                key_values={})
 
 # region Message

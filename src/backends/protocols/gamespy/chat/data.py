@@ -29,11 +29,13 @@ def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tupl
     assert isinstance(password_hash, str)
 
     result = PG_SESSION.query(Users.userid, Profiles.profileid,
-                              Users.emailverified, Users.banned).join(Profiles, (Users.userid == Profiles.userid)).where(
-        Users.email == email,
-        Profiles.nick == nick_name,
-        Users.password == password_hash
-    ).first()
+                              Users.emailverified, Users.banned)\
+                            .join(Profiles, (Users.userid == Profiles.userid))\
+                            .where(
+                                Users.email == email,
+                                Profiles.nick == nick_name,
+                                Users.password == password_hash
+                            ).first()
     if TYPE_CHECKING:
         result = cast(tuple[int, int, bool, bool], result)
     if result is None:
@@ -90,10 +92,17 @@ def add_channel(channel:ChatChannelCaches):
     PG_SESSION.add(channel)
     PG_SESSION.commit()
 
+
 def get_channel_by_name_and_game(channel_name:str,game_name:str)->ChatChannelCaches|None:
     channel = PG_SESSION.query(ChatChannelCaches)\
         .where(ChatChannelCaches.channel_name == channel_name,
                 ChatChannelCaches.game_name == game_name)\
+                .first()
+    return channel
+
+def get_channel_by_name(channel_name:str)->ChatChannelCaches|None:
+    channel = PG_SESSION.query(ChatChannelCaches)\
+        .where(ChatChannelCaches.channel_name == channel_name)\
                 .first()
     return channel
 
@@ -117,6 +126,11 @@ def get_channel_user_cache_by_name_and_ip_port(channel_name:str,ip:str,port:int)
     result = PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name == channel_name,
     ChatChannelUserCaches.remote_ip_address == ip,
     ChatChannelUserCaches.remote_port == port).first()
+    return result
+
+def get_channel_user_caches_by_name(channel_name:str)->list:
+    assert isinstance(channel_name,str)
+    result = PG_SESSION.query(ChatChannelUserCaches.key_values).where(ChatChannelUserCaches.channel_name == channel_name).all()
     return result
 
 def update_channel_time(channel:ChatChannelCaches):
@@ -185,8 +199,10 @@ def add_invited(channel_name:str,client_ip:str,client_port:int):
 def find_channel_by_substring(channel_name:str)->list[dict]:
     assert isinstance(channel_name,str)
 
-    names,topics = PG_SESSION.query(ChatChannelCaches.channel_name,ChatChannelCaches.topic).where(ChatChannelCaches.channel_name.like(f"%{channel_name}%")).all()
-    users = PG_SESSION.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name.like(f"%{channel_name}%")).all()
+    names,topics = PG_SESSION.query(ChatChannelCaches.channel_name,ChatChannelCaches.topic)\
+                   .where(ChatChannelCaches.channel_name.like(f"%{channel_name}%")).all()
+    users = PG_SESSION.query(ChatChannelUserCaches)\
+            .where(ChatChannelUserCaches.channel_name.like(f"%{channel_name}%")).all()
     data: list[dict] =[]
     for name,topic,count in zip(names,topics,users):
         d = {
@@ -201,7 +217,10 @@ def find_user_by_substring(user_name:str)->list[dict]:
     assert isinstance(user_name,str)
     names,topics,users = PG_SESSION.query(
         ChatChannelCaches.channel_name,
-        ChatChannelCaches.topic,func.count(ChatChannelUserCaches.channel_name)).join(ChatUserCaches,ChatUserCaches.nick_name==ChatChannelUserCaches.nick_name).join(ChatChannelCaches,ChatChannelCaches.channel_name==ChatChannelUserCaches.channel_name).where(ChatUserCaches.user_name.like(f"%{user_name}%")).all()
+        ChatChannelCaches.topic,func.count(ChatChannelUserCaches.channel_name))\
+        .join(ChatUserCaches,ChatUserCaches.nick_name==ChatChannelUserCaches.nick_name)\
+        .join(ChatChannelCaches,ChatChannelCaches.channel_name==ChatChannelUserCaches.channel_name)\
+        .where(ChatUserCaches.user_name.like(f"%{user_name}%")).all()
     data: list[dict] =[]
 
     for name,topic,count in zip(names,topics,users):
@@ -213,8 +232,14 @@ def find_user_by_substring(user_name:str)->list[dict]:
         data.append(d)
     return data
 
+def create_channel_user_caches(chan_user:ChatChannelUserCaches):
+    PG_SESSION.add(chan_user)
+    PG_SESSION.commit()
+
 def get_channel_user_caches(channel_name:str)->list[dict]:
-    result:list[ChatChannelUserCaches] = PG_SESSION.query(ChatChannelUserCaches).join(ChatChannelCaches,ChatChannelCaches.channel_name == ChatChannelUserCaches.channel_name).join(ChatUserCaches,ChatUserCaches.user_name == ChatChannelUserCaches.user_name).where(ChatChannelUserCaches.channel_name == channel_name).all()
+    result:list[ChatChannelUserCaches] = PG_SESSION.query(ChatChannelUserCaches).join(ChatChannelCaches,ChatChannelCaches.channel_name == ChatChannelUserCaches.channel_name)\
+        .join(ChatUserCaches,ChatUserCaches.user_name == ChatChannelUserCaches.user_name)\
+        .where(ChatChannelUserCaches.channel_name == channel_name).all()
     data = []
     for r in result:
         temp = {}
@@ -222,7 +247,6 @@ def get_channel_user_caches(channel_name:str)->list[dict]:
         temp["user_name"] = r.user_name
         temp["public_ip_addr"] = r.remote_ip_address
         temp["nick_name"] = r.nick_name
-        temp["modes"] = r.modes
         data.append(temp)
     return data
 
@@ -236,6 +260,5 @@ def get_channel_user_cache_by_ip(ip:str,port:int)->list[dict]:
         temp["user_name"] = r.user_name
         temp["public_ip_addr"] = r.remote_ip_address
         temp["nick_name"] = r.nick_name
-        temp["modes"] = r.modes
         data.append(temp)
     return data

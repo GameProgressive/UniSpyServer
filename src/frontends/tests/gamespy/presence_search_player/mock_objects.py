@@ -21,7 +21,7 @@ def create_client() -> Client:
     create_mock_url(config, CheckHandler, CheckResult.model_validate(
         {"profile_id": 0}).model_dump())
 
-    create_mock_url(config, SearchHandler, SearchResult.model_validate({"result": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
+    create_mock_url(config, SearchHandler, SearchResult.model_validate({"data": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
                                                                                     "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]}).model_dump())
 
     return cast(Client, conn._client)

@@ -26,7 +26,7 @@ def create_client() -> Client:
     create_mock_url(config, UserHandler, {"message": "ok"})
     create_mock_url(config, CdKeyHandler, {"message": "ok"})
     create_mock_url(config, GetCKeyHandler, GetCKeyResult.model_validate(
-        {"channel_name": "test", "infos": [{"nick_name": "test_nick", "user_values": "/data/key/value/data"}]}).model_dump())
+        {"channel_name": "test", "infos": [{"nick_name": "test_nick", "user_values": ["data", "key", "value", "data"]}]}).model_dump())
     create_mock_url(config, ModeHandler, ModeResult.model_validate(
         {"channel_name": "test", "channel_modes": "+n", "joiner_nick_name": "test_nick"}).model_dump())
     create_mock_url(config, SetCKeyHandler, {"message": "ok"})

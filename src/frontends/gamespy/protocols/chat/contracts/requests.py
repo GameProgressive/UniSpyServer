@@ -475,7 +475,7 @@ class ModeRequest(ChannelRequestBase):
                         self.mode_operations.append(
                             ModeOperationType.REMOVE_PRIVATE_CHANNEL_FLAG
                         )
-                    case "-p":
+                    case "+p":
                         self.mode_operations.append(
                             ModeOperationType.SET_PRIVATE_CHANNEL_FLAG
                         )
@@ -492,12 +492,6 @@ class ModeRequest(ChannelRequestBase):
                             ModeOperationType.ADD_CHANNEL_PASSWORD
                         )
                     case "-k":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_CHANNEL_PASSWORD
-                        )
-                    case "+l":
-                        self.channel_name = self._cmd_params[0]
-                        self.limit_number = int(self._cmd_params[2])
                         self.mode_operations.append(
                             ModeOperationType.REMOVE_CHANNEL_PASSWORD
                         )
