@@ -1,5 +1,5 @@
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeRequestType, TopicRequestType, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeOperationType, ModeRequestType, TopicRequestType, WhoRequestType
 
 
 class RequestBase(lib.RequestBase):
@@ -24,7 +24,7 @@ class GetUdpRelayRequest(RequestBase):
 
 class InviteRequest(RequestBase):
     channel_name: str
-    nick_name:str
+    nick_name: str
 
 
 class ListLimitRequest(RequestBase):
@@ -138,7 +138,7 @@ class KickRequest(ChannelRequestBase):
 
 class ModeRequest(ChannelRequestBase):
     request_type: ModeRequestType
-    mode_operations: list = []
+    mode_operations: list[ModeOperationType]
     nick_name: str
     user_name: str
     limit_number: int

@@ -1,4 +1,5 @@
 
+from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import ChatChannelCaches, ChatChannelUserCaches, ChatUserCaches
 from backends.protocols.gamespy.chat.requests import ChannelRequestBase
@@ -11,6 +12,12 @@ class ChannelHandlerBase(HandlerBase):
     _user: ChatUserCaches | None
     _channel: ChatChannelCaches | None
     _channel_user: ChatChannelUserCaches | None
+
+    def __init__(self, request: RequestBase) -> None:
+        super().__init__(request)
+        self._user = None
+        self._channel = None
+        self._channel_user = None
 
     def _get_user(self):
         self._user = data.get_user_cache_by_ip_port(

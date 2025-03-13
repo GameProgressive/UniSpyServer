@@ -4,11 +4,11 @@ from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, ChatChannelUserCaches
 from backends.protocols.gamespy.chat.abstractions import ChannelHandlerBase
-from backends.protocols.gamespy.chat.channel import ChannelUserHelper
+from backends.protocols.gamespy.chat.helper import ChannelHelper, ChannelUserHelper
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.managers import KeyValueManager
 from backends.protocols.gamespy.chat.requests import *
-from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
+from frontends.gamespy.protocols.chat.aggregates.exceptions import BadChannelKeyException, ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
 from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetCKeyResult, GetKeyResult, ListResult, NickResult, WhoIsResult, WhoResult
 
 # region General
@@ -267,27 +267,69 @@ class JoinHandler(ChannelHandlerBase):
         self._check_user()
 
         self._get_channel()
-        self._check_channel()
-
-        self._get_channel_user()
 
     async def _data_operate(self) -> None:
         assert self._user is not None
         assert isinstance(self._user.nick_name, str)
         assert self._channel is not None
         assert isinstance(self._channel.channel_name, str)
-
-        if self._channel_user is None:
-            cache = ChatChannelUserCaches(
-                nick_name=self._user.nick_name,
-                user_name=self._user.user_name,
-                channel_name=self._channel.channel_name,
+        if self._channel is None:
+            self._channel = ChannelHelper.create(
+                server_id=self._request.server_id,
+                channel_name=self._request.channel_name,
+                password=self._request.password,
+                game_name=self._request.game_name,
+                room_name="",
+                topic="",
+                key_values={},
                 update_time=datetime.now(),
-                is_voiceable=True,
-                is_channel_operator=False,
-                is_channel_creator=False,
-                remote_ip_address=self._user.remote_ip_address,
-                remote_port=self._user.remote_port,
-                key_values={})
+                modes=[],
+                creator=self._user.nick_name,
+                group_id=0,
+                max_num_user=100
+            )
+        ChannelHelper.join(self._channel, self._user)
 
-# region Message
+
+class KickHandler(ChannelHandlerBase):
+    _kickee: ChatChannelUserCaches | None
+    _request: KickRequest
+
+    def __init__(self, request: RequestBase) -> None:
+        super().__init__(request)
+        self._kickee = None
+
+    async def _request_check(self) -> None:
+        await super()._request_check()
+        assert isinstance(self._channel, ChatChannelCaches)
+        assert isinstance(self._channel.channel_name, str)
+        self._kickee = data.get_channel_user_cache_by_name(
+            self._channel.channel_name, self._request.kickee_nick_name)
+        if self._kickee is None:
+            raise BadChannelKeyException(
+                f"kickee is not a user of channel:{self._channel.channel_name}")
+
+    async def _data_operate(self) -> None:
+        assert self._channel
+        assert self._channel_user
+        assert self._kickee
+        ChannelHelper.kick(self._channel, self._channel_user, self._kickee)
+
+
+class ModeHandler(ChannelHandlerBase):
+    _request: ModeRequest
+
+    async def _data_operate(self) -> None:
+        assert self._channel
+        assert self._channel_user
+        ChannelHelper.change_modes(
+            self._channel, self._channel_user, self._request)
+
+    async def _result_construct(self) -> None:
+        raise NotImplementedError()
+        return await super()._result_construct()
+
+
+class NamesHandler(ChannelHandlerBase):
+    
+    # region Message

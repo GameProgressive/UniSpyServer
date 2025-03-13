@@ -30,12 +30,12 @@ def nick_and_email_login(nick_name: str, email: str, password_hash: str) -> tupl
 
     result = PG_SESSION.query(Users.userid, Profiles.profileid,
                               Users.emailverified, Users.banned)\
-                            .join(Profiles, (Users.userid == Profiles.userid))\
-                            .where(
-                                Users.email == email,
-                                Profiles.nick == nick_name,
-                                Users.password == password_hash
-                            ).first()
+        .join(Profiles, (Users.userid == Profiles.userid))\
+        .where(
+        Users.email == email,
+        Profiles.nick == nick_name,
+        Users.password == password_hash
+    ).first()
     if TYPE_CHECKING:
         result = cast(tuple[int, int, bool, bool], result)
     if result is None:
@@ -128,9 +128,9 @@ def get_channel_user_cache_by_name_and_ip_port(channel_name:str,ip:str,port:int)
     ChatChannelUserCaches.remote_port == port).first()
     return result
 
-def get_channel_user_caches_by_name(channel_name:str)->list:
+def get_channel_user_caches_by_name(channel_name:str)->list[ChatChannelUserCaches]:
     assert isinstance(channel_name,str)
-    result = PG_SESSION.query(ChatChannelUserCaches.key_values).where(ChatChannelUserCaches.channel_name == channel_name).all()
+    result:list[ChatChannelUserCaches] = PG_SESSION.query(ChatChannelUserCaches.key_values).where(ChatChannelUserCaches.channel_name == channel_name).all()#type:ignore
     return result
 
 def update_channel_time(channel:ChatChannelCaches):
