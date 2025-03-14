@@ -9,7 +9,7 @@ import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.managers import KeyValueManager
 from backends.protocols.gamespy.chat.requests import *
 from frontends.gamespy.protocols.chat.aggregates.exceptions import BadChannelKeyException, ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
-from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetCKeyResult, GetKeyResult, ListResult, NickResult, WhoIsResult, WhoResult
+from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetCKeyResult, GetKeyResult, ListResult, NamesResult, NickResult, PartResult, SetChannelKeyResult, TopicResult, WhoIsResult, WhoResult
 
 # region General
 
@@ -331,5 +331,101 @@ class ModeHandler(ChannelHandlerBase):
 
 
 class NamesHandler(ChannelHandlerBase):
-    
-    # region Message
+    _request: NamesRequest
+
+    async def _request_check(self) -> None:
+        self._get_user()
+        self._check_user()
+
+        self._get_channel()
+        self._check_channel()
+
+    async def _data_operate(self) -> None:
+        assert self._channel
+        self._data = ChannelHelper.get_all_user_nick_string(self._channel)
+
+    async def _result_construct(self) -> None:
+        assert self._user
+        assert isinstance(self._user.nick_name, str)
+        self._result = NamesResult(
+            all_channel_user_nicks=self._data,
+            channel_name=self._request.channel_name,
+            requester_nick_name=self._user.nick_name)
+
+
+class PartHandler(ChannelHandlerBase):
+    _request: PartRequest
+
+    async def _data_operate(self) -> None:
+        assert self._channel
+        assert self._channel_user
+        ChannelHelper.quit(self._channel, self._channel_user)
+
+    async def _result_construct(self) -> None:
+        assert self._channel_user
+        assert self._channel
+        assert isinstance(self._channel_user.is_channel_creator, bool)
+        assert isinstance(self._channel_user.is_channel_operator, bool)
+        assert isinstance(self._channel.channel_name, str)
+
+        irc = ChannelUserHelper.get_user_irc_prefix(self._channel_user)
+        self._result = PartResult(leaver_irc_prefix=irc, is_channel_creator=self._channel_user.is_channel_creator,
+                                  channel_name=self._channel.channel_name)
+
+
+class SetChannelKeyHandler(ChannelHandlerBase):
+    _request: SetChannelKeyRequest
+
+    async def _request_check(self) -> None:
+        await super()._request_check()
+        assert self._channel_user
+        assert isinstance(self._channel_user.is_channel_operator, bool)
+        if self._channel_user.is_channel_operator:
+            self._channel.key_values = self._request.key_values  # type:ignore
+        data.db_commit()
+
+    async def _result_construct(self) -> None:
+        assert self._channel_user
+        irc = ChannelUserHelper.get_user_irc_prefix(self._channel_user)
+        self._result = SetChannelKeyResult(
+            channel_user_irc_prefix=irc, channel_name=self._request.channel_name)
+
+
+class SetCkeyHandler(ChannelHandlerBase):
+    """
+    todo check if set channel_user or user keyvalue or set for other channeluser keyvalue
+    """
+    _request: SetCKeyRequest
+
+    async def _data_operate(self) -> None:
+        self._channel_user.key_values = self._request.key_values  # type:ignore
+        data.db_commit()
+        self._is_broadcast = True
+
+    async def _result_construct(self) -> None:
+        # todo think how to broadcast message
+        raise NotImplementedError()
+
+
+class TopicHandler(ChannelHandlerBase):
+    _request: TopicRequest
+
+    async def _data_operate(self) -> None:
+        assert self._channel_user
+        assert isinstance(self._channel_user.is_channel_operator, bool)
+        if self._request.request_type is TopicRequestType.GET_CHANNEL_TOPIC:
+            self._data: str = self._channel.topic  # type:ignore
+        else:
+            if not self._channel_user.is_channel_operator:
+                raise NoSuchChannelException(
+                    "inorder to set channel topic, you have to be channel operator")
+            self._channel.topic = self._request.channel_topic  # type:ignore
+            self._data: str = self._request.channel_topic
+
+    async def _result_construct(self) -> None:
+        self._result = TopicResult(
+            channel_name=self._request.channel_name, channel_topic=self._data)
+        
+# region Message
+
+# class AtmHandler()

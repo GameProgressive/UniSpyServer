@@ -6,6 +6,7 @@ from uuid import UUID
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatChannelUserCaches, ChatUserCaches
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import ModeRequest
+from protocols.chat.abstractions.contract import SERVER_DOMAIN
 from protocols.chat.aggregates.enums import ModeOperationType
 from protocols.chat.aggregates.exceptions import BadChannelKeyException, BannedFromChanException, InviteOnlyChanException, NoSuchChannelException
 
@@ -27,6 +28,11 @@ class ChannelUserHelper:
         if user.is_voiceable:
             buffer += "+"
         return buffer
+
+    @staticmethod
+    def get_user_irc_prefix(user: ChatChannelUserCaches):
+        irc = f"{user.nick_name}!{user.user_name}@{SERVER_DOMAIN}"
+        return irc
 
 
 class ChannelHelper:
@@ -217,8 +223,19 @@ class ChannelHelper:
         PG_SESSION.commit()
 
     @staticmethod
-    def get_all_user_nick_string(channel: ChatChannelCaches):
+    def get_all_user_nick_string(channel: ChatChannelCaches) -> str:
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(channel.channel_name, str)
         users = data.get_channel_user_caches_by_name(channel.channel_name)
-        
+        nicks = ""
+        for user in users:
+            assert isinstance(user.is_channel_creator, bool)
+            assert isinstance(user.nick_name, str)
+            if user.is_channel_creator:
+                nicks += f"@{user.nick_name}"
+            else:
+                nicks += user.nick_name
+            # use space as seperator
+            if user != users[-1]:
+                nicks += " "
+        return nicks
