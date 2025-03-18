@@ -116,7 +116,7 @@ ALTER SEQUENCE unispy.blocked_blockid_seq OWNED BY unispy.blocked.blockid;
 
 CREATE TABLE unispy.chat_user_caches (
     server_id uuid NOT NULL,
-    nick_name character varying primary key NOT NULL UNIQUE ,
+    nick_name character varying PRIMARY KEY NOT NULL,
     game_name character varying,
     user_name character varying,
     remote_ip_address inet NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE unispy.chat_user_caches (
 --
 
 CREATE TABLE unispy.chat_channel_caches (
-    channel_name character varying NOT NULL UNIQUE,
+    channel_name character varying NOT NULL PRIMARY KEY,
     server_id uuid NOT NULL,
     game_name character varying NOT NULL,
     room_name character varying NOT NULL,
@@ -157,8 +157,8 @@ ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.chat_channel_user_caches (
-    nick_name character varying NOT NULL
-    user_name character varying NOT NULL
+    nick_name character varying NOT NULL,
+    user_name character varying NOT NULL,
     channel_name character varying NOT NULL,
     server_id uuid NOT NULL,
     update_time timestamp without time zone NOT NULL,
@@ -257,7 +257,7 @@ ALTER TABLE unispy.game_server_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.games (
-    gameid integer NOT NULL,
+    gameid integer PRIMARY KEY NOT NULL ,
     gamename character varying NOT NULL,
     secretkey character varying,
     description character varying(4095) NOT NULL,
@@ -5496,9 +5496,9 @@ ALTER TABLE ONLY unispy.profiles
 -- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
 --
 ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREIGN KEY(channel_name) unispy.chat_channel_caches(channel_name)
-    ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) unispy.chat_user_caches(nick_name)
+    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREIGN KEY(channel_name) REFERENCES unispy.chat_channel_caches(channel_name);
 
-PostgreSQL database dump complete
+ALTER TABLE ONLY unispy.chat_channel_user_caches
+    ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name);
 
-
+-- PostgreSQL database dump complete
