@@ -1,8 +1,7 @@
-import asyncio
 import threading
 from typing import Optional
-import websocket
 from redis import Redis
+import websocket
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from redis.client import PubSub
 

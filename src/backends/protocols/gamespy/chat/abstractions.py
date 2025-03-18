@@ -64,7 +64,7 @@ class ChannelHandlerBase(HandlerBase):
     async def _boradcast(self) -> None:
         # todo boradcast message here
         raise NotImplementedError()
-        pass
+        
 
     async def handle(self) -> None:
         try:

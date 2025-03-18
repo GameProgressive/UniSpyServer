@@ -242,7 +242,6 @@ class ChatChannelCaches(Base):
     key_values = Column(JSONB, default={})
     invited_nicks = Column(JSONB, default=[])
     update_time = Column(DateTime, nullable=False)
-    creator = Column(String, nullable=True)
     modes = Column(JSONB, default=[])
     banned_nicks = Column(JSONB, default=[])
 

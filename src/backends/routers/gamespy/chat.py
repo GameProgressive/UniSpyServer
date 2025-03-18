@@ -1,33 +1,14 @@
 import json
 from typing import Optional
 from backends.protocols.gamespy.chat.handlers import CdKeyHandler, GetKeyHandler, GetUdpRelayHandler, InviteHandler
-from backends.protocols.gamespy.chat.requests import (ATMRequest, CdkeyRequest, GetCKeyRequest, GetChannelKeyRequest, GetKeyRequest, GetUdpRelayRequest, InviteRequest, JoinRequest, KickRequest,
-                                                      ListRequest, LoginRequest, ModeRequest, NamesRequest, NickRequest, NoticeRequest, PartRequest, PrivateRequest, QuitRequest, SetChannelKeyRequest, SetGroupRequest, SetKeyRequest, TopicRequest, UTMRequest, UserIPRequest, UserRequest, WhoIsRequest, WhoRequest)
+from backends.protocols.gamespy.chat.requests import AtmRequest, CdkeyRequest, GetCKeyRequest, GetChannelKeyRequest, GetKeyRequest, GetUdpRelayRequest, InviteRequest, JoinRequest, KickRequest, ListRequest, LoginRequest, ModeRequest, NamesRequest, NickRequest, NoticeRequest, PartRequest, PrivateRequest, QuitRequest, SetChannelKeyRequest, SetGroupRequest, SetKeyRequest, TopicRequest, UtmRequest, UserIPRequest, UserRequest, WhoIsRequest, WhoRequest
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
-from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
+from backends.library.brockers.chat import CHANNELS, FRONTENDS
 
 router = APIRouter()
-channels: dict[str, list[WebSocket]] = {"test": []}
-"""
-{"channel_name" : "list of WebSocket"}
-"""
-clients: dict[str, WebSocket] = {}
-"""
-{"client ip and port" : WebSocket}
-"""
-
-
-@router.post(f"{CHAT}/add_channel")
-def add_channel(channel_name: str, config: ServerConfig):
-    # first validate the server_id server_ip etc. info
-    # if server is valid we initialize the channel
-
-    # we initialize the channel
-    if channel_name not in channels:
-        channels[channel_name] = []
 
 
 def check_request(request: str) -> Optional[BrockerMessage]:
@@ -41,24 +22,20 @@ def check_request(request: str) -> Optional[BrockerMessage]:
     return ch_msg
 
 
-async def multicast_message(ws: WebSocket):
-    pass
-
-
 @router.websocket(f"{CHAT}/Channel")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
     if isinstance(ws, WebSocket) and ws.client is not None:
         client_key = f"{ws.client.host}:{ws.client.port}"
-        clients[client_key] = ws
+        FRONTENDS[client_key] = ws
     try:
         while True:
             request = await ws.receive_text()
             msg = check_request(request)
             if msg is None:
                 return
-            channels[msg.channel_name].append(ws)
-            channel_clients: list[WebSocket] = channels[msg.channel_name]
+            CHANNELS[msg.channel_name].append(ws)
+            channel_clients: list[WebSocket] = CHANNELS[msg.channel_name]
 
             for client in channel_clients:
                 # we do not send data to the publisher
@@ -69,9 +46,9 @@ async def websocket_endpoint(ws: WebSocket):
     except WebSocketDisconnect:
         if ws.client is not None:
             client_key = f"{ws.client.host}:{ws.client.port}"
-            del clients[client_key]
+            del FRONTENDS[client_key]
             if msg is not None:
-                channels[msg.channel_name].remove(ws)
+                CHANNELS[msg.channel_name].remove(ws)
         print("Client disconnected")
 
 # region General
@@ -205,7 +182,7 @@ async def topic(request: TopicRequest):
 
 
 @router.post(f"{CHAT}/ATMHandler")
-async def atm(request: ATMRequest):
+async def atm(request: AtmRequest):
     pass
 
 
@@ -220,7 +197,7 @@ async def private(request: PrivateRequest):
 
 
 @router.post(f"{CHAT}/UTMHandler")
-async def utm(request: UTMRequest):
+async def utm(request: UtmRequest):
     pass
 
 

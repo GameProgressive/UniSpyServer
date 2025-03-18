@@ -5,7 +5,7 @@ import backends.protocols.gamespy.presence_search_player.data as data
 
 
 class DataFetchTests(TestCase):
-    def test_verify_email(self):
+    def test_verify_email(self) -> None:
         result1 = data.verify_email("spyguy@unispy.net")
         self.assertFalse(result1)
         result2 = data.verify_email("spyguy@gamespy.com")

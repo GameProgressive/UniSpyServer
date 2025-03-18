@@ -184,7 +184,7 @@ class MessageRequestBase(ChannelRequestBase):
 # region Message
 
 
-class ATMRequest(MessageRequestBase):
+class AtmRequest(MessageRequestBase):
     pass
 
 
@@ -196,5 +196,5 @@ class PrivateRequest(MessageRequestBase):
     pass
 
 
-class UTMRequest(MessageRequestBase):
+class UtmRequest(MessageRequestBase):
     pass

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatUserCaches, ChatChannelUserCaches
-from backends.protocols.gamespy.chat.abstractions import ChannelHandlerBase
+from backends.protocols.gamespy.chat.abstractions import ChannelHandlerBase, MessageHandlerBase
 from backends.protocols.gamespy.chat.helper import ChannelHelper, ChannelUserHelper
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.managers import KeyValueManager
@@ -425,7 +425,21 @@ class TopicHandler(ChannelHandlerBase):
     async def _result_construct(self) -> None:
         self._result = TopicResult(
             channel_name=self._request.channel_name, channel_topic=self._data)
-        
+
 # region Message
 
-# class AtmHandler()
+
+class AtmHandler(MessageHandlerBase):
+    _request: AtmRequest
+
+
+class UtmHandler(MessageHandlerBase):
+    _request: UtmRequest
+
+
+class NoticeHandler(MessageHandlerBase):
+    _request: NoticeRequest
+
+
+class PrivateHandler(MessageHandlerBase):
+    _request: NoticeRequest
