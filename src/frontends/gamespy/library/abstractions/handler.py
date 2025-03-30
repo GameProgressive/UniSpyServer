@@ -87,7 +87,7 @@ class CmdHandlerBase:
         self._temp_data["client_ip"] = self._client.connection.remote_ip
         self._temp_data["server_id"] = self._client.server_config.server_id
         self._temp_data["client_port"] = self._client.connection.remote_port
-
+    
     def _upload_data(self):
         """
         whether need send data to backend

@@ -297,7 +297,7 @@ class GameServerCaches(Base):
 def connect_to_db() -> Session:
     ENGINE = create_engine(CONFIG.postgresql.url)
     session = sessionmaker(bind=ENGINE)()
-    Base.metadata.create_all(ENGINE)
+    # Base.metadata.create_all(ENGINE)
     with ENGINE.connect() as conn:
         conn.execute(text("SELECT 1")).first()
     return session
