@@ -29,6 +29,8 @@ class LoginHandler(HandlerBase):
             raise ValueError("Request type not valid")
 
     def _nick_email_login(self) -> None:
+        assert self._request.email is not None
+        assert self._request.nick is not None
         is_exsit = data.is_email_exist(self._request.email)
         if not is_exsit:
             raise GPLoginBadEmailException(
@@ -37,16 +39,20 @@ class LoginHandler(HandlerBase):
             self._request.nick, self._request.email)
 
     def _unique_nick_login(self) -> None:
+        assert self._request.unique_nick is not None
+        assert self._request.namespace_id is not None
         self.data = data.get_user_infos_by_uniquenick_namespace_id(
-            self._request.unique_nick, self._request.namespace_id)
+            self._request.unique_nick,
+            self._request.namespace_id)
 
     def _auth_token_login(self) -> None:
+        assert self._request.auth_token is not None
         self._data = data.get_user_infos_by_authtoken(
             self._request.auth_token)
 
     async def _result_construct(self) -> None:
-        if self.data is not None:
-            self._result = LoginResult(data=self.data)
+        assert self._data
+        self._result = LoginResult(data=self._data)
 
 
 class LogoutHandler(HandlerBase):
@@ -169,8 +175,8 @@ class StatusInfoHandler(HandlerBase):
 
     async def _data_operate(self) -> None:
         raise NotImplementedError()
-    
-    
+
+
 # region Profile
 
 
