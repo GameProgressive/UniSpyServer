@@ -1,7 +1,7 @@
 PRESENCE_CONNECTION_MANAGER = "/GameSpy/PresenceConnectionManager"
 PRESENCE_SEARCH_PLAYER = "/GameSpy/PresenceSearchPlayer"
 SERVER_BROWSER_V1 = "/GameSpy/ServerBrowserV1"
-SERVER_BROWSER_V2 = "/GameSpy/ServerBrowser_V2"
+SERVER_BROWSER_V2 = "/GameSpy/ServerBrowserV2"
 QUERY_REPORT = "/GameSpy/QueryReport"
 NATNEG = "/GameSpy/NatNegotiation"
 GAMESTATUS = "/GameSpy/GameStatus"
