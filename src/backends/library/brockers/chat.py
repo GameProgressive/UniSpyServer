@@ -17,7 +17,7 @@ store the frontends server websockets
 """
 
 
-async def channel_publish(channel_name: str, message: dict):
-    if channel_name in CHANNELS:
-        for client in CHANNELS[channel_name]:
-            await client.send(message)
+# async def channel_publish(channel_name: str, message: dict):
+#     if channel_name in CHANNELS:
+#         for client in CHANNELS[channel_name]:
+#             await client.send(message)
