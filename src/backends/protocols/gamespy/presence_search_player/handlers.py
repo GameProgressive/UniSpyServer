@@ -13,6 +13,7 @@ class CheckHandler(HandlerBase):
     todo: whether need check the partner id, which means whether we need to check subprofiles
     """
     _request: CheckRequest
+    _result: CheckResult
 
     async def _data_operate(self) -> None:
         if data.verify_email(self._request.email):
@@ -32,6 +33,7 @@ class CheckHandler(HandlerBase):
 
 class NewUserHandler(HandlerBase):
     _request: NewUserRequest
+    _result: NewUserResult
 
     async def _data_operate(self) -> None:
 
@@ -89,6 +91,7 @@ class NewUserHandler(HandlerBase):
 
 class NicksHandler(HandlerBase):
     _request: NicksRequest
+    _result: NicksResult
 
     async def _data_operate(self) -> None:
         self.temp_list = data.get_nick_and_unique_nick_list(
@@ -104,6 +107,7 @@ class NicksHandler(HandlerBase):
 
 class OthersHandler(HandlerBase):
     _request: OthersRequest
+    _result: OthersResult
 
     async def _data_operate(self) -> None:
         self._data: list = data.get_friend_info_list(
@@ -120,6 +124,7 @@ class OthersHandler(HandlerBase):
 
 class OthersListHandler(HandlerBase):
     _request: OthersListRequest
+    result: OthersListResult
 
     async def _data_operate(self) -> None:
         self._data: list = data.get_matched_profile_info_list(
@@ -138,6 +143,7 @@ class OthersListHandler(HandlerBase):
 
 class SearchHandler(HandlerBase):
     _request: SearchRequest
+    _result: SearchResult
 
     async def _data_operate(self) -> None:
         if self._request.request_type == SearchType.NICK_SEARCH:
@@ -162,12 +168,13 @@ class SearchHandler(HandlerBase):
         data = []
         for d in self._data:
             dd = SearchResultData(**d)
-        data.append(dd)
+            data.append(dd)
         self._result = SearchResult(data=data)
 
 
 class SearchUniqueHandler(HandlerBase):
     _request: SearchUniqueRequest
+    _result: SearchUniqueResult
 
     async def _data_operate(self) -> None:
         self._data = data.get_matched_info_by_uniquenick_and_namespaceids(
@@ -183,6 +190,7 @@ class SearchUniqueHandler(HandlerBase):
 
 class UniqueSearchHandler(HandlerBase):
     _request: UniqueSearchRequest
+    _result: UniqueSearchResult
 
     async def _data_operate(self) -> None:
         self._is_exist = data.is_uniquenick_exist(
@@ -194,6 +202,7 @@ class UniqueSearchHandler(HandlerBase):
 
 class ValidHandler(HandlerBase):
     _request: ValidRequest
+    _result: ValidResult
 
     async def _data_operate(self) -> None:
         self._is_exist = data.is_email_exist(self._request.email)

@@ -1,6 +1,6 @@
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
-from pydantic import UUID4, BaseModel
+from pydantic import ValidationError
 
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginType,
@@ -16,17 +16,18 @@ class ErrorOnParse(RequestBase):
     raw_request: str
 
 
+# region buddy
+
 class AddBlockRequest(RequestBase):
     taget_id: int
     profile_id: int
     session_key: str
 
-# region buddy
-
 
 class BuddyListRequest(RequestBase):
     profile_id: int
     namespace_id: int
+    raw_request: Optional[str] = None
 
 
 class BlockListRequest(RequestBase):
@@ -96,12 +97,12 @@ class NewUserRequest(RequestBase):
 class LoginRequest(RequestBase):
     user_challenge: str
     response: str
-    unique_nick: str
     user_data: str
-    namespace_id: int
-    auth_token: str
-    nick: str
-    email: str
+    unique_nick: Optional[str] = None
+    namespace_id: Optional[int] = None
+    auth_token: Optional[str] = None
+    nick: Optional[str] = None
+    email: Optional[str] = None
     product_id: int
     type: Union[LoginType, int]
     sdk_revision_type: Union[SdkRevisionType, int]
@@ -109,9 +110,27 @@ class LoginRequest(RequestBase):
     user_id: int
     profile_id: int
     partner_id: int
-    game_name: int
+    game_name: Optional[str]
     quiet_mode_flags: int
     firewall: bool
+
+    def model_post_init(self, __context: Any) -> None:
+        super().model_post_init(__context)
+        if self.type == LoginType.AUTH_TOKEN:
+            if self.auth_token is None:
+                raise ValidationError("authtoken is missing.")
+        elif self.type == LoginType.UNIQUENICK_NAMESPACE_ID:
+            if self.unique_nick is None:
+                raise ValidationError("unique nick is missing.")
+            if self.namespace_id is None:
+                raise ValidationError("namespace is missing.")
+        elif self.type == LoginType.NICK_EMAIL:
+            if self.nick is None:
+                raise ValidationError("nick name is missing.")
+            if self.email is None:
+                raise ValidationError("email is missing.")
+        else:
+            raise ValidationError(f"request type {self.type} not found.")
 
 
 class LogoutRequest(RequestBase):

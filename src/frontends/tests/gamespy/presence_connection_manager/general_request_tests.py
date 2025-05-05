@@ -5,15 +5,15 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
     QuietModeType,
     SdkRevisionType,
 )
+LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\xxxx\\userid\\0\\profileid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\0\\profileid\\0\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@unispy.org\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 
 
 class GeneralRequestTest(unittest.TestCase):
-    LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\xxxx\\userid\\0\\profileid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-    LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\0\\profileid\\0\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-    LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@unispy.org\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 
     def test_login_auth_token(self) -> None:
-        request = LoginRequest(GeneralRequestTest.LOGIN_AUTH_TOKEN)
+        request = LoginRequest(LOGIN_AUTH_TOKEN)
         request.parse()
         self.assertEqual(LoginType.AUTH_TOKEN, request.type)
         self.assertEqual("xxxx", request.user_challenge)
@@ -31,7 +31,7 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_unique_nick(self) -> None:
-        request = LoginRequest(GeneralRequestTest.LOGIN_UNIQUE_NICK)
+        request = LoginRequest(LOGIN_UNIQUE_NICK)
         request.parse()
         self.assertEqual(LoginType.UNIQUENICK_NAMESPACE_ID, request.type)
         self.assertEqual("xxxx", request.user_challenge)
@@ -50,7 +50,7 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_user(self) -> None:
-        request = LoginRequest(GeneralRequestTest.LOGIN_USER)
+        request = LoginRequest(LOGIN_USER)
         request.parse()
         self.assertEqual(LoginType.NICK_EMAIL, request.type)
         self.assertEqual("xxxx", request.user_challenge)

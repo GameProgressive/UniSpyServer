@@ -272,6 +272,38 @@ class NewUserRequest(RequestBase):
 # region Buddy
 
 
+class BuddyListRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+    def __init__(self,
+                 profile_id: int,
+                 namespace_id: int) -> None:
+        assert isinstance(profile_id, int)
+        assert isinstance(namespace_id, int)
+        self.profile_id = profile_id
+        self.namespace_id = namespace_id
+
+    def parse(self):
+        pass
+
+
+class BlockListRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+    def __init__(self,
+                 profile_id: int,
+                 namespace_id: int) -> None:
+        assert isinstance(profile_id, int)
+        assert isinstance(namespace_id, int)
+        self.profile_id = profile_id
+        self.namespace_id = namespace_id
+
+    def parse(self):
+        pass
+
+
 @final
 class AddBuddyRequest(RequestBase):
     friend_profile_id: int
