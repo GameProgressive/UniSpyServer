@@ -1,7 +1,40 @@
 import json
 from typing import Optional
-from backends.protocols.gamespy.chat.handlers import CdKeyHandler, GetKeyHandler, GetUdpRelayHandler, InviteHandler
-from backends.protocols.gamespy.chat.requests import AtmRequest, CdkeyRequest, GetCKeyRequest, GetChannelKeyRequest, GetKeyRequest, GetUdpRelayRequest, InviteRequest, JoinRequest, KickRequest, ListRequest, LoginRequest, ModeRequest, NamesRequest, NickRequest, NoticeRequest, PartRequest, PrivateRequest, QuitRequest, SetChannelKeyRequest, SetGroupRequest, SetKeyRequest, TopicRequest, UtmRequest, UserIPRequest, UserRequest, WhoIsRequest, WhoRequest
+from backends.protocols.gamespy.chat.handlers import (
+    CdKeyHandler,
+    GetKeyHandler,
+    GetUdpRelayHandler,
+    InviteHandler,
+)
+from backends.protocols.gamespy.chat.requests import (
+    AtmRequest,
+    CdkeyRequest,
+    GetCKeyRequest,
+    GetChannelKeyRequest,
+    GetKeyRequest,
+    GetUdpRelayRequest,
+    InviteRequest,
+    JoinRequest,
+    KickRequest,
+    ListRequest,
+    LoginRequest,
+    ModeRequest,
+    NamesRequest,
+    NickRequest,
+    NoticeRequest,
+    PartRequest,
+    PrivateRequest,
+    QuitRequest,
+    SetChannelKeyRequest,
+    SetGroupRequest,
+    SetKeyRequest,
+    TopicRequest,
+    UtmRequest,
+    UserIPRequest,
+    UserRequest,
+    WhoIsRequest,
+    WhoRequest,
+)
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
@@ -22,7 +55,7 @@ def check_request(request: str) -> Optional[BrockerMessage]:
     return ch_msg
 
 
-@router.websocket(f"{CHAT}/Channel")
+@router.websocket(f"{CHAT}/Brocker")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
     if isinstance(ws, WebSocket) and ws.client is not None:
@@ -50,6 +83,7 @@ async def websocket_endpoint(ws: WebSocket):
             if msg is not None:
                 CHANNELS[msg.channel_name].remove(ws)
         print("Client disconnected")
+
 
 # region General
 
@@ -178,6 +212,7 @@ async def set_group(request: SetGroupRequest):
 async def topic(request: TopicRequest):
     pass
 
+
 # region Message
 
 
@@ -204,6 +239,7 @@ async def utm(request: UtmRequest):
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     uvicorn.run(app, host="0.0.0.0", port=8080)
