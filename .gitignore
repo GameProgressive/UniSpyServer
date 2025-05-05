@@ -5,7 +5,7 @@
 *.pyc
 # C extensions
 *.so
-
+.ruff_cache/
 # Distribution / packaging
 .Python
 build/
