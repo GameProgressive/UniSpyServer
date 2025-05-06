@@ -6,7 +6,6 @@ from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, Chat
 from backends.protocols.gamespy.chat.abstractions import ChannelHandlerBase, MessageHandlerBase
 from backends.protocols.gamespy.chat.helper import ChannelHelper, ChannelUserHelper
 import backends.protocols.gamespy.chat.data as data
-from backends.protocols.gamespy.chat.managers import KeyValueManager
 from backends.protocols.gamespy.chat.requests import *
 from frontends.gamespy.protocols.chat.aggregates.exceptions import BadChannelKeyException, ChatException, LoginFailedException, NickNameInUseException, NoSuchChannelException, NoSuchNickException
 from frontends.gamespy.protocols.chat.contracts.results import CryptResult, GetCKeyResult, GetKeyResult, ListResult, NamesResult, NickResult, PartResult, SetChannelKeyResult, TopicResult, WhoIsResult, WhoResult

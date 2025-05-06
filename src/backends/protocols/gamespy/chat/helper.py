@@ -1,14 +1,23 @@
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, cast
 from uuid import UUID
 
-from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches, ChatChannelUserCaches, ChatUserCaches
+from backends.library.database.pg_orm import (
+    PG_SESSION,
+    ChatChannelCaches,
+    ChatChannelUserCaches,
+    ChatUserCaches,
+)
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import ModeRequest
-from protocols.chat.abstractions.contract import SERVER_DOMAIN
-from protocols.chat.aggregates.enums import ModeOperationType
-from protocols.chat.aggregates.exceptions import BadChannelKeyException, BannedFromChanException, InviteOnlyChanException, NoSuchChannelException
+from frontends.gamespy.protocols.chat.abstractions.contract import SERVER_DOMAIN
+from frontends.gamespy.protocols.chat.aggregates.enums import ModeOperationType
+from frontends.gamespy.protocols.chat.aggregates.exceptions import (
+    BadChannelKeyException,
+    BannedFromChanException,
+    InviteOnlyChanException,
+    NoSuchChannelException,
+)
 
 
 class ChannelUserProperty(Enum):
@@ -17,7 +26,6 @@ class ChannelUserProperty(Enum):
 
 
 class ChannelUserHelper:
-
     @staticmethod
     def get_mode_string(user: ChatChannelUserCaches):
         assert isinstance(user.is_channel_operator, bool)
@@ -38,7 +46,6 @@ class ChannelUserHelper:
 class ChannelHelper:
     @staticmethod
     def join(channel: ChatChannelCaches, user: ChatUserCaches) -> None:
-
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(channel.modes, list)
         assert isinstance(user.nick_name, str)
@@ -49,12 +56,14 @@ class ChannelHelper:
         if ModeOperationType.SET_INVITED_ONLY in channel.modes:
             if user.nick_name not in channel.invited_nicks:
                 raise InviteOnlyChanException(
-                    f"You can only join channel: {channel.channel_name} when you are in invite list")
+                    f"You can only join channel: {channel.channel_name} when you are in invite list"
+                )
 
         # 2 check if user is in ban list, if it is user can not join
         if user.nick_name in channel.banned_nicks:
             raise BannedFromChanException(
-                "can not join channel, because you are in ban list")
+                "can not join channel, because you are in ban list"
+            )
         if channel.creator == user.nick_name:  # type:ignore
             is_creator = True
         else:
@@ -68,7 +77,8 @@ class ChannelHelper:
             is_channel_operator=False,
             is_channel_creator=is_creator,
             remote_ip_address=user.remote_ip_address,
-            remote_port=user.remote_port)
+            remote_port=user.remote_port,
+        )
         PG_SESSION.add(chan_user)
         PG_SESSION.commit()
 
@@ -86,7 +96,11 @@ class ChannelHelper:
         PG_SESSION.commit()
 
     @staticmethod
-    def kick(channel: ChatChannelCaches, kicker: ChatChannelUserCaches, kickee: ChatChannelUserCaches) -> None:
+    def kick(
+        channel: ChatChannelCaches,
+        kicker: ChatChannelUserCaches,
+        kickee: ChatChannelUserCaches,
+    ) -> None:
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(kicker, ChatChannelUserCaches)
         assert isinstance(kickee, ChatChannelUserCaches)
@@ -95,72 +109,82 @@ class ChannelHelper:
         assert isinstance(kickee.channel_name, str)
         if kicker.channel_name != channel.channel_name:  # type:ignore
             raise BadChannelKeyException(
-                f"kicker is not in channel: {channel.channel_name}")
+                f"kicker is not in channel: {channel.channel_name}"
+            )
         if kickee.channel_name != channel.channel_name:  # type:ignore
             raise BadChannelKeyException(
-                f"kickee is not in channel: {channel.channel_name}")
+                f"kickee is not in channel: {channel.channel_name}"
+            )
         if not kicker.is_channel_operator:  # type:ignore
-            raise BadChannelKeyException(
-                "kick failed, kicker is not channel operator")
+            raise BadChannelKeyException("kick failed, kicker is not channel operator")
         PG_SESSION.delete(kickee)
         PG_SESSION.commit()
 
     @staticmethod
-    def invite(channel: ChatChannelCaches, inviter: ChatChannelUserCaches, invitee: ChatUserCaches) -> None:
-
+    def invite(
+        channel: ChatChannelCaches,
+        inviter: ChatChannelUserCaches,
+        invitee: ChatUserCaches,
+    ) -> None:
         if str(inviter.channel_name) != str(channel.channel_name):
             raise InviteOnlyChanException(
-                f"The inviter:{inviter.nick_name} is not a user in channel:{channel.channel_name}.")
+                f"The inviter:{inviter.nick_name} is not a user in channel:{channel.channel_name}."
+            )
 
         assert isinstance(channel.invited_nicks, list)
         channel.invited_nicks.append(invitee.nick_name)
         PG_SESSION.commit()
 
     @staticmethod
-    def create(server_id: UUID,
-               channel_name: str,
-               password: str,
-               game_name: str,
-               room_name: str,
-               topic: str,
-               group_id: int,
-               max_num_user: int,
-               key_values: dict,
-               update_time: datetime,
-               modes: list,
-               creator: str | None = None) -> ChatChannelCaches:
+    def create(
+        server_id: UUID,
+        channel_name: str,
+        password: str,
+        game_name: str,
+        room_name: str,
+        topic: str,
+        group_id: int,
+        max_num_user: int,
+        key_values: dict,
+        update_time: datetime,
+        modes: list,
+        creator: str | None = None,
+    ) -> ChatChannelCaches:
         # check whether if channel exist, if not user is creator
         is_exist = data.is_channel_exist(channel_name, game_name)
         if is_exist:
             raise NoSuchChannelException(
-                f"Channel: {channel_name} is already exist, can not create a new one")
-        cache = ChatChannelCaches(server_id=server_id,
-                                  channel_name=channel_name,
-                                  password=password,
-                                  game_name=game_name,
-                                  room_name=room_name,
-                                  topic=topic,
-                                  group_id=group_id,
-                                  max_num_user=max_num_user,
-                                  key_values=key_values,
-                                  update_time=update_time,
-                                  creator=creator,
-                                  modes=modes)
+                f"Channel: {channel_name} is already exist, can not create a new one"
+            )
+        cache = ChatChannelCaches(
+            server_id=server_id,
+            channel_name=channel_name,
+            password=password,
+            game_name=game_name,
+            room_name=room_name,
+            topic=topic,
+            group_id=group_id,
+            max_num_user=max_num_user,
+            key_values=key_values,
+            update_time=update_time,
+            creator=creator,
+            modes=modes,
+        )
         PG_SESSION.add(cache)
         PG_SESSION.commit()
 
         return cache
 
     @staticmethod
-    def change_modes(channel: ChatChannelCaches,
-                     changer: ChatChannelUserCaches,
-                     request: ModeRequest,
-                     ):
+    def change_modes(
+        channel: ChatChannelCaches,
+        changer: ChatChannelUserCaches,
+        request: ModeRequest,
+    ):
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(changer, ChatChannelUserCaches)
         assert isinstance(channel.modes, list)
-        assert all(isinstance(m, ModeOperationType)
-                   for m in request.mode_operations)
+        assert all(isinstance(m, ModeOperationType) for m in request.mode_operations)
 
         for flag in request.mode_operations:
             if flag not in channel.modes:
@@ -168,14 +192,22 @@ class ChannelHelper:
             match flag:
                 case ModeOperationType.ENABLE_USER_QUIET_FLAG:
                     if changer.is_channel_operator:  # type:ignore
-                        if ModeOperationType.ENABLE_USER_QUIET_FLAG not in channel.modes:
+                        if (
+                            ModeOperationType.ENABLE_USER_QUIET_FLAG
+                            not in channel.modes
+                        ):
                             channel.modes.append(
-                                ModeOperationType.ENABLE_USER_QUIET_FLAG)
+                                ModeOperationType.ENABLE_USER_QUIET_FLAG
+                            )
                 case ModeOperationType.DISABLE_USER_QUIET_FLAG:
                     if changer.is_channel_operator:  # type:ignore
-                        if ModeOperationType.ENABLE_USER_QUIET_FLAG not in channel.modes:
+                        if (
+                            ModeOperationType.ENABLE_USER_QUIET_FLAG
+                            not in channel.modes
+                        ):
                             channel.modes.remove(
-                                ModeOperationType.ENABLE_USER_QUIET_FLAG)
+                                ModeOperationType.ENABLE_USER_QUIET_FLAG
+                            )
                 case ModeOperationType.ADD_CHANNEL_PASSWORD:
                     assert isinstance(request.password, str)
                     if changer.is_channel_operator:  # type:ignore
@@ -198,26 +230,31 @@ class ChannelHelper:
                         channel.banned_nicks.remove(request.nick_name)
                 case ModeOperationType.ADD_CHANNEL_OPERATOR:
                     u = data.get_channel_user_cache_by_name(
-                        request.channel_name, request.nick_name)
+                        request.channel_name, request.nick_name
+                    )
                     if u is None:
                         raise BadChannelKeyException(
-                            f"no user found with nick name:{request.nick_name}")
+                            f"no user found with nick name:{request.nick_name}"
+                        )
 
                     u.is_channel_operator = True  # type: ignore
                     PG_SESSION.commit()
                 case ModeOperationType.REMOVE_CHANNEL_OPERATOR:
                     u = data.get_channel_user_cache_by_name(
-                        request.channel_name, request.nick_name)
+                        request.channel_name, request.nick_name
+                    )
                     u.is_channel_operator = False  # type: ignore
                     PG_SESSION.commit()
 
                 case ModeOperationType.ENABLE_USER_VOICE_PERMISSION:
                     u = data.get_channel_user_cache_by_name(
-                        request.channel_name, request.nick_name)
+                        request.channel_name, request.nick_name
+                    )
                     u.is_voiceable = True  # type: ignore
                 case ModeOperationType.DISABLE_USER_VOICE_PERMISSION:
                     u = data.get_channel_user_cache_by_name(
-                        request.channel_name, request.nick_name)
+                        request.channel_name, request.nick_name
+                    )
                     u.is_voiceable = False  # type: ignore
 
         PG_SESSION.commit()

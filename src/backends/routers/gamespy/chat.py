@@ -1,5 +1,4 @@
-import json
-from typing import Optional
+from backends.library.brockers.chat import MANAGER
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     GetKeyHandler,
@@ -39,49 +38,32 @@ from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
-from backends.library.brockers.chat import CHANNELS, FRONTENDS
 
 router = APIRouter()
 
 
-def check_request(request: str) -> Optional[BrockerMessage]:
-    ch_msg = None
-    try:
-        request_dict = json.loads(request)
-        ch_msg = BrockerMessage(**request_dict)
-    except Exception as e:
-        print(e)
-        return None
-    return ch_msg
+def check_request(request: dict) -> BrockerMessage:
+    msg = BrockerMessage(**request)
+    return msg
 
 
-@router.websocket(f"{CHAT}/Brocker")
+@router.websocket(f"{CHAT}/Broker")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
     if isinstance(ws, WebSocket) and ws.client is not None:
-        client_key = f"{ws.client.host}:{ws.client.port}"
-        FRONTENDS[client_key] = ws
+        MANAGER.connect(ws)
     try:
         while True:
-            request = await ws.receive_text()
-            msg = check_request(request)
-            if msg is None:
+            request = await ws.receive_json()
+            r = check_request(request)
+            if r.message is None:
                 return
-            CHANNELS[msg.channel_name].append(ws)
-            channel_clients: list[WebSocket] = CHANNELS[msg.channel_name]
-
-            for client in channel_clients:
-                # we do not send data to the publisher
-                if client == ws:
-                    continue
-                await client.send_text(request)
+            # currently we broadcast all message
+            MANAGER.broadcast(r.model_dump())
 
     except WebSocketDisconnect:
         if ws.client is not None:
-            client_key = f"{ws.client.host}:{ws.client.port}"
-            del FRONTENDS[client_key]
-            if msg is not None:
-                CHANNELS[msg.channel_name].remove(ws)
+            MANAGER.disconnect(ws)
         print("Client disconnected")
 
 
