@@ -59,6 +59,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     CryptResult,
     GetCKeyResult,
     GetKeyResult,
+    JoinResult,
     ListResult,
     NamesResult,
     NickResult,
@@ -361,6 +362,20 @@ class JoinHandler(ChannelHandlerBase):
                 max_num_user=100,
             )
         ChannelHelper.join(self._channel, self._user)
+        self._nicks = ChannelHelper.get_channel_all_nicks(self._channel)
+
+    async def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.user_name, str)
+        assert isinstance(self._user.nick_name, str)
+        assert self._channel is not None
+        assert isinstance(self._channel.modes, list)
+        self._result = JoinResult(
+            joiner_user_name=self._user.user_name,
+            joiner_nick_name=self._user.nick_name,
+            all_channel_user_nicks=self._nicks,
+            channel_modes=self._channel.modes,
+        )
 
 
 class KickHandler(ChannelHandlerBase):
@@ -415,13 +430,13 @@ class NamesHandler(ChannelHandlerBase):
 
     async def _data_operate(self) -> None:
         assert self._channel
-        self._data = ChannelHelper.get_all_user_nick_string(self._channel)
+        self._nicks = ChannelHelper.get_channel_all_nicks(self._channel)
 
     async def _result_construct(self) -> None:
         assert self._user
         assert isinstance(self._user.nick_name, str)
         self._result = NamesResult(
-            all_channel_user_nicks=self._data,
+            all_channel_nicks=self._nicks,
             channel_name=self._request.channel_name,
             requester_nick_name=self._user.nick_name,
         )

@@ -201,7 +201,7 @@ class QuitHandler(CmdHandlerBase):
     _request: QuitRequest
 
     def __init__(self, client: ClientBase, request: QuitRequest):
-        assert isinstance(request, QuitHandler)
+        assert isinstance(request, QuitRequest)
         super().__init__(client, request)
 
 

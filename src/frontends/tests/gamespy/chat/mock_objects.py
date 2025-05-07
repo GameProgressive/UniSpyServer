@@ -15,7 +15,7 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     UserHandler,
     UserIPHandler,
     WhoHandler,
-    LoginHandler
+    LoginHandler,
 )
 from frontends.gamespy.protocols.chat.contracts.results import (
     GetCKeyResult,
@@ -60,10 +60,10 @@ def create_client() -> Client:
         config,
         JoinHandler,
         JoinResult(
-            joiner_nick_name="unispy",
-            joiner_prefix="xiaojiuwo!unispy@UNISPYSERVER",
-            all_channel_user_nicks="test",
-            channel_modes="+q",
+            joiner_nick_name="xiaojiuwo",
+            joiner_user_name="unispy",
+            all_channel_user_nicks=["unispy1", "unispy2"],
+            channel_modes=["+q"],
         ).model_dump(),
     )
     create_mock_url(config, UserHandler, {"message": "ok"})

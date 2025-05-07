@@ -1,11 +1,13 @@
 import threading
 from typing import Optional, Callable
+from uuid import UUID
 from redis import Redis
 import websocket
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from redis.client import PubSub
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 websocket.enableTrace(True)
 
@@ -71,11 +73,10 @@ class WebSocketBrocker(BrockerBase):
     def unsubscribe(self):
         self._subscriber.close()
 
-    def publish_message(self, message: str):
-        raise NotImplementedError("Websocket brocker only use to listen to message.")
+    def publish_message(self, message: BrockerMessage):
         if self._publisher is None:
             raise ValueError("websocket connection is not established")
-        self._publisher.send(message)
+        self._publisher.send(message.model_dump_json())
 
 
 if __name__ == "__main__":
@@ -85,8 +86,12 @@ if __name__ == "__main__":
         call_back_func=print,
     )
     ws.subscribe()
-    import json
+    msg = BrockerMessage(
+        server_id=UUID("08ed7859-1d9e-448b-8fda-dabb845d85f9"),
+        channel_name="gmtest",
+        sender_ip_address="192.168.0.1",
+        sender_port=80,
+        message="hello",
+    )
+    ws.publish_message(msg)
 
-    ws.publish_message(json.dumps({"channel_name": "test", "message": "hello"}))
-    while True:
-        pass

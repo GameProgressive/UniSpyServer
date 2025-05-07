@@ -1,4 +1,7 @@
-from frontends.gamespy.protocols.chat.abstractions.handler import ChannelRequestBase, MessageRequestBase
+from frontends.gamespy.protocols.chat.abstractions.handler import (
+    ChannelRequestBase,
+    MessageRequestBase,
+)
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     ModeOperationType,
@@ -12,9 +15,14 @@ from frontends.gamespy.library.extentions.string_extentions import (
     convert_kvstring_to_dictionary,
 )
 from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
-from frontends.gamespy.protocols.chat.aggregates.enums import LoginRequestType, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    LoginRequestType,
+    WhoRequestType,
+)
 from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException
-from frontends.gamespy.protocols.chat.aggregates.exceptions import NickNameInUseException
+from frontends.gamespy.protocols.chat.aggregates.exceptions import (
+    NickNameInUseException,
+)
 
 # General
 
@@ -70,8 +78,7 @@ class ListLimitRequest(RequestBase):
             )
         try:
             self.max_number_of_channels = int(self._cmd_params[0])
-
-        except Exception as e:
+        except Exception:
             raise ChatException("The max number format is incorrect.")
 
         self.filter = self._cmd_params[1]
@@ -113,8 +120,7 @@ class LoginRequest(RequestBase):
         super().parse()
         try:
             self.namespace_id = int(self._cmd_params[0])
-
-        except Exception as e:
+        except Exception:
             raise ChatException("The namespaceid format is incorrect.")
 
         if self._cmd_params[1] == "*":
@@ -126,7 +132,7 @@ class LoginRequest(RequestBase):
 
             profile_nick_index = self._long_param.index("@")
             self.nick_name = self._long_param[0:profile_nick_index]
-            self.email = self._long_param[profile_nick_index + 1:]
+            self.email = self._long_param[profile_nick_index + 1 :]
             return
 
         self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
@@ -135,7 +141,7 @@ class LoginRequest(RequestBase):
 
 
 class NickRequest(RequestBase):
-    _invalid_chars = "#@$%^&*()~"
+    _invalid_chars = "#@$%^&()~"
     nick_name: str
 
     def parse(self):
@@ -153,8 +159,7 @@ class NickRequest(RequestBase):
                 raise NickNameInUseException(
                     self.nick_name,
                     self.nick_name,
-                    f"The nick name: {
-                        self.nick_name} contains invalid character.",
+                    f"The nick name: {self.nick_name} contains invalid character.",
                 )
 
 
@@ -337,7 +342,6 @@ class GetCKeyRequest(ChannelRequestBase):
         self.cookie = self._cmd_params[2]
 
         if "\0" not in self._long_param and "\\" not in self._long_param:
-
             raise ChatException("The key provide is incorrect.")
 
         self.keys = self._long_param.strip("\\").rstrip("\0").split("\\")
@@ -417,8 +421,7 @@ class ModeRequest(ChannelRequestBase):
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
             self.type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
-            modeFlags = [s for s in re.split(
-                r"(?=\+|\-)", self.mode_flag) if s.strip()]
+            modeFlags = [s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()]
             modeFlags = list(filter(None, modeFlags))
             for flag in modeFlags:
                 match flag:
@@ -464,8 +467,7 @@ class ModeRequest(ChannelRequestBase):
                             ModeOperationType.REMOVE_SECRET_CHANNEL_FLAG
                         )
                     case "+i":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_INVITED_ONLY)
+                        self.mode_operations.append(ModeOperationType.SET_INVITED_ONLY)
                     case "-i":
                         self.mode_operations.append(
                             ModeOperationType.REMOVE_INVITED_ONLY
@@ -597,12 +599,10 @@ class SetCKeyRequest(ChannelRequestBase):
     def parse(self) -> None:
         super().parse()
         if self._cmd_params is None:
-            raise ChatException(
-                "The cmdParams from SETCKEY request are missing.")
+            raise ChatException("The cmdParams from SETCKEY request are missing.")
 
         if self._long_param is None:
-            raise ChatException(
-                "The longParam from SETCKEY request is missing.")
+            raise ChatException("The longParam from SETCKEY request is missing.")
 
         self.channel_name = self._cmd_params[0]
         self.nick_name = self._cmd_params[1]
@@ -641,6 +641,7 @@ class TopicRequest(ChannelRequestBase):
         else:
             self.request_type = TopicRequestType.SET_CHANNEL_TOPIC
             self.channel_topic = self._long_param
+
 
 #  region Message
 

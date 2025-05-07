@@ -276,3 +276,13 @@ class ChannelHelper:
             if user != users[-1]:
                 nicks += " "
         return nicks
+
+    @staticmethod
+    def get_channel_all_nicks(channel: ChatChannelCaches) -> list[str]:
+        assert channel is not None
+        assert isinstance(channel.channel_name, str)
+        users = data.get_channel_user_caches_by_name(channel.channel_name)
+        nicks = []
+        for user in users:
+            nicks.append(user.nick_name)
+        return nicks

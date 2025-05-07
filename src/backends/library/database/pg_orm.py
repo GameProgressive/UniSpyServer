@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.configs import CONFIG
 from datetime import datetime
 from sqlalchemy import (
@@ -13,16 +12,22 @@ from sqlalchemy import (
     DateTime,
     text,
     UUID,
-    create_engine
 )
 from sqlalchemy.orm.session import Session
 from sqlalchemy.dialects.postgresql import JSONB, INET
-from sqlalchemy.ext.declarative import DeclarativeMeta
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import TypeDecorator
-from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex, NatPortType
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import FriendRequestStatus, GPStatusCode
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
+from frontends.gamespy.protocols.natneg.aggregations.enums import (
+    NatClientIndex,
+    NatPortType,
+)
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    FriendRequestStatus,
+    GPStatusCode,
+)
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
+    GameServerStatus,
+)
 import sqlalchemy as sa
 import enum
 from sqlalchemy.orm.decl_api import DeclarativeBase
@@ -52,16 +57,15 @@ class Base(DeclarativeBase):
 class Users(Base):
     __tablename__ = "users"
 
-    userid: Column[int] = Column(
-        Integer, primary_key=True, autoincrement=True)
+    userid: Column[int] = Column(Integer, primary_key=True, autoincrement=True)
     email: Column[str] = Column(String, nullable=False)
     password: Column[str] = Column(String, nullable=False)
-    emailverified: Column[bool] = Column(
-        Boolean, default=True, nullable=False)
+    emailverified: Column[bool] = Column(Boolean, default=True, nullable=False)
     lastip: Column[str] = Column(INET)
     lastonline: Column[datetime] = Column(DateTime, default=datetime.now())
     createddate: Column[datetime] = Column(
-        DateTime, default=datetime.now(), nullable=False)
+        DateTime, default=datetime.now(), nullable=False
+    )
     banned: Column[bool] = Column(Boolean, default=False, nullable=False)
     deleted: Column[bool] = Column(Boolean, default=False, nullable=False)
 
@@ -69,14 +73,11 @@ class Users(Base):
 class Profiles(Base):
     __tablename__ = "profiles"
 
-    profileid: Column[int] = Column(
-        Integer, primary_key=True, autoincrement=True)
-    userid: Column[int] = Column(
-        Integer, ForeignKey("users.userid"), nullable=False)
+    profileid: Column[int] = Column(Integer, primary_key=True, autoincrement=True)
+    userid: Column[int] = Column(Integer, ForeignKey("users.userid"), nullable=False)
     nick: Column[str] = Column(String, nullable=False)
     serverflag: Column[int] = Column(Integer, nullable=False, default=0)
-    status = Column(
-        IntEnum(GPStatusCode), default=GPStatusCode.OFFLINE)
+    status = Column(IntEnum(GPStatusCode), default=GPStatusCode.OFFLINE)
     statstring: Column[str] = Column(String, default="I love UniSpy")
     extra_info: Column[JSONB] = Column(JSONB)
 
@@ -104,8 +105,7 @@ class Blocked(Base):
     __tablename__ = "blocked"
 
     blockid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
 
@@ -114,8 +114,7 @@ class Friends(Base):
     __tablename__ = "friends"
 
     friendid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
     targetid = Column(Integer, nullable=False)
     namespaceid = Column(Integer, nullable=False)
 
@@ -124,14 +123,15 @@ class FriendAddRequest(Base):
     __tablename__ = "addrequests"
 
     addrequestid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
-    targetid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    targetid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     reason = Column(String, nullable=False)
-    status = Column(IntEnum(FriendRequestStatus), nullable=False,
-                    default=FriendRequestStatus.PENDING)
+    status = Column(
+        IntEnum(FriendRequestStatus),
+        nullable=False,
+        default=FriendRequestStatus.PENDING,
+    )
 
 
 class Games(Base):
@@ -175,8 +175,7 @@ class PStorage(Base):
     __tablename__ = "pstorage"
 
     pstorageid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
     data = Column(JSONB)
@@ -214,6 +213,7 @@ class NatFailCaches(Base):
     public_ip_address2 = Column(INET, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
+
 # class ReportPackets(Base):
 #     __tablename__ = "report_packets"
 #     public_ip_address1 = Column(String, nullable=False)
@@ -250,6 +250,7 @@ class ChatUserCaches(Base):
     """
     each user only have a unique nick caches, but have multiple user caches
     """
+
     __tablename__ = "chat_user_caches"
     server_id = Column(UUID, nullable=False)
     nick_name = Column(String, primary_key=True, nullable=False)
@@ -263,12 +264,21 @@ class ChatUserCaches(Base):
 
 class ChatChannelUserCaches(Base):
     __tablename__ = "chat_channel_user_caches"
-    nick_name = Column(String, ForeignKey(
-        "chat_user_caches.nick_name"), primary_key=True, nullable=False)
-    user_name = Column(String, ForeignKey(
-        "chat_user_caches.user_name"), primary_key=True, nullable=False)
-    channel_name = Column(String, ForeignKey(
-        "chat_channel_caches.channel_name"), nullable=False)
+    nick_name = Column(
+        String,
+        ForeignKey("chat_user_caches.nick_name"),
+        primary_key=True,
+        nullable=False,
+    )
+    user_name = Column(
+        String,
+        ForeignKey("chat_user_caches.user_name"),
+        primary_key=True,
+        nullable=False,
+    )
+    channel_name = Column(
+        String, ForeignKey("chat_channel_caches.channel_name"), nullable=False
+    )
     update_time = Column(DateTime, nullable=False)
     # can we directly store the flags?
     is_voiceable = Column(Boolean, nullable=False)

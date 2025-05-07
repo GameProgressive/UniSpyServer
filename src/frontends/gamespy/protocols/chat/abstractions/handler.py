@@ -1,5 +1,7 @@
+from backends.library.database.pg_orm import ChatChannelCaches
 from frontends.gamespy.protocols.chat.aggregates.enums import MessageType
 from frontends.gamespy.protocols.chat.abstractions.contract import (
+    BrockerMessage,
     RequestBase,
     ResponseBase,
     ResultBase,
@@ -70,6 +72,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _request: ChannelRequestBase
     _response: ResponseBase
     _result: ResultBase
+    _channel: ChatChannelCaches
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
@@ -77,6 +80,24 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         we handle message broadcasting in backend api
         frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive
         """
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        # send message to backend websocket
+        self.broadcast_message()
+
+    def broadcast_message(self):
+        assert self._client.brocker
+        assert self._channel
+        assert isinstance(self._channel.channel_name, str)
+        msg = BrockerMessage(
+            server_id=self._client.server_config.server_id,
+            channel_name=self._channel.channel_name,
+            sender_ip_address=self._client.connection.remote_ip,
+            sender_port=self._client.connection.remote_port,
+            message=self._response.sending_buffer,
+        )
+        self._client.brocker.publish_message(msg)
 
 
 # region Message

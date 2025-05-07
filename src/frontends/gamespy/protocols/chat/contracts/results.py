@@ -19,6 +19,7 @@ class ListResult(ResultBase):
         channel_name: str
         total_channel_user: int
         channel_topic: str
+
     user_irc_prefix: str
     channel_info_list: list[ListInfo] = []
     """(channel_name:str,total_channel_user:int,channel_topic:str)"""
@@ -70,6 +71,7 @@ class WhoResult(ResultBase):
         public_ip_addr: str
         nick_name: str
         modes: str
+
     infos: list[WhoInfo]
 
 
@@ -93,16 +95,16 @@ class GetCKeyResult(ResultBase):
 
 
 class JoinResult(ResultBase):
-    joiner_prefix: str
+    joiner_user_name: str
     joiner_nick_name: str
-    all_channel_user_nicks: str
-    channel_modes: str
+    all_channel_user_nicks: list[str]
+    channel_modes: list[str]
 
 
 class KickResult(ResultBase):
     channel_name: str
-    kicker_irc_prefix: str
     kicker_nick_name: str
+    kicker_user_name: str
     kickee_nick_name: str
 
 
@@ -113,7 +115,7 @@ class ModeResult(ResultBase):
 
 
 class NamesResult(ResultBase):
-    all_channel_user_nicks: str
+    all_channel_nicks: list[str]
     channel_name: str
     requester_nick_name: str
 
@@ -137,16 +139,10 @@ class SetChannelKeyResult(ResultBase):
 if __name__ == "__main__":
     dd = {
         "infos": [
-            {
-                "nick_name": "John",
-                "user_values": "12345"
-            },
-            {
-                "nick_name": "Alice",
-                "user_values": "67890"
-            }
+            {"nick_name": "John", "user_values": "12345"},
+            {"nick_name": "Alice", "user_values": "67890"},
         ],
-        "channel_name": "example_channel"
+        "channel_name": "example_channel",
     }
     result = GetCKeyResult(**dd)
     pass

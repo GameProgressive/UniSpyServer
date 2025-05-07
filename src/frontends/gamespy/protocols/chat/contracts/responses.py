@@ -1,5 +1,39 @@
 from frontends.gamespy.protocols.chat.abstractions.handler import ChannelResponseBase
-from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    ModeRequestType,
+    WhoRequestType,
+)
+from frontends.gamespy.protocols.chat.aggregates.response_name import (
+    ABOVE_THE_TABLE_MSG,
+    CD_KEY,
+    CHANNEL_MODELS,
+    END_GET_CKEY,
+    END_GET_KEY,
+    END_OF_NAMES,
+    END_OF_WHO,
+    END_OF_WHO_IS,
+    GET_CHAN_KEY,
+    GET_CKEY,
+    GET_KEY,
+    JOIN,
+    KICK,
+    LIST_END,
+    LIST_START,
+    LOGIN,
+    NAME_REPLY,
+    NO_TOPIC,
+    NOTICE,
+    PART,
+    PONG,
+    PRIVATE_MSG,
+    SECURE_KEY,
+    TOPIC,
+    UNDER_THE_TABLE_MSG,
+    WELCOME,
+    WHO_IS_CHANNELS,
+    WHO_IS_USER,
+    WHO_REPLY,
+)
 from frontends.gamespy.protocols.chat.contracts.results import (
     GetCKeyResult,
     GetChannelKeyResult,
@@ -39,15 +73,14 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     PrivateRequest,
     UTMRequest,
     GetKeyRequest,
-    WhoRequest
-
+    WhoRequest,
 )
 from frontends.gamespy.protocols.chat.abstractions.contract import (
     SERVER_DOMAIN,
     ResponseBase,
 )
 from frontends.gamespy.library.encryption.gs_encryption import CLIENT_KEY, SERVER_KEY
-from frontends.gamespy.protocols.chat.aggregates.response_name import *
+from frontends.tests.gamespy.chat.request_tests import USER_IP
 
 # region General
 
@@ -65,7 +98,9 @@ class CryptResponse(ResponseBase):
         pass
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {SECURE_KEY} * {CLIENT_KEY} {SERVER_KEY}\r\n"  # noqa
+        self.sending_buffer = (
+            f":{SERVER_DOMAIN} {SECURE_KEY} * {CLIENT_KEY} {SERVER_KEY}\r\n"  # noqa
+        )
 
 
 class GetKeyResponse(ResponseBase):
@@ -134,8 +169,7 @@ class PingResponse(ResponseBase):
         self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{
-            self._result.requester_irc_prefix} {PONG}\r\n"
+        self.sending_buffer = f":{self._result.requester_irc_prefix} {PONG}\r\n"
 
 
 class UserIPResponse(ResponseBase):
@@ -146,7 +180,9 @@ class UserIPResponse(ResponseBase):
         self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {USER_IP} :@{self._result.remote_ip_address}\r\n"  # noqa
+        self.sending_buffer = (
+            f":{SERVER_DOMAIN} {USER_IP} :@{self._result.remote_ip_address}\r\n"
+        )
 
 
 class WhoIsResponse(ResponseBase):
@@ -191,10 +227,10 @@ class WhoResponse(ResponseBase):
 
         if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
             # if len(self._result.infos) > 0:
-                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.channel_name} * :End of WHO.\r\n"  # noqa
+            self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.channel_name} * :End of WHO.\r\n"  # noqa
         elif self._request.request_type == WhoRequestType.GET_USER_INFO:
             # if len(self._result.infos) > 0:
-                self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.nick_name} * :End of WHO.\r\n"  # noqa
+            self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_WHO} * {self._request.nick_name} * :End of WHO.\r\n"  # noqa
 
 
 # region Channel
@@ -205,8 +241,7 @@ class GetChannelKeyResponse(ChannelResponseBase):
     _result: GetChannelKeyResult
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.channel_user_irc_prefix} {
-            GET_CHAN_KEY} * {self._result.channel_name} {self._request.cookie} {self._result.values}\r\n"
+        self.sending_buffer = f":{self._result.channel_user_irc_prefix} {GET_CHAN_KEY} * {self._result.channel_name} {self._request.cookie} {self._result.values}\r\n"
 
 
 class GetCKeyResponse(ResponseBase):
@@ -236,9 +271,9 @@ class JoinResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
+        joiner_irc_prefix = f"{self._result.joiner_nick_name}!{self._result.joiner_user_name}@{SERVER_DOMAIN}"
         self.sending_buffer = (
-            f"{self._result.joiner_prefix} {JOIN} {
-                self._request.channel_name}\r\n"
+            f"{joiner_irc_prefix} {JOIN} {self._request.channel_name}\r\n"
         )
 
 
@@ -252,8 +287,8 @@ class KickResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f"{self._result.kicker_irc_prefix} {KICK} {
-            self._result.channel_name} {self._result.kickee_nick_name} :{self._request.reason}\r\n"
+        kicker_irc_prefix = f"{self._result.kicker_nick_name}!{self._result.kicker_user_name}@{SERVER_DOMAIN}"
+        self.sending_buffer = f"{kicker_irc_prefix} {KICK} {self._result.channel_name} {self._result.kickee_nick_name} :{self._request.reason}\r\n"
 
 
 class ModeResponse(ResponseBase):
@@ -267,8 +302,7 @@ class ModeResponse(ResponseBase):
 
     def build(self) -> None:
         if self._request.type == ModeRequestType.GET_CHANNEL_MODES:
-            self.sending_buffer = f":{SERVER_DOMAIN} {
-                CHANNEL_MODELS} * {self._result.channel_modes} {self._result.channel_modes}\r\n"
+            self.sending_buffer = f":{SERVER_DOMAIN} {CHANNEL_MODELS} * {self._result.channel_modes} {self._result.channel_modes}\r\n"
 
 
 class NamesResponse(ChannelResponseBase):
@@ -281,11 +315,8 @@ class NamesResponse(ChannelResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {NAME_REPLY} {self._result.requester_nick_name} = {
-            self._result.channel_name} :{self._result.all_channel_user_nicks}\r\n"
-
-        self.sending_buffer = f":{SERVER_DOMAIN} {END_OF_NAMES} {
-            self._result.requester_nick_name} {self._result.channel_name} :End of NAMES list. \r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {NAME_REPLY} {self._result.requester_nick_name} = {self._result.channel_name} :{self._result.all_channel_nicks}\r\n"
+        self.sending_buffer += f":{SERVER_DOMAIN} {END_OF_NAMES} {self._result.requester_nick_name} {self._result.channel_name} :End of NAMES list. \r\n"
 
 
 class PartResponse(ResponseBase):
@@ -298,8 +329,7 @@ class PartResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.leaver_irc_prefix} {
-            PART} {self._result.channel_name} :{self._request.reason}\r\n"
+        self.sending_buffer = f":{self._result.leaver_irc_prefix} {PART} {self._result.channel_name} :{self._request.reason}\r\n"
 
 
 class SetChannelKeyResponse(ChannelResponseBase):
@@ -314,8 +344,7 @@ class SetChannelKeyResponse(ChannelResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.channel_user_irc_prefix} {
-            GET_CHAN_KEY} * {self._request.channel_name} BCAST {self._request.key_value_string}\r\n"
+        self.sending_buffer = f":{self._result.channel_user_irc_prefix} {GET_CHAN_KEY} * {self._request.channel_name} BCAST {self._request.key_value_string}\r\n"
 
 
 class SetCKeyResponse(ResponseBase):
@@ -326,11 +355,9 @@ class SetCKeyResponse(ResponseBase):
         super().__init__(request, None)
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {GET_CKEY} * {self._request.channel_name} {
-            self._request.nick_name} {self._request.cookie} {self._request.key_value_string}\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {GET_CKEY} * {self._request.channel_name} {self._request.nick_name} {self._request.cookie} {self._request.key_value_string}\r\n"
 
-        self.sending_buffer = f":{SERVER_DOMAIN} {END_GET_CKEY} * {self._request.channel_name} {
-            self._request.nick_name} {self._request.cookie} :End Of SETCKEY.\r\n"
+        self.sending_buffer += f":{SERVER_DOMAIN} {END_GET_CKEY} * {self._request.channel_name} {self._request.nick_name} {self._request.cookie} :End Of SETCKEY.\r\n"
 
 
 class TopicResponse(ResponseBase):
@@ -348,8 +375,7 @@ class TopicResponse(ResponseBase):
                 f":{SERVER_DOMAIN} {NO_TOPIC} * {self._result.channel_name}\r\n"
             )
         else:
-            self.sending_buffer = f":{SERVER_DOMAIN} {
-                TOPIC} * {self._result.channel_name} :{self._result.channel_topic}\r\n"
+            self.sending_buffer = f":{SERVER_DOMAIN} {TOPIC} * {self._result.channel_name} :{self._result.channel_topic}\r\n"
 
 
 # region Message
@@ -365,8 +391,7 @@ class ATMResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.user_irc_prefix} {ABOVE_THE_TABLE_MSG} {
-            self._result.target_name} :{self._request.message}\r\n"
+        self.sending_buffer = f":{self._result.user_irc_prefix} {ABOVE_THE_TABLE_MSG} {self._result.target_name} :{self._request.message}\r\n"
 
 
 class NoticeResponse(ResponseBase):
@@ -380,8 +405,7 @@ class NoticeResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.user_irc_prefix} {NOTICE} {
-            self._result.target_name} {self._request.message}\r\n"
+        self.sending_buffer = f":{self._result.user_irc_prefix} {NOTICE} {self._result.target_name} {self._request.message}\r\n"
 
 
 class PrivateResponse(ResponseBase):
@@ -394,8 +418,7 @@ class PrivateResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.user_irc_prefix} {PRIVATE_MSG} {
-            self._result.target_name} :{self._request.message}\r\n"
+        self.sending_buffer = f":{self._result.user_irc_prefix} {PRIVATE_MSG} {self._result.target_name} :{self._request.message}\r\n"
 
 
 class UTMResponse(ResponseBase):
@@ -408,5 +431,6 @@ class UTMResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.user_irc_prefix} {
-            UNDER_THE_TABLE_MSG} {self._result.target_name} :{self._request.message}"
+        self.sending_buffer = f":{self._result.user_irc_prefix} {UNDER_THE_TABLE_MSG} {
+            self._result.target_name
+        } :{self._request.message}"

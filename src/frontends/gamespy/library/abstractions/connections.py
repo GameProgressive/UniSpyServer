@@ -1,6 +1,5 @@
 import abc
 import socketserver
-from typing import Optional
 from frontends.gamespy.library.abstractions.client import ClientBase
 
 from frontends.gamespy.library.log.log_manager import LogWriter
