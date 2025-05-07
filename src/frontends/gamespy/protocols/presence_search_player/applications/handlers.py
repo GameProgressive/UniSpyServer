@@ -103,8 +103,8 @@ class SearchHandler(CmdHandlerBase):
 
 
 class SearchUniqueHandler(CmdHandlerBase):
-    _result_cls: type[SearchUniqueResult]
     _result: SearchUniqueResult
+    _result_cls: type[SearchUniqueResult]
 
     def __init__(self, client: Client, request: SearchUniqueRequest) -> None:
         assert isinstance(request, SearchUniqueRequest)
@@ -116,9 +116,9 @@ class SearchUniqueHandler(CmdHandlerBase):
 
 
 class UniqueSearchHandler(CmdHandlerBase):
-    _result_cls: type[UniqueSearchResult]
     _request: UniqueSearchRequest
     _result: UniqueSearchResult
+    _result_cls: type[UniqueSearchResult]
 
     def __init__(self, client: Client, request: UniqueSearchRequest) -> None:
         assert isinstance(request, UniqueSearchRequest)
@@ -130,9 +130,9 @@ class UniqueSearchHandler(CmdHandlerBase):
 
 
 class ValidHandler(CmdHandlerBase):
-    _result_cls: type[ValidResult]
     _result: ValidResult
     _request: ValidRequest
+    _result_cls: type[ValidResult]
 
     def __init__(self, client: Client, request: ValidRequest) -> None:
         assert isinstance(request, ValidRequest)

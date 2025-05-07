@@ -1,4 +1,3 @@
-
 from typing import TYPE_CHECKING, Optional
 
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
@@ -9,6 +8,7 @@ if TYPE_CHECKING:
 
 
 class UniSpyException(Exception):
+    _is_unittesting: bool = False
     message: str
     """the error message"""
 
@@ -18,16 +18,17 @@ class UniSpyException(Exception):
     @staticmethod
     # def handle_exception(e: Exception, client: ClientBase = None):
     def handle_exception(e: Exception, client: Optional["ClientBase"] = None):
+        # if we are unittesting we raise the exception out
+        if UniSpyException._is_unittesting:
+            raise e
         if client is None:
             GLOBAL_LOGGER.info(str(e))
-            pass
         else:
             if issubclass(type(e), UniSpyException):
                 ex: UniSpyException = e  # type:ignore
                 client.log_error(ex.message)
             else:
                 client.log_error(str(e))
-            pass
 
     def __repr__(self) -> str:
         # return super().__repr__()

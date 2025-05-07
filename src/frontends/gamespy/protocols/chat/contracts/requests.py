@@ -1,4 +1,3 @@
-from frontends.gamespy.library.extentions.string_extentions import convert_kvstring_to_dictionary
 from frontends.gamespy.protocols.chat.abstractions.handler import ChannelRequestBase, MessageRequestBase
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,

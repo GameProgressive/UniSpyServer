@@ -1,6 +1,11 @@
 from typing import Optional, final
-from backends.library.abstractions.contracts import DataResponse, ErrorResponse, OKResponse, RequestBase, Response
-from backends.library.database.pg_orm import PG_SESSION
+from backends.library.abstractions.contracts import (
+    DataResponse,
+    ErrorResponse,
+    OKResponse,
+    RequestBase,
+    Response,
+)
 from frontends.gamespy.library.abstractions.contracts import ResultBase
 
 import logging
@@ -12,6 +17,7 @@ class HandlerBase:
     """
     The ultimate handler base of backend service
     """
+
     _request: RequestBase
     _result: Optional[ResultBase]
     _response: Response
@@ -22,6 +28,7 @@ class HandlerBase:
     """
     the data get from database, can be any type
     """
+
     @property
     def response(self) -> dict:
         """
@@ -62,6 +69,7 @@ class HandlerBase:
         """virtual method\n
         can override by child class to create self._result
         """
+
     @final
     async def _response_construct(self) -> None:
         """
@@ -70,10 +78,7 @@ class HandlerBase:
         # if there are no result, we send ok response
         if self._result is None:
             self._response = OKResponse()
-            self.logger.info(
-                f"[{self.__class__.__name__}] use default OKResponse")
+            self.logger.info(f"[{self.__class__.__name__}] use default OKResponse")
         else:
-            self._response = DataResponse(
-                result=self._result.model_dump(mode="json"))
-            self.logger.info(
-                f"[{self.__class__.__name__}] use default DataResponse")
+            self._response = DataResponse(result=self._result.model_dump(mode="json"))
+            self.logger.info(f"[{self.__class__.__name__}] use default DataResponse")

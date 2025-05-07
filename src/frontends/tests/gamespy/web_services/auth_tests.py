@@ -16,7 +16,7 @@ LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?>
                         <ns1:gameid>0</ns1:gameid>
                         <ns1:partnercode>0</ns1:partnercode>
                         <ns1:namespaceid>0</ns1:namespaceid>
-                        <ns1:email>spyguy@unispy.org</ns1:email>
+                        <ns1:email>spyguy@gamespy.com</ns1:email>
                         <ns1:uniquenick>spyguy</ns1:uniquenick>
                         <ns1:cdkey>XXXXXXXXXXX</ns1:cdkey>
                         <ns1:password>
@@ -116,7 +116,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual(0, request.game_id)
         self.assertEqual(0, request.partner_code)
         self.assertEqual(0, request.namespace_id)
-        self.assertEqual("spyguy@unispy.org", request.email)
+        self.assertEqual("spyguy@gamespy.com", request.email)
         self.assertEqual("spyguy", request.uniquenick)
         self.assertEqual("XXXXXXXXXXX", request.cdkey)
         self.assertEqual("XXXXXXXXXXX", request.password)

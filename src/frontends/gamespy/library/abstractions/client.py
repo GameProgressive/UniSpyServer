@@ -1,7 +1,6 @@
 from frontends.gamespy.library.encryption.encoding import Encoding
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
-from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.configs import ServerConfig
 import threading
 from typing import TYPE_CHECKING, Optional
@@ -26,26 +25,30 @@ class ClientBase:
     crypto: Optional["EncryptBase"]
     info: "ClientInfoBase"
     is_log_raw: bool
+    # class static property
     pool: dict[str, "ClientBase"] = {}
+
     """
     Note: initialize in child class as class static member 
     """
 
     def __init__(
-        self, connection: "ConnectionBase", server_config: ServerConfig, logger: LogWriter
+        self,
+        connection: "ConnectionBase",
+        server_config: ServerConfig,
+        logger: LogWriter,
     ):
         assert isinstance(server_config, ServerConfig)
         assert isinstance(logger, LogWriter)
         from frontends.gamespy.library.abstractions.connections import ConnectionBase
+
         assert issubclass(type(connection), ConnectionBase)
         self.server_config = server_config
         self.connection = connection
         self.logger = logger
         self.crypto = None
         self.is_log_raw = False
-        # fmt: off
         self._log_prefix = f"[{self.connection.ip_endpoint}]"
-        # fmt: on
 
     def on_connected(self) -> None:
         lock = threading.Lock()
@@ -123,8 +126,7 @@ class ClientBase:
         self.logger.info(f"{self._log_prefix} [upload]: {data}")
 
     def log_current_class(self, object: "CmdHandlerBase") -> None:
-        self.logger.debug(f"{self._log_prefix} [=>] <{
-                          object.__class__.__name__}>")
+        self.logger.debug(f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
 
 
 class EasyTimer:

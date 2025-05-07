@@ -46,7 +46,6 @@ from frontends.gamespy.protocols.chat.contracts.responses import (
     UserIPResponse,
     WhoIsResponse,
     WhoResponse,
-
 )
 from frontends.gamespy.protocols.chat.contracts.requests import (
     ATMRequest,
@@ -77,14 +76,18 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     UserRequest,
     WhoIsRequest,
     WhoRequest,
-    GetUdpRelayRequest
+    GetUdpRelayRequest,
 )
-from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType, TopicRequestType
-from frontends.gamespy.protocols.chat.aggregates.response_name import *
+from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType
 from typing import Type
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
-from frontends.gamespy.protocols.chat.abstractions.handler import ChannelHandlerBase, CmdHandlerBase, MessageHandlerBase, PostLoginHandlerBase
+from frontends.gamespy.protocols.chat.abstractions.handler import (
+    ChannelHandlerBase,
+    CmdHandlerBase,
+    MessageHandlerBase,
+    PostLoginHandlerBase,
+)
 # region General
 
 
@@ -163,6 +166,7 @@ class LoginHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: LoginRequest):
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
+        self._result_cls = LoginResult
 
     def _response_construct(self) -> None:
         self._response = LoginResponse(self._result)
@@ -225,12 +229,10 @@ class UserIPHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: UserIPRequest):
         assert isinstance(request, UserIPRequest)
         super().__init__(client, request)
-
-    def _feach_data(self):
-        self._result = UserIPResult(
-            remote_ip_address=self._client.connection.remote_ip)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
+        self._result = UserIPResult(remote_ip_address=self._client.connection.remote_ip)
         self._response = UserIPResponse(self._result)
 
 
@@ -258,6 +260,7 @@ class WhoIsHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._response = WhoIsResponse(self._result)
+
 
 # region channel
 
@@ -331,8 +334,10 @@ class ModeHandler(ChannelHandlerBase):
             self._is_fetching = False
 
     def _response_construct(self):
-        if self._request.type in [ModeRequestType.GET_CHANNEL_AND_USER_MODES,
-                                  ModeRequestType.GET_CHANNEL_MODES]:
+        if self._request.type in [
+            ModeRequestType.GET_CHANNEL_AND_USER_MODES,
+            ModeRequestType.GET_CHANNEL_MODES,
+        ]:
             self._response = ModeResponse(self._request, self._result)
 
 
@@ -398,12 +403,7 @@ class TopicHandler(ChannelHandlerBase):
     def _response_construct(self) -> None:
         self._response = TopicResponse(self._request, self._result)
 
-    def _response_send(self) -> None:
-        match self._request.request_type:
-            case TopicRequestType.GET_CHANNEL_TOPIC:
-                self._client.send(self._response)
-            case TopicRequestType.SET_CHANNEL_TOPIC:
-                self._publish_to_brocker()
+
 # region Message
 
 

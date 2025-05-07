@@ -1,9 +1,13 @@
-from backends.library.abstractions.websocket_manager import WebSocketClient, WebSocketManager
+from typing import cast
+from backends.library.abstractions.websocket_manager import (
+    WebSocketClient,
+    WebSocketManager,
+)
 
 # from library.network.brockers import RedisBrocker
 from fastapi import WebSocket
 
-# init in fast api routers
+
 class ChatWebSocketClient(WebSocketClient):
     channels: list[str]
 
@@ -32,7 +36,7 @@ class ChatWebSocketManager(WebSocketManager):
 
     def add_to_channel(self, channel_name: str, ws: WebSocket):
         client = self.get_client(ws)
-        assert isinstance(client, ChatWebSocketClient)
+        client = cast(ChatWebSocketClient, client)
         # add channel to client.channels
         if channel_name not in client.channels:
             client.channels.append(channel_name)
@@ -46,8 +50,15 @@ class ChatWebSocketManager(WebSocketManager):
         # remove from channel_info
         if channel_name not in self.channel_info:
             return
+
         client = self.get_client(ws)
-        assert isinstance(client, ChatWebSocketClient)
+        client = cast(ChatWebSocketClient, client)
+
+        if client.ip_port in self.channel_info[channel_name]:
+            del self.channel_info[channel_name][client.ip_port]
+            # when channel do not have player we remove it
+        if len(self.channel_info[channel_name]) == 0:
+            del self.channel_info[channel_name]
         # remove from client.channels
         if channel_name not in client.channels:
             return
@@ -55,7 +66,7 @@ class ChatWebSocketManager(WebSocketManager):
 
     def disconnect(self, ws: WebSocket):
         client = self.get_client(ws)
-        assert isinstance(client, ChatWebSocketClient)
+        client = cast(ChatWebSocketClient, client)
         for channel_name in client.channels:
             if channel_name in self.channel_info:
                 channel_dict = self.channel_info[channel_name]

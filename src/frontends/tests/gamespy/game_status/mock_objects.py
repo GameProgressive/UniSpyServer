@@ -5,12 +5,14 @@ from frontends.gamespy.protocols.game_status.applications.handlers import AuthGa
 from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
 from frontends.tests.gamespy.library.mock_objects import ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
 
+from frontends.gamespy.library.exceptions.general import UniSpyException
 
 class ClientMock(Client):
     pass
 
 
 def create_client() -> Client:
+    UniSpyException._is_unittesting = True
     handler = RequestHandlerMock()
     logger = LogMock()
     conn = ConnectionMock(

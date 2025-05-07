@@ -15,7 +15,6 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     LoginRequest,
     LogoutRequest,
 )
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
     BlockListResult,
     BuddyListResult,
@@ -24,7 +23,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     StatusResult,
     GetProfileResult,
     NewProfileResult,
-    LoginResult
+    LoginResult,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.responses import (
     BlockListResponse,
@@ -38,19 +37,27 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.responses
     LoginResponse,
 )
 
-from frontends.gamespy.protocols.presence_connection_manager.applications.client import Client
+from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+    Client,
+)
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
     CmdHandlerBase,
     LoginedHandlerBase,
 )
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import RequestBase
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
+    RequestBase,
+)
 from multiprocessing.pool import Pool
 from typing import TYPE_CHECKING
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.sdk_revision import SdkRevision
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.sdk_revision import (
+    SdkRevision,
+)
 
 
 if TYPE_CHECKING:
-    from frontends.gamespy.protocols.presence_connection_manager.applications.client import Client
+    from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+        Client,
+    )
 
 # region General
 
@@ -61,6 +68,7 @@ class KeepAliveHandler(CmdHandlerBase):
     def __init__(self, client: "Client", request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _data_operate(self) -> None:
         # we set ip and data to request
@@ -73,7 +81,6 @@ class KeepAliveHandler(CmdHandlerBase):
 
 
 class LoginHandler(CmdHandlerBase):
-
     _request: LoginRequest
     _result_cls: type[LoginResult]
     _result: LoginResult
@@ -122,11 +129,11 @@ class SdkRevisionHandler(CmdHandlerBase):
         pass
 
     def _response_construct(self) -> None:
-        self._client.info.sdk_revision = SdkRevision(
-            self._request.sdk_revision_type)
+        self._client.info.sdk_revision = SdkRevision(self._request.sdk_revision_type)
         if self._client.info.sdk_revision.is_support_gpi_new_status_notification:
             BuddyListHandler(self._client).handle()
             BlockListHandler(self._client).handle()
+
 
 # region Buddy
 
@@ -142,6 +149,7 @@ class BlockListHandler(CmdHandlerBase):
 
     def __init__(self, client: Client) -> None:
         assert isinstance(client, Client)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
         self._response = BlockListResponse(self._result)
@@ -152,8 +160,8 @@ class BuddyListHandler(LoginedHandlerBase):
     _result_cls: type[BuddyListResult]
 
     def __init__(self, client):
-        assert isinstance(client, Client)
         self._client = client
+        assert isinstance(client, Client)
 
     def response_construct(self):
         self._response = BuddyListResponse(self._request, self._result)
@@ -193,8 +201,8 @@ class DelBuddyHandler(LoginedHandlerBase):
 
     def __init__(self, client: Client, request: DelBuddyRequest) -> None:
         assert isinstance(request, DelBuddyRequest)
-        self._is_uploading = False
         super().__init__(client, request)
+        self._is_uploading = False
 
 
 class InviteToHandler(LoginedHandlerBase):
@@ -222,6 +230,7 @@ class StatusInfoHandler(LoginedHandlerBase):
     _request: StatusInfoRequest
     _result: StatusInfoResult
 
+    # TODO: check if this implement is correct
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)
         super().__init__(client, request)
@@ -242,6 +251,7 @@ class AddBlockHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AddBlockRequest) -> None:
         assert isinstance(request, AddBlockRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
 
 @final
@@ -252,6 +262,7 @@ class GetProfileHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: GetProfileRequest) -> None:
         assert isinstance(request, GetProfileRequest)
         super().__init__(client, request)
+        self._result_cls = GetProfileResult
 
     def _response_construct(self) -> None:
         self._response = GetProfileResponse(self._request, self._result)
@@ -265,6 +276,7 @@ class NewProfileHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: NewProfileRequest) -> None:
         assert isinstance(request, NewProfileRequest)
         super().__init__(client, request)
+        self._result_cls = NewProfileResult
 
     def _response_construct(self) -> None:
         self._response = NewProfileResponse(self._request, self._result)
@@ -277,6 +289,7 @@ class RegisterCDKeyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterCDKeyRequest) -> None:
         assert isinstance(request, RegisterCDKeyRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
 
 @final
@@ -286,6 +299,7 @@ class RegisterNickHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
         assert isinstance(request, RegisterNickRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
         self._response = RegisterNickResponse(self._request)
@@ -305,6 +319,7 @@ class UpdateProfileHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: UpdateProfileRequest) -> None:
         assert isinstance(request, UpdateProfileRequest)
         super().__init__(client, request)
+        raise NotImplementedError()
 
 
 @final

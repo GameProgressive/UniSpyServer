@@ -1,6 +1,6 @@
 from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
 from frontends.gamespy.library.network.udp_handler import UdpServer
-from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.natneg.applications.client import Client
 
 

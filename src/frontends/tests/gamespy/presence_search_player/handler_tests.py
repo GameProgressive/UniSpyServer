@@ -8,15 +8,15 @@ from frontends.tests.gamespy.presence_search_player.mock_objects import create_c
 CHECK1 = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
 
 SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\namespaceid\\0\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\email\\spyguy@unispy.org\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 SEARCH_3 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_4 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\email\\spyguy@unispy.org\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_4 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 
 SEARCH_UNIQUENICK = "\\searchunique\\\\sesskey\\xxxx\\profileid\\0\\uniquenick\\spyguy\\namespaces\\1,2,3,4,5\\gamename\\gmtest\\final\\"
 
-VALID = "\\valid\\\\email\\spyguy@unispy.org\\partnerid\\1\\gamename\\gmtest\\final\\"
+VALID = "\\valid\\\\email\\spyguy@gamespy.com\\partnerid\\1\\gamename\\gmtest\\final\\"
 
-NICKS = "\\nicks\\\\email\\spyguy@unispy.org\\passenc\\xxxxx\\namespaceid\\0\\partnerid\\0\\gamename\\gmtest\\final\\"
+NICKS = "\\nicks\\\\email\\spyguy@gamespy.com\\passenc\\xxxxx\\namespaceid\\0\\partnerid\\0\\gamename\\gmtest\\final\\"
 
 
 PMATCH = "\\pmatch\\\\sesskey\\123456\\profileid\\0\\productid\\0\\final\\"
@@ -49,7 +49,7 @@ class HandlerTests(unittest.TestCase):
         request = SearchRequest(SEARCH_2)
         request.parse()
         self.assertEqual("spyguy", request.nick)
-        self.assertEqual("spyguy@unispy.org", request.email)
+        self.assertEqual("spyguy@gamespy.com", request.email)
 
         request = SearchRequest(SEARCH_3)
         request.parse()
@@ -57,11 +57,11 @@ class HandlerTests(unittest.TestCase):
 
         request = SearchRequest(SEARCH_4)
         request.parse()
-        self.assertEqual("spyguy@unispy.org", request.email)
+        self.assertEqual("spyguy@gamespy.com", request.email)
 
         handler = SearchHandler(client, request)
         handler.handle()
-        self.assertEqual("\\bsr\\0\\nick\\spyguy\\uniquenick\\spyguy\\namespaceid\\0\\firstname\\spy\\lastname\\guy\\email\\spyguy@unispy.org\\bsrdone\\\\more\\0\\final\\",
+        self.assertEqual("\\bsr\\0\\nick\\spyguy\\uniquenick\\spyguy\\namespaceid\\0\\firstname\\spy\\lastname\\guy\\email\\spyguy@gamespy.com\\bsrdone\\\\more\\0\\final\\",
                          handler._response.sending_buffer)
 
 

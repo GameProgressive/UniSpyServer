@@ -12,7 +12,7 @@ LIST_LIMIT = "LISTLIMIT 5 test\r\n"
 LIST = "LIST test\r\n"
 LOGIN_PRE_AUTH = "LOGINPREAUTH xxxxx yyyyy\r\n"
 # TODO: add binary data test [0D][0A]
-LOGIN_NICK_AND_EMAIL = "LOGIN 0 * xxxxx :spyguy@spyguy@unispy.org\r\n"
+LOGIN_NICK_AND_EMAIL = "LOGIN 0 * xxxxx :spyguy@spyguy@gamespy.com\r\n"
 LOGIN_UNIQUE_NICK = "LOGIN 0 spyguy xxxxx\r\n"
 NAMES = "NAMES\r\n"
 NICK = "NICK :spyguy\r\n"

@@ -47,7 +47,7 @@ class RequestBase(lib.RequestBase):
         else:
             index_of_colon = raw.index(":")
         if index_of_colon != 0 and index_of_colon != -1:
-            self._long_param = raw[index_of_colon + 1:]
+            self._long_param = raw[index_of_colon + 1 :]
             # reset the request string
             raw = raw[:index_of_colon]
 
@@ -76,6 +76,7 @@ class ResponseBase(lib.ResponseBase):
         if result is not None:
             assert issubclass(type(result), ResultBase)
         assert issubclass(type(request), RequestBase)
+
 
 # region Brocker
 

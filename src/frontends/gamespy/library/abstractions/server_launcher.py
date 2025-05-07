@@ -1,4 +1,3 @@
-import signal
 from types import MappingProxyType
 from typing import Optional
 from frontends.gamespy.library.abstractions.connections import NetworkServerBase
@@ -10,20 +9,21 @@ import requests
 from prettytable import PrettyTable
 
 VERSION = 0.45
-
-_SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType({
-    "PresenceConnectionManager": "PCM",
-    "PresenceSearchPlayer": "PSP",
-    "CDKey": "CDKey",
-    "ServerBrwoserV1": "SBv1",
-    "ServerBrowserV2": "SBv2",
-    "QueryReport": "QR",
-    "NatNegotiation": "NN",
-    "GameStatus": "GS",
-    "Chat": "Chat",
-    "WebServices": "Web",
-    "GameTrafficReplay": "GTR",
-})
+_SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
+    {
+        "PresenceConnectionManager": "PCM",
+        "PresenceSearchPlayer": "PSP",
+        "CDKey": "CDKey",
+        "ServerBrwoserV1": "SBv1",
+        "ServerBrowserV2": "SBv2",
+        "QueryReport": "QR",
+        "NatNegotiation": "NN",
+        "GameStatus": "GS",
+        "Chat": "Chat",
+        "WebServices": "Web",
+        "GameTrafficReplay": "GTR",
+    }
+)
 
 
 class ServerLauncherBase:
@@ -50,35 +50,37 @@ class ServerLauncherBase:
         # display version info
         print(f"version {VERSION}")
         table = PrettyTable()
-        table.field_names = ["Server Name",
-                             "Listening Address", "Listening Port"]
+        table.field_names = ["Server Name", "Listening Address", "Listening Port"]
         assert self.config is not None
-        table.add_row([self.config.server_name,
-                      self.config.public_address, self.config.listening_port])
+        table.add_row(
+            [
+                self.config.server_name,
+                self.config.public_address,
+                self.config.listening_port,
+            ]
+        )
         print(table)
 
     def _launch_server(self) -> None:
         if self.server is None:
             raise UniSpyException("Create network server in child class")
-        import threading
         print("Press Ctrl+C to Quit")
         self.server.start()
-        
 
     def _connect_to_backend(self):
         try:
             # post our server config to backends to register
             assert self.config is not None
             resp = requests.post(
-                url=CONFIG.backend.url+"/",
-                data=self.config.model_dump_json())
+                url=CONFIG.backend.url + "/", data=self.config.model_dump_json()
+            )
             if resp.status_code == 200:
                 data = resp.json()
                 if data["status"] != "online":
                     raise Exception(
                         f"backend server: {CONFIG.backend.url} not available."
                     )
-        except:
+        except Exception:
             # fmt: off
             raise UniSpyException(f"backend server: {CONFIG.backend.url} not available.")
             # fmt: on
@@ -89,4 +91,4 @@ class ServerLauncherBase:
         self.logger = LogManager.create(short_name)
 
     def __keep_running(self):
-        key = input('Press Q to Quit')
+        _ = input("Press Q to Quit")

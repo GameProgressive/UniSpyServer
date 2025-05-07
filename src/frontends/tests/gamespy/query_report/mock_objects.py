@@ -4,6 +4,7 @@ from frontends.gamespy.protocols.query_report.applications.client import Client
 from frontends.gamespy.protocols.query_report.v2.applications.handlers import AvailableHandler, HeartBeatHandler, KeepAliveHandler
 from frontends.gamespy.protocols.query_report.v2.contracts.results import HeartBeatResult
 from frontends.tests.gamespy.library.mock_objects import ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
+from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 class ClientMock(Client):
@@ -11,6 +12,7 @@ class ClientMock(Client):
 
 
 def create_client() -> Client:
+    UniSpyException._is_unittesting = True
     handler = RequestHandlerMock()
     logger = LogMock()
     conn = ConnectionMock(

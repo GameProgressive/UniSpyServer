@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING, Optional, cast
-from sqlalchemy import Column, and_
+from typing import TYPE_CHECKING, cast
+from sqlalchemy import Column
 from backends.library.database.pg_orm import (
     Friends,
     Profiles,
@@ -7,8 +7,6 @@ from backends.library.database.pg_orm import (
     Users,
     PG_SESSION,
 )
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import CheckException
-from frontends.gamespy.protocols.presence_search_player.contracts.results import *
 
 
 def db_commit() -> None:
@@ -37,7 +35,9 @@ def verify_email_and_password(email: str, password: str):
     return False
 
 
-def get_profile_id(email: str, password: str, nick_name: str, partner_id: int) -> int | None:
+def get_profile_id(
+    email: str, password: str, nick_name: str, partner_id: int
+) -> int | None:
     result = (
         PG_SESSION.query(Profiles.profileid)
         .join(Users, Profiles.userid == Users.userid)
@@ -47,7 +47,8 @@ def get_profile_id(email: str, password: str, nick_name: str, partner_id: int) -
             Users.password == password,
             Profiles.nick == nick_name,
             SubProfiles.partnerid == partner_id,
-        ).first()
+        )
+        .first()
     )
     if result is not None:
         result = result[0]
@@ -94,25 +95,35 @@ def get_user(email: str) -> Users | None:
 def get_profile(user_id: int, nick_name: str) -> Profiles | None:
     assert isinstance(user_id, int)
     assert isinstance(nick_name, str)
-    result = PG_SESSION.query(Profiles).where(
-        Profiles.userid == user_id, Profiles.nick == nick_name
-    ).first()
+    result = (
+        PG_SESSION.query(Profiles)
+        .where(Profiles.userid == user_id, Profiles.nick == nick_name)
+        .first()
+    )
     return result
 
 
-def get_sub_profile(profile_id: int, namespace_id: int, product_id: int) -> SubProfiles | None:
+def get_sub_profile(
+    profile_id: int, namespace_id: int, product_id: int
+) -> SubProfiles | None:
     assert isinstance(SubProfiles.profileid, Column)
     assert isinstance(SubProfiles.namespaceid, Column)
     assert isinstance(SubProfiles.namespaceid, Column)
-    result = PG_SESSION.query(SubProfiles).where(
-        SubProfiles.profileid == profile_id,
-        SubProfiles.namespaceid == namespace_id,
-        SubProfiles.namespaceid == product_id,
-    ).first()
+    result = (
+        PG_SESSION.query(SubProfiles)
+        .where(
+            SubProfiles.profileid == profile_id,
+            SubProfiles.namespaceid == namespace_id,
+            SubProfiles.namespaceid == product_id,
+        )
+        .first()
+    )
     return result
 
 
-def get_nick_and_unique_nick_list(email: str, password: str, namespace_id: int) -> list[tuple[str, str]]:
+def get_nick_and_unique_nick_list(
+    email: str, password: str, namespace_id: int
+) -> list[tuple[str, str]]:
     """
     return [(nick, uniquenick)]
     """
@@ -154,7 +165,8 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> 
         .where(
             Friends.profileid == profile_id,
             SubProfiles.namespaceid == namespace_id,
-            SubProfiles.gamename == game_name,)
+            SubProfiles.gamename == game_name,
+        )
         .all()
     )
     return result
@@ -195,7 +207,7 @@ def get_matched_info_by_nick(
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
-            Profiles.extra_info
+            Profiles.extra_info,
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -208,13 +220,15 @@ def get_matched_info_by_nick(
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {"profile_id": profile_id,
-             "nick": nick,
-             "uniquenick": uniquenick,
-             "email": email,
-             "namespace_id": namespace_id,
-             "firstname": firstname,
-             "lastname": lastname}
+        t = {
+            "profile_id": profile_id,
+            "nick": nick,
+            "uniquenick": uniquenick,
+            "email": email,
+            "namespace_id": namespace_id,
+            "firstname": firstname,
+            "lastname": lastname,
+        }
         temp.append(t)
 
     return temp
@@ -230,7 +244,7 @@ def get_matched_info_by_email(
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
-            Profiles.extra_info
+            Profiles.extra_info,
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -243,19 +257,20 @@ def get_matched_info_by_email(
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {"profile_id": profile_id,
-             "nick": nick,
-             "uniquenick": uniquenick,
-             "email": email,
-             "namespace_id": namespace_id,
-             "firstname": firstname,
-             "lastname": lastname}
+        t = {
+            "profile_id": profile_id,
+            "nick": nick,
+            "uniquenick": uniquenick,
+            "email": email,
+            "namespace_id": namespace_id,
+            "firstname": firstname,
+            "lastname": lastname,
+        }
         temp.append(t)
     return temp
 
 
 def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]:
-
     result = (
         PG_SESSION.query(
             Users.email,
@@ -263,7 +278,7 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
-            Profiles.extra_info
+            Profiles.extra_info,
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -276,13 +291,15 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {"profile_id": profile_id,
-             "nick": nick,
-             "uniquenick": uniquenick,
-             "email": email,
-             "namespace_id": namespace_id,
-             "firstname": firstname,
-             "lastname": lastname}
+        t = {
+            "profile_id": profile_id,
+            "nick": nick,
+            "uniquenick": uniquenick,
+            "email": email,
+            "namespace_id": namespace_id,
+            "firstname": firstname,
+            "lastname": lastname,
+        }
         data.append(t)
     return data
 
@@ -296,7 +313,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
-            Profiles.extra_info
+            Profiles.extra_info,
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -312,13 +329,15 @@ def get_matched_info_by_uniquenick_and_namespaceid(
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {"profile_id": profile_id,
-             "nick": nick,
-             "uniquenick": uniquenick,
-             "email": email,
-             "namespace_id": namespace_id,
-             "firstname": firstname,
-             "lastname": lastname}
+        t = {
+            "profile_id": profile_id,
+            "nick": nick,
+            "uniquenick": uniquenick,
+            "email": email,
+            "namespace_id": namespace_id,
+            "firstname": firstname,
+            "lastname": lastname,
+        }
         data.append(t)
 
     return data
@@ -338,7 +357,7 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
-            SubProfiles.namespaceid.in_(namespace_ids)
+            SubProfiles.namespaceid.in_(namespace_ids),
         )
         .all()
     )
@@ -348,13 +367,15 @@ def get_matched_info_by_uniquenick_and_namespaceids(
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {"profile_id": profile_id,
-             "nick": nick,
-             "uniquenick": uniquenick,
-             "email": email,
-             "namespace_id": namespace_id,
-             "firstname": firstname,
-             "lastname": lastname}
+        t = {
+            "profile_id": profile_id,
+            "nick": nick,
+            "uniquenick": uniquenick,
+            "email": email,
+            "namespace_id": namespace_id,
+            "firstname": firstname,
+            "lastname": lastname,
+        }
         data.append(t)
 
     return data
@@ -382,8 +403,7 @@ def is_email_exist(email: str) -> bool:
     if TYPE_CHECKING:
         Users.userid = cast(Column, Users.userid)
         Users.email = cast(Column, Users.email)
-    result = PG_SESSION.query(Users.userid).where(
-        Users.email == email).count()
+    result = PG_SESSION.query(Users.userid).where(Users.email == email).count()
     # According to game <FSW> partnerid is not nessesary
     if result == 0:
         return False

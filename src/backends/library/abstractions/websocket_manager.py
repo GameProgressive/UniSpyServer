@@ -2,6 +2,8 @@ import asyncio
 from uuid import UUID
 from fastapi import WebSocket
 
+from frontends.gamespy.library.exceptions.general import UniSpyException
+
 
 class WebSocketClient:
     server_id: UUID
@@ -17,7 +19,7 @@ class WebSocketClient:
         self.ws = ws
 
     @property
-    def ip_port(self):
+    def ip_port(self) -> str:
         return f"{self.ip}:{self.port}"
 
     @staticmethod
@@ -37,11 +39,15 @@ class WebSocketManager:
         client = WebSocketClient(ws)
         return client
 
-    def get_client(self, ws: WebSocket) -> WebSocketClient | None:
+    def get_client(self, ws: WebSocket) -> WebSocketClient:
         ip_port = WebSocketClient.get_ip_port_str(ws)
         client = None
         if ip_port in self.client_pool:
             client = self.client_pool[ip_port]
+        if client is None:
+            raise UniSpyException(
+                "client is not existed in client pool. skip deleting."
+            )
         return client
 
     def connect(self, ws: WebSocket):

@@ -5,12 +5,14 @@ from frontends.gamespy.protocols.presence_search_player.applications.client impo
 from frontends.gamespy.protocols.presence_search_player.applications.handlers import CheckHandler, SearchHandler
 from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, SearchResult
 
+from frontends.gamespy.library.exceptions.general import UniSpyException
 
 class ClientMock(Client):
     pass
 
 
 def create_client() -> Client:
+    UniSpyException._is_unittesting = True
     handler = RequestHandlerMock()
     logger = LogMock()
     conn = ConnectionMock(
@@ -22,6 +24,6 @@ def create_client() -> Client:
         {"profile_id": 0}).model_dump())
 
     create_mock_url(config, SearchHandler, SearchResult.model_validate({"data": [{"profile_id": 0, "nick": "spyguy", "uniquenick": "spyguy",
-                                                                                    "email": "spyguy@unispy.org", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]}).model_dump())
+                                                                                    "email": "spyguy@gamespy.com", "firstname": "spy", "lastname": "guy", "namespace_id": 0}]}).model_dump())
 
     return cast(Client, conn._client)

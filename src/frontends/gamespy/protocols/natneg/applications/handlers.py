@@ -37,18 +37,17 @@ class AddressCheckHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._is_fetching = False
 
-    def _data_operate(self) -> None:
+    def _response_construct(self) -> None:
         """
         address check did not require restapi backend, \n
         just send the remote ip back to the client
         """
         self._result = AddressCheckResult(
             public_ip_addr=self._client.connection.remote_ip,
-            public_port=self._client.connection.remote_port)
+            public_port=self._client.connection.remote_port,
+        )
         self._result.public_ip_addr = self._client.connection.remote_ip
         self._result.public_port = self._client.connection.remote_port
-
-    def _response_construct(self) -> None:
         self._response = AddressCheckResponse(self._request, self._result)
 
 
@@ -59,10 +58,6 @@ class ConnectAckHandler(CmdHandlerBase):
         assert isinstance(request, ConnectAckRequest)
         super().__init__(client, request)
         self._is_fetching = False
-
-    def _data_operate(self) -> None:
-        self._client.log_info(
-            f"client:{self._request.client_index} aknowledged connect request.")
 
 
 class ConnectHandler(CmdHandlerBase):
@@ -82,13 +77,16 @@ class ErtAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         assert isinstance(request, ErtAckRequest)
         super().__init__(client, request)
-
-    def _feach_data(self) -> None:
-        self._result = ErtAckResult(
-            public_ip_addr=self._client.connection.remote_ip,
-            public_port=self._client.connection.remote_port)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
+        """
+        Natneg require fast response, so we do not wait for upload data.
+        """
+        self._result = ErtAckResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port,
+        )
         self._response = ErcAckResponse(self._request, self._result)
 
 
@@ -96,6 +94,7 @@ class InitHandler(CmdHandlerBase):
     """
     In init process, we need response the initresponse first to make client not timeout
     """
+
     _request: InitRequest
     _result: InitResult
     _response: InitResponse
@@ -103,19 +102,18 @@ class InitHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
         super().__init__(client, request)
-
-    def _feach_data(self) -> None:
-        self._result = InitResult(
-            public_ip_addr=self._client.connection.remote_ip,
-            public_port=self._client.connection.remote_port)
+        self._is_fetching = False
 
     def _response_construct(self):
-        self._response = InitResponse(self._request, self._result)
+        """
+        Natneg require fast response, so we do not wait for upload data.
+        """
+        self._result = InitResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port,
+        )
 
-    def _response_send(self) -> None:
-        """we need first to send the response to client in case of the time expire"""
-        super()._response_send()
-        super()._data_operate()
+        self._response = InitResponse(self._request, self._result)
 
 
 class NatifyHandler(CmdHandlerBase):
@@ -126,18 +124,17 @@ class NatifyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         assert isinstance(request, NatifyRequest)
         super().__init__(client, request)
-
-    def _feach_data(self):
-        self._result = NatifyResult(
-            public_ip_addr=self._client.connection.remote_ip,
-            public_port=self._client.connection.remote_port)
+        self._is_fetching = False
 
     def _response_construct(self):
+        """
+        Natneg require fast response, so we do not wait for upload data.
+        """
+        self._result = NatifyResult(
+            public_ip_addr=self._client.connection.remote_ip,
+            public_port=self._client.connection.remote_port,
+        )
         self._response = NatifyResponse(self._request, self._result)
-
-    def _response_send(self) -> None:
-        super()._response_send()
-        super()._data_operate()
 
 
 class PingHandler(CmdHandlerBase):
@@ -151,5 +148,6 @@ class ReportHandler(CmdHandlerBase):
     _result: ReportResult
 
     def __init__(self, client: Client, request: ReportRequest) -> None:
-        super().__init__(client, request)
         assert isinstance(request, ReportRequest)
+        super().__init__(client, request)
+        self._is_fetching = False

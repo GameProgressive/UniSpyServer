@@ -9,7 +9,6 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
 class ConnectionMock(ConnectionBase):
-
     def send(self, data: bytes) -> None:
         pass
 
@@ -53,8 +52,8 @@ class BrokerMock(BrockerBase):
         pass
 
 
-def create_mock_url(config: ServerConfig, handler: type[CmdHandlerBase], data: dict) -> None:
-    # fmt: off
+def create_mock_url(
+    config: ServerConfig, handler: type[CmdHandlerBase], data: dict
+) -> None:
     url = f"{CONFIG.backend.url}/GameSpy/{config.server_name}/{handler.__name__}"
     responses.add(responses.POST, url, json=data, status=200)
-    # fmt: on

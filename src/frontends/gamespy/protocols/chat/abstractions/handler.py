@@ -1,17 +1,18 @@
-from frontends.gamespy.library.abstractions.brocker import BrockerBase
-from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.library.network.brockers import WebsocketBrocker
 from frontends.gamespy.protocols.chat.aggregates.enums import MessageType
-from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
-from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException, NoSuchNickException, NoSuchChannelException
-from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
-from frontends.gamespy.protocols.chat.abstractions.contract import *
+from frontends.gamespy.protocols.chat.abstractions.contract import (
+    RequestBase,
+    ResponseBase,
+    ResultBase,
+)
+from frontends.gamespy.protocols.chat.aggregates.exceptions import (
+    ChatException,
+    NoSuchNickException,
+)
 from frontends.gamespy.library.abstractions.client import ClientBase
-from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase, ResultBase
 from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.protocols.chat.aggregates.exceptions import IRCException
 import frontends.gamespy.library.abstractions.handler as lib
-from typing import cast
+from typing import Optional, cast
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):
@@ -69,46 +70,16 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _request: ChannelRequestBase
     _response: ResponseBase
     _result: ResultBase
-    _b_msg: BrockerMessage
-    """
-    broadcast message
-    """
-    _brocker: BrockerBase = WebsocketBrocker(
-        "channel", CONFIG.backend.url, handle_brocker_message)
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
-        # self._channel = None
-
-    def _message_construct(self):
         """
-        broadcast message construct
+        we handle message broadcasting in backend api
+        frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive
         """
-        assert self._request.channel_name is not None
-        self._response.build()
-        self._b_msg = BrockerMessage(server_id=self._client.server_config.server_id,
-                                     channel_name=self._request.channel_name,
-                                     sender_ip_address=self._client.connection.remote_ip,
-                                     sender_port=self._client.connection.remote_port,
-                                     message=self._response.sending_buffer)
-
-    def _publish_to_brocker(self):
-        """
-        send message to backend, let backend to broadcast for us
-        """
-        self._message_construct()
-        j_str = self._b_msg.model_dump_json()
-        self._client.log_network_broadcast(j_str)
-        ChannelHandlerBase._brocker.publish_message(j_str)
-
-    def _response_send(self) -> None:
-        super()._response_send()
-        self._publish_to_brocker()
 
 
 # region Message
-
-
 class MessageRequestBase(ChannelRequestBase):
     type: MessageType
     nick_name: str
@@ -117,8 +88,7 @@ class MessageRequestBase(ChannelRequestBase):
     def parse(self):
         super().parse()
         if self.channel_name is None:
-            raise NoSuchNickException(
-                "the channel name is missing from the request")
+            raise NoSuchNickException("the channel name is missing from the request")
         if "#" in self.channel_name:
             self.type = MessageType.CHANNEL_MESSAGE
         else:

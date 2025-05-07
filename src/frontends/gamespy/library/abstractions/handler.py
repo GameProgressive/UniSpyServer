@@ -7,7 +7,11 @@ import requests
 from frontends.gamespy.library.configs import CONFIG
 
 # if TYPE_CHECKING:
-from frontends.gamespy.library.abstractions.contracts import RequestBase, ResultBase, ResponseBase
+from frontends.gamespy.library.abstractions.contracts import (
+    RequestBase,
+    ResultBase,
+    ResponseBase,
+)
 from frontends.gamespy.library.extentions.encoding import UniSpyJsonEncoder
 
 
@@ -32,7 +36,6 @@ class CmdHandlerBase:
     _is_fetching: bool
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
-
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
         self._client = client
@@ -87,22 +90,33 @@ class CmdHandlerBase:
         self._temp_data["client_ip"] = self._client.connection.remote_ip
         self._temp_data["server_id"] = self._client.server_config.server_id
         self._temp_data["client_port"] = self._client.connection.remote_port
-    
+
     def _upload_data(self):
         """
         whether need send data to backend
         if child class do not require feach, overide this function to do nothing
         """
-        url = f"{CONFIG.backend.url}/GameSpy/{
-            self._client.server_config.server_name}/{self.__class__.__name__}"
+        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{
+            self.__class__.__name__
+        }"
         json_str = json.dumps(
-            self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False)
+            self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False
+        )
         self._client.log_network_upload(f"[{url}] {json_str}")
-        response = requests.post(url, data=json_str, headers={
-                                 "Content-Type": "application/json"})
+        try:
+            response = requests.post(
+                url, data=json_str, headers={"Content-Type": "application/json"}
+            )
+        except requests.exceptions.ConnectionError:
+            if UniSpyException._is_unittesting:
+                raise UniSpyException(
+                    f"backends api for {[self.__class__.__name__]} is not mocked"
+                )
+            else:
+                raise UniSpyException("backends is not avaliable")
 
         if response.status_code != 200:
-            raise UniSpyException("failed to upload data to background.")
+            raise UniSpyException("failed to upload data to backends.")
         self._http_result = response.json()
 
     def _feach_data(self):
@@ -112,7 +126,8 @@ class CmdHandlerBase:
         """
         if self._result_cls is None:
             raise UniSpyException(
-                f"_result in {self.__class__.__name__} should not be null when feach data")
+                "_result_cls can not be null when feach data."
+            )
         assert issubclass(self._result_cls, ResultBase)
 
         self._result = self._result_cls(**self._http_result)
@@ -134,9 +149,6 @@ class CmdHandlerBase:
         override in child class if there are different exception handling behavior
         """
         UniSpyException.handle_exception(ex, self._client)
-        # if we are debugging the app we re-raise the exception
-        if CmdHandlerBase._debug:
-            raise ex
 
     def _log_current_class(self) -> None:
         if self._client is None:

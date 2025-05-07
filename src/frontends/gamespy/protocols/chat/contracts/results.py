@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 from pydantic import BaseModel
 from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
 from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultBase

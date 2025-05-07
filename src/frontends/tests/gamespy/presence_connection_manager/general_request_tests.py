@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 )
 LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\xxxx\\userid\\0\\profileid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\0\\profileid\\0\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@unispy.org\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@gamespy.com\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 
 
 class GeneralRequestTest(unittest.TestCase):
@@ -55,7 +55,7 @@ class GeneralRequestTest(unittest.TestCase):
         self.assertEqual(LoginType.NICK_EMAIL, request.type)
         self.assertEqual("xxxx", request.user_challenge)
         self.assertEqual("spyguy", request.nick)
-        self.assertEqual("spyguy@unispy.org", request.email)
+        self.assertEqual("spyguy@gamespy.com", request.email)
         self.assertEqual(0, request.namespace_id)
         self.assertEqual(0, request.user_id)
         self.assertEqual(0, request.profile_id)

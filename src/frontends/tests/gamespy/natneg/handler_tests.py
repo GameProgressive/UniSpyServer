@@ -1,8 +1,5 @@
 import unittest
 
-from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.tests.gamespy.library.mock_objects import create_mock_url
-from frontends.gamespy.protocols.natneg.contracts.requests import InitRequest
 from frontends.gamespy.protocols.natneg.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
 import responses
 from frontends.gamespy.protocols.natneg.contracts.requests import (
@@ -18,10 +15,10 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     PreInitState,
     RequestType,
 )
+from frontends.gamespy.library.exceptions.general import UniSpyException
 
-from frontends.gamespy.protocols.natneg.contracts.responses import InitResponse
 from frontends.tests.gamespy.natneg.mock_objects import create_client
-CmdHandlerBase._debug = True
+UniSpyException._is_unittesting = True
 
 
 class HandlerTests(unittest.TestCase):

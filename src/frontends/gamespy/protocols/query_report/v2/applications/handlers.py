@@ -1,6 +1,7 @@
-
 from frontends.gamespy.protocols.query_report.applications.client import Client
-from frontends.gamespy.protocols.query_report.v2.abstractions.cmd_handler_base import CmdHandlerBase
+from frontends.gamespy.protocols.query_report.v2.abstractions.cmd_handler_base import (
+    CmdHandlerBase,
+)
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
@@ -16,7 +17,10 @@ from frontends.gamespy.protocols.query_report.v2.contracts.responses import (
     ClientMessageResponse,
     HeartBeatResponse,
 )
-from frontends.gamespy.protocols.query_report.v2.contracts.results import ChallengeResult, HeartBeatResult
+from frontends.gamespy.protocols.query_report.v2.contracts.results import (
+    ChallengeResult,
+    HeartBeatResult,
+)
 
 
 class AvailableHandler(CmdHandlerBase):
@@ -26,8 +30,6 @@ class AvailableHandler(CmdHandlerBase):
         assert isinstance(request, AvaliableRequest)
         super().__init__(client, request)
         self._is_fetching = False
-
-
 
     def _response_construct(self):
         self._response = AvaliableResponse(self._request)
@@ -40,6 +42,7 @@ class ChallengeHanler(CmdHandlerBase):
     def __init__(self, client: Client, request: ChallengeRequest) -> None:
         assert isinstance(request, ChallengeRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _response_construct(self):
         self._response = ChallengeResponse(self._request, self._result)
@@ -49,6 +52,7 @@ class ClientMessageAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ClientMessageAckRequest) -> None:
         assert isinstance(request, ClientMessageAckRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _response_construct(self):
         self._client.log_info("Get client message ack")
@@ -64,7 +68,7 @@ class ClientMessageHandler(CmdHandlerBase):
     def _request_check(self) -> None:
         pass
 
-    def _response_construct(self):
+    def _response_construct(self) -> None:
         self._response = ClientMessageResponse(self._request)
 
 
@@ -82,13 +86,13 @@ class HeartBeatHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: HeartBeatRequest) -> None:
         assert isinstance(request, HeartBeatRequest)
         super().__init__(client, request)
-
-    def _feach_data(self):
-        self._result = HeartBeatResult(
-            remote_ip_address=self._client.connection.remote_ip,
-            remote_port=self._client.connection.remote_port)
+        self._is_fetching = False
 
     def _response_construct(self) -> None:
+        self._result = HeartBeatResult(
+            remote_ip_address=self._client.connection.remote_ip,
+            remote_port=self._client.connection.remote_port,
+        )
         self._response = HeartBeatResponse(self._request, self._result)
 
 
@@ -99,5 +103,3 @@ class KeepAliveHandler(CmdHandlerBase):
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
         self._is_fetching = False
-
-
