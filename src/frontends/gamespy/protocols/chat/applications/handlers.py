@@ -203,6 +203,7 @@ class QuitHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: QuitRequest):
         assert isinstance(request, QuitRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
 
 class SetKeyHandler(PostLoginHandlerBase):

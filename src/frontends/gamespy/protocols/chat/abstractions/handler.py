@@ -42,11 +42,10 @@ class PostLoginHandlerBase(CmdHandlerBase):
 
 
 class ChannelRequestBase(RequestBase):
-    channel_name: Optional[str]
+    channel_name: str
 
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
-        self.channel_name = None
 
     def parse(self) -> None:
         super().parse()
@@ -62,10 +61,6 @@ class ChannelResponseBase(ResponseBase):
         super().__init__(request, result)
         assert isinstance(request, RequestBase)
         assert isinstance(result, ResultBase)
-
-
-def handle_brocker_message(message: str):
-    raise NotImplementedError()
 
 
 class ChannelHandlerBase(PostLoginHandlerBase):
@@ -87,16 +82,15 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         self.broadcast_message()
 
     def broadcast_message(self):
-        assert self._client.brocker
-        assert self._channel
-        assert isinstance(self._channel.channel_name, str)
+        assert self._request.channel_name
         msg = BrockerMessage(
             server_id=self._client.server_config.server_id,
-            channel_name=self._channel.channel_name,
+            channel_name=self._request.channel_name,
             sender_ip_address=self._client.connection.remote_ip,
             sender_port=self._client.connection.remote_port,
             message=self._response.sending_buffer,
         )
+        assert self._client.brocker
         self._client.brocker.publish_message(msg)
 
 

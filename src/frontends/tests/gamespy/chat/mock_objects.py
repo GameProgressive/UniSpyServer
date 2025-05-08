@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, cast
+from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.chat.applications.handlers import (
     CdKeyHandler,
@@ -8,6 +9,7 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     ModeHandler,
     NickHandler,
     PartHandler,
+    QuitHandler,
     SetCKeyHandler,
     SetChannelKeyHandler,
     TopicHandler,
@@ -40,8 +42,24 @@ from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
+class WebSocketBrockerMock(BrockerBase):
+    def __init__(self) -> None:
+        super().__init__("test", "ws://test.com", print)
+
+    def subscribe(self):
+        pass
+
+    def publish_message(self, message):
+        pass
+
+    def unsubscribe(self):
+        pass
+
+
 class ClientMock(Client):
-    pass
+    def start_brocker(self):
+        self.brocker = WebSocketBrockerMock()  # type:ignore
+        self.brocker.subscribe()  # type:ignore
 
 
 def create_client() -> Client:
@@ -55,6 +73,7 @@ def create_client() -> Client:
     create_mock_url(
         config, LoginHandler, LoginResult(profile_id=1, user_id=1).model_dump()
     )
+    create_mock_url(config, QuitHandler, {"message": "ok"})
     create_mock_url(config, UserIPHandler, {"message": "ok"})
     create_mock_url(
         config,
@@ -131,7 +150,7 @@ def create_client() -> Client:
 
     if TYPE_CHECKING:
         conn._client = cast(Client, conn._client)
-
+    conn._client.on_connected()
     return conn._client
 
 

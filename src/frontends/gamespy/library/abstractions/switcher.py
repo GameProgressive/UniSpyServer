@@ -50,8 +50,6 @@ class SwitcherBase:
                 handler.handle()
         except Exception as e:
             UniSpyException.handle_exception(e, self._client)
-            if CmdHandlerBase._debug:
-                raise e
 
     @abstractmethod
     def _process_raw_request(self) -> None:

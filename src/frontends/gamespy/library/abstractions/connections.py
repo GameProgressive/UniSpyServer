@@ -5,11 +5,6 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.configs import ServerConfig
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from frontends.gamespy.library.network.http_handler import HttpRequest
-
 
 class ConnectionBase:
     remote_ip: str
@@ -30,9 +25,6 @@ class ConnectionBase:
     ) -> None:
         super().__init__()
         assert isinstance(config, ServerConfig)
-        assert issubclass(t_client, ClientBase)
-        # assert isinstance(logger, LogWriter)
-        # assert issubclass(type(handler), socketserver.BaseRequestHandler)
         self.handler = handler
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
