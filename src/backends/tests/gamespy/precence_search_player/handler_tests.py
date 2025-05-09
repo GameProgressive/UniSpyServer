@@ -1,5 +1,4 @@
 # the total requests tests
-import asyncio
 import unittest
 
 from backends.tests.utils import add_headers
@@ -23,7 +22,7 @@ class HandlerTest(unittest.TestCase):
             data = add_headers(r)
             request = bkr.SearchRequest(**data)
             handler = bkh.SearchHandler(request)
-            asyncio.run(handler.handle())
+            handler.handle()
             pass
 
     def test_chenck(self):
@@ -31,7 +30,7 @@ class HandlerTest(unittest.TestCase):
         data = add_headers(r)
         request = bkr.CheckRequest(**data)
         handler = bkh.CheckHandler(request)
-        asyncio.run(handler.handle())
+        handler.handle()
         pass
 
     def test_new_user(self):
@@ -39,7 +38,7 @@ class HandlerTest(unittest.TestCase):
         data = add_headers(r)
         request = bkr.NewUserRequest(**data)
         handler = bkh.NewUserHandler(request)
-        asyncio.run(handler.handle())
+        handler.handle()
         pass
 
     def test_nick(self):
@@ -47,7 +46,7 @@ class HandlerTest(unittest.TestCase):
         data = add_headers(r)
         request = bkr.NicksRequest(**data)
         handler = bkh.NicksHandler(request)
-        asyncio.run(handler.handle())
+        handler.handle()
         pass
 
     def test_others_list(self):
@@ -62,7 +61,7 @@ class HandlerTest(unittest.TestCase):
         data = add_headers(r)
         request = bkr.SearchUniqueRequest(**data)
         handler = bkh.SearchUniqueHandler(request)
-        asyncio.run(handler.handle())
+        handler.handle()
         pass
 
     def test_valid(self):
@@ -70,6 +69,6 @@ class HandlerTest(unittest.TestCase):
         data = add_headers(r)
         request = bkr.ValidRequest(**data)
         handler = bkh.ValidHandler(request)
-        asyncio.run(handler.handle())
+        handler.handle()
         self.assertTrue(handler._result.is_account_valid, True)
         pass

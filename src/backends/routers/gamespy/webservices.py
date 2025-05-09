@@ -10,91 +10,91 @@ router = APIRouter()
 
 
 @router.post(f"{WEB_SERVICES}/Altas/CreateRecordHandler")
-async def create_matchless_session(request):
+def create_matchless_session(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Altas/CreateSessionHandler")
-async def create_session(request):
+def create_session(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Altas/SetReportIntentionHandler")
-async def set_report_intention(request):
+def set_report_intention(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Altas/SubmitReportHandler")
-async def submit_report(request):
+def submit_report(request):
     raise NotImplementedError()
 
 
 # Auth services
 @router.post(f"{WEB_SERVICES}/Auth/LoginProfileHandler")
-async def login_profile(request: LoginProfileRequest):
+def login_profile(request: LoginProfileRequest):
     handler = LoginProfileHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/Auth/LoginRemoteAuthHandler")
-async def login_remote_auth(request: LoginRemoteAuthRequest):
+def login_remote_auth(request: LoginRemoteAuthRequest):
     handler = LoginRemoteAuthHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/Auth/LoginUniqueNickHandler")
-async def login_uniquenick(request: LoginUniqueNickRequest):
+def login_uniquenick(request: LoginUniqueNickRequest):
     handler = LoginUniqueNickHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 # SAKE services
 @router.post(f"{WEB_SERVICES}/Sake/CreateRecordHandler")
-async def create_record(request: CreateRecordRequest):
+def create_record(request: CreateRecordRequest):
     handler = CreateRecordHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/Sake/DeleteRecordHandler")
-async def delete_record(request):
+def delete_record(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Sake/GetMyRecordsHandler")
-async def get_my_records(request: GetMyRecordsRequest):
+def get_my_records(request: GetMyRecordsRequest):
     handler = GetMyRecordsHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/Sake/GetRandomRecordsHandler")
-async def get_random_records(request):
+def get_random_records(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Sake/GetRecordLimitHandler")
-async def get_record_limit(request):
+def get_record_limit(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Sake/RateRecordHandler")
-async def rate_record(request):
+def rate_record(request):
     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/Sake/SearchForRecordsHandler")
-async def search_for_records(request: SearchForRecordsRequest):
+def search_for_records(request: SearchForRecordsRequest):
     handler = SearchForRecordsHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/Sake/UpdateRecordHandler")
-async def update_record(request):
+def update_record(request):
     raise NotImplementedError()
 
 if __name__ == "__main__":

@@ -10,36 +10,36 @@ router = APIRouter()
 
 
 @router.post(f"{NATNEG}/AddressCheckHandler")
-async def address_check(request: AddressCheckRequest):
+def address_check(request: AddressCheckRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{NATNEG}/ConnectHandler")
-async def connect(request: ConnectRequest):
+def connect(request: ConnectRequest):
     handler = ConnectHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{NATNEG}/ErtAckHandler")
-async def ert_ack(request: ErtAckRequest):
+def ert_ack(request: ErtAckRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{NATNEG}/InitHandler")
-async def init(request: InitRequest):
+def init(request: InitRequest):
     handler = InitHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{NATNEG}/PingHandler")
-async def ping(request: PingRequest):
+def ping(request: PingRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{NATNEG}/ReportHandler")
-async def report(request: ReportRequest):
+def report(request: ReportRequest):
     raise NotImplementedError()
 
 

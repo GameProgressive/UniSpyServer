@@ -228,19 +228,19 @@
 #             result = self._redis_client.get(db_keys[0])
 #         return result
 
-#     async def async_count(self,  queries: list[RedisQuery]) -> int:
+#     def async_count(self,  queries: list[RedisQuery]) -> int:
 #         loop = asyncio.get_event_loop()
-#         result = await loop.run_in_executor(None, self.count, queries)
+#         result = loop.run_in_executor(None, self.count, queries)
 #         return result
 
-#     async def async_query(self, queries: list[RedisQuery]) -> list["RedisKeyValueObject"]:
+#     def async_query(self, queries: list[RedisQuery]) -> list["RedisKeyValueObject"]:
 #         loop = asyncio.get_event_loop()
-#         result = await loop.run_in_executor(None, self.query, queries)
+#         result = loop.run_in_executor(None, self.query, queries)
 #         return result
 
-#     async def async_first(self, queries: list[RedisQuery]) -> Optional["RedisKeyValueObject"]:
+#     def async_first(self, queries: list[RedisQuery]) -> Optional["RedisKeyValueObject"]:
 #         loop = asyncio.get_event_loop()
-#         result = await loop.run_in_executor(None, self.first, queries)
+#         result = loop.run_in_executor(None, self.first, queries)
 #         return result
 
 

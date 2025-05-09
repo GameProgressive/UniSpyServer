@@ -10,37 +10,37 @@ client_pool: dict[str, WebSocket] = {}
 
 
 @router.websocket(f"{SERVER_BROWSER_V2}/AdHocHandler")
-async def check(websocket: WebSocket):
+def check(websocket: WebSocket):
     """
     notify every server browser to send message to its client
     """
     raise NotImplementedError()
-    await websocket.accept()
+    websocket.accept()
     while True:
         try:
-            data = await websocket.receive_text()
+            data = websocket.receive_text()
             client_pool[websocket.client.host] = websocket
-            await websocket.send_text(f"Message text was: {data}")
+            websocket.send_text(f"Message text was: {data}")
         except WebSocketDisconnect:
             del client_pool[websocket.client.host]
 
 
 @router.post(f"{SERVER_BROWSER_V2}/SendMessageHandler")
-async def send_message(request: SendMessageRequest):
+def send_message(request: SendMessageRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerInfoHandler")
-async def server_info(request: ServerInfoRequest):
+def server_info(request: ServerInfoRequest):
     handler = ServerInfoHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerListHandler")
-async def server_list(request: ServerListRequest):
+def server_list(request: ServerListRequest):
     handler = ServerListHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 

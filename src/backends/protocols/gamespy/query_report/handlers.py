@@ -13,7 +13,7 @@ class AvaliableHandler(HandlerBase):
 class ChallengeHandler(HandlerBase):
     _request: HeartBeatRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         cache = PG_SESSION.query(GameServerCaches).where(
             GameServerCaches.instant_key == self._request.instant_key).first()
         if cache is None:
@@ -26,7 +26,7 @@ class ChallengeHandler(HandlerBase):
 class Heartbeathandler(HandlerBase):
     _request: HeartBeatRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         cache = data.get_server_info_with_instant_key(
             str(self._request.instant_key))
         if cache is None:
@@ -60,7 +60,7 @@ class Heartbeathandler(HandlerBase):
 class KeepAliveHandler(HandlerBase):
     _request: KeepAliveRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         cache = PG_SESSION.query(GameServerCaches).where(
             GameServerCaches.instant_key == self._request.instant_key).first()
         # update heartbeat time

@@ -14,7 +14,7 @@ class AuthGameHandler(HandlerBase):
 class AuthPlayerHandler(HandlerBase):
     _request: AuthPlayerRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         match self._request.auth_type:
             case AuthMethod.PARTNER_ID_AUTH:
                 self.data = data.get_profile_id_by_token(token=self._request.auth_token)
@@ -27,31 +27,31 @@ class AuthPlayerHandler(HandlerBase):
             case _:
                 raise GSException("Invalid auth type")
 
-    async def _result_construct(self):
+    def _result_construct(self):
         self._result = AuthPlayerResult(profile_id=self.data)
 
 
 class GetPlayerDataHandler(HandlerBase):
     _request: GetPlayerDataRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         self.data = data.get_player_data(
             self._request.profile_id,
             self._request.storage_type,
             self._request.data_index)
 
-    async def _result_construct(self):
+    def _result_construct(self):
         self._result = GetPlayerDataResult(keyvalues=self.data)
 
 
 class GetProfileIdHandler(HandlerBase):
     _request: GetProfileIdRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         self.data = data.get_profile_id_by_cdkey(
             cdkey=self._request.cdkey, nick_name=self._request.nick)
 
-    async def _result_construct(self):
+    def _result_construct(self):
         self._result = GetProfileIdResult(profile_id=self.data)
 
 
@@ -61,19 +61,19 @@ class NewGameHandler(HandlerBase):
     find game based on the session key, and create a space for the game data
     """
 
-    async def _data_operate(self):
+    def _data_operate(self):
         self.data = data.create_new_game_data()
 
 
 class SetPlayerDataHandler(HandlerBase):
     _request: SetPlayerDataRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         raise NotImplementedError()
 
 
 class UpdateGameHandler(HandlerBase):
     _request: SetPlayerDataRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         raise NotImplementedError()

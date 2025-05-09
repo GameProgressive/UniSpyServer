@@ -44,12 +44,12 @@ class HandlerBase:
         self._result = None
         self._response = OKResponse()
 
-    async def handle(self) -> None:
+    def handle(self) -> None:
         try:
-            await self._request_check()
-            await self._data_operate()
-            await self._result_construct()
-            await self._response_construct()
+            self._request_check()
+            self._data_operate()
+            self._result_construct()
+            self._response_construct()
         except UniSpyException as ex:
             self.logger.error(ex.message)
             self._response = ErrorResponse(message=ex.message)
@@ -57,21 +57,21 @@ class HandlerBase:
             self.logger.error(ex)
             self._response = ErrorResponse(message=str(ex))
 
-    async def _request_check(self) -> None:
+    def _request_check(self) -> None:
         """virtual method"""
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         """virtual method\n
         override by child class to perform database operations
         """
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         """virtual method\n
         can override by child class to create self._result
         """
 
     @final
-    async def _response_construct(self) -> None:
+    def _response_construct(self) -> None:
         """
         _response_construct can not be overrided
         """

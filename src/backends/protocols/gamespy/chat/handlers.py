@@ -76,7 +76,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
 class CdKeyHandler(HandlerBase):
     _request: CdkeyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         is_valid = data.is_cdkey_valid(self._request.cdkey)
         if not is_valid:
             raise LoginFailedException("cdkey not matched")
@@ -85,7 +85,7 @@ class CdKeyHandler(HandlerBase):
 class CryptHandler(HandlerBase):
     _request: CryptRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         result = data.get_user_cache_by_ip_port(
             self._request.client_ip, self._request.client_port
         )
@@ -94,14 +94,14 @@ class CryptHandler(HandlerBase):
         result.game_name = self._request.gamename  # type: ignore
         PG_SESSION.commit()
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = CryptResult()
 
 
 class GetKeyHandler(HandlerBase):
     _request: GetKeyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         caches = data.get_user_cache_by_nick_name(self._request.nick_name)
 
         if caches is None:
@@ -109,7 +109,7 @@ class GetKeyHandler(HandlerBase):
         if TYPE_CHECKING:
             self.caches = cast(list, caches)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = GetKeyResult(
             nick_name=self._request.nick_name, values=self.caches
         )
@@ -126,7 +126,7 @@ class GetUdpRelayHandler(HandlerBase):
 class InviteHandler(HandlerBase):
     _request: InviteRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         chann = data.get_channel_by_name_and_ip_port(
             self._request.channel_name,
             self._request.client_ip,
@@ -145,7 +145,7 @@ class InviteHandler(HandlerBase):
 class ListHandler(HandlerBase):
     _request: ListRequest
 
-    async def _request_check(self) -> None:
+    def _request_check(self) -> None:
         if self._request.is_searching_channel:
             pass
         elif self._request.is_searching_user:
@@ -153,7 +153,7 @@ class ListHandler(HandlerBase):
         else:
             raise ChatException("request is invalid")
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if self._request.is_searching_channel:
             # get the channel names with the substring
             self._data = data.find_channel_by_substring(self._request.filter)
@@ -162,7 +162,7 @@ class ListHandler(HandlerBase):
             # get the user names with the substring
             self._data = data.find_user_by_substring(self._request.filter)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         data = []
         for d in self._data:
             dd = ListResult.ListInfo(**d)
@@ -173,19 +173,19 @@ class ListHandler(HandlerBase):
 class LoginPreAuthHandler(HandlerBase):
     _request: LoginPreAuthRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         raise NotImplementedError("should this access to PCM's api?")
 
 
 class LoginHandler(HandlerBase):
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         raise NotImplementedError("should this access to PCM's api?")
 
 
 class NickHandler(HandlerBase):
     _request: NickRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         is_nick = data.is_nick_exist(self._request.nick_name)
         if is_nick:
             raise NickNameInUseException(
@@ -202,14 +202,14 @@ class NickHandler(HandlerBase):
             ChatUserCaches()
             data.add_nick_cache(cache)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = NickResult(nick_name=self._request.nick_name)
 
 
 class QuitHandler(HandlerBase):
     _request: QuitRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         data.remove_user_caches_by_ip_port(
             self._request.client_ip, self._request.client_port
         )
@@ -217,14 +217,14 @@ class QuitHandler(HandlerBase):
 
 
 class RegisterNickHandler(HandlerBase):
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         raise NotImplementedError("we do not know which unique nick should be updated")
 
 
 class SetKeyHandler(HandlerBase):
     _request: SetKeyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         user = data.get_user_cache_by_ip_port(
             self._request.client_ip, self._request.client_port
         )
@@ -238,14 +238,14 @@ class SetKeyHandler(HandlerBase):
 class UserHandler(HandlerBase):
     _request: UserRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         raise NotImplementedError("maybe update the user caches")
 
 
 class WhoHandler(HandlerBase):
     _request: WhoRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if self._request.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
             self._get_channel_user_info()
         else:
@@ -259,7 +259,7 @@ class WhoHandler(HandlerBase):
             self._request.client_ip, self._request.client_port
         )
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         infos = []
         for d in self._data:
             info = WhoResult.WhoInfo(**d)
@@ -270,10 +270,10 @@ class WhoHandler(HandlerBase):
 class WhoIsHandler(HandlerBase):
     _request: WhoIsRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._data: tuple = data.get_whois_result(self._request.nick_name)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = WhoIsResult(
             nick_name=self._data[0],
             user_name=self._data[1],
@@ -289,15 +289,15 @@ class GetChannelKeyHandler(ChannelHandlerBase):
         assert isinstance(self._channel, ChatChannelCaches)
         self._key_values = self._channel.key_values
 
-    async def _request_check(self) -> None:
-        await super()._request_check()
+    def _request_check(self) -> None:
+        super()._request_check()
         self._get_key_values()
 
 
 class GetCKeyHandler(ChannelHandlerBase):
     _request: GetCKeyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         match self._request.request_type:
             case GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE:
                 self.get_channel_all_user_key_value()
@@ -314,7 +314,7 @@ class GetCKeyHandler(ChannelHandlerBase):
         if d is not None:
             self._data = [d]
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         if self._data is None:
             return
         infos = []
@@ -335,13 +335,13 @@ class GetCKeyHandler(ChannelHandlerBase):
 class JoinHandler(ChannelHandlerBase):
     _request: JoinRequest
 
-    async def _request_check(self) -> None:
+    def _request_check(self) -> None:
         self._get_user()
         self._check_user()
 
         self._get_channel()
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._user is not None
         assert isinstance(self._user.nick_name, str)
         assert self._channel is not None
@@ -364,7 +364,7 @@ class JoinHandler(ChannelHandlerBase):
         ChannelHelper.join(self._channel, self._user)
         self._nicks = ChannelHelper.get_channel_all_nicks(self._channel)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._user is not None
         assert isinstance(self._user.user_name, str)
         assert isinstance(self._user.nick_name, str)
@@ -386,8 +386,8 @@ class KickHandler(ChannelHandlerBase):
         super().__init__(request)
         self._kickee = None
 
-    async def _request_check(self) -> None:
-        await super()._request_check()
+    def _request_check(self) -> None:
+        super()._request_check()
         assert isinstance(self._channel, ChatChannelCaches)
         assert isinstance(self._channel.channel_name, str)
         self._kickee = data.get_channel_user_cache_by_name(
@@ -398,7 +398,7 @@ class KickHandler(ChannelHandlerBase):
                 f"kickee is not a user of channel:{self._channel.channel_name}"
             )
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._channel
         assert self._channel_user
         assert self._kickee
@@ -408,31 +408,31 @@ class KickHandler(ChannelHandlerBase):
 class ModeHandler(ChannelHandlerBase):
     _request: ModeRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._channel
         assert self._channel_user
         ChannelHelper.change_modes(self._channel, self._channel_user, self._request)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         raise NotImplementedError()
-        return await super()._result_construct()
+        return super()._result_construct()
 
 
 class NamesHandler(ChannelHandlerBase):
     _request: NamesRequest
 
-    async def _request_check(self) -> None:
+    def _request_check(self) -> None:
         self._get_user()
         self._check_user()
 
         self._get_channel()
         self._check_channel()
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._channel
         self._nicks = ChannelHelper.get_channel_all_nicks(self._channel)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._user
         assert isinstance(self._user.nick_name, str)
         self._result = NamesResult(
@@ -445,12 +445,12 @@ class NamesHandler(ChannelHandlerBase):
 class PartHandler(ChannelHandlerBase):
     _request: PartRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._channel
         assert self._channel_user
         ChannelHelper.quit(self._channel, self._channel_user)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._channel_user
         assert self._channel
         assert isinstance(self._channel_user.is_channel_creator, bool)
@@ -468,15 +468,15 @@ class PartHandler(ChannelHandlerBase):
 class SetChannelKeyHandler(ChannelHandlerBase):
     _request: SetChannelKeyRequest
 
-    async def _request_check(self) -> None:
-        await super()._request_check()
+    def _request_check(self) -> None:
+        super()._request_check()
         assert self._channel_user
         assert isinstance(self._channel_user.is_channel_operator, bool)
         if self._channel_user.is_channel_operator:
             self._channel.key_values = self._request.key_values  # type:ignore
         data.db_commit()
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._channel_user
         irc = ChannelUserHelper.get_user_irc_prefix(self._channel_user)
         self._result = SetChannelKeyResult(
@@ -491,12 +491,12 @@ class SetCkeyHandler(ChannelHandlerBase):
 
     _request: SetCKeyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._channel_user.key_values = self._request.key_values  # type:ignore
         data.db_commit()
         self._is_broadcast = True
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         # todo think how to broadcast message
         raise NotImplementedError()
 
@@ -504,7 +504,7 @@ class SetCkeyHandler(ChannelHandlerBase):
 class TopicHandler(ChannelHandlerBase):
     _request: TopicRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         assert self._channel_user
         assert isinstance(self._channel_user.is_channel_operator, bool)
         if self._request.request_type is TopicRequestType.GET_CHANNEL_TOPIC:
@@ -517,7 +517,7 @@ class TopicHandler(ChannelHandlerBase):
             self._channel.topic = self._request.channel_topic  # type:ignore
             self._data: str = self._request.channel_topic
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = TopicResult(
             channel_name=self._request.channel_name, channel_topic=self._data
         )

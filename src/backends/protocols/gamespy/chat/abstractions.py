@@ -61,7 +61,7 @@ class ChannelHandlerBase(HandlerBase):
                 f"Can not find channel user with channel name: {self._request.channel_name}, ip address: {self._request.client_ip}:{self._request.client_port}"
             )
 
-    async def _request_check(self) -> None:
+    def _request_check(self) -> None:
         self._get_user()
         self._check_user()
 
@@ -71,18 +71,18 @@ class ChannelHandlerBase(HandlerBase):
         self._get_channel_user()
         self._check_channel_user()
 
-    async def _boradcast(self) -> None:
+    def _boradcast(self) -> None:
         # todo boradcast message here
         raise NotImplementedError()
 
-    async def handle(self) -> None:
+    def handle(self) -> None:
         try:
-            await self._request_check()
-            await self._data_operate()
-            await self._result_construct()
-            await self._response_construct()
+            self._request_check()
+            self._data_operate()
+            self._result_construct()
+            self._response_construct()
 
-            await self._boradcast()
+            self._boradcast()
         except UniSpyException as ex:
             self.logger.error(ex.message)
             self._response = ErrorResponse(message=ex.message)

@@ -14,7 +14,7 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.protocols.chat.aggregates.exceptions import IRCException
 import frontends.gamespy.library.abstractions.handler as lib
-from typing import Optional, cast
+from typing import cast
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):

@@ -9,36 +9,36 @@ router = APIRouter()
 
 
 @router.post(f"{QUERY_REPORT}/HeartBeatHandler")
-async def heartbeat(request: HeartBeatRequest):
+def heartbeat(request: HeartBeatRequest):
     handler = Heartbeathandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{QUERY_REPORT}/ChallengeHanler")
-async def challenge(request: ChallengeRequest):
+def challenge(request: ChallengeRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{QUERY_REPORT}/AvailableHandler")
-async def available(request: AvaliableRequest):
+def available(request: AvaliableRequest):
     handler = AvaliableHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{QUERY_REPORT}/ClientMessageAckHandler")
-async def client_message(request: ClientMessageRequest):
+def client_message(request: ClientMessageRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{QUERY_REPORT}/EchoHandler")
-async def echo(request: EchoRequest):
+def echo(request: EchoRequest):
     raise NotImplementedError()
 
 
 @router.post(f"{QUERY_REPORT}/KeepAliveHandler")
-async def keep_alive(request: KeepAliveRequest):
+def keep_alive(request: KeepAliveRequest):
     raise NotImplementedError()
 
 

@@ -6,44 +6,44 @@ router = APIRouter()
 
 
 @router.post(f"{GAMESTATUS}/AuthGameHandler")
-async def auth_game(request: AuthGameRequest):
+def auth_game(request: AuthGameRequest):
     handler = AuthGameHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{GAMESTATUS}/AuthPlayerHandler")
-async def auth_player(request: AuthPlayerRequest):
+def auth_player(request: AuthPlayerRequest):
     handler = AuthPlayerHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{GAMESTATUS}/NewGameHandler")
-async def new_game(request: NewGameRequest):
+def new_game(request: NewGameRequest):
     handler = NewGameHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{GAMESTATUS}/GetPlayerDataHandler")
-async def get_player_data(request: GetPlayerDataRequest):
+def get_player_data(request: GetPlayerDataRequest):
     handler = GetPlayerDataHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{GAMESTATUS}/SetPlayerDataHandler")
-async def set_player_data(request: SetPlayerDataRequest):
+def set_player_data(request: SetPlayerDataRequest):
     handler = SetPlayerDataHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 
 @router.post(f"{GAMESTATUS}/UpdateGameHandler")
-async def updaet_game(request: UpdateGameRequest):
+def updaet_game(request: UpdateGameRequest):
     handler = UpdateGameHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler._response
 
 

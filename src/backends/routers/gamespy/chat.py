@@ -71,127 +71,127 @@ async def websocket_endpoint(ws: WebSocket):
 
 
 @router.post(f"{CHAT}/CdKeyHandler")
-async def cdkey(request: CdkeyRequest):
+def cdkey(request: CdkeyRequest):
     handler = CdKeyHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{CHAT}/GetKeyHandler")
-async def getkey(request: GetKeyRequest):
+def getkey(request: GetKeyRequest):
     handler = GetKeyHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{CHAT}/GetUdpRelayHandler")
-async def get_udp_relay(request: GetUdpRelayRequest):
+def get_udp_relay(request: GetUdpRelayRequest):
     handler = GetUdpRelayHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{CHAT}/InviteHandler")
-async def invite(request: InviteRequest):
+def invite(request: InviteRequest):
     handler = InviteHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{CHAT}/ListHandler")
-async def list_data(request: ListRequest):
+def list_data(request: ListRequest):
     # handler = ListHandler
     raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/LoginHandler")
-async def login(request: LoginRequest):
+def login(request: LoginRequest):
     pass
 
 
 @router.post(f"{CHAT}/NickHandler")
-async def nick(request: NickRequest):
+def nick(request: NickRequest):
     pass
 
 
 @router.post(f"{CHAT}/QuitHandler")
-async def quit(request: QuitRequest):
+def quit(request: QuitRequest):
     pass
 
 
 @router.post(f"{CHAT}/SetKeyHandler")
-async def set_key(request: SetKeyRequest):
+def set_key(request: SetKeyRequest):
     pass
 
 
 @router.post(f"{CHAT}/UserHandler")
-async def user(request: UserRequest):
+def user(request: UserRequest):
     pass
 
 
 @router.post(f"{CHAT}/UserIPHandler")
-async def user_ip(request: UserIPRequest):
+def user_ip(request: UserIPRequest):
     pass
 
 
 @router.post(f"{CHAT}/WhoHandler")
-async def who(request: WhoRequest):
+def who(request: WhoRequest):
     pass
 
 
 @router.post(f"{CHAT}/WhoIsHandler")
-async def whois(request: WhoIsRequest):
+def whois(request: WhoIsRequest):
     pass
 
 
 # region channel
 @router.post(f"{CHAT}/GetChannelKeyHandler")
-async def get_channel_key(request: GetChannelKeyRequest):
+def get_channel_key(request: GetChannelKeyRequest):
     pass
 
 
 @router.post(f"{CHAT}/GetCKeyHandler")
-async def get_ckey(request: GetCKeyRequest):
+def get_ckey(request: GetCKeyRequest):
     pass
 
 
 @router.post(f"{CHAT}/JoinHandler")
-async def join(request: JoinRequest):
+def join(request: JoinRequest):
     pass
 
 
 @router.post(f"{CHAT}/KickHandler")
-async def kick(request: KickRequest):
+def kick(request: KickRequest):
     pass
 
 
 @router.post(f"{CHAT}/ModeHandler")
-async def mode(request: ModeRequest):
+def mode(request: ModeRequest):
     pass
 
 
 @router.post(f"{CHAT}/NamesHandler")
-async def names(request: NamesRequest):
+def names(request: NamesRequest):
     pass
 
 
 @router.post(f"{CHAT}/PartHandler")
-async def part(request: PartRequest):
+def part(request: PartRequest):
     pass
 
 
 @router.post(f"{CHAT}/SetChannelKeyHandler")
-async def set_channel_key(request: SetChannelKeyRequest):
+def set_channel_key(request: SetChannelKeyRequest):
     pass
 
 
 @router.post(f"{CHAT}/SetGroupHandler")
-async def set_group(request: SetGroupRequest):
+def set_group(request: SetGroupRequest):
     pass
 
 
 @router.post(f"{CHAT}/TopicHandler")
-async def topic(request: TopicRequest):
+def topic(request: TopicRequest):
     pass
 
 
@@ -199,7 +199,7 @@ async def topic(request: TopicRequest):
 
 
 @router.post(f"{CHAT}/ATMHandler")
-async def atm(request: AtmRequest):
+def atm(request: AtmRequest):
     pass
 
 
@@ -209,12 +209,12 @@ def notice(request: NoticeRequest):
 
 
 @router.post(f"{CHAT}/PrivateHandler")
-async def private(request: PrivateRequest):
+def private(request: PrivateRequest):
     pass
 
 
 @router.post(f"{CHAT}/UTMHandler")
-async def utm(request: UtmRequest):
+def utm(request: UtmRequest):
     pass
 
 

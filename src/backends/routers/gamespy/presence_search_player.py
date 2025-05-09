@@ -9,70 +9,70 @@ router = APIRouter()
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/CheckHandler")
-async def check(request: CheckRequest):
+def check(request: CheckRequest):
     handler = CheckHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/NewUserHandler")
-async def new_user(request: NewUserRequest):
+def new_user(request: NewUserRequest):
     handler = NewUserHandler(request)
-    await handler.handle()
+    handler.handle()
     handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/NicksHandler")
-async def nicks(request: NicksRequest):
+def nicks(request: NicksRequest):
     handler = NicksHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersHandler")
-async def others(request: OthersRequest):
+def others(request: OthersRequest):
     handler = OthersHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/OthersListHandler")
-async def others_list(request: OthersListRequest):
+def others_list(request: OthersListRequest):
     handler = OthersListHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/PMatchHandler")
-async def player_match(request: dict):
+def player_match(request: dict):
     raise NotImplementedError()
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchHandler")
-async def search(request: SearchRequest):
+def search(request: SearchRequest):
     handler = SearchHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/SearchUniqueHandler")
-async def search_unique(request: SearchUniqueRequest):
+def search_unique(request: SearchUniqueRequest):
     handler = SearchUniqueHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/UniqueSearchHandler")
-async def unique_search(request: UniqueSearchRequest):
+def unique_search(request: UniqueSearchRequest):
     handler = UniqueSearchHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/ValidHandler")
-async def valid(request: ValidRequest):
+def valid(request: ValidRequest):
     handler = ValidHandler(request)
-    await handler.handle()
+    handler.handle()
     return handler.response
 
 

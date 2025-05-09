@@ -15,7 +15,7 @@ class CheckHandler(HandlerBase):
     _request: CheckRequest
     _result: CheckResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if data.verify_email(self._request.email):
             raise CheckException("The email is not existed")
         if data.verify_email_and_password(self._request.email, self._request.password):
@@ -26,7 +26,7 @@ class CheckHandler(HandlerBase):
             raise CheckException(f"No pid found with email{
                                  self._request.email}")
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._profile_id is not None
         self._result = CheckResult(profile_id=self._profile_id)
 
@@ -35,7 +35,7 @@ class NewUserHandler(HandlerBase):
     _request: NewUserRequest
     _result: NewUserResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
 
         # check if user exist
         self.user = data.get_user(self._request.email)
@@ -55,7 +55,7 @@ class NewUserHandler(HandlerBase):
         if self.subprofile is None:
             self._create_subprofile()
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self.user is not None
         assert isinstance(self.user.userid, int)
         assert self.profile is not None
@@ -93,7 +93,7 @@ class NicksHandler(HandlerBase):
     _request: NicksRequest
     _result: NicksResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.temp_list = data.get_nick_and_unique_nick_list(
             self._request.email, self._request.password, self._request.namespace_id)
         self.result_data = []
@@ -101,7 +101,7 @@ class NicksHandler(HandlerBase):
             self.result_data.append(
                 NickResultData(nick=nick, uniquenick=unique))
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = NicksResult(data=self.result_data)
 
 
@@ -109,11 +109,11 @@ class OthersHandler(HandlerBase):
     _request: OthersRequest
     _result: OthersResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._data: list = data.get_friend_info_list(
             self._request.profile_id, self._request.namespace_id, self._request.game_name)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         temp_list = []
         for item in self._data:
             temp_list.append(OthersResultData(
@@ -126,11 +126,11 @@ class OthersListHandler(HandlerBase):
     _request: OthersListRequest
     result: OthersListResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._data: list = data.get_matched_profile_info_list(
             self._request.profile_ids, self._request.namespace_id)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         temp = []
         for profile_id, uniquenick in self._data:
             temp.append(OthersListData(
@@ -145,7 +145,7 @@ class SearchHandler(HandlerBase):
     _request: SearchRequest
     _result: SearchResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if self._request.request_type == SearchType.NICK_SEARCH:
             assert self._request.nick
             self._data = data.get_matched_info_by_nick(self._request.nick)
@@ -164,7 +164,7 @@ class SearchHandler(HandlerBase):
         else:
             raise UniSpyException("search type invalid")
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         data = []
         for d in self._data:
             dd = SearchResultData(**d)
@@ -176,11 +176,11 @@ class SearchUniqueHandler(HandlerBase):
     _request: SearchUniqueRequest
     _result: SearchUniqueResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._data = data.get_matched_info_by_uniquenick_and_namespaceids(
             self._request.uniquenick, self._request.namespace_ids)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         data = []
         for d in self._data:
             dd = SearchResultData(**d)
@@ -192,11 +192,11 @@ class UniqueSearchHandler(HandlerBase):
     _request: UniqueSearchRequest
     _result: UniqueSearchResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._is_exist = data.is_uniquenick_exist(
             self._request.preferred_nick, self._request.namespace_id, self._request.game_name)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = UniqueSearchResult(is_uniquenick_exist=self._is_exist)
 
 
@@ -204,8 +204,8 @@ class ValidHandler(HandlerBase):
     _request: ValidRequest
     _result: ValidResult
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self._is_exist = data.is_email_exist(self._request.email)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = ValidResult(is_account_valid=self._is_exist)

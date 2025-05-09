@@ -24,21 +24,21 @@ logger = LogManager.create("backend")
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
+def validation_exception_handler(request, exc):
     str_error = str(exc)
     logger.error(str_error)
     return JSONResponse({"error": str_error})
 
 
 @app.exception_handler(Exception)
-async def handle_unispy_exception(request, exc):
+def handle_unispy_exception(request, exc):
     str_error = str(exc)
     logger.error(str_error)
     return JSONResponse({"error": str_error})
 
 
 @app.post("/")
-async def home(request: ServerConfig) -> dict:
+def home(request: ServerConfig) -> dict:
     # todo add the server config to our database
     return {"status": "online"}
 
@@ -49,7 +49,7 @@ class RegisterRequest(BaseModel):
 
 
 @app.post("/token")
-async def get_auth_token(request: RegisterRequest):
+def get_auth_token(request: RegisterRequest):
 
     pass
 if __name__ == "__main__":

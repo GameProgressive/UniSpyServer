@@ -15,7 +15,7 @@ class ServerListHandler(HandlerBase):
     _request: ServerListRequest
     _caches: list[PeerRoomInfo] | list[GameServerInfo]
 
-    async def _data_operate(self):
+    def _data_operate(self):
         if self._request.update_option in\
             [ServerListUpdateOption.SERVER_MAIN_LIST,
              ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
@@ -33,7 +33,7 @@ class ServerListHandler(HandlerBase):
             raise ServerBrowserException(
                 "invalid server browser update option")
 
-    async def _result_construct(self):
+    def _result_construct(self):
         if self._request.update_option in\
             [ServerListUpdateOption.SERVER_MAIN_LIST,
              ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
@@ -62,18 +62,18 @@ class ServerListHandler(HandlerBase):
 class AdHocHandler(HandlerBase):
     _request: AdHocRequestBase
 
-    async def _data_operate(self):
+    def _data_operate(self):
         raise NotImplementedError()
 
 
 class SendMessageHandler(HandlerBase):
     _request: SendMessageRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         self.data = data.get_server_info_with_ip_and_port(
             self._request.game_server_public_ip, self._request.game_server_public_port)
 
-    async def _result_construct(self):
+    def _result_construct(self):
         self._result = SendMessageResult(sb_sender_id=self._request.server_id,
                                          natneg_message=self._request.client_message, server_info=self.data)
 
@@ -81,9 +81,9 @@ class SendMessageHandler(HandlerBase):
 class ServerInfoHandler(HandlerBase):
     _request: ServerInfoRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.data = data.get_server_info_with_ip_and_port(
             self._request.game_server_public_ip, self._request.game_server_public_port)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = ServerInfoResult(game_server_info=self.data)

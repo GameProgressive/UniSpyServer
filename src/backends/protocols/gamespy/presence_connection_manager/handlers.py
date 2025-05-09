@@ -10,7 +10,7 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
 class KeepAliveHandler(HandlerBase):
     _request: KeepAliveRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         data.update_online_time(self._request.client_ip,
                                 self._request.client_port)
 
@@ -18,7 +18,7 @@ class KeepAliveHandler(HandlerBase):
 class LoginHandler(HandlerBase):
     _request: LoginRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if self._request.type == LoginType.NICK_EMAIL:
             self._nick_email_login()
         elif self._request.type == LoginType.UNIQUENICK_NAMESPACE_ID:
@@ -50,7 +50,7 @@ class LoginHandler(HandlerBase):
         self._data = data.get_user_infos_by_authtoken(
             self._request.auth_token)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         assert self._data
         self._result = LoginResult(data=self._data)
 
@@ -58,7 +58,7 @@ class LoginHandler(HandlerBase):
 class LogoutHandler(HandlerBase):
     _request: LogoutRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         # data.update_online_status(user_id=, status=LoginStatus.DISCONNECTED)
         raise NotImplementedError()
 
@@ -75,22 +75,22 @@ class NewUserHandler(HandlerBase):
 class BuddyListHandler(HandlerBase):
     _request: BuddyListRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.data = data.get_buddy_list(
             self._request.profile_id, self._request.namespace_id)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = BuddyListResult(profile_ids=self.data)
 
 
 class BlockListHandler(HandlerBase):
     _request: BlockListRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.data = data.get_block_list(
             self._request.profile_id, self._request.namespace_id)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = BlockListResult(profile_ids=self.data)
 
 
@@ -111,7 +111,7 @@ class BuddyStatusInfoHandler(HandlerBase):
 class DelBuddyHandler(HandlerBase):
     _request: DelBuddyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.data = data.delete_friend_by_profile_id(
             self._request.target_id)
 
@@ -119,7 +119,7 @@ class DelBuddyHandler(HandlerBase):
 class AddBuddyHandler(HandlerBase):
     _request: AddBuddyRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         data.add_friend_request(
             self._request.profile_id,
             self._request.target_id,
@@ -130,7 +130,7 @@ class AddBuddyHandler(HandlerBase):
 class AddBlockHandler(HandlerBase):
     _request: AddBlockRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         data.update_block(self._request.profile_id,
                           self._request.taget_id, self._request.session_key)
 
@@ -138,7 +138,7 @@ class AddBlockHandler(HandlerBase):
 class InviteToHandler(HandlerBase):
     _request: InviteToRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         # user is offline
         # if (client is null)
         # {
@@ -156,14 +156,14 @@ class InviteToHandler(HandlerBase):
 class StatusHandler(HandlerBase):
     _request: StatusRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         if self._request.is_get:
             self.data = data.get_status(
                 self._request.session_key)
         else:
             data.update_status(self._request.session_key, self._request.status)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
 
         if self._request.is_get:
             assert isinstance(self.data, UserStatus)
@@ -173,7 +173,7 @@ class StatusHandler(HandlerBase):
 class StatusInfoHandler(HandlerBase):
     _request: StatusInfoRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         raise NotImplementedError()
 
 
@@ -183,11 +183,11 @@ class StatusInfoHandler(HandlerBase):
 class GetProfileHandler(HandlerBase):
     _request: GetProfileRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         self.data = data.get_profile_infos(
             profile_id=self._request.profile_id, session_key=self._request.session_key)
 
-    async def _result_construct(self) -> None:
+    def _result_construct(self) -> None:
         self._result = GetProfileResult(user_profile=self.data)
 
 
@@ -197,7 +197,7 @@ class NewProfileHandler(HandlerBase):
     """
     _request: NewProfileRequest
 
-    async def _data_operate(self) -> None:
+    def _data_operate(self) -> None:
         data.update_new_nick(
             self._request.session_key, self._request.old_nick, self._request.new_nick)
 
@@ -205,7 +205,7 @@ class NewProfileHandler(HandlerBase):
 class RegisterCDKeyHandler(HandlerBase):
     _request: RegisterCDKeyRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         data.update_cdkey(self._request.session_key, self._request.cdkey_enc)
 
 
@@ -215,20 +215,20 @@ class RegisterNickHandler(HandlerBase):
     """
     _request: RegisterNickRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         data.update_uniquenick(self._request.session_key,
                                self._request.unique_nick)
 
 
 class RemoveBlockHandler(HandlerBase):
-    async def _data_operate(self):
+    def _data_operate(self):
         raise NotImplementedError()
 
 
 class UpdateProfileHandler(HandlerBase):
     _request: UpdateProfileRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         data.update_profiles(self._request.session_key,
                              self._request.extra_infos)
 
@@ -236,6 +236,6 @@ class UpdateProfileHandler(HandlerBase):
 class UpdateUserInfoHandler(HandlerBase):
     _request: UpdateUserInfoRequest
 
-    async def _data_operate(self):
+    def _data_operate(self):
         data.update_profiles(self._request.session_key,
                              self._request.extra_infos)
