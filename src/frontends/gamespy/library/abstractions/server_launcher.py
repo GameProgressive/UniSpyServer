@@ -68,6 +68,8 @@ class ServerLauncherBase:
         self.server.start()
 
     def _connect_to_backend(self):
+        if CONFIG.unittest.is_collect_request:
+            return
         try:
             # post our server config to backends to register
             assert self.config is not None
@@ -81,7 +83,9 @@ class ServerLauncherBase:
                         f"backend server: {CONFIG.backend.url} not available."
                     )
         except requests.ConnectionError:
-            raise UniSpyException(f"backend server: {CONFIG.backend.url} not available.")
+            raise UniSpyException(
+                f"backend server: {CONFIG.backend.url} not available."
+            )
 
     def _create_logger(self):
         assert self.config is not None
