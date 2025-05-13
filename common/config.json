@@ -103,5 +103,9 @@
       "public_address": "0.0.0.0",
       "listening_port": 10086
     }
+  },
+  "unittest": {
+    "is_raise_except": false,
+    "is_collect_request": false
   }
 }

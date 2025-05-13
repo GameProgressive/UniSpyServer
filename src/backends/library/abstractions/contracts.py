@@ -18,7 +18,7 @@ class RequestBase(BaseModel):
 class Response(BaseModel):
     message: str
 
-    def to_json_dict(self) -> dict:
+    def to_json_dict(self) -> dict[str, object]:
         return self.model_dump(mode="json")
 
 

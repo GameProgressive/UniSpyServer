@@ -1,17 +1,44 @@
-from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
 import backends.protocols.gamespy.presence_search_player.data as data
-from backends.protocols.gamespy.presence_search_player.requests import *
+from backends.protocols.gamespy.presence_search_player.requests import (
+    CheckRequest,
+    NewUserRequest,
+    NicksRequest,
+    OthersListRequest,
+    OthersRequest,
+    SearchRequest,
+    SearchUniqueRequest,
+    UniqueSearchRequest,
+    ValidRequest,
+)
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import CheckException
-from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, NewUserResult, NickResultData, NicksResult, OthersListData, OthersListResult, OthersResult, OthersResultData, SearchResult, SearchResultData, SearchUniqueResult, UniqueSearchResult, ValidResult
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import SearchType
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    CheckException,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.results import (
+    CheckResult,
+    NewUserResult,
+    NickResultData,
+    NicksResult,
+    OthersListData,
+    OthersListResult,
+    OthersResult,
+    OthersResultData,
+    SearchResult,
+    SearchResultData,
+    SearchUniqueResult,
+    UniqueSearchResult,
+    ValidResult,
+)
 
 
 class CheckHandler(HandlerBase):
     """
     todo: whether need check the partner id, which means whether we need to check subprofiles
     """
+
     _request: CheckRequest
     _result: CheckResult
 
@@ -21,10 +48,13 @@ class CheckHandler(HandlerBase):
         if data.verify_email_and_password(self._request.email, self._request.password):
             raise CheckException("The password is incorrect")
         self._profile_id = data.get_profile_id(
-            self._request.email, self._request.password, self._request.nick, self._request.partner_id)
+            self._request.email,
+            self._request.password,
+            self._request.nick,
+            self._request.partner_id,
+        )
         if self._profile_id is None:
-            raise CheckException(f"No pid found with email{
-                                 self._request.email}")
+            raise CheckException(f"No pid found with email{self._request.email}")
 
     def _result_construct(self) -> None:
         assert self._profile_id is not None
@@ -36,13 +66,12 @@ class NewUserHandler(HandlerBase):
     _result: NewUserResult
 
     def _data_operate(self) -> None:
-
         # check if user exist
         self.user = data.get_user(self._request.email)
         if self.user is None:
             self._create_user()
 
-        assert self.user != None
+        assert self.user
         assert isinstance(self.user.userid, int)
 
         self.profile = data.get_profile(self.user.userid, self._request.nick)
@@ -51,7 +80,10 @@ class NewUserHandler(HandlerBase):
         assert self.profile is not None
         assert isinstance(self.profile.profileid, int)
         self.subprofile = data.get_sub_profile(
-            profile_id=self.profile.profileid, namespace_id=self._request.namespace_id, product_id=self._request.product_id)
+            profile_id=self.profile.profileid,
+            namespace_id=self._request.namespace_id,
+            product_id=self._request.product_id,
+        )
         if self.subprofile is None:
             self._create_subprofile()
 
@@ -61,7 +93,8 @@ class NewUserHandler(HandlerBase):
         assert self.profile is not None
         assert isinstance(self.profile.profileid, int)
         self._result = NewUserResult(
-            user_id=self.user.userid, profile_id=self.profile.profileid)
+            user_id=self.user.userid, profile_id=self.profile.profileid
+        )
 
     def _create_user(self) -> None:
         user_dict = {}
@@ -72,7 +105,6 @@ class NewUserHandler(HandlerBase):
         PG_SESSION.commit()
 
     def _create_profile(self) -> None:
-
         profile_dict = {}
         for key, value in self._request.__dict__.items():
             if key in Profiles.__dict__:
@@ -95,11 +127,11 @@ class NicksHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.temp_list = data.get_nick_and_unique_nick_list(
-            self._request.email, self._request.password, self._request.namespace_id)
+            self._request.email, self._request.password, self._request.namespace_id
+        )
         self.result_data = []
         for nick, unique in self.temp_list:
-            self.result_data.append(
-                NickResultData(nick=nick, uniquenick=unique))
+            self.result_data.append(NickResultData(nick=nick, uniquenick=unique))
 
     def _result_construct(self) -> None:
         self._result = NicksResult(data=self.result_data)
@@ -111,14 +143,25 @@ class OthersHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data: list = data.get_friend_info_list(
-            self._request.profile_id, self._request.namespace_id, self._request.game_name)
+            self._request.profile_id,
+            self._request.namespace_id,
+            self._request.game_name,
+        )
 
     def _result_construct(self) -> None:
         temp_list = []
         for item in self._data:
-            temp_list.append(OthersResultData(
-                profile_id=item[0], nick=item[1], uniquenick=item[2], lastname=item[3], firstname=item[4], user_id=item[5], email=item[6]
-            ))
+            temp_list.append(
+                OthersResultData(
+                    profile_id=item[0],
+                    nick=item[1],
+                    uniquenick=item[2],
+                    lastname=item[3],
+                    firstname=item[4],
+                    user_id=item[5],
+                    email=item[6],
+                )
+            )
         self._result = OthersResult(data=temp_list)
 
 
@@ -128,18 +171,19 @@ class OthersListHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data: list = data.get_matched_profile_info_list(
-            self._request.profile_ids, self._request.namespace_id)
+            self._request.profile_ids, self._request.namespace_id
+        )
 
     def _result_construct(self) -> None:
         temp = []
         for profile_id, uniquenick in self._data:
-            temp.append(OthersListData(
-                profile_id=profile_id, unique_nick=uniquenick))
+            temp.append(OthersListData(profile_id=profile_id, unique_nick=uniquenick))
         self._result = OthersListResult(data=temp)
 
 
 # class PlayerMatchHandler(HandlerBase):
 #     _request: playermatchrequest
+
 
 class SearchHandler(HandlerBase):
     _request: SearchRequest
@@ -153,11 +197,13 @@ class SearchHandler(HandlerBase):
             assert self._request.email
             assert self._request.nick
             self._data = data.get_matched_info_by_nick_and_email(
-                self._request.nick, self._request.email)
+                self._request.nick, self._request.email
+            )
         elif self._request.request_type == SearchType.UNIQUENICK_NAMESPACEID_SEARCH:
             assert self._request.uniquenick
             self._data = data.get_matched_info_by_uniquenick_and_namespaceid(
-                self._request.uniquenick, self._request.namespace_id)
+                self._request.uniquenick, self._request.namespace_id
+            )
         elif self._request.request_type == SearchType.EMAIL_SEARCH:
             assert self._request.email
             self._data = data.get_matched_info_by_email(self._request.email)
@@ -178,7 +224,8 @@ class SearchUniqueHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.get_matched_info_by_uniquenick_and_namespaceids(
-            self._request.uniquenick, self._request.namespace_ids)
+            self._request.uniquenick, self._request.namespace_ids
+        )
 
     def _result_construct(self) -> None:
         data = []
@@ -194,7 +241,10 @@ class UniqueSearchHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._is_exist = data.is_uniquenick_exist(
-            self._request.preferred_nick, self._request.namespace_id, self._request.game_name)
+            self._request.preferred_nick,
+            self._request.namespace_id,
+            self._request.game_name,
+        )
 
     def _result_construct(self) -> None:
         self._result = UniqueSearchResult(is_uniquenick_exist=self._is_exist)

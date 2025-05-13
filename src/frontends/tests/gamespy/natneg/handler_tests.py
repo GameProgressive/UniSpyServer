@@ -1,5 +1,6 @@
 import unittest
 
+from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.natneg.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
 import responses
 from frontends.gamespy.protocols.natneg.contracts.requests import (
@@ -15,10 +16,9 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     PreInitState,
     RequestType,
 )
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 from frontends.tests.gamespy.natneg.mock_objects import create_client
-UniSpyException._is_unittesting = True
+CONFIG.unittest.is_raise_except = True
 
 
 class HandlerTests(unittest.TestCase):

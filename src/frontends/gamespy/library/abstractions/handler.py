@@ -13,6 +13,7 @@ from frontends.gamespy.library.abstractions.contracts import (
     ResponseBase,
 )
 from frontends.gamespy.library.extentions.encoding import UniSpyJsonEncoder
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 
 class CmdHandlerBase:
@@ -52,6 +53,8 @@ class CmdHandlerBase:
             self._log_current_class()
             # then we handle it
             self._request_check()
+            if CONFIG.unittest.is_collect_request:
+                return
             self._data_operate()
             self._response_construct()
             if self._response is None:
@@ -91,24 +94,28 @@ class CmdHandlerBase:
         self._temp_data["server_id"] = self._client.server_config.server_id
         self._temp_data["client_port"] = self._client.connection.remote_port
 
+    def __get_url(self) -> str:
+        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{
+            self.__class__.__name__
+        }"
+        return url
+
     def _upload_data(self):
         """
         whether need send data to backend
         if child class do not require feach, overide this function to do nothing
         """
-        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{
-            self.__class__.__name__
-        }"
+        self.__url = self.__get_url()
         json_str = json.dumps(
             self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False
         )
-        self._client.log_network_upload(f"[{url}] {json_str}")
+        self._client.log_network_upload(f"[{self.__url}] {json_str}")
         try:
             response = requests.post(
-                url, data=json_str, headers={"Content-Type": "application/json"}
+                self.__url, data=json_str, headers={"Content-Type": "application/json"}
             )
         except requests.exceptions.ConnectionError:
-            if UniSpyException._is_unittesting:
+            if CONFIG.unittest.is_raise_except:
                 raise UniSpyException(
                     f"backends api for {[self.__class__.__name__]} is not mocked"
                 )
@@ -125,12 +132,11 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         if self._result_cls is None:
-            raise UniSpyException(
-                "_result_cls can not be null when feach data."
-            )
+            raise UniSpyException("_result_cls can not be null when feach data.")
         assert issubclass(self._result_cls, ResultBase)
+        self._client.log_network_fetch(f"[{self.__url}] {self._http_result}")
 
-        self._result = self._result_cls(**self._http_result)
+        self._result = self._result_cls(**self._http_result["result"])
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""
@@ -153,6 +159,6 @@ class CmdHandlerBase:
     def _log_current_class(self) -> None:
         if self._client is None:
             # todo
-            print(self)
+            GLOBAL_LOGGER.debug(f"=> <{self.__class__.__name__}>")
         else:
             self._client.log_current_class(self)

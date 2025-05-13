@@ -1,4 +1,6 @@
-from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import ResponseBase
+from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import (
+    ResponseBase,
+)
 from frontends.gamespy.protocols.presence_search_player.contracts.requests import (
     CheckRequest,
     NewUserRequest,
@@ -29,10 +31,9 @@ class CheckResponse(ResponseBase):
 
     def build(self):
         if self._result.profile_id is None:
-            self.sending_buffer = f"\\cur\\1\\final\\"
+            self.sending_buffer = "\\cur\\1\\final\\"
         else:
-            self.sending_buffer = f"\\cur\\0\\pid\\{
-                self._result.profile_id}\\final\\"
+            self.sending_buffer = f"\\cur\\0\\pid\\{self._result.profile_id}\\final\\"
 
 
 class NewUserResponse(ResponseBase):
@@ -45,9 +46,7 @@ class NewUserResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self):
-        self.sending_buffer = (
-            f"\\nur\\\\pid\\{self._result.profile_id}\\final\\"
-        )
+        self.sending_buffer = f"\\nur\\\\pid\\{self._result.profile_id}\\final\\"
 
 
 class NicksResponse(ResponseBase):
@@ -111,7 +110,7 @@ class SearchResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = f"\\bsr\\"
+        self.sending_buffer = "\\bsr\\"
         for info in self._result.data:
             self.sending_buffer += str(info.profile_id)
             self.sending_buffer += f"\\nick\\{info.nick}"
@@ -120,7 +119,7 @@ class SearchResponse(ResponseBase):
             self.sending_buffer += f"\\firstname\\{info.firstname}"
             self.sending_buffer += f"\\lastname\\{info.lastname}"
             self.sending_buffer += f"\\email\\{info.email}"
-        self.sending_buffer += f"\\bsrdone\\\\more\\0\\final\\"
+        self.sending_buffer += "\\bsrdone\\\\more\\0\\final\\"
 
 
 class SearchUniqueResponse(ResponseBase):
@@ -131,7 +130,7 @@ class SearchUniqueResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = "\\bsr"
+        self.sending_buffer = "\\bsr\\"
         for info in self._result.data:
             self.sending_buffer += str(info.profile_id)
             self.sending_buffer += f"\\nick\\{info.nick}"
@@ -140,7 +139,7 @@ class SearchUniqueResponse(ResponseBase):
             self.sending_buffer += f"\\firstname\\{info.firstname}"
             self.sending_buffer += f"\\lastname\\{info.lastname}"
             self.sending_buffer += f"\\email\\{info.email}"
-        self.sending_buffer += "\\bsrdone\\\\more\\0"
+        self.sending_buffer += "\\bsrdone\\\\more\\0\\final\\"
 
 
 class ValidResponse(ResponseBase):
@@ -175,6 +174,5 @@ class UniqueSearchResponse(ResponseBase):
             self.sending_buffer = "\\us\\1\\nick\\Choose another name\\usdone\\final\\"
         else:
             self.sending_buffer = (
-                f"\\us\\1\\nick\\{
-                    self._request.preferred_nick}\\usdone\\final\\"
+                f"\\us\\1\\nick\\{self._request.preferred_nick}\\usdone\\final\\"
             )

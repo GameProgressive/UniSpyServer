@@ -4,7 +4,7 @@ import responses
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.abstractions.connections import ConnectionBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.library.log.log_manager import LogWriter
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER, LogWriter
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
@@ -27,15 +27,19 @@ class LogMock(LogWriter):
 
     def debug(self, message):
         print(message)
+        GLOBAL_LOGGER.debug(message)
 
     def info(self, message):
         print(message)
+        GLOBAL_LOGGER.info(message)
 
     def error(self, message):
         print(message)
+        GLOBAL_LOGGER.error(message)
 
     def warn(self, message):
         print(message)
+        GLOBAL_LOGGER.warn(message)
 
 
 class BrokerMock(BrockerBase):

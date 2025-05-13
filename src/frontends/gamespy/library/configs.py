@@ -33,13 +33,9 @@ class RedisConfig(BaseModel):
     @property
     def url(self) -> str:
         if self.ssl:
-            return (
-                f"rediss://{self.user}:{self.password}@{self.server}:{self.port}/0"
-            )
+            return f"rediss://{self.user}:{self.password}@{self.server}:{self.port}/0"
         else:
-            return (
-                f"redis://{self.user}:{self.password}@{self.server}:{self.port}/0"
-            )
+            return f"redis://{self.user}:{self.password}@{self.server}:{self.port}/0"
 
 
 class ServerConfig(BaseModel):
@@ -53,7 +49,7 @@ class LoggingConfig(BaseModel):
     path: str
     min_log_level: Literal["debug", "info", "warning", "error"]
 
-    @field_validator('path', mode='before')
+    @field_validator("path", mode="before")
     def expand_user_path(cls, value):
         if "~" in value:
             return os.path.expanduser(value)
@@ -67,12 +63,28 @@ class BackendConfig(BaseModel):
     token_expire_time: int = 30
 
 
+class UnittestConfig(BaseModel):
+    """
+    unittest related config
+    """
+
+    is_raise_except: bool
+    """
+    whether raise exception after log it
+    """
+    is_collect_request: bool
+    """
+    only connect the request do not actually do anything
+    """
+
+
 class UniSpyServerConfig(BaseModel):
     postgresql: PostgreSql
     redis: RedisConfig
     backend: BackendConfig
     servers: dict[str, ServerConfig]
     logging: LoggingConfig
+    unittest: UnittestConfig
 
 
 unispy_config = os.environ.get("UNISPY_CONFIG")
@@ -83,9 +95,7 @@ if unispy_config is None:
     #     "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     # )
 if not os.path.exists(unispy_config):
-    raise Exception(
-        "Unispy server config file not exist, check UNISPY_CONFIG path."
-    )
+    raise Exception("Unispy server config file not exist, check UNISPY_CONFIG path.")
 with open(unispy_config, "r") as f:
     import json
 

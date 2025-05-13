@@ -34,9 +34,11 @@ class XorEncoding(EncryptBase):
         elif enc_type == XorType.TYPE_3:
             key = seed_3
         result = []
+        key_index = 0
         for index in range(len(plaintext)):
             key_index = index % len(key)
-            enc_byte = ((plaintext[index] ^ key[key_index])) % 255
+            print(key_index)
+            enc_byte = (plaintext[index] ^ key[key_index]) % 255
             result.append(enc_byte)
 
         return bytes(result)

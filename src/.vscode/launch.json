@@ -38,7 +38,7 @@
             "name": "pcm",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/presence_connection_manager/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/presence_connection_manager/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -49,7 +49,7 @@
             "name": "psp",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/presence_search_player/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/presence_search_player/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -60,7 +60,7 @@
             "name": "chat",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/chat/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/chat/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -71,7 +71,7 @@
             "name": "gs",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/game_status/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/game_status/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -82,7 +82,7 @@
             "name": "natneg",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/natneg/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/natneg/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -93,7 +93,7 @@
             "name": "qr",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/query_report/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/query_report/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -104,7 +104,7 @@
             "name": "sb",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/server_browser/src/v2/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/server_browser/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
@@ -115,7 +115,7 @@
             "name": "web",
             "type": "debugpy",
             "request": "launch",
-            "program": "servers/web_services/src/applications/server_launcher.py",
+            "program": "frontends/gamespy/protocols/web_services/applications/server_launcher.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",

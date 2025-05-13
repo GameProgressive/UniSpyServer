@@ -77,13 +77,11 @@ class ServerLauncherBase:
             if resp.status_code == 200:
                 data = resp.json()
                 if data["status"] != "online":
-                    raise Exception(
+                    raise UniSpyException(
                         f"backend server: {CONFIG.backend.url} not available."
                     )
-        except Exception:
-            # fmt: off
+        except requests.ConnectionError:
             raise UniSpyException(f"backend server: {CONFIG.backend.url} not available.")
-            # fmt: on
 
     def _create_logger(self):
         assert self.config is not None

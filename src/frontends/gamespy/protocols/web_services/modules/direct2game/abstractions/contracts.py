@@ -1,4 +1,4 @@
-import protocols.web_services.abstractions.contracts as lib
+import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 
 NAMESPACE = "http://gamespy.net/commerce/"

@@ -34,14 +34,13 @@ def create_dir(path):
 
 
 class LogManager:
-
     @staticmethod
     def create(logger_name: str) -> "LogWriter":
         log_file_path = CONFIG.logging.path
         create_dir(log_file_path)
         file_name = f"{log_file_path}/{logger_name}.log"
         logging.basicConfig(
-            filename=logger_name,
+            filename=file_name,
             level=logging.INFO,
             format=f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
@@ -63,15 +62,21 @@ class LogManager:
         )  # Set the desired log level for the console
         file_handler.setFormatter(formatter)
 
-        # 控制台日志输出
+        # create console log handler
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.DEBUG)
         console_handler.setFormatter(formatter)
-
+        # create logger
         logger = logging.getLogger(logger_name)
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
         return LogWriter(logger)
+
+    @staticmethod
+    def logger_exists(name) -> bool:
+        logger = logging.getLogger(name)
+        is_exist = len(logger.handlers) > 0
+        return is_exist
 
 
 GLOBAL_LOGGER = LogManager.create("unispy")

@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-from backends.library.abstractions.contracts import Response
 from backends.protocols.gamespy.presence_search_player.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler, OthersListHandler, SearchHandler, SearchUniqueHandler, UniqueSearchHandler, ValidHandler
 from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 from backends.urls import PRESENCE_SEARCH_PLAYER

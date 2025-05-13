@@ -39,7 +39,6 @@ from frontends.tests.gamespy.library.mock_objects import (
     create_mock_url,
 )
 from frontends.gamespy.protocols.chat.applications.client import Client
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 class WebSocketBrockerMock(BrockerBase):
@@ -63,7 +62,7 @@ class ClientMock(Client):
 
 
 def create_client() -> Client:
-    UniSpyException._is_unittesting = True
+    CONFIG.unittest.is_raise_except = True
     handler = RequestHandlerMock()
     logger = LogMock()
     config = CONFIG.servers["Chat"]

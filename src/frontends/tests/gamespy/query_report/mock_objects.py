@@ -12,7 +12,7 @@ class ClientMock(Client):
 
 
 def create_client() -> Client:
-    UniSpyException._is_unittesting = True
+    CONFIG.unittest.is_raise_except = True
     handler = RequestHandlerMock()
     logger = LogMock()
     conn = ConnectionMock(
