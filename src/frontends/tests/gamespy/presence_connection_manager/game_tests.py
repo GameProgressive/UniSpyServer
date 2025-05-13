@@ -36,8 +36,8 @@ class GameTest(unittest.TestCase):
         raw = "\\status\\1\\sesskey\\1111\\statstring\\EN LIGNE\\locstring\\\\final\\"
         request = StatusRequest(raw)
         request.parse()
-        self.assertTrue(request.status.location_string == "")
-        self.assertTrue(request.status.status_string == "EN LIGNE")
+        self.assertTrue(request.location_string == "")
+        self.assertTrue(request.status_string == "EN LIGNE")
 
 
 if __name__ == "__main__":

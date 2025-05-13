@@ -7,9 +7,7 @@ from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
 )
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.sdk_revision import SdkRevision
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus, SdkRevisionType
 
 LOGIN_TICKET = "0000000000000000000000__"
 SESSION_KEY = 1111
@@ -21,7 +19,7 @@ class ClientInfo(ClientInfoBase):
     sub_profile_id: int
     login_status: LoginStatus
     namespace_id: int
-    sdk_revision: SdkRevision
+    sdk_revision: list[SdkRevisionType]
 
     def __init__(self) -> None:
         super().__init__()

@@ -1,8 +1,11 @@
-from urllib.parse import urlparse
 from frontends.gamespy.library.abstractions.client import ClientBase
-from frontends.gamespy.library.abstractions.connections import ConnectionBase, NetworkServerBase
+from frontends.gamespy.library.abstractions.connections import (
+    ConnectionBase,
+    NetworkServerBase,
+)
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.log.log_manager import LogWriter
 
 
 class HttpRequest:
@@ -49,19 +52,23 @@ class HttpHandler(BaseHTTPRequestHandler):
         data = self.rfile.read(content_length).decode()
         # request = HttpRequest(parsed_url, dict(self.headers), data)
         if self.conn is None:
-            self.conn = HttpConnection(
-                self, *self.server.unispy_params)  # type: ignore
+            self.conn = HttpConnection(self, *self.server.unispy_params)  # type: ignore
         self.conn.on_received(data.encode())
 
 
 class HttpServer(NetworkServerBase):
-    def start(self) -> None:
+    def __init__(
+        self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter
+    ) -> None:
+        super().__init__(config, t_client, logger)
         self._server = ThreadingHTTPServer(
             (self._config.public_address, self._config.listening_port), HttpHandler
         )
         # fmt: off
         self._server.unispy_params = (self._config, self._client_cls, self._logger)# type: ignore  
         # fmt: on
+
+    def start(self) -> None:
         self._server.serve_forever()
 
 

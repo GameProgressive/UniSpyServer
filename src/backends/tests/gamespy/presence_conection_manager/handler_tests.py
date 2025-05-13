@@ -1,7 +1,7 @@
 import unittest
 from backends.tests.utils import add_headers
 import frontends.gamespy.protocols.presence_connection_manager.contracts.requests as pcm
-from frontends.tests.gamespy.presence_connection_manager.general_request_tests import (
+from frontends.tests.gamespy.presence_connection_manager.request_tests import (
     LOGIN_AUTH_TOKEN,
     LOGIN_UNIQUE_NICK,
     LOGIN_USER,

@@ -1,5 +1,8 @@
 from typing import final
 
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    SdkRevisionType,
+)
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     AddBlockRequest,
     GetProfileRequest,
@@ -47,11 +50,7 @@ from frontends.gamespy.protocols.presence_connection_manager.abstractions.handle
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     RequestBase,
 )
-from multiprocessing.pool import Pool
 from typing import TYPE_CHECKING
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.sdk_revision import (
-    SdkRevision,
-)
 
 
 if TYPE_CHECKING:
@@ -129,10 +128,16 @@ class SdkRevisionHandler(CmdHandlerBase):
         pass
 
     def _response_construct(self) -> None:
-        self._client.info.sdk_revision = SdkRevision(self._request.sdk_revision_type)
-        if self._client.info.sdk_revision.is_support_gpi_new_status_notification:
-            BuddyListHandler(self._client).handle()
-            BlockListHandler(self._client).handle()
+        self._client.info.sdk_revision = self._request.sdk_revision_type
+        for operation in self._client.info.sdk_revision:
+            if operation == SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN:
+                BuddyListHandler(self._client).handle()
+                BlockListHandler(self._client).handle()
+                request = StatusInfoRequest()
+                request.profile_id = self._client.info.profile_id
+                request.namespace_id = int(self._client.info.namespace_id)
+                StatusInfoHandler(self._client, request).handle()
+            # todo: add other revision operations
 
 
 # region Buddy
@@ -165,23 +170,6 @@ class BuddyListHandler(LoginedHandlerBase):
 
     def response_construct(self):
         self._response = BuddyListResponse(self._request, self._result)
-
-    def handle_status_info(self, profile_id):
-        request = StatusInfoRequest()
-        request.profile_id = profile_id
-        request.namespace_id = int(self._client.info.namespace_id)
-        # request.is_get_status_info = True
-
-        StatusInfoHandler(self._client, request).handle()
-
-    def _response_send(self) -> None:
-        super()._response_send()
-
-        if not self._client.info.sdk_revision.is_support_gpi_new_status_notification:
-            return
-
-        with Pool() as pool:
-            pool.map(self.handle_status_info, self._result.profile_ids)
 
 
 class BuddyStatusInfoHandler(CmdHandlerBase):
@@ -220,10 +208,7 @@ class StatusHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: StatusRequest) -> None:
         assert isinstance(request, StatusRequest)
         super().__init__(client, request)
-
-    def _response_send(self) -> None:
-        # TODO check if statushandler need send response
-        raise NotImplementedError()
+        self._is_fetching = False
 
 
 class StatusInfoHandler(LoginedHandlerBase):
@@ -234,8 +219,10 @@ class StatusInfoHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
     def _response_send(self) -> None:
+        # todo: check if response is needed
         if self._request is not None:
             self._response = StatusInfoResponse(self._request, self._result)
             super()._response_send()

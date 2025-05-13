@@ -8,12 +8,11 @@ from typing import Dict, Optional
 import frontends.gamespy.library.abstractions.contracts as lib
 
 
-
 def normalize_request(message: str):
     if "login" in message:
         message = message.replace("\\-", "\\")
         pos = message.index("\\", message.index("\\") + 1)
-        if message[pos: pos + 2] != "\\\\":
+        if message[pos : pos + 2] != "\\\\":
             message = message[:pos] + "\\" + message[pos:]
     return message
 
@@ -36,9 +35,10 @@ class RequestBase(lib.RequestBase):
         if "id" in self.request_dict:
             try:
                 self.operation_id = int(self.request_dict["id"])
-            except:
+            except Exception:
                 raise GPParseException("namespaceid is invalid.")
-    
+
+
 class ResultBase(lib.ResultBase):
     pass
 

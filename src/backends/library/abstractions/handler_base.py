@@ -1,7 +1,6 @@
 from typing import Optional, final
 from backends.library.abstractions.contracts import (
     DataResponse,
-    ErrorResponse,
     OKResponse,
     RequestBase,
     Response,
@@ -10,7 +9,6 @@ from frontends.gamespy.library.abstractions.contracts import ResultBase
 
 import logging
 
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 class HandlerBase:
@@ -45,17 +43,10 @@ class HandlerBase:
         self._response = OKResponse()
 
     def handle(self) -> None:
-        try:
-            self._request_check()
-            self._data_operate()
-            self._result_construct()
-            self._response_construct()
-        except UniSpyException as ex:
-            self.logger.error(ex.message)
-            self._response = ErrorResponse(message=ex.message)
-        except Exception as ex:
-            self.logger.error(ex)
-            self._response = ErrorResponse(message=str(ex))
+        self._request_check()
+        self._data_operate()
+        self._result_construct()
+        self._response_construct()
 
     def _request_check(self) -> None:
         """virtual method"""

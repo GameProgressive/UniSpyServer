@@ -4,8 +4,9 @@ from typing import Optional
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import ConnectionBase, NetworkServerBase
 
+from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network import DATA_SIZE
-from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
 class TcpConnection(ConnectionBase):
@@ -47,11 +48,14 @@ class TcpHandler(socketserver.BaseRequestHandler):
 
 
 class TcpServer(NetworkServerBase):
-    def start(self) -> None:
+    def __init__(self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter) -> None:
+        super().__init__(config, t_client, logger)
         self._server = socketserver.ThreadingTCPServer(
             (self._config.public_address, self._config.listening_port),
             TcpHandler,
         )
+    def start(self) -> None:
+
         self._server.allow_reuse_address = True
         self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
         self._server.serve_forever()

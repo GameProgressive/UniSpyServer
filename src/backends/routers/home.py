@@ -6,9 +6,20 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
+from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
-from backends.routers.gamespy import chat, gstats, natneg, presence_connection_manager, presence_search_player, query_report, server_browser, webservices
+from backends.routers.gamespy import (
+    chat,
+    gstats,
+    natneg,
+    presence_connection_manager,
+    presence_search_player,
+    query_report,
+    server_browser,
+    webservices,
+)
+
 app = FastAPI()
 
 # app.include_router(chat.router)
@@ -23,15 +34,21 @@ app.include_router(webservices.router)
 logger = LogManager.create("backend")
 
 
+@app.exception_handler(UniSpyException)
+def unispy_exception_handler(_, exc: UniSpyException):
+    logger.error(exc.message)
+    return JSONResponse({"error": exc.message})
+
+
 @app.exception_handler(RequestValidationError)
-def validation_exception_handler(request, exc):
-    str_error = str(exc)
+def validation_exception_handler(_, exc: RequestValidationError):
+    str_error = str(exc.args)
     logger.error(str_error)
     return JSONResponse({"error": str_error})
 
 
 @app.exception_handler(Exception)
-def handle_unispy_exception(request, exc):
+def handle_unispy_exception(_, exc: Exception):
     str_error = str(exc)
     logger.error(str_error)
     return JSONResponse({"error": str_error})
@@ -50,8 +67,8 @@ class RegisterRequest(BaseModel):
 
 @app.post("/token")
 def get_auth_token(request: RegisterRequest):
-
     pass
+
+
 if __name__ == "__main__":
-    uvicorn.run("backends.routers.home:app",
-                host="127.0.0.1", port=8080, reload=True)
+    uvicorn.run("backends.routers.home:app", host="127.0.0.1", port=8080, reload=True)

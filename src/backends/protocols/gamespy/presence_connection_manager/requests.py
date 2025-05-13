@@ -3,13 +3,12 @@ from typing import Any, Optional, Union
 from pydantic import ValidationError
 
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    GPStatusCode,
     LoginType,
-    PublicMasks,
     SdkRevisionType,
 )
 
 from backends.library.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.user_status import UserStatus, UserStatusInfo
 
 
 class ErrorOnParse(RequestBase):
@@ -17,6 +16,7 @@ class ErrorOnParse(RequestBase):
 
 
 # region buddy
+
 
 class AddBlockRequest(RequestBase):
     taget_id: int
@@ -59,13 +59,25 @@ class StatusInfoRequest(RequestBase):
     is_get: bool
     profile_id: int
     namespace_id: int
-    status_info: UserStatusInfo
+    status_state: str
+    buddy_ip: str
+    host_ip: str
+    host_private_ip: str
+    query_report_port: int
+    host_port: int
+    session_flags: str
+    rich_status: str
+    game_type: str
+    game_variant: str
+    game_map_name: str
+    quiet_mode_flags: str
 
 
 class StatusRequest(RequestBase):
     session_key: str
-    status: UserStatus
-    is_get: bool
+    status_string: str
+    location_string: str
+    current_status: GPStatusCode
 
 
 # region general
@@ -105,10 +117,8 @@ class LoginRequest(RequestBase):
     email: Optional[str] = None
     product_id: int
     type: Union[LoginType, int]
-    sdk_revision_type: Union[SdkRevisionType, int]
+    sdk_revision_type: list[SdkRevisionType]
     game_port: int
-    user_id: int
-    profile_id: int
     partner_id: int
     game_name: Optional[str]
     quiet_mode_flags: int

@@ -1,9 +1,6 @@
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.user_status import (
-    UserStatusInfo,
-)
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.user_status import UserStatus
 from pydantic import BaseModel
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResultBase
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPStatusCode
 
 # region General
 
@@ -48,12 +45,25 @@ class BuddyListResult(ResultBase):
 class StatusInfoResult(ResultBase):
     profile_id: int
     product_id: int
-    status_info: UserStatusInfo
+    status_state: str
+    buddy_ip: str
+    host_ip: str
+    host_private_ip: str
+    query_report_port: int
+    host_port: int
+    session_flags: str
+    rich_status: str
+    game_type: str
+    game_variant: str
+    game_map_name: str
+    quiet_mode_flags: str
+
 
 
 class StatusResult(ResultBase):
-    status: UserStatus
-
+    status_string: str
+    location_string: str
+    current_status: GPStatusCode
 
 # class NewUserResult()
 

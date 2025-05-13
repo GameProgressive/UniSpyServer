@@ -37,9 +37,9 @@ class ServerLauncherBase:
         self.config = None
 
     def start(self):
-        self.__show_unispy_logo()
         self._connect_to_backend()
         self._create_logger()
+        self.__show_unispy_logo()
         self._launch_server()
         print("Server successfully launched.")
         self.__keep_running()

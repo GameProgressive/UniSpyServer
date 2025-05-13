@@ -1,5 +1,11 @@
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResponseBase
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import SERVER_CHALLENGE, LoginChallengeProof
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
+    RequestBase,
+    ResponseBase,
+)
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
+    SERVER_CHALLENGE,
+    LoginChallengeProof,
+)
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     LOGIN_TICKET,
     SESSION_KEY,
@@ -8,11 +14,29 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     KeepAliveRequest,
     LoginRequest,
     NewUserRequest,
+    AddBuddyRequest,
+    StatusInfoRequest,
+    GetProfileRequest,
+    NewProfileRequest,
+    RegisterNickRequest,
 )
+
+from frontends.gamespy.library.extentions.gamespy_ramdoms import (
+    StringType,
+    generate_random_string,
+)
+
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
+    GetProfileResult,
+    NewProfileResult,
+    AddBuddyResult,
+    BlockListResult,
+    BuddyListResult,
+    StatusInfoResult,
     LoginResult,
     NewUserResult,
 )
+
 
 # region General
 
@@ -35,15 +59,19 @@ class LoginResponse(ResponseBase):
         assert isinstance(result, LoginResult)
 
     def build(self):
-
-        response_proof = LoginChallengeProof(self._request.user_data,
-                                             self._request.type,
-                                             self._request.partner_id,
-                                             self._request.user_challenge,
-                                             SERVER_CHALLENGE,
-                                             self._result.data.password_hash).generate_proof()
-        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{response_proof}\\userid\\{
-            self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
+        response_proof = LoginChallengeProof(
+            self._request.user_data,
+            self._request.type,
+            self._request.partner_id,
+            self._request.user_challenge,
+            SERVER_CHALLENGE,
+            self._result.data.password_hash,
+        ).generate_proof()
+        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{
+            response_proof
+        }\\userid\\{self._result.data.user_id}\\profileid\\{
+            self._result.data.profile_id
+        }"
 
         if self._result.data.unique_nick is not None:
             self.sending_buffer += "\\uniquenick\\" + self._result.data.unique_nick
@@ -63,22 +91,11 @@ class NewUserResponse(ResponseBase):
 
     def build(self):
         # fmt: on
-        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._request.operation_id}\\final\\" # fmt: off
+        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._request.operation_id}\\final\\"  # fmt: off
 
 
 # region Buddy
 
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
-    RequestBase,
-    ResponseBase,
-)
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import AddBuddyRequest, StatusInfoRequest
-from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
-    AddBuddyResult,
-    BlockListResult,
-    BuddyListResult,
-    StatusInfoResult,
-)
 
 class AddBuddyResponse(ResponseBase):
     def __init__(self, request: AddBuddyRequest, result: AddBuddyResult) -> None:
@@ -138,28 +155,19 @@ class StatusInfoResponse(ResponseBase):
     def build(self):
         # \bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\\qport\\hport\\sessflags\\rstatus\\gameType\\gameVnt\\gameMn\\product\\qmodeflags\
         self.sending_buffer = (
-            f"\\bsi\\state\\{self._result.status_info.status_state}\\"
-            f"profile\\{self._result.profile_id}\\bip\\{self._result.status_info.buddy_ip}\\"
-            f"hostIp\\{self._result.status_info.host_ip}\\hprivIp\\{self._result.status_info.host_private_ip}\\"
-            f"qport\\{self._result.status_info.query_report_port}\\hport\\{self._result.status_info.host_port}\\"
-            f"sessflags\\{self._result.status_info.session_flags}\\rstatus\\{self._result.status_info.rich_status}\\"
-            f"gameType\\{self._result.status_info.game_type}\\gameVnt\\{self._result.status_info.game_variant}\\"
-            f"gameMn\\{self._result.status_info.game_map_name}\\product\\{self._result.product_id}\\"
-            f"qmodeflags\\{self._result.status_info.quiet_mode_flags}\\final\\"
+            f"\\bsi\\state\\{self._result.status_state}\\"
+            f"profile\\{self._result.profile_id}\\bip\\{self._result.buddy_ip}\\"
+            f"hostIp\\{self._result.host_ip}\\hprivIp\\{self._result.host_private_ip}\\"
+            f"qport\\{self._result.query_report_port}\\hport\\{self._result.host_port}\\"
+            f"sessflags\\{self._result.session_flags}\\rstatus\\{self._result.rich_status}\\"
+            f"gameType\\{self._result.game_type}\\gameVnt\\{self._result.game_variant}\\"
+            f"gameMn\\{self._result.game_map_name}\\product\\{self._result.product_id}\\"
+            f"qmodeflags\\{self._result.quiet_mode_flags}\\final\\"
         )
 
+
 # region Profile
-from frontends.gamespy.library.extentions.gamespy_ramdoms import StringType, generate_random_string
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResponseBase
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
-    GetProfileRequest,
-    NewProfileRequest,
-    RegisterNickRequest,
-)
-from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
-    GetProfileResult,
-    NewProfileResult,
-)
+
 
 class GetProfileResponse(ResponseBase):
     _result: GetProfileResult
@@ -177,7 +185,7 @@ class GetProfileResponse(ResponseBase):
             + f"\\uniquenick\\{self._result.user_profile.unique_nick}"
             + f"\\email\\{self._result.user_profile.email}"
         )
-        for key,value in self._result.user_profile.extra_infos.items():
+        for key, value in self._result.user_profile.extra_infos.items():
             self.sending_buffer += f"\\{key}\\{value}"
 
         self.sending_buffer += (

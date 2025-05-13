@@ -2,8 +2,12 @@ import socket
 import socketserver
 
 from frontends.gamespy.library.abstractions.client import ClientBase
-from frontends.gamespy.library.abstractions.connections import ConnectionBase, NetworkServerBase
-from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.library.abstractions.connections import (
+    ConnectionBase,
+    NetworkServerBase,
+)
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.log.log_manager import LogWriter
 
 
 class UdpConnection(ConnectionBase):
@@ -27,7 +31,10 @@ class UdpHandler(socketserver.BaseRequestHandler):
 
 
 class UdpServer(NetworkServerBase):
-    def start(self) -> None:
+    def __init__(
+        self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter
+    ) -> None:
+        super().__init__(config, t_client, logger)
         self._server = socketserver.ThreadingUDPServer(
             (self._config.public_address, self._config.listening_port),
             UdpHandler,
@@ -35,6 +42,7 @@ class UdpServer(NetworkServerBase):
         # inject the handler params to ThreadingUDPServer
         self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
 
+    def start(self) -> None:
         self._server.serve_forever()
 
     def __exit__(self, *args):
