@@ -13,6 +13,6 @@ class Client(ClientBase):
         super().__init__(connection, server_config, logger)
     
     def _create_switcher(self, buffer: bytes) -> SwitcherBase:
-        from frontends.gamespy.protocols.presence_search_player.applications.switcher import CmdSwitcher
+        from frontends.gamespy.protocols.presence_search_player.applications.switcher import Switcher
         temp_buffer = buffer.decode()
-        return CmdSwitcher(self, temp_buffer)
+        return Switcher(self, temp_buffer)

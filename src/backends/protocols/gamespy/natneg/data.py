@@ -32,7 +32,6 @@ def get_init_infos(server_id: UUID, cookie: int, client_index: NatClientIndex) -
 
 def update_init_info(info: InitPacketCaches) -> None:
     assert isinstance(info, InitPacketCaches)
-    remove_init_info(info)
     store_init_packet(info)
 
 

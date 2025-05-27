@@ -1,5 +1,3 @@
-import socket
-import struct
 from typing import Literal
 
 

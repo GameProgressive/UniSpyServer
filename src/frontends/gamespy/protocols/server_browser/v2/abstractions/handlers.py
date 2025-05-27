@@ -1,5 +1,4 @@
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase as CMB
-import abc
 
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     ServerListUpdateOptionRequestBase,

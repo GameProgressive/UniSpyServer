@@ -1,8 +1,12 @@
 from socket import inet_ntoa
 import struct
+from typing import Optional
 
 # from frontends.gamespy.library.extentions.string_extentions import IPEndPoint
-from frontends.gamespy.protocols.natneg.abstractions.contracts import CommonRequestBase, RequestBase
+from frontends.gamespy.protocols.natneg.abstractions.contracts import (
+    CommonRequestBase,
+    RequestBase,
+)
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
@@ -42,9 +46,13 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: str
+    game_name: Optional[str]
     private_ip: str
     private_port: int
+
+    def __init__(self, raw_request: bytes | None = None):
+        super().__init__(raw_request)
+        self.game_name = "unknown"
 
     def parse(self) -> None:
         super().parse()
@@ -96,4 +104,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")

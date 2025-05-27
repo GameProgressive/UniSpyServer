@@ -1,4 +1,3 @@
-import abc
 
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (

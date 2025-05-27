@@ -10,7 +10,6 @@ from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
 from backends.routers.gamespy import (
-    chat,
     gstats,
     natneg,
     presence_connection_manager,

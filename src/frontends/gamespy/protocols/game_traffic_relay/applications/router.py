@@ -5,6 +5,6 @@ from frontends.gamespy.protocols.game_traffic_relay.contracts.general import Ini
 app = FastAPI()
 
 
-@app.post(f"/GetNatNegotiationInfo")
+@app.post("/GetNatNegotiationInfo")
 def get_natneg_info(request: InitPacketInfo):
     data = request.json

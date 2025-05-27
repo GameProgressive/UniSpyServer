@@ -106,9 +106,9 @@ def get_profile(user_id: int, nick_name: str) -> Profiles | None:
 def get_sub_profile(
     profile_id: int, namespace_id: int, product_id: int
 ) -> SubProfiles | None:
-    assert isinstance(SubProfiles.profileid, Column)
-    assert isinstance(SubProfiles.namespaceid, Column)
-    assert isinstance(SubProfiles.namespaceid, Column)
+    assert isinstance(profile_id, int)
+    assert isinstance(namespace_id, int)
+    assert isinstance(product_id, int)
     result = (
         PG_SESSION.query(SubProfiles)
         .where(

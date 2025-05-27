@@ -1,5 +1,4 @@
 from enum import IntEnum
-import base64
 
 from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
 

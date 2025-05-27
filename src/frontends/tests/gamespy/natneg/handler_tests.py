@@ -37,8 +37,7 @@ class HandlerTests(unittest.TestCase):
         # test request parsing
         request = InitRequest(raw)
         request.parse()
-        cookie = 151191552
-        self.assertEqual(cookie, request.cookie)
+        self.assertEqual(151191552, request.cookie)
         self.assertEqual(RequestType.INIT, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(False, request.use_game_port)

@@ -34,5 +34,4 @@
 # query = QueryBuilder(None, None)
 # result = query.filter_by(url="example.com", name="hello").first()
 # print(result)
-import ast
 

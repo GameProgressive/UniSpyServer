@@ -12,7 +12,7 @@ import backends.library.abstractions.contracts as lib
 
 
 class RequestBase(lib.RequestBase):
-    raw_request: list
+    raw_request: str
     version: int
     cookie: int
     port_type: NatPortType
@@ -45,8 +45,9 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: Optional[str]
-    private_ip_address: Optional[str]
+    game_name: Optional[str] = None
+    private_ip: str
+    private_port: int
 
 
 class NatifyRequest(CommonRequestBase):

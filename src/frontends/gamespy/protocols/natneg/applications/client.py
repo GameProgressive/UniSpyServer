@@ -13,6 +13,6 @@ class Client(ClientBase):
 
     def _create_switcher(self, buffer: bytes):
         assert isinstance(buffer, bytes)
-        from frontends.gamespy.protocols.natneg.applications.switcher import CmdSwitcher
+        from frontends.gamespy.protocols.natneg.applications.switcher import Switcher
 
-        return CmdSwitcher(self, buffer)
+        return Switcher(self, buffer)

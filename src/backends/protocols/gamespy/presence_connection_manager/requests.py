@@ -120,7 +120,7 @@ class LoginRequest(RequestBase):
     sdk_revision_type: list[SdkRevisionType]
     game_port: int
     partner_id: int
-    game_name: Optional[str]
+    game_name: Optional[str] = None
     quiet_mode_flags: int
     firewall: bool
 

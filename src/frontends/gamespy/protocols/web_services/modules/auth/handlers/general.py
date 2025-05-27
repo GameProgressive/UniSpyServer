@@ -1,5 +1,4 @@
 from frontends.gamespy.protocols.web_services.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.modules.auth.abstractions.general import LoginResultBase
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
     LoginProfileRequest,
     LoginProfileWithGameIdRequest,

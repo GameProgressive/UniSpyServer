@@ -8,7 +8,6 @@ from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
     ClientMessageAckRequest,
-    ClientMessageRequest,
     EchoRequest,
     HeartBeatRequest,
     KeepAliveRequest,
@@ -24,7 +23,7 @@ from frontends.gamespy.protocols.query_report.v2.applications.handlers import (
 )
 
 
-class CmdSwitcher(SwitcherBase):
+class Switcher(SwitcherBase):
     _raw_request: bytes
 
     def _process_raw_request(self) -> None:

@@ -6,7 +6,7 @@ def is_email_format_correct(email: str) -> bool:
     try:
         validate_email(email, check_deliverability=False)
 
-    except EmailNotValidError as e:
+    except EmailNotValidError:
         return False
 
     return True

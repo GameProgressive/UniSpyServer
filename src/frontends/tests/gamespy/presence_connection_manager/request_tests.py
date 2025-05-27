@@ -37,7 +37,7 @@ ADD_BUDDY = "\\addbuddy\\\\sesskey\\0\\newprofileid\\0\\reason\\test\\final\\"
 DEL_BUDDY = "\\delbuddy\\\\sesskey\\0\\delprofileid\\0\\final\\"
 INVITE_TO = "\\inviteto\\\\sesskey\\0\\productid\\0\\profileid\\0\\final\\"
 STATUS = [
-    "\\status\\0\\statstring\\test\\locstring\\test\\final\\",
+    "\\status\\0\\sesskey\\1111\\statstring\\test\\locstring\\test\\final\\",
     "\\status\\1\\sesskey\\1111\\statstring\\Not Ready\\locstring\\gptestc\\final\\",
 ]
 

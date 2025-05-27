@@ -4,7 +4,6 @@ import unittest
 from pydantic import ValidationError
 from backends.library.database.pg_orm import PG_SESSION, ChatChannelCaches
 import backends.protocols.gamespy.query_report.data as data
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
 
 
 class DataFetchTests(unittest.TestCase):
@@ -20,10 +19,12 @@ class DataFetchTests(unittest.TestCase):
             room_name="unispy_test_room_name",
             group_id=0,
             max_num_user=100,
-            update_time=datetime.now(timezone.utc))
+            update_time=datetime.now(timezone.utc),
+        )
         PG_SESSION.add(cache)
         PG_SESSION.commit()
         self.assertRaises(
-            ValidationError, data.get_peer_staging_channels, "unispy_test_game_name", 0)
+            ValidationError, data.get_peer_staging_channels, "unispy_test_game_name", 0
+        )
         PG_SESSION.delete(cache)
         PG_SESSION.commit()

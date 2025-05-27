@@ -197,7 +197,7 @@ class InitPacketCaches(Base):
     version = Column(Integer, nullable=False)
     port_type = Column(IntEnum(NatPortType), nullable=False)
     client_index = Column(IntEnum(NatClientIndex), nullable=False)
-    game_name = Column(String, nullable=False)
+    game_name = Column(String, nullable=True)
     use_game_port = Column(Boolean, nullable=False)
     public_ip = Column(String, nullable=False)
     public_port = Column(Integer, nullable=False)

@@ -8,7 +8,6 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 from typing import Optional
 
-from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 
 class ClientInfo:

@@ -32,6 +32,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPLoginBadEmailException,
+    GPLoginException,
 )
 # region General
 
@@ -69,7 +70,7 @@ class LoginHandler(HandlerBase):
     def _unique_nick_login(self) -> None:
         assert self._request.unique_nick is not None
         assert self._request.namespace_id is not None
-        self.data = data.get_user_infos_by_uniquenick_namespace_id(
+        self._data = data.get_user_infos_by_uniquenick_namespace_id(
             self._request.unique_nick, self._request.namespace_id
         )
 
@@ -78,7 +79,8 @@ class LoginHandler(HandlerBase):
         self._data = data.get_user_infos_by_authtoken(self._request.auth_token)
 
     def _result_construct(self) -> None:
-        assert self._data
+        if self._data is None:
+            raise GPLoginException("User is not exist.")
         self._result = LoginResult(data=self._data)
 
 
@@ -193,7 +195,6 @@ class StatusHandler(HandlerBase):
             self._request.location_string,
             self._request.status_string,
         )
-
 
 
 class StatusInfoHandler(HandlerBase):

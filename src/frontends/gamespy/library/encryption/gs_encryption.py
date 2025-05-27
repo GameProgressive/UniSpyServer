@@ -1,5 +1,4 @@
 from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
-import hashlib
 
 DIGITS_HEX = "0123456789abcdef"
 DIGITS_CRYPT = "aFl4uOD9sfWq1vGp"

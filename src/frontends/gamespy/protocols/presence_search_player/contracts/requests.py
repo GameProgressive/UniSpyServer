@@ -1,7 +1,11 @@
 from frontends.gamespy.library.extentions.gamespy_utils import is_email_format_correct
 from frontends.gamespy.library.extentions.password_encoder import process_password
-from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.presence_search_player.aggregates.enums import SearchType
+from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import (
+    RequestBase,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    SearchType,
+)
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
 )
@@ -29,11 +33,12 @@ class CheckRequest(RequestBase):
         if "partner_id" in self.request_dict.keys():
             try:
                 self.partner_id = int(self.request_dict["partner_id"])
-            except:
+            except Exception:
                 raise GPParseException(
-                    "no partner id found, check whether need implement the default partnerid")
+                    "no partner id found, check whether need implement the default partnerid"
+                )
         else:
-            self.partner_id = 0
+            self.partner_id = 1
 
 
 class NewUserRequest(RequestBase):

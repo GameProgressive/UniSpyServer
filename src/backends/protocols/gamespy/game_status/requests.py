@@ -1,12 +1,15 @@
 from typing import Optional
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.game_status.aggregations.enums import AuthMethod, PersistStorageType
+from frontends.gamespy.protocols.game_status.aggregations.enums import (
+    AuthMethod,
+    PersistStorageType,
+)
 
 
 class RequestBase(lib.RequestBase):
     command_name: str
     raw_request: str
-    local_id: Optional[int]
+    local_id: Optional[int] = None
     request_dict: dict[str, str]
 
 

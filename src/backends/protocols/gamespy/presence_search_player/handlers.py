@@ -13,7 +13,9 @@ from backends.protocols.gamespy.presence_search_player.requests import (
     ValidRequest,
 )
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.protocols.presence_search_player.aggregates.enums import SearchType
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    SearchType,
+)
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     CheckException,
 )
@@ -43,9 +45,11 @@ class CheckHandler(HandlerBase):
     _result: CheckResult
 
     def _data_operate(self) -> None:
-        if data.verify_email(self._request.email):
+        if not data.verify_email(self._request.email):
             raise CheckException("The email is not existed")
-        if data.verify_email_and_password(self._request.email, self._request.password):
+        if not data.verify_email_and_password(
+            self._request.email, self._request.password
+        ):
             raise CheckException("The password is incorrect")
         self._profile_id = data.get_profile_id(
             self._request.email,
@@ -102,6 +106,7 @@ class NewUserHandler(HandlerBase):
             if key in Users.__dict__:
                 user_dict[key] = value
         self.user = Users(**user_dict)
+        PG_SESSION.add(self.user)
         PG_SESSION.commit()
 
     def _create_profile(self) -> None:
@@ -109,7 +114,12 @@ class NewUserHandler(HandlerBase):
         for key, value in self._request.__dict__.items():
             if key in Profiles.__dict__:
                 profile_dict[key] = value
+
+        assert self.user is not None
+        assert isinstance(self.user.userid, int)
+        profile_dict["userid"] = self.user.userid
         self.profile = Profiles(**profile_dict)
+        PG_SESSION.add(self.profile)
         PG_SESSION.commit()
 
     def _create_subprofile(self) -> None:
@@ -117,7 +127,10 @@ class NewUserHandler(HandlerBase):
         for key, value in self._request.__dict__.items():
             if key in SubProfiles.__dict__:
                 subprofile_dict[key] = value
+        assert self.profile is not None
+        subprofile_dict["profileid"] = self.profile.profileid
         self.subprofile = SubProfiles(**subprofile_dict)
+        PG_SESSION.add(self.subprofile)
         PG_SESSION.commit()
 
 

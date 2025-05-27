@@ -1,7 +1,6 @@
 import unittest
 from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
 from frontends.gamespy.library.encryption.xor_encryption import XorEncoding, XorType
-from frontends.gamespy.protocols.game_status.aggregations.gscrypt import GSCrypt
 
 
 class EncryptionTest(unittest.TestCase):

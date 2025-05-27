@@ -14,7 +14,6 @@ from frontends.gamespy.protocols.natneg.applications.handlers import (
     InitHandler,
     NatifyHandler,
 )
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 class ClientMock(Client):

@@ -1,5 +1,5 @@
 
-from pydantic import UUID4, Field, constr
+from pydantic import UUID4
 import backends.library.abstractions.contracts as lib
 
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus, RequestType

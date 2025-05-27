@@ -1,6 +1,5 @@
 from typing import cast
 from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.tests.gamespy.library.mock_objects import (
     ConnectionMock,
     LogMock,

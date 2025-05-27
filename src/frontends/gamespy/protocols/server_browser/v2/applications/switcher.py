@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.server_browser.v2.applications.handlers import 
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import SendMessageRequest, ServerInfoRequest, ServerListRequest
 
 
-class CmdSwitcher(SwitcherBase):
+class Switcher(SwitcherBase):
     _raw_request: bytes
 
     def _process_raw_request(self) -> None:

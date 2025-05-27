@@ -22,6 +22,5 @@
 #         pass
 
 
-from fastapi import testclient
 
 # testclient.TestClient.get()

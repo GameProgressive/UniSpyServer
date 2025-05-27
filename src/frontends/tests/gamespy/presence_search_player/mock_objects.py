@@ -5,7 +5,6 @@ from frontends.gamespy.protocols.presence_search_player.applications.client impo
 from frontends.gamespy.protocols.presence_search_player.applications.handlers import CheckHandler, SearchHandler
 from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, SearchResult
 
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 class ClientMock(Client):
     pass

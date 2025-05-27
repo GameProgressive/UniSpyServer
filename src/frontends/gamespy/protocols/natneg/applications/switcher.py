@@ -21,7 +21,7 @@ from frontends.gamespy.protocols.natneg.applications.handlers import (
 )
 
 
-class CmdSwitcher(SwitcherBase):
+class Switcher(SwitcherBase):
     _raw_request: bytes
     _client: Client
 

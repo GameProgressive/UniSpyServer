@@ -2,8 +2,7 @@ from typing import TYPE_CHECKING, cast
 import unittest
 
 from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest
-from frontends.gamespy.protocols.presence_search_player.applications.handlers import CheckHandler
-from frontends.gamespy.protocols.presence_search_player.applications.switcher import CmdSwitcher
+from frontends.gamespy.protocols.presence_search_player.applications.switcher import Switcher
 import responses
 
 from frontends.gamespy.protocols.presence_search_player.contracts.responses import CheckResponse
@@ -16,7 +15,7 @@ class GameTest(unittest.TestCase):
         raw = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
         client = create_client()
 
-        switcher = CmdSwitcher(client, raw)
+        switcher = Switcher(client, raw)
         switcher.handle()
         request = switcher._handlers[0]._request
         if TYPE_CHECKING:

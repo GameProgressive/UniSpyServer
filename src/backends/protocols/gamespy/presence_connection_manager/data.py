@@ -175,14 +175,14 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
 
 
 def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
+    # if TYPE_CHECKING:
+    #     assert isinstance(Profiles.profileid, Column)
+    #     assert isinstance(Profiles.userid, Column)
+    #     assert isinstance(Users.userid, Column)
+    #     assert isinstance(Users.email, Column)
+    #     assert isinstance(Profiles.nick, Column)
+    #     assert isinstance(SubProfiles.uniquenick, Column)
+    #     assert isinstance(SubProfiles.namespaceid, Column)
 
     result = (
         PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
@@ -327,19 +327,20 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
         .where(SubProfiles.authtoken == auth_token)
         .first()
     )
-    data = {
-        "user_id": result[0],
-        "profile_id": result[1],
-        "sub_profile_id": result[2],
-        "nick": result[3],
-        "email": result[4],
-        "unique_nick": result[5],
-        "password_hash": result[6],
-        "email_verified_flag": result[7],
-        "banned_flag": result[8],
-        "namespace_id": result[9],
-    }
+
     if result is not None:
+        data = {
+            "user_id": result[0],
+            "profile_id": result[1],
+            "sub_profile_id": result[2],
+            "nick": result[3],
+            "email": result[4],
+            "unique_nick": result[5],
+            "password_hash": result[6],
+            "email_verified_flag": result[7],
+            "banned_flag": result[8],
+            "namespace_id": result[9],
+        }
         return LoginData(**data)  # type: ignore
     else:
         return None

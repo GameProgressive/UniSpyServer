@@ -1,5 +1,4 @@
 import frontends.gamespy.library.abstractions.contracts as lib
-import abc
 
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 

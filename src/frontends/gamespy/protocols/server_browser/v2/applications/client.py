@@ -19,5 +19,5 @@ class Client(ClientBase):
     crypto: EncryptBase
 
     def _create_switcher(self, buffer: bytes) -> "SwitcherBase":
-        from frontends.gamespy.protocols.server_browser.v2.applications.switcher import CmdSwitcher
-        return CmdSwitcher(self, buffer)
+        from frontends.gamespy.protocols.server_browser.v2.applications.switcher import Switcher
+        return Switcher(self, buffer)

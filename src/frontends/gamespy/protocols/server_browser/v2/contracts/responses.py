@@ -6,7 +6,7 @@ from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import
 from frontends.gamespy.protocols.server_browser.v2.aggregations.server_info_builder import (
     build_server_info_header,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import *
+from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import ALL_SERVER_END_FLAG, NTS_STRING_FLAG, STRING_SPLITER
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import ServerListRequest
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,

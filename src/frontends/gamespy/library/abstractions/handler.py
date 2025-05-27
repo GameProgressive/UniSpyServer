@@ -94,7 +94,7 @@ class CmdHandlerBase:
         self._temp_data["server_id"] = self._client.server_config.server_id
         self._temp_data["client_port"] = self._client.connection.remote_port
 
-    def __get_url(self) -> str:
+    def _get_url(self) -> str:
         url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{
             self.__class__.__name__
         }"
@@ -105,14 +105,14 @@ class CmdHandlerBase:
         whether need send data to backend
         if child class do not require feach, overide this function to do nothing
         """
-        self.__url = self.__get_url()
+        self._url = self._get_url()
         json_str = json.dumps(
             self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False
         )
-        self._client.log_network_upload(f"[{self.__url}] {json_str}")
+        self._client.log_network_upload(f"[{self._url}] {json_str}")
         try:
             response = requests.post(
-                self.__url, data=json_str, headers={"Content-Type": "application/json"}
+                self._url, data=json_str, headers={"Content-Type": "application/json"}
             )
         except requests.exceptions.ConnectionError:
             if CONFIG.unittest.is_raise_except:
@@ -124,7 +124,18 @@ class CmdHandlerBase:
 
         if response.status_code != 200:
             raise UniSpyException("failed to upload data to backends.")
+
         self._http_result = response.json()
+
+        if "error" in self._http_result:
+            self._handle_upload_error()
+
+    def _handle_upload_error(self):
+        """
+        handle the error message response from backend
+        """
+        # we raise the error as UniSpyException
+        raise UniSpyException(self._http_result["error"])
 
     def _feach_data(self):
         """
@@ -134,9 +145,9 @@ class CmdHandlerBase:
         if self._result_cls is None:
             raise UniSpyException("_result_cls can not be null when feach data.")
         assert issubclass(self._result_cls, ResultBase)
-        self._client.log_network_fetch(f"[{self.__url}] {self._http_result}")
+        self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
 
-        self._result = self._result_cls(**self._http_result["result"])
+        self._result = self._result_cls(**self._http_result)
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""

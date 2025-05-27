@@ -1,10 +1,21 @@
 from concurrent.futures import ProcessPoolExecutor
 from typing import TYPE_CHECKING, cast
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
-from frontends.gamespy.protocols.query_report.v2.contracts.requests import ClientMessageRequest
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus, RequestType
-from frontends.gamespy.protocols.server_browser.aggregates.exceptions import ServerBrowserException
-from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import RequestBase
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    GameServerInfo,
+)
+from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
+    ClientMessageRequest,
+)
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
+    GameServerStatus,
+    RequestType,
+)
+from frontends.gamespy.protocols.server_browser.aggregates.exceptions import (
+    ServerBrowserException,
+)
+from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
+    RequestBase,
+)
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
     SendMessageRequest,
     ServerInfoRequest,
@@ -18,6 +29,7 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.responses import (
     UpdateServerInfoResponse,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
+    P2PGroupRoomListResult,
     ServerInfoResult,
     ServerMainListResult,
 )
@@ -25,7 +37,9 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     # RequestType,
     ServerListUpdateOption,
 )
-from frontends.gamespy.protocols.server_browser.v2.abstractions.handlers import CmdHandlerBase
+from frontends.gamespy.protocols.server_browser.v2.abstractions.handlers import (
+    CmdHandlerBase,
+)
 
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 
@@ -53,12 +67,12 @@ class AdHocHandler(CmdHandlerBase):
 
     def handle(self) -> None:
         result = ServerInfoResult(game_server_info=self._message)
-        match (self._message.status):
-            case (
-                status
-            ) if status == GameServerStatus.NORMAL \
-                    or status == GameServerStatus.UPDATE \
-                    or status == GameServerStatus.PLAYING:
+        match self._message.status:
+            case status if (
+                status == GameServerStatus.NORMAL
+                or status == GameServerStatus.UPDATE
+                or status == GameServerStatus.PLAYING
+            ):
                 self.response = UpdateServerInfoResponse(result)
             case GameServerStatus.SHUTDOWN:
                 self.response = DeleteServerInfoResponse(result)
@@ -76,12 +90,11 @@ class AdHocHandler(CmdHandlerBase):
             and client.crypto is not None
             and (
                 client.info.search_type == ServerListUpdateOption.SERVER_MAIN_LIST
-                or client.info.search_type == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
+                or client.info.search_type
+                == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
             )
         ):
-            client.log_info(
-                f"Sending AdHoc message {self._message.status} to client"
-            )
+            client.log_info(f"Sending AdHoc message {self._message.status} to client")
             client.send(self.response)
 
 
@@ -127,11 +140,25 @@ class ServerInfoHandler(CmdHandlerBase):
 class ServerListHandler(CmdHandlerBase):
     _request: ServerListRequest
     _result: ServerMainListResult
-    _result_cls: type[ServerMainListResult]
+    _result_cls: (
+        type[ServerMainListResult]
+        | type[P2PGroupRoomListResult]
+        | type[ServerInfoResult]
+    )
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
-        super().__init__(client, request)
-        self._result_cls = ServerMainListResult
+    def _request_check(self) -> None:
+        super()._request_check()
+        match self._request.update_option:
+            case option if option in [
+                ServerListUpdateOption.SERVER_MAIN_LIST,
+                ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
+                ServerListUpdateOption.LIMIT_RESULT_COUNT,
+            ]:
+                self._result_cls = ServerMainListResult
+            case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
+                self._result_cls = P2PGroupRoomListResult
+            case _:
+                raise ServerBrowserException("unknown serverlist update option type")
 
     def _response_construct(self) -> None:
         match self._request.update_option:
@@ -141,15 +168,12 @@ class ServerListHandler(CmdHandlerBase):
                 ServerListUpdateOption.LIMIT_RESULT_COUNT,
                 ServerListUpdateOption.SERVER_FULL_INFO_LIST,
             ]:
-                self._response = ServerMainListResponse(
-                    self._request, self._result)
+                self._response = ServerMainListResponse(self._request, self._result)
             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-                self._response = P2PGroupRoomListResponse(
-                    self._request, self._result)
+                self._response = P2PGroupRoomListResponse(self._request, self._result)
             case ServerListUpdateOption.SERVER_FULL_INFO_LIST:
                 self._response = ServerNetworkInfoListResponse(
                     self._request, self._result
                 )
             case _:
-                raise ServerBrowserException(
-                    "unknown serverlist update option type")
+                raise ServerBrowserException("unknown serverlist update option type")

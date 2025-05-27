@@ -1,5 +1,3 @@
-import abc
-import socket
 from typing import Optional
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.natneg.aggregations.enums import (

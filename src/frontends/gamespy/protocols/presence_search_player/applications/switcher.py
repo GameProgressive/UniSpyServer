@@ -10,7 +10,7 @@ from frontends.gamespy.protocols.presence_search_player.abstractions.handler imp
 from frontends.gamespy.protocols.presence_search_player.applications.client import Client
 
 
-class CmdSwitcher(SwitcherBase):
+class Switcher(SwitcherBase):
     _raw_request: str
 
     def __init__(self, client: Client, raw_request: str):
