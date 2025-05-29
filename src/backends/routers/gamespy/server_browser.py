@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from backends.protocols.gamespy.server_browser.handlers import ServerInfoHandler, ServerListHandler
+from backends.protocols.gamespy.server_browser.handlers import ServerInfoHandler, ServerMainListHandler
 from backends.protocols.gamespy.server_browser.requests import SendMessageRequest, ServerInfoRequest, ServerListRequest
 from backends.urls import SERVER_BROWSER_V2
 
@@ -39,7 +39,7 @@ def server_info(request: ServerInfoRequest):
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerListHandler")
 def server_list(request: ServerListRequest):
-    handler = ServerListHandler(request)
+    handler = ServerMainListHandler(request)
     handler.handle()
     return handler.response
 

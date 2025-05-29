@@ -3,9 +3,15 @@ import frontends.gamespy.library.abstractions.contracts as lib
 
 from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
 from frontends.gamespy.library.extentions.encoding import get_bytes
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
-from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import SERVER_CHALLENGE
-from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import STRING_SPLITER
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    GameServerInfo,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import (
+    SERVER_CHALLENGE,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import (
+    STRING_SPLITER,
+)
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     DataKeyType,
     GameServerFlags,
@@ -26,8 +32,7 @@ class RequestBase(lib.RequestBase):
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        self.request_length = int.from_bytes(
-            self.raw_request[:2], byteorder="little")
+        self.request_length = int.from_bytes(self.raw_request[:2], byteorder="little")
         self.command_name = RequestType(self.raw_request[2])
 
 
@@ -90,10 +95,8 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
     def build(self) -> None:
         crypt_header = self.build_crypt_header()
         self._servers_info_buffers.extend(crypt_header)
-        self._servers_info_buffers.extend(
-            ip_to_4_bytes(self._result.client_remote_ip))
-        self._servers_info_buffers.extend(
-            QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
+        self._servers_info_buffers.extend(ip_to_4_bytes(self._result.client_remote_ip))
+        self._servers_info_buffers.extend(QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
 
     def build_crypt_header(self) -> list:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes

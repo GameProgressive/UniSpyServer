@@ -135,3 +135,4 @@ class ServerNetworkInfoListResponse(ServerListUpdateOptionResponseBase):
     def build(self) -> None:
         super().build()
         self.sending_buffer = bytes(self._servers_info_buffers)
+        raise NotImplementedError()

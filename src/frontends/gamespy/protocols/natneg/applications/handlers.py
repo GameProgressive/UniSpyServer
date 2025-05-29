@@ -12,6 +12,7 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
 )
 from frontends.gamespy.protocols.natneg.contracts.responses import (
     AddressCheckResponse,
+    ConnectResponse,
     ErcAckResponse,
     InitResponse,
     NatifyResponse,
@@ -61,12 +62,17 @@ class ConnectAckHandler(CmdHandlerBase):
 
 
 class ConnectHandler(CmdHandlerBase):
+    _request: ConnectRequest
+    _result: ConnectResult
     _result_cls: type[ConnectResult]
 
     def __init__(self, client: Client, request: ConnectRequest) -> None:
         assert isinstance(request, ConnectRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        self._result_cls = ConnectResult
+
+    def _response_construct(self) -> None:
+        self._response = ConnectResponse(self._request, self._result)
 
 
 class ErtAckHandler(CmdHandlerBase):

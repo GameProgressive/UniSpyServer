@@ -56,8 +56,8 @@ class ResponseBase(lib.ResponseBase):
     def build(self) -> None:
         data = bytes()
         data += MAGIC_DATA
-        data += self._request.version.to_bytes()
-        data += self._result.packet_type.value.to_bytes()
+        data += self._request.version.to_bytes(1)
+        data += self._result.packet_type.value.to_bytes(1)
         data += self._request.cookie.to_bytes(4)
         self.sending_buffer = data
 
@@ -85,8 +85,8 @@ class CommonResponseBase(ResponseBase):
         super().build()
         data = bytes()
         data += self.sending_buffer
-        data += self._request.port_type.value.to_bytes()
-        data += self._request.client_index.value.to_bytes()
+        data += self._request.port_type.value.to_bytes(1)
+        data += self._request.client_index.value.to_bytes(1)
         data += bytes(self._request.use_game_port)
         data += ip_to_4_bytes(self._result.public_ip_addr)
         data += self._result.public_port.to_bytes(2)

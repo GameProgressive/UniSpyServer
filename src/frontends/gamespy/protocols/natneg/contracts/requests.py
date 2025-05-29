@@ -33,7 +33,7 @@ class ConnectAckRequest(RequestBase):
         self.client_index = NatClientIndex(self.raw_request[13])
 
 
-class ConnectRequest(RequestBase):
+class ConnectRequest(CommonRequestBase):
     """
     Server will send this request to client to let them connect to each other
     """

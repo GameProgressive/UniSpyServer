@@ -150,10 +150,12 @@ class InviteHandler(CmdHandlerBase):
 class ListHandler(PostLoginHandlerBase):
     _request: ListRequest
     _result: ListResult
+    _result_cls: type[ListResult]
 
     def __init__(self, client: ClientBase, request: ListRequest):
         assert isinstance(request, ListRequest)
         super().__init__(client, request)
+        self._result_cls = ListResult
 
     def _response_construct(self) -> None:
         self._response = ListResponse(self._result)
@@ -175,6 +177,7 @@ class LoginHandler(CmdHandlerBase):
 class NickHandler(CmdHandlerBase):
     _request: NickRequest
     _result: NickResult
+    _result_cls: type[NickResult]
 
     def __init__(self, client: ClientBase, request: NickRequest):
         assert isinstance(request, NickRequest)
@@ -192,6 +195,7 @@ class PingHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: PingRequest):
         assert isinstance(request, PingRequest)
         super().__init__(client, request)
+        raise NotImplementedError()
 
     def _response_construct(self) -> None:
         self._response = PingResponse(self._result)

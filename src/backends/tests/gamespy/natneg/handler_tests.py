@@ -1,6 +1,6 @@
 import unittest
-from backends.protocols.gamespy.natneg.handlers import InitHandler
-from backends.protocols.gamespy.natneg.requests import InitRequest
+from backends.protocols.gamespy.natneg.handlers import ConnectHandler, InitHandler
+from backends.protocols.gamespy.natneg.requests import InitRequest, ConnectRequest
 from backends.tests.utils import add_headers
 import frontends.gamespy.protocols.natneg.contracts.requests as fnt
 
@@ -19,5 +19,24 @@ class HandlerTests(unittest.TestCase):
         data["raw_request"] = data["raw_request"].decode("ascii", "backslashreplace")
         request = InitRequest(**data)
         handler = InitHandler(request)
+        handler.handle()
+        pass
+
+    def test_report(self):
+        raise NotImplementedError()
+
+    def test_connect(self):
+        raw = bytes(
+            [
+                0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2, 0x03,
+                0x00,
+                0x00, 0x00, 0x03, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ]
+        )  # fmt:skip
+        r = fnt.ConnectRequest(raw)
+        data = add_headers(r)
+        data["raw_request"] = data["raw_request"].decode("ascii", "backslashreplace")
+        request = ConnectRequest(**data)
+        handler = ConnectHandler(request)
         handler.handle()
         pass

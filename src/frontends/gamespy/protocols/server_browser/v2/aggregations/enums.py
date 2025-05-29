@@ -45,7 +45,7 @@ class ProtocolVersion(IntEnum):
 class ServerListUpdateOption(IntEnum):
     SERVER_MAIN_LIST = 0
     SEND_FIELD_FOR_ALL = 1
-    SERVER_FULL_INFO_LIST = 2
+    SERVER_FULL_MAIN_LIST = 2
     P2P_SERVER_MAIN_LIST = 4
     ALTERNATE_SOURCE_IP = 8
     P2P_GROUP_ROOM_LIST = 32

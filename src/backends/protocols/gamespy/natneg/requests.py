@@ -37,8 +37,6 @@ class ConnectRequest(RequestBase):
     Server will send this request to client to let them connect to each other
     """
 
-    client_index: NatClientIndex
-
 
 class ErtAckRequest(CommonRequestBase):
     pass

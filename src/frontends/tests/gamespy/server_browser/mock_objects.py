@@ -9,7 +9,7 @@ from frontends.tests.gamespy.library.mock_objects import (
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     ServerInfoHandler,
-    ServerListHandler,
+    ServerMainListHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     ServerInfoResult,
@@ -34,7 +34,7 @@ def create_v2_client() -> Client:
 
     create_mock_url(
         config,
-        ServerListHandler,
+        ServerMainListHandler,
         ServerMainListResult.model_validate(
             {
                 "client_remote_ip": "127.0.0.1",
@@ -90,7 +90,7 @@ def create_v1_client() -> Client:
     config = CONFIG.servers["ServerBrowserV1"]
     create_mock_url(
         config,
-        ServerListHandler,
+        ServerMainListHandler,
         ServerMainListResult.model_validate(
             {"remote_ip_address": conn.remote_ip, "remote_port": conn.remote_port}
         ).model_dump(),

@@ -35,3 +35,6 @@ class ConnectHandler(HandlerBase):
     def __init__(self, request: RequestBase) -> None:
         super().__init__(request)
         assert isinstance(request, ConnectRequest)
+
+    def _data_operate(self) -> None:
+        raise NotImplementedError()

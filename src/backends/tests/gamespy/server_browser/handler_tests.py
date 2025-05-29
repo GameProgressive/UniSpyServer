@@ -1,7 +1,7 @@
 import unittest
 from backends.protocols.gamespy.server_browser.handlers import (
     ServerInfoHandler,
-    ServerListHandler,
+    ServerMainListHandler,
 )
 from backends.protocols.gamespy.server_browser.requests import (
     ServerInfoRequest,
@@ -17,11 +17,14 @@ class HandlerTests(unittest.TestCase):
         r = fnt.ServerListRequest(raw)
         data = add_headers(r)
         request = ServerListRequest(**data)
-        handler = ServerListHandler(request)
+        handler = ServerMainListHandler(request)
         handler.handle()
         pass
 
     def test_p2p_group_room_list(self):
+        raise NotImplementedError()
+
+    def test_server_network_info_list(self):
         raise NotImplementedError()
 
     def test_server_info(self):

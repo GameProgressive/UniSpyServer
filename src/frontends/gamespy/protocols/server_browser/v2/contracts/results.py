@@ -1,7 +1,11 @@
 from uuid import UUID
 
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
-from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import PeerRoomInfo
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    GameServerInfo,
+)
+from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
+    PeerRoomInfo,
+)
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     AdHocResultBase,
     ResultBase,
@@ -18,6 +22,10 @@ class P2PGroupRoomListResult(ServerListUpdateOptionResultBase):
 
 
 class ServerMainListResult(ServerListUpdateOptionResultBase):
+    servers_info: list[GameServerInfo]
+
+
+class ServerNetworkInfoListResult(ServerListUpdateOptionResultBase):
     servers_info: list[GameServerInfo]
 
 

@@ -1,7 +1,5 @@
 # the total requests tests
 import unittest
-
-from backends.library.database.pg_orm import PG_SESSION
 from backends.tests.utils import add_headers
 import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
 from frontends.tests.gamespy.presence_search_player.handler_tests import (
