@@ -15,8 +15,8 @@ class ConnectResult(ResultBase):
     finished: ConnectPacketStatus = ConnectPacketStatus.NO_ERROR
     ip: str
     port: int
-    version: bytes
-    cookie: bytes
+    version: int
+    cookie: int
     packet_type: ResponseType = ResponseType.CONNECT
 
 

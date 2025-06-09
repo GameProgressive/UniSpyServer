@@ -32,7 +32,7 @@ class ConnectAckRequest(RequestBase):
     client_index: NatClientIndex
 
 
-class ConnectRequest(RequestBase):
+class ConnectRequest(CommonRequestBase):
     """
     Server will send this request to client to let them connect to each other
     """
