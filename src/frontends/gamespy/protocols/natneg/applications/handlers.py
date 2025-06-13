@@ -7,7 +7,6 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
     ErtAckRequest,
     InitRequest,
     NatifyRequest,
-    PingRequest,
     ReportRequest,
 )
 from frontends.gamespy.protocols.natneg.contracts.responses import (
@@ -143,10 +142,7 @@ class NatifyHandler(CmdHandlerBase):
         self._response = NatifyResponse(self._request, self._result)
 
 
-class PingHandler(CmdHandlerBase):
-    def __init__(self, client: Client, request: PingRequest) -> None:
-        super().__init__(client, request)
-        raise NotImplementedError()
+
 
 
 class ReportHandler(CmdHandlerBase):

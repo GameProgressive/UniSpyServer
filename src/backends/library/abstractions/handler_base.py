@@ -10,7 +10,6 @@ from frontends.gamespy.library.abstractions.contracts import ResultBase
 import logging
 
 
-
 class HandlerBase:
     """
     The ultimate handler base of backend service
@@ -18,7 +17,7 @@ class HandlerBase:
 
     _request: RequestBase
     _result: Optional[ResultBase]
-    _response: Response
+    _response: Optional[Response]
     """
     the response using to wrap data
     """
@@ -28,10 +27,12 @@ class HandlerBase:
     """
 
     @property
-    def response(self) -> dict:
+    def response(self) -> Optional[dict]:
         """
         the dict response which send to client
         """
+        if self._response is None:
+            return None
         return self._response.to_json_dict()
 
     def __init__(self, request: RequestBase) -> None:
@@ -40,7 +41,7 @@ class HandlerBase:
         # decoupling the logging in home.py
         self.logger = logging.getLogger("backend")
         self._result = None
-        self._response = OKResponse()
+        self._response = None
 
     def handle(self) -> None:
         self._request_check()

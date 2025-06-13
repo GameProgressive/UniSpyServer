@@ -227,6 +227,7 @@ class RelayServerCaches(Base):
     public_ip_address = Column(String, nullable=False)
     public_port = Column(Integer, nullable=False)
     client_count = Column(Integer, nullable=False)
+    update_time = Column(DateTime, nullable=False)
 
 
 class ChatChannelCaches(Base):

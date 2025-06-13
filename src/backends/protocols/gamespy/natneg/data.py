@@ -1,5 +1,11 @@
 from datetime import datetime, timedelta
-from backends.library.database.pg_orm import PG_SESSION, InitPacketCaches, NatFailCaches
+from typing import Optional
+from backends.library.database.pg_orm import (
+    PG_SESSION,
+    InitPacketCaches,
+    NatFailCaches,
+    RelayServerCaches,
+)
 from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex
 
 
@@ -76,7 +82,6 @@ def get_nat_fail_info(info: NatFailCaches):
     return result
 
 
-
 def get_nat_fail_info_by_ip(public_ip1: str, public_ip2: str) -> list[NatFailCaches]:
     result = (
         PG_SESSION.query(NatFailCaches)
@@ -86,4 +91,24 @@ def get_nat_fail_info_by_ip(public_ip1: str, public_ip2: str) -> list[NatFailCac
         )
         .all()
     )
+    return result
+
+
+def get_game_traffic_relay_servers(
+    number: Optional[int] = None,
+) -> list[RelayServerCaches]:
+    if number is None:
+        result = (
+            PG_SESSION.query(RelayServerCaches)
+            .order_by(RelayServerCaches.client_count.desc())
+            .all()
+        )
+    else:
+        assert isinstance(number, int)
+        result = (
+            PG_SESSION.query(RelayServerCaches)
+            .order_by(RelayServerCaches.client_count.desc())
+            .limit(number)
+            .all()
+        )
     return result

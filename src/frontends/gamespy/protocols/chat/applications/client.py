@@ -9,7 +9,6 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from typing import Optional
 
 
-
 class ClientInfo:
     previously_joined_channel: Optional[str]
     joined_channels: list[str]
@@ -39,7 +38,8 @@ class Client(ClientBase):
     def _create_switcher(self, buffer: bytes) -> SwitcherBase:
         from frontends.gamespy.protocols.chat.applications.switcher import Switcher
 
-        return Switcher(self, buffer.decode())
+        switcher = Switcher(self, buffer.decode())
+        return switcher
 
     def on_connected(self) -> None:
         self.start_brocker()
@@ -63,5 +63,5 @@ class Client(ClientBase):
 
     def _process_brocker_message(self, message: str):
         # responsible for receive message and send out
-        assert message
+        assert isinstance(message, str)
         self.connection.send(message.encode())

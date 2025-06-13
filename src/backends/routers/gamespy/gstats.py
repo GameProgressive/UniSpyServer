@@ -1,5 +1,20 @@
 from fastapi import APIRouter
-from backends.protocols.gamespy.game_status.handlers import *
+from backends.protocols.gamespy.game_status.handlers import (
+    AuthGameHandler,
+    AuthPlayerHandler,
+    GetPlayerDataHandler,
+    NewGameHandler,
+    SetPlayerDataHandler,
+    UpdateGameHandler,
+)
+from backends.protocols.gamespy.game_status.requests import (
+    AuthGameRequest,
+    AuthPlayerRequest,
+    GetPlayerDataRequest,
+    NewGameRequest,
+    SetPlayerDataRequest,
+    UpdateGameRequest,
+)
 from backends.urls import GAMESTATUS
 
 router = APIRouter()
@@ -50,6 +65,7 @@ def updaet_game(request: UpdateGameRequest):
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     uvicorn.run(app, host="0.0.0.0", port=8080)

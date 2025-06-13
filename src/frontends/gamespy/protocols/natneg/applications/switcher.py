@@ -7,7 +7,6 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
     ConnectRequest,
     ErtAckRequest,
     InitRequest,
-    PingRequest,
     ReportRequest,
 )
 from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
@@ -16,7 +15,6 @@ from frontends.gamespy.protocols.natneg.applications.handlers import (
     ConnectHandler,
     ErtAckHandler,
     InitHandler,
-    PingHandler,
     ReportHandler,
 )
 
@@ -52,8 +50,6 @@ class Switcher(SwitcherBase):
                 return ErtAckHandler(self._client, ErtAckRequest(raw_request))
             case RequestType.CONNECT:
                 return ConnectHandler(self._client, ConnectRequest(raw_request))
-            case RequestType.PING:
-                return PingHandler(self._client, PingRequest(raw_request))
             case RequestType.ADDRESS_CHECK:
                 return AddressCheckHandler(
                     self._client, AddressCheckRequest(raw_request)

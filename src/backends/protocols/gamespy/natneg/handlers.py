@@ -70,7 +70,9 @@ class ConnectHandler(HandlerBase):
         else:
             self._helper1 = NatProtocolHelper(init_infos_1)
             self._helper2 = NatProtocolHelper(init_infos_2)
-            self._strategy = NatProtocolHelper.choose_nat_strategy(self._helper1, self._helper2)
+            self._strategy = NatProtocolHelper.choose_nat_strategy(
+                self._helper1, self._helper2
+            )
 
     def _result_construct(self) -> None:
         if self._strategy == NatStrategy.USE_PRIVATE_IP:
@@ -89,13 +91,15 @@ class ConnectHandler(HandlerBase):
             )
 
         elif self._strategy == NatStrategy.USE_GAME_TRAFFIC_RALEY:
-            self._use_game_traffic_relay()
-
-    def _use_game_traffic_relay(self):
-        raise NotImplementedError()
-
-    def _use_public_address(self):
-        raise NotImplementedError()
-
-    def _use_private_address(self):
-        raise NotImplementedError()
+            # get a small number of players server from database
+            relay_servers = data.get_game_traffic_relay_servers(5)
+            # select strategy to choose one gtr server
+            rs = relay_servers[0]
+            assert isinstance(rs.public_ip_address, str)
+            assert isinstance(rs.public_port, int)
+            self._result = ConnectResult(
+                ip=rs.public_ip_address,
+                port=rs.public_port,
+                version=self._helper2.version,
+                cookie=self._helper2.cookie,
+            )

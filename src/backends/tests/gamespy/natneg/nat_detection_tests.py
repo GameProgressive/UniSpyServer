@@ -1,3 +1,4 @@
+from datetime import datetime
 import unittest
 
 from backends.library.database.pg_orm import InitPacketCaches
@@ -23,6 +24,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=1,
                 private_ip="10.0.0.1",
                 private_port=0,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN1,
@@ -34,6 +36,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=0,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN2,
@@ -45,6 +48,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=2,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN3,
@@ -56,6 +60,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=2,
+                update_time=datetime.now(),
             ),
         ]
 
@@ -81,6 +86,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=1,
                 private_ip="192.168.1.1",
                 private_port=0,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN1,
@@ -92,6 +98,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=0,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN2,
@@ -103,6 +110,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=2,
+                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN3,
@@ -114,6 +122,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=2,
+                update_time=datetime.now(),
             ),
         ]
 

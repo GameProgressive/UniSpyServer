@@ -2,6 +2,7 @@ from types import MappingProxyType
 from typing import Optional
 from frontends.gamespy.library.abstractions.connections import NetworkServerBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.extentions.schedular import Schedular
 from frontends.gamespy.library.log.log_manager import LogManager, LogWriter
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 import pyfiglet
@@ -30,6 +31,7 @@ class ServerLauncherBase:
     config: Optional[ServerConfig]
     logger: Optional[LogWriter]
     server: Optional[NetworkServerBase]
+    schedular: Schedular
 
     def __init__(self):
         self.server = None
@@ -65,9 +67,13 @@ class ServerLauncherBase:
         if self.server is None:
             raise UniSpyException("Create network server in child class")
         print("Press Ctrl+C to Quit")
+        self._heartbeat_to_backend()
         self.server.start()
 
     def _connect_to_backend(self):
+        """
+        check backend availability
+        """
         if CONFIG.unittest.is_collect_request:
             return
         try:
@@ -86,6 +92,17 @@ class ServerLauncherBase:
             raise UniSpyException(
                 f"backend server: {CONFIG.backend.url} not available."
             )
+
+    def _heartbeat_to_backend(self):
+        """
+        send heartbeat info to backend to keep the infomation update
+        """
+        #! temperarily use connect to backend function
+        self.schedular = Schedular(self._connect_to_backend, 30)
+        self.schedular.start()
+
+    def _test(self):
+        print("test")
 
     def _create_logger(self):
         assert self.config is not None

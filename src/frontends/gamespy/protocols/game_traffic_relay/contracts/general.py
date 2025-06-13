@@ -15,3 +15,10 @@ class InitPacketInfo(BaseModel):
     public_port: int
     private_ip: str
     private_port: int
+
+
+class UpdateGTRServiceRequest(BaseModel):
+    server_id: UUID4
+    public_ip_address: str
+    public_port: int
+    client_count: int
