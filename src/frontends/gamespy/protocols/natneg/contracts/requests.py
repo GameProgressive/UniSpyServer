@@ -1,4 +1,5 @@
 from socket import inet_ntoa
+import socket
 import struct
 from typing import Optional
 
@@ -22,7 +23,15 @@ class AddressCheckRequest(CommonRequestBase):
 
 
 class PingRequest(RequestBase):
-    pass
+    def parse(self) -> None:
+        self.version = int(self.raw_request[6])
+        self.command_name = RequestType(self.raw_request[7])
+        self.cookie = int.from_bytes(self.raw_request[8:12], byteorder="little")
+        self.ip = socket.inet_ntoa(self.raw_request[12:16])
+        self.port = int.from_bytes(self.raw_request[16:18])
+        # port here is not in little endian
+        self.got_your_data = bool(self.raw_request[18])
+        self.is_finished = bool(self.raw_request[19])
 
 
 class ConnectAckRequest(RequestBase):

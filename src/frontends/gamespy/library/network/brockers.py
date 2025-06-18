@@ -1,15 +1,14 @@
 import threading
-from typing import Optional, Callable
+from typing import Callable
 from uuid import UUID
 from redis import Redis
-import websocket
+from websockets import ConnectionClosed
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from redis.client import PubSub
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
-
-websocket.enableTrace(True)
+from websockets.sync.client import connect, ClientConnection
 
 
 class RedisBrocker(BrockerBase):
@@ -45,30 +44,21 @@ class RedisBrocker(BrockerBase):
 
 
 class WebSocketBrocker(BrockerBase):
-    _subscriber: websocket.WebSocketApp
-    _publisher: Optional[websocket.WebSocket] = None
-
-    def __init__(self, name: str, url: str, call_back_func: Callable) -> None:
-        super().__init__(name, url, call_back_func)
-        self._subscriber = websocket.WebSocketApp(
-            url,
-            on_message=lambda _, m: self.receive_message(m),
-            on_error=print,
-            on_close=print,
-        )
-        self._subscriber.on_open = self._on_open
-
-    def _on_open(self, ws):
-        self._publisher = ws
-
-    def _on_message(self, _, message):
-        threading.Thread(target=self.receive_message, args=message).start()
+    _subscriber: ClientConnection
+    _publisher: ClientConnection
 
     def subscribe(self):
-        threading.Thread(target=self._subscriber.run_forever).start()
-        # # wait for connection establish
-        if self._publisher is None:
-            raise UniSpyException("brocker backend is not available")
+        self._publisher = self._subscriber = connect(self.url)
+        th = threading.Thread(target=self._listen)
+        th.start()
+
+    def _listen(self):
+        try:
+            while True:
+                message = self._subscriber.recv()
+                self._call_back_func(message)
+        except ConnectionClosed:
+            raise UniSpyException("websocket connection is not established")
 
     def unsubscribe(self):
         self._subscriber.close()
@@ -82,7 +72,7 @@ class WebSocketBrocker(BrockerBase):
 if __name__ == "__main__":
     ws = WebSocketBrocker(
         name="test_channel",
-        url="ws://127.0.0.1:8080/GameSpy/Chat/Channel",
+        url="ws://127.0.0.1:8080/GameSpy/Chat/ws",
         call_back_func=print,
     )
     ws.subscribe()
@@ -94,4 +84,3 @@ if __name__ == "__main__":
         message="hello",
     )
     ws.publish_message(msg)
-

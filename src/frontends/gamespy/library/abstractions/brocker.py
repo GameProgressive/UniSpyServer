@@ -27,7 +27,8 @@ class BrockerBase:
         pass
 
     @final
-    def receive_message(self, message):
+    def receive_message(self, message: dict):
+        assert isinstance(message, dict)
         self._call_back_func(message)
         pass
 

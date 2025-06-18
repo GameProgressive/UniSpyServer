@@ -1,3 +1,4 @@
+import asyncio
 from typing import cast
 from backends.library.abstractions.websocket_manager import (
     WebSocketClient,
@@ -6,6 +7,8 @@ from backends.library.abstractions.websocket_manager import (
 
 # from library.network.brockers import RedisBrocker
 from fastapi import WebSocket
+
+from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 
 class ChatWebSocketClient(WebSocketClient):
@@ -74,8 +77,11 @@ class ChatWebSocketManager(WebSocketManager):
                     del channel_dict[client.ip_port]
         super().disconnect(ws)
 
-    def channel_broad_cast(self):
-        pass
+    def channel_broad_cast(self, name: str, message: BrockerMessage):
+        if name in self.channel_info:
+            channel = self.channel_info[name]
+            for nick, ws in channel.items():
+                asyncio.run(ws.ws.send_json(message.model_dump()))
 
 
 MANAGER = ChatWebSocketManager()

@@ -1,8 +1,10 @@
+from datetime import datetime
 import frontends.gamespy.protocols.natneg.applications.client as natneg
 
 
 class ClientInfo:
     cookie: int
+    last_receive_time: datetime
     pass
 
 
@@ -28,7 +30,7 @@ class ConnectionListener:
                 return
             # if current client is not in the pair
             if len(clients) == 1 and client not in clients:
-                clients = (clients[0], client)
+                clients.append(client)
 
     def get_another_client(self, cookie: int, client: "Client"):
         if cookie not in self.pool:
@@ -46,10 +48,8 @@ class ConnectionListener:
         clients = self.pool[cookie]
         if len(clients) != 2:
             return False
-        elif self.is_client_exist(cookie, client):
-            return True
         else:
-            return False
+            return True
 
 
 class Client(natneg.Client):
@@ -57,16 +57,26 @@ class Client(natneg.Client):
     client_pool: dict[str, "Client"] = {}
     listener: ConnectionListener = ConnectionListener()
 
+    def __init__(
+        self,
+        connection: natneg.UdpConnection,
+        server_config: natneg.ServerConfig,
+        logger: natneg.LogWriter,
+    ):
+        super().__init__(connection, server_config, logger)
+        self.info = ClientInfo()
+
     def on_received(self, buffer: bytes) -> None:
         """
         when we receive udp message, we check whether the client pair is ready.
         if client is ready we send the following data to the another client
         """
+        self.info.last_receive_time = datetime.now()
         if self.listener.is_both_client_ready(self.info.cookie, self):
             another_client = self.listener.get_another_client(self.info.cookie, self)
             another_client.connection.send(buffer)
-            self.log_info(
-                f"[{self.connection.ip_endpoint}] => [{another_client.connection.ip_endpoint}] {buffer}"
+            self.log_network_sending(
+                f"=> [{another_client.connection.ip_endpoint}] {buffer}"
             )
         else:
             super().on_received(buffer)

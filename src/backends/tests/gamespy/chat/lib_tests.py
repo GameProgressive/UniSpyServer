@@ -4,7 +4,10 @@ import unittest
 from fastapi import WebSocket
 from fastapi.datastructures import Address
 
-from backends.library.brockers.chat import ChatWebSocketClient, ChatWebSocketManager
+from backends.protocols.gamespy.chat.brocker_manager import (
+    ChatWebSocketClient,
+    ChatWebSocketManager,
+)
 
 
 class WebSocketMock:

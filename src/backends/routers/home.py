@@ -10,6 +10,7 @@ from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
 from backends.routers.gamespy import (
+    chat,
     gstats,
     natneg,
     presence_connection_manager,
@@ -21,7 +22,7 @@ from backends.routers.gamespy import (
 
 app = FastAPI()
 
-# app.include_router(chat.router)
+app.include_router(chat.router)
 app.include_router(gstats.router)
 app.include_router(natneg.router)
 app.include_router(presence_connection_manager.router)

@@ -1,4 +1,4 @@
-from backends.library.brockers.chat import MANAGER
+from backends.protocols.gamespy.chat.brocker_manager import MANAGER
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     GetKeyHandler,
@@ -36,7 +36,6 @@ from backends.protocols.gamespy.chat.requests import (
 )
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
-
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 router = APIRouter()
@@ -47,7 +46,7 @@ def check_request(request: dict) -> BrockerMessage:
     return msg
 
 
-@router.websocket(f"{CHAT}/Broker")
+@router.websocket(f"{CHAT}/ws")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
     if isinstance(ws, WebSocket) and ws.client is not None:
@@ -59,7 +58,7 @@ async def websocket_endpoint(ws: WebSocket):
             if r.message is None:
                 return
             # currently we broadcast all message
-            MANAGER.broadcast(r.model_dump())
+            MANAGER.channel_broad_cast(r.channel_name, r)
 
     except WebSocketDisconnect:
         if ws.client is not None:

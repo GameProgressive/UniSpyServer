@@ -1,3 +1,4 @@
+import json
 from frontends.gamespy.library.abstractions.client import ClientBase
 
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
@@ -7,6 +8,8 @@ from frontends.gamespy.library.network.tcp_handler import TcpConnection
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 from typing import Optional
+
+from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 
 class ClientInfo:
@@ -63,5 +66,8 @@ class Client(ClientBase):
 
     def _process_brocker_message(self, message: str):
         # responsible for receive message and send out
+        # TODO: check whether exception here will cause brocker stop
         assert isinstance(message, str)
-        self.connection.send(message.encode())
+        j = json.loads(message)
+        r = BrockerMessage(**j)
+        self.connection.send(r.message.encode())
