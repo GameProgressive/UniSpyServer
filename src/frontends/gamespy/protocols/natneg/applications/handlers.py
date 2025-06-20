@@ -36,6 +36,7 @@ class AddressCheckHandler(CmdHandlerBase):
         assert isinstance(request, AddressCheckRequest)
         super().__init__(client, request)
         self._is_fetching = False
+        self._is_uploading = False
 
     def _response_construct(self) -> None:
         """
@@ -130,6 +131,7 @@ class NatifyHandler(CmdHandlerBase):
         assert isinstance(request, NatifyRequest)
         super().__init__(client, request)
         self._is_fetching = False
+        self._is_uploading = False
 
     def _response_construct(self):
         """
@@ -140,9 +142,6 @@ class NatifyHandler(CmdHandlerBase):
             public_port=self._client.connection.remote_port,
         )
         self._response = NatifyResponse(self._request, self._result)
-
-
-
 
 
 class ReportHandler(CmdHandlerBase):

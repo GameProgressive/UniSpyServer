@@ -123,7 +123,9 @@ class CmdHandlerBase:
                 raise UniSpyException("backends is not avaliable")
 
         if response.status_code != 200:
-            raise UniSpyException("failed to upload data to backends.")
+            raise UniSpyException(
+                f"failed to upload data to backends. reason: {response.text}"
+            )
 
         self._http_result = response.json()
 

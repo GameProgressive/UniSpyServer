@@ -50,6 +50,8 @@ def validation_exception_handler(_, exc: RequestValidationError):
 @app.exception_handler(Exception)
 def handle_unispy_exception(_, exc: Exception):
     str_error = str(exc)
+    if len(str_error) == 0:
+        str_error = exc.__class__.__name__
     logger.error(str_error)
     return JSONResponse({"error": str_error})
 

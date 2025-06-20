@@ -1,5 +1,5 @@
 from backends.library.abstractions.handler_base import HandlerBase
-from backends.library.database.pg_orm import PG_SESSION, Users, Profiles, SubProfiles
+from backends.library.database.pg_orm import ENGINE, Users, Profiles, SubProfiles
 import backends.protocols.gamespy.presence_search_player.data as data
 from backends.protocols.gamespy.presence_search_player.requests import (
     CheckRequest,
@@ -34,6 +34,7 @@ from frontends.gamespy.protocols.presence_search_player.contracts.results import
     UniqueSearchResult,
     ValidResult,
 )
+from sqlalchemy.orm import Session
 
 
 class CheckHandler(HandlerBase):
@@ -106,8 +107,9 @@ class NewUserHandler(HandlerBase):
             if key in Users.__dict__:
                 user_dict[key] = value
         self.user = Users(**user_dict)
-        PG_SESSION.add(self.user)
-        PG_SESSION.commit()
+        with Session(ENGINE) as session:
+            session.add(self.user)
+            session.commit()
 
     def _create_profile(self) -> None:
         profile_dict = {}
@@ -119,8 +121,9 @@ class NewUserHandler(HandlerBase):
         assert isinstance(self.user.userid, int)
         profile_dict["userid"] = self.user.userid
         self.profile = Profiles(**profile_dict)
-        PG_SESSION.add(self.profile)
-        PG_SESSION.commit()
+        with Session(ENGINE) as session:
+            session.add(self.profile)
+            session.commit()
 
     def _create_subprofile(self) -> None:
         subprofile_dict = {}
@@ -130,8 +133,9 @@ class NewUserHandler(HandlerBase):
         assert self.profile is not None
         subprofile_dict["profileid"] = self.profile.profileid
         self.subprofile = SubProfiles(**subprofile_dict)
-        PG_SESSION.add(self.subprofile)
-        PG_SESSION.commit()
+        with Session(ENGINE) as session:
+            session.add(self.subprofile)
+            session.commit()
 
 
 class NicksHandler(HandlerBase):

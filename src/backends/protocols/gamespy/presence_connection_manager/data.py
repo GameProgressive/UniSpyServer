@@ -10,7 +10,6 @@ from backends.library.database.pg_orm import (
     Profiles,
     SubProfiles,
     Users,
-    PG_SESSION,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     GPStatusCode,
@@ -28,7 +27,10 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPException,
 )
 import backends.protocols.gamespy.presence_search_player.data as psp
+
 # region General
+from backends.library.database.pg_orm import ENGINE
+from sqlalchemy.orm import Session
 
 
 def is_email_exist(email: str):
@@ -38,42 +40,45 @@ def is_email_exist(email: str):
 def update_online_time(ip: str, port: int):
     if TYPE_CHECKING:
         assert isinstance(Users.lastip, Column)
-
-    result = PG_SESSION.query(Users).where(Users.lastip == ip).first()
-    if result is None:
-        return False
-    result.lastonline = datetime.now()
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        result = session.query(Users).where(Users.lastip == ip).first()
+        if result is None:
+            return False
+        result.lastonline = datetime.now()
+        session.commit()
 
 
 def delete_friend_by_profile_id(profile_id: int):
-    friend = PG_SESSION.query(Friends).where(Friends.friendid == profile_id).first()
-    if friend is None:
-        raise GPDatabaseException(
-            f"friend deletion have errors on profile id:{profile_id}"
-        )
-    else:
-        PG_SESSION.delete(friend)
-        PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        friend = session.query(Friends).where(Friends.friendid == profile_id).first()
+        if friend is None:
+            raise GPDatabaseException(
+                f"friend deletion have errors on profile id:{profile_id}"
+            )
+        else:
+            session.delete(friend)
+            session.commit()
 
 
 def get_blocked_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
-    result = (
-        PG_SESSION.query(Blocked.targetid)
-        .where(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
-        .all()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Blocked.targetid)
+            .where(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
+            .all()
+        )
     if TYPE_CHECKING:
         result = cast(list[int], result)
     return result
 
 
 def get_friend_profile_id_list(profile_id: int, namespace_id: int) -> list[int]:
-    result = (
-        PG_SESSION.query(Friends.targetid)
-        .where(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
-        .all()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Friends.targetid)
+            .where(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
+            .all()
+        )
     if TYPE_CHECKING:
         result = cast(list[int], result)
     return result
@@ -99,23 +104,26 @@ def get_profile_infos(profile_id: int, session_key: str) -> GetProfileData:
         assert isinstance(SubProfiles.namespaceid, Column)
         assert isinstance(SubProfiles.session_key, Column)
 
-    namespace_id = (
-        PG_SESSION.query(SubProfiles.namespaceid)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
+    with Session(ENGINE) as session:
+        namespace_id = (
+            session.query(SubProfiles.namespaceid)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
     if namespace_id is None:
         raise GPException("namespace not found")
 
-    result = (
-        PG_SESSION.query(Users, Profiles, SubProfiles)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .where(
-            Profiles.profileid == profile_id, SubProfiles.namespaceid == namespace_id
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Users, Profiles, SubProfiles)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .join(Users, Profiles.userid == Users.userid)
+            .where(
+                Profiles.profileid == profile_id,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .first()
         )
-        .first()
-    )
     if result is None:
         raise GPException("no profile found")
 
@@ -162,13 +170,14 @@ def get_user_info_list(email: str, nick_name: str) -> list[tuple[int, int, int]]
         assert isinstance(Users.email, Column)
         assert isinstance(Profiles.nick, Column)
 
-    result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(Users.email == email, Profiles.nick == nick_name)
-        .all()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(Users.email == email, Profiles.nick == nick_name)
+            .all()
+        )
     if TYPE_CHECKING:
         result = cast(list[tuple[int, int, int]], result)
     return result
@@ -184,16 +193,17 @@ def get_user_info(unique_nick: str, namespace_id: int) -> tuple[int, int, int]:
     #     assert isinstance(SubProfiles.uniquenick, Column)
     #     assert isinstance(SubProfiles.namespaceid, Column)
 
-    result = (
-        PG_SESSION.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            SubProfiles.uniquenick == unique_nick,
-            SubProfiles.namespaceid == namespace_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                SubProfiles.uniquenick == unique_nick,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .first()
         )
-        .first()
-    )
     if TYPE_CHECKING:
         result = cast(tuple[int, int, int], result)
     return result
@@ -214,27 +224,28 @@ def get_user_infos_by_uniquenick_namespace_id(
         assert isinstance(Users.emailverified, Column)
         assert isinstance(Users.banned, Column)
 
-    result = (
-        PG_SESSION.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.userid,
+                Profiles.profileid,
+                SubProfiles.subprofileid,
+                Profiles.nick,
+                Users.email,
+                SubProfiles.uniquenick,
+                Users.password,
+                Users.emailverified,
+                Users.banned,
+                SubProfiles.namespaceid,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                SubProfiles.uniquenick == unique_nick,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .first()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            SubProfiles.uniquenick == unique_nick,
-            SubProfiles.namespaceid == namespace_id,
-        )
-        .first()
-    )
 
     return result
 
@@ -252,24 +263,25 @@ def get_user_infos_by_nick_email(nick: str, email: str) -> LoginData | None:
         assert isinstance(SubProfiles.uniquenick, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
 
-    result = (
-        PG_SESSION.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.userid,
+                Profiles.profileid,
+                SubProfiles.subprofileid,
+                Profiles.nick,
+                Users.email,
+                SubProfiles.uniquenick,
+                Users.password,
+                Users.emailverified,
+                Users.banned,
+                SubProfiles.namespaceid,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(Users.email == email, Profiles.nick == nick)
+            .first()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(Users.email == email, Profiles.nick == nick)
-        .first()
-    )
     data = {
         "user_id": result[0],
         "profile_id": result[1],
@@ -291,8 +303,9 @@ def get_user_infos_by_nick_email(nick: str, email: str) -> LoginData | None:
 def update_online_status(user_id: int, status: LoginStatus):
     if TYPE_CHECKING:
         assert isinstance(Users.userid, Column)
-    result = PG_SESSION.query(Users).where(Users.userid == user_id).first()
     raise NotImplementedError("implement sesskey")
+    with Session(ENGINE) as session:
+        result = session.query(Users).where(Users.userid == user_id).first()
 
 
 def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
@@ -309,24 +322,25 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
         assert isinstance(SubProfiles.namespaceid, Column)
         assert isinstance(SubProfiles.authtoken, Column)
 
-    result = (
-        PG_SESSION.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.userid,
+                Profiles.profileid,
+                SubProfiles.subprofileid,
+                Profiles.nick,
+                Users.email,
+                SubProfiles.uniquenick,
+                Users.password,
+                Users.emailverified,
+                Users.banned,
+                SubProfiles.namespaceid,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(SubProfiles.authtoken == auth_token)
+            .first()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(SubProfiles.authtoken == auth_token)
-        .first()
-    )
 
     if result is not None:
         data = {
@@ -347,14 +361,15 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
 
 
 def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
-    result = (
-        PG_SESSION.query(Blocked.targetid)
-        .where(
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Blocked.targetid)
+            .where(
+                Blocked.namespaceid == namespace_id,
+                Blocked.profileid == profile_id,
+            )
+            .all()
         )
-        .all()
-    )
     if TYPE_CHECKING:
         result = cast(list[int], result)
     return result
@@ -364,14 +379,15 @@ def get_block_list(profile_id: int, namespace_id: int) -> list[int]:
 
 
 def get_buddy_list(profile_id: int, namespace_id: int) -> list[int]:
-    result = (
-        PG_SESSION.query(Friends.targetid)
-        .where(
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Friends.targetid)
+            .where(
+                Blocked.namespaceid == namespace_id,
+                Blocked.profileid == profile_id,
+            )
+            .all()
         )
-        .all()
-    )
     # assert isinstance(result, list)
     if TYPE_CHECKING:
         result = cast(list[int], result)
@@ -381,41 +397,45 @@ def get_buddy_list(profile_id: int, namespace_id: int) -> list[int]:
 def update_block(profile_id: int, target_id: int, session_key: str) -> None:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
-    namespace_id = (
-        PG_SESSION.query(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    result = (
-        PG_SESSION.query(Blocked)
-        .where(
-            Blocked.targetid == target_id,
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+    with Session(ENGINE) as session:
+        namespace_id = (
+            session.query(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
         )
-        .count()
-    )
-    if result == 0:
-        b = Blocked(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
-        PG_SESSION.add(b)
-        PG_SESSION.commit()
+        result = (
+            session.query(Blocked)
+            .where(
+                Blocked.targetid == target_id,
+                Blocked.namespaceid == namespace_id,
+                Blocked.profileid == profile_id,
+            )
+            .count()
+        )
+        if result == 0:
+            b = Blocked(
+                targetid=target_id, namespaceid=namespace_id, profileid=profile_id
+            )
+            session.add(b)
+            session.commit()
 
 
 def update_friend_info(target_id: int, profile_id: int, namespace_id: int):
-    result = (
-        PG_SESSION.query(Friends)
-        .where(
-            Friends.targetid == target_id,
-            Friends.namespaceid == namespace_id,
-            Friends.profileid == profile_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Friends)
+            .where(
+                Friends.targetid == target_id,
+                Friends.namespaceid == namespace_id,
+                Friends.profileid == profile_id,
+            )
+            .count()
         )
-        .count()
-    )
-    f = Friends(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
+        f = Friends(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
 
-    if result == 0:
-        PG_SESSION.add(f)
-        PG_SESSION.commit()
+        if result == 0:
+            session.add(f)
+            session.commit()
 
 
 def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
@@ -428,70 +448,77 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str):
         assert isinstance(Users.userid, Column)
         assert isinstance(Users.email, Column)
         assert isinstance(Profiles.nick, Column)
-    result = (
-        PG_SESSION.query(Profiles)
-        .where(Profiles.profileid == profile_id, Profiles.nick == old_nick)
-        .first()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .where(Profiles.profileid == profile_id, Profiles.nick == old_nick)
+            .first()
+        )
 
-    if result is None:
-        raise GPDatabaseException("No user infomation found in database.")
+        if result is None:
+            raise GPDatabaseException("No user infomation found in database.")
 
-    result.nick = new_nick  # type:ignore
-    PG_SESSION.commit()
+        result.nick = new_nick  # type:ignore
+        session.commit()
 
 
 # def update_profile_info(profile: Profiles):
-#     PG_SESSION.add(profile)
-#     PG_SESSION.commit()
+#     session.add(profile)
+#     session.commit()
 
 
 def update_unique_nick(subprofile_id: int, unique_nick: str):
-    result = (
-        PG_SESSION.query(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
-        .first()
-    )
-    result.uniquenick = unique_nick  # type:ignore
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        result = (
+            session.query(SubProfiles)
+            .where(SubProfiles.subprofileid == subprofile_id)
+            .first()
+        )
+        result.uniquenick = unique_nick  # type:ignore
+        session.commit()
 
 
 def update_subprofile_info(subprofile: SubProfiles):
-    PG_SESSION.add(subprofile)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.add(subprofile)
+        session.commit()
 
 
 def add_friend_request(
     profileid: int, targetid: int, namespace_id: int, reason: str
 ) -> None:
-    data = (
-        PG_SESSION.query(FriendAddRequest)
-        .where(
-            FriendAddRequest.profileid == profileid,
-            FriendAddRequest.targetid == targetid,
-            FriendAddRequest.namespaceid == namespace_id,
+    with Session(ENGINE) as session:
+        data = (
+            session.query(FriendAddRequest)
+            .where(
+                FriendAddRequest.profileid == profileid,
+                FriendAddRequest.targetid == targetid,
+                FriendAddRequest.namespaceid == namespace_id,
+            )
+            .first()
         )
-        .first()
-    )
-    if data is not None:
-        raise GPAddBuddyException("Request is existed, add friend ignored")
-    request = FriendAddRequest(
-        profileid=profileid, targetid=targetid, namespaceid=namespace_id, reason=reason
-    )
-    PG_SESSION.add(request)
-    PG_SESSION.commit()
+        if data is not None:
+            raise GPAddBuddyException("Request is existed, add friend ignored")
+        request = FriendAddRequest(
+            profileid=profileid,
+            targetid=targetid,
+            namespaceid=namespace_id,
+            reason=reason,
+        )
+        session.add(request)
+        session.commit()
 
 
 def get_status(session_key: str) -> dict:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
-
-    result = (
-        PG_SESSION.query(Profiles)
-        .join(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .join(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
     if result is None:
         raise GPStatusException("No profile found with the provided session key")
 
@@ -516,75 +543,86 @@ def update_status(
 ):
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
-    result = (
-        PG_SESSION.query(Profiles)
-        .join(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    if result is None:
-        raise GPStatusException("No profile found with the provided session key")
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .join(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
+        if result is None:
+            raise GPStatusException("No profile found with the provided session key")
 
-    result.statstring = status_string
-    result.status = current_status
-    assert isinstance(result.extra_info, list)
-    result.extra_info.append(location_string)
+        result.statstring = status_string
+        result.status = current_status
+        assert isinstance(result.extra_info, list)
+        result.extra_info.append(location_string)
 
-    PG_SESSION.commit()
+        session.commit()
 
 
 def update_new_nick(session_key: str, old_nick: str, new_nick: str):
-    result = (
-        PG_SESSION.query(Profiles)
-        .join(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    if result.nick == old_nick and result.nick != new_nick:
-        result.nick = new_nick
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .join(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
+        if result.nick == old_nick and result.nick != new_nick:
+            result.nick = new_nick
+        session.commit()
 
 
 def update_cdkey(session_key: str, cdkey: str):
-    subprofile = (
-        PG_SESSION.query(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    if subprofile is None:
-        raise GPDatabaseException(f"no subprofile found with session key:{session_key}")
+    with Session(ENGINE) as session:
+        subprofile = (
+            session.query(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
+        if subprofile is None:
+            raise GPDatabaseException(
+                f"no subprofile found with session key:{session_key}"
+            )
 
-    subprofile.cdkeyenc = cdkey
+        subprofile.cdkeyenc = cdkey
 
-    PG_SESSION.commit()
+        session.commit()
 
 
 def update_uniquenick(session_key: str, uniquenick: str):
-    subprofile = (
-        PG_SESSION.query(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    if subprofile is None:
-        raise GPDatabaseException(f"no subprofile found with session key:{session_key}")
+    with Session(ENGINE) as session:
+        subprofile = (
+            session.query(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
+        if subprofile is None:
+            raise GPDatabaseException(
+                f"no subprofile found with session key:{session_key}"
+            )
 
-    subprofile.uniquenick = uniquenick
-    PG_SESSION.commit()
+        subprofile.uniquenick = uniquenick
+        session.commit()
 
 
 def update_profiles(session_key: str, extra_info: dict):
-    profile = (
-        PG_SESSION.query(Profiles)
-        .join(SubProfiles)
-        .where(SubProfiles.session_key == session_key)
-        .first()
-    )
-    if profile is None:
-        raise GPDatabaseException(f"no profile found with session key:{session_key}")
-    for key, value in extra_info.items():
-        profile.extra_info[key] = value
+    with Session(ENGINE) as session:
+        profile = (
+            session.query(Profiles)
+            .join(SubProfiles)
+            .where(SubProfiles.session_key == session_key)
+            .first()
+        )
+        if profile is None:
+            raise GPDatabaseException(
+                f"no profile found with session key:{session_key}"
+            )
+        for key, value in extra_info.items():
+            profile.extra_info[key] = value
 
-    PG_SESSION.commit()
+        session.commit()
 
 
 def update_user(session_key):

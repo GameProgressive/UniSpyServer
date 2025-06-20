@@ -7,6 +7,7 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
     ConnectRequest,
     ErtAckRequest,
     InitRequest,
+    NatifyRequest,
     ReportRequest,
 )
 from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
@@ -15,6 +16,7 @@ from frontends.gamespy.protocols.natneg.applications.handlers import (
     ConnectHandler,
     ErtAckHandler,
     InitHandler,
+    NatifyHandler,
     ReportHandler,
 )
 
@@ -29,11 +31,9 @@ class Switcher(SwitcherBase):
         assert isinstance(raw_request, bytes)
 
     def _process_raw_request(self) -> None:
-
         name = self._raw_request[7]
         if name not in RequestType:
-            self._client.log_debug(
-                f"Request: {name} is not a valid request.")
+            self._client.log_debug(f"Request: {name} is not a valid request.")
             return
         self._requests.append((RequestType(name), self._raw_request))
 
@@ -43,6 +43,8 @@ class Switcher(SwitcherBase):
         assert isinstance(name, RequestType)
         assert isinstance(raw_request, bytes)
         match name:
+            case RequestType.NATIFY_REQUEST:
+                return NatifyHandler(self._client, NatifyRequest(raw_request))
             case RequestType.INIT:
                 return InitHandler(self._client, InitRequest(raw_request))
             # case RequestType.

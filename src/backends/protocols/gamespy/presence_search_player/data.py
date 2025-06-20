@@ -5,31 +5,33 @@ from backends.library.database.pg_orm import (
     Profiles,
     SubProfiles,
     Users,
-    PG_SESSION,
+    ENGINE,
 )
-
+from sqlalchemy.orm import Session
 
 def db_commit() -> None:
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.commit()
 
 
 def verify_email(email: str):
     assert isinstance(email, str)
-    if PG_SESSION.query(Users).where(Users.email == email).count() == 1:
-        return True
-    else:
-        return False
+    with Session(ENGINE) as session:
+        if session.query(Users).where(Users.email == email).count() == 1:
+            return True
+        else:
+            return False
 
 
 def verify_email_and_password(email: str, password: str):
     assert isinstance(email, str)
     assert isinstance(password, str)
-
-    result = (
-        PG_SESSION.query(Users)
-        .where(Users.email == email, Users.password == password)
-        .count()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Users)
+            .where(Users.email == email, Users.password == password)
+            .count()
+        )
     if result == 1:
         return True
     return False
@@ -38,18 +40,19 @@ def verify_email_and_password(email: str, password: str):
 def get_profile_id(
     email: str, password: str, nick_name: str, partner_id: int
 ) -> int | None:
-    result = (
-        PG_SESSION.query(Profiles.profileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            Users.email == email,
-            Users.password == password,
-            Profiles.nick == nick_name,
-            SubProfiles.partnerid == partner_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles.profileid)
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                Users.email == email,
+                Users.password == password,
+                Profiles.nick == nick_name,
+                SubProfiles.partnerid == partner_id,
+            )
+            .first()
         )
-        .first()
-    )
     if result is not None:
         result = result[0]
         assert isinstance(result, int)
@@ -57,49 +60,57 @@ def get_profile_id(
 
 
 def add_user(user: Users):
-    PG_SESSION.add(user)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.add(user)
+        session.commit()
 
 
 def add_profile(profile: Profiles):
-    PG_SESSION.add(profile)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.add(profile)
+        session.commit()
 
 
 def add_sub_profile(subprofile: SubProfiles):
-    PG_SESSION.add(subprofile)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.add(subprofile)
+        session.commit()
 
 
 def update_user(user: Users):
-    PG_SESSION.merge(user)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.merge(user)
+        session.commit()
 
 
 def update_profile(profile: Profiles):
-    PG_SESSION.merge(profile)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.merge(profile)
+        session.commit()
 
 
 def update_subprofile(subprofile: SubProfiles):
-    PG_SESSION.merge(subprofile)
-    PG_SESSION.commit()
+    with Session(ENGINE) as session:
+        session.merge(subprofile)
+        session.commit()
 
 
 def get_user(email: str) -> Users | None:
     assert isinstance(email, str)
-    result = PG_SESSION.query(Users).where(Users.email == email).first()
+    with Session(ENGINE) as session:
+        result = session.query(Users).where(Users.email == email).first()
     return result
 
 
 def get_profile(user_id: int, nick_name: str) -> Profiles | None:
     assert isinstance(user_id, int)
     assert isinstance(nick_name, str)
-    result = (
-        PG_SESSION.query(Profiles)
-        .where(Profiles.userid == user_id, Profiles.nick == nick_name)
-        .first()
-    )
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .where(Profiles.userid == user_id, Profiles.nick == nick_name)
+            .first()
+        )
     return result
 
 
@@ -109,15 +120,16 @@ def get_sub_profile(
     assert isinstance(profile_id, int)
     assert isinstance(namespace_id, int)
     assert isinstance(product_id, int)
-    result = (
-        PG_SESSION.query(SubProfiles)
-        .where(
-            SubProfiles.profileid == profile_id,
-            SubProfiles.namespaceid == namespace_id,
-            SubProfiles.namespaceid == product_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(SubProfiles)
+            .where(
+                SubProfiles.profileid == profile_id,
+                SubProfiles.namespaceid == namespace_id,
+                SubProfiles.namespaceid == product_id,
+            )
+            .first()
         )
-        .first()
-    )
     return result
 
 
@@ -127,17 +139,18 @@ def get_nick_and_unique_nick_list(
     """
     return [(nick, uniquenick)]
     """
-    result = (
-        PG_SESSION.query(Profiles.nick, SubProfiles.uniquenick)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            Users.email == email,
-            Users.password == password,
-            SubProfiles.namespaceid == namespace_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles.nick, SubProfiles.uniquenick)
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                Users.email == email,
+                Users.password == password,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .all()
         )
-        .all()
-    )
     assert isinstance(result, list)
     data = []
     for r in result:
@@ -150,25 +163,26 @@ def get_friend_info_list(profile_id: int, namespace_id: int, game_name: str) -> 
     """
     return [(profileid, nick, uniquenick, lastname, firstname, userid, email)]
     """
-    result = (
-        PG_SESSION.query(
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            Users.userid,
-            Users.email,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                Users.userid,
+                Users.email,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .join(Friends, Profiles.profileid == Friends.friendid)
+            # todo check whether friends table join is correct
+            .where(
+                Friends.profileid == profile_id,
+                SubProfiles.namespaceid == namespace_id,
+                SubProfiles.gamename == game_name,
+            )
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .join(Friends, Profiles.profileid == Friends.friendid)
-        # todo check whether friends table join is correct
-        .where(
-            Friends.profileid == profile_id,
-            SubProfiles.namespaceid == namespace_id,
-            SubProfiles.gamename == game_name,
-        )
-        .all()
-    )
     return result
 
 
@@ -183,14 +197,15 @@ def get_matched_profile_info_list(
         assert isinstance(SubProfiles.profileid, Column)
         assert isinstance(SubProfiles.uniquenick, Column)
         assert isinstance(SubProfiles.namespaceid, Column)
-    result = (
-        PG_SESSION.query(SubProfiles.profileid, SubProfiles.uniquenick)
-        .where(
-            SubProfiles.profileid.in_(profile_ids),
-            SubProfiles.namespaceid == namespace_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(SubProfiles.profileid, SubProfiles.uniquenick)
+            .where(
+                SubProfiles.profileid.in_(profile_ids),
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .all()
         )
-        .all()
-    )
     data = []
     for r in result:
         data.append(tuple(r))
@@ -200,20 +215,21 @@ def get_matched_profile_info_list(
 def get_matched_info_by_nick(
     nick_name: str,
 ) -> list[dict]:
-    result = (
-        PG_SESSION.query(
-            Users.email,
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            SubProfiles.namespaceid,
-            Profiles.extra_info,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.email,
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                SubProfiles.namespaceid,
+                Profiles.extra_info,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(Profiles.nick == nick_name)
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(Profiles.nick == nick_name)
-        .all()
-    )
     temp: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
@@ -237,20 +253,21 @@ def get_matched_info_by_nick(
 def get_matched_info_by_email(
     email: str,
 ) -> list[dict]:
-    result = (
-        PG_SESSION.query(
-            Users.email,
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            SubProfiles.namespaceid,
-            Profiles.extra_info,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.email,
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                SubProfiles.namespaceid,
+                Profiles.extra_info,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(Users.email == email)
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(Users.email == email)
-        .all()
-    )
     temp: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
@@ -271,20 +288,21 @@ def get_matched_info_by_email(
 
 
 def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]:
-    result = (
-        PG_SESSION.query(
-            Users.email,
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            SubProfiles.namespaceid,
-            Profiles.extra_info,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Users.email,
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                SubProfiles.namespaceid,
+                Profiles.extra_info,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(Users.email == email, Profiles.nick == nick_name)
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(Users.email == email, Profiles.nick == nick_name)
-        .all()
-    )
     data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
@@ -307,22 +325,23 @@ def get_matched_info_by_nick_and_email(nick_name: str, email: str) -> list[dict]
 def get_matched_info_by_uniquenick_and_namespaceid(
     unique_nick: str, namespace_id: int
 ) -> list[dict]:
-    result = (
-        PG_SESSION.query(
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            SubProfiles.namespaceid,
-            Profiles.extra_info,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                SubProfiles.namespaceid,
+                Profiles.extra_info,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                SubProfiles.uniquenick == unique_nick,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            SubProfiles.uniquenick == unique_nick,
-            SubProfiles.namespaceid == namespace_id,
-        )
-        .all()
-    )
     data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
@@ -346,21 +365,22 @@ def get_matched_info_by_uniquenick_and_namespaceid(
 def get_matched_info_by_uniquenick_and_namespaceids(
     unique_nick: str, namespace_ids: list[int]
 ) -> list[dict]:
-    result = (
-        PG_SESSION.query(
-            Profiles.profileid,
-            Profiles.nick,
-            SubProfiles.uniquenick,
-            SubProfiles.namespaceid,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(
+                Profiles.profileid,
+                Profiles.nick,
+                SubProfiles.uniquenick,
+                SubProfiles.namespaceid,
+            )
+            .join(Users, Profiles.userid == Users.userid)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                SubProfiles.uniquenick == unique_nick,
+                SubProfiles.namespaceid.in_(namespace_ids),
+            )
+            .all()
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            SubProfiles.uniquenick == unique_nick,
-            SubProfiles.namespaceid.in_(namespace_ids),
-        )
-        .all()
-    )
     data: list[dict] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
@@ -382,16 +402,17 @@ def get_matched_info_by_uniquenick_and_namespaceids(
 
 
 def is_uniquenick_exist(unique_nick: str, namespace_id: int, game_name: str) -> bool:
-    result = (
-        PG_SESSION.query(Profiles)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .where(
-            SubProfiles.uniquenick == unique_nick,
-            SubProfiles.gamename == game_name,
-            SubProfiles.namespaceid == namespace_id,
+    with Session(ENGINE) as session:
+        result = (
+            session.query(Profiles)
+            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+            .where(
+                SubProfiles.uniquenick == unique_nick,
+                SubProfiles.gamename == game_name,
+                SubProfiles.namespaceid == namespace_id,
+            )
+            .count()
         )
-        .count()
-    )
 
     if result == 0:
         return False
@@ -403,7 +424,8 @@ def is_email_exist(email: str) -> bool:
     if TYPE_CHECKING:
         Users.userid = cast(Column, Users.userid)
         Users.email = cast(Column, Users.email)
-    result = PG_SESSION.query(Users.userid).where(Users.email == email).count()
+    with Session(ENGINE) as session:
+        result = session.query(Users.userid).where(Users.email == email).count()
     # According to game <FSW> partnerid is not nessesary
     if result == 0:
         return False

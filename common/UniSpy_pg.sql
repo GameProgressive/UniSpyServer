@@ -299,7 +299,7 @@ COMMENT ON TABLE unispy.grouplist IS 'Old games use grouplist to create their ga
 --
 
 CREATE TABLE unispy.init_packet_caches (
-    cookie integer NOT NULL,
+    cookie bigint NOT NULL,
     server_id uuid NOT NULL,
     version integer NOT NULL,
     port_type smallint NOT NULL,

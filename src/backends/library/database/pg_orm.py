@@ -1,6 +1,7 @@
 from frontends.gamespy.library.configs import CONFIG
 from datetime import datetime
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     SmallInteger,
     Text,
@@ -15,7 +16,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm.session import Session
 from sqlalchemy.dialects.postgresql import JSONB, INET
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import TypeDecorator
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
@@ -192,7 +192,7 @@ class SakeStorage(Base):
 class InitPacketCaches(Base):
     __tablename__ = "init_packet_caches"
 
-    cookie = Column(Integer, primary_key=True, nullable=False)
+    cookie = Column(BigInteger, primary_key=True, nullable=False)
     server_id = Column(UUID, nullable=False)
     version = Column(Integer, nullable=False)
     port_type = Column(IntEnum(NatPortType), nullable=False)
@@ -305,19 +305,13 @@ class GameServerCaches(Base):
     avaliable = Column(Boolean, nullable=True)
 
 
-def connect_to_db() -> Session:
-    ENGINE = create_engine(CONFIG.postgresql.url)
-    session = sessionmaker(bind=ENGINE)()
-    # Base.metadata.create_all(ENGINE)
-    with ENGINE.connect() as conn:
-        conn.execute(text("SELECT 1")).first()
-    return session
-
-
-PG_SESSION = connect_to_db()
+ENGINE = create_engine(CONFIG.postgresql.url)
+with ENGINE.connect() as conn:
+    conn.execute(text("SELECT 1")).first()
 
 if __name__ == "__main__":
-    PG_SESSION.query(Users.userid == 0).all()  # type:ignore
+    with Session(ENGINE) as session:
+        session.query(Users.userid == 0).all()  # type:ignore
     # profile = Profiles(userid=1, nick="spyguy",
     #                    extra_info={}, status=GPStatusCode.OFFLINE)
     # PG_SESSION.add(profile)

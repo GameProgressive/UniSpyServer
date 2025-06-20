@@ -19,21 +19,28 @@ class InitHandler(HandlerBase):
         super().__init__(request)
 
     def _data_operate(self) -> None:
-        info = InitPacketCaches(
-            cookie=self._request.cookie,
-            server_id=self._request.server_id,
-            version=self._request.version,
-            port_type=self._request.port_type,
-            client_index=self._request.client_index,
-            game_name=self._request.game_name,
-            use_game_port=self._request.use_game_port,
-            public_ip=self._request.client_ip,
-            public_port=self._request.client_port,
-            private_ip=self._request.private_ip,
-            private_port=self._request.private_port,
-            update_time=datetime.now(timezone.utc),
+        info = data.get_init_info(
+            self._request.cookie, self._request.client_index, self._request.port_type
         )
-        data.update_init_info(info)
+        if info is None:
+            info = InitPacketCaches(
+                cookie=self._request.cookie,
+                server_id=self._request.server_id,
+                version=self._request.version,
+                port_type=self._request.port_type,
+                client_index=self._request.client_index,
+                game_name=self._request.game_name,
+                use_game_port=self._request.use_game_port,
+                public_ip=self._request.client_ip,
+                public_port=self._request.client_port,
+                private_ip=self._request.private_ip,
+                private_port=self._request.private_port,
+                update_time=datetime.now(timezone.utc),
+            )
+            data.add_init_packet(info)
+        else:
+            info.update_time = datetime.now(timezone.utc)  # type: ignore
+            data.update_init_info(info)
 
 
 class ConnectHandler(HandlerBase):

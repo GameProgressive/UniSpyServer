@@ -34,7 +34,7 @@ class RequestBase(lib.RequestBase):
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
         self.cookie = int.from_bytes(
-            self.raw_request[8:12], byteorder="little")
+            self.raw_request[8:12])
         self.port_type = NatPortType(self.raw_request[12])
 
 

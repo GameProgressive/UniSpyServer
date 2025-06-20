@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import (
-    PG_SESSION,
+    ENGINE,
     ChatChannelCaches,
     ChatUserCaches,
     ChatChannelUserCaches,
@@ -69,7 +69,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     WhoIsResult,
     WhoResult,
 )
-
+from sqlalchemy.orm import Session
 # region General
 
 
@@ -86,13 +86,15 @@ class CryptHandler(HandlerBase):
     _request: CryptRequest
 
     def _data_operate(self) -> None:
-        result = data.get_user_cache_by_ip_port(
-            self._request.client_ip, self._request.client_port
-        )
-        if result is None:
-            raise NoSuchNickException(f"No nick found for {self._request.client_ip}")
-        result.game_name = self._request.gamename  # type: ignore
-        PG_SESSION.commit()
+        with Session(ENGINE) as session:
+
+            result = data.get_user_cache_by_ip_port(
+                self._request.client_ip, self._request.client_port
+            )
+            if result is None:
+                raise NoSuchNickException(f"No nick found for {self._request.client_ip}")
+            result.game_name = self._request.gamename  # type: ignore
+            session.commit()
 
     def _result_construct(self) -> None:
         self._result = CryptResult()

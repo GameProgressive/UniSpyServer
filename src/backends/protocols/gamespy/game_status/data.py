@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column
-from backends.library.database.pg_orm import PG_SESSION, PStorage, Profiles, SubProfiles, Users
+from backends.library.database.pg_orm import ENGINE, PStorage, Profiles, SubProfiles, Users
 from frontends.gamespy.protocols.game_status.aggregations.enums import PersistStorageType
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
-
+from sqlalchemy.orm import Session
 
 def create_new_game_data():
     raise NotImplementedError()
@@ -20,23 +20,24 @@ def update_player_data():
 
 def get_profile_id_by_token(token: str) -> int:
     assert isinstance(token, str)
-    result = PG_SESSION.query(SubProfiles.profileid).where(
-        SubProfiles.authtoken == token).first()
-    if result is None:
-        raise GSException("No records found in database")
-    assert isinstance(result, int)
-    return result
+    with Session(ENGINE) as session:
+        result = session.query(SubProfiles.profileid).where(
+            SubProfiles.authtoken == token).first()
+        if result is None:
+            raise GSException("No records found in database")
+        assert isinstance(result, int)
+        return result
 
 
 def get_profile_id_by_profile_id(profile_id: int) -> int:
     assert isinstance(profile_id, int)
-
-    result = PG_SESSION.query(SubProfiles.profileid).where(
-        SubProfiles.profileid == profile_id).count()
-    if result != 1:
-        raise GSException(f"There is no profile_id {profile_id} existed")
-    assert isinstance(result, int)
-    return result
+    with Session(ENGINE) as session:
+        result = session.query(SubProfiles.profileid).where(
+            SubProfiles.profileid == profile_id).count()
+        if result != 1:
+            raise GSException(f"There is no profile_id {profile_id} existed")
+        assert isinstance(result, int)
+        return result
 
 
 def get_profile_id_by_cdkey(cdkey: str, nick_name: str) -> int:
@@ -48,11 +49,12 @@ def get_profile_id_by_cdkey(cdkey: str, nick_name: str) -> int:
         assert isinstance(Profiles.nick, Column)
         assert isinstance(SubProfiles.profileid, Column)
         assert isinstance(SubProfiles.cdkeyenc, Column)
-    result = PG_SESSION.query(SubProfiles.profileid).join(
-        SubProfiles, Profiles.profileid == SubProfiles.profileid)\
-        .where(SubProfiles.cdkeyenc == cdkey,
-                Profiles.nick == nick_name)\
-        .first()
+    with Session(ENGINE) as session:
+        result = session.query(SubProfiles.profileid).join(
+            SubProfiles, Profiles.profileid == SubProfiles.profileid)\
+            .where(SubProfiles.cdkeyenc == cdkey,
+                    Profiles.nick == nick_name)\
+            .first()
     if result is None:
         raise GSException("No record found in database")
     if TYPE_CHECKING:
@@ -61,9 +63,10 @@ def get_profile_id_by_cdkey(cdkey: str, nick_name: str) -> int:
 
 
 def get_player_data(profile_id: int, storage_type: PersistStorageType, data_index: int) -> dict:
-    result = PG_SESSION.query(PStorage.data).where(PStorage.ptype == storage_type.value,
-                                                    PStorage.dindex == data_index,
-                                                    PStorage.profileid == profile_id).first()
+    with Session(ENGINE) as session:
+        result = session.query(PStorage.data).where(PStorage.ptype == storage_type.value,
+                                                        PStorage.dindex == data_index,
+                                                        PStorage.profileid == profile_id).first()
     if result is None:
         raise GSException("No records found in database")
     if TYPE_CHECKING:
