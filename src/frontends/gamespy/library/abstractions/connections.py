@@ -1,5 +1,6 @@
 import abc
 import socketserver
+import threading
 from frontends.gamespy.library.abstractions.client import ClientBase
 
 from frontends.gamespy.library.log.log_manager import LogWriter
@@ -83,9 +84,9 @@ class NetworkServerBase:
         self._client_cls = t_client
         self._logger = logger
 
-    @abc.abstractmethod
     def start(self):
-        pass
+        thread = threading.Thread(target=self._server.serve_forever)
+        thread.start()
 
     def __del__(self):
         self._server.shutdown()

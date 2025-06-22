@@ -42,9 +42,6 @@ class UdpServer(NetworkServerBase):
         # inject the handler params to ThreadingUDPServer
         self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
 
-    def start(self) -> None:
-        self._server.serve_forever()
-
     def __exit__(self, *args):
         self._server.__exit__(*args)
 

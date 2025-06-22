@@ -1,7 +1,12 @@
 import unittest
 
 from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.protocols.natneg.applications.handlers import AddressCheckHandler, ErtAckHandler, InitHandler, NatifyHandler
+from frontends.gamespy.protocols.natneg.applications.handlers import (
+    AddressCheckHandler,
+    ErtAckHandler,
+    InitHandler,
+    NatifyHandler,
+)
 import responses
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,
@@ -18,6 +23,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
 )
 
 from frontends.tests.gamespy.natneg.mock_objects import create_client
+
 CONFIG.unittest.is_raise_except = True
 
 
@@ -37,7 +43,7 @@ class HandlerTests(unittest.TestCase):
         # test request parsing
         request = InitRequest(raw)
         request.parse()
-        self.assertEqual(151191552, request.cookie)
+        self.assertEqual(777, request.cookie)
         self.assertEqual(RequestType.INIT, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(False, request.use_game_port)
@@ -47,8 +53,10 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
 
         # test response constructing
-        self.assertTrue(handler._response.sending_buffer ==
-                        b'\xfd\xfc\x1efj\xb2\x03\x01\t\x03\x00\x00\x01\x00\xc0\xa8\x00\x01\x00\x00')
+        self.assertTrue(
+            handler._response.sending_buffer
+            == b"\xfd\xfc\x1efj\xb2\x03\x01\x00\x00\x03\t\x01\x00\xc0\xa8\x00\x01\x00\x00"
+        )
 
     @responses.activate
     def test_address_check(self):
@@ -60,7 +68,7 @@ class HandlerTests(unittest.TestCase):
 
         request = AddressCheckRequest(raw)
         request.parse()
-        self.assertEqual(151191552, request.cookie)
+        self.assertEqual(777, request.cookie)
         self.assertEqual(RequestType.ADDRESS_CHECK, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(False, request.use_game_port)
@@ -71,8 +79,10 @@ class HandlerTests(unittest.TestCase):
         handler = AddressCheckHandler(client, request)
         handler.handle()
 
-        self.assertTrue(handler._response.sending_buffer ==
-                        b'\xfd\xfc\x1efj\xb2\x03\x0b\t\x03\x00\x00\x01\x00\xc0\xa8\x00\x01\x00\x00')
+        self.assertTrue(
+            handler._response.sending_buffer
+            == b"\xfd\xfc\x1efj\xb2\x03\x0b\x00\x00\x03\t\x01\x00\xc0\xa8\x00\x01\x00\x00"
+        )
 
     @responses.activate
     def test_ert_ack(self):
@@ -86,7 +96,7 @@ class HandlerTests(unittest.TestCase):
         )  # fmt: skip
         request = ErtAckRequest(raw)
         request.parse()
-        self.assertEqual(151191552, request.cookie)
+        self.assertEqual(777, request.cookie)
         self.assertEqual(RequestType.ERT_ACK, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(3, request.version)
@@ -96,8 +106,10 @@ class HandlerTests(unittest.TestCase):
 
         handler = ErtAckHandler(client, request)
         handler.handle()
-        self.assertTrue(handler._response.sending_buffer ==
-                        b'\xfd\xfc\x1efj\xb2\x03\x03\t\x03\x00\x00\x01\x00\xc0\xa8\x00\x01\x00\x00')
+        self.assertTrue(
+            handler._response.sending_buffer
+            == b'\xfd\xfc\x1efj\xb2\x03\x03\x00\x00\x03\t\x01\x00\xc0\xa8\x00\x01\x00\x00'
+        )
 
     @responses.activate
     def test_natify(self):
@@ -111,7 +123,7 @@ class HandlerTests(unittest.TestCase):
         )  # fmt: skip
         request = NatifyRequest(raw)
         request.parse()
-        self.assertEqual(151191552, request.cookie)
+        self.assertEqual(777, request.cookie)
         self.assertEqual(RequestType.NATIFY_REQUEST, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(3, request.version)
@@ -121,8 +133,10 @@ class HandlerTests(unittest.TestCase):
 
         handler = NatifyHandler(client, request)
         handler.handle()
-        self.assertTrue(handler._response.sending_buffer ==
-                        b'\xfd\xfc\x1efj\xb2\x03\x02\t\x03\x00\x00\x01\x00\xc0\xa8\x00\x01\x00\x00')
+        self.assertTrue(
+            handler._response.sending_buffer
+            == b'\xfd\xfc\x1efj\xb2\x03\x02\x00\x00\x03\t\x01\x00\xc0\xa8\x00\x01\x00\x00'
+        )
 
     @responses.activate
     def test_preinit(self):
@@ -134,7 +148,7 @@ class HandlerTests(unittest.TestCase):
 
         req = PreInitRequest(raw)
         req.parse()
-        self.assertEqual(714465461, req.cookie)
+        self.assertEqual(3051394346, req.cookie)
         self.assertEqual(RequestType.PRE_INIT, req.command_name)
         self.assertEqual(4, req.version)
         self.assertEqual(NatPortType.GP, req.port_type)

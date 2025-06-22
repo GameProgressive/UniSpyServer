@@ -64,12 +64,7 @@ class HttpServer(NetworkServerBase):
         self._server = ThreadingHTTPServer(
             (self._config.public_address, self._config.listening_port), HttpHandler
         )
-        # fmt: off
-        self._server.unispy_params = (self._config, self._client_cls, self._logger)# type: ignore  
-        # fmt: on
-
-    def start(self) -> None:
-        self._server.serve_forever()
+        self._server.unispy_params = (self._config, self._client_cls, self._logger) # type: ignore
 
 
 class TestClient(ClientBase):

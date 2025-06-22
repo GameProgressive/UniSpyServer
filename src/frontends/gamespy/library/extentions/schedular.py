@@ -27,7 +27,7 @@ class Schedular:
             if not self._is_started:
                 break
             schedule.run_pending()
-            time.sleep(self._interval)
+            time.sleep(self._interval/2)
 
     def stop(self):
         self._is_started = False

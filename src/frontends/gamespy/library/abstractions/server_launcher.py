@@ -44,7 +44,7 @@ class ServerLauncherBase:
         self.__show_unispy_logo()
         self._launch_server()
         print("Server successfully launched.")
-        self.__keep_running()
+        self._keep_running()
 
     def __show_unispy_logo(self):
         # display logo
@@ -66,9 +66,10 @@ class ServerLauncherBase:
     def _launch_server(self) -> None:
         if self.server is None:
             raise UniSpyException("Create network server in child class")
-        print("Press Ctrl+C to Quit")
         self._heartbeat_to_backend()
         self.server.start()
+        self._keep_running()
+        pass
 
     def _connect_to_backend(self):
         """
@@ -101,13 +102,10 @@ class ServerLauncherBase:
         self.schedular = Schedular(self._connect_to_backend, 30)
         self.schedular.start()
 
-    def _test(self):
-        print("test")
-
     def _create_logger(self):
         assert self.config is not None
         short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
         self.logger = LogManager.create(short_name)
 
-    def __keep_running(self):
-        _ = input("Press Q to Quit")
+    def _keep_running(self):
+        _ = input("Press any key to Quit\n")
