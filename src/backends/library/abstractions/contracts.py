@@ -27,7 +27,7 @@ class OKResponse(Response):
 
 
 class DataResponse(OKResponse):
-    result: object
+    result: dict
     pass
 
 

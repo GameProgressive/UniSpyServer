@@ -1,4 +1,6 @@
 from typing import Optional
+
+from pydantic import Field
 import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.game_status.aggregations.enums import (
     AuthMethod,
@@ -7,7 +9,6 @@ from frontends.gamespy.protocols.game_status.aggregations.enums import (
 
 
 class RequestBase(lib.RequestBase):
-    command_name: str
     raw_request: str
     local_id: Optional[int] = None
     request_dict: dict[str, str]
@@ -42,8 +43,10 @@ class GetProfileIdRequest(RequestBase):
 class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
     challenge: str
-    connection_id: int
-    session_key: str
+    connection_id: int = Field(
+        description="The session key that backend send to client."
+    )
+    session_key: str = Field(description="The game session key")
 
 
 class SetPlayerDataRequest(RequestBase):

@@ -343,18 +343,19 @@ def get_user_infos_by_authtoken(auth_token: str) -> LoginData | None:
         )
 
     if result is not None:
-        data = {
-            "user_id": result[0],
-            "profile_id": result[1],
-            "sub_profile_id": result[2],
-            "nick": result[3],
-            "email": result[4],
-            "unique_nick": result[5],
-            "password_hash": result[6],
-            "email_verified_flag": result[7],
-            "banned_flag": result[8],
-            "namespace_id": result[9],
-        }
+        keys = [
+            "user_id",
+            "profile_id",
+            "sub_profile_id",
+            "nick",
+            "email",
+            "unique_nick",
+            "password_hash",
+            "email_verified_flag",
+            "banned_flag",
+            "namespace_id",
+        ]
+        data = {key: result[i] for i, key in enumerate(keys)}
         return LoginData(**data)  # type: ignore
     else:
         return None

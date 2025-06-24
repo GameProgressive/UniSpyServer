@@ -79,7 +79,7 @@ class CmdHandlerBase:
         if self._is_uploading:
             self._upload_data()
         if self._is_fetching:
-            self._feach_data()
+            self._fetch_data()
 
     def _prepare_data(self):
         self._temp_data = self._request.to_dict()
@@ -139,7 +139,7 @@ class CmdHandlerBase:
         # we raise the error as UniSpyException
         raise UniSpyException(self._http_result["error"])
 
-    def _feach_data(self):
+    def _fetch_data(self):
         """
         whether need get data from backend.
         if child class do not require feach, overide this function to do nothing
@@ -148,8 +148,9 @@ class CmdHandlerBase:
             raise UniSpyException("_result_cls can not be null when feach data.")
         assert issubclass(self._result_cls, ResultBase)
         self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
-
-        self._result = self._result_cls(**self._http_result)
+        if "result" not in self._http_result:
+            raise UniSpyException("result can not be empty when feach data")
+        self._result = self._result_cls(**self._http_result["result"])
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""

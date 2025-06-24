@@ -36,7 +36,6 @@ class XorEncoding(EncryptBase):
         key_index = 0
         for index in range(len(plaintext)):
             key_index = index % len(key)
-            print(key_index)
             enc_byte = (plaintext[index] ^ key[key_index]) % 255
             result.append(enc_byte)
 

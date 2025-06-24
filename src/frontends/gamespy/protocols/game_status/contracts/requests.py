@@ -1,7 +1,10 @@
 from typing import Optional, final
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.game_status.aggregations.enums import AuthMethod, PersistStorageType
+from frontends.gamespy.protocols.game_status.aggregations.enums import (
+    AuthMethod,
+    PersistStorageType,
+)
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 
 
@@ -25,7 +28,7 @@ class AuthGameRequest(RequestBase):
         if "port" in self.request_dict:
             try:
                 self.port = int(self.request_dict["port"])
-            except:
+            except ValueError:
                 raise GSException("port format is incorrect")
 
 
@@ -46,7 +49,7 @@ class AuthPlayerRequest(RequestBase):
         if "pid" in self.request_dict and "resp" in self.request_dict:
             try:
                 self.profile_id = int(self.request_dict["pid"])
-            except:
+            except ValueError:
                 raise GSException("profile id format is incorrect")
             self.auth_type = AuthMethod.PROFILE_ID_AUTH
         elif "authtoken" in self.request_dict and "response" in self.request_dict:
@@ -82,20 +85,19 @@ class GetPlayerDataRequest(RequestBase):
         if "pid" in self.request_dict:
             try:
                 self.profile_id = int(self.request_dict["pid"])
-            except:
+            except ValueError:
                 raise GSException("pid format is incorrect")
 
         if "ptype" in self.request_dict:
             try:
-                self.storage_type = PersistStorageType(
-                    int(self.request_dict["ptype"]))
-            except:
+                self.storage_type = PersistStorageType(int(self.request_dict["ptype"]))
+            except ValueError:
                 raise GSException("ptype format is incorrect")
 
         if "dindex" in self.request_dict:
             try:
                 self.data_index = int(self.request_dict["dindex"])
-            except:
+            except ValueError:
                 raise GSException("dindex format is incorrect")
 
         if "keys" not in self.request_dict:
@@ -135,7 +137,13 @@ class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
     challenge: str
     connection_id: int
+    """
+    client session key
+    """
     session_key: str
+    """
+    game session key
+    """
 
     def parse(self) -> None:
         super().parse()
@@ -148,7 +156,7 @@ class NewGameRequest(RequestBase):
             raise GSException("connid is missing")
         try:
             self.connection_id = int(self.request_dict["connid"])
-        except:
+        except ValueError:
             raise GSException("connid format is incorrect")
 
         if "challenge" in self.request_dict:
@@ -180,23 +188,22 @@ class SetPlayerDataRequest(RequestBase):
 
         try:
             self.profile_id = int(self.request_dict["pid"])
-        except:
+        except ValueError:
             raise GSException("pid format is incorrect")
 
         try:
-            self.storage_type = PersistStorageType(
-                int(self.request_dict["ptype"]))
-        except:
+            self.storage_type = PersistStorageType(int(self.request_dict["ptype"]))
+        except ValueError:
             raise GSException("ptype format is incorrect")
 
         try:
             self.data_index = int(self.request_dict["dindex"])
-        except:
+        except ValueError:
             raise GSException("dindex format is incorrect")
 
         try:
             self.length = int(self.request_dict["length"])
-        except:
+        except ValueError:
             raise GSException("length format is incorrect")
 
         if "report" in self.request_dict:
@@ -230,7 +237,7 @@ class UpdateGameRequest(RequestBase):
         if "dl" in self.request_dict:
             self.is_client_local_storage_available = True
 
-        if 'done' not in self.request_dict:
+        if "done" not in self.request_dict:
             raise GSException("done is missing")
 
         done = self.request_dict["done"]
@@ -250,5 +257,5 @@ class UpdateGameRequest(RequestBase):
         if "connid" in self.request_dict:
             try:
                 self.connection_id = int(self.request_dict["connid"])
-            except:
+            except ValueError:
                 raise GSException("connid format is incorrect")

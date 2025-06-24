@@ -34,14 +34,17 @@ class Client(ClientBase):
     info: ClientInfo
     client_pool: dict[str, "Client"] = {}
 
-    def __init__(self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter):
+    def __init__(
+        self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter
+    ):
         super().__init__(connection, server_config, logger)
         self.info = ClientInfo()
 
     def on_connected(self) -> None:
         self.crypto = GSCrypt()
         self.log_network_sending(CHALLENGE_RESPONSE)
-        self.connection.send(CHALLENGE_RESPONSE.encode("ascii"))
+        enc_buffer = self.crypto.encrypt(CHALLENGE_RESPONSE.encode("ascii"))
+        self.connection.send(enc_buffer)
 
     def decrypt_message(self, buffer: bytes) -> bytes:
         if self.crypto is None:
@@ -52,12 +55,15 @@ class Client(ClientBase):
         if len(temp) > 1:
             message = ""
             for t in temp:
-                complete_buffer = (t+"\\final\\").encode()
+                complete_buffer = (t + "\\final\\").encode()
                 message += self.crypto.decrypt(complete_buffer).decode()
             return message.encode()
 
         return self.crypto.decrypt(buffer)
 
     def _create_switcher(self, buffer: bytes) -> SwitcherBase:
-        from frontends.gamespy.protocols.game_status.applications.switcher import Switcher
+        from frontends.gamespy.protocols.game_status.applications.switcher import (
+            Switcher,
+        )
+
         return Switcher(self, buffer.decode())
