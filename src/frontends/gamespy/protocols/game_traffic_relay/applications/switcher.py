@@ -1,4 +1,4 @@
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
 from frontends.gamespy.protocols.game_traffic_relay.applications.handlers import (
@@ -25,7 +25,7 @@ class Switcher(SwitcherBase):
 
     def _create_cmd_handlers(
         self, name: RequestType, raw_request: bytes
-    ) -> Optional[PingHandler | None]:
+    ) -> PingHandler | None:
         assert isinstance(name, RequestType)
         assert isinstance(raw_request, bytes)
         match name:

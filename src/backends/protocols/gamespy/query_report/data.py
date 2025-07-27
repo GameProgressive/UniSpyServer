@@ -105,7 +105,7 @@ def get_peer_group_channel(group_data: list[dict]) -> list[PeerRoomInfo]:
     return data
 
 
-def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerCaches]:
+def get_server_info_with_instant_key(instant_key: str) -> GameServerCaches | None:
     assert isinstance(instant_key, str)
     with Session(ENGINE) as session:
         result = (
@@ -116,7 +116,7 @@ def get_server_info_with_instant_key(instant_key: str) -> Optional[GameServerCac
     return result
 
 
-def get_server_info_with_game_name(game_name: str) -> Optional[GameServerCaches]:
+def get_server_info_with_game_name(game_name: str) -> GameServerCaches | None:
     assert isinstance(game_name, str)
     with Session(ENGINE) as session:
         result = (

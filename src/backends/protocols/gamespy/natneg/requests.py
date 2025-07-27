@@ -6,7 +6,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     PreInitState,
     RequestType,
 )
-from typing import Optional, Union
+from typing import Union
 
 import backends.library.abstractions.contracts as lib
 
@@ -43,7 +43,7 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: Optional[str] = None
+    game_name: str | None = None
     private_ip: str
     private_port: int
 

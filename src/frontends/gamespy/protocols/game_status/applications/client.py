@@ -1,4 +1,4 @@
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.log.log_manager import LogWriter
@@ -11,13 +11,13 @@ CHALLENGE_RESPONSE = "\\challenge\\00000000000000000000\\final\\"
 
 
 class ClientInfo(ClientInfoBase):
-    session_key: Optional[str]
-    game_name: Optional[str]
+    session_key: str | None
+    game_name: str | None
     is_user_authenticated: bool
     is_player_authenticated: bool
     is_game_authenticated: bool
-    profile_id: Optional[int]
-    game_session_key: Optional[str]
+    profile_id: int | None
+    game_session_key: str | None
 
     def __init__(self) -> None:
         super().__init__()

@@ -27,7 +27,7 @@ class AddBlockRequest(RequestBase):
 class BuddyListRequest(RequestBase):
     profile_id: int
     namespace_id: int
-    raw_request: Optional[str] = None
+    raw_request: str | None = None
 
 
 class BlockListRequest(RequestBase):
@@ -110,17 +110,17 @@ class LoginRequest(RequestBase):
     user_challenge: str
     response: str
     user_data: str
-    unique_nick: Optional[str] = None
-    namespace_id: Optional[int] = None
-    auth_token: Optional[str] = None
-    nick: Optional[str] = None
-    email: Optional[str] = None
+    unique_nick: str | None = None
+    namespace_id: int | None = None
+    auth_token: str | None = None
+    nick: str | None = None
+    email: str | None = None
     product_id: int
     type: Union[LoginType, int]
     sdk_revision_type: list[SdkRevisionType]
     game_port: int
     partner_id: int
-    game_name: Optional[str] = None
+    game_name: str | None = None
     quiet_mode_flags: int
     firewall: bool
 

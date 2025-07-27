@@ -1,4 +1,4 @@
-from typing import Optional
+
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSEx
 class RequestBase(lib.RequestBase):
     command_name: str
     raw_request: str
-    local_id: Optional[int]
+    local_id: int | None
     request_dict: dict[str, str]
 
     @staticmethod

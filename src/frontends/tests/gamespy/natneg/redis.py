@@ -1,5 +1,5 @@
 # import datetime
-# from typing import Optional
+# 
 
 # from pydantic.v1 import EmailStr
 
@@ -12,7 +12,7 @@
 #     email: EmailStr
 #     join_date: datetime.date
 #     age: int = Field(index=True)
-#     bio: Optional[str]
+#     bio: str | None
 
 
 # # Now, if we use this model with a Redis deployment that has the

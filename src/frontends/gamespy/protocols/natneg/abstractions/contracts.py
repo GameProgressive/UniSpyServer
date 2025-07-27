@@ -1,4 +1,4 @@
-from typing import Optional
+
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
@@ -23,7 +23,7 @@ class RequestBase(lib.RequestBase):
     command_name: RequestType
     raw_request: bytes
 
-    def __init__(self, raw_request: Optional[bytes] = None):
+    def __init__(self, raw_request: bytes | None = None):
         assert isinstance(raw_request, bytes)
         self.raw_request = raw_request
 

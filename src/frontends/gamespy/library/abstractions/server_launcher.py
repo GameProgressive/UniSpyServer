@@ -1,5 +1,5 @@
 from types import MappingProxyType
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.connections import NetworkServerBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.extentions.schedular import Schedular
@@ -28,9 +28,9 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
 
 
 class ServerLauncherBase:
-    config: Optional[ServerConfig]
-    logger: Optional[LogWriter]
-    server: Optional[NetworkServerBase]
+    config: ServerConfig | None
+    logger: LogWriter | None
+    server: NetworkServerBase | None
     schedular: Schedular
 
     def __init__(self):

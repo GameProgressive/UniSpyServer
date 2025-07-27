@@ -1,6 +1,6 @@
 import socket
 import socketserver
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
@@ -30,7 +30,7 @@ class TcpConnection(ConnectionBase):
 
 class TcpHandler(socketserver.BaseRequestHandler):
     request: socket.socket
-    conn: Optional[TcpConnection] = None
+    conn: TcpConnection | None = None
 
     def handle(self) -> None:
         if self.conn is None:

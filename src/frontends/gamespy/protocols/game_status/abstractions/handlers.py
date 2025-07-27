@@ -1,4 +1,4 @@
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.contracts import ResponseBase
 import frontends.gamespy.library.abstractions.handler as lib
 from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase, ResultBase
@@ -9,7 +9,7 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     _client: Client
     _request: RequestBase
     _result: ResultBase
-    _response: Optional[ResponseBase]
+    _response: ResponseBase | None
 
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)

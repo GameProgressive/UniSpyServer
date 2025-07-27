@@ -1,5 +1,5 @@
 import abc
-from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -49,7 +49,7 @@ class ResponseBase:
     _result: ResultBase
     _request: RequestBase
 
-    def __init__(self, request: RequestBase, result: Optional[ResultBase]) -> None:
+    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
         super().__init__()
         if request is not None:
             assert issubclass(type(request), RequestBase)

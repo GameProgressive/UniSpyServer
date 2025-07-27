@@ -1,4 +1,4 @@
-from typing import Optional
+
 from uuid import UUID
 from frontends.gamespy.library.extentions.encoding import get_string
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
@@ -45,7 +45,7 @@ class ClientMessageRequest(RequestBase):
     def target_ip_endpoint(self) -> str:
         return f"{self.target_ip_address}:{self.target_port}"
 
-    def __init__(self, raw_request: Optional[bytes] = None) -> None:
+    def __init__(self, raw_request: bytes | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 

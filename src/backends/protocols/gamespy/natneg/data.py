@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Optional
+
 from backends.library.database.pg_orm import (
     ENGINE,
     InitPacketCaches,
@@ -124,7 +124,7 @@ def get_nat_fail_info_by_ip(public_ip1: str, public_ip2: str) -> list[NatFailCac
 
 
 def get_game_traffic_relay_servers(
-    number: Optional[int] = None,
+    number: int | None = None,
 ) -> list[RelayServerCaches]:
     with Session(ENGINE) as session:
         if number is None:

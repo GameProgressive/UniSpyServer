@@ -1,5 +1,5 @@
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from typing import Optional, final
+from typing import final
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     RequestBase,
@@ -392,7 +392,7 @@ class StatusInfoRequest(RequestBase):
     game_map_name: str
     quiet_mode_flags: str
 
-    def __init__(self, raw_request: Optional[str] = None) -> None:
+    def __init__(self, raw_request: str | None = None) -> None:
         if raw_request is not None:
             self.raw_request = raw_request
 

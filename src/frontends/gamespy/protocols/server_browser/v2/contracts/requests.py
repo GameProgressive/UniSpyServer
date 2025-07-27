@@ -1,5 +1,5 @@
 from socket import inet_ntoa
-from typing import Optional
+
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     AdHocRequestBase,
@@ -58,7 +58,7 @@ class SendMessageRequest(AdHocRequestBase):
     prefix_message: bytes
     client_message: bytes
 
-    def __init__(self, raw_request: Optional[bytes] = None) -> None:
+    def __init__(self, raw_request: bytes | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 

@@ -1,4 +1,4 @@
-from typing import Optional
+
 from backends.library.abstractions.contracts import RequestBase as RB
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import SearchType
 
@@ -25,10 +25,10 @@ class NewUserRequest(RequestBase):
     uniquenick: str
     namespace_id: int
     product_id: int
-    game_port: Optional[int] = None
-    cd_key: Optional[str] = None
-    partner_id: Optional[int] = None
-    game_name: Optional[str] = None
+    game_port: int | None = None
+    cd_key: str | None = None
+    partner_id: int | None = None
+    game_name: str | None = None
 
 
 class NicksRequest(RequestBase):

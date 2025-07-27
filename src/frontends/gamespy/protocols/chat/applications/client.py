@@ -7,17 +7,17 @@ from frontends.gamespy.library.network.brockers import WebSocketBrocker
 from frontends.gamespy.library.network.tcp_handler import TcpConnection
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
-from typing import Optional
+
 
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 
 class ClientInfo:
-    previously_joined_channel: Optional[str]
+    previously_joined_channel: str | None
     joined_channels: list[str]
-    nick_name: Optional[str]
-    gamename: Optional[str]
-    user_name: Optional[str]
+    nick_name: str | None
+    gamename: str | None
+    user_name: str | None
 
     def __init__(self) -> None:
         self.joined_channels = []
@@ -29,7 +29,7 @@ class ClientInfo:
 
 class Client(ClientBase):
     info: ClientInfo
-    brocker: Optional[WebSocketBrocker]
+    brocker: WebSocketBrocker | None
 
     def __init__(
         self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter

@@ -1,7 +1,7 @@
 from socket import inet_ntoa
 import socket
 import struct
-from typing import Optional
+
 
 # from frontends.gamespy.library.extentions.string_extentions import IPEndPoint
 from frontends.gamespy.protocols.natneg.abstractions.contracts import (
@@ -55,7 +55,7 @@ class ErtAckRequest(CommonRequestBase):
 
 
 class InitRequest(CommonRequestBase):
-    game_name: Optional[str]
+    game_name: str | None
     private_ip: str
     private_port: int
 

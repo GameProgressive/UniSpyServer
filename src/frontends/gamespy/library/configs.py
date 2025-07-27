@@ -13,9 +13,9 @@ class PostgreSql(BaseModel):
     password: str
     ssl_mode: str  # You might want to restrict this to specific values
     trust_server_cert: bool
-    ssl_key: Optional[str] = None  # Optional field for SSL key
-    ssl_password: Optional[str] = None  # Optional field for SSL password
-    root_cert: Optional[str] = None  # Optional field for root certificate
+    ssl_key: str | None = None  # Optional field for SSL key
+    ssl_password: str | None = None  # Optional field for SSL password
+    root_cert: str | None = None  # Optional field for root certificate
 
     @property
     def url(self) -> str:
@@ -28,7 +28,7 @@ class RedisConfig(BaseModel):
     user: str
     password: str
     ssl: bool  # Use bool for SSL flag
-    ssl_host: Optional[str] = None  # Optional field for SSL host
+    ssl_host: str | None = None  # Optional field for SSL host
 
     @property
     def url(self) -> str:

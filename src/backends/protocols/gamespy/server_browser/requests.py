@@ -1,4 +1,4 @@
-from typing import Optional
+
 import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     ServerListUpdateOption,
@@ -20,9 +20,9 @@ class ServerListUpdateOptionRequestBase(RequestBase):
     update_option: ServerListUpdateOption
     keys: list[str]
     filter: str
-    max_servers: Optional[int] = None
-    source_ip: Optional[str] = None
-    query_options: Optional[int] = None
+    max_servers: int | None = None
+    source_ip: str | None = None
+    query_options: int | None = None
 
 
 class ServerListRequest(ServerListUpdateOptionRequestBase):

@@ -35,7 +35,7 @@ class Switcher(SwitcherBase):
             raise WebException("request name invalid")
         self._requests.append((name, self._raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)
 

@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Optional
+
 from uuid import UUID
 from backends.library.database.pg_orm import ENGINE, RelayServerCaches
 from sqlalchemy.orm import Session
 
-def search_relay_server(server_id: UUID, server_ip: str) -> Optional[RelayServerCaches]:
+def search_relay_server(server_id: UUID, server_ip: str) -> RelayServerCaches | None:
     with Session(ENGINE) as session:
         result = (
             session.query(RelayServerCaches)

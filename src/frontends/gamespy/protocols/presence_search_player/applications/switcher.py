@@ -32,7 +32,7 @@ class Switcher(SwitcherBase):
                 continue
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)

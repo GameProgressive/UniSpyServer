@@ -1,7 +1,7 @@
 import json
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from typing import Optional, Type
+from typing import Type
 import requests
 
 from frontends.gamespy.library.configs import CONFIG
@@ -19,12 +19,12 @@ from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 class CmdHandlerBase:
     _client: "ClientBase"
     _request: "RequestBase"
-    _result: Optional["ResultBase"]
-    _response: Optional["ResponseBase"]
+    _result: "ResultBase | None"
+    _response: "ResponseBase | None"
     """
     the response instance, initialize as None in __init__
     """
-    _result_cls: Optional["Type[ResultBase]"]
+    _result_cls: "Type[ResultBase] | None"
     """
     the result type class, use to deserialize json data from backend\n
     the initialization of _result_cls must after call super().__init__()
@@ -41,9 +41,9 @@ class CmdHandlerBase:
         assert issubclass(type(request), RequestBase)
         self._client = client
         self._request = request
-        self._response = None
         self._result_cls = None
         self._result = None
+        self._response = None
         self._is_uploading = True
         self._is_fetching = True
 

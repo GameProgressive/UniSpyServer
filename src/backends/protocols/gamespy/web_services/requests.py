@@ -1,4 +1,4 @@
-from typing import Optional
+
 from pydantic import BaseModel
 import backends.library.abstractions.contracts as lib
 
@@ -96,7 +96,7 @@ class AuthRequestBase(lib.RequestBase):
     version: int
     partner_code: int
     namespace_id: int
-    game_id: Optional[int] = None
+    game_id: int | None = None
 
 
 class LoginProfileRequest(AuthRequestBase):

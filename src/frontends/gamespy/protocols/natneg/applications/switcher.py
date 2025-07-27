@@ -1,4 +1,4 @@
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.natneg.applications.client import Client
@@ -39,7 +39,7 @@ class Switcher(SwitcherBase):
 
     def _create_cmd_handlers(
         self, name: RequestType, raw_request: bytes
-    ) -> Optional[CmdHandlerBase | None]:
+    ) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         assert isinstance(raw_request, bytes)
         match name:

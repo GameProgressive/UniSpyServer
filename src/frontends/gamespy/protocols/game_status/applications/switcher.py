@@ -1,4 +1,4 @@
-from typing import Optional, cast
+from typing import cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.game_status.aggregations.enums import RequestType
@@ -29,7 +29,7 @@ class Switcher(SwitcherBase):
                 return
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         self._client = cast(Client, self._client)
         match name:

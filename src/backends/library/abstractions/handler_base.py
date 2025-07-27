@@ -1,4 +1,4 @@
-from typing import Optional, final
+from typing import final
 from backends.library.abstractions.contracts import (
     DataResponse,
     OKResponse,
@@ -16,8 +16,8 @@ class HandlerBase:
     """
 
     _request: RequestBase
-    _result: Optional[ResultBase]
-    _response: Optional[Response]
+    _result: ResultBase | None
+    _response: Response | None
     """
     the response using to wrap data
     """
@@ -27,7 +27,7 @@ class HandlerBase:
     """
 
     @property
-    def response(self) -> Optional[dict]:
+    def response(self) -> dict | None:
         """
         the dict response which send to client
         """

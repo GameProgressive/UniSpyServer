@@ -1,4 +1,4 @@
-from typing import Optional
+
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
@@ -82,7 +82,7 @@ class Switcher(SwitcherBase):
                 continue
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         r_type = RequestType(name)
         match r_type:

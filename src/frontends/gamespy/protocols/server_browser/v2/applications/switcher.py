@@ -41,7 +41,7 @@ class Switcher(SwitcherBase):
 
     def _create_cmd_handlers(
         self, name: int, raw_request: bytes
-    ) -> Optional[CmdHandlerBase]:
+    ) -> CmdHandlerBase | None:
         req = raw_request
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)

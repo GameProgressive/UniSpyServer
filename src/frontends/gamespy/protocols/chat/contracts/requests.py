@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.chat.aggregates.enums import (
     ModeRequestType,
     TopicRequestType,
 )
-from typing import Optional
+
 import re
 from frontends.gamespy.library.extentions.string_extentions import (
     convert_keystr_to_list,
@@ -321,7 +321,7 @@ class GetChannelKeyRequest(ChannelRequestBase):
 
 
 class GetCKeyRequest(ChannelRequestBase):
-    nick_name: Optional[str]
+    nick_name: str | None
     cookie: str
     keys: list
     request_type: GetKeyRequestType
@@ -352,7 +352,7 @@ class GetUdpRelayRequest(ChannelRequestBase):
 
 
 class JoinRequest(ChannelRequestBase):
-    password: Optional[str]
+    password: str | None
 
     def __init__(self, raw_request):
         super().__init__(raw_request)
@@ -556,7 +556,7 @@ class ModeRequest(ChannelRequestBase):
 
 
 class NamesRequest(ChannelRequestBase):
-    def __init__(self, raw_request: Optional[str] = None) -> None:
+    def __init__(self, raw_request: str | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 
@@ -564,7 +564,7 @@ class NamesRequest(ChannelRequestBase):
 class PartRequest(ChannelRequestBase):
     reason: str = "Unknown reason"
 
-    def __init__(self, raw_request: Optional[str] = None) -> None:
+    def __init__(self, raw_request: str | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
 

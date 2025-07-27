@@ -1,4 +1,4 @@
-from typing import Optional
+
 import xml.etree.ElementTree as ET
 
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
@@ -54,7 +54,7 @@ class DeleteRecordRequest(RequestBase):
 
 
 class GetMyRecordsRequest(RequestBase):
-    fields: list[tuple[Optional[str], str]]
+    fields: list[tuple[str | None, str]]
 
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
@@ -74,7 +74,7 @@ class GetMyRecordsRequest(RequestBase):
 
 class GetRandomRecordsRequest(RequestBase):
     max: int
-    fields: list[tuple[Optional[str], str]] = []
+    fields: list[tuple[str | None, str]] = []
 
     def parse(self) -> None:
         super().parse()
@@ -159,14 +159,14 @@ class RateRecordRequest(RequestBase):
 
 
 class SearchForRecordsRequest(RequestBase):
-    filter: Optional[str]
-    sort: Optional[str]
+    filter: str | None
+    sort: str | None
     offset: str
     max: str
     surrounding: str
-    owner_ids: Optional[str]
+    owner_ids: str | None
     cache_flag: str
-    fields: list[tuple[Optional[str], str]]
+    fields: list[tuple[str | None, str]]
     """
     [
     (field_name,field_type),

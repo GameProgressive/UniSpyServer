@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from typing import Optional
+
 
 
 class SwitcherBase:
@@ -56,5 +56,5 @@ class SwitcherBase:
         pass
 
     @abstractmethod
-    def _create_cmd_handlers(self, name: object, raw_request: object) -> Optional[CmdHandlerBase]:
+    def _create_cmd_handlers(self, name: object, raw_request: object) -> CmdHandlerBase | None:
         pass

@@ -1,4 +1,4 @@
-from typing import Optional
+
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -8,9 +8,9 @@ import frontends.gamespy.library.abstractions.contracts as lib
 class RequestBase(lib.RequestBase):
     raw_request: str
     command_name: str
-    _prefix: Optional[str]
+    _prefix: str | None
     _cmd_params: list[str]
-    _long_param: Optional[str]
+    _long_param: str | None
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
@@ -71,7 +71,7 @@ class ResponseBase(lib.ResponseBase):
     _result: ResultBase
     _request: RequestBase
 
-    def __init__(self, request: RequestBase, result: Optional[ResultBase]) -> None:
+    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
         super().__init__(request, result)
         if result is not None:
             assert issubclass(type(result), ResultBase)

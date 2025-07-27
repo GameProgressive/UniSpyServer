@@ -1,4 +1,4 @@
-from typing import Optional
+
 
 from pydantic import Field
 import backends.library.abstractions.contracts as lib
@@ -10,7 +10,7 @@ from frontends.gamespy.protocols.game_status.aggregations.enums import (
 
 class RequestBase(lib.RequestBase):
     raw_request: str
-    local_id: Optional[int] = None
+    local_id: int | None = None
     request_dict: dict[str, str]
 
 
