@@ -31,7 +31,9 @@ class ServerNetworkInfoListHandler(HandlerBase):
     _caches: list[GameServerInfo]
 
     def _data_operate(self):
-        self._caches = data.get_server_info_list_with_game_name(self._request.game_name)
+        self._caches = data.get_server_info_list_with_game_name(
+            self._request.game_name, self._session
+        )
 
     def _result_construct(self):
         assert isinstance(self._caches, list) and all(
@@ -53,7 +55,7 @@ class P2PGroupRoomListHandler(HandlerBase):
 
     def _data_operate(self):
         group_data = data.get_group_data_list_by_gamename(self._request.game_name)
-        self._caches = data.get_peer_group_channel(group_data)
+        self._caches = data.get_peer_group_channel(group_data, self._session)
 
     def _result_construct(self) -> None:
         assert isinstance(self._caches, list) and all(
@@ -74,7 +76,9 @@ class ServerMainListHandler(HandlerBase):
     _caches: list[GameServerInfo]
 
     def _data_operate(self):
-        self._caches = data.get_server_info_list_with_game_name(self._request.game_name)
+        self._caches = data.get_server_info_list_with_game_name(
+            self._request.game_name, self._session
+        )
 
     def _result_construct(self):
         assert isinstance(self._caches, list) and all(
@@ -105,7 +109,9 @@ class SendMessageHandler(HandlerBase):
 
     def _data_operate(self):
         self._data = data.get_server_info_with_ip_and_port(
-            self._request.game_server_public_ip, self._request.game_server_public_port
+            self._request.game_server_public_ip,
+            self._request.game_server_public_port,
+            self._session,
         )
 
     def _result_construct(self):
@@ -123,7 +129,9 @@ class ServerInfoHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.get_server_info_with_ip_and_port(
-            self._request.game_server_public_ip, self._request.game_server_public_port
+            self._request.game_server_public_ip,
+            self._request.game_server_public_port,
+            self._session,
         )
 
     def _result_construct(self) -> None:

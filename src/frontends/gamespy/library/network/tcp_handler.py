@@ -51,6 +51,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
 
 
 class TcpServer(NetworkServerBase):
+    
     def __init__(
         self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter
     ) -> None:
@@ -58,10 +59,12 @@ class TcpServer(NetworkServerBase):
         self._server = socketserver.ThreadingTCPServer(
             (self._config.public_address, self._config.listening_port),
             TcpHandler,
+            bind_and_activate=False
         )
-        self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
         self._server.allow_reuse_address = True  # type:ignore
-
+        self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
+        self._server.server_bind()
+        self._server.server_activate()
 
 
 class TestClient(ClientBase):

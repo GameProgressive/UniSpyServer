@@ -139,7 +139,7 @@ class Games(Base):
 
     gameid = Column(Integer, primary_key=True)
     gamename = Column(String, nullable=False)
-    secretkey = Column(String)
+    secretkey = Column(String, nullable=False)
     description = Column(String(4095), nullable=False)
     disabled = Column(Boolean, nullable=False)
 
@@ -179,6 +179,16 @@ class PStorage(Base):
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
     data = Column(JSONB)
+
+
+class GameStatusSnapShot(Base):
+    __tablename__ = "game_status_snapshot"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    connection_id = Column(Integer)
+    session_key = Column(String)
+    game_name = Column(String)
+    game_data = Column(JSONB)
+    update_time = Column(DateTime, nullable=False)
 
 
 class SakeStorage(Base):
@@ -234,7 +244,9 @@ class ChatChannelCaches(Base):
     __tablename__ = "chat_channel_caches"
     server_id = Column(UUID, nullable=False)
     channel_name = Column(String, primary_key=True, nullable=False)
+    creator = Column(String, nullable=False)
     game_name = Column(String, nullable=False)
+    creator = Column(String, nullable=True)
     room_name = Column(String, nullable=False)
     topic = Column(String, nullable=True)
     password = Column(String, nullable=True)
@@ -245,6 +257,7 @@ class ChatChannelCaches(Base):
     update_time = Column(DateTime, nullable=False)
     modes = Column(JSONB, default=[])
     banned_nicks = Column(JSONB, default=[])
+    
 
 
 class ChatUserCaches(Base):
@@ -254,12 +267,12 @@ class ChatUserCaches(Base):
 
     __tablename__ = "chat_user_caches"
     server_id = Column(UUID, nullable=False)
-    nick_name = Column(String, primary_key=True, nullable=False)
+    nick_name = Column(String, primary_key=True, nullable=True)
     user_name = Column(String, nullable=True)
     game_name = Column(String, nullable=True)
     remote_ip_address = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
-    key_value = Column(JSONB)
+    key_value = Column(JSONB, default={})
     update_time = Column(DateTime, nullable=False)
 
 

@@ -62,6 +62,44 @@ class TopicRequestType(IntEnum):
     SET_CHANNEL_TOPIC = 1
 
 
+class ResponseCode(Enum):
+    WELCOME = "001"
+    USRIP = "302"
+    WHOISUSER = "311"
+    ENDOFWHO = "315"
+    ENDOFWHOIS = "318"
+    WHOISCHANNELS = "319"
+    LISTSTART = "321"
+    LIST = "322"
+    LISTEND = "323"
+    CHANNELMODEIS = "324"
+    NOTOPIC = "331"
+    TOPIC = "332"
+    WHOREPLY = "352"
+    NAMEREPLY = "353"
+    ENDOFNAMES = "366"
+    BANLIST = "367"
+    ENDOFBANLIST = "368"
+    GETKEY = "700"
+    ENDGETKEY = "701"
+    GETCKEY = "702"
+    ENDGETCKEY = "703"
+    GETCHANKEY = "704"
+    SECUREKEY = "705"
+    CDKEY = "706"
+    LOGIN = "707"
+    GETUDPRELAY = "712"
+    PONG = "PONG"
+    JOIN = "JOIN"
+    KICK = "KICK"
+    QUIT = "QUIT"
+    PART = "PART"
+    ATM = "ATM"
+    UTM = "UTM"
+    PRIVMSG = "PRIVMSG"
+    NOTICE = "NOTICE"
+    
+
 # region IRC error code
 class IRCErrorCode(Enum):
     NO_SUCH_NICK = "401"
@@ -79,6 +117,7 @@ class IRCErrorCode(Enum):
     NO_UNIQUE_NICK = "709"
     UNIQUE_NICK_EXPIRED = "710"
     REGISTER_NICK_FAILED = "711"
+
 
 # region Peer room
 

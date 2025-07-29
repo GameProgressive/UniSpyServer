@@ -22,7 +22,7 @@ class UpdateGTRServiceHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         info = data.search_relay_server(
-            self._request.server_id, self._request.public_ip_address
+            self._request.server_id, self._request.public_ip_address, self._session
         )
         if info is None:
             info = RelayServerCaches(
@@ -32,7 +32,7 @@ class UpdateGTRServiceHandler(HandlerBase):
                 client_count=self._request.client_count,
                 update_time=datetime.now(),
             )
-            data.add_relay_server(info)
+            data.add_relay_server(info, self._session)
         else:
             # refresh update time
-            data.update_relay_server(info)
+            data.update_relay_server(info, self._session)

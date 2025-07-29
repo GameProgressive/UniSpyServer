@@ -8,7 +8,6 @@ from frontends.gamespy.library.network.tcp_handler import TcpConnection
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
-
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
 
@@ -55,7 +54,7 @@ class Client(ClientBase):
     def start_brocker(self):
         self.brocker = WebSocketBrocker(
             name=self.server_config.server_name,
-            url=f"{CONFIG.backend.url}/Chat/ws",
+            url=f"{CONFIG.backend.url.replace('http', 'ws')}/GameSpy/Chat/ws",
             call_back_func=self._process_brocker_message,
         )
         self.brocker.subscribe()

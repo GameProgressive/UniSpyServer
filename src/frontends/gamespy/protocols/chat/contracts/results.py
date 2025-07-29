@@ -6,6 +6,7 @@ from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultB
 
 
 class CryptResult(ResultBase):
+    secret_key: str
     pass
 
 

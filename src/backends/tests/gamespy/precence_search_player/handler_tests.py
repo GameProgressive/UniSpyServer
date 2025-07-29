@@ -3,7 +3,16 @@ import unittest
 from backends.tests.utils import add_headers
 import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
 from frontends.tests.gamespy.presence_search_player.handler_tests import (
-    NICKS, SEARCH_1, SEARCH_2, SEARCH_3, SEARCH_4, CHECK1, NEWUSER, SEARCH_UNIQUENICK, VALID)
+    NICKS,
+    SEARCH_1,
+    SEARCH_2,
+    SEARCH_3,
+    SEARCH_4,
+    CHECK1,
+    NEWUSER,
+    SEARCH_UNIQUENICK,
+    VALID,
+)
 import backends.protocols.gamespy.presence_search_player.requests as bkr
 import backends.protocols.gamespy.presence_search_player.handlers as bkh
 
@@ -12,6 +21,7 @@ class HandlerTest(unittest.TestCase):
     """
     test backend and server request compability
     """
+
     # region PCM
     # region PSP
 
@@ -35,6 +45,8 @@ class HandlerTest(unittest.TestCase):
     def test_new_user(self):
         r = psp.NewUserRequest(NEWUSER)
         data = add_headers(r)
+        data["email"] = "xiaojiuwo1@gamespy.com"
+        data["nick"] = "xiaojiuwo1"
         request = bkr.NewUserRequest(**data)
         handler = bkh.NewUserHandler(request)
         handler.handle()

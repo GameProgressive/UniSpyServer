@@ -147,6 +147,7 @@ class NewGameRequest(RequestBase):
 
     def parse(self) -> None:
         super().parse()
+        self.is_client_local_storage_available = True
         if "sesskey" not in self.request_dict:
             raise GSException("sesskey is missing")
 

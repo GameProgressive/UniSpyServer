@@ -15,7 +15,7 @@ class ServerLauncher(ServerLauncherBase):
         assert self.config is not None
         assert self.logger is not None
         self.server = TcpServer(self.config, Client, self.logger)
-
+        super()._launch_server()
 
 if __name__ == "__main__":
     s = ServerLauncher()

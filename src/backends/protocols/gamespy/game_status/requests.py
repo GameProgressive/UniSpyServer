@@ -1,5 +1,3 @@
-
-
 from pydantic import Field
 import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.game_status.aggregations.enums import (
@@ -42,7 +40,7 @@ class GetProfileIdRequest(RequestBase):
 
 class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
-    challenge: str
+    challenge: str | None = None
     connection_id: int = Field(
         description="The session key that backend send to client."
     )

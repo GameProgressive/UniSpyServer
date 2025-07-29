@@ -1,13 +1,18 @@
+from backends.library.abstractions.contracts import OKResponse
 from backends.protocols.gamespy.chat.brocker_manager import MANAGER
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
+    CryptHandler,
     GetKeyHandler,
     GetUdpRelayHandler,
     InviteHandler,
+    NickHandler,
+    UserHandler,
 )
 from backends.protocols.gamespy.chat.requests import (
     AtmRequest,
     CdkeyRequest,
+    CryptRequest,
     GetCKeyRequest,
     GetChannelKeyRequest,
     GetKeyRequest,
@@ -66,6 +71,8 @@ async def websocket_endpoint(ws: WebSocket):
         print("Client disconnected")
 
 
+    
+    
 # region General
 
 
@@ -110,7 +117,9 @@ def login(request: LoginRequest):
 
 @router.post(f"{CHAT}/NickHandler")
 def nick(request: NickRequest):
-    pass
+    handler = NickHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/QuitHandler")
@@ -125,12 +134,15 @@ def set_key(request: SetKeyRequest):
 
 @router.post(f"{CHAT}/UserHandler")
 def user(request: UserRequest):
-    pass
+    handler = UserHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/UserIPHandler")
 def user_ip(request: UserIPRequest):
-    pass
+    print(request)
+    return OKResponse()
 
 
 @router.post(f"{CHAT}/WhoHandler")
@@ -192,6 +204,13 @@ def set_group(request: SetGroupRequest):
 @router.post(f"{CHAT}/TopicHandler")
 def topic(request: TopicRequest):
     pass
+
+
+@router.post(f"{CHAT}/CryptHandler")
+def crypt(request: CryptRequest):
+    handler = CryptHandler(request)
+    handler.handle()
+    return handler.response
 
 
 # region Message

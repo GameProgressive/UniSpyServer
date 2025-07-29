@@ -20,7 +20,10 @@ class InitHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         info = data.get_init_info(
-            self._request.cookie, self._request.client_index, self._request.port_type
+            self._request.cookie,
+            self._request.client_index,
+            self._request.port_type,
+            self._session,
         )
         if info is None:
             info = InitPacketCaches(
@@ -37,10 +40,10 @@ class InitHandler(HandlerBase):
                 private_port=self._request.private_port,
                 update_time=datetime.now(timezone.utc),
             )
-            data.add_init_packet(info)
+            data.add_init_packet(info, self._session)
         else:
             info.update_time = datetime.now(timezone.utc)  # type: ignore
-            data.update_init_info(info)
+            data.update_init_info(info, self._session)
 
 
 class ConnectHandler(HandlerBase):
@@ -54,14 +57,16 @@ class ConnectHandler(HandlerBase):
     def _data_operate(self) -> None:
         # analysis NAT of both parties and find the proper ips
         init_infos_1 = data.get_init_infos(
-            self._request.cookie, self._request.client_index
+            self._request.cookie, self._request.client_index, self._session
         )
         # choose the other index of the currect client
         if self._request.client_index == NatClientIndex.GAME_CLIENT:
             client_index_2 = NatClientIndex.GAME_SERVER
         else:
             client_index_2 = NatClientIndex.GAME_CLIENT
-        init_infos_2 = data.get_init_infos(self._request.cookie, client_index_2)
+        init_infos_2 = data.get_init_infos(
+            self._request.cookie, client_index_2, self._session
+        )
         if len(init_infos_1) == 0 or len(init_infos_2) == 0:
             raise UniSpyException(
                 f"no init info found for cookie {self._request.cookie}"
@@ -69,7 +74,7 @@ class ConnectHandler(HandlerBase):
         assert isinstance(init_infos_1[0].public_ip, str)
         assert isinstance(init_infos_2[0].public_ip, str)
         nat_fail_infos = data.get_nat_fail_info_by_ip(
-            init_infos_1[0].public_ip, init_infos_2[0].public_ip
+            init_infos_1[0].public_ip, init_infos_2[0].public_ip, self._session
         )
         self._strategy = NatStrategy.USE_GAME_TRAFFIC_RALEY
         if len(nat_fail_infos) != 0:
@@ -99,7 +104,7 @@ class ConnectHandler(HandlerBase):
 
         elif self._strategy == NatStrategy.USE_GAME_TRAFFIC_RALEY:
             # get a small number of players server from database
-            relay_servers = data.get_game_traffic_relay_servers(5)
+            relay_servers = data.get_game_traffic_relay_servers(self._session, 5)
             # select strategy to choose one gtr server
             rs = relay_servers[0]
             assert isinstance(rs.public_ip_address, str)

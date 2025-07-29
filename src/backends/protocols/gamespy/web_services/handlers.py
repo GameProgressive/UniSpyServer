@@ -33,6 +33,7 @@ class LoginProfileHandler(HandlerBase):
             namespace_id=self._request.namespace_id,
             cdkey=self._request.cdkey,
             email=self._request.email,
+            session=self._session,
         )
 
     def _result_construct(self) -> None:
@@ -56,7 +57,9 @@ class LoginRemoteAuthHandler(HandlerBase):
     _request: LoginRemoteAuthRequest
 
     def _data_operate(self) -> None:
-        self.data = data.get_info_by_authtoken(auth_token=self._request.auth_token)
+        self.data = data.get_info_by_authtoken(
+            auth_token=self._request.auth_token, session=self._session
+        )
 
     def _result_construct(self) -> None:
         self._result = LoginProfileResult(
@@ -73,7 +76,9 @@ class LoginUniqueNickHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_uniquenick(
-            uniquenick=self._request.uniquenick, namespace_id=self._request.namespace_id
+            uniquenick=self._request.uniquenick,
+            namespace_id=self._request.namespace_id,
+            session=self._session,
         )
 
     def _result_construct(self) -> None:
@@ -136,7 +141,7 @@ class GetMyRecordsHandler(HandlerBase):
     _request: GetMyRecordsRequest
 
     def _data_operate(self):
-        self.data = data.get_user_data(self._request.table_id)
+        self.data = data.get_user_data(self._request.table_id, self._session)
         raise NotImplementedError()
 
 

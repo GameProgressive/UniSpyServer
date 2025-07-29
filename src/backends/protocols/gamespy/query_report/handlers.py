@@ -37,7 +37,9 @@ class Heartbeathandler(HandlerBase):
     _request: HeartBeatRequest
 
     def _data_operate(self) -> None:
-        cache = data.get_server_info_with_instant_key(str(self._request.instant_key))
+        cache = data.get_server_info_with_instant_key(
+            str(self._request.instant_key), self._session
+        )
         if cache is None:
             cache = GameServerCaches(
                 instant_key=self._request.instant_key,
@@ -52,7 +54,7 @@ class Heartbeathandler(HandlerBase):
                 team_data=self._request.team_data,
                 avaliable=True,
             )
-            data.create_game_server(cache)
+            data.create_game_server(cache, self._session)
         else:
             cache.instant_key = self._request.instant_key  # type: ignore
             cache.server_id = self._request.server_id  # type: ignore
@@ -65,7 +67,7 @@ class Heartbeathandler(HandlerBase):
             cache.server_data = self._request.server_data  # type: ignore
             cache.team_data = self._request.team_data  # type: ignore
             cache.avaliable = True  # type: ignore
-            data.update_game_server()
+            data.update_game_server(self._session)
 
 
 class KeepAliveHandler(HandlerBase):

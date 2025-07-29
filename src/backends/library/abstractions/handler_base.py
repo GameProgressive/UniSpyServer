@@ -5,9 +5,11 @@ from backends.library.abstractions.contracts import (
     RequestBase,
     Response,
 )
+from backends.library.database.pg_orm import ENGINE
 from frontends.gamespy.library.abstractions.contracts import ResultBase
 
 import logging
+from sqlalchemy.orm import Session
 
 
 class HandlerBase:
@@ -44,10 +46,13 @@ class HandlerBase:
         self._response = None
 
     def handle(self) -> None:
-        self._request_check()
-        self._data_operate()
-        self._result_construct()
-        self._response_construct()
+        with Session(ENGINE) as session:
+            self._session = session
+            self._request_check()
+            self._data_operate()
+            self._session.commit()
+            self._result_construct()
+            self._response_construct()
 
     def _request_check(self) -> None:
         """virtual method"""

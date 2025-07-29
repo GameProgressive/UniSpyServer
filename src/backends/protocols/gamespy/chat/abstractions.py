@@ -30,17 +30,20 @@ class ChannelHandlerBase(HandlerBase):
 
     def _get_user(self):
         self._user = data.get_user_cache_by_ip_port(
-            self._request.client_ip, self._request.client_port
+            self._request.client_ip, self._request.client_port, self._session
         )
 
     def _get_channel(self):
-        self._channel = data.get_channel_by_name(self._request.channel_name)
+        self._channel = data.get_channel_by_name(
+            self._request.channel_name, self._session
+        )
 
     def _get_channel_user(self):
         self._channel_user = data.get_channel_user_cache_by_name_and_ip_port(
             self._request.channel_name,
             self._request.client_ip,
             self._request.client_port,
+            self._session,
         )
 
     def _check_user(self):

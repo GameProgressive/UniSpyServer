@@ -4,7 +4,6 @@
 
 from typing import TYPE_CHECKING, cast
 from backends.library.database.pg_orm import (
-    ENGINE,
     Profiles,
     SubProfiles,
     Users,
@@ -26,28 +25,28 @@ def is_user_exist(
     namespace_id: int,
     email: str,
     password: str,
+    session: Session,
 ) -> None:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Profiles)
-            .join(Users)
-            .join(SubProfiles)
-            .where(
-                SubProfiles.uniquenick == uniquenick,
-                SubProfiles.cdkeyenc == cdkey,
-                SubProfiles.partnerid == partner_id,
-                SubProfiles.namespaceid == namespace_id,
-                Users.email == email,
-                Users.password == password,
-            )
-            .first()
+    result = (
+        session.query(Profiles)
+        .join(Users)
+        .join(SubProfiles)
+        .where(
+            SubProfiles.uniquenick == uniquenick,
+            SubProfiles.cdkeyenc == cdkey,
+            SubProfiles.partnerid == partner_id,
+            SubProfiles.namespaceid == namespace_id,
+            Users.email == email,
+            Users.password == password,
         )
+        .first()
+    )
     if result is None:
         raise AuthException("No account exists with the provided email address.")
 
 
 def get_info_by_cdkey_email(
-    uniquenick: str, namespace_id: int, cdkey: str, email: str
+    uniquenick: str, namespace_id: int, cdkey: str, email: str, session: Session
 ) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
@@ -57,22 +56,21 @@ def get_info_by_cdkey_email(
     assert isinstance(cdkey, str)
     assert isinstance(email, str)
 
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Users, Profiles, SubProfiles)
-            .join(Users)
-            .join(
-                Profiles,
-            )
-            .join(SubProfiles)
-            .where(
-                SubProfiles.uniquenick == uniquenick,
-                SubProfiles.namespaceid == namespace_id,
-                SubProfiles.cdkeyenc == cdkey,
-                Users.email == email,
-            )
-            .first()
+    result = (
+        session.query(Users, Profiles, SubProfiles)
+        .join(Users)
+        .join(
+            Profiles,
         )
+        .join(SubProfiles)
+        .where(
+            SubProfiles.uniquenick == uniquenick,
+            SubProfiles.namespaceid == namespace_id,
+            SubProfiles.cdkeyenc == cdkey,
+            Users.email == email,
+        )
+        .first()
+    )
 
     if result is None:
         raise AuthException(
@@ -96,18 +94,20 @@ def get_info_by_cdkey_email(
     )
 
 
-def get_info_by_authtoken(auth_token: str) -> tuple[int, int, str, str, str]:
+def get_info_by_authtoken(
+    auth_token: str, session: Session
+) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Users, Profiles, SubProfiles)
-            .join(Users, Users.userid == Profiles.userid)
-            .join(Profiles, Profiles.profileid == SubProfiles.profileid)
-            .where(SubProfiles.authtoken == auth_token)
-            .first()
-        )
+
+    result = (
+        session.query(Users, Profiles, SubProfiles)
+        .join(Users, Users.userid == Profiles.userid)
+        .join(Profiles, Profiles.profileid == SubProfiles.profileid)
+        .where(SubProfiles.authtoken == auth_token)
+        .first()
+    )
     if result is None:
         raise AuthException("No account exists with the provided authtoken.")
     user: Users = result[0]
@@ -128,22 +128,22 @@ def get_info_by_authtoken(auth_token: str) -> tuple[int, int, str, str, str]:
 
 
 def get_info_by_uniquenick(
-    uniquenick: str, namespace_id: int
+    uniquenick: str, namespace_id: int, session: Session
 ) -> tuple[int, int, str, str, str]:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Users, Profiles, SubProfiles)
-            .join(Users, Users.userid == Profiles.userid)
-            .join(Profiles, Profiles.profileid == SubProfiles.profileid)
-            .where(
-                SubProfiles.uniquenick == uniquenick,
-                SubProfiles.namespaceid == namespace_id,
-            )
-            .first()
+
+    result = (
+        session.query(Users, Profiles, SubProfiles)
+        .join(Users, Users.userid == Profiles.userid)
+        .join(Profiles, Profiles.profileid == SubProfiles.profileid)
+        .where(
+            SubProfiles.uniquenick == uniquenick,
+            SubProfiles.namespaceid == namespace_id,
         )
+        .first()
+    )
 
     if result is None:
         raise AuthException(
@@ -178,26 +178,18 @@ def get_info_by_uniquenick(
 # region sake
 
 
-def get_user_data(
-    table_id: int,
-) -> dict:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(SakeStorage.data)
-            .where(SakeStorage.tableid == table_id)
-            .first()
-        )
+def get_user_data(table_id: int, session: Session) -> dict:
+    result = (
+        session.query(SakeStorage.data).where(SakeStorage.tableid == table_id).first()
+    )
 
     if TYPE_CHECKING:
         result = cast(dict, result)
     return result
 
 
-def update_user_data(table_id: int, data: dict) -> None:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
-        )
+def update_user_data(table_id: int, data: dict, session: Session) -> None:
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
     if result is None:
         raise SakeException("user data not found")
     assert isinstance(result.data, dict)
@@ -210,29 +202,16 @@ def update_user_data(table_id: int, data: dict) -> None:
             result.data[key] = data[key]
 
 
-def create_records(table_id: int, data: dict) -> None:
+def create_records(table_id: int, data: dict, session: Session) -> None:
     assert isinstance(table_id, int)
     assert isinstance(data, dict)
-    with Session(ENGINE) as session:
-        result = (
-            session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
-        )
 
-        if result != 0:
-            raise SakeException("Records already existed")
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
 
-        sake = SakeStorage(table_id=table_id, data=data)
+    if result != 0:
+        raise SakeException("Records already existed")
 
-        session.add(sake)
-        session.commit()
+    sake = SakeStorage(table_id=table_id, data=data)
 
-
-if __name__ == "__main__":
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Users, Profiles, SubProfiles)
-            .join(Profiles, Users.userid == Profiles.userid)
-            .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-            .where(Users.userid == 1)
-            .first()
-        )
+    session.add(sake)
+    session.commit()

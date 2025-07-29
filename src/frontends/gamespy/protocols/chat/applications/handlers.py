@@ -1,3 +1,4 @@
+from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
 from frontends.gamespy.protocols.chat.contracts.results import (
     ATMResult,
     NoticeResult,
@@ -110,12 +111,18 @@ class CryptHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: RequestBase):
         assert isinstance(request, CryptRequest)
         super().__init__(client, request)
+        self._result_cls = CryptResult
 
-    def _data_operate(self):
-        pass
+    def _data_operate(self) -> None:
+        super()._data_operate()
+        self._client.info.gamename = self._request.gamename
 
     def _response_construct(self) -> None:
         self._response = CryptResponse()
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        self._client.crypto = ChatCrypt(self._result.secret_key)
 
 
 class GetKeyHandler(CmdHandlerBase):
@@ -226,6 +233,9 @@ class UserHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._is_fetching = False
 
+    def _request_check(self) -> None:
+        super()._request_check()
+
 
 class UserIPHandler(CmdHandlerBase):
     _request: UserIPRequest
@@ -236,8 +246,15 @@ class UserIPHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._is_fetching = False
 
-    def _response_construct(self) -> None:
+    def _request_check(self) -> None:
+        super()._request_check()
+        self._request.remote_ip_address = self._client.connection.remote_ip
+
+    def _data_operate(self) -> None:
+        super()._data_operate()
         self._result = UserIPResult(remote_ip_address=self._client.connection.remote_ip)
+
+    def _response_construct(self) -> None:
         self._response = UserIPResponse(self._result)
 
 

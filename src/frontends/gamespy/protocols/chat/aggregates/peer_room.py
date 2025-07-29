@@ -2,7 +2,6 @@ from frontends.gamespy.protocols.chat.aggregates.enums import PeerRoomType
 
 
 class PeerRoom:
-
     TitleRoomPrefix = "#GSP"
     """ When game connects to the server, the player will enter the default channel for communicating with other players."""
     StagingRoomPrefix = "#GSP"
@@ -61,4 +60,5 @@ class PeerRoom:
 
 if __name__ == "__main__":
     result = PeerRoom.get_room_type("#GSP!worms3!Ml4lz344lM")
+    result = PeerRoom.get_room_type("#GPG!700")
     pass

@@ -218,19 +218,21 @@ class UserIPRequest(RequestBase):
 
 class UserRequest(RequestBase):
     user_name: str
-    host_name: str
+    local_ip_address: str
     server_name: str
-    nick_name: str
     name: str
+
+    def __init__(self, raw_request: str) -> None:
+        super().__init__(raw_request)
 
     def parse(self):
         super().parse()
         if len(self._cmd_params) == 3:
             self.user_name = self._cmd_params[0]
-            self.host_name = self._cmd_params[1]
+            self.local_ip_address = self._cmd_params[1]
             self.server_name = self._cmd_params[2]
         else:
-            self.host_name = self._cmd_params[0]
+            self.local_ip_address = self._cmd_params[0]
             self.server_name = self._cmd_params[1]
 
         assert isinstance(self._long_param, str)

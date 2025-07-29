@@ -2,7 +2,7 @@ import os
 from typing import Literal, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, HttpUrl, field_validator
 
 
 class PostgreSql(BaseModel):
@@ -61,6 +61,9 @@ class BackendConfig(BaseModel):
     token_secret_key: str
     token_algorithm: str
     token_expire_time: int = 30
+
+
+
 
 
 class UnittestConfig(BaseModel):

@@ -1,10 +1,19 @@
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, LoginRequestType, MessageType, ModeOperationType, ModeRequestType, TopicRequestType, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    GetKeyRequestType,
+    LoginRequestType,
+    MessageType,
+    ModeOperationType,
+    ModeRequestType,
+    TopicRequestType,
+    WhoRequestType,
+)
 
 
 class RequestBase(lib.RequestBase):
     raw_request: str
     command_name: str
+
 
 # region General
 
@@ -84,9 +93,8 @@ class UserIPRequest(RequestBase):
 
 class UserRequest(RequestBase):
     user_name: str
-    host_name: str
+    local_ip_address: str
     server_name: str
-    nick_name: str
     name: str
 
 
@@ -106,6 +114,7 @@ class GetKeyRequest(RequestBase):
     cookie: str
     unknown_cmd_param: str
     keys: list[str]
+
 
 # region Channel
 
@@ -180,6 +189,7 @@ class MessageRequestBase(ChannelRequestBase):
     type: MessageType
     nick_name: str
     message: str
+
 
 # region Message
 

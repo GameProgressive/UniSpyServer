@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from backends.library.database.pg_orm import (
-    ENGINE,
     InitPacketCaches,
     NatFailCaches,
     RelayServerCaches,
@@ -13,132 +12,134 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
 
 from sqlalchemy.orm import Session
 
-def add_init_packet(info: InitPacketCaches) -> None:
+
+def add_init_packet(info: InitPacketCaches, session: Session) -> None:
     assert isinstance(info, InitPacketCaches)
-    with Session(ENGINE) as session:
-        session.add(info)
-        session.commit()
+
+    session.add(info)
+    session.commit()
 
 
-def count_init_info(cookie: int, version: int) -> int:
+def count_init_info(cookie: int, version: int, session: Session) -> int:
     time = datetime.now() - timedelta(seconds=30)
-    with Session(ENGINE) as session:
-        result = (
-            session.query(InitPacketCaches)
-            .where(
-                InitPacketCaches.cookie == cookie,
-                InitPacketCaches.version == version,
-                InitPacketCaches.update_time >= time,
-            )
-            .count()
+
+    result = (
+        session.query(InitPacketCaches)
+        .where(
+            InitPacketCaches.cookie == cookie,
+            InitPacketCaches.version == version,
+            InitPacketCaches.update_time >= time,
         )
-        return result
-
-
-def get_init_info(
-    cookie: int, client_index: NatClientIndex, port_type: NatPortType
-) -> InitPacketCaches | None:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(InitPacketCaches)
-            .where(
-                InitPacketCaches.cookie == cookie,
-                InitPacketCaches.client_index == client_index,
-                InitPacketCaches.port_type == port_type,
-            )
-            .first()
-        )
-        return result
-
-
-def get_init_infos(cookie: int, client_index: NatClientIndex) -> list[InitPacketCaches]:
-    # query the latest init info with in 30 seconds
-    time = datetime.now() - timedelta(seconds=30)
-    with Session(ENGINE) as session:
-        result = (
-            session.query(InitPacketCaches)
-            .where(
-                InitPacketCaches.cookie == cookie,
-                InitPacketCaches.client_index == client_index,
-                InitPacketCaches.update_time >= time,
-            )
-            .all()
-        )
-        return result
-
-
-def update_init_info(info: InitPacketCaches) -> None:
-    assert isinstance(info, InitPacketCaches)
-    with Session(ENGINE) as session:
-        session.commit()
-
-
-def remove_init_info(info: InitPacketCaches) -> None:
-    assert isinstance(info, InitPacketCaches)
-    with Session(ENGINE) as session:
-        session.delete(info)
-        session.commit()
-
-
-def store_nat_fail_info(info: NatFailCaches) -> None:
-    assert isinstance(info, NatFailCaches)
-    with Session(ENGINE) as session:
-        session.add(info)
-        session.commit()
-
-
-def update_nat_fail_info(info: NatFailCaches) -> None:
-    assert isinstance(info, NatFailCaches)
-    with Session(ENGINE) as session:
-        result = get_nat_fail_info(info)
-        if result is not None:
-            session.delete(result)
-        store_nat_fail_info(info)
-
-
-def remove_nat_fail_info(info: NatFailCaches) -> None:
-    assert isinstance(info, NatFailCaches)
-    with Session(ENGINE) as session:
-        session.delete(info)
-        session.commit()
-
-
-def get_nat_fail_info(info: NatFailCaches):
-    result = get_nat_fail_info_by_ip(
-        str(info.public_ip_address1), str(info.public_ip_address2)
+        .count()
     )
     return result
 
 
-def get_nat_fail_info_by_ip(public_ip1: str, public_ip2: str) -> list[NatFailCaches]:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(NatFailCaches)
-            .where(
-                NatFailCaches.public_ip_address1 == public_ip1,
-                NatFailCaches.public_ip_address2 == public_ip2,
-            )
-            .all()
+def get_init_info(
+    cookie: int, client_index: NatClientIndex, port_type: NatPortType, session: Session
+) -> InitPacketCaches | None:
+    result = (
+        session.query(InitPacketCaches)
+        .where(
+            InitPacketCaches.cookie == cookie,
+            InitPacketCaches.client_index == client_index,
+            InitPacketCaches.port_type == port_type,
         )
-        return result
+        .first()
+    )
+    return result
+
+
+def get_init_infos(
+    cookie: int, client_index: NatClientIndex, session: Session
+) -> list[InitPacketCaches]:
+    # query the latest init info with in 30 seconds
+    time = datetime.now() - timedelta(seconds=30)
+
+    result = (
+        session.query(InitPacketCaches)
+        .where(
+            InitPacketCaches.cookie == cookie,
+            InitPacketCaches.client_index == client_index,
+            InitPacketCaches.update_time >= time,
+        )
+        .all()
+    )
+    return result
+
+
+def update_init_info(info: InitPacketCaches, session: Session) -> None:
+    assert isinstance(info, InitPacketCaches)
+
+    session.commit()
+
+
+def remove_init_info(info: InitPacketCaches, session: Session) -> None:
+    assert isinstance(info, InitPacketCaches)
+
+    session.delete(info)
+    session.commit()
+
+
+def store_nat_fail_info(info: NatFailCaches, session: Session) -> None:
+    assert isinstance(info, NatFailCaches)
+
+    session.add(info)
+    session.commit()
+
+
+def update_nat_fail_info(info: NatFailCaches, session: Session) -> None:
+    assert isinstance(info, NatFailCaches)
+
+    result = get_nat_fail_info(info, session)
+    if result is not None:
+        session.delete(result)
+    store_nat_fail_info(info, session)
+
+
+def remove_nat_fail_info(info: NatFailCaches, session: Session) -> None:
+    assert isinstance(info, NatFailCaches)
+
+    session.delete(info)
+    session.commit()
+
+
+def get_nat_fail_info(info: NatFailCaches, session: Session):
+    result = get_nat_fail_info_by_ip(
+        str(info.public_ip_address1), str(info.public_ip_address2), session
+    )
+    return result
+
+
+def get_nat_fail_info_by_ip(
+    public_ip1: str, public_ip2: str, session: Session
+) -> list[NatFailCaches]:
+    result = (
+        session.query(NatFailCaches)
+        .where(
+            NatFailCaches.public_ip_address1 == public_ip1,
+            NatFailCaches.public_ip_address2 == public_ip2,
+        )
+        .all()
+    )
+    return result
 
 
 def get_game_traffic_relay_servers(
-    number: int | None = None,
+    session: Session, number: int | None = None
 ) -> list[RelayServerCaches]:
-    with Session(ENGINE) as session:
-        if number is None:
-            result = (
-                session.query(RelayServerCaches)
-                .order_by(RelayServerCaches.client_count.desc())
-                .all()
-            )
-        else:
-            assert isinstance(number, int)
-            result = (
-                session.query(RelayServerCaches)
-                .order_by(RelayServerCaches.client_count.desc())
-                .limit(number)
-                .all()
-            )
-        return result
+    if number is None:
+        result = (
+            session.query(RelayServerCaches)
+            .order_by(RelayServerCaches.client_count.desc())
+            .all()
+        )
+    else:
+        assert isinstance(number, int)
+        result = (
+            session.query(RelayServerCaches)
+            .order_by(RelayServerCaches.client_count.desc())
+            .limit(number)
+            .all()
+        )
+    return result
