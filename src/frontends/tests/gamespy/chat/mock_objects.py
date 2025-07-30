@@ -7,6 +7,7 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     GetKeyHandler,
     JoinHandler,
     ModeHandler,
+    NamesHandler,
     NickHandler,
     PartHandler,
     QuitHandler,
@@ -18,13 +19,17 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     UserIPHandler,
     WhoHandler,
     LoginHandler,
+    CryptHandler,
 )
 from frontends.gamespy.protocols.chat.contracts.results import (
+    CryptResult,
     GetCKeyResult,
     GetKeyResult,
     JoinResult,
     LoginResult,
     ModeResult,
+    NamesResult,
+    NamesResultData,
     NickResult,
     PartResult,
     SetChannelKeyResult,
@@ -69,8 +74,18 @@ def create_client() -> Client:
     conn = ConnectionMock(
         handler=handler, config=config, t_client=ClientMock, logger=logger
     )
+    create_mock_url(config, CryptHandler, CryptResult(secret_key="test").model_dump())
     create_mock_url(
         config, LoginHandler, LoginResult(profile_id=1, user_id=1).model_dump()
+    )
+    create_mock_url(
+        config,
+        NamesHandler,
+        NamesResult(
+            channel_nicks=[NamesResultData(nick_name="test")],
+            channel_name="test",
+            requester_nick_name="test1",
+        ).model_dump(),
     )
     create_mock_url(config, QuitHandler, {"message": "ok"})
     create_mock_url(config, UserIPHandler, {"message": "ok"})
@@ -80,8 +95,6 @@ def create_client() -> Client:
         JoinResult(
             joiner_nick_name="xiaojiuwo",
             joiner_user_name="unispy",
-            all_channel_user_nicks=["unispy1", "unispy2"],
-            channel_modes=["+q"],
         ).model_dump(),
     )
     create_mock_url(config, UserHandler, {"message": "ok"})

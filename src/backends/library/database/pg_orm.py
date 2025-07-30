@@ -293,6 +293,7 @@ class ChatChannelUserCaches(Base):
     channel_name = Column(
         String, ForeignKey("chat_channel_caches.channel_name"), nullable=False
     )
+    server_id = Column(UUID, nullable=False)
     update_time = Column(DateTime, nullable=False)
     # can we directly store the flags?
     is_voiceable = Column(Boolean, nullable=False)

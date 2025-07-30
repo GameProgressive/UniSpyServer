@@ -191,6 +191,10 @@ class NickHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._result_cls = NickResult
 
+    def _data_operate(self) -> None:
+        super()._data_operate()
+        self._client.info.nick_name = self._request.nick_name
+
     def _response_construct(self) -> None:
         self._response = NickResponse(self._result)
 
@@ -232,6 +236,10 @@ class UserHandler(CmdHandlerBase):
         assert isinstance(request, UserRequest)
         super().__init__(client, request)
         self._is_fetching = False
+
+    def _data_operate(self) -> None:
+        super()._data_operate()
+        self._client.info.user_name = self._request.user_name
 
     def _request_check(self) -> None:
         super()._request_check()
@@ -327,6 +335,18 @@ class JoinHandler(ChannelHandlerBase):
     def _response_construct(self):
         self._response = JoinResponse(self._request, self._result)
 
+    def _response_send(self) -> None:
+        super()._response_send()
+        names_raw = NamesRequest.build(self._request.channel_name)
+        names_req = NamesRequest(names_raw)
+        names_handler = NamesHandler(self._client, names_req)
+        names_handler.handle()
+
+        mode_raw = ModeRequest.build(self._request.channel_name)
+        mode_req = ModeRequest(mode_raw)
+        mode_handler = ModeHandler(self._client, mode_req)
+        mode_handler.handle()
+
 
 class KickHandler(ChannelHandlerBase):
     _request: KickRequest
@@ -352,11 +372,11 @@ class ModeHandler(ChannelHandlerBase):
 
     def _request_check(self) -> None:
         super()._request_check()
-        if self._request.type == ModeRequestType.SET_CHANNEL_MODES:
+        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
             self._is_fetching = False
 
     def _response_construct(self):
-        if self._request.type in [
+        if self._request.request_type in [
             ModeRequestType.GET_CHANNEL_AND_USER_MODES,
             ModeRequestType.GET_CHANNEL_MODES,
         ]:
@@ -370,6 +390,7 @@ class NamesHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: NamesRequest):
         assert isinstance(request, NamesRequest)
         super().__init__(client, request)
+        self._result_cls = NamesResult
 
     def _response_construct(self):
         self._response = NamesResponse(self._request, self._result)

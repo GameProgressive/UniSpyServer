@@ -394,7 +394,7 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> +l <limit number>"
     # "MODE <channel name> -l"
 
-    # "MODE <channel name> +b" actually we do not care about this request
+    # "MODE <channel name> +b *!*@<host name>" actually we do not care about this request
     # "MODE <channel name> +/-b <nick name>"
 
     # "MODE <channel name> +/-co <user name>"
@@ -402,165 +402,97 @@ class ModeRequest(ChannelRequestBase):
 
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
-    type: ModeRequestType
+    request_type: ModeRequestType
     mode_operations: list[ModeOperationType]
     nick_name: str
     user_name: str
     limit_number: int
     mode_flag: str
-    password: str
-
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.mode_operations = []
+    password: str | None
 
     def parse(self):
-        if self.raw_request is None:
-            return
         super().parse()
+        self.mode_operations = []
         if len(self._cmd_params) == 1:
-            self.type = ModeRequestType.GET_CHANNEL_MODES
+            self.request_type = ModeRequestType.GET_CHANNEL_MODES
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
-            self.type = ModeRequestType.SET_CHANNEL_MODES
+            self.request_type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
             modeFlags = [s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()]
             modeFlags = list(filter(None, modeFlags))
             for flag in modeFlags:
-                match flag:
-                    case "+e":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_OPERATOR_ABEY_CHANNEL_LIMITS
-                        )
-                    case "-e":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_OPERATOR_ABEY_CHANNEL_LIMITS
-                        )
-                    case "+t":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_TOPIC_CHANGE_BY_OPERATOR_FLAG
-                        )
-                    case "-t":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_TOPIC_CHANGE_BY_OPERATOR_FLAG
-                        )
-                    case "+n":
-                        self.mode_operations.append(
-                            ModeOperationType.ENABLE_EXTERNAL_MESSAGES_FLAG
-                        )
-                    case "-n":
-                        self.mode_operations.append(
-                            ModeOperationType.DISABLE_EXTERNAL_MESSAGES_FLAG
-                        )
-                    case "+m":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_MODERATED_CHANNEL_FLAG
-                        )
-                    case "-m":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_MODERATED_CHANNEL_FLAG
-                        )
-                    case "+s":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_SECRET_CHANNEL_FLAG
-                        )
+                conv_flag = ModeOperationType(flag)
+                match conv_flag:
+                    case (
+                        ModeOperationType.SET_OPERATOR_ABEY_CHANNEL_LIMITS
+                        | ModeOperationType.REMOVE_OPERATOR_ABEY_CHANNEL_LIMITS
+                        | ModeOperationType.SET_TOPIC_CHANGE_BY_OPERATOR_FLAG
+                        | ModeOperationType.REMOVE_TOPIC_CHANGE_BY_OPERATOR_FLAG
+                        | ModeOperationType.ENABLE_EXTERNAL_MESSAGES_FLAG
+                        | ModeOperationType.DISABLE_EXTERNAL_MESSAGES_FLAG
+                        | ModeOperationType.SET_MODERATED_CHANNEL_FLAG
+                        | ModeOperationType.REMOVE_MODERATED_CHANNEL_FLAG
+                        | ModeOperationType.SET_SECRET_CHANNEL_FLAG
+                        | ModeOperationType.REMOVE_SECRET_CHANNEL_FLAG
+                        | ModeOperationType.SET_INVITED_ONLY
+                        | ModeOperationType.REMOVE_INVITED_ONLY
+                        | ModeOperationType.SET_PRIVATE_CHANNEL_FLAG
+                        | ModeOperationType.REMOVE_PRIVATE_CHANNEL_FLAG
+                        | ModeOperationType.ENABLE_USER_QUIET_FLAG
+                        | ModeOperationType.DISABLE_USER_QUIET_FLAG
+                        | ModeOperationType.ADD_CHANNEL_PASSWORD
+                        | ModeOperationType.REMOVE_CHANNEL_PASSWORD
+                    ):
+                        self.mode_operations.append(conv_flag)
 
-                    case "-s":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_SECRET_CHANNEL_FLAG
-                        )
-                    case "+i":
-                        self.mode_operations.append(ModeOperationType.SET_INVITED_ONLY)
-                    case "-i":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_INVITED_ONLY
-                        )
-                    case "-p":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_PRIVATE_CHANNEL_FLAG
-                        )
-                    case "+p":
-                        self.mode_operations.append(
-                            ModeOperationType.SET_PRIVATE_CHANNEL_FLAG
-                        )
-                    case "+q":
-                        self.mode_operations.append(
-                            ModeOperationType.ENABLE_USER_QUIET_FLAG
-                        )
-                    case "-q":
-                        self.mode_operations.append(
-                            ModeOperationType.DISABLE_USER_QUIET_FLAG
-                        )
-                    case "+k":
-                        self.mode_operations.append(
-                            ModeOperationType.ADD_CHANNEL_PASSWORD
-                        )
-                    case "-k":
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_CHANNEL_PASSWORD
-                        )
-
-                    case "+l":
+                    case ModeOperationType.ADD_CHANNEL_USER_LIMITS:
                         self.channel_name = self._cmd_params[0]
                         self.limit_number = int(self._cmd_params[2])
-                        self.mode_operations.append(
-                            ModeOperationType.ADD_CHANNEL_USER_LIMITS
-                        )
-                    case "-l":
+                        self.mode_operations.append(conv_flag)
+                    case (
+                        ModeOperationType.REMOVE_CHANNEL_USER_LIMITS
+                        | ModeOperationType.REMOVE_BAN_ON_USER
+                    ):
                         self.channel_name = self._cmd_params[0]
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_CHANNEL_USER_LIMITS
-                        )
-                    case "+b":
+                        self.mode_operations.append(conv_flag)
+                    case (
+                        ModeOperationType.ADD_BAN_ON_USER
+                        | ModeOperationType.GET_BANNED_USERS
+                    ):
                         self.channel_name = self._cmd_params[0]
                         if len(self._cmd_params) == 3:
                             self.nick_name = self._cmd_params[2]
-                            self.mode_operations.append(
-                                ModeOperationType.ADD_BAN_ON_USER
-                            )
-                        else:
-                            self.mode_operations.append(
-                                ModeOperationType.GET_BANNED_USERS
-                            )
-                    case "-b":
-                        self.channel_name = self._cmd_params[0]
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_BAN_ON_USER
-                        )
-                    case "+co":
+                        self.mode_operations.append(conv_flag)
+                    case (
+                        ModeOperationType.ADD_CHANNEL_OPERATOR
+                        | ModeOperationType.REMOVE_CHANNEL_OPERATOR
+                        | ModeOperationType.ENABLE_USER_VOICE_PERMISSION
+                        | ModeOperationType.DISABLE_USER_VOICE_PERMISSION
+                    ):
                         self.channel_name = self._cmd_params[0]
                         self.user_name = self._cmd_params[2]
-                        self.mode_operations.append(
-                            ModeOperationType.ADD_CHANNEL_OPERATOR
-                        )
-                    case "-co":
-                        self.channel_name = self._cmd_params[0]
-                        self.user_name = self._cmd_params[2]
-                        self.mode_operations.append(
-                            ModeOperationType.REMOVE_CHANNEL_OPERATOR
-                        )
-                    case "+cv":
-                        self.channel_name = self._cmd_params[0]
-                        self.user_name = self._cmd_params[2]
-                        self.mode_operations.append(
-                            ModeOperationType.ENABLE_USER_VOICE_PERMISSION
-                        )
-                    case "-cv":
-                        self.channel_name = self._cmd_params[0]
-                        self.user_name = self._cmd_params[2]
-                        self.mode_operations.append(
-                            ModeOperationType.DISABLE_USER_VOICE_PERMISSION
-                        )
-                    # Add more cases for other flags following the same pattern
-                    case _:
-                        raise ChatException("Unknown mode request type.")
+                        self.mode_operations.append(conv_flag)
+
         else:
             raise ChatException("The number of IRC parameters are incorrect.")
 
+    @staticmethod
+    def build(channel_name: str):
+        """
+        build the irc request for get the channel modes
+        """
+        raw = f"MODE {channel_name}"
+        return raw
+
 
 class NamesRequest(ChannelRequestBase):
-    def __init__(self, raw_request: str | None = None) -> None:
-        if raw_request is not None:
-            super().__init__(raw_request)
+    @staticmethod
+    def build(channel_name: str):
+        """
+        build raw request to get channel mode
+        """
+        raw = f"NAMES {channel_name}"
+        return raw
 
 
 class PartRequest(ChannelRequestBase):

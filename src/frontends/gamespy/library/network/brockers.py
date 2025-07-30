@@ -6,7 +6,7 @@ from websockets import ConnectionClosed
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from redis.client import PubSub
 
-from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 from websockets.sync.client import connect, ClientConnection
 
@@ -58,7 +58,8 @@ class WebSocketBrocker(BrockerBase):
                 message = self._subscriber.recv()
                 self._call_back_func(message)
         except ConnectionClosed:
-            raise UniSpyException("websocket connection is not established")
+            GLOBAL_LOGGER.warn("backend websocket server is not avaliable")
+            # raise UniSpyException("websocket connection is not established")
 
     def unsubscribe(self):
         self._subscriber.close()

@@ -6,6 +6,9 @@ from backends.protocols.gamespy.chat.handlers import (
     GetKeyHandler,
     GetUdpRelayHandler,
     InviteHandler,
+    JoinHandler,
+    ModeHandler,
+    NamesHandler,
     NickHandler,
     UserHandler,
 )
@@ -71,8 +74,6 @@ async def websocket_endpoint(ws: WebSocket):
         print("Client disconnected")
 
 
-    
-    
 # region General
 
 
@@ -112,7 +113,7 @@ def list_data(request: ListRequest):
 
 @router.post(f"{CHAT}/LoginHandler")
 def login(request: LoginRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/NickHandler")
@@ -124,12 +125,12 @@ def nick(request: NickRequest):
 
 @router.post(f"{CHAT}/QuitHandler")
 def quit(request: QuitRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/SetKeyHandler")
 def set_key(request: SetKeyRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/UserHandler")
@@ -147,63 +148,69 @@ def user_ip(request: UserIPRequest):
 
 @router.post(f"{CHAT}/WhoHandler")
 def who(request: WhoRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/WhoIsHandler")
 def whois(request: WhoIsRequest):
-    pass
+    raise NotImplementedError()
 
 
 # region channel
 @router.post(f"{CHAT}/GetChannelKeyHandler")
 def get_channel_key(request: GetChannelKeyRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/GetCKeyHandler")
 def get_ckey(request: GetCKeyRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/JoinHandler")
 def join(request: JoinRequest):
-    pass
+    handler = JoinHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/KickHandler")
 def kick(request: KickRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/ModeHandler")
 def mode(request: ModeRequest):
-    pass
+    handler = ModeHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/NamesHandler")
 def names(request: NamesRequest):
-    pass
+    handler = NamesHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/PartHandler")
 def part(request: PartRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/SetChannelKeyHandler")
 def set_channel_key(request: SetChannelKeyRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/SetGroupHandler")
 def set_group(request: SetGroupRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/TopicHandler")
 def topic(request: TopicRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/CryptHandler")
@@ -218,22 +225,22 @@ def crypt(request: CryptRequest):
 
 @router.post(f"{CHAT}/ATMHandler")
 def atm(request: AtmRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/NoticeHandler")
 def notice(request: NoticeRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/PrivateHandler")
 def private(request: PrivateRequest):
-    pass
+    raise NotImplementedError()
 
 
 @router.post(f"{CHAT}/UTMHandler")
 def utm(request: UtmRequest):
-    pass
+    raise NotImplementedError()
 
 
 if __name__ == "__main__":

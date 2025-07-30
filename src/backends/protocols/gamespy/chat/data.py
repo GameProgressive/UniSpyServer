@@ -232,7 +232,7 @@ def get_channel_user_caches_by_name(
     assert isinstance(channel_name, str)
 
     result: list[ChatChannelUserCaches] = (
-        session.query(ChatChannelUserCaches.key_values)
+        session.query(ChatChannelUserCaches)
         .where(ChatChannelUserCaches.channel_name == channel_name)
         .all()
     )  # type:ignore

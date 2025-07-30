@@ -136,8 +136,7 @@ class GetCKeyRequest(ChannelRequestBase):
 
 
 class JoinRequest(ChannelRequestBase):
-    password: str
-    game_name: str
+    password: str | None = None
 
 
 class KickRequest(ChannelRequestBase):
@@ -147,12 +146,12 @@ class KickRequest(ChannelRequestBase):
 
 class ModeRequest(ChannelRequestBase):
     request_type: ModeRequestType
-    mode_operations: list[ModeOperationType]
-    nick_name: str
-    user_name: str
-    limit_number: int
-    mode_flag: str
-    password: str
+    mode_operations: list[ModeOperationType] = []
+    limit_number: int | None = None
+    mode_flag: str | None = None
+    password: str | None = None
+    nick_name: str | None = None
+    user_name: str | None = None
 
 
 class NamesRequest(ChannelRequestBase):
@@ -187,7 +186,6 @@ class TopicRequest(ChannelRequestBase):
 
 class MessageRequestBase(ChannelRequestBase):
     type: MessageType
-    nick_name: str
     message: str
 
 

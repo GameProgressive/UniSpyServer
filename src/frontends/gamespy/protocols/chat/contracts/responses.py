@@ -11,6 +11,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     KickResult,
     ModeResult,
     NamesResult,
+    NamesResultData,
     PartResult,
     SetChannelKeyResult,
     TopicResult,
@@ -69,9 +70,7 @@ class CryptResponse(ResponseBase):
         pass
 
     def build(self) -> None:
-        self.sending_buffer = (
-            f":{SERVER_DOMAIN} {ResponseCode.SECUREKEY.value} * {CLIENT_KEY} {SERVER_KEY}\r\n"  # noqa
-        )
+        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.SECUREKEY.value} * {CLIENT_KEY} {SERVER_KEY}\r\n"  # noqa
 
 
 class GetKeyResponse(ResponseBase):
@@ -245,9 +244,7 @@ class JoinResponse(ResponseBase):
 
     def build(self) -> None:
         joiner_irc_prefix = f"{self._result.joiner_nick_name}!{self._result.joiner_user_name}@{SERVER_DOMAIN}"
-        self.sending_buffer = (
-            f"{joiner_irc_prefix} {ResponseCode.JOIN.value} {self._request.channel_name}\r\n"
-        )
+        self.sending_buffer = f"{joiner_irc_prefix} {ResponseCode.JOIN.value} {self._request.channel_name}\r\n"
 
 
 class KickResponse(ResponseBase):
@@ -274,7 +271,7 @@ class ModeResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        if self._request.type == ModeRequestType.GET_CHANNEL_MODES:
+        if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
             self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.CHANNELMODEIS.value} * {self._result.channel_modes} {self._result.channel_modes}\r\n"
 
 
@@ -287,8 +284,25 @@ class NamesResponse(ChannelResponseBase):
         assert isinstance(result, NamesResult)
         super().__init__(request, result)
 
+    @staticmethod
+    def get_nicks_list(data: list[NamesResultData]):
+        nicks_str = ""
+        for i in range(len(data)):
+            user = data[i]
+            assert isinstance(user.is_channel_creator, bool)
+            assert isinstance(user.nick_name, str)
+            if user.is_channel_creator:
+                nicks_str += f"@{user.nick_name}"
+            else:
+                nicks_str += user.nick_name
+            # use space as seperator
+            if i != (len(data) - 1):
+                nicks_str += " "
+        return nicks_str
+
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.NAMEREPLY.value} {self._result.requester_nick_name} = {self._result.channel_name} :{self._result.all_channel_nicks}\r\n"
+        nicks_str = NamesResponse.get_nicks_list(self._result.channel_nicks)
+        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.NAMEREPLY.value} {self._result.requester_nick_name} = {self._result.channel_name} :{nicks_str}\r\n"
         self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.ENDOFNAMES.value} {self._result.requester_nick_name} {self._result.channel_name} :End of NAMES list. \r\n"
 
 
@@ -402,6 +416,6 @@ class UTMResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.user_irc_prefix} {ResponseCode.UTM.value} {
-            self._result.target_name
-        } :{self._request.message}"
+        self.sending_buffer = f":{self._result.user_irc_prefix} {
+            ResponseCode.UTM.value
+        } {self._result.target_name} :{self._request.message}"

@@ -95,11 +95,29 @@ class GetCKeyResult(ResultBase):
     channel_name: str
 
 
+class ModeResult(ResultBase):
+    channel_name: str
+    channel_modes: str
+    joiner_nick_name: str
+
+
+class NamesResultData(BaseModel):
+    nick_name: str
+    is_channel_creator: bool = False
+    is_channel_operator: bool = False
+
+
+class NamesResult(ResultBase):
+    channel_nicks: list[NamesResultData]
+    channel_name: str
+    requester_nick_name: str
+
+
 class JoinResult(ResultBase):
     joiner_user_name: str
     joiner_nick_name: str
-    all_channel_user_nicks: list[str]
-    channel_modes: list[str]
+    # channel_nicks_data: list[NamesResultData]
+    # channel_modes: list[str]
 
 
 class KickResult(ResultBase):
@@ -107,18 +125,6 @@ class KickResult(ResultBase):
     kicker_nick_name: str
     kicker_user_name: str
     kickee_nick_name: str
-
-
-class ModeResult(ResultBase):
-    channel_name: str
-    channel_modes: str
-    joiner_nick_name: str
-
-
-class NamesResult(ResultBase):
-    all_channel_nicks: list[str]
-    channel_name: str
-    requester_nick_name: str
 
 
 class PartResult(ResultBase):

@@ -1,7 +1,7 @@
 import json
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from typing import Type
+from typing import Type, final
 import requests
 
 from frontends.gamespy.library.configs import CONFIG
@@ -62,14 +62,13 @@ class CmdHandlerBase:
             self._response_send()
         except Exception as ex:
             self._handle_exception(ex)
-
+            
     def _request_check(self) -> None:
         """
-        virtual function, can be override
+        raw request is nessesary param
         """
         # if there is gamespy raw request we convert it to unispy request
-        if self._request.raw_request is not None:
-            self._request.parse()
+        self._request.parse()
 
     def _data_operate(self) -> None:
         """
