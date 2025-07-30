@@ -33,6 +33,24 @@ def create_dir(path):
         os.makedirs(log_path)
 
 
+class ColoredFormatter(logging.Formatter):
+    COLORS = {
+        "DEBUG": "\033[94m",  # Blue
+        "INFO": "\033[92m",  # Green
+        "WARNING": "\033[93m",  # Yellow
+        "ERROR": "\033[91m",  # Red
+        "CRITICAL": "\033[41m",  # White text on Red background
+    }
+    RESET = "\033[0m"  # Reset to default color
+
+    def format(self, record):
+        # Get the color for the levelname
+        color = self.COLORS.get(record.levelname, self.RESET)
+        # Format the levelname with color
+        record.levelname = f"{color}{record.levelname}{self.RESET}"
+        return super().format(record)
+
+
 class LogManager:
     @staticmethod
     def create(logger_name: str) -> "LogWriter":
@@ -53,7 +71,7 @@ class LogManager:
             backupCount=7,
             encoding="utf-8",
         )
-        formatter = logging.Formatter(
+        formatter = ColoredFormatter(
             f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
