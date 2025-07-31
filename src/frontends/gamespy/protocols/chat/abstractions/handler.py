@@ -25,7 +25,10 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
-
+    def _request_check(self) -> None:
+        super()._request_check()
+        assert self._client.brocker
+        self._request.websocket_address = self._client.brocker.ip_port
     def _handle_exception(self, ex: Exception) -> None:
         t_ex = type(ex)
         if t_ex is IRCException:
@@ -99,6 +102,7 @@ class MessageRequestBase(ChannelRequestBase):
     type: MessageType
     nick_name: str
     message: str
+    broad_cast_raw: str
 
     def parse(self):
         super().parse()
@@ -128,6 +132,13 @@ class MessageHandlerBase(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: MessageRequestBase):
         assert isinstance(request, MessageRequestBase)
         super().__init__(client, request)
+
+    def _request_check(self) -> None:
+        super()._request_check()
+        self._request.broad_cast_raw = (
+            f"{self._client.info.irc_prefix} {self._request.raw_request}"
+        )
+        
 
     def _update_channel_cache(self):
         """we do nothing here, channel message do not need to update channel cache"""

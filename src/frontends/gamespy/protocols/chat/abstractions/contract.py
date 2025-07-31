@@ -1,4 +1,3 @@
-
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -11,6 +10,7 @@ class RequestBase(lib.RequestBase):
     _prefix: str | None
     _cmd_params: list[str]
     _long_param: str | None
+    websocket_address: str
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)

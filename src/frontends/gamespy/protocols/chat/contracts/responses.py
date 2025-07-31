@@ -1,6 +1,5 @@
 from frontends.gamespy.protocols.chat.abstractions.handler import ChannelResponseBase
 from frontends.gamespy.protocols.chat.aggregates.enums import (
-    ModeRequestType,
     WhoRequestType,
     ResponseCode,
 )
@@ -154,7 +153,7 @@ class UserIPResponse(ResponseBase):
         self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.USRIP.value} :@{self._result.remote_ip_address}\r\n"
+        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.USRIP.value} :@{self._result.remote_ip}\r\n"
 
 
 class WhoIsResponse(ResponseBase):
@@ -270,9 +269,19 @@ class ModeResponse(ResponseBase):
         assert isinstance(result, ModeResult)
         super().__init__(request, result)
 
+    @staticmethod
+    def get_mode_str(modes: list[str]):
+        if len(modes) == 0:
+            return ""
+        
+        modes_str = "+"
+        for m in modes:
+            modes_str += m
+        return modes_str
+
     def build(self) -> None:
-        if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
-            self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.CHANNELMODEIS.value} * {self._result.channel_modes} {self._result.channel_modes}\r\n"
+        chann_modes_str = ModeResponse.get_mode_str(self._result.channel_modes)
+        self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.CHANNELMODEIS.value} * {self._request.channel_name} {chann_modes_str}\r\n"
 
 
 class NamesResponse(ChannelResponseBase):

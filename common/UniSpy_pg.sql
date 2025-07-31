@@ -119,8 +119,9 @@ CREATE TABLE unispy.chat_user_caches (
     nick_name character varying PRIMARY KEY NOT NULL,
     game_name character varying,
     user_name character varying,
-    remote_ip_address inet NOT NULL,
+    remote_ip inet NOT NULL,
     remote_port INTEGER NOT NULL,
+    websocket_address character varying NOT NULL,
     key_value jsonb,
     update_time timestamp without time zone NOT NULL
 );
@@ -166,7 +167,7 @@ CREATE TABLE unispy.chat_channel_user_caches (
     is_voiceable boolean NOT NULL,
     is_channel_operator boolean NOT NULL,
     is_channel_creator boolean NOT NULL,
-    remote_ip_address inet NOT NULL,
+    remote_ip inet NOT NULL,
     remote_port integer NOT NULL,
     key_values jsonb
 );
@@ -770,7 +771,7 @@ COPY unispy.chat_channel_caches (channel_name, server_id, game_name, room_name, 
 -- Data for Name: chat_nick_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote_ip_address, remote_port, key_value, update_time) FROM stdin;
+COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote_ip, remote_port,websocket_address, key_value, update_time) FROM stdin;
 \.
 
 
@@ -778,7 +779,7 @@ COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote
 -- Data for Name: chat_user_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.chat_channel_user_caches (nick_name, channel_name, server_id, user_name, update_time, is_voiceable, is_channel_operator, is_channel_creator, remote_ip_address, remote_port, key_values) FROM stdin;
+COPY unispy.chat_channel_user_caches (nick_name, channel_name, server_id, user_name, update_time, is_voiceable, is_channel_operator, is_channel_creator, remote_ip, remote_port, key_values) FROM stdin;
 \.
 
 

@@ -1,7 +1,8 @@
 import unittest
 
-from frontends.gamespy.protocols.chat.aggregates.enums import MessageType
-from frontends.gamespy.protocols.chat.contracts.requests import *
+from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, MessageType, ModeName, ModeOperation
+from frontends.gamespy.protocols.chat.contracts.requests import ATMRequest, GetCKeyRequest, GetChannelKeyRequest, JoinRequest, KickRequest, ModeRequest, NoticeRequest, PartRequest, PrivateRequest, SetCKeyRequest, SetChannelKeyRequest, TopicRequest, UTMRequest
+
 # region General
 CD_KEY = "CDKEY XXXX-XXXX-XXXX-XXXX\r\n"
 CRYPT = "CRYPT des 1 gmtest\r\n"
@@ -15,6 +16,8 @@ LOGIN_PRE_AUTH = "LOGINPREAUTH xxxxx yyyyy\r\n"
 LOGIN_NICK_AND_EMAIL = "LOGIN 0 * xxxxx :spyguy@spyguy@gamespy.com\r\n"
 LOGIN_UNIQUE_NICK = "LOGIN 0 spyguy xxxxx\r\n"
 NAMES = "NAMES\r\n"
+MODES_GET = "MODES #gmtest"
+MODES_SET = "MODES #gmtest +s"
 NICK = "NICK :spyguy\r\n"
 PING = "PING\r\n"  # TODO: add binary data test [0D][0A]
 PONG = "PONG :Pong!\r\n"
@@ -36,8 +39,12 @@ class GeneralRequestTests(unittest.TestCase):
 
 # region Channel
 GET_CHANNEL_KEY = "GETCHANKEY #GSP!room!test 0000 0 :\\username\\nickname\0\r\n"
-GET_CKEY_CHANNEL_SPECIFIC_USER = "GETCKEY #GSP!room!test spyguy 0000 0 :\\username\\nickname\0\r\n"
-GET_CKEY_CHANNEL_ALL_USER = "GETCKEY #GSP!room!test * 0000 0 :\\username\\nickname\0\r\n"
+GET_CKEY_CHANNEL_SPECIFIC_USER = (
+    "GETCKEY #GSP!room!test spyguy 0000 0 :\\username\\nickname\0\r\n"
+)
+GET_CKEY_CHANNEL_ALL_USER = (
+    "GETCKEY #GSP!room!test * 0000 0 :\\username\\nickname\0\r\n"
+)
 JOIN = "JOIN #GSP!room!test\r\n"
 JOIN_WITH_PASS = "JOIN #GSP!room!test pass123\r\n"
 KICK = "KICK #islabul spyguy :Spam\r\n"
@@ -62,8 +69,9 @@ class ChannelRequestTests(unittest.TestCase):
     def test_get_ckey_channel_specific_user(self):
         request = GetCKeyRequest(GET_CKEY_CHANNEL_SPECIFIC_USER)
         request.parse()
-        self.assertEqual(request.request_type,
-                         GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE)
+        self.assertEqual(
+            request.request_type, GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE
+        )
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.nick_name, "spyguy")
         self.assertEqual(request.cookie, "0000")
@@ -73,8 +81,9 @@ class ChannelRequestTests(unittest.TestCase):
     def test_get_ckey_channel_all_user(self):
         request = GetCKeyRequest(GET_CKEY_CHANNEL_ALL_USER)
         request.parse()
-        self.assertEqual(request.request_type,
-                         GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE)
+        self.assertEqual(
+            request.request_type, GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE
+        )
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.cookie, "0000")
         self.assertEqual(request.keys[0], "username")
@@ -100,7 +109,9 @@ class ChannelRequestTests(unittest.TestCase):
         request = ModeRequest(MODE_CHANNEL)
         request.parse()
         self.assertEqual(
-            request.mode_operations[0], ModeOperationType.ADD_CHANNEL_USER_LIMITS)
+            request.mode_operations,
+            {ModeName.CHANNEL_USER_LIMITS.value: ModeOperation.SET.value},
+        )
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.mode_flag, "+l")
         self.assertEqual(request.limit_number, 2)
@@ -135,6 +146,7 @@ class ChannelRequestTests(unittest.TestCase):
         request.parse()
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.channel_topic, "This is a topic message.")
+
 
 # region Message
 

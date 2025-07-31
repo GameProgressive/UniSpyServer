@@ -68,8 +68,6 @@ class ServerLauncherBase:
             raise UniSpyException("Create network server in child class")
         self._heartbeat_to_backend()
         self.server.start()
-        self._keep_running()
-        pass
 
     def _connect_to_backend(self):
         """

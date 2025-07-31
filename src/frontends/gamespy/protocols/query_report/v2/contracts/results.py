@@ -27,5 +27,5 @@ class HeartBeatResult(ResultBase):
     this result is replied in unispy server
     """
     packet_type: PacketType = PacketType.HEARTBEAT
-    remote_ip_address: str
+    remote_ip: str
     remote_port: int

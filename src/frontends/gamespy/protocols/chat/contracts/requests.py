@@ -4,7 +4,8 @@ from frontends.gamespy.protocols.chat.abstractions.handler import (
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
-    ModeOperationType,
+    ModeName,
+    ModeOperation,
     ModeRequestType,
     TopicRequestType,
 )
@@ -213,7 +214,7 @@ class SetKeyRequest(RequestBase):
 
 
 class UserIPRequest(RequestBase):
-    remote_ip_address: str
+    remote_ip: str
 
 
 class UserRequest(RequestBase):
@@ -403,7 +404,12 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_operations: list[ModeOperationType]
+    mode_operations: dict[str, str]
+    """
+    <mode_name>,<operation>
+    o,+
+    i,+
+    """
     nick_name: str
     user_name: str
     limit_number: int
@@ -412,69 +418,56 @@ class ModeRequest(ChannelRequestBase):
 
     def parse(self):
         super().parse()
-        self.mode_operations = []
+        self.mode_operations = {}
         if len(self._cmd_params) == 1:
             self.request_type = ModeRequestType.GET_CHANNEL_MODES
         elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
             self.request_type = ModeRequestType.SET_CHANNEL_MODES
             self.mode_flag = self._cmd_params[1]
-            modeFlags = [s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()]
-            modeFlags = list(filter(None, modeFlags))
-            for flag in modeFlags:
-                conv_flag = ModeOperationType(flag)
-                match conv_flag:
-                    case (
-                        ModeOperationType.SET_OPERATOR_ABEY_CHANNEL_LIMITS
-                        | ModeOperationType.REMOVE_OPERATOR_ABEY_CHANNEL_LIMITS
-                        | ModeOperationType.SET_TOPIC_CHANGE_BY_OPERATOR_FLAG
-                        | ModeOperationType.REMOVE_TOPIC_CHANGE_BY_OPERATOR_FLAG
-                        | ModeOperationType.ENABLE_EXTERNAL_MESSAGES_FLAG
-                        | ModeOperationType.DISABLE_EXTERNAL_MESSAGES_FLAG
-                        | ModeOperationType.SET_MODERATED_CHANNEL_FLAG
-                        | ModeOperationType.REMOVE_MODERATED_CHANNEL_FLAG
-                        | ModeOperationType.SET_SECRET_CHANNEL_FLAG
-                        | ModeOperationType.REMOVE_SECRET_CHANNEL_FLAG
-                        | ModeOperationType.SET_INVITED_ONLY
-                        | ModeOperationType.REMOVE_INVITED_ONLY
-                        | ModeOperationType.SET_PRIVATE_CHANNEL_FLAG
-                        | ModeOperationType.REMOVE_PRIVATE_CHANNEL_FLAG
-                        | ModeOperationType.ENABLE_USER_QUIET_FLAG
-                        | ModeOperationType.DISABLE_USER_QUIET_FLAG
-                        | ModeOperationType.ADD_CHANNEL_PASSWORD
-                        | ModeOperationType.REMOVE_CHANNEL_PASSWORD
-                    ):
-                        self.mode_operations.append(conv_flag)
-
-                    case ModeOperationType.ADD_CHANNEL_USER_LIMITS:
-                        self.channel_name = self._cmd_params[0]
-                        self.limit_number = int(self._cmd_params[2])
-                        self.mode_operations.append(conv_flag)
-                    case (
-                        ModeOperationType.REMOVE_CHANNEL_USER_LIMITS
-                        | ModeOperationType.REMOVE_BAN_ON_USER
-                    ):
-                        self.channel_name = self._cmd_params[0]
-                        self.mode_operations.append(conv_flag)
-                    case (
-                        ModeOperationType.ADD_BAN_ON_USER
-                        | ModeOperationType.GET_BANNED_USERS
-                    ):
-                        self.channel_name = self._cmd_params[0]
-                        if len(self._cmd_params) == 3:
-                            self.nick_name = self._cmd_params[2]
-                        self.mode_operations.append(conv_flag)
-                    case (
-                        ModeOperationType.ADD_CHANNEL_OPERATOR
-                        | ModeOperationType.REMOVE_CHANNEL_OPERATOR
-                        | ModeOperationType.ENABLE_USER_VOICE_PERMISSION
-                        | ModeOperationType.DISABLE_USER_VOICE_PERMISSION
-                    ):
-                        self.channel_name = self._cmd_params[0]
-                        self.user_name = self._cmd_params[2]
-                        self.mode_operations.append(conv_flag)
-
+            mode_flags = [
+                s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()
+            ]
+            mode_flags = list(filter(None, mode_flags))
+            self.process_mode_flags(mode_flags)
         else:
             raise ChatException("The number of IRC parameters are incorrect.")
+
+    def process_mode_flags(self, mode_flags: list[str]):
+        for flag in mode_flags:
+            try:
+                operation = ModeOperation(flag[0])
+                flag_name = ModeName(flag[1:])
+            except Exception:
+                continue
+            match flag_name:
+                case (
+                    ModeName.OPERATOR_ABEY_CHANNEL_LIMITS
+                    | ModeName.TOPIC_CHANGE_BY_OPERATOR_FLAG
+                    | ModeName.EXTERNAL_MESSAGES_FLAG
+                    | ModeName.MODERATED_CHANNEL_FLAG
+                    | ModeName.SECRET_CHANNEL_FLAG
+                    | ModeName.INVITED_ONLY
+                    | ModeName.PRIVATE_CHANNEL_FLAG
+                    | ModeName.USER_QUIET_FLAG
+                    | ModeName.CHANNEL_PASSWORD
+                ):
+                    self.mode_operations[flag_name.value] = operation.value
+                case ModeName.CHANNEL_USER_LIMITS:
+                    if operation == ModeOperation.SET:
+                        self.channel_name = self._cmd_params[0]
+                        self.limit_number = int(self._cmd_params[2])
+                    else:
+                        self.channel_name = self._cmd_params[0]
+                    self.mode_operations[flag_name.value] = operation.value
+                case ModeName.BAN_ON_USER:
+                    self.channel_name = self._cmd_params[0]
+                    if len(self._cmd_params) == 3:
+                        self.nick_name = self._cmd_params[2]
+                    self.mode_operations[flag_name.value] = operation.value
+                case ModeName.CHANNEL_OPERATOR | ModeName.USER_VOICE_PERMISSION:
+                    self.channel_name = self._cmd_params[0]
+                    self.user_name = self._cmd_params[2]
+                    self.mode_operations[flag_name.value] = operation.value
 
     @staticmethod
     def build(channel_name: str):

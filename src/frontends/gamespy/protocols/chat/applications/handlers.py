@@ -2,7 +2,6 @@ from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
 from frontends.gamespy.protocols.chat.contracts.results import (
     ATMResult,
     NoticeResult,
-    PrivateResult,
     UTMResult,
     GetCKeyResult,
     GetChannelKeyResult,
@@ -24,10 +23,6 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     WhoResult,
 )
 from frontends.gamespy.protocols.chat.contracts.responses import (
-    ATMResponse,
-    NoticeResponse,
-    PrivateResponse,
-    UTMResponse,
     GetCKeyResponse,
     JoinResponse,
     KickResponse,
@@ -116,7 +111,7 @@ class CryptHandler(CmdHandlerBase):
     def _data_operate(self) -> None:
         super()._data_operate()
         self._client.info.gamename = self._request.gamename
-
+        
     def _response_construct(self) -> None:
         self._response = CryptResponse()
 
@@ -256,11 +251,11 @@ class UserIPHandler(CmdHandlerBase):
 
     def _request_check(self) -> None:
         super()._request_check()
-        self._request.remote_ip_address = self._client.connection.remote_ip
+        self._request.remote_ip = self._client.connection.remote_ip
 
     def _data_operate(self) -> None:
         super()._data_operate()
-        self._result = UserIPResult(remote_ip_address=self._client.connection.remote_ip)
+        self._result = UserIPResult(remote_ip=self._client.connection.remote_ip)
 
     def _response_construct(self) -> None:
         self._response = UserIPResponse(self._result)
@@ -376,10 +371,7 @@ class ModeHandler(ChannelHandlerBase):
             self._is_fetching = False
 
     def _response_construct(self):
-        if self._request.request_type in [
-            ModeRequestType.GET_CHANNEL_AND_USER_MODES,
-            ModeRequestType.GET_CHANNEL_MODES,
-        ]:
+        if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
             self._response = ModeResponse(self._request, self._result)
 
 
@@ -456,10 +448,7 @@ class ATMHandler(MessageHandlerBase):
 
     def __init__(self, client: ClientBase, request: ATMRequest):
         assert isinstance(request, ATMRequest)
-        super().__init__(client, request)
-
-    def _response_construct(self) -> None:
-        self._response = ATMResponse(self._request, self._result)
+        self._is_fetching = False
 
 
 class UTMHandler(MessageHandlerBase):
@@ -469,10 +458,7 @@ class UTMHandler(MessageHandlerBase):
     def __init__(self, client: ClientBase, request: UTMRequest):
         assert isinstance(request, UTMRequest)
         super().__init__(client, request)
-        self._result_cls = UTMResult
-
-    def _response_construct(self) -> None:
-        self._response = UTMResponse(self._request, self._result)
+        self._is_fetching = False
 
 
 class NoticeHandler(MessageHandlerBase):
@@ -482,20 +468,13 @@ class NoticeHandler(MessageHandlerBase):
     def __init__(self, client: ClientBase, request: NoticeRequest):
         assert isinstance(request, NoticeRequest)
         super().__init__(client, request)
-        self._result_cls = NoticeResult
-
-    def _response_construct(self) -> None:
-        self._response = NoticeResponse(self._request, self._result)
+        self._is_fetching = False
 
 
 class PrivateHandler(MessageHandlerBase):
     _request: PrivateRequest
-    _result: PrivateResult
 
     def __init__(self, client: ClientBase, request: PrivateRequest):
         assert isinstance(request, PrivateRequest)
         super().__init__(client, request)
-        self._result_cls = PrivateResult
-
-    def _response_construct(self) -> None:
-        self._response = PrivateResponse(self._request, self._result)
+        self._is_fetching = False

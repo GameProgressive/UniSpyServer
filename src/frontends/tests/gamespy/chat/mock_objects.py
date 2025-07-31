@@ -120,7 +120,7 @@ def create_client() -> Client:
         ModeResult.model_validate(
             {
                 "channel_name": "test",
-                "channel_modes": "+n",
+                "channel_modes": ["n", "m"],
                 "joiner_nick_name": "test_nick",
             }
         ).model_dump(),

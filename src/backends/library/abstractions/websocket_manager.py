@@ -2,6 +2,7 @@ import asyncio
 from uuid import UUID
 from fastapi import WebSocket
 
+from backends.protocols.gamespy.chat.requests import RequestBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
@@ -63,7 +64,18 @@ class WebSocketManager:
         if temp.ip_port in self.client_pool:
             del self.client_pool[temp.ip_port]
 
-    def broadcast(self, message: dict):
-        loop = asyncio.get_event_loop()
-        for client in self.client_pool.values():
-            loop.create_task(client.ws.send_json(message))
+    def broadcast(self, message: RequestBase, ws: list[str] | None = None):
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:  # No event loop is running
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        if ws is None:
+            clients = self.client_pool.values()
+        else:
+            clients = []
+            for w in ws:
+                clients.append(self.client_pool[w])
+
+        for client in clients:
+            loop.create_task(client.ws.send_json(message.model_dump()))

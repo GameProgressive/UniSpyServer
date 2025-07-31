@@ -92,7 +92,7 @@ def create_v1_client() -> Client:
         config,
         ServerMainListHandler,
         ServerMainListResult.model_validate(
-            {"remote_ip_address": conn.remote_ip, "remote_port": conn.remote_port}
+            {"remote_ip": conn.remote_ip, "remote_port": conn.remote_port}
         ).model_dump(),
     )
 

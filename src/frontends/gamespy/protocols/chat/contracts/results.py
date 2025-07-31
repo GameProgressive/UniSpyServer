@@ -54,7 +54,7 @@ class QuitResult(ResultBase):
 
 
 class UserIPResult(ResultBase):
-    remote_ip_address: str
+    remote_ip: str
 
 
 class WhoIsResult(ResultBase):
@@ -97,7 +97,7 @@ class GetCKeyResult(ResultBase):
 
 class ModeResult(ResultBase):
     channel_name: str
-    channel_modes: str
+    channel_modes: list[str]
     joiner_nick_name: str
 
 

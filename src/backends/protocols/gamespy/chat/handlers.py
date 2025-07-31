@@ -1,14 +1,15 @@
 from datetime import datetime
 from typing import TYPE_CHECKING, cast
-from backends.library.abstractions.contracts import RequestBase
 import backends.library.abstractions.handler_base as hb
 
 
+from backends.library.abstractions.websocket_manager import WebSocketManager
 from backends.library.database.pg_orm import (
     ChatChannelCaches,
     ChatUserCaches,
     ChatChannelUserCaches,
 )
+from backends.protocols.gamespy.chat.brocker_manager import MANAGER
 from backends.protocols.gamespy.chat.helper import ChannelHelper, ChannelUserHelper
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import (
@@ -31,6 +32,7 @@ from backends.protocols.gamespy.chat.requests import (
     PartRequest,
     PrivateRequest,
     QuitRequest,
+    RequestBase,
     SetCKeyRequest,
     SetChannelKeyRequest,
     SetKeyRequest,
@@ -43,6 +45,7 @@ from backends.protocols.gamespy.chat.requests import (
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
+    ModeRequestType,
     TopicRequestType,
     WhoRequestType,
 )
@@ -60,6 +63,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     GetKeyResult,
     JoinResult,
     ListResult,
+    ModeResult,
     NamesResult,
     NamesResultData,
     NickResult,
@@ -75,6 +79,7 @@ from sqlalchemy.orm import Session
 
 
 class HandlerBase(hb.HandlerBase):
+    _request: RequestBase
     _user: ChatUserCaches | None
     _session: Session
 
@@ -93,10 +98,11 @@ class HandlerBase(hb.HandlerBase):
         if self._user is None:
             self._user = ChatUserCaches(
                 server_id=self._request.server_id,
-                remote_ip_address=self._request.client_ip,
+                remote_ip=self._request.client_ip,
                 remote_port=self._request.client_port,
                 update_time=datetime.now(),
                 nick_name=f"{self._request.client_ip}:{self._request.client_port}",
+                websocket_address=self._request.websocket_address,
             )
             self._session.add(self._user)
         else:
@@ -159,16 +165,36 @@ class ChannelHandlerBase(HandlerBase):
 
     def _boradcast(self) -> None:
         # todo boradcast message here
-        raise NotImplementedError()
+        # find channel user websockets
+        assert self._channel
+        users = (
+            self._session.query(ChatUserCaches)
+            .join(
+                ChatChannelUserCaches,
+                ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,
+            )
+            .where(ChatChannelUserCaches.channel_name == self._channel.channel_name)
+            .all()
+        )  # type: ignore
+        ws_list = []
+        
+        for user in users:
+            assert self._user
+            if user.websocket_address != self._user.websocket_address:  # type: ignore
+                ws_list.append(user.websocket_address)
 
-    def handle(self) -> None:
-        super().handle()
+        MANAGER.broadcast(self._request, ws_list)
+
+    def _response_construct(self) -> None:
+        super()._response_construct()
         if self._is_broadcast:
             self._boradcast()
 
 
 class MessageHandlerBase(ChannelHandlerBase):
-    pass
+    def __init__(self, request: RequestBase) -> None:
+        super().__init__(request)
+        self._is_broadcast = True
 
 
 # region General
@@ -315,7 +341,7 @@ class NickHandler(HandlerBase):
                 return
 
             if (
-                cache.remote_ip_address != self._request.client_ip
+                cache.remote_ip != self._request.client_ip
                 and cache.remote_port != self._request.client_port
             ):  # type: ignore
                 raise NickNameInUseException(
@@ -455,7 +481,7 @@ class JoinHandler(ChannelHandlerBase):
         assert isinstance(self._user.nick_name, str)
         assert self._channel is not None
         assert isinstance(self._channel.modes, list)
-        
+
         self._result = JoinResult(
             joiner_user_name=self._user.user_name,
             joiner_nick_name=self._user.nick_name,
@@ -545,13 +571,20 @@ class ModeHandler(ChannelHandlerBase):
     def _data_operate(self) -> None:
         assert self._channel
         assert self._channel_user
-        ChannelHelper.change_modes(
-            self._channel, self._channel_user, self._request, self._session
-        )
+        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
+            # set modes of channel
+            ChannelHelper.change_modes(
+                self._channel, self._channel_user, self._request, self._session
+            )
 
     def _result_construct(self) -> None:
-        raise NotImplementedError()
-        return super()._result_construct()
+        # we send the response when type is GET_CHANNEL_MODES
+        if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
+            self._result = ModeResult(
+                channel_name=self._channel.channel_name,  # type: ignore
+                channel_modes=self._channel.modes,  # type: ignore
+                joiner_nick_name=self._user.nick_name,  # type: ignore
+            )
 
 
 class NamesHandler(ChannelHandlerBase):
@@ -575,7 +608,7 @@ class NamesHandler(ChannelHandlerBase):
         assert isinstance(self._user.nick_name, str)
         nicks = []
         for nick in self._channel_users_info:
-            nick.channel_name # yield nick
+            nick.channel_name  # yield nick
             data = NamesResultData(**nick.__dict__)
             nicks.append(data)
 

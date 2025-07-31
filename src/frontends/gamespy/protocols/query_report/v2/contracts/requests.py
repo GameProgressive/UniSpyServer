@@ -56,7 +56,7 @@ class HeartBeatRequest(RequestBase):
     team_data: list[dict[str, str]]
     server_status: GameServerStatus
     group_id: int | None
-    remote_ip_address: str
+    remote_ip: str
     remote_port: int
     game_name: str
 

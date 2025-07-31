@@ -120,7 +120,7 @@ class CmdHandlerBase:
                 )
             else:
                 raise UniSpyException("backends is not avaliable")
-
+        # todo http code to determine object type
         if response.status_code != 200:
             raise UniSpyException(
                 f"failed to upload data to backends. reason: {response.text}"

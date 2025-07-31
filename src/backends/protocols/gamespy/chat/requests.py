@@ -3,7 +3,8 @@ from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     LoginRequestType,
     MessageType,
-    ModeOperationType,
+    ModeName,
+    ModeOperation,
     ModeRequestType,
     TopicRequestType,
     WhoRequestType,
@@ -13,6 +14,7 @@ from frontends.gamespy.protocols.chat.aggregates.enums import (
 class RequestBase(lib.RequestBase):
     raw_request: str
     command_name: str
+    websocket_address: str
 
 
 # region General
@@ -88,7 +90,7 @@ class SetKeyRequest(RequestBase):
 
 
 class UserIPRequest(RequestBase):
-    remote_ip_address: str
+    remote_ip: str
 
 
 class UserRequest(RequestBase):
@@ -121,6 +123,7 @@ class GetKeyRequest(RequestBase):
 
 class ChannelRequestBase(RequestBase):
     channel_name: str
+    broad_cast_raw: str | None = None
 
 
 class GetChannelKeyRequest(ChannelRequestBase):
@@ -146,7 +149,7 @@ class KickRequest(ChannelRequestBase):
 
 class ModeRequest(ChannelRequestBase):
     request_type: ModeRequestType
-    mode_operations: list[ModeOperationType] = []
+    mode_operations: dict[ModeName, ModeOperation]
     limit_number: int | None = None
     mode_flag: str | None = None
     password: str | None = None

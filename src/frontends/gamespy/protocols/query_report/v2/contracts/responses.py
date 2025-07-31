@@ -80,7 +80,7 @@ class HeartBeatResponse(ResponseBase):
         data = bytearray()
         data.extend(self.sending_buffer)
         data.extend(CHALLENGE)
-        data.extend(ip_to_4_bytes(self._result.remote_ip_address))
+        data.extend(ip_to_4_bytes(self._result.remote_ip))
         data.extend(SPLITER)
         data.extend(port_to_2_bytes(self._result.remote_port))
         self.sending_buffer = bytes(data)

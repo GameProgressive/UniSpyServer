@@ -51,7 +51,10 @@ class WebSocketBrocker(BrockerBase):
         self._publisher = self._subscriber = connect(self.url)
         th = threading.Thread(target=self._listen)
         th.start()
-
+    @property
+    def ip_port(self)->str:
+        name = self._subscriber.socket.getsockname()
+        return f"{name[0]}:{name[1]}"
     def _listen(self):
         try:
             while True:

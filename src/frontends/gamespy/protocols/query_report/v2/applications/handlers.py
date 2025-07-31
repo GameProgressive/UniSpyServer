@@ -90,7 +90,7 @@ class HeartBeatHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._result = HeartBeatResult(
-            remote_ip_address=self._client.connection.remote_ip,
+            remote_ip=self._client.connection.remote_ip,
             remote_port=self._client.connection.remote_port,
         )
         self._response = HeartBeatResponse(self._request, self._result)

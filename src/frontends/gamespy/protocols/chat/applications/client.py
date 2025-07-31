@@ -8,7 +8,10 @@ from frontends.gamespy.library.network.tcp_handler import TcpConnection
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
-from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
+from frontends.gamespy.protocols.chat.abstractions.contract import (
+    SERVER_DOMAIN,
+    BrockerMessage,
+)
 
 
 class ClientInfo:
@@ -24,6 +27,12 @@ class ClientInfo:
         self.gamename = None
         self.user_name = None
         self.previously_joined_channel = None
+
+    @property
+    def irc_prefix(self) -> str:
+        assert self.nick_name
+        assert self.user_name
+        return f"{self.nick_name}!{self.user_name}@{SERVER_DOMAIN}"
 
 
 class Client(ClientBase):

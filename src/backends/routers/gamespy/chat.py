@@ -10,6 +10,7 @@ from backends.protocols.gamespy.chat.handlers import (
     ModeHandler,
     NamesHandler,
     NickHandler,
+    PrivateHandler,
     UserHandler,
 )
 from backends.protocols.gamespy.chat.requests import (
@@ -61,13 +62,7 @@ async def websocket_endpoint(ws: WebSocket):
         MANAGER.connect(ws)
     try:
         while True:
-            request = await ws.receive_json()
-            r = check_request(request)
-            if r.message is None:
-                return
-            # currently we broadcast all message
-            MANAGER.channel_broad_cast(r.channel_name, r)
-
+            _ = await ws.receive_json()
     except WebSocketDisconnect:
         if ws.client is not None:
             MANAGER.disconnect(ws)
@@ -235,7 +230,9 @@ def notice(request: NoticeRequest):
 
 @router.post(f"{CHAT}/PrivateHandler")
 def private(request: PrivateRequest):
-    raise NotImplementedError()
+    handler = PrivateHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/UTMHandler")

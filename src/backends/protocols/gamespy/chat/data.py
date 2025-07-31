@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column, func
 from backends.library.database.pg_orm import (
-    ENGINE,
     ChatChannelCaches,
     ChatUserCaches,
     ChatChannelUserCaches,
@@ -186,7 +185,7 @@ def get_channel_by_name_and_ip_port(
         .join(ChatChannelUserCaches)
         .where(
             ChatChannelUserCaches.channel_name == channel_name,
-            ChatChannelUserCaches.remote_ip_address == ip,
+            ChatChannelUserCaches.remote_ip == ip,
             ChatChannelUserCaches.remote_port == port,
         )
         .first()
@@ -218,7 +217,7 @@ def get_channel_user_cache_by_name_and_ip_port(
         session.query(ChatChannelUserCaches)
         .where(
             ChatChannelUserCaches.channel_name == channel_name,
-            ChatChannelUserCaches.remote_ip_address == ip,
+            ChatChannelUserCaches.remote_ip == ip,
             ChatChannelUserCaches.remote_port == port,
         )
         .first()
@@ -266,7 +265,7 @@ def get_user_cache_by_ip_port(
     result = (
         session.query(ChatUserCaches)
         .where(
-            ChatUserCaches.remote_ip_address == ip,
+            ChatUserCaches.remote_ip == ip,
             ChatUserCaches.remote_port == port,
         )
         .first()
@@ -297,7 +296,7 @@ def get_whois_result(nick: str, session: Session) -> tuple:
         info.nick_name,
         info.user_name,
         info.nick_name,
-        info.remote_ip_address,
+        info.remote_ip,
         channels,
     )  # type:ignore
 
@@ -307,7 +306,7 @@ def remove_user_caches_by_ip_port(ip: str, port: int, session: Session):
     assert isinstance(port, int)
 
     session.query(ChatChannelUserCaches).where(
-        ChatChannelUserCaches.remote_ip_address == ip,
+        ChatChannelUserCaches.remote_ip == ip,
         ChatChannelUserCaches.remote_port == port,
     ).delete()
 
@@ -335,7 +334,7 @@ def is_user_exist(ip: str, port: int, session: Session) -> bool:
     user_count = (
         session.query(ChatChannelUserCaches)
         .where(
-            ChatChannelUserCaches.remote_ip_address == ip,
+            ChatChannelUserCaches.remote_ip == ip,
             ChatChannelUserCaches.remote_port == port,
         )
         .count()
@@ -431,7 +430,7 @@ def get_channel_user_caches(channel_name: str, session: Session) -> list[dict]:
         temp = {}
         temp["channel_name"] = r.channel_name
         temp["user_name"] = r.user_name
-        temp["public_ip_addr"] = r.remote_ip_address
+        temp["public_ip_addr"] = r.remote_ip
         temp["nick_name"] = r.nick_name
         data.append(temp)
     return data
@@ -449,7 +448,7 @@ def get_channel_user_cache_by_ip(ip: str, port: int, session: Session) -> list[d
             ChatUserCaches.user_name == ChatChannelUserCaches.user_name,
         )
         .where(
-            ChatUserCaches.remote_ip_address == ip,
+            ChatUserCaches.remote_ip == ip,
             ChatUserCaches.remote_port == port,
         )
         .all()
@@ -459,7 +458,7 @@ def get_channel_user_cache_by_ip(ip: str, port: int, session: Session) -> list[d
         temp = {}
         temp["channel_name"] = r.channel_name
         temp["user_name"] = r.user_name
-        temp["public_ip_addr"] = r.remote_ip_address
+        temp["public_ip_addr"] = r.remote_ip
         temp["nick_name"] = r.nick_name
         data.append(temp)
     return data

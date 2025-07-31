@@ -257,7 +257,6 @@ class ChatChannelCaches(Base):
     update_time = Column(DateTime, nullable=False)
     modes = Column(JSONB, default=[])
     banned_nicks = Column(JSONB, default=[])
-    
 
 
 class ChatUserCaches(Base):
@@ -270,8 +269,9 @@ class ChatUserCaches(Base):
     nick_name = Column(String, primary_key=True, nullable=True)
     user_name = Column(String, nullable=True)
     game_name = Column(String, nullable=True)
-    remote_ip_address = Column(INET, nullable=False)
+    remote_ip = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
+    websocket_address = Column(String, nullable=False)
     key_value = Column(JSONB, default={})
     update_time = Column(DateTime, nullable=False)
 
@@ -299,7 +299,7 @@ class ChatChannelUserCaches(Base):
     is_voiceable = Column(Boolean, nullable=False)
     is_channel_operator = Column(Boolean, nullable=False)
     is_channel_creator = Column(Boolean, nullable=False)
-    remote_ip_address = Column(INET, nullable=False)
+    remote_ip = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
     key_values = Column(JSONB, default={})
 
