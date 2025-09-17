@@ -1,3 +1,4 @@
+import traceback
 from typing import TYPE_CHECKING, Optional
 
 from frontends.gamespy.library.configs import CONFIG
@@ -26,7 +27,7 @@ class UniSpyException(Exception):
                 ex: UniSpyException = e  # type:ignore
                 client.log_error(ex.message)
             else:
-                client.log_error(str(e))
+                client.log_error(traceback.format_exc())
         # if we are unittesting we raise the exception out
         if CONFIG.unittest.is_raise_except:
             raise e

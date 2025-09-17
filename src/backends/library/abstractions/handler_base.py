@@ -75,7 +75,5 @@ class HandlerBase:
         # if there are no result, we send ok response
         if self._result is None:
             self._response = OKResponse()
-            self.logger.info(f"[{self.__class__.__name__}] use default OKResponse")
         else:
             self._response = DataResponse(result=self._result.model_dump(mode="json"))
-            self.logger.info(f"[{self.__class__.__name__}] use default DataResponse")

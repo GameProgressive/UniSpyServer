@@ -1,6 +1,6 @@
 from ipaddress import IPv4Address
 from uuid import UUID
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -37,14 +37,14 @@ logger = LogManager.create("backend")
 @app.exception_handler(UniSpyException)
 def unispy_exception_handler(_, exc: UniSpyException):
     logger.error(exc.message)
-    return JSONResponse({"error": exc.message})
+    return JSONResponse({"error": exc.message}, status_code=450)
 
 
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(_, exc: RequestValidationError):
     str_error = str(exc.args)
     logger.error(str_error)
-    return JSONResponse({"error": str_error})
+    return JSONResponse({"error": str_error}, status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @app.exception_handler(Exception)
@@ -53,7 +53,9 @@ def handle_unispy_exception(_, exc: Exception):
     if len(str_error) == 0:
         str_error = exc.__class__.__name__
     logger.error(str_error)
-    return JSONResponse({"error": str_error})
+    return JSONResponse(
+        {"error": str_error}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+    )
 
 
 @app.post("/")

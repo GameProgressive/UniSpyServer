@@ -77,6 +77,10 @@ class ResponseBase(lib.ResponseBase):
             assert issubclass(type(result), ResultBase)
         assert issubclass(type(request), RequestBase)
 
+    @staticmethod
+    def build_irc_user_prefix(nick_name: str, user_name: str):
+        return f"{nick_name}!{user_name}@{SERVER_DOMAIN}"
+
 
 # region Brocker
 

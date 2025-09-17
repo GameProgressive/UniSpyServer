@@ -75,7 +75,6 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     GetUdpRelayRequest,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType
-from typing import Type
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
 from frontends.gamespy.protocols.chat.abstractions.handler import (
@@ -277,11 +276,11 @@ class WhoHandler(CmdHandlerBase):
 class WhoIsHandler(CmdHandlerBase):
     _request: WhoIsRequest
     _result: WhoIsResult
-    _result_type: Type = WhoIsResult
 
     def __init__(self, client: ClientBase, request: WhoIsRequest):
         assert isinstance(request, WhoIsRequest)
         super().__init__(client, request)
+        self._result_cls = WhoIsResult
 
     def _response_construct(self) -> None:
         self._response = WhoIsResponse(self._result)
@@ -447,6 +446,7 @@ class ATMHandler(MessageHandlerBase):
     _result: ATMResult
 
     def __init__(self, client: ClientBase, request: ATMRequest):
+        super().__init__(client, request)
         assert isinstance(request, ATMRequest)
         self._is_fetching = False
 

@@ -59,6 +59,10 @@ class WebSocketBrockerMock(BrockerBase):
     def unsubscribe(self):
         pass
 
+    @property
+    def ip_port(self):
+        return "127.0.0.1:10086"
+
 
 class ClientMock(Client):
     def start_brocker(self):
@@ -93,8 +97,7 @@ def create_client() -> Client:
         config,
         JoinHandler,
         JoinResult(
-            joiner_nick_name="xiaojiuwo",
-            joiner_user_name="unispy",
+            joiner_nick_name="nickname", joiner_user_name="username"
         ).model_dump(),
     )
     create_mock_url(config, UserHandler, {"message": "ok"})
@@ -135,7 +138,8 @@ def create_client() -> Client:
         config,
         PartHandler,
         PartResult(
-            leaver_irc_prefix="test_prefix",
+            leaver_nick_name="nickname",
+            leaver_user_name="username",
             is_channel_creator=False,
             channel_name="test_chan",
         ).model_dump(),
@@ -146,7 +150,9 @@ def create_client() -> Client:
         config,
         SetChannelKeyHandler,
         SetChannelKeyResult(
-            channel_user_irc_prefix="unispy!unispy@unispyserver", channel_name="test"
+            setter_nick_name="nickname",
+            setter_user_name="username",
+            channel_name="test",
         ).model_dump(),
     )
     create_mock_url(
@@ -155,9 +161,7 @@ def create_client() -> Client:
     create_mock_url(
         config,
         UTMHandler,
-        UTMResult(
-            user_irc_prefix="unispy!unispy@unispy", target_name="spyguy"
-        ).model_dump(),
+        UTMResult(irc_prefix="unispy!unispy@unispy", target_name="spyguy").model_dump(),
     )
 
     if TYPE_CHECKING:

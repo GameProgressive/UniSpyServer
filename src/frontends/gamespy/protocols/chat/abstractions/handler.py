@@ -25,6 +25,7 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
+        
     def _request_check(self) -> None:
         super()._request_check()
         assert self._client.brocker
@@ -46,9 +47,11 @@ class PostLoginHandlerBase(CmdHandlerBase):
 
 class ChannelRequestBase(RequestBase):
     channel_name: str
+    broad_cast_raw: str | None
 
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
+        self.broad_cast_raw = None
 
     def parse(self) -> None:
         super().parse()
@@ -64,6 +67,22 @@ class ChannelResponseBase(ResponseBase):
         super().__init__(request, result)
         assert isinstance(request, RequestBase)
         assert isinstance(result, ResultBase)
+
+    @staticmethod
+    def build_value_str(keys: list, kv: dict) -> str:
+        v_str = ""
+        for k in keys:
+            v_str += "\\"
+            if k in kv:
+                v_str += kv[k]
+        return v_str
+
+    @staticmethod
+    def build_key_value_str(kv: dict) -> str:
+        kv_str = ""
+        for k, v in kv.items():
+            kv_str += f"\\{k}\\{v}"
+        return kv_str
 
 
 class ChannelHandlerBase(PostLoginHandlerBase):
@@ -121,7 +140,7 @@ class MessageRequestBase(ChannelRequestBase):
 
 
 class MessageResultBase(ResultBase):
-    user_irc_prefix: str
+    irc_prefix: str
     target_name: str
 
 
@@ -138,7 +157,6 @@ class MessageHandlerBase(ChannelHandlerBase):
         self._request.broad_cast_raw = (
             f"{self._client.info.irc_prefix} {self._request.raw_request}"
         )
-        
 
     def _update_channel_cache(self):
         """we do nothing here, channel message do not need to update channel cache"""

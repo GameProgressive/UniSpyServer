@@ -62,7 +62,7 @@ class CmdHandlerBase:
             self._response_send()
         except Exception as ex:
             self._handle_exception(ex)
-            
+
     def _request_check(self) -> None:
         """
         raw request is nessesary param
@@ -99,6 +99,7 @@ class CmdHandlerBase:
         }"
         return url
 
+    @final
     def _upload_data(self):
         """
         whether need send data to backend
@@ -120,13 +121,25 @@ class CmdHandlerBase:
                 )
             else:
                 raise UniSpyException("backends is not avaliable")
+
         # todo http code to determine object type
-        if response.status_code != 200:
+        if response.status_code in [200, 450, 500]:
+            self._http_result = response.json()
+        else:
             raise UniSpyException(
                 f"failed to upload data to backends. reason: {response.text}"
             )
-
-        self._http_result = response.json()
+        # match response.status_code:
+        #     case 200:
+        #         pass
+        #     case 450:
+        #         self._handle_upload_error()
+        #     case 500:
+        #         self._handle_upload_error()
+        #     case _:
+        #          raise UniSpyException(
+        #         f"failed to upload data to backends. reason: {response.text}"
+        #     )
 
         if "error" in self._http_result:
             self._handle_upload_error()
@@ -138,6 +151,7 @@ class CmdHandlerBase:
         # we raise the error as UniSpyException
         raise UniSpyException(self._http_result["error"])
 
+    @final
     def _fetch_data(self):
         """
         whether need get data from backend.
@@ -169,6 +183,7 @@ class CmdHandlerBase:
         """
         UniSpyException.handle_exception(ex, self._client)
 
+    @final
     def _log_current_class(self) -> None:
         if self._client is None:
             # todo

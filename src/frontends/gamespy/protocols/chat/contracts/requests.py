@@ -308,6 +308,10 @@ class GetKeyRequest(RequestBase):
 
 
 class GetChannelKeyRequest(ChannelRequestBase):
+    """
+    sprintf(buffer, "GETCHANKEY %s %s 0 :", channel, cookie);
+    """
+
     cookie: str
     keys: list
 
@@ -324,6 +328,10 @@ class GetChannelKeyRequest(ChannelRequestBase):
 
 
 class GetCKeyRequest(ChannelRequestBase):
+    """
+    sprintf(buffer, "GETCKEY %s %s %s 0 :", channel, nick, cookie);
+    """
+
     nick_name: str | None
     cookie: str
     keys: list
@@ -504,6 +512,10 @@ class PartRequest(ChannelRequestBase):
 
 
 class SetChannelKeyRequest(ChannelRequestBase):
+    """
+    sprintf(buffer, "SETCHANKEY %s :", channel);
+    """
+
     key_value_string: str
     key_values: dict[str, str]
 
@@ -517,12 +529,16 @@ class SetChannelKeyRequest(ChannelRequestBase):
 
 
 class SetCKeyRequest(ChannelRequestBase):
+    """
+    sprintf(buffer, "SETCKEY %s %s :", channel, user);
+    """
+
     nick_name: str
     cookie: str
     is_broadcast: bool
     key_value_string: str
     key_values: dict[str, str]
-
+    
     def parse(self) -> None:
         super().parse()
         if self._cmd_params is None:

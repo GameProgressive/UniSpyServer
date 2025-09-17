@@ -1,4 +1,5 @@
 import asyncio
+from logging import getLogger
 from uuid import UUID
 from fastapi import WebSocket
 
@@ -63,6 +64,9 @@ class WebSocketManager:
         temp = self.create_client(ws)
         if temp.ip_port in self.client_pool:
             del self.client_pool[temp.ip_port]
+            # todo remove record in database
+
+            # todo check channelcache,usercache,channelusercache
 
     def broadcast(self, message: RequestBase, ws: list[str] | None = None):
         try:
@@ -75,7 +79,11 @@ class WebSocketManager:
         else:
             clients = []
             for w in ws:
-                clients.append(self.client_pool[w])
+                if w in self.client_pool:
+                    clients.append(self.client_pool[w])
+                else:
+                    logger = getLogger("backend")
+                    logger.info(f"{ws} not in websocket client list")
 
         for client in clients:
             loop.create_task(client.ws.send_json(message.model_dump()))

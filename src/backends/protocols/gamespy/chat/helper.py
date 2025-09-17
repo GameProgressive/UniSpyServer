@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import Enum
 from typing import cast
 from uuid import UUID
 
@@ -11,7 +10,6 @@ from backends.library.database.pg_orm import (
 )
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import ModeRequest
-from frontends.gamespy.protocols.chat.abstractions.contract import SERVER_DOMAIN
 from frontends.gamespy.protocols.chat.aggregates.enums import ModeName, ModeOperation
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     BadChannelKeyException,
@@ -21,11 +19,6 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
 )
 
 from sqlalchemy.orm import Session
-
-
-class ChannelUserProperty(Enum):
-    CHANNEL_CREATOR = "channel_creator"
-    CHANNEL_OPERATOR = "channel_operator"
 
 
 class ChannelUserHelper:
@@ -41,23 +34,39 @@ class ChannelUserHelper:
         return buffer
 
     @staticmethod
-    def get_user_irc_prefix(user: ChatChannelUserCaches):
-        irc = f"{user.nick_name}!{user.user_name}@{SERVER_DOMAIN}"
-        return irc
+    def connect(ip: str, port: str):
+        pass
+
+    @staticmethod
+    def disconnect(websocket_address: str):
+        with Session(ENGINE) as session:
+            user = data.get_user_cache_by_ws(websocket_address, session)
+            if user is None:
+                return
+            session.delete(user)
+            channel_users = data.get_channel_user_list_by_ip_port(
+                user.remote_ip,  # type: ignore
+                user.remote_port,  # type: ignore
+                session,
+            )
+            for user in channel_users:
+                session.delete(user)
+            session.commit()
 
 
 class ChannelHelper:
     @staticmethod
     def join(
         channel: ChatChannelCaches, user: ChatUserCaches, session: Session
-    ) -> None:
+    ) -> ChatChannelUserCaches:
         assert isinstance(channel, ChatChannelCaches)
+        assert isinstance(channel.channel_name, str)
         assert isinstance(channel.modes, list)
         assert isinstance(user.nick_name, str)
         assert isinstance(channel.banned_nicks, list)
         # 1 check if is a invited channel
         # 1.1 check if user is in a invited list
-        channel_modes =  [ModeName(m) for m in channel.modes]
+        channel_modes = [ModeName(m) for m in channel.modes]
         if ModeName.INVITED_ONLY in channel_modes:
             if user.nick_name not in channel.invited_nicks:
                 raise InviteOnlyChanException(
@@ -69,6 +78,9 @@ class ChannelHelper:
             raise BannedFromChanException(
                 "can not join channel, because you are in ban list"
             )
+
+        data.check_channel_user_trash_data(channel, user, session)
+
         if channel.creator == user.nick_name:  # type:ignore
             is_creator = True
         else:
@@ -86,10 +98,14 @@ class ChannelHelper:
             remote_port=user.remote_port,
         )
         session.add(chan_user)
+
         session.commit()
+        return chan_user
 
     @staticmethod
-    def quit(channel: ChatChannelCaches, quiter: ChatChannelUserCaches) -> None:
+    def quit(
+        channel: ChatChannelCaches, quiter: ChatChannelUserCaches, session: Session
+    ) -> None:
         assert isinstance(quiter, ChatChannelUserCaches)
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(quiter.channel_name, str)
@@ -98,12 +114,12 @@ class ChannelHelper:
         if quiter.channel_name != channel.channel_name:  # type:ignore
             print("user is not in channel, so can not quit")
             return
-        with Session(ENGINE) as session:
-            session.delete(quiter)
-            session.commit()
+        session.delete(quiter)
+        session.commit()
 
     @staticmethod
     def kick(
+        session: Session,
         channel: ChatChannelCaches,
         kicker: ChatChannelUserCaches,
         kickee: ChatChannelUserCaches,
@@ -124,9 +140,8 @@ class ChannelHelper:
             )
         if not kicker.is_channel_operator:  # type:ignore
             raise BadChannelKeyException("kick failed, kicker is not channel operator")
-        with Session(ENGINE) as session:
-            session.delete(kickee)
-            session.commit()
+        session.delete(kickee)
+        session.commit()
 
     @staticmethod
     def invite(

@@ -10,8 +10,11 @@ from backends.protocols.gamespy.chat.handlers import (
     ModeHandler,
     NamesHandler,
     NickHandler,
+    PartHandler,
     PrivateHandler,
+    QuitHandler,
     UserHandler,
+    WhoIsHandler,
 )
 from backends.protocols.gamespy.chat.requests import (
     AtmRequest,
@@ -66,6 +69,7 @@ async def websocket_endpoint(ws: WebSocket):
     except WebSocketDisconnect:
         if ws.client is not None:
             MANAGER.disconnect(ws)
+        # todo remove chat info by websocket
         print("Client disconnected")
 
 
@@ -120,7 +124,9 @@ def nick(request: NickRequest):
 
 @router.post(f"{CHAT}/QuitHandler")
 def quit(request: QuitRequest):
-    raise NotImplementedError()
+    handler = QuitHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/SetKeyHandler")
@@ -148,7 +154,9 @@ def who(request: WhoRequest):
 
 @router.post(f"{CHAT}/WhoIsHandler")
 def whois(request: WhoIsRequest):
-    raise NotImplementedError()
+    handler = WhoIsHandler(request)
+    handler.handle()
+    return handler.response
 
 
 # region channel
@@ -190,7 +198,9 @@ def names(request: NamesRequest):
 
 @router.post(f"{CHAT}/PartHandler")
 def part(request: PartRequest):
-    raise NotImplementedError()
+    handler = PartHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/SetChannelKeyHandler")

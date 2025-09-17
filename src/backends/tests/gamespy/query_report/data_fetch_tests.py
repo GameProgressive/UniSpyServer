@@ -30,6 +30,7 @@ class DataFetchTests(unittest.TestCase):
                 data.get_peer_staging_channels,
                 "unispy_test_game_name",
                 0,
+                session,
             )
             session.delete(cache)
             session.commit()

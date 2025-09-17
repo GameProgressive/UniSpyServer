@@ -20,8 +20,8 @@ class ListResult(ResultBase):
         channel_name: str
         total_channel_user: int
         channel_topic: str
-
-    user_irc_prefix: str
+    invoker_nick_name:str
+    invoker_user_name:str
     channel_info_list: list[ListInfo] = []
     """(channel_name:str,total_channel_user:int,channel_topic:str)"""
 
@@ -60,9 +60,8 @@ class UserIPResult(ResultBase):
 class WhoIsResult(ResultBase):
     nick_name: str
     user_name: str
-    name: str
     public_ip_address: str
-    joined_channel_name: list[str] = []
+    joined_channel_name: list[str]
 
 
 class WhoResult(ResultBase):
@@ -80,9 +79,10 @@ class WhoResult(ResultBase):
 
 
 class GetChannelKeyResult(ResultBase):
-    channel_user_irc_prefix: str
+    nick_name: str
+    user_name: str
     channel_name: str
-    values: str
+    key_values: dict
 
 
 class GetCKeyResult(ResultBase):
@@ -114,10 +114,8 @@ class NamesResult(ResultBase):
 
 
 class JoinResult(ResultBase):
-    joiner_user_name: str
     joiner_nick_name: str
-    # channel_nicks_data: list[NamesResultData]
-    # channel_modes: list[str]
+    joiner_user_name: str
 
 
 class KickResult(ResultBase):
@@ -128,7 +126,8 @@ class KickResult(ResultBase):
 
 
 class PartResult(ResultBase):
-    leaver_irc_prefix: str
+    leaver_nick_name: str
+    leaver_user_name: str
     is_channel_creator: bool
     channel_name: str
 
@@ -139,7 +138,8 @@ class TopicResult(ResultBase):
 
 
 class SetChannelKeyResult(ResultBase):
-    channel_user_irc_prefix: str
+    setter_nick_name: str
+    setter_user_name: str
     channel_name: str
 
 

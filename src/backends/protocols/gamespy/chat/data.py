@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column, func
 from backends.library.database.pg_orm import (
+    ENGINE,
     ChatChannelCaches,
     ChatUserCaches,
     ChatChannelUserCaches,
@@ -39,10 +40,6 @@ def add_user_cache(cache: ChatUserCaches, session: Session) -> Session:
     session.add(cache)
     session.commit()
     return session
-
-
-def update_user_cache(cache: ChatUserCaches, session: Session):
-    session.commit()
 
 
 def nick_and_email_login(
@@ -133,7 +130,6 @@ def is_channel_exist(channel_name: str, game_name: str, session: Session) -> boo
         .where(
             ChatChannelCaches.channel_name == channel_name,
             ChatChannelCaches.game_name == game_name,
-            ChatChannelCaches.update_time >= datetime.now() - timedelta(minutes=10),
         )
         .count()
     )
@@ -173,6 +169,39 @@ def get_channel_by_name(
     return channel
 
 
+def get_channel_user_list_by_ip_port(
+    ip: str, port: int, session: Session
+) -> list[ChatChannelUserCaches]:
+    assert isinstance(ip, str)
+    assert isinstance(port, int)
+    result = (
+        session.query(ChatChannelUserCaches)
+        .where(
+            ChatChannelUserCaches.remote_ip == ip,
+            ChatChannelUserCaches.remote_port == port,
+        )
+        .all()
+    )
+    return result
+
+
+# def get_channel_cache_list_by_ip_port(
+#     ip: str, port: int, session: Session
+# ) -> list[ChatChannelCaches]:
+#     assert isinstance(ip, str)
+#     assert isinstance(port, int)
+#     result = (
+#         session.query(ChatChannelCaches)
+#         .join(ChatChannelUserCaches)
+#         .where(
+#             ChatChannelUserCaches.remote_ip == ip,
+#             ChatChannelUserCaches.remote_port == port,
+#         )
+#         .all()
+#     )
+#     return result
+
+
 def get_channel_by_name_and_ip_port(
     channel_name: str, ip: str, port: int, session: Session
 ) -> ChatChannelCaches | None:
@@ -191,6 +220,26 @@ def get_channel_by_name_and_ip_port(
         .first()
     )
     return result
+
+
+def check_channel_user_trash_data(
+    channel: ChatChannelCaches, user: ChatUserCaches, session: Session
+):
+    assert isinstance(channel.channel_name, str)
+    assert isinstance(user.nick_name, str)
+    exist_user = get_channel_user_cache_by_name(
+        channel.channel_name, user.nick_name, session
+    )
+    if exist_user is not None:
+        if exist_user.update_time <= datetime.now() - timedelta(minutes=2):  # type: ignore
+            session.delete(exist_user)
+            session.commit()
+        else:
+            raise NoSuchNickException(
+                "There are two same channel user cache in database"
+            )
+
+    # session.commit()
 
 
 def get_channel_user_cache_by_name(
@@ -238,12 +287,6 @@ def get_channel_user_caches_by_name(
     return result
 
 
-def update_channel_time(channel: ChatChannelCaches, session: Session):
-    channel.update_time = datetime.now()  # type: ignore
-
-    session.commit()
-
-
 def db_commit(session: Session):
     session.commit()
 
@@ -257,6 +300,17 @@ def get_user_cache_by_nick_name(
         .first()
     )
     return result
+
+
+def get_user_cache_by_ws(
+    websocket_address: str, session: Session
+) -> ChatUserCaches | None:
+    user = (
+        session.query(ChatUserCaches)
+        .where(ChatUserCaches.websocket_address == websocket_address)
+        .first()
+    )
+    return user
 
 
 def get_user_cache_by_ip_port(
@@ -274,7 +328,7 @@ def get_user_cache_by_ip_port(
     return result
 
 
-def get_whois_result(nick: str, session: Session) -> tuple:
+def get_whois_result(nick: str, session: Session) -> dict:
     """
     nick is unique in chat
     """
@@ -292,22 +346,54 @@ def get_whois_result(nick: str, session: Session) -> tuple:
         .where(ChatChannelUserCaches.nick_name == info.nick_name)
         .all()
     )
-    return (
-        info.nick_name,
-        info.user_name,
-        info.nick_name,
-        info.remote_ip,
-        channels,
-    )  # type:ignore
+    ret_dict = {
+        "nick_name": info.nick_name,
+        "user_name": info.user_name,
+        "remote_ip": info.remote_ip,
+        "channels": channels[0],
+    }
+    return ret_dict
 
 
-def remove_user_caches_by_ip_port(ip: str, port: int, session: Session):
+def get_websocket_addr_by_channel_name(
+    channel_name: str, session: Session
+) -> list[str]:
+    """
+    find the client websocket address in database which updated within 1 min
+    """
+    users = (
+        session.query(ChatUserCaches.websocket_address)
+        .join(
+            ChatChannelUserCaches,
+            ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,
+        )
+        .where(
+            ChatChannelUserCaches.channel_name == channel_name,
+            ChatChannelUserCaches.update_time >= datetime.now() - timedelta(minutes=1),
+        )
+        .all()
+    )  # type: ignore
+    users = [user[0] for user in users]
+    assert isinstance(users, list)
+    return users
+
+
+def remove_channel_user_caches_by_ip_port(ip: str, port: int, session: Session):
     assert isinstance(ip, str)
     assert isinstance(port, int)
 
     session.query(ChatChannelUserCaches).where(
         ChatChannelUserCaches.remote_ip == ip,
         ChatChannelUserCaches.remote_port == port,
+    ).delete()
+
+
+def remove_user_cache_by_ip_port(ip: str, port: int, session: Session):
+    assert isinstance(ip, str)
+    assert isinstance(port, int)
+    session.query(ChatUserCaches).where(
+        ChatUserCaches.remote_ip == ip,
+        ChatUserCaches.remote_port == port,
     ).delete()
 
 
@@ -464,8 +550,33 @@ def get_channel_user_cache_by_ip(ip: str, port: int, session: Session) -> list[d
     return data
 
 
+def remove_expired_user_cache(session: Session):
+    session.query(ChatUserCaches).where(
+        ChatUserCaches.update_time > (datetime.now() - timedelta(minutes=5))
+    ).delete()
+
+
+def remove_expired_channel_user_cache(session: Session):
+    session.query(ChatChannelUserCaches).where(
+        ChatUserCaches.update_time > (datetime.now() - timedelta(minutes=5))
+    ).delete()
+
+
+def _flush_chat_database():
+    """
+    be caution with this function
+    this function will remove all datatable for chat
+    """
+    with Session(ENGINE) as session:
+        session.query(ChatChannelUserCaches).delete()
+        session.query(ChatUserCaches).delete()
+        session.query(ChatChannelCaches).delete()
+        session.commit()
+
+
 if __name__ == "__main__":
     pass
+    _flush_chat_database()
     #
     #     result = (
     #         session.query(ChatUserCaches)
