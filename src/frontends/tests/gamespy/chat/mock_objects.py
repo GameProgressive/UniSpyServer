@@ -34,7 +34,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     PartResult,
     SetChannelKeyResult,
     TopicResult,
-    UTMResult,
+    UtmResult,
     WhoResult,
 )
 from frontends.tests.gamespy.library.mock_objects import (
@@ -161,7 +161,7 @@ def create_client() -> Client:
     create_mock_url(
         config,
         UTMHandler,
-        UTMResult(irc_prefix="unispy!unispy@unispy", target_name="spyguy").model_dump(),
+        UtmResult(nick_name="unispy", user_name="unispy").model_dump(),
     )
 
     if TYPE_CHECKING:

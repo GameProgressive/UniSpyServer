@@ -41,6 +41,7 @@ class ConnectionBase:
 
     @abc.abstractmethod
     def send(self, data: bytes) -> None:
+        assert isinstance(data, bytes)
         if not self._is_started:
             raise Exception("Server is not running.")
         assert isinstance(data, bytes)

@@ -48,14 +48,11 @@ from backends.protocols.gamespy.chat.requests import (
 )
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
-from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
+
+
 
 router = APIRouter()
-
-
-def check_request(request: dict) -> BrockerMessage:
-    msg = BrockerMessage(**request)
-    return msg
+client_pool = {}
 
 
 @router.websocket(f"{CHAT}/ws")
@@ -65,7 +62,9 @@ async def websocket_endpoint(ws: WebSocket):
         MANAGER.connect(ws)
     try:
         while True:
-            _ = await ws.receive_json()
+            data = await ws.receive_json()
+            msg = MANAGER.process_message(data)
+            await MANAGER.broadcast(msg, ws)
     except WebSocketDisconnect:
         if ws.client is not None:
             MANAGER.disconnect(ws)

@@ -51,10 +51,12 @@ class WebSocketBrocker(BrockerBase):
         self._publisher = self._subscriber = connect(self.url)
         th = threading.Thread(target=self._listen)
         th.start()
+
     @property
-    def ip_port(self)->str:
+    def ip_port(self) -> str:
         name = self._subscriber.socket.getsockname()
         return f"{name[0]}:{name[1]}"
+
     def _listen(self):
         try:
             while True:
@@ -73,11 +75,21 @@ class WebSocketBrocker(BrockerBase):
         self._publisher.send(message.model_dump_json())
 
 
+COUNT = 0
+
+
+def call_back(str):
+    global COUNT
+    COUNT +=1
+    print(COUNT)
+    # print(f"{datetime.now()}:{str}")
+
+
 if __name__ == "__main__":
     ws = WebSocketBrocker(
         name="test_channel",
         url="ws://127.0.0.1:8080/GameSpy/Chat/ws",
-        call_back_func=print,
+        call_back_func=call_back,
     )
     ws.subscribe()
     msg = BrockerMessage(
@@ -87,4 +99,5 @@ if __name__ == "__main__":
         sender_port=80,
         message="hello",
     )
-    ws.publish_message(msg)
+    while True:
+        ws.publish_message(msg)

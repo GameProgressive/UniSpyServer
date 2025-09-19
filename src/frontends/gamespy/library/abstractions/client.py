@@ -82,9 +82,10 @@ class ClientBase:
         else:
             return buffer
 
-    def send(self, response: "ResponseBase") -> None:
+    def send(self, response: "ResponseBase|None") -> None:
         from frontends.gamespy.library.abstractions.contracts import ResponseBase
-
+        if response is None:
+            return
         assert issubclass(type(response), ResponseBase)
         response.build()
         sending_buffer = response.sending_buffer

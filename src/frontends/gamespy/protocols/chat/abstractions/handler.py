@@ -25,11 +25,12 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
-        
+
     def _request_check(self) -> None:
         super()._request_check()
         assert self._client.brocker
         self._request.websocket_address = self._client.brocker.ip_port
+
     def _handle_exception(self, ex: Exception) -> None:
         t_ex = type(ex)
         if t_ex is IRCException:
@@ -47,11 +48,9 @@ class PostLoginHandlerBase(CmdHandlerBase):
 
 class ChannelRequestBase(RequestBase):
     channel_name: str
-    broad_cast_raw: str | None
 
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
-        self.broad_cast_raw = None
 
     def parse(self) -> None:
         super().parse()
@@ -90,6 +89,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _response: ResponseBase
     _result: ResultBase
     _channel: ChatChannelCaches
+    _is_broadcast: bool
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
@@ -97,13 +97,17 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         we handle message broadcasting in backend api
         frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive
         """
+        self._is_broadcast = False
 
     def _response_send(self) -> None:
-        super()._response_send()
-        # send message to backend websocket
-        self.broadcast_message()
+        if self._is_broadcast:
+            # send message to backend websocket
+            self.broadcast()
+        else:
+            super()._response_send()
 
-    def broadcast_message(self):
+    def broadcast(self):
+        self._response.build()
         assert self._request.channel_name
         msg = BrockerMessage(
             server_id=self._client.server_config.server_id,
@@ -114,6 +118,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         )
         assert self._client.brocker
         self._client.brocker.publish_message(msg)
+        self._client.log_network_broadcast(msg)
 
 
 # region Message
@@ -121,27 +126,28 @@ class MessageRequestBase(ChannelRequestBase):
     type: MessageType
     nick_name: str
     message: str
-    broad_cast_raw: str
-
+    target_name:str
     def parse(self):
         super().parse()
         if self.channel_name is None:
             raise NoSuchNickException("the channel name is missing from the request")
         if "#" in self.channel_name:
             self.type = MessageType.CHANNEL_MESSAGE
+            self.target_name = self.channel_name
         else:
             if self._cmd_params is None or len(self._cmd_params) < 1:
                 raise ChatException("cmd params is invalid")
             self.type = MessageType.USER_MESSAGE
             self.nick_name = self._cmd_params[0]
+            self.target_name = self.nick_name
         if self._long_param is None:
             raise ChatException("long param is invalid")
         self.message = self._long_param
 
 
 class MessageResultBase(ResultBase):
-    irc_prefix: str
-    target_name: str
+    nick_name: str
+    user_name: str
 
 
 class MessageHandlerBase(ChannelHandlerBase):
@@ -151,13 +157,4 @@ class MessageHandlerBase(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: MessageRequestBase):
         assert isinstance(request, MessageRequestBase)
         super().__init__(client, request)
-
-    def _request_check(self) -> None:
-        super()._request_check()
-        self._request.broad_cast_raw = (
-            f"{self._client.info.irc_prefix} {self._request.raw_request}"
-        )
-
-    def _update_channel_cache(self):
-        """we do nothing here, channel message do not need to update channel cache"""
-        pass
+        self._is_broadcast = True

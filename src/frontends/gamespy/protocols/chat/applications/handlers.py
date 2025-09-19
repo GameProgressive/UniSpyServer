@@ -1,8 +1,9 @@
 from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
 from frontends.gamespy.protocols.chat.contracts.results import (
-    ATMResult,
+    AtmResult,
     NoticeResult,
-    UTMResult,
+    PrivateResult,
+    UtmResult,
     GetCKeyResult,
     GetChannelKeyResult,
     JoinResult,
@@ -23,12 +24,15 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     WhoResult,
 )
 from frontends.gamespy.protocols.chat.contracts.responses import (
+    AtmResponse,
     GetCKeyResponse,
     JoinResponse,
     KickResponse,
     ModeResponse,
     NamesResponse,
+    NoticeResponse,
     PartResponse,
+    PrivateResponse,
     SetCKeyResponse,
     SetChannelKeyResponse,
     TopicResponse,
@@ -39,15 +43,16 @@ from frontends.gamespy.protocols.chat.contracts.responses import (
     LoginResponse,
     NickResponse,
     PingResponse,
+    UtmResponse,
     UserIPResponse,
     WhoIsResponse,
     WhoResponse,
 )
 from frontends.gamespy.protocols.chat.contracts.requests import (
-    ATMRequest,
+    AtmRequest,
     NoticeRequest,
     PrivateRequest,
-    UTMRequest,
+    UtmRequest,
     GetCKeyRequest,
     GetChannelKeyRequest,
     JoinRequest,
@@ -110,7 +115,7 @@ class CryptHandler(CmdHandlerBase):
     def _data_operate(self) -> None:
         super()._data_operate()
         self._client.info.gamename = self._request.gamename
-        
+
     def _response_construct(self) -> None:
         self._response = CryptResponse()
 
@@ -325,12 +330,14 @@ class JoinHandler(ChannelHandlerBase):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
         self._result_cls = JoinResult
+        self._is_broadcast = True
 
     def _response_construct(self):
         self._response = JoinResponse(self._request, self._result)
 
     def _response_send(self) -> None:
         super()._response_send()
+        # gamespy sdk join require ciNameReplyHandler
         names_raw = NamesRequest.build(self._request.channel_name)
         names_req = NamesRequest(names_raw)
         names_handler = NamesHandler(self._client, names_req)
@@ -366,8 +373,13 @@ class ModeHandler(ChannelHandlerBase):
 
     def _request_check(self) -> None:
         super()._request_check()
-        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-            self._is_fetching = False
+        # if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
+        #     self._is_fetching = False
+        if self._request.request_type == [
+            ModeRequestType.SET_CHANNEL_MODES,
+            ModeRequestType.SET_CHANNEL_USER_MODES,
+        ]:
+            self._is_broadcast = True
 
     def _response_construct(self):
         if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
@@ -442,23 +454,29 @@ class TopicHandler(ChannelHandlerBase):
 
 
 class ATMHandler(MessageHandlerBase):
-    _request: ATMRequest
-    _result: ATMResult
+    _request: AtmRequest
+    _result: AtmResult
 
-    def __init__(self, client: ClientBase, request: ATMRequest):
+    def __init__(self, client: ClientBase, request: AtmRequest):
         super().__init__(client, request)
-        assert isinstance(request, ATMRequest)
-        self._is_fetching = False
+        assert isinstance(request, AtmRequest)
+        self._result_cls = AtmResult
+
+    def _response_construct(self) -> None:
+        self._response = AtmResponse(self._request, self._result)
 
 
 class UTMHandler(MessageHandlerBase):
-    _request: UTMRequest
-    _result: UTMResult
+    _request: UtmRequest
+    _result: UtmResult
 
-    def __init__(self, client: ClientBase, request: UTMRequest):
-        assert isinstance(request, UTMRequest)
+    def __init__(self, client: ClientBase, request: UtmRequest):
+        assert isinstance(request, UtmRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        self._result_cls = UtmResult
+
+    def _response_construct(self) -> None:
+        self._response = UtmResponse(self._request, self._result)
 
 
 class NoticeHandler(MessageHandlerBase):
@@ -468,13 +486,20 @@ class NoticeHandler(MessageHandlerBase):
     def __init__(self, client: ClientBase, request: NoticeRequest):
         assert isinstance(request, NoticeRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        self._result_cls = NoticeResult
+
+    def _response_construct(self) -> None:
+        self._response = NoticeResponse(self._request, self._result)
 
 
 class PrivateHandler(MessageHandlerBase):
     _request: PrivateRequest
+    _result: PrivateResult
 
     def __init__(self, client: ClientBase, request: PrivateRequest):
         assert isinstance(request, PrivateRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        self._result_cls = PrivateResult
+
+    def _response_construct(self) -> None:
+        self._response = PrivateResponse(self._request, self._result)

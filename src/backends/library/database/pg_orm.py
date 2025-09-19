@@ -32,7 +32,6 @@ import sqlalchemy as sa
 import enum
 from sqlalchemy.orm.decl_api import DeclarativeBase
 
-
 class IntEnum(TypeDecorator):
     impl = sa.Integer
 

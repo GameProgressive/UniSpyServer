@@ -27,10 +27,10 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     UserRequest,
     WhoIsRequest,
     WhoRequest,
-    ATMRequest,
+    AtmRequest,
     NoticeRequest,
     PrivateRequest,
-    UTMRequest,
+    UtmRequest,
 )
 from frontends.gamespy.protocols.chat.applications.handlers import (
     GetCKeyHandler,
@@ -138,13 +138,13 @@ class Switcher(SwitcherBase):
 
             # Message commands
             case RequestType.ATM:
-                return ATMHandler(self._client, ATMRequest(raw_request))
+                return ATMHandler(self._client, AtmRequest(raw_request))
             case RequestType.NOTICE:
                 return NoticeHandler(self._client, NoticeRequest(raw_request))
             case RequestType.PRIVMSG:
                 return PrivateHandler(self._client, PrivateRequest(raw_request))
             case RequestType.UTM:
-                return UTMHandler(self._client, UTMRequest(raw_request))
+                return UTMHandler(self._client, UtmRequest(raw_request))
             case _:
                 return None
             # endregion

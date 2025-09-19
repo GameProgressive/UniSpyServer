@@ -1,7 +1,7 @@
 import unittest
 
 from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, MessageType, ModeName, ModeOperation
-from frontends.gamespy.protocols.chat.contracts.requests import ATMRequest, GetCKeyRequest, GetChannelKeyRequest, JoinRequest, KickRequest, ModeRequest, NoticeRequest, PartRequest, PrivateRequest, SetCKeyRequest, SetChannelKeyRequest, TopicRequest, UTMRequest
+from frontends.gamespy.protocols.chat.contracts.requests import AtmRequest, GetCKeyRequest, GetChannelKeyRequest, JoinRequest, KickRequest, ModeRequest, NoticeRequest, PartRequest, PrivateRequest, SetCKeyRequest, SetChannelKeyRequest, TopicRequest, UtmRequest
 
 # region General
 CD_KEY = "CDKEY XXXX-XXXX-XXXX-XXXX\r\n"
@@ -160,7 +160,7 @@ ACTION_MSG = "PRIVMSG #GSP!room!test :\001ACTION hello this is a test.\001\r\n"
 
 class MessageRequestTests(unittest.TestCase):
     def test_atm(self):
-        request = ATMRequest(ABOVE_THE_TABLE_MSG)
+        request = AtmRequest(ABOVE_THE_TABLE_MSG)
         request.parse()
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))
@@ -181,7 +181,7 @@ class MessageRequestTests(unittest.TestCase):
         self.assertEqual("#GSP!room!test", request.channel_name)
 
     def test_utm(self):
-        request = UTMRequest(UNDER_THE_TABLE_MSG)
+        request = UtmRequest(UNDER_THE_TABLE_MSG)
         request.parse()
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))

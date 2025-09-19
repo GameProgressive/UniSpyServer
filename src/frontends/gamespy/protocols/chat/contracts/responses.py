@@ -14,10 +14,10 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     PartResult,
     SetChannelKeyResult,
     TopicResult,
-    ATMResult,
+    AtmResult,
     NoticeResult,
     PrivateResult,
-    UTMResult,
+    UtmResult,
     GetKeyResult,
     ListResult,
     LoginResult,
@@ -38,10 +38,10 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     SetCKeyRequest,
     SetChannelKeyRequest,
     TopicRequest,
-    ATMRequest,
+    AtmRequest,
     NoticeRequest,
     PrivateRequest,
-    UTMRequest,
+    UtmRequest,
     GetKeyRequest,
     WhoRequest,
 )
@@ -249,7 +249,7 @@ class JoinResponse(ResponseBase):
         joiner_irc_prefix = ResponseBase.build_irc_user_prefix(
             self._result.joiner_nick_name, self._result.joiner_user_name
         )
-        self.sending_buffer = f"{joiner_irc_prefix} {ResponseCode.JOIN.value} {self._request.channel_name}\r\n"
+        self.sending_buffer = f":{joiner_irc_prefix} {ResponseCode.JOIN.value} {self._request.channel_name}\r\n"
 
 
 class KickResponse(ResponseBase):
@@ -388,17 +388,20 @@ class TopicResponse(ResponseBase):
 # region Message
 
 
-class ATMResponse(ResponseBase):
-    _request: ATMRequest
-    _result: ATMResult
+class AtmResponse(ResponseBase):
+    _request: AtmRequest
+    _result: AtmResult
 
-    def __init__(self, request: ATMRequest, result: ATMResult) -> None:
-        assert isinstance(request, ATMRequest)
-        assert isinstance(result, ATMResult)
+    def __init__(self, request: AtmRequest, result: AtmResult) -> None:
+        assert isinstance(request, AtmRequest)
+        assert isinstance(result, AtmResult)
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.irc_prefix} {ResponseCode.ATM.value} {self._result.target_name} :{self._request.message}\r\n"
+        irc_prefix = ResponseBase.build_irc_user_prefix(
+            self._result.nick_name, self._result.user_name
+        )
+        self.sending_buffer = f":{irc_prefix} {ResponseCode.ATM.value} {self._request.target_name} :{self._request.message}\r\n"
 
 
 class NoticeResponse(ResponseBase):
@@ -412,7 +415,11 @@ class NoticeResponse(ResponseBase):
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.irc_prefix} {ResponseCode.NOTICE.value} {self._result.target_name} {self._request.message}\r\n"
+        irc_prefix = ResponseBase.build_irc_user_prefix(
+            self._result.nick_name, self._result.user_name
+        )
+
+        self.sending_buffer = f":{irc_prefix} {ResponseCode.NOTICE.value} {self._request.target_name} {self._request.message}\r\n"
 
 
 class PrivateResponse(ResponseBase):
@@ -420,24 +427,29 @@ class PrivateResponse(ResponseBase):
     _result: PrivateResult
 
     def __init__(self, request: PrivateRequest, result: PrivateResult) -> None:
-        assert isinstance(result, PrivateRequest)
-        assert isinstance(request, PrivateResult)
+        assert isinstance(request, PrivateRequest)
+        assert isinstance(result, PrivateResult)
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.irc_prefix} {ResponseCode.PRIVMSG.value} {self._result.target_name} :{self._request.message}\r\n"
+        irc_prefix = ResponseBase.build_irc_user_prefix(
+            self._result.nick_name, self._result.user_name
+        )
+        self.sending_buffer = f":{irc_prefix} {ResponseCode.PRIVMSG.value} {self._request.target_name} :{self._request.message}\r\n"
 
 
-class UTMResponse(ResponseBase):
-    _request: UTMRequest
-    _result: UTMResult
+class UtmResponse(ResponseBase):
+    _request: UtmRequest
+    _result: UtmResult
 
-    def __init__(self, request: UTMRequest, result: UTMResult) -> None:
-        assert isinstance(request, UTMRequest)
-        assert isinstance(result, UTMResult)
+    def __init__(self, request: UtmRequest, result: UtmResult) -> None:
+        assert isinstance(request, UtmRequest)
+        assert isinstance(result, UtmResult)
         super().__init__(request, result)
 
     def build(self) -> None:
-        self.sending_buffer = f":{self._result.irc_prefix} {ResponseCode.UTM.value} {
-            self._result.target_name
-        } :{self._request.message}"
+        irc_prefix = ResponseBase.build_irc_user_prefix(
+            self._result.nick_name, self._result.user_name
+        )
+
+        self.sending_buffer = f":{irc_prefix} {ResponseCode.UTM.value} {self._request.target_name} :{self._request.message}\r\n"

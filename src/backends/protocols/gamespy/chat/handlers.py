@@ -8,7 +8,6 @@ from backends.library.database.pg_orm import (
     ChatUserCaches,
     ChatChannelUserCaches,
 )
-from backends.protocols.gamespy.chat.brocker_manager import MANAGER
 from backends.protocols.gamespy.chat.helper import ChannelHelper
 import backends.protocols.gamespy.chat.data as data
 from backends.protocols.gamespy.chat.requests import (
@@ -57,6 +56,7 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     NoSuchNickException,
 )
 from frontends.gamespy.protocols.chat.contracts.results import (
+    AtmResult,
     CryptResult,
     GetCKeyResult,
     GetChannelKeyResult,
@@ -68,9 +68,12 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     NamesResult,
     NamesResultData,
     NickResult,
+    NoticeResult,
     PartResult,
+    PrivateResult,
     SetChannelKeyResult,
     TopicResult,
+    UtmResult,
     WhoIsResult,
     WhoResult,
 )
@@ -96,17 +99,7 @@ class HandlerBase(hb.HandlerBase):
         self._user = data.get_user_cache_by_ip_port(
             self._request.client_ip, self._request.client_port, self._session
         )
-        if self._user is None:
-            self._user = ChatUserCaches(
-                server_id=self._request.server_id,
-                remote_ip=self._request.client_ip,
-                remote_port=self._request.client_port,
-                update_time=datetime.now(),
-                nick_name=f"{self._request.client_ip}:{self._request.client_port}",
-                websocket_address=self._request.websocket_address,
-            )
-            self._session.add(self._user)
-        else:
+        if self._user is not None:
             self._user.update_time = datetime.now()  # type: ignore
 
     def _check_user(self):
@@ -120,13 +113,11 @@ class ChannelHandlerBase(HandlerBase):
     _request: ChannelRequestBase
     _channel: ChatChannelCaches | None
     _channel_user: ChatChannelUserCaches | None
-    _is_broadcast: bool
 
     def __init__(self, request: RequestBase) -> None:
         super().__init__(request)
         self._channel = None
         self._channel_user = None
-        self._is_broadcast = False
 
     def _request_check(self) -> None:
         super()._request_check()
@@ -164,33 +155,10 @@ class ChannelHandlerBase(HandlerBase):
             )
         self._channel_user.update_time = datetime.now()  # type: ignore
 
-    def _boradcast(self) -> None:
-        # todo boradcast message here
-        # find channel user websockets
-        assert self._channel
-        assert isinstance(self._channel.channel_name, str)
-        result = data.get_websocket_addr_by_channel_name(
-            self._channel.channel_name, self._session
-        )
-        ws_list = []
-
-        for ws in result:
-            assert self._user
-            if ws != self._user.websocket_address:  # type: ignore
-                ws_list.append(ws)
-
-        MANAGER.broadcast(self._request, ws_list)
-
-    def _response_construct(self) -> None:
-        super()._response_construct()
-        if self._is_broadcast:
-            self._boradcast()
-
 
 class MessageHandlerBase(ChannelHandlerBase):
     def __init__(self, request: RequestBase) -> None:
         super().__init__(request)
-        self._is_broadcast = True
 
 
 # region General
@@ -208,9 +176,28 @@ class CdKeyHandler(HandlerBase):
 class CryptHandler(HandlerBase):
     _request: CryptRequest
 
+    def _request_check(self) -> None:
+        # we just clean the garbage data
+        data.clean_expired_channel_user_cache(self._session)
+        data.clean_expired_channel_cache(self._session)
+        data.clean_expired_user_cache(self._session)
+        self._get_user()
+        if self._user is not None:
+            raise UniSpyException("user cache is trash in database")
+
     def _data_operate(self) -> None:
-        assert self._user is not None
-        self._user.game_name = self._request.gamename  # type: ignore
+        assert self._user is None
+        if self._user is None:
+            self._user = ChatUserCaches(
+                server_id=self._request.server_id,
+                remote_ip=self._request.client_ip,
+                remote_port=self._request.client_port,
+                update_time=datetime.now(),
+                nick_name=f"{self._request.client_ip}:{self._request.client_port}",
+                websocket_address=self._request.websocket_address,
+                game_name=self._request.gamename,
+            )
+        self._session.add(self._user)
         self._secret_key = data.get_secret_key_by_game_name(
             self._request.gamename, self._session
         )
@@ -325,7 +312,7 @@ class NickHandler(HandlerBase):
     _request: NickRequest
 
     def _data_operate(self) -> None:
-        # todo we remove expired data 
+        # todo we remove expired data
         # data.remove_expired_user_cache(self._session)
         # data.remove_expired_channel_user_cache(self._session)
         # cache = data.get_user_cache_by_nick_name("172.19.0.5:52986")
@@ -396,6 +383,10 @@ class SetKeyHandler(HandlerBase):
 
 class UserHandler(HandlerBase):
     _request: UserRequest
+
+    def _request_check(self) -> None:
+        data.clean_expired_user_cache(self._session)
+        super()._request_check()
 
     def _data_operate(self) -> None:
         self._user.user_name = self._request.user_name  # type: ignore
@@ -737,14 +728,50 @@ class TopicHandler(ChannelHandlerBase):
 class AtmHandler(MessageHandlerBase):
     _request: AtmRequest
 
+    def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert isinstance(self._user.user_name, str)
+
+        self._result = AtmResult(
+            nick_name=self._user.nick_name, user_name=self._user.user_name
+        )
+
 
 class UtmHandler(MessageHandlerBase):
     _request: UtmRequest
+
+    def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert isinstance(self._user.user_name, str)
+
+        self._result = UtmResult(
+            nick_name=self._user.nick_name, user_name=self._user.user_name
+        )
 
 
 class NoticeHandler(MessageHandlerBase):
     _request: NoticeRequest
 
+    def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert isinstance(self._user.user_name, str)
+
+        self._result = NoticeResult(
+            nick_name=self._user.nick_name, user_name=self._user.user_name
+        )
+
 
 class PrivateHandler(MessageHandlerBase):
     _request: PrivateRequest
+
+    def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert isinstance(self._user.user_name, str)
+
+        self._result = PrivateResult(
+            nick_name=self._user.nick_name, user_name=self._user.user_name
+        )

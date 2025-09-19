@@ -157,7 +157,7 @@ if __name__ == "__main__":
 # region Message
 
 
-class ATMResult(MessageResultBase):
+class AtmResult(MessageResultBase):
     pass
 
 
@@ -166,8 +166,7 @@ class NoticeResult(MessageResultBase):
 
 
 class PrivateResult(MessageResultBase):
-    is_broadcast_message: bool = False
+    pass
 
-
-class UTMResult(MessageResultBase):
+class UtmResult(MessageResultBase):
     pass

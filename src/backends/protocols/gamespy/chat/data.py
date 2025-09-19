@@ -550,15 +550,21 @@ def get_channel_user_cache_by_ip(ip: str, port: int, session: Session) -> list[d
     return data
 
 
-def remove_expired_user_cache(session: Session):
+def clean_expired_user_cache(session: Session):
     session.query(ChatUserCaches).where(
-        ChatUserCaches.update_time > (datetime.now() - timedelta(minutes=5))
+        ChatUserCaches.update_time < (datetime.now() - timedelta(minutes=5))
     ).delete()
 
 
-def remove_expired_channel_user_cache(session: Session):
+def clean_expired_channel_cache(session: Session):
+    session.query(ChatChannelCaches).where(
+        ChatChannelCaches.update_time < (datetime.now() - timedelta(minutes=5))
+    ).delete()
+
+
+def clean_expired_channel_user_cache(session: Session):
     session.query(ChatChannelUserCaches).where(
-        ChatUserCaches.update_time > (datetime.now() - timedelta(minutes=5))
+        ChatUserCaches.update_time < (datetime.now() - timedelta(minutes=5))
     ).delete()
 
 
