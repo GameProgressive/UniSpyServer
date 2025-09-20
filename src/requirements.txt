@@ -9,3 +9,4 @@ xmltodict == 0.14.2
 responses == 0.25.3
 redis == 5.2.0
 websockets == 15.0.1
+schedule

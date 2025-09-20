@@ -52,7 +52,11 @@ class ServerLauncherBase:
         # display version info
         print(f"version {VERSION}")
         table = PrettyTable()
-        table.field_names = ["Server Name", "Listening Address", "Listening Port"]
+        table.field_names = [
+            "Server Name",
+            "Listening Address",
+            "Listening Port",
+        ]
         assert self.config is not None
         table.add_row(
             [
@@ -106,4 +110,7 @@ class ServerLauncherBase:
         self.logger = LogManager.create(short_name)
 
     def _keep_running(self):
-        _ = input("Press any key to Quit\n")
+        # _ = input("Press any key to Quit\n")
+        print("Press ctr+c to Quit\n")
+        while True:
+            pass
