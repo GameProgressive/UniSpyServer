@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.game_traffic_relay.handlers import (
-    UpdateGTRServiceHandler,
+    GTRHeartBeatHandler,
 )
 from backends.protocols.gamespy.game_traffic_relay.requests import (
-    UpdateGTRServiceRequest,
+    GTRHeartBeat,
 )
 from backends.urls import GAME_TRAFFIC_RELAY
 
@@ -12,10 +12,10 @@ router = APIRouter()
 
 
 @router.post(f"{GAME_TRAFFIC_RELAY}/heartbeat")
-def heartbeat(request: UpdateGTRServiceRequest):
-    handler = UpdateGTRServiceHandler(request)
+def heartbeat(request: GTRHeartBeat):
+    handler = GTRHeartBeatHandler(request)
     handler.handle()
-    return
+    return None
 
 
 if __name__ == "__main__":

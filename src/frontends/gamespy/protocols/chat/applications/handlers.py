@@ -102,7 +102,6 @@ class CdKeyHandler(CmdHandlerBase):
     def _response_construct(self) -> None:
         self._response = CdKeyResponse()
 
-
 class CryptHandler(CmdHandlerBase):
     _request: CryptRequest
     _result: CryptResult

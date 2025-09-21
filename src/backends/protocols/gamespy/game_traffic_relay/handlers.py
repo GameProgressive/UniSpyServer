@@ -4,17 +4,17 @@ from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import RelayServerCaches
 from backends.protocols.gamespy.game_traffic_relay.requests import (
-    UpdateGTRServiceRequest,
+    GTRHeartBeat,
 )
 
 import backends.protocols.gamespy.game_traffic_relay.data as data
 
 
-class UpdateGTRServiceHandler(HandlerBase):
-    _request: UpdateGTRServiceRequest
+class GTRHeartBeatHandler(HandlerBase):
+    _request: GTRHeartBeat
 
-    def __init__(self, request: UpdateGTRServiceRequest) -> None:
-        assert isinstance(request, UpdateGTRServiceRequest)
+    def __init__(self, request: GTRHeartBeat) -> None:
+        assert isinstance(request, GTRHeartBeat)
         self._request = request
         self.logger = logging.getLogger("backend")
         self._result = None

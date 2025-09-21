@@ -8,6 +8,8 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
 from prettytable import PrettyTable
+from frontends.gamespy.library.abstractions.client import ClientBase
+from typing import final
 
 VERSION = 0.45
 _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
@@ -22,27 +24,40 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
         "GameStatus": "GS",
         "Chat": "Chat",
         "WebServices": "Web",
-        "GameTrafficReplay": "GTR",
+        "GameTrafficRelay": "GTR",
     }
 )
 
 
 class ServerLauncherBase:
-    config: ServerConfig | None
+    config: ServerConfig
     logger: LogWriter | None
     server: NetworkServerBase | None
-    schedular: Schedular
+    _schedular: Schedular
+    _server_cls: type[NetworkServerBase]
+    _client_cls: type[ClientBase]
 
-    def __init__(self):
+    def __init__(
+        self,
+        config_name: str,
+        client_cls: type[ClientBase],
+        server_cls: type[NetworkServerBase],
+    ):
+        assert issubclass(client_cls, ClientBase)
+        assert issubclass(server_cls, NetworkServerBase)
+        assert config_name in CONFIG.servers
+        self.config = CONFIG.servers[config_name]
         self.server = None
         self.logger = None
-        self.config = None
+        self._server_cls = server_cls
+        self._client_cls = client_cls
+        self._create_logger()
 
     def start(self):
         self._connect_to_backend()
-        self._create_logger()
         self.__show_unispy_logo()
         self._launch_server()
+        self._launch_heartbeat_schedular()
         print("Server successfully launched.")
         self._keep_running()
 
@@ -67,24 +82,26 @@ class ServerLauncherBase:
         )
         print(table)
 
+    @final
     def _launch_server(self) -> None:
-        if self.server is None:
-            raise UniSpyException("Create network server in child class")
-        self._heartbeat_to_backend()
+        """
+        assign data in child class so the related instance can be created here
+        """
+        assert self.logger is not None
+        assert self._server_cls is not None
+        assert self._client_cls is not None
+        self.server = self._server_cls(self.config, self._client_cls, self.logger)
         self.server.start()
 
-    def _connect_to_backend(self):
+    @final
+    def _heartbeat_to_backend(self, url: str, json_str: str):
         """
-        check backend availability
+        send heartbeat to backends
         """
-        if CONFIG.unittest.is_collect_request:
-            return
+        assert isinstance(json_str, str)
         try:
             # post our server config to backends to register
-            assert self.config is not None
-            resp = requests.post(
-                url=CONFIG.backend.url + "/", data=self.config.model_dump_json()
-            )
+            resp = requests.post(url=url, data=json_str)
             if resp.status_code == 200:
                 data = resp.json()
                 if data["status"] != "online":
@@ -96,21 +113,34 @@ class ServerLauncherBase:
                 f"backend server: {CONFIG.backend.url} not available."
             )
 
-    def _heartbeat_to_backend(self):
+    def _connect_to_backend(self):
         """
-        send heartbeat info to backend to keep the infomation update
+        check backend availability
+        """
+        assert self.config is not None
+        if CONFIG.unittest.is_collect_request:
+            return
+        self._heartbeat_to_backend(CONFIG.backend.url, self.config.model_dump_json())
+
+    @final
+    def _launch_heartbeat_schedular(self):
+        """
+        set the schedular to send heartbeat info to backend to keep the infomation update
         """
         #! temperarily use connect to backend function
-        self.schedular = Schedular(self._connect_to_backend, 30)
-        self.schedular.start()
+        self._schedular = Schedular(self._connect_to_backend, 30)
+        self._schedular.start()
 
+    @final
     def _create_logger(self):
         assert self.config is not None
         short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
         self.logger = LogManager.create(short_name)
 
+    @final
     def _keep_running(self):
-        # _ = input("Press any key to Quit\n")
         print("Press ctr+c to Quit\n")
+        from time import sleep
         while True:
+            sleep(1)
             pass

@@ -16,3 +16,17 @@
 # client.set("hello", "hi")
 # data = client.get("hello")
 # pass
+import socket
+
+SERVER_IP = "127.0.0.1"   # change to target IP if needed
+SERVER_PORT = 27901
+MESSAGE = b"hello"
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+try:
+    for _ in range(10):
+        sock.sendto(MESSAGE, (SERVER_IP, SERVER_PORT))
+        print(f"Sent {MESSAGE!r} to {SERVER_IP}:{SERVER_PORT}")
+finally:
+    sock.close()
