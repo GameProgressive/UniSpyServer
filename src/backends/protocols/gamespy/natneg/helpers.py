@@ -8,6 +8,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatType,
 )
 
+
 class NatStrategy(enum.IntEnum):
     USE_PUBLIC_IP = 0
     USE_PRIVATE_IP = 1
@@ -15,9 +16,9 @@ class NatStrategy(enum.IntEnum):
 
 
 class NatNegVersion(enum.IntEnum):
-    VERSION1 = 1
     VERSION2 = 2
     VERSION3 = 3
+    VERSION4 = 4
 
 
 class NatProtocolHelper:
@@ -35,7 +36,8 @@ class NatProtocolHelper:
 
     def __init__(self, init_caches: list[InitPacketCaches]) -> None:
         if len(init_caches) < 3:
-            raise UniSpyException("init cache length not enough for NAT determination")
+            raise UniSpyException(
+                "init cache length not enough for NAT determination")
         self.nat_type = NatType.NO_NAT
         self.port_mapping = NatPortMappingScheme.CONSISTENT_PORT
         self.guessed_next_port = 0
@@ -43,8 +45,6 @@ class NatProtocolHelper:
         for cache in init_caches:
             assert isinstance(cache.port_type, NatPortType)
             self.address_infos[cache.port_type] = cache
-
-
 
         last_address_info = list(self.address_infos.values())[-1]
         assert isinstance(last_address_info.cookie, int)
@@ -66,15 +66,16 @@ class NatProtocolHelper:
         if self.version not in NatNegVersion:
             raise UniSpyException("Unknown natneg version")
         version = NatNegVersion(self.version)
-        if version == NatNegVersion.VERSION1:
+        if version == NatNegVersion.VERSION2:
             raise UniSpyException("Version 1 not implemented")
-        elif version == NatNegVersion.VERSION2:
-            self._validate_version2()
-            NatProtocolHelper._determine_nat_type_version2(self)
         elif version == NatNegVersion.VERSION3:
             self._validate_version3()
             NatProtocolHelper._determine_nat_type_version3(self)
-    def _validate_version2(self):
+        elif version == NatNegVersion.VERSION4:
+            self._validate_version4()
+            NatProtocolHelper._determine_nat_type_version4(self)
+
+    def _validate_version3(self):
         if not (
             NatPortType.NN1 in self.address_infos
             and NatPortType.NN2 in self.address_infos
@@ -112,7 +113,7 @@ class NatProtocolHelper:
             ):  # type: ignore
                 raise UniSpyException("GP packet info is not correct")
 
-    def _validate_version3(self):
+    def _validate_version4(self):
         # TODO: some games will not send GP packet to NAT negotiation server; currently, the reason is unknown and requires more games for analysis.
         # This will happen in GameClient
 
@@ -175,9 +176,10 @@ class NatProtocolHelper:
                 raise UniSpyException("GP packet info is not correct")
 
     @staticmethod
-    def _determine_nat_type_version2(info: "NatProtocolHelper"):
+    def _determine_nat_type_version3(info: "NatProtocolHelper"):
         if len(info.address_infos) < 3:
-            raise UniSpyException("We need 3 init records to determine the nat type.")
+            raise UniSpyException(
+                "We need 3 init records to determine the nat type.")
 
         nn1 = info.address_infos[NatPortType.NN1]
         nn2 = info.address_infos[NatPortType.NN2]
@@ -199,9 +201,10 @@ class NatProtocolHelper:
             info.nat_type = NatType.UNKNOWN
 
     @staticmethod
-    def _determine_nat_type_version3(info: "NatProtocolHelper"):
+    def _determine_nat_type_version4(info: "NatProtocolHelper"):
         if len(info.address_infos) < 3:
-            raise UniSpyException("We need 3 init records to determine the nat type.")
+            raise UniSpyException(
+                "We need 3 init records to determine the nat type.")
 
         nn1 = info.address_infos[NatPortType.NN1]
         nn2 = info.address_infos[NatPortType.NN2]
@@ -249,7 +252,8 @@ class NatProtocolHelper:
         is_both_have_same_public_ip = helper1.public_ip == helper2.public_ip
         # Check if the first 3 bytes of the private IP addresses are the same
         is_both_in_same_private_ip_range = (
-            helper1.private_ip.split(".")[:3] == helper2.private_ip.split(".")[:3]
+            helper1.private_ip.split(
+                ".")[:3] == helper2.private_ip.split(".")[:3]
         )
 
         # we use p2p strategy when nat punch is available

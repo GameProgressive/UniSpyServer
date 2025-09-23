@@ -11,12 +11,11 @@ class AddressCheckResult(CommonResultBase):
 
 
 class ConnectResult(ResultBase):
+    is_both_client_ready: bool
     got_your_data: bytes = bytes([1])
-    finished: ConnectPacketStatus = ConnectPacketStatus.NO_ERROR
-    ip: str
-    port: int
-    version: int
-    cookie: int
+    status: ConnectPacketStatus | None
+    ip: str | None
+    port: int | None
     packet_type: ResponseType = ResponseType.CONNECT
 
 

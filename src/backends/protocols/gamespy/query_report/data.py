@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING,  cast
+from uuid import UUID
 from backends.library.database.pg_orm import (
     ENGINE,
     ChatChannelCaches,
@@ -6,6 +7,7 @@ from backends.library.database.pg_orm import (
     Games,
     GameServerCaches,
 )
+from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
@@ -14,6 +16,10 @@ from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
     PeerRoomInfo,
 )
 from sqlalchemy.orm import Session
+
+from datetime import datetime
+
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 
 
 def get_all_groups() -> dict:
@@ -142,24 +148,24 @@ def get_server_info_list_with_game_name(
     return data
 
 
-def get_server_info_with_ip_and_port(ip: str, port: int,session:Session) -> GameServerInfo | None:
+def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> GameServerInfo | None:
     assert isinstance(ip, str)
     assert isinstance(port, int)
     result = (
-            session.query(GameServerCaches)
-            .where(
-                GameServerCaches.host_ip_address == ip,
-                GameServerCaches.query_report_port == port,
-            )
-            .first()
+        session.query(GameServerCaches)
+        .where(
+            GameServerCaches.host_ip_address == ip,
+            GameServerCaches.query_report_port == port,
         )
+        .first()
+    )
     if result is None:
         return None
     data = GameServerInfo(**result.__dict__)
     return data
 
 
-def remove_server_info(info: GameServerCaches,session:Session) -> None:
+def remove_server_info(info: GameServerCaches, session: Session) -> None:
     session.delete(info)
     session.commit()
 
@@ -167,15 +173,44 @@ def remove_server_info(info: GameServerCaches,session:Session) -> None:
 # todo finish the GameServerCaches creation
 
 
-def create_game_server(info: GameServerCaches,session:Session) -> None:
+def create_game_server(info: GameServerCaches, session: Session) -> None:
     session.add(info)
-    update_game_server(session)
+    session.commit()
 
 
-def update_game_server(session:Session) -> None:
-    # info.update_time = datetime.now()  # type:ignore
-    with Session(ENGINE) as session:
-        session.commit()
+def update_game_server(
+    cache: GameServerCaches,
+    instant_key: str,
+    server_id: UUID,
+    host_ip_address: str,
+    game_name: str,
+    query_report_port: int,
+    server_status: GameServerStatus,
+    player_data: list[dict[str, object]],
+    server_data: dict[str, object],
+    team_data: list[dict[str, object]],
+    session: Session,
+) -> None:
+    cache.instant_key = instant_key  # type: ignore
+    cache.server_id = server_id  # type: ignore
+    cache.host_ip_address = host_ip_address  # type: ignore
+    cache.game_name = game_name  # type: ignore
+    cache.query_report_port = query_report_port  # type: ignore
+    cache.update_time = datetime.now()  # type: ignore
+    cache.status = server_status  # type: ignore
+    cache.player_data = player_data  # type: ignore
+    cache.server_data = server_data  # type: ignore
+    cache.team_data = team_data  # type: ignore
+    session.commit()
+
+
+def refresh_game_server_cache(instant_key: str, session: Session):
+    cache = get_server_info_with_instant_key(instant_key, session)
+    if cache is None:
+        raise UniSpyException(
+            "no game server cache found, please check the database")
+    cache.update_time = datetime.now() # type: ignore
+    session.commit()
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import struct
 
 # from frontends.gamespy.library.extentions.string_extentions import IPEndPoint
 from frontends.gamespy.protocols.natneg.abstractions.contracts import (
+    MAGIC_DATA,
     CommonRequestBase,
     RequestBase,
 )
@@ -26,7 +27,8 @@ class PingRequest(RequestBase):
     def parse(self) -> None:
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(self.raw_request[8:12], byteorder="little")
+        self.cookie = int.from_bytes(
+            self.raw_request[8:12], byteorder="little")
         self.ip = socket.inet_ntoa(self.raw_request[12:16])
         self.port = int.from_bytes(self.raw_request[16:18])
         # port here is not in little endian
@@ -48,6 +50,18 @@ class ConnectRequest(CommonRequestBase):
     """
 
     client_index: NatClientIndex
+
+    @staticmethod
+    def build(version: int, command_name: RequestType, cookie: int, port_type: NatPortType, client_index: NatClientIndex, use_game_port: bool) -> bytes:
+        data = bytes()
+        data += MAGIC_DATA
+        data += version.to_bytes(1)
+        data += command_name.value.to_bytes(1)
+        data += cookie.to_bytes(4)
+        data += port_type.value.to_bytes(1)
+        data += client_index.value.to_bytes(1)
+        data += use_game_port.to_bytes(1)
+        return data
 
 
 class ErtAckRequest(CommonRequestBase):
@@ -94,7 +108,7 @@ class PreInitRequest(RequestBase):
 
 
 class ReportRequest(CommonRequestBase):
-    is_nat_success: bool = False
+    is_nat_success: bool
     game_name: str
     nat_type: NatType
     mapping_scheme: NatPortMappingScheme
@@ -113,4 +127,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")

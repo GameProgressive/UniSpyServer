@@ -24,7 +24,6 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=1,
                 private_ip="10.0.0.1",
                 private_port=0,
-                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN1,
@@ -36,7 +35,6 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=0,
-                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN2,
@@ -48,7 +46,6 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=2,
-                update_time=datetime.now(),
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN3,
@@ -60,7 +57,6 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="10.0.0.1",
                 private_port=2,
-                update_time=datetime.now(),
             ),
         ]
 
@@ -68,7 +64,7 @@ class NatDetectionTests(unittest.TestCase):
         init_info = NatProtocolHelper(packet_caches)
 
         # Determine NAT type
-        NatProtocolHelper._determine_nat_type_version3(init_info)
+        NatProtocolHelper._determine_nat_type_version4(init_info)
 
         # Assert that the NAT type is NoNat
         self.assertEqual(init_info.nat_type, NatType.NO_NAT)
@@ -86,7 +82,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=1,
                 private_ip="192.168.1.1",
                 private_port=0,
-                update_time=datetime.now(),
+
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN1,
@@ -98,7 +94,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=0,
-                update_time=datetime.now(),
+
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN2,
@@ -110,7 +106,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=2,
-                update_time=datetime.now(),
+
             ),
             InitPacketCaches(
                 port_type=NatPortType.NN3,
@@ -122,7 +118,7 @@ class NatDetectionTests(unittest.TestCase):
                 public_port=2,
                 private_ip="192.168.1.1",
                 private_port=2,
-                update_time=datetime.now(),
+
             ),
         ]
 
@@ -130,7 +126,7 @@ class NatDetectionTests(unittest.TestCase):
         init_info = NatProtocolHelper(packet_caches)
 
         # Determine NAT type
-        NatProtocolHelper._determine_nat_type_version3(init_info)
+        NatProtocolHelper._determine_nat_type_version4(init_info)
         self.assertEqual(init_info.nat_type, NatType.FULL_CONE)
 
     # Test method
@@ -187,7 +183,7 @@ class NatDetectionTests(unittest.TestCase):
         init_info = NatProtocolHelper(packet_caches)
 
         # Determine NAT type
-        NatProtocolHelper._determine_nat_type_version3(init_info)
+        NatProtocolHelper._determine_nat_type_version4(init_info)
 
         # Assert the NAT type is symmetric
         self.assertEqual(init_info.nat_type, NatType.SYMMETRIC)
@@ -245,7 +241,7 @@ class NatDetectionTests(unittest.TestCase):
         init_info = NatProtocolHelper(packet_caches)
 
         # Determine NAT type
-        NatProtocolHelper._determine_nat_type_version3(init_info)
+        NatProtocolHelper._determine_nat_type_version4(init_info)
 
         # Assert the NAT type is symmetric
         self.assertEqual(init_info.nat_type, NatType.SYMMETRIC)

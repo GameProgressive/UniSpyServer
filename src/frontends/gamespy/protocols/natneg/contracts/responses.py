@@ -67,11 +67,14 @@ class ConnectResponse(ResponseBase):
     _request: ConnectRequest
 
     def build(self) -> None:
+        assert self._result.ip is not None
+        assert self._result.port is not None
+        assert self._result.status is not None
         super().build()
         data = bytes()
         data += self.sending_buffer
         data += socket.inet_aton(self._result.ip)
         data += self._result.port.to_bytes(2)[::-1]
         data += self._result.got_your_data
-        data += self._result.finished.value.to_bytes(1)
+        data += self._result.status.value.to_bytes(1)
         self.sending_buffer = data

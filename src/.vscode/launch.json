@@ -81,6 +81,17 @@
             "justMyCode": true
         },
         {
+            "name": "gtr",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/game_traffic_relay/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
             "name": "natneg",
             "type": "debugpy",
             "request": "launch",

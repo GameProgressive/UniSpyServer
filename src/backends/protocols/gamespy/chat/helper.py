@@ -90,7 +90,6 @@ class ChannelHelper:
             nick_name=user.nick_name,
             user_name=user.user_name,
             channel_name=channel.channel_name,
-            update_time=datetime.now(),
             is_voiceable=True,
             is_channel_operator=False,
             is_channel_creator=is_creator,
@@ -170,7 +169,6 @@ class ChannelHelper:
         group_id: int,
         max_num_user: int,
         key_values: dict,
-        update_time: datetime,
         session: Session,
         modes: list = [],
         creator: str | None = None,
@@ -191,7 +189,6 @@ class ChannelHelper:
             group_id=group_id,
             max_num_user=max_num_user,
             key_values=key_values,
-            update_time=update_time,
             creator=creator,
             modes=modes,
         )

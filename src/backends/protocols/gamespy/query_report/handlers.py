@@ -47,7 +47,6 @@ class Heartbeathandler(HandlerBase):
                 host_ip_address=self._request.client_ip,
                 game_name=self._request.game_name,
                 query_report_port=self._request.client_port,
-                update_time=datetime.now(),
                 status=self._request.server_status,
                 player_data=self._request.player_data,
                 server_data=self._request.server_data,
@@ -56,31 +55,25 @@ class Heartbeathandler(HandlerBase):
             )
             data.create_game_server(cache, self._session)
         else:
-            cache.instant_key = self._request.instant_key  # type: ignore
-            cache.server_id = self._request.server_id  # type: ignore
-            cache.host_ip_address = self._request.client_ip  # type: ignore
-            cache.game_name = self._request.game_name  # type: ignore
-            cache.query_report_port = self._request.client_port  # type: ignore
-            cache.update_time = datetime.now()  # type: ignore
-            cache.status = self._request.server_status  # type: ignore
-            cache.player_data = self._request.player_data  # type: ignore
-            cache.server_data = self._request.server_data  # type: ignore
-            cache.team_data = self._request.team_data  # type: ignore
-            cache.avaliable = True  # type: ignore
-            data.update_game_server(self._session)
+            data.update_game_server(
+                cache=cache,
+                instant_key=self._request.instant_key,
+                server_id=self._request.server_id,
+                host_ip_address=self._request.client_ip,
+                game_name=self._request.game_name,
+                query_report_port=self._request.client_port,
+                server_status=self._request.server_status,
+                player_data=self._request.player_data,
+                server_data=self._request.server_data,
+                team_data=self._request.team_data,
+                session=self._session,
+            )
 
 
 class KeepAliveHandler(HandlerBase):
     _request: KeepAliveRequest
 
     def _data_operate(self) -> None:
-        with Session(ENGINE) as session:
-            cache = (
-                session.query(GameServerCaches)
-                .where(GameServerCaches.instant_key == self._request.instant_key)
-                .first()
-            )
-            # update heartbeat time
-            cache.update_time = datetime.now()  # type: ignore
-
-            session.commit()
+        assert isinstance(self._request.instant_key, str)
+        data.refresh_game_server_cache(
+            self._request.instant_key, self._session)

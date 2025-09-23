@@ -19,6 +19,7 @@ from sqlalchemy.dialects.postgresql import JSONB, INET
 from sqlalchemy.types import TypeDecorator
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
+    NatPortMappingScheme,
     NatPortType,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
@@ -31,6 +32,7 @@ from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
 import sqlalchemy as sa
 import enum
 from sqlalchemy.orm.decl_api import DeclarativeBase
+
 
 class IntEnum(TypeDecorator):
     impl = sa.Integer
@@ -72,8 +74,10 @@ class Users(Base):
 class Profiles(Base):
     __tablename__ = "profiles"
 
-    profileid: Column[int] = Column(Integer, primary_key=True, autoincrement=True)
-    userid: Column[int] = Column(Integer, ForeignKey("users.userid"), nullable=False)
+    profileid: Column[int] = Column(
+        Integer, primary_key=True, autoincrement=True)
+    userid: Column[int] = Column(
+        Integer, ForeignKey("users.userid"), nullable=False)
     nick: Column[str] = Column(String, nullable=False)
     serverflag: Column[int] = Column(Integer, nullable=False, default=0)
     status = Column(IntEnum(GPStatusCode), default=GPStatusCode.OFFLINE)
@@ -104,7 +108,8 @@ class Blocked(Base):
     __tablename__ = "blocked"
 
     blockid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
 
@@ -113,7 +118,8 @@ class Friends(Base):
     __tablename__ = "friends"
 
     friendid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     targetid = Column(Integer, nullable=False)
     namespaceid = Column(Integer, nullable=False)
 
@@ -122,8 +128,10 @@ class FriendAddRequest(Base):
     __tablename__ = "addrequests"
 
     addrequestid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
-    targetid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
+    targetid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     reason = Column(String, nullable=False)
     status = Column(
@@ -135,7 +143,6 @@ class FriendAddRequest(Base):
 
 class Games(Base):
     __tablename__ = "games"
-
     gameid = Column(Integer, primary_key=True)
     gamename = Column(String, nullable=False)
     secretkey = Column(String, nullable=False)
@@ -145,7 +152,6 @@ class Games(Base):
 
 class GroupList(Base):
     __tablename__ = "grouplist"
-
     groupid = Column(Integer, primary_key=True)
     gameid = Column(Integer, ForeignKey("games.gameid"), nullable=False)
     roomname = Column(Text, nullable=False)
@@ -153,8 +159,7 @@ class GroupList(Base):
 
 class Messages(Base):
     __tablename__ = "messages"
-
-    messageid = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     namespaceid = Column(Integer, nullable=False)
     type = Column(Integer)
     from_user = Column(Integer, nullable=False)
@@ -165,16 +170,15 @@ class Messages(Base):
 
 class Partner(Base):
     __tablename__ = "partner"
-
     partnerid = Column(Integer, primary_key=True)
     partnername = Column(String, nullable=False)
 
 
 class PStorage(Base):
     __tablename__ = "pstorage"
-
-    pstorageid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    profileid = Column(Integer, ForeignKey(
+        "profiles.profileid"), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
     data = Column(JSONB)
@@ -187,21 +191,20 @@ class GameStatusSnapShot(Base):
     session_key = Column(String)
     game_name = Column(String)
     game_data = Column(JSONB)
-    update_time = Column(DateTime, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 class SakeStorage(Base):
     __tablename__ = "sakestorage"
-
-    sakestorageid = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     tableid = Column(Integer, nullable=False)
     data: Column[JSONB] = Column(JSONB, nullable=False)
 
 
 class InitPacketCaches(Base):
     __tablename__ = "init_packet_caches"
-
-    cookie = Column(BigInteger, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cookie = Column(SmallInteger, nullable=False)
     server_id = Column(UUID, nullable=False)
     version = Column(Integer, nullable=False)
     port_type = Column(IntEnum(NatPortType), nullable=False)
@@ -212,37 +215,37 @@ class InitPacketCaches(Base):
     public_port = Column(Integer, nullable=False)
     private_ip = Column(String, nullable=False)
     private_port = Column(Integer, nullable=False)
-    update_time = Column(DateTime, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
-class NatFailCaches(Base):
-    __tablename__ = "nat_fail_cachess"
-    record_id = Column(Integer, primary_key=True, autoincrement=True)
-    public_ip_address1 = Column(INET, nullable=False)
-    public_ip_address2 = Column(INET, nullable=False)
-    update_time = Column(DateTime, nullable=False)
-
-
-# class ReportPackets(Base):
-#     __tablename__ = "report_packets"
-#     public_ip_address1 = Column(String, nullable=False)
-#     public_ip_address2 = Column(String, nullable=False)
-#     update_time = Column(DateTime, nullable=False)
+class NatResultCaches(Base):
+    __tablename__ = "nat_result_caches"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cookie = Column(SmallInteger, nullable=False)
+    public_ip = Column(SmallInteger, nullable=False)
+    private_ip = Column(SmallInteger, nullable=False)
+    is_success = Column(Boolean, nullable=False)
+    port_mapping_type = Column(IntEnum(NatPortMappingScheme), nullable=False)
+    port_type = Column(IntEnum(NatPortType), nullable=False)
+    client_index = Column(IntEnum(NatClientIndex), nullable=False)
+    game_name = Column(String, nullable=True)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 class RelayServerCaches(Base):
     __tablename__ = "relay_server_caches"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     server_id = Column(UUID, primary_key=True, nullable=False)
-    public_ip_address = Column(String, nullable=False)
+    public_ip = Column(String, nullable=False)
     public_port = Column(Integer, nullable=False)
     client_count = Column(Integer, nullable=False)
-    update_time = Column(DateTime, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 class ChatChannelCaches(Base):
     __tablename__ = "chat_channel_caches"
-    server_id = Column(UUID, nullable=False)
     channel_name = Column(String, primary_key=True, nullable=False)
+    server_id = Column(UUID, nullable=False)
     creator = Column(String, nullable=False)
     game_name = Column(String, nullable=False)
     creator = Column(String, nullable=True)
@@ -253,9 +256,9 @@ class ChatChannelCaches(Base):
     max_num_user = Column(Integer, nullable=False)
     key_values = Column(JSONB, default={})
     invited_nicks = Column(JSONB, default=[])
-    update_time = Column(DateTime, nullable=False)
     modes = Column(JSONB, default=[])
     banned_nicks = Column(JSONB, default=[])
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 class ChatUserCaches(Base):
@@ -264,15 +267,15 @@ class ChatUserCaches(Base):
     """
 
     __tablename__ = "chat_user_caches"
-    server_id = Column(UUID, nullable=False)
     nick_name = Column(String, primary_key=True, nullable=True)
+    server_id = Column(UUID, nullable=False)
     user_name = Column(String, nullable=True)
     game_name = Column(String, nullable=True)
     remote_ip = Column(INET, nullable=False)
     remote_port = Column(Integer, nullable=False)
     websocket_address = Column(String, nullable=False)
     key_value = Column(JSONB, default={})
-    update_time = Column(DateTime, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 class ChatChannelUserCaches(Base):
@@ -293,7 +296,7 @@ class ChatChannelUserCaches(Base):
         String, ForeignKey("chat_channel_caches.channel_name"), nullable=False
     )
     server_id = Column(UUID, nullable=False)
-    update_time = Column(DateTime, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
     # can we directly store the flags?
     is_voiceable = Column(Boolean, nullable=False)
     is_channel_operator = Column(Boolean, nullable=False)
@@ -310,12 +313,12 @@ class GameServerCaches(Base):
     host_ip_address = Column(INET, nullable=False)
     game_name = Column(String, nullable=False)
     query_report_port = Column(Integer, nullable=False)
-    update_time = Column(DateTime, nullable=False)
     status = Column(IntEnum(GameServerStatus))
     player_data = Column(JSONB, nullable=False)
     server_data = Column(JSONB, nullable=False)
     team_data = Column(JSONB, nullable=False)
     avaliable = Column(Boolean, nullable=True)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
 ENGINE = create_engine(CONFIG.postgresql.url)

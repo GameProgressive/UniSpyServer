@@ -20,8 +20,8 @@ class ListResult(ResultBase):
         channel_name: str
         total_channel_user: int
         channel_topic: str
-    invoker_nick_name:str
-    invoker_user_name:str
+    invoker_nick_name: str
+    invoker_user_name: str
     channel_info_list: list[ListInfo] = []
     """(channel_name:str,total_channel_user:int,channel_topic:str)"""
 
@@ -143,6 +143,12 @@ class SetChannelKeyResult(ResultBase):
     channel_name: str
 
 
+class SetCKeyResult(ResultBase):
+    setter_nick_name: str
+    setter_user_name: str
+    channel_name: str
+
+
 if __name__ == "__main__":
     dd = {
         "infos": [
@@ -167,6 +173,7 @@ class NoticeResult(MessageResultBase):
 
 class PrivateResult(MessageResultBase):
     pass
+
 
 class UtmResult(MessageResultBase):
     pass

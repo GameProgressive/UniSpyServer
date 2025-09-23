@@ -35,7 +35,7 @@ class ResponseType(Enum):
 
 class ConnectPacketStatus(Enum):
     NO_ERROR = 0
-    BEAD_HEART_BEAT = 1
+    BAD_HEART_BEAT = 1
     INIT_PACKET_TIMEOUT = 2
 
 

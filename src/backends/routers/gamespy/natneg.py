@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from backends.protocols.gamespy.chat.requests import PingRequest
-from backends.protocols.gamespy.natneg.handlers import ConnectHandler, InitHandler
+from backends.protocols.gamespy.natneg.handlers import ConnectHandler, InitHandler, ReportHandler
 from backends.protocols.gamespy.natneg.requests import AddressCheckRequest, ConnectRequest, ErtAckRequest, InitRequest, ReportRequest
 from backends.urls import NATNEG
 
@@ -33,14 +33,11 @@ def init(request: InitRequest):
     return handler.response
 
 
-@router.post(f"{NATNEG}/PingHandler")
-def ping(request: PingRequest):
-    raise NotImplementedError()
-
-
 @router.post(f"{NATNEG}/ReportHandler")
 def report(request: ReportRequest):
-    raise NotImplementedError()
+    handler = ReportHandler(request)
+    handler.handle()
+    return handler.response
 
 
 if __name__ == "__main__":

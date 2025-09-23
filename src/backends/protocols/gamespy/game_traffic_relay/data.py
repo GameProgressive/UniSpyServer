@@ -12,7 +12,7 @@ def search_relay_server(
         session.query(RelayServerCaches)
         .where(
             RelayServerCaches.server_id == server_id,
-            RelayServerCaches.public_ip_address == server_ip,
+            RelayServerCaches.public_ip == server_ip,
         )
         .first()
     )
@@ -36,7 +36,7 @@ def update_relay_server(info: RelayServerCaches, session: Session):
     session.commit()
 
 
-def add_relay_server(info: RelayServerCaches, session: Session):
+def create_relay_server(info: RelayServerCaches, session: Session):
     session.add(info)
     session.commit()
 
@@ -50,7 +50,7 @@ def delete_relay_server(server_id: UUID, ip_address: str, port: int, session: Se
         session.query(RelayServerCaches)
         .where(
             RelayServerCaches.server_id == server_id,
-            RelayServerCaches.public_ip_address == ip_address,
+            RelayServerCaches.public_ip == ip_address,
             RelayServerCaches.public_port == port,
         )
         .first()

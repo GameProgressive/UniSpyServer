@@ -42,7 +42,8 @@ def is_user_exist(
         .first()
     )
     if result is None:
-        raise AuthException("No account exists with the provided email address.")
+        raise AuthException(
+            "No account exists with the provided email address.")
 
 
 def get_info_by_cdkey_email(
@@ -102,28 +103,27 @@ def get_info_by_authtoken(
     """
 
     result = (
-        session.query(Users, Profiles, SubProfiles)
-        .join(Users, Users.userid == Profiles.userid)
-        .join(Profiles, Profiles.profileid == SubProfiles.profileid)
+        session.query(Users.userid,
+                      Profiles.profileid,
+                      Profiles.nick,
+                      SubProfiles.uniquenick,
+                      SubProfiles.cdkeyenc)
+        .join(Profiles, Profiles.userid == Users.userid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
         .where(SubProfiles.authtoken == auth_token)
         .first()
     )
     if result is None:
         raise AuthException("No account exists with the provided authtoken.")
-    user: Users = result[0]
-    profile: Profiles = result[1]
-    subprofile: SubProfiles = result[2]
-    assert isinstance(user.userid, int)
-    assert isinstance(profile.profileid, int)
-    assert isinstance(profile.nick, str)
-    assert isinstance(subprofile.uniquenick, str)
-    assert isinstance(subprofile.cdkeyenc, str)
+
+    userid, profileid, nick, uniquenick, cdkeyenc = result
+    assert isinstance(userid, int)
+    assert isinstance(profileid, int)
+    assert isinstance(nick, str)
+    assert isinstance(uniquenick, str)
+    assert isinstance(cdkeyenc, str)
     return (
-        user.userid,
-        profile.profileid,
-        profile.nick,
-        subprofile.uniquenick,
-        subprofile.cdkeyenc,
+        userid, profileid, nick, uniquenick, cdkeyenc
     )
 
 
@@ -180,7 +180,8 @@ def get_info_by_uniquenick(
 
 def get_user_data(table_id: int, session: Session) -> dict:
     result = (
-        session.query(SakeStorage.data).where(SakeStorage.tableid == table_id).first()
+        session.query(SakeStorage.data).where(
+            SakeStorage.tableid == table_id).first()
     )
 
     if TYPE_CHECKING:
@@ -189,7 +190,8 @@ def get_user_data(table_id: int, session: Session) -> dict:
 
 
 def update_user_data(table_id: int, data: dict, session: Session) -> None:
-    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
+    result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).first()
     if result is None:
         raise SakeException("user data not found")
     assert isinstance(result.data, dict)
@@ -206,7 +208,8 @@ def create_records(table_id: int, data: dict, session: Session) -> None:
     assert isinstance(table_id, int)
     assert isinstance(data, dict)
 
-    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
+    result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).count()
 
     if result != 0:
         raise SakeException("Records already existed")

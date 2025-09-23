@@ -301,6 +301,7 @@ COMMENT ON TABLE unispy.grouplist IS 'Old games use grouplist to create their ga
 --
 
 CREATE TABLE unispy.init_packet_caches (
+    id SERIAL PRIMARY KEY NOT NULL,
     cookie bigint NOT NULL,
     server_id uuid NOT NULL,
     version integer NOT NULL,
@@ -345,7 +346,7 @@ ALTER TABLE unispy.init_packet_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.messages (
-    messageid SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     namespaceid integer NOT NULL,
     type integer,
     from_user integer NOT NULL,
@@ -358,10 +359,10 @@ CREATE TABLE unispy.messages (
 ALTER TABLE unispy.messages OWNER TO unispy;
 
 --
--- Name: messages_messageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.messages_messageid_seq
+-- CREATE SEQUENCE unispy.messages_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -370,34 +371,40 @@ ALTER TABLE unispy.messages OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.messages_messageid_seq OWNER TO unispy;
+ALTER TABLE unispy.messages_id_seq OWNER TO unispy;
 
 --
--- Name: messages_messageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.messages_messageid_seq OWNED BY unispy.messages.messageid;
+ALTER SEQUENCE unispy.messages_id_seq OWNED BY unispy.messages.id;
 
 
 --
--- Name: nat_fail_cachess; Type: TABLE; Schema: unispy; Owner: unispy
+-- Name: nat_result_caches; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.nat_fail_cachess (
-    record_id SERIAL NOT NULL,
-    public_ip_address1 inet NOT NULL,
-    public_ip_address2 inet NOT NULL,
+CREATE TABLE unispy.nat_result_caches (
+    id SERIAL PRIMARY KEY NOT NULL,
+    cookie smallint NOT NULL,
+    public_ip inet NOT NULL,
+    private_ip inet NOT NULL,
+    is_success boolean NOT NULL,
+    port_mapping_type smallint NOT NULL,
+    port_type smallint NOT NULL,
+    client_index smallint NOT NULL,
+    game_name character varying[20] NOT NULL,
     update_time timestamp without time zone NOT NULL
 );
 
 
-ALTER TABLE unispy.nat_fail_cachess OWNER TO unispy;
+ALTER TABLE unispy.nat_result_caches OWNER TO unispy;
 
 --
--- Name: nat_fail_cachess_record_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: nat_result_caches_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.nat_fail_cachess_record_id_seq
+-- CREATE SEQUENCE unispy.nat_result_caches_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -406,13 +413,13 @@ ALTER TABLE unispy.nat_fail_cachess OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.nat_fail_cachess_record_id_seq OWNER TO unispy;
+ALTER TABLE unispy.nat_result_caches_id_seq OWNER TO unispy;
 
 --
--- Name: nat_fail_cachess_record_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: nat_result_caches_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.nat_fail_cachess_record_id_seq OWNED BY unispy.nat_fail_cachess.record_id;
+ALTER SEQUENCE unispy.nat_result_caches_id_seq OWNED BY unispy.nat_result_caches.id;
 
 
 --
@@ -479,7 +486,7 @@ ALTER SEQUENCE unispy.profiles_profileid_seq OWNED BY unispy.profiles.profileid;
 --
 
 CREATE TABLE unispy.pstorage (
-    pstorageid SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     ptype integer NOT NULL,
     dindex integer NOT NULL,
@@ -490,10 +497,10 @@ CREATE TABLE unispy.pstorage (
 ALTER TABLE unispy.pstorage OWNER TO unispy;
 
 --
--- Name: pstorage_pstorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: pstorage_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.pstorage_pstorageid_seq
+-- CREATE SEQUENCE unispy.pstorage_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -502,13 +509,13 @@ ALTER TABLE unispy.pstorage OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.pstorage_pstorageid_seq OWNER TO unispy;
+ALTER TABLE unispy.pstorage_id_seq OWNER TO unispy;
 
 --
--- Name: pstorage_pstorageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: pstorage_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.pstorage_pstorageid_seq OWNED BY unispy.pstorage.pstorageid;
+ALTER SEQUENCE unispy.pstorage_id_seq OWNED BY unispy.pstorage.id;
 
 
 --
@@ -516,10 +523,12 @@ ALTER SEQUENCE unispy.pstorage_pstorageid_seq OWNED BY unispy.pstorage.pstoragei
 --
 
 CREATE TABLE unispy.relay_server_caches (
+    id SERIAL PRIMARY KEY NOT NULL,
     server_id uuid NOT NULL,
-    public_ip_address character varying NOT NULL,
+    public_ip character varying NOT NULL,
     public_port integer NOT NULL,
-    client_count integer NOT NULL
+    client_count integer NOT NULL,
+    update_time timestamp without time zone NOT NULL
 );
 
 
@@ -530,7 +539,7 @@ ALTER TABLE unispy.relay_server_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.sakestorage (
-    sakestorageid SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     tableid integer NOT NULL,
     data jsonb
 );
@@ -546,10 +555,10 @@ COMMENT ON TABLE unispy.sakestorage IS 'Sake storage system.';
 
 
 --
--- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: sakestorage_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.sakestorage_sakestorageid_seq
+-- CREATE SEQUENCE unispy.sakestorage_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -558,13 +567,13 @@ COMMENT ON TABLE unispy.sakestorage IS 'Sake storage system.';
 --     CACHE 1;
 
 
-ALTER TABLE unispy.sakestorage_sakestorageid_seq OWNER TO unispy;
+ALTER TABLE unispy.sakestorage_id_seq OWNER TO unispy;
 
 --
--- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: sakestorage_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.sakestorage_sakestorageid_seq OWNED BY unispy.sakestorage.sakestorageid;
+ALTER SEQUENCE unispy.sakestorage_id_seq OWNED BY unispy.sakestorage.id;
 
 
 --
@@ -695,17 +704,17 @@ ALTER TABLE ONLY unispy.blocked ALTER COLUMN blockid SET DEFAULT nextval('unispy
 
 
 --
--- Name: messages messageid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: messages id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.messages ALTER COLUMN messageid SET DEFAULT nextval('unispy.messages_messageid_seq'::regclass);
+ALTER TABLE ONLY unispy.messages ALTER COLUMN id SET DEFAULT nextval('unispy.messages_id_seq'::regclass);
 
 
 --
--- Name: nat_fail_cachess record_id; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: nat_result_caches id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.nat_fail_cachess ALTER COLUMN record_id SET DEFAULT nextval('unispy.nat_fail_cachess_record_id_seq'::regclass);
+ALTER TABLE ONLY unispy.nat_result_caches ALTER COLUMN id SET DEFAULT nextval('unispy.nat_result_caches_id_seq'::regclass);
 
 
 --
@@ -716,17 +725,17 @@ ALTER TABLE ONLY unispy.profiles ALTER COLUMN profileid SET DEFAULT nextval('uni
 
 
 --
--- Name: pstorage pstorageid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: pstorage id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.pstorage ALTER COLUMN pstorageid SET DEFAULT nextval('unispy.pstorage_pstorageid_seq'::regclass);
+ALTER TABLE ONLY unispy.pstorage ALTER COLUMN id SET DEFAULT nextval('unispy.pstorage_id_seq'::regclass);
 
 
 --
--- Name: sakestorage sakestorageid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: sakestorage id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.sakestorage ALTER COLUMN sakestorageid SET DEFAULT nextval('unispy.sakestorage_sakestorageid_seq'::regclass);
+ALTER TABLE ONLY unispy.sakestorage ALTER COLUMN id SET DEFAULT nextval('unispy.sakestorage_id_seq'::regclass);
 
 
 --
@@ -5317,15 +5326,15 @@ COPY unispy.init_packet_caches (cookie, server_id, version, port_type, client_in
 -- Data for Name: messages; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.messages (messageid, namespaceid, type, from_user, to_user, date, message) FROM stdin;
+COPY unispy.messages (id, namespaceid, type, from_user, to_user, date, message) FROM stdin;
 \.
 
 
 --
--- Data for Name: nat_fail_cachess; Type: TABLE DATA; Schema: unispy; Owner: unispy
+-- Data for Name: nat_result_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.nat_fail_cachess (record_id, public_ip_address1, public_ip_address2, update_time) FROM stdin;
+COPY unispy.nat_result_caches (id, public_ip_address1, public_ip_address2, update_time) FROM stdin;
 \.
 
 
@@ -5352,7 +5361,7 @@ COPY unispy.profiles (profileid, userid, nick, serverflag, status, statstring, e
 -- Data for Name: pstorage; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.pstorage (pstorageid, profileid, ptype, dindex, data) FROM stdin;
+COPY unispy.pstorage (id, profileid, ptype, dindex, data) FROM stdin;
 \.
 
 
@@ -5368,7 +5377,7 @@ COPY unispy.relay_server_caches (server_id, public_ip_address, public_port, clie
 -- Data for Name: sakestorage; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.sakestorage (sakestorageid, tableid, data) FROM stdin;
+COPY unispy.sakestorage (id, tableid, data) FROM stdin;
 \.
 
 
@@ -5430,17 +5439,17 @@ SELECT pg_catalog.setval('unispy.friends_friendid_seq', 1, false);
 
 
 --
--- Name: messages_messageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.messages_messageid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.messages_id_seq', 1, false);
 
 
 --
--- Name: nat_fail_cachess_record_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: nat_result_caches_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.nat_fail_cachess_record_id_seq', 1, false);
+SELECT pg_catalog.setval('unispy.nat_result_caches_id_seq', 1, false);
 
 
 --
@@ -5451,17 +5460,17 @@ SELECT pg_catalog.setval('unispy.profiles_profileid_seq', 2, true);
 
 
 --
--- Name: pstorage_pstorageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: pstorage_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.pstorage_pstorageid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.pstorage_id_seq', 1, false);
 
 
 --
--- Name: sakestorage_sakestorageid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: sakestorage_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.sakestorage_sakestorageid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.sakestorage_id_seq', 1, false);
 
 
 --

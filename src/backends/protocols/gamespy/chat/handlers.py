@@ -71,6 +71,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     NoticeResult,
     PartResult,
     PrivateResult,
+    SetCKeyResult,
     SetChannelKeyResult,
     TopicResult,
     UtmResult,
@@ -192,7 +193,6 @@ class CryptHandler(HandlerBase):
                 server_id=self._request.server_id,
                 remote_ip=self._request.client_ip,
                 remote_port=self._request.client_port,
-                update_time=datetime.now(),
                 nick_name=f"{self._request.client_ip}:{self._request.client_port}",
                 websocket_address=self._request.websocket_address,
                 game_name=self._request.gamename,
@@ -364,7 +364,8 @@ class QuitHandler(HandlerBase):
 
 class RegisterNickHandler(HandlerBase):
     def _data_operate(self) -> None:
-        raise NotImplementedError("we do not know which unique nick should be updated")
+        raise NotImplementedError(
+            "we do not know which unique nick should be updated")
 
 
 class SetKeyHandler(HandlerBase):
@@ -375,7 +376,8 @@ class SetKeyHandler(HandlerBase):
             self._request.client_ip, self._request.client_port, self._session
         )
         if user is None:
-            raise NoSuchNickException("The ip and port is not find in database")
+            raise NoSuchNickException(
+                "The ip and port is not find in database")
 
         user.key_value = self._request.key_values  # type:ignore
         super()._data_operate()
@@ -423,7 +425,8 @@ class WhoIsHandler(HandlerBase):
     _request: WhoIsRequest
 
     def _data_operate(self) -> None:
-        self._data: dict = data.get_whois_result(self._request.nick_name, self._session)
+        self._data: dict = data.get_whois_result(
+            self._request.nick_name, self._session)
 
     def _result_construct(self) -> None:
         self._result = WhoIsResult(
@@ -458,7 +461,6 @@ class JoinHandler(ChannelHandlerBase):
                 room_name="",
                 topic="",
                 key_values={},
-                update_time=datetime.now(),
                 creator=self._user.nick_name,  # type: ignore
                 group_id=0,
                 max_num_user=100,
@@ -671,6 +673,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
         assert isinstance(self._channel_user.is_channel_operator, bool)
         if self._channel_user.is_channel_operator:
             self._channel.key_values = self._request.key_values  # type:ignore
+            self._session.commit()
 
     def _result_construct(self) -> None:
         assert self._channel_user
@@ -696,8 +699,14 @@ class SetCkeyHandler(ChannelHandlerBase):
         self._is_broadcast = True
 
     def _result_construct(self) -> None:
-        # todo think how to broadcast message
-        raise NotImplementedError()
+        assert self._channel_user
+        assert isinstance(self._channel_user.nick_name, str)
+        assert isinstance(self._channel_user.user_name, str)
+        self._result = SetCKeyResult(
+            setter_nick_name=self._channel_user.nick_name,
+            setter_user_name=self._channel_user.user_name,
+            channel_name=self._request.channel_name,
+        )
 
 
 class TopicHandler(ChannelHandlerBase):

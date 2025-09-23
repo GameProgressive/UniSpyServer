@@ -45,14 +45,12 @@ class HttpConnection(ConnectionBase):
 
 class HttpHandler(BaseHTTPRequestHandler):
     conn: HttpConnection
-
+    
     def do_POST(self) -> None:
         # parsed_url = urlparse(self.path).geturl()
         content_length = int(self.headers["Content-Length"])
         data = self.rfile.read(content_length).decode()
-        # request = HttpRequest(parsed_url, dict(self.headers), data)
-        if self.conn is None:
-            self.conn = HttpConnection(self, *self.server.unispy_params)  # type: ignore
+        self.conn = HttpConnection(self, *self.server.unispy_params)  # type: ignore
         self.conn.on_received(data.encode())
 
 

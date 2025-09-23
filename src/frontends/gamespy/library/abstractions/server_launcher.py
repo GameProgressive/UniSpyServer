@@ -90,7 +90,8 @@ class ServerLauncherBase:
         assert self.logger is not None
         assert self._server_cls is not None
         assert self._client_cls is not None
-        self.server = self._server_cls(self.config, self._client_cls, self.logger)
+        self.server = self._server_cls(
+            self.config, self._client_cls, self.logger)
         self.server.start()
 
     @final
@@ -102,12 +103,9 @@ class ServerLauncherBase:
         try:
             # post our server config to backends to register
             resp = requests.post(url=url, data=json_str)
-            if resp.status_code == 200:
-                data = resp.json()
-                if data["status"] != "online":
-                    raise UniSpyException(
-                        f"backend server: {CONFIG.backend.url} not available."
-                    )
+            if resp.status_code != 200:
+                message = resp.json()
+                raise UniSpyException(message["error"])
         except requests.ConnectionError:
             raise UniSpyException(
                 f"backend server: {CONFIG.backend.url} not available."
@@ -120,7 +118,8 @@ class ServerLauncherBase:
         assert self.config is not None
         if CONFIG.unittest.is_collect_request:
             return
-        self._heartbeat_to_backend(CONFIG.backend.url, self.config.model_dump_json())
+        self._heartbeat_to_backend(
+            CONFIG.backend.url, self.config.model_dump_json())
 
     @final
     def _launch_heartbeat_schedular(self):

@@ -1,4 +1,5 @@
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
+from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,
@@ -59,6 +60,11 @@ class ConnectAckHandler(CmdHandlerBase):
         assert isinstance(request, ConnectAckRequest)
         super().__init__(client, request)
         self._is_fetching = False
+        self._is_uploading = False
+
+    def _response_construct(self) -> None:
+        self._client.log_info(
+            f"client: {self._request.client_index} is received the connect packet.")
 
 
 class ConnectHandler(CmdHandlerBase):
@@ -72,6 +78,10 @@ class ConnectHandler(CmdHandlerBase):
         self._result_cls = ConnectResult
 
     def _response_construct(self) -> None:
+        if not self._result.is_both_client_ready:
+            self._client.log_warn(
+                f"init cache is not enough for cookie: {self._request.cookie}")
+            return
         self._response = ConnectResponse(self._request, self._result)
 
 
@@ -104,6 +114,7 @@ class InitHandler(CmdHandlerBase):
     _request: InitRequest
     _result: InitResult
     _response: InitResponse
+    _client: Client
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
@@ -120,6 +131,36 @@ class InitHandler(CmdHandlerBase):
         )
 
         self._response = InitResponse(self._request, self._result)
+
+    def handle(self) -> None:
+        try:
+            # we first log this class
+            self._log_current_class()
+            # then we handle it
+            self._request_check()
+            self._response_construct()
+            # first send the response
+            if self._response is None:
+                return
+            self._response_send()
+            # then send to backends
+            self._data_operate()
+            self._invoke_connect()
+        except Exception as ex:
+            self._handle_exception(ex)
+
+    def _invoke_connect(self) -> None:
+        connect_raw = ConnectRequest.build(
+            version=self._request.version,
+            command_name=RequestType.CONNECT,
+            cookie=self._request.cookie,
+            port_type=self._request.port_type,
+            client_index=self._request.client_index,
+            use_game_port=self._request.use_game_port
+        )
+        request = ConnectRequest(connect_raw)
+        handler = ConnectHandler(self._client, request)
+        handler.handle()
 
 
 class NatifyHandler(CmdHandlerBase):

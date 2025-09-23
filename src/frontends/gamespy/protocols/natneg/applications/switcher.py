@@ -4,6 +4,7 @@ from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerB
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,
+    ConnectAckRequest,
     ConnectRequest,
     ErtAckRequest,
     InitRequest,
@@ -13,6 +14,7 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
 from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
 from frontends.gamespy.protocols.natneg.applications.handlers import (
     AddressCheckHandler,
+    ConnectAckHandler,
     ConnectHandler,
     ErtAckHandler,
     InitHandler,
@@ -52,6 +54,8 @@ class Switcher(SwitcherBase):
                 return ErtAckHandler(self._client, ErtAckRequest(raw_request))
             case RequestType.CONNECT:
                 return ConnectHandler(self._client, ConnectRequest(raw_request))
+            case RequestType.CONNECT_ACK:
+                return ConnectAckHandler(self._client, ConnectAckRequest(raw_request))
             case RequestType.ADDRESS_CHECK:
                 return AddressCheckHandler(
                     self._client, AddressCheckRequest(raw_request)

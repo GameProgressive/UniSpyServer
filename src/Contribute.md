@@ -13,6 +13,6 @@ class BaseClass:
         # if the property do not have default value it must be initialized as None
         self._property1 = None
         # In the base class we have to check whether the _property has been initialized, if not we init it
-        if not hasattr(self,"_property1"):
+        if self._property1 is not None:
             self._property2 = value2
 ```

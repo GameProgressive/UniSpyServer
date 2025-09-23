@@ -26,10 +26,10 @@ class Switcher(SwitcherBase):
         name_node = ET.fromstring(self._raw_request)[0][0]
         if name_node is None:
             raise WebException("name node is missing from soap request")
-        if name_node.text is None:
+        if name_node.tag is None:
             raise WebException(
                 "name node text field is missing from soap request")
-        name = name_node.text.split("}")[1]
+        name = name_node.tag.split("}")[1]
 
         if len(name) < 4:
             raise WebException("request name invalid")

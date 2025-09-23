@@ -11,6 +11,7 @@ from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
 from backends.routers.gamespy import (
     chat,
+    game_traffic_relay,
     gstats,
     natneg,
     presence_connection_manager,
@@ -24,6 +25,7 @@ app = FastAPI()
 
 app.include_router(chat.router)
 app.include_router(gstats.router)
+app.include_router(game_traffic_relay.router)
 app.include_router(natneg.router)
 app.include_router(presence_connection_manager.router)
 app.include_router(presence_search_player.router)
@@ -75,4 +77,5 @@ def get_auth_token(request: RegisterRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run("backends.routers.home:app", host="127.0.0.1", port=8080, reload=True)
+    uvicorn.run("backends.routers.home:app",
+                host="127.0.0.1", port=8080, reload=True)
