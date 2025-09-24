@@ -3,6 +3,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     AtmResult,
     NoticeResult,
     PrivateResult,
+    SetCKeyResult,
     UtmResult,
     GetCKeyResult,
     GetChannelKeyResult,
@@ -102,6 +103,7 @@ class CdKeyHandler(CmdHandlerBase):
     def _response_construct(self) -> None:
         self._response = CdKeyResponse()
 
+
 class CryptHandler(CmdHandlerBase):
     _request: CryptRequest
     _result: CryptResult
@@ -131,9 +133,7 @@ class GetKeyHandler(CmdHandlerBase):
         assert isinstance(request, GetKeyRequest)
         super().__init__(client, request)
         self._result_cls = GetKeyResult
-
-    def _response_construct(self) -> None:
-        self._response = GetKeyResponse(self._request, self._result)
+        self._response_cls = GetKeyResponse
 
 
 class GetUdpRelayHandler(CmdHandlerBase):
@@ -258,7 +258,8 @@ class UserIPHandler(CmdHandlerBase):
 
     def _data_operate(self) -> None:
         super()._data_operate()
-        self._result = UserIPResult(remote_ip=self._client.connection.remote_ip)
+        self._result = UserIPResult(
+            remote_ip=self._client.connection.remote_ip)
 
     def _response_construct(self) -> None:
         self._response = UserIPResponse(self._result)
@@ -272,9 +273,7 @@ class WhoHandler(CmdHandlerBase):
         assert isinstance(request, WhoRequest)
         super().__init__(client, request)
         self._result_cls = WhoResult
-
-    def _response_construct(self) -> None:
-        self._response = WhoResponse(self._request, self._result)
+        self._response_cls = WhoResponse
 
 
 class WhoIsHandler(CmdHandlerBase):
@@ -285,9 +284,7 @@ class WhoIsHandler(CmdHandlerBase):
         assert isinstance(request, WhoIsRequest)
         super().__init__(client, request)
         self._result_cls = WhoIsResult
-
-    def _response_construct(self) -> None:
-        self._response = WhoIsResponse(self._result)
+        self._response_cls = WhoIsResponse
 
 
 # region channel
@@ -316,9 +313,7 @@ class GetCKeyHandler(ChannelHandlerBase):
         assert isinstance(request, GetCKeyRequest)
         super().__init__(client, request)
         self._result_cls = GetCKeyResult
-
-    def _response_construct(self):
-        self._response = GetCKeyResponse(self._request, self._result)
+        self._response_cls = GetCKeyResponse
 
 
 class JoinHandler(ChannelHandlerBase):
@@ -328,11 +323,9 @@ class JoinHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
-        self._result_cls = JoinResult
         self._is_broadcast = True
-
-    def _response_construct(self):
-        self._response = JoinResponse(self._request, self._result)
+        self._result_cls = JoinResult
+        self._response_cls = JoinResponse
 
     def _response_send(self) -> None:
         super()._response_send()
@@ -356,9 +349,7 @@ class KickHandler(ChannelHandlerBase):
         assert isinstance(request, KickRequest)
         super().__init__(client, request)
         self._result_cls = KickResult
-
-    def _response_construct(self):
-        self._response = KickResponse(self._request, self._result)
+        self._response_cls = KickResponse
 
 
 class ModeHandler(ChannelHandlerBase):
@@ -369,6 +360,7 @@ class ModeHandler(ChannelHandlerBase):
         assert isinstance(request, ModeRequest)
         super().__init__(client, request)
         self._result_cls = ModeResult
+        self._response_cls = ModeResponse
 
     def _request_check(self) -> None:
         super()._request_check()
@@ -382,7 +374,7 @@ class ModeHandler(ChannelHandlerBase):
 
     def _response_construct(self):
         if self._request.request_type == ModeRequestType.GET_CHANNEL_MODES:
-            self._response = ModeResponse(self._request, self._result)
+            super()._response_construct()
 
 
 class NamesHandler(ChannelHandlerBase):
@@ -393,9 +385,7 @@ class NamesHandler(ChannelHandlerBase):
         assert isinstance(request, NamesRequest)
         super().__init__(client, request)
         self._result_cls = NamesResult
-
-    def _response_construct(self):
-        self._response = NamesResponse(self._request, self._result)
+        self._response_cls = NamesResponse
 
 
 class PartHandler(ChannelHandlerBase):
@@ -406,9 +396,7 @@ class PartHandler(ChannelHandlerBase):
         assert isinstance(request, PartRequest)
         super().__init__(client, request)
         self._result_cls = PartResult
-
-    def _response_construct(self):
-        self._response = PartResponse(self._request, self._result)
+        self._response_cls = PartResponse
 
 
 class SetChannelKeyHandler(ChannelHandlerBase):
@@ -419,9 +407,10 @@ class SetChannelKeyHandler(ChannelHandlerBase):
         assert isinstance(request, SetChannelKeyRequest)
         super().__init__(client, request)
         self._result_cls = SetChannelKeyResult
+        self._is_broadcast = True
 
     def _response_construct(self):
-        self._response = SetChannelKeyResponse(self._request, self._result)
+        self._response = SetChannelKeyResponse(self._result)
 
 
 class SetCKeyHandler(ChannelHandlerBase):
@@ -430,10 +419,8 @@ class SetCKeyHandler(ChannelHandlerBase):
     def __init__(self, client: ClientBase, request: SetCKeyRequest):
         assert isinstance(request, SetCKeyRequest)
         super().__init__(client, request)
-        self._is_fetching = False
-
-    def _response_construct(self) -> None:
-        self._response = SetCKeyResponse(self._request)
+        self._result_cls = SetCKeyResult
+        self._response_cls = SetCKeyResponse
 
 
 class TopicHandler(ChannelHandlerBase):
@@ -444,9 +431,7 @@ class TopicHandler(ChannelHandlerBase):
         assert isinstance(request, TopicRequest)
         super().__init__(client, request)
         self._result_cls = TopicResult
-
-    def _response_construct(self) -> None:
-        self._response = TopicResponse(self._request, self._result)
+        self._response_cls = TopicResponse
 
 
 # region Message
@@ -460,9 +445,7 @@ class ATMHandler(MessageHandlerBase):
         super().__init__(client, request)
         assert isinstance(request, AtmRequest)
         self._result_cls = AtmResult
-
-    def _response_construct(self) -> None:
-        self._response = AtmResponse(self._request, self._result)
+        self._response_cls = AtmResponse
 
 
 class UTMHandler(MessageHandlerBase):
@@ -473,9 +456,7 @@ class UTMHandler(MessageHandlerBase):
         assert isinstance(request, UtmRequest)
         super().__init__(client, request)
         self._result_cls = UtmResult
-
-    def _response_construct(self) -> None:
-        self._response = UtmResponse(self._request, self._result)
+        self._response_cls = UtmResponse
 
 
 class NoticeHandler(MessageHandlerBase):
@@ -486,9 +467,7 @@ class NoticeHandler(MessageHandlerBase):
         assert isinstance(request, NoticeRequest)
         super().__init__(client, request)
         self._result_cls = NoticeResult
-
-    def _response_construct(self) -> None:
-        self._response = NoticeResponse(self._request, self._result)
+        self._response_cls = NoticeResponse
 
 
 class PrivateHandler(MessageHandlerBase):
@@ -499,6 +478,4 @@ class PrivateHandler(MessageHandlerBase):
         assert isinstance(request, PrivateRequest)
         super().__init__(client, request)
         self._result_cls = PrivateResult
-
-    def _response_construct(self) -> None:
-        self._response = PrivateResponse(self._request, self._result)
+        self._response_cls = PrivateResponse

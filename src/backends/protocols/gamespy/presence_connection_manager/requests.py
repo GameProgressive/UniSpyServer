@@ -28,11 +28,13 @@ class BuddyListRequest(RequestBase):
     profile_id: int
     namespace_id: int
     raw_request: str | None = None
+    operation_id: int
 
 
 class BlockListRequest(RequestBase):
     profile_id: int
     namespace_id: int
+    operation_id: int
 
 
 class AddBuddyRequest(RequestBase):
@@ -116,13 +118,14 @@ class LoginRequest(RequestBase):
     nick: str | None = None
     email: str | None = None
     product_id: int
-    type: Union[LoginType, int]
+    type: LoginType
     sdk_revision_type: list[SdkRevisionType]
     game_port: int
     partner_id: int
     game_name: str | None = None
     quiet_mode_flags: int
     firewall: bool
+    operation_id: int
 
     def model_post_init(self, __context: Any) -> None:
         super().model_post_init(__context)
@@ -153,6 +156,7 @@ class LogoutRequest(RequestBase):
 class GetProfileRequest(RequestBase):
     profile_id: int
     session_key: str
+    operation_id: int
 
 
 class NewProfileRequest(RequestBase):

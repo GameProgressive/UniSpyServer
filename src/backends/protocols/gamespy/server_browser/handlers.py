@@ -46,6 +46,7 @@ class ServerNetworkInfoListHandler(HandlerBase):
             flag=GameServerFlags.HAS_KEYS_FLAG,
             game_secret_key="",
             servers_info=self._caches,
+            keys=self._request.keys
         )
 
 
@@ -54,7 +55,8 @@ class P2PGroupRoomListHandler(HandlerBase):
     _caches: list[PeerRoomInfo]
 
     def _data_operate(self):
-        group_data = data.get_group_data_list_by_gamename(self._request.game_name)
+        group_data = data.get_group_data_list_by_gamename(
+            self._request.game_name)
         self._caches = data.get_peer_group_channel(group_data, self._session)
 
     def _result_construct(self) -> None:
@@ -68,6 +70,7 @@ class P2PGroupRoomListHandler(HandlerBase):
             flag=GameServerFlags.HAS_KEYS_FLAG,
             game_secret_key="",
             peer_room_info=self._caches,
+            keys=self._request.keys
         )
 
 
@@ -91,6 +94,7 @@ class ServerMainListHandler(HandlerBase):
             flag=GameServerFlags.HAS_KEYS_FLAG,
             game_secret_key="",
             servers_info=self._caches,
+            keys=self._request.keys
         )
 
 

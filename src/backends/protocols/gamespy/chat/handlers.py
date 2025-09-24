@@ -16,6 +16,7 @@ from backends.protocols.gamespy.chat.requests import (
     ChannelRequestBase,
     CryptRequest,
     GetCKeyRequest,
+    GetChannelKeyRequest,
     GetKeyRequest,
     GetUdpRelayRequest,
     InviteRequest,
@@ -40,7 +41,6 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     ModeRequestType,
@@ -184,7 +184,7 @@ class CryptHandler(HandlerBase):
         data.clean_expired_user_cache(self._session)
         self._get_user()
         if self._user is not None:
-            raise UniSpyException("user cache is trash in database")
+            raise ChatException("user cache is trash in database")
 
     def _data_operate(self) -> None:
         assert self._user is None
@@ -202,7 +202,7 @@ class CryptHandler(HandlerBase):
             self._request.gamename, self._session
         )
         if self._secret_key is None:
-            raise UniSpyException("game secret key not found in database.")
+            raise ChatException("game secret key not found in database.")
 
     def _result_construct(self) -> None:
         assert isinstance(self._secret_key, str)
@@ -225,7 +225,9 @@ class GetKeyHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = GetKeyResult(
-            nick_name=self._request.nick_name, values=self._values
+            nick_name=self._request.nick_name,
+            values=self._values,
+            cookie=self._request.cookie
         )
 
 
@@ -418,7 +420,9 @@ class WhoHandler(HandlerBase):
         for d in self._data:
             info = WhoResult.WhoInfo(**d)
             infos.append(info)
-        self._result = WhoResult(infos=infos)
+        self._result = WhoResult(infos=infos,
+                                 request_type=self._request.request_type,
+                                 channel_name=self._request.channel_name, nick_name=self._request.nick_name)
 
 
 class WhoIsHandler(HandlerBase):
@@ -481,10 +485,12 @@ class JoinHandler(ChannelHandlerBase):
         self._result = JoinResult(
             joiner_nick_name=self._channel_user.nick_name,
             joiner_user_name=self._channel_user.user_name,
+            channel_name=self._request.channel_name
         )
 
 
 class GetChannelKeyHandler(ChannelHandlerBase):
+    _request: GetChannelKeyRequest
     _values: list
 
     def _result_construct(self) -> None:
@@ -499,6 +505,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
             key_values=dict(self._channel.key_values),
             nick_name=self._user.nick_name,
             user_name=self._user.user_name,
+            cookie=self._request.cookie
         )
 
 
@@ -538,7 +545,9 @@ class GetCKeyHandler(ChannelHandlerBase):
             infos.append(info)
 
         self._result = GetCKeyResult(
-            infos=infos, channel_name=self._request.channel_name
+            infos=infos,
+            channel_name=self._request.channel_name,
+            cookie=self._request.cookie
         )
 
 
@@ -582,6 +591,7 @@ class KickHandler(ChannelHandlerBase):
             kicker_user_name=self._channel_user.user_name,
             kicker_nick_name=self._channel_user.nick_name,
             kickee_nick_name=self._request.kickee_nick_name,
+            reason=self._request.reason
         )
 
 
@@ -661,6 +671,7 @@ class PartHandler(ChannelHandlerBase):
             leaver_user_name=self._channel_user.user_name,
             is_channel_creator=self._channel_user.is_channel_creator,
             channel_name=self._channel.channel_name,
+            reason=self._request.reason
         )
 
 
@@ -669,11 +680,12 @@ class SetChannelKeyHandler(ChannelHandlerBase):
 
     def _request_check(self) -> None:
         super()._request_check()
-        assert self._channel_user
+        assert self._channel is not None
+        assert self._channel_user is not None
         assert isinstance(self._channel_user.is_channel_operator, bool)
         if self._channel_user.is_channel_operator:
-            self._channel.key_values = self._request.key_values  # type:ignore
-            self._session.commit()
+            ChannelHelper.update_channel_key_values(
+                self._request.key_values, self._channel, self._session)
 
     def _result_construct(self) -> None:
         assert self._channel_user
@@ -684,6 +696,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
             setter_nick_name=self._channel_user.nick_name,
             setter_user_name=self._channel_user.user_name,
             channel_name=self._request.channel_name,
+            key_value=self._request.key_values
         )
 
 
@@ -695,8 +708,8 @@ class SetCkeyHandler(ChannelHandlerBase):
     _request: SetCKeyRequest
 
     def _data_operate(self) -> None:
+        assert self._channel_user is not None
         self._channel_user.key_values = self._request.key_values  # type:ignore
-        self._is_broadcast = True
 
     def _result_construct(self) -> None:
         assert self._channel_user
@@ -706,6 +719,8 @@ class SetCkeyHandler(ChannelHandlerBase):
             setter_nick_name=self._channel_user.nick_name,
             setter_user_name=self._channel_user.user_name,
             channel_name=self._request.channel_name,
+            key_value=self._request.key_values,
+            cookie=self._request.cookie
         )
 
 
@@ -743,7 +758,10 @@ class AtmHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = AtmResult(
-            nick_name=self._user.nick_name, user_name=self._user.user_name
+            sender_nick_name=self._user.nick_name,
+            sender_user_name=self._user.user_name,
+            target_name=self._request.target_name,
+            message=self._request.message
         )
 
 
@@ -756,7 +774,9 @@ class UtmHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = UtmResult(
-            nick_name=self._user.nick_name, user_name=self._user.user_name
+            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            target_name=self._request.target_name,
+            message=self._request.message
         )
 
 
@@ -769,7 +789,9 @@ class NoticeHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = NoticeResult(
-            nick_name=self._user.nick_name, user_name=self._user.user_name
+            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            target_name=self._request.target_name,
+            message=self._request.message
         )
 
 
@@ -782,5 +804,7 @@ class PrivateHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = PrivateResult(
-            nick_name=self._user.nick_name, user_name=self._user.user_name
+            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            target_name=self._request.target_name,
+            message=self._request.message
         )

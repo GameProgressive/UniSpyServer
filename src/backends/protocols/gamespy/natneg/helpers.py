@@ -1,12 +1,12 @@
 import enum
 from backends.library.database.pg_orm import InitPacketCaches
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
     NatPortType,
     NatType,
 )
+from frontends.gamespy.protocols.natneg.aggregations.exceptions import NatNegException
 
 
 class NatStrategy(enum.IntEnum):
@@ -36,7 +36,7 @@ class NatProtocolHelper:
 
     def __init__(self, init_caches: list[InitPacketCaches]) -> None:
         if len(init_caches) < 3:
-            raise UniSpyException(
+            raise NatNegException(
                 "init cache length not enough for NAT determination")
         self.nat_type = NatType.NO_NAT
         self.port_mapping = NatPortMappingScheme.CONSISTENT_PORT
@@ -64,10 +64,10 @@ class NatProtocolHelper:
         self.private_port = last_address_info.private_port
 
         if self.version not in NatNegVersion:
-            raise UniSpyException("Unknown natneg version")
+            raise NatNegException("Unknown natneg version")
         version = NatNegVersion(self.version)
         if version == NatNegVersion.VERSION2:
-            raise UniSpyException("Version 1 not implemented")
+            raise NatNegException("Version 1 not implemented")
         elif version == NatNegVersion.VERSION3:
             self._validate_version3()
             NatProtocolHelper._determine_nat_type_version3(self)
@@ -80,7 +80,7 @@ class NatProtocolHelper:
             NatPortType.NN1 in self.address_infos
             and NatPortType.NN2 in self.address_infos
         ):
-            raise UniSpyException("Incomplete init packets")
+            raise NatNegException("Incomplete init packets")
         assert isinstance(self.address_infos[NatPortType.NN1].cookie, int)
         assert isinstance(self.address_infos[NatPortType.NN2].cookie, int)
 
@@ -88,17 +88,17 @@ class NatProtocolHelper:
             self.address_infos[NatPortType.NN1].cookie
             != self.address_infos[NatPortType.NN2].cookie
         ):  # type: ignore
-            raise UniSpyException("Broken cookie")
+            raise NatNegException("Broken cookie")
         if (
             self.address_infos[NatPortType.NN1].version
             != self.address_infos[NatPortType.NN2].version
         ):  # type: ignore
-            raise UniSpyException("Broken version")
+            raise NatNegException("Broken version")
         if (
             self.address_infos[NatPortType.NN1].client_index
             != self.address_infos[NatPortType.NN2].client_index
         ):  # type: ignore
-            raise UniSpyException("Broken client index")
+            raise NatNegException("Broken client index")
 
         if NatPortType.GP in self.address_infos:
             if (
@@ -111,7 +111,7 @@ class NatProtocolHelper:
                 or self.address_infos[NatPortType.GP].use_game_port
                 != self.address_infos[NatPortType.NN1].use_game_port
             ):  # type: ignore
-                raise UniSpyException("GP packet info is not correct")
+                raise NatNegException("GP packet info is not correct")
 
     def _validate_version4(self):
         # TODO: some games will not send GP packet to NAT negotiation server; currently, the reason is unknown and requires more games for analysis.
@@ -122,7 +122,7 @@ class NatProtocolHelper:
             and NatPortType.NN2 in self.address_infos
             and NatPortType.NN3 in self.address_infos
         ):
-            raise UniSpyException("Incomplete init packets")
+            raise NatNegException("Incomplete init packets")
 
         if (
             self.address_infos[NatPortType.NN1].cookie
@@ -130,7 +130,7 @@ class NatProtocolHelper:
             or self.address_infos[NatPortType.NN1].cookie
             != self.address_infos[NatPortType.NN3].cookie
         ):  # type: ignore
-            raise UniSpyException("Broken cookie")
+            raise NatNegException("Broken cookie")
 
         if (
             self.address_infos[NatPortType.NN1].version
@@ -138,7 +138,7 @@ class NatProtocolHelper:
             or self.address_infos[NatPortType.NN1].version
             != self.address_infos[NatPortType.NN3].version
         ):  # type: ignore
-            raise UniSpyException("Broken version")
+            raise NatNegException("Broken version")
 
         if (
             self.address_infos[NatPortType.NN1].client_index
@@ -146,7 +146,7 @@ class NatProtocolHelper:
             or self.address_infos[NatPortType.NN1].client_index
             != self.address_infos[NatPortType.NN3].client_index
         ):  # type: ignore
-            raise UniSpyException("Broken client index")
+            raise NatNegException("Broken client index")
 
         if (
             self.address_infos[NatPortType.NN1].use_game_port
@@ -154,13 +154,13 @@ class NatProtocolHelper:
             or self.address_infos[NatPortType.NN1].use_game_port
             != self.address_infos[NatPortType.NN3].use_game_port
         ):  # type: ignore
-            raise UniSpyException("Broken use game port")
+            raise NatNegException("Broken use game port")
 
         if (
             self.address_infos[NatPortType.NN2].private_ip
             != self.address_infos[NatPortType.NN3].private_ip
         ):  # type: ignore
-            raise UniSpyException("Client is sending wrong init packet.")
+            raise NatNegException("Client is sending wrong init packet.")
 
         if NatPortType.GP in self.address_infos:
             if (
@@ -173,12 +173,12 @@ class NatProtocolHelper:
                 or self.address_infos[NatPortType.GP].use_game_port
                 != self.address_infos[NatPortType.NN1].use_game_port
             ):  # type: ignore
-                raise UniSpyException("GP packet info is not correct")
+                raise NatNegException("GP packet info is not correct")
 
     @staticmethod
     def _determine_nat_type_version3(info: "NatProtocolHelper"):
         if len(info.address_infos) < 3:
-            raise UniSpyException(
+            raise NatNegException(
                 "We need 3 init records to determine the nat type.")
 
         nn1 = info.address_infos[NatPortType.NN1]
@@ -203,7 +203,7 @@ class NatProtocolHelper:
     @staticmethod
     def _determine_nat_type_version4(info: "NatProtocolHelper"):
         if len(info.address_infos) < 3:
-            raise UniSpyException(
+            raise NatNegException(
                 "We need 3 init records to determine the nat type.")
 
         nn1 = info.address_infos[NatPortType.NN1]

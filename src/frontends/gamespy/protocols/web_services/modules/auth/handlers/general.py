@@ -30,7 +30,7 @@ class LoginProfileHandler(CmdHandlerBase):
     _result: LoginProfileResult
 
     def _response_construct(self) -> None:
-        self._response = LoginProfileResponse(self._request, self._result)
+        self._response = LoginProfileResponse(self._result)
 
 
 class LoginProfileWithGameIdHandler(CmdHandlerBase):
@@ -38,8 +38,7 @@ class LoginProfileWithGameIdHandler(CmdHandlerBase):
     _result: LoginProfileResult
 
     def _response_construct(self) -> None:
-        self._response = LoginProfileWithGameIdResponse(
-            self._request, self._result)
+        self._response = LoginProfileWithGameIdResponse(self._result)
 
 
 class LoginPs3CertHandler(CmdHandlerBase):
@@ -57,7 +56,7 @@ class LoginRemoteAuthHandler(CmdHandlerBase):
     _result: LoginRemoteAuthResult
 
     def _response_construct(self) -> None:
-        self._response = LoginRemoteAuthResponse(self._request, self._result)
+        self._response = LoginRemoteAuthResponse(self._result)
 
 
 class LoginRemoteAuthWithGameIdHandler(CmdHandlerBase):
@@ -65,8 +64,7 @@ class LoginRemoteAuthWithGameIdHandler(CmdHandlerBase):
     _result: LoginRemoteAuthResult
 
     def _response_construct(self) -> None:
-        self._response = LoginRemoteAuthWithGameIdResponse(
-            self._request, self._result)
+        self._response = LoginRemoteAuthWithGameIdResponse(self._result)
 
 
 class LoginUniqueNickHandler(CmdHandlerBase):
@@ -74,12 +72,12 @@ class LoginUniqueNickHandler(CmdHandlerBase):
     _result: LoginUniqueNickResult
 
     def _response_construct(self) -> None:
-        self._response = LoginUniqueNickResponse(self._request, self._result)
+        self._response = LoginUniqueNickResponse(self._result)
 
 
 class LoginUniqueNickWithGameIdHandler(CmdHandlerBase):
     _request: LoginUniqueNickWithGameIdRequest
     _result: LoginUniqueNickResult
+
     def _response_construct(self) -> None:
-        self._response = LoginUniqueNickWithGameIdResponse(
-            self._request, self._result)
+        self._response = LoginUniqueNickWithGameIdResponse(self._result)

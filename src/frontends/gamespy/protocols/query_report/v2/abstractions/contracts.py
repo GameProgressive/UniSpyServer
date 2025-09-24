@@ -24,16 +24,16 @@ class RequestBase(lib.RequestBase):
 
 class ResultBase(lib.ResultBase):
     packet_type: PacketType
-
+    command_name: RequestType
+    instant_key: str
 
 class ResponseBase(lib.ResponseBase):
     _result: ResultBase
-    _request: RequestBase
     sending_buffer: bytes
 
     def build(self) -> None:
         data = bytearray()
         data.extend(MAGIC_DATA)
-        data.append(self._request.command_name.value)
-        data.extend(int(self._request.instant_key).to_bytes(4))
+        data.append(self._result.command_name.value)
+        data.extend(int(self._result.instant_key).to_bytes(4))
         self.sending_buffer = bytes(data)

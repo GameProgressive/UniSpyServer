@@ -1,4 +1,3 @@
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from typing import final
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
@@ -8,6 +7,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
     GPStatusCode,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    GPException,
     GPParseException,
 )
 from frontends.gamespy.library.extentions.gamespy_utils import is_email_format_correct
@@ -75,7 +75,7 @@ def validate_extra_infos(info_dict: dict) -> dict:
                     value_type = EXTRA_INFO_DICT[key]
                     converted_value = value_type(value)
                 except Exception as e:
-                    raise UniSpyException(f"value conversion failed: {e}")
+                    raise GPException(f"value conversion failed: {e}")
             extra_infos[key] = converted_value
     return extra_infos
 
@@ -153,7 +153,7 @@ class LoginRequest(RequestBase):
             if pos == -1 or pos < 1 or (pos + 1) >= len(self.user_data):
                 raise GPParseException("user format is incorrect")
             self.nick = self.user_data[:pos]
-            self.email = self.user_data[pos + 1 :]
+            self.email = self.user_data[pos + 1:]
             if "namespaceid" in self.request_dict:
                 namespace_id = int(self.request_dict["namespaceid"])
                 self.namespace_id = namespace_id
@@ -422,7 +422,8 @@ class StatusInfoRequest(RequestBase):
             self.host_port = int(self.request_dict["hport"])
             self.session_flags = self.request_dict["sessflags"]
         except ValueError:
-            raise GPParseException("qport, hport, or sessflags format is incorrect.")
+            raise GPParseException(
+                "qport, hport, or sessflags format is incorrect.")
 
         if "namespace_id" in self.request_dict:
             self.namespace_id = int(self.request_dict["namespaceid"])

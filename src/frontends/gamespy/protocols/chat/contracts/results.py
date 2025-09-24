@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
 from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultBase
+from frontends.gamespy.protocols.chat.aggregates.enums import WhoRequestType
 
 # region General
 
@@ -13,6 +14,7 @@ class CryptResult(ResultBase):
 class GetKeyResult(ResultBase):
     nick_name: str
     values: list
+    cookie: str
 
 
 class ListResult(ResultBase):
@@ -66,15 +68,16 @@ class WhoIsResult(ResultBase):
 
 class WhoResult(ResultBase):
     class WhoInfo(BaseModel):
-        channel_name: str
         user_name: str
-        public_ip_addr: str
         nick_name: str
+        channel_name: str
+        public_ip_addr: str
         modes: str
 
     infos: list[WhoInfo]
-
-
+    request_type: WhoRequestType
+    channel_name: str
+    nick_name: str
 # region Channel
 
 
@@ -83,16 +86,17 @@ class GetChannelKeyResult(ResultBase):
     user_name: str
     channel_name: str
     key_values: dict
+    cookie: str
 
 
 class GetCKeyResult(ResultBase):
     class GetCKeyInfos(BaseModel):
         nick_name: str
-        user_values: list
-
+        user_values: list[str]
     infos: list[GetCKeyInfos]
     """ nick_name:str, user_values:str"""
     channel_name: str
+    cookie: str
 
 
 class ModeResult(ResultBase):
@@ -116,6 +120,7 @@ class NamesResult(ResultBase):
 class JoinResult(ResultBase):
     joiner_nick_name: str
     joiner_user_name: str
+    channel_name: str
 
 
 class KickResult(ResultBase):
@@ -123,6 +128,7 @@ class KickResult(ResultBase):
     kicker_nick_name: str
     kicker_user_name: str
     kickee_nick_name: str
+    reason: str
 
 
 class PartResult(ResultBase):
@@ -130,6 +136,7 @@ class PartResult(ResultBase):
     leaver_user_name: str
     is_channel_creator: bool
     channel_name: str
+    reason: str
 
 
 class TopicResult(ResultBase):
@@ -141,12 +148,15 @@ class SetChannelKeyResult(ResultBase):
     setter_nick_name: str
     setter_user_name: str
     channel_name: str
+    key_value: dict[str, str]
 
 
 class SetCKeyResult(ResultBase):
     setter_nick_name: str
     setter_user_name: str
     channel_name: str
+    cookie: str
+    key_value: dict
 
 
 if __name__ == "__main__":

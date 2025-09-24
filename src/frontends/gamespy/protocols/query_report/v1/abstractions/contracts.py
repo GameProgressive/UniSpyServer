@@ -24,7 +24,6 @@ class ResultBase(lib.ResultBase):
 class ResponseBase(lib.ResponseBase):
     sending_buffer: str
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        assert issubclass(type(request), RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
-        super().__init__(request, result)
+        super().__init__(result)

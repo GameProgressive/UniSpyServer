@@ -11,7 +11,7 @@ def normalize_request(message: str):
     if "login" in message:
         message = message.replace("\\-", "\\")
         pos = message.index("\\", message.index("\\") + 1)
-        if message[pos : pos + 2] != "\\\\":
+        if message[pos: pos + 2] != "\\\\":
             message = message[:pos] + "\\" + message[pos:]
     return message
 
@@ -39,6 +39,7 @@ class RequestBase(lib.RequestBase):
 
 
 class ResultBase(lib.ResultBase):
+    operation_id: int
     pass
 
 
@@ -47,7 +48,6 @@ class ResponseBase(lib.ResponseBase):
     _result: ResultBase
     sending_buffer: str
 
-    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
-        assert issubclass(type(request), RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
-        super().__init__(request, result)
+        super().__init__(result)

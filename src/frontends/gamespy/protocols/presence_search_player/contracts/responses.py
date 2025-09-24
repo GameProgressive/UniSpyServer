@@ -24,10 +24,9 @@ from frontends.gamespy.protocols.presence_search_player.contracts.results import
 class CheckResponse(ResponseBase):
     _result: CheckResult
 
-    def __init__(self, request: CheckRequest, result: CheckResult) -> None:
-        assert isinstance(request, CheckRequest)
+    def __init__(self, result: CheckResult) -> None:
         assert isinstance(result, CheckResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         if self._result.profile_id is None:
@@ -38,32 +37,28 @@ class CheckResponse(ResponseBase):
 
 class NewUserResponse(ResponseBase):
     _result: NewUserResult
-    _request: NewUserRequest
 
-    def __init__(self, request: NewUserRequest, result: NewUserResult) -> None:
-        assert isinstance(request, NewUserRequest)
+    def __init__(self, result: NewUserResult) -> None:
         assert isinstance(result, NewUserResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         self.sending_buffer = f"\\nur\\\\pid\\{self._result.profile_id}\\final\\"
 
 
 class NicksResponse(ResponseBase):
-    _request: NicksRequest
+
     _result: NicksResult
 
-    def __init__(self, request: NicksRequest, result: NicksResult) -> None:
-        assert isinstance(request, NicksRequest)
+    def __init__(self, result: NicksResult) -> None:
         assert isinstance(result, NicksResult)
-
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         self.sending_buffer = "\\nr\\"
         for info in self._result.data:
             self.sending_buffer += f"\\nick\\{info.nick}"
-            if self._request.is_require_uniquenicks:
+            if self._result.is_require_uniquenicks:
                 self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
         self.sending_buffer += "\\ndone\\final\\"
 
@@ -143,13 +138,12 @@ class SearchUniqueResponse(ResponseBase):
 
 
 class ValidResponse(ResponseBase):
-    _request: ValidRequest
+
     _result: ValidResult
 
-    def __init__(self, request: ValidRequest, result: ValidResult) -> None:
-        assert isinstance(request, ValidRequest)
+    def __init__(self, result: ValidResult) -> None:
         assert isinstance(result, ValidResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         if self._result.is_account_valid:
@@ -159,20 +153,19 @@ class ValidResponse(ResponseBase):
 
 
 class UniqueSearchResponse(ResponseBase):
-    _request: UniqueSearchRequest
+
     _result: UniqueSearchResult
 
     def __init__(
-        self, request: UniqueSearchRequest, result: UniqueSearchResult
+        self, result: UniqueSearchResult
     ) -> None:
-        assert isinstance(request, UniqueSearchRequest)
         assert isinstance(result, UniqueSearchResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         if self._result.is_uniquenick_exist:
             self.sending_buffer = "\\us\\1\\nick\\Choose another name\\usdone\\final\\"
         else:
             self.sending_buffer = (
-                f"\\us\\1\\nick\\{self._request.preferred_nick}\\usdone\\final\\"
+                f"\\us\\1\\nick\\{self._result.preferred_nick}\\usdone\\final\\"
             )

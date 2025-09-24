@@ -41,6 +41,7 @@ def create_v2_client() -> Client:
                 "flag": 64,
                 "game_secret_key": "123567",
                 "servers_info": [],
+                "keys": []
             }
         ).model_dump(mode="json"),
     )

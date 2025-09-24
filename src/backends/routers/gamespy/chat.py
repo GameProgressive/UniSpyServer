@@ -3,6 +3,8 @@ from backends.protocols.gamespy.chat.brocker_manager import MANAGER
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,
+    GetCKeyHandler,
+    GetChannelKeyHandler,
     GetKeyHandler,
     GetUdpRelayHandler,
     InviteHandler,
@@ -48,7 +50,6 @@ from backends.protocols.gamespy.chat.requests import (
 )
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
-
 
 
 router = APIRouter()
@@ -161,12 +162,16 @@ def whois(request: WhoIsRequest):
 # region channel
 @router.post(f"{CHAT}/GetChannelKeyHandler")
 def get_channel_key(request: GetChannelKeyRequest):
-    raise NotImplementedError()
+    handler = GetChannelKeyHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/GetCKeyHandler")
 def get_ckey(request: GetCKeyRequest):
-    raise NotImplementedError()
+    handler = GetCKeyHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/JoinHandler")

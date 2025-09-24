@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, Optional, cast
+from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.query_report.applications.client import Client
 from frontends.gamespy.protocols.query_report.v2.abstractions.cmd_handler_base import CmdHandlerBase
 
@@ -28,7 +28,7 @@ class Switcher(SwitcherBase):
 
     def _process_raw_request(self) -> None:
         if len(self._raw_request) < 4:
-            raise UniSpyException("Invalid request")
+            raise QRException("Invalid request")
         name = self._raw_request[0]
         if name not in RequestType:
             self._client.log_debug(

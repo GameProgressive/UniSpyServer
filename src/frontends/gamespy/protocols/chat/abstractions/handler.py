@@ -60,12 +60,9 @@ class ChannelRequestBase(RequestBase):
 
 
 class ChannelResponseBase(ResponseBase):
-    _request: ChannelRequestBase
-
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        super().__init__(request, result)
-        assert isinstance(request, RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert isinstance(result, ResultBase)
+        super().__init__(result)
 
     @staticmethod
     def build_value_str(keys: list, kv: dict) -> str:
@@ -126,11 +123,13 @@ class MessageRequestBase(ChannelRequestBase):
     type: MessageType
     nick_name: str
     message: str
-    target_name:str
+    target_name: str
+
     def parse(self):
         super().parse()
         if self.channel_name is None:
-            raise NoSuchNickException("the channel name is missing from the request")
+            raise NoSuchNickException(
+                "the channel name is missing from the request")
         if "#" in self.channel_name:
             self.type = MessageType.CHANNEL_MESSAGE
             self.target_name = self.channel_name
@@ -146,8 +145,10 @@ class MessageRequestBase(ChannelRequestBase):
 
 
 class MessageResultBase(ResultBase):
-    nick_name: str
-    user_name: str
+    sender_nick_name: str
+    sender_user_name: str
+    target_name: str
+    message: str
 
 
 class MessageHandlerBase(ChannelHandlerBase):

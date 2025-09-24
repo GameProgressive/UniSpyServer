@@ -22,6 +22,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     BlockListResult,
     BuddyListResult,
     NewUserResult,
+    RegisterNickResult,
     StatusInfoResult,
     StatusResult,
     GetProfileResult,
@@ -76,7 +77,7 @@ class KeepAliveHandler(CmdHandlerBase):
         super()._data_operate()
 
     def _response_construct(self) -> None:
-        self._response = KeepAliveResponse(self._request)
+        self._response = KeepAliveResponse()
 
 
 class LoginHandler(CmdHandlerBase):
@@ -88,9 +89,7 @@ class LoginHandler(CmdHandlerBase):
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
         self._result_cls = LoginResult
-
-    def _response_construct(self) -> None:
-        self._response = LoginResponse(self._request, self._result)
+        self._response_cls = LoginResponse
 
 
 class LogoutHandler(LoginedHandlerBase):
@@ -112,9 +111,7 @@ class NewUserHandler(CmdHandlerBase):
         assert isinstance(request, NewUserRequest)
         super().__init__(client, request)
         self._result_cls = NewUserResult
-
-    def _response_construct(self):
-        self._response = NewUserResponse(self._request, self._result)
+        self._response_cls = NewUserResponse
 
 
 class SdkRevisionHandler(CmdHandlerBase):
@@ -167,9 +164,8 @@ class BuddyListHandler(LoginedHandlerBase):
     def __init__(self, client):
         self._client = client
         assert isinstance(client, Client)
-
-    def response_construct(self):
-        self._response = BuddyListResponse(self._request, self._result)
+        self._result_cls = BuddyListResult
+        self._response_cls = BuddyListResponse
 
 
 class BuddyStatusInfoHandler(CmdHandlerBase):
@@ -219,13 +215,12 @@ class StatusInfoHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        self._result_cls = StatusInfoResult
+        self._response_cls = StatusInfoResponse
 
     def _response_send(self) -> None:
         # todo: check if response is needed
-        if self._request is not None:
-            self._response = StatusInfoResponse(self._request, self._result)
-            super()._response_send()
+        super()._response_send()
 
 
 # region Profile
@@ -250,9 +245,7 @@ class GetProfileHandler(CmdHandlerBase):
         assert isinstance(request, GetProfileRequest)
         super().__init__(client, request)
         self._result_cls = GetProfileResult
-
-    def _response_construct(self) -> None:
-        self._response = GetProfileResponse(self._request, self._result)
+        self._response_cls = GetProfileResponse
 
 
 @final
@@ -264,9 +257,7 @@ class NewProfileHandler(CmdHandlerBase):
         assert isinstance(request, NewProfileRequest)
         super().__init__(client, request)
         self._result_cls = NewProfileResult
-
-    def _response_construct(self) -> None:
-        self._response = NewProfileResponse(self._request, self._result)
+        self._response_cls = NewProfileResponse
 
 
 @final
@@ -286,10 +277,8 @@ class RegisterNickHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
         assert isinstance(request, RegisterNickRequest)
         super().__init__(client, request)
-        self._is_fetching = False
-
-    def _response_construct(self) -> None:
-        self._response = RegisterNickResponse(self._request)
+        self._result_cls = RegisterNickResult
+        self._response_cls = RegisterNickResponse
 
 
 @final

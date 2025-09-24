@@ -5,11 +5,11 @@ from backends.library.database.pg_orm import InitPacketCaches, NatResultCaches
 import backends.protocols.gamespy.natneg.data as data
 from backends.protocols.gamespy.natneg.helpers import NatProtocolHelper, NatStrategy
 from backends.protocols.gamespy.natneg.requests import ConnectRequest, InitRequest, ReportRequest
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     ConnectPacketStatus,
     NatClientIndex,
 )
+from frontends.gamespy.protocols.natneg.aggregations.exceptions import NatNegException
 from frontends.gamespy.protocols.natneg.contracts.results import ConnectResult
 
 
@@ -105,7 +105,9 @@ class ConnectHandler(HandlerBase):
                 is_both_client_ready=False,
                 ip=None,
                 port=None,
-                status=None
+                status=None,
+                version=self._request.version,
+                cookie=self._request.cookie,
             )
             return
 
@@ -114,14 +116,18 @@ class ConnectHandler(HandlerBase):
                 is_both_client_ready=True,
                 ip=self._helper2.private_ip,
                 port=self._helper2.private_port,
-                status=ConnectPacketStatus.NO_ERROR
+                status=ConnectPacketStatus.NO_ERROR,
+                version=self._request.version,
+                cookie=self._request.cookie,
             )
         elif self._strategy == NatStrategy.USE_PUBLIC_IP:
             self._result = ConnectResult(
                 is_both_client_ready=True,
                 ip=self._helper2.public_ip,
                 port=self._helper2.public_port,
-                status=ConnectPacketStatus.NO_ERROR
+                status=ConnectPacketStatus.NO_ERROR,
+                version=self._request.version,
+                cookie=self._request.cookie,
             )
 
         elif self._strategy == NatStrategy.USE_GAME_TRAFFIC_RALEY:
@@ -129,6 +135,9 @@ class ConnectHandler(HandlerBase):
             relay_servers = data.get_game_traffic_relay_servers(
                 self._session, 5)
             # select strategy to choose one gtr server
+            if len(relay_servers) == 0:
+                raise NatNegException(
+                    "No relay server found, please check the database")
             rs = relay_servers[0]
             assert isinstance(rs.public_ip, str)
             assert isinstance(rs.public_port, int)
@@ -136,7 +145,9 @@ class ConnectHandler(HandlerBase):
                 is_both_client_ready=True,
                 ip=rs.public_ip,
                 port=rs.public_port,
-                status=ConnectPacketStatus.NO_ERROR
+                status=ConnectPacketStatus.NO_ERROR,
+                version=self._request.version,
+                cookie=self._request.cookie,
             )
 
 
@@ -151,7 +162,7 @@ class ReportHandler(HandlerBase):
             self._session
         )
         if init_cache is None:
-            raise UniSpyException(
+            raise NatNegException(
                 f"No init package found for report pacakge cookie: {self._request.cookie} client_index: {self._request.client_index}")
         report_cache = NatResultCaches(
             cookie=self._request.cookie,

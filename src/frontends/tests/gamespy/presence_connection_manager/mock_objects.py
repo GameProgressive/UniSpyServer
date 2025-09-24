@@ -30,7 +30,8 @@ def create_client() -> Client:
         logger=logger,
     )
     config = CONFIG.servers["PresenceConnectionManager"]
-    create_mock_url(config, NewUserHandler, {"user_id": 0, "profile_id": 0})
+    create_mock_url(config, NewUserHandler, {
+                    "user_id": 0, "profile_id": 0, "operation_id": 0})
     create_mock_url(
         config,
         LoginHandler,
@@ -48,6 +49,11 @@ def create_client() -> Client:
                 "sub_profile_id": 0,
                 "banned_flag": False,
             },
+            "operation_id": 0,
+            "user_data": "",
+            "type": 0,
+            "partner_id": 0,
+            "user_challenge": "xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT"
         },
     )
 

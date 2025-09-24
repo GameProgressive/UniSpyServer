@@ -47,17 +47,9 @@ class ResultBase(BaseModel):
 class ResponseBase:
     sending_buffer: object
     _result: ResultBase
-    _request: RequestBase
-
-    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
-        super().__init__()
-        if request is not None:
-            assert issubclass(type(request), RequestBase)
-            self._request = request
-
-        if result is not None:
-            assert issubclass(type(result), ResultBase)
-            self._result = result
+    def __init__(self, result: ResultBase) -> None:
+        assert issubclass(type(result), ResultBase)
+        self._result = result
 
     @abc.abstractmethod
     def build(self) -> None:

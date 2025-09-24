@@ -12,13 +12,15 @@ from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     KeepAliveRequest,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.responses import (
-    AvaliableResponse,
+    AvailableResponse,
     ChallengeResponse,
     ClientMessageResponse,
     HeartBeatResponse,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.results import (
+    AvailableResult,
     ChallengeResult,
+    ClientMessageResult,
     HeartBeatResult,
 )
 
@@ -32,7 +34,10 @@ class AvailableHandler(CmdHandlerBase):
         self._is_fetching = False
 
     def _response_construct(self):
-        self._response = AvaliableResponse(self._request)
+        self._result = AvailableResult(
+            command_name=self._request.command_name,
+            instant_key=self._request.instant_key)
+        self._response = AvailableResponse(self._result)
 
 
 class ChallengeHanler(CmdHandlerBase):
@@ -42,10 +47,8 @@ class ChallengeHanler(CmdHandlerBase):
     def __init__(self, client: Client, request: ChallengeRequest) -> None:
         assert isinstance(request, ChallengeRequest)
         super().__init__(client, request)
-        self._is_fetching = False
-
-    def _response_construct(self):
-        self._response = ChallengeResponse(self._request, self._result)
+        self._result_cls = ChallengeResult
+        self._response_cls = ChallengeResponse
 
 
 class ClientMessageAckHandler(CmdHandlerBase):
@@ -59,17 +62,12 @@ class ClientMessageAckHandler(CmdHandlerBase):
 
 
 class ClientMessageHandler(CmdHandlerBase):
-    _request: ClientMessageRequest
 
     def __init__(self, client: Client, request: ClientMessageRequest) -> None:
         assert isinstance(request, ClientMessageRequest)
         super().__init__(client, request)
-
-    def _request_check(self) -> None:
-        pass
-
-    def _response_construct(self) -> None:
-        self._response = ClientMessageResponse(self._request)
+        self._result_cls = ClientMessageResult
+        self._response_cls = ClientMessageResponse
 
 
 class EchoHandler(CmdHandlerBase):
@@ -92,12 +90,13 @@ class HeartBeatHandler(CmdHandlerBase):
         self._result = HeartBeatResult(
             remote_ip=self._client.connection.remote_ip,
             remote_port=self._client.connection.remote_port,
+            instant_key=self._request.instant_key,
+            command_name=self._request.command_name
         )
-        self._response = HeartBeatResponse(self._request, self._result)
+        self._response = HeartBeatResponse(self._result)
 
 
 class KeepAliveHandler(CmdHandlerBase):
-    _request: KeepAliveRequest
 
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)

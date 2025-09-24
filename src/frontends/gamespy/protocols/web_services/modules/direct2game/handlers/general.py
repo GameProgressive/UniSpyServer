@@ -23,7 +23,7 @@ class GetPurchaseHistoryHandler(CmdHandlerBase):
         super().__init__(client, request)
 
     def _response_construct(self) -> None:
-        self._response = GetPurchaseHistoryResponse(self._request, self._result)
+        self._response = GetPurchaseHistoryResponse(self._result)
 
 
 class GetStoreAvailabilityHandler(CmdHandlerBase):
@@ -35,4 +35,4 @@ class GetStoreAvailabilityHandler(CmdHandlerBase):
         super().__init__(client, request)
 
     def _response_construct(self) -> None:
-        self._response = GetStoreAvailabilityResponse(self._request, self._result)
+        self._response = GetStoreAvailabilityResponse(self._result)

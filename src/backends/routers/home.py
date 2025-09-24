@@ -39,7 +39,7 @@ logger = LogManager.create("backend")
 @app.exception_handler(UniSpyException)
 def unispy_exception_handler(_, exc: UniSpyException):
     logger.error(exc.message)
-    return JSONResponse({"error": exc.message}, status_code=450)
+    return JSONResponse({"error": exc.message, "exception": type(exc).__name__}, status_code=450)
 
 
 @app.exception_handler(RequestValidationError)

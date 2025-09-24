@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.protocols.chat.aggregates.enums import WhoRequestType
 from frontends.gamespy.protocols.chat.applications.handlers import (
     CdKeyHandler,
     GetCKeyHandler,
@@ -32,6 +33,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     NamesResultData,
     NickResult,
     PartResult,
+    SetCKeyResult,
     SetChannelKeyResult,
     TopicResult,
     UtmResult,
@@ -78,7 +80,8 @@ def create_client() -> Client:
     conn = ConnectionMock(
         handler=handler, config=config, t_client=ClientMock, logger=logger
     )
-    create_mock_url(config, CryptHandler, CryptResult(secret_key="test").model_dump())
+    create_mock_url(config, CryptHandler, CryptResult(
+        secret_key="test").model_dump())
     create_mock_url(
         config, LoginHandler, LoginResult(profile_id=1, user_id=1).model_dump()
     )
@@ -97,7 +100,9 @@ def create_client() -> Client:
         config,
         JoinHandler,
         JoinResult(
-            joiner_nick_name="nickname", joiner_user_name="username"
+            joiner_nick_name="nickname",
+            joiner_user_name="username",
+            channel_name="#GP!test"
         ).model_dump(),
     )
     create_mock_url(config, UserHandler, {"message": "ok"})
@@ -112,8 +117,9 @@ def create_client() -> Client:
                     {
                         "nick_name": "test_nick",
                         "user_values": ["data", "key", "value", "data"],
-                    }
+                    },
                 ],
+                "cookie": "000",
             }
         ).model_dump(),
     )
@@ -128,11 +134,20 @@ def create_client() -> Client:
             }
         ).model_dump(),
     )
-    create_mock_url(config, SetCKeyHandler, {"message": "ok"})
+    create_mock_url(config,
+                    SetCKeyHandler,
+                    SetCKeyResult.model_validate(
+                        {"setter_nick_name": "unispy",
+                         "setter_user_name": "unispy",
+                         "channel_name": "#GP!test",
+                         "cookie": "000",
+                         "key_value": {}}
+                    ).model_dump(mode="json"))
     create_mock_url(
         config,
         TopicHandler,
-        TopicResult(channel_name="test_chan", channel_topic="test").model_dump(),
+        TopicResult(channel_name="test_chan",
+                    channel_topic="test").model_dump(),
     )
     create_mock_url(
         config,
@@ -142,10 +157,16 @@ def create_client() -> Client:
             leaver_user_name="username",
             is_channel_creator=False,
             channel_name="test_chan",
+            reason="part"
         ).model_dump(),
     )
-    create_mock_url(config, NickHandler, NickResult(nick_name="test").model_dump())
-    create_mock_url(config, WhoHandler, WhoResult(infos=[]).model_dump())
+    create_mock_url(config, NickHandler, NickResult(
+        nick_name="test").model_dump())
+    create_mock_url(config, WhoHandler, WhoResult(
+        infos=[],
+        request_type=WhoRequestType.GET_CHANNEL_USER_INFO,
+        channel_name="#GP!test",
+        nick_name="unispy").model_dump())
     create_mock_url(
         config,
         SetChannelKeyHandler,
@@ -153,15 +174,18 @@ def create_client() -> Client:
             setter_nick_name="nickname",
             setter_user_name="username",
             channel_name="test",
+            key_value={}
         ).model_dump(),
     )
     create_mock_url(
-        config, GetKeyHandler, GetKeyResult(nick_name="unispy", values=[]).model_dump()
+        config, GetKeyHandler, GetKeyResult(
+            nick_name="unispy", values=[], cookie="000").model_dump()
     )
     create_mock_url(
         config,
         UTMHandler,
-        UtmResult(nick_name="unispy", user_name="unispy").model_dump(),
+        UtmResult(sender_nick_name="unispy", sender_user_name="unispy",
+                  target_name="unispy", message="hello").model_dump(),
     )
 
     if TYPE_CHECKING:

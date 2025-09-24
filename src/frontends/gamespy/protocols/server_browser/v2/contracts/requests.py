@@ -1,6 +1,5 @@
 from socket import inet_ntoa
 
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     AdHocRequestBase,
     ServerListUpdateOptionRequestBase,
@@ -9,13 +8,14 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
 
 
 class ServerListRequest(ServerListUpdateOptionRequestBase):
     def parse(self) -> None:
         self.command_name = RequestType(self.raw_request[0])
         if self.command_name != RequestType.SERVER_LIST_REQUEST:
-            raise UniSpyException("raw request is not valid server list request")
+            raise SBException("raw request is not valid server list request")
         self.request_version = int(self.raw_request[2])
         self.protocol_version = int(self.raw_request[3])
         self.encoding_version = int(self.raw_request[4])
@@ -50,7 +50,7 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
 
         if self.update_option & ServerListUpdateOption.LIMIT_RESULT_COUNT:
             if len(remain_data) != 4:
-                raise UniSpyException("The max number of server is incorrect.")
+                raise SBException("The max number of server is incorrect.")
             self.max_servers = int(remain_data[:4][::-1])
 
 

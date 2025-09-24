@@ -145,7 +145,7 @@ class ServerMainListHandler(CmdHandlerBase):
         self._result_cls = ServerMainListResult
 
     def _response_construct(self) -> None:
-        self._response = ServerMainListResponse(self._request, self._result)
+        self._response = ServerMainListResponse(self._result)
 
 
 class P2PGroupRoomListHandler(CmdHandlerBase):
@@ -158,7 +158,7 @@ class P2PGroupRoomListHandler(CmdHandlerBase):
         self._result_cls = P2PGroupRoomListResult
 
     def _response_construct(self) -> None:
-        self._response = P2PGroupRoomListResponse(self._request, self._result)
+        self._response = P2PGroupRoomListResponse(self._result)
 
 
 class ServerNetworkInfoListHandler(CmdHandlerBase):
@@ -171,7 +171,7 @@ class ServerNetworkInfoListHandler(CmdHandlerBase):
         self._result_cls = ServerNetworkInfoListResult
 
     def _response_construct(self) -> None:
-        self._response = ServerNetworkInfoListResponse(self._request, self._result)
+        self._response = ServerNetworkInfoListResponse(self._result)
 
 
 # class ServerListHandler(CmdHandlerBase):

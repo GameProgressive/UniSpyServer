@@ -32,7 +32,8 @@ class RequestBase(lib.RequestBase):
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        self.request_length = int.from_bytes(self.raw_request[:2], byteorder="little")
+        self.request_length = int.from_bytes(
+            self.raw_request[:2], byteorder="little")
         self.command_name = RequestType(self.raw_request[2])
 
 
@@ -41,14 +42,12 @@ class ResultBase(lib.ResultBase):
 
 
 class ResponseBase(lib.ResponseBase):
-    _request: RequestBase
     _result: ResultBase
     sending_buffer: bytes
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        assert issubclass(type(request), RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
-        super().__init__(request, result)
+        super().__init__(result)
 
 
 class ServerListUpdateOptionRequestBase(RequestBase):
@@ -75,28 +74,28 @@ class ServerListUpdateOptionResultBase(ResultBase):
     client_remote_ip: str
     flag: GameServerFlags
     game_secret_key: str
+    keys: list[str]
 
 
 class ServerListUpdateOptionResponseBase(ResponseBase):
-    _request: ServerListUpdateOptionRequestBase
     _result: ServerListUpdateOptionResultBase
     _servers_info_buffers: bytearray
 
     def __init__(
         self,
-        request: ServerListUpdateOptionRequestBase,
         result: ServerListUpdateOptionResultBase,
     ) -> None:
-        assert issubclass(type(request), ServerListUpdateOptionRequestBase)
         assert issubclass(type(result), ServerListUpdateOptionResultBase)
-        super().__init__(request, result)
+        super().__init__(result)
         self._servers_info_buffers = bytearray()
 
     def build(self) -> None:
         crypt_header = self.build_crypt_header()
         self._servers_info_buffers.extend(crypt_header)
-        self._servers_info_buffers.extend(ip_to_4_bytes(self._result.client_remote_ip))
-        self._servers_info_buffers.extend(QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
+        self._servers_info_buffers.extend(
+            ip_to_4_bytes(self._result.client_remote_ip))
+        self._servers_info_buffers.extend(
+            QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
 
     def build_crypt_header(self) -> list:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
@@ -109,9 +108,9 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
 
     def build_server_keys(self) -> None:
         # we add the total number of the requested keys
-        self._servers_info_buffers.append(len(self._request.keys))
+        self._servers_info_buffers.append(len(self._result.keys))
         # then we add the keys
-        for key in self._request.keys:
+        for key in self._result.keys:
             self._servers_info_buffers.append(DataKeyType.STRING)
             self._servers_info_buffers.extend(get_bytes(key))
             self._servers_info_buffers.extend(STRING_SPLITER)
@@ -140,6 +139,6 @@ class AdHocResponseBase(ResponseBase):
     _result: AdHocResultBase
     _buffer: bytearray
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        super().__init__(request, result)
+    def __init__(self, result: ResultBase) -> None:
+        super().__init__(result)
         self._buffer = bytearray()

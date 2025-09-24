@@ -1,7 +1,7 @@
 import frontends.gamespy.library.abstractions.contracts as lib
 import xml.etree.ElementTree as ET
 
-from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 
 
@@ -29,15 +29,14 @@ class ResponseBase(lib.ResponseBase):
     """
     sending_buffer: str
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        assert issubclass(type(request), RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         if not hasattr(self, "_content"):
-            raise UniSpyException(
+            raise WebException(
                 "Soap envelope content must be initialized in response sub class"
             )
         assert isinstance(self._content, SoapEnvelop)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self) -> None:
         self.sending_buffer = str(self._content)

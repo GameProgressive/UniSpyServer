@@ -189,6 +189,7 @@ class TopicRequest(ChannelRequestBase):
 
 class MessageRequestBase(ChannelRequestBase):
     type: MessageType
+    target_name: str
     message: str
 
 

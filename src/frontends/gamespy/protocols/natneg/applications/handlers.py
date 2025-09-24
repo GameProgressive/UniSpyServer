@@ -47,10 +47,15 @@ class AddressCheckHandler(CmdHandlerBase):
         self._result = AddressCheckResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port,
+            version=self._request.version,
+            cookie=self._request.cookie,
+            client_index=self._request.client_index,
+            use_game_port=self._request.use_game_port,
+            port_type=self._request.port_type
         )
         self._result.public_ip_addr = self._client.connection.remote_ip
         self._result.public_port = self._client.connection.remote_port
-        self._response = AddressCheckResponse(self._request, self._result)
+        self._response = AddressCheckResponse(self._result)
 
 
 class ConnectAckHandler(CmdHandlerBase):
@@ -76,13 +81,14 @@ class ConnectHandler(CmdHandlerBase):
         assert isinstance(request, ConnectRequest)
         super().__init__(client, request)
         self._result_cls = ConnectResult
+        self._response_cls = ConnectResponse
 
     def _response_construct(self) -> None:
         if not self._result.is_both_client_ready:
             self._client.log_warn(
                 f"init cache is not enough for cookie: {self._request.cookie}")
             return
-        self._response = ConnectResponse(self._request, self._result)
+        super()._response_construct()
 
 
 class ErtAckHandler(CmdHandlerBase):
@@ -102,8 +108,13 @@ class ErtAckHandler(CmdHandlerBase):
         self._result = ErtAckResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port,
+            version=self._request.version,
+            cookie=self._request.cookie,
+            client_index=self._request.client_index,
+            use_game_port=self._request.use_game_port,
+            port_type=self._request.port_type
         )
-        self._response = ErcAckResponse(self._request, self._result)
+        self._response = ErcAckResponse(self._result)
 
 
 class InitHandler(CmdHandlerBase):
@@ -128,9 +139,14 @@ class InitHandler(CmdHandlerBase):
         self._result = InitResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port,
+            version=self._request.version,
+            cookie=self._request.cookie,
+            client_index=self._request.client_index,
+            use_game_port=self._request.use_game_port,
+            port_type=self._request.port_type
         )
 
-        self._response = InitResponse(self._request, self._result)
+        self._response = InitResponse(self._result)
 
     def handle(self) -> None:
         try:
@@ -181,8 +197,13 @@ class NatifyHandler(CmdHandlerBase):
         self._result = NatifyResult(
             public_ip_addr=self._client.connection.remote_ip,
             public_port=self._client.connection.remote_port,
+            version=self._request.version,
+            cookie=self._request.cookie,
+            client_index=self._request.client_index,
+            use_game_port=self._request.use_game_port,
+            port_type=self._request.port_type
         )
-        self._response = NatifyResponse(self._request, self._result)
+        self._response = NatifyResponse(self._result)
 
 
 class ReportHandler(CmdHandlerBase):

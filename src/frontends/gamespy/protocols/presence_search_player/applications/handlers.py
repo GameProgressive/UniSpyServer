@@ -17,9 +17,7 @@ class CheckHandler(CmdHandlerBase):
         assert isinstance(request, CheckRequest)
         super().__init__(client, request)
         self._result_cls = CheckResult
-
-    def _response_construct(self):
-        self._response = CheckResponse(self._request, self._result)
+        self._response_cls = CheckResponse
 
 
 class NewUserHandler(CmdHandlerBase):
@@ -31,9 +29,7 @@ class NewUserHandler(CmdHandlerBase):
         assert isinstance(request, NewUserRequest)
         super().__init__(client, request)
         self._result_cls = NewUserResult
-
-    def _response_construct(self):
-        self._response = NewUserResponse(self._request, self._result)
+        self._response_cls = NewUserResponse
 
 
 class NicksHandler(CmdHandlerBase):
@@ -45,9 +41,7 @@ class NicksHandler(CmdHandlerBase):
         assert isinstance(request, NicksRequest)
         super().__init__(client, request)
         self._result_cls = NicksResult
-
-    def _response_construct(self):
-        self._response = NicksResponse(self._request, self._result)
+        self._response_cls = NicksResponse
 
 
 class OthersHandler(CmdHandlerBase):
@@ -110,9 +104,7 @@ class SearchUniqueHandler(CmdHandlerBase):
         assert isinstance(request, SearchUniqueRequest)
         super().__init__(client, request)
         self._result_cls = SearchUniqueResult
-
-    def _response_construct(self):
-        self._response = SearchUniqueResponse(self._result)
+        self._response_cls = SearchUniqueResponse
 
 
 class UniqueSearchHandler(CmdHandlerBase):
@@ -124,9 +116,7 @@ class UniqueSearchHandler(CmdHandlerBase):
         assert isinstance(request, UniqueSearchRequest)
         super().__init__(client, request)
         self._result_cls = UniqueSearchResult
-
-    def _response_construct(self):
-        self._response = UniqueSearchResponse(self._request, self._result)
+        self._response_cls = UniqueSearchResponse
 
 
 class ValidHandler(CmdHandlerBase):
@@ -138,6 +128,4 @@ class ValidHandler(CmdHandlerBase):
         assert isinstance(request, ValidRequest)
         super().__init__(client, request)
         self._result_cls = ValidResult
-
-    def _response_construct(self):
-        self._response = ValidResponse(self._request, self._result)
+        self._response_cls = ValidResponse

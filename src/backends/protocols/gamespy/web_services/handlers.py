@@ -43,6 +43,9 @@ class LoginProfileHandler(HandlerBase):
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
+            version=self._request.version,
+            namespace_id=self._request.namespace_id,
+            partner_code=self._request.partner_code
         )
 
 
@@ -68,6 +71,9 @@ class LoginRemoteAuthHandler(HandlerBase):
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
+            version=self._request.version,
+            namespace_id=self._request.namespace_id,
+            partner_code=self._request.partner_code
         )
 
 
@@ -88,6 +94,9 @@ class LoginUniqueNickHandler(HandlerBase):
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
+            version=self._request.version,
+            namespace_id=self._request.namespace_id,
+            partner_code=self._request.partner_code
         )
 
 

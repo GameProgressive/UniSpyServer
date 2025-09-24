@@ -1,12 +1,10 @@
 from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
 from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
 from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
     GtrHeartbeat,
 )
-import requests
 
 
 class ServerLauncher(ServerLauncherBase):
@@ -21,20 +19,9 @@ class ServerLauncher(ServerLauncherBase):
         self._get_public_ip()
 
     def _get_public_ip(self):
-        try:
-            # post our server config to backends to register
-            resp = requests.get(
-                url=f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/get_my_ip")
-            data = resp.json()
-            if resp.status_code == 200:
-                self._public_ip = data['ip']
-                print(f"GameTrafficRelay public ip: {self._public_ip}")
-            else:
-                raise UniSpyException(data["error"])
-        except requests.ConnectionError:
-            raise UniSpyException(
-                f"backend server: {CONFIG.backend.url} not available."
-            )
+        url = f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/get_my_ip"
+        data = self._get_data_from_backends(url=url, is_post=False)
+        self._public_ip = data['ip']
 
     def _gtr_heartbeat(self):
         assert self.config

@@ -138,7 +138,8 @@ class ChannelHelper:
                 f"kickee is not in channel: {channel.channel_name}"
             )
         if not kicker.is_channel_operator:  # type:ignore
-            raise BadChannelKeyException("kick failed, kicker is not channel operator")
+            raise BadChannelKeyException(
+                "kick failed, kicker is not channel operator")
         session.delete(kickee)
         session.commit()
 
@@ -288,7 +289,8 @@ class ChannelHelper:
     def get_all_user_nick_string(channel: ChatChannelCaches, session: Session) -> str:
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(
+            channel.channel_name, session)
         nicks = ""
         for user in users:
             assert isinstance(user.is_channel_creator, bool)
@@ -308,5 +310,11 @@ class ChannelHelper:
     ) -> list[ChatChannelUserCaches]:
         assert channel is not None
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(
+            channel.channel_name, session)
         return users
+
+    @staticmethod
+    def update_channel_key_values(kv: dict, channel: ChatChannelCaches, session: Session):
+        channel.key_values = kv  # type:ignore
+        session.commit()

@@ -40,25 +40,25 @@ class RequestBase(lib.RequestBase):
 
 class ResultBase(lib.ResultBase):
     packet_type: ResponseType
+    version: int
+    cookie: int
     pass
 
 
 class ResponseBase(lib.ResponseBase):
-    _request: RequestBase
     _result: ResultBase
     sending_buffer: bytes
 
-    def __init__(self, request: RequestBase, result: ResultBase) -> None:
-        super().__init__(request, result)
-        assert issubclass(type(request), RequestBase)
+    def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
+        super().__init__(result)
 
     def build(self) -> None:
         data = bytes()
         data += MAGIC_DATA
-        data += self._request.version.to_bytes(1)
+        data += self._result.version.to_bytes(1)
         data += self._result.packet_type.value.to_bytes(1)
-        data += self._request.cookie.to_bytes(4)
+        data += self._result.cookie.to_bytes(4)
         self.sending_buffer = data
 
 
@@ -75,19 +75,21 @@ class CommonRequestBase(RequestBase):
 class CommonResultBase(ResultBase):
     public_ip_addr: str
     public_port: int
+    port_type: NatPortType
+    client_index: NatClientIndex
+    use_game_port: bool
 
 
 class CommonResponseBase(ResponseBase):
     _result: CommonResultBase
-    _request: CommonRequestBase
 
     def build(self) -> None:
         super().build()
         data = bytes()
         data += self.sending_buffer
-        data += self._request.port_type.value.to_bytes(1)
-        data += self._request.client_index.value.to_bytes(1)
-        data += bytes(self._request.use_game_port)
+        data += self._result.port_type.value.to_bytes(1)
+        data += self._result.client_index.value.to_bytes(1)
+        data += int(self._result.use_game_port).to_bytes(1)
         data += ip_to_4_bytes(self._result.public_ip_addr)
         data += self._result.public_port.to_bytes(2)
         self.sending_buffer = data

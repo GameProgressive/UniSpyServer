@@ -80,6 +80,7 @@ class SearchUniqueResult(ResultBase):
 
 class UniqueSearchResult(ResultBase):
     is_uniquenick_exist: bool
+    preferred_nick: str
 
 
 class ValidResult(ResultBase):

@@ -3,13 +3,6 @@ from frontends.gamespy.protocols.natneg.abstractions.contracts import (
     CommonResponseBase,
     ResponseBase,
 )
-from frontends.gamespy.protocols.natneg.contracts.requests import (
-    AddressCheckRequest,
-    ConnectRequest,
-    ErtAckRequest,
-    InitRequest,
-    NatifyRequest,
-)
 from frontends.gamespy.protocols.natneg.contracts.results import (
     AddressCheckResult,
     ConnectResult,
@@ -20,51 +13,41 @@ from frontends.gamespy.protocols.natneg.contracts.results import (
 
 
 class InitResponse(CommonResponseBase):
-    _request: InitRequest
     _result: InitResult
 
-    def __init__(self, request: InitRequest, result: InitResult) -> None:
-        super().__init__(request, result)
-        assert isinstance(request, InitRequest)
+    def __init__(self, result: InitResult) -> None:
         assert isinstance(result, InitResult)
+        super().__init__(result)
 
 
 class ErcAckResponse(InitResponse):
-    _request: ErtAckRequest
     _result: ErtAckResult
 
-    def __init__(self, request: ErtAckRequest, result: ErtAckResult) -> None:
-        assert isinstance(request, ErtAckRequest)
+    def __init__(self, result: ErtAckResult) -> None:
         assert isinstance(result, ErtAckResult)
-        self._request = request
         self._result = result
 
 
 class NatifyResponse(CommonResponseBase):
-    _request: NatifyRequest
     _result: NatifyResult
 
-    def __init__(self, request: NatifyRequest, result: NatifyResult) -> None:
-        assert isinstance(request, NatifyRequest)
+    def __init__(self, result: NatifyResult) -> None:
         assert isinstance(result, NatifyResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
 
 class AddressCheckResponse(CommonResponseBase):
-    _request: AddressCheckRequest
     _result: AddressCheckResult
 
     def __init__(
-        self, request: AddressCheckRequest, result: AddressCheckResult
+        self, result: AddressCheckResult
     ) -> None:
-        assert isinstance(request, AddressCheckRequest)
         assert isinstance(result, AddressCheckResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
 
 class ConnectResponse(ResponseBase):
     _result: ConnectResult
-    _request: ConnectRequest
 
     def build(self) -> None:
         assert self._result.ip is not None

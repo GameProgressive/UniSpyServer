@@ -32,6 +32,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     AddBuddyResult,
     BlockListResult,
     BuddyListResult,
+    RegisterNickResult,
     StatusInfoResult,
     LoginResult,
     NewUserResult,
@@ -42,8 +43,8 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
 
 
 class KeepAliveResponse(ResponseBase):
-    def __init__(self, request: KeepAliveRequest) -> None:
-        super().__init__(request, None)
+    def __init__(self) -> None:
+        pass
 
     def build(self) -> None:
         self.sending_buffer = "\\ka\\final\\"
@@ -53,17 +54,17 @@ class LoginResponse(ResponseBase):
     _result: LoginResult
     _request: LoginRequest
 
-    def __init__(self, request: LoginRequest, result: LoginResult):
-        super().__init__(request, result)
-        assert isinstance(request, LoginRequest)
+    def __init__(self, result: LoginResult):
+        super().__init__(result)
+
         assert isinstance(result, LoginResult)
 
     def build(self):
         response_proof = LoginChallengeProof(
-            self._request.user_data,
-            self._request.type,
-            self._request.partner_id,
-            self._request.user_challenge,
+            self._result.user_data,
+            self._result.type,
+            self._result.partner_id,
+            self._result.user_challenge,
             SERVER_CHALLENGE,
             self._result.data.password_hash,
         ).generate_proof()
@@ -77,31 +78,30 @@ class LoginResponse(ResponseBase):
             self.sending_buffer += "\\uniquenick\\" + self._result.data.unique_nick
 
         self.sending_buffer += f"\\lt\\{LOGIN_TICKET}"
-        self.sending_buffer += f"\\id\\{self._request.operation_id}\\final\\"
+        self.sending_buffer += f"\\id\\{self._result.operation_id}\\final\\"
 
 
 class NewUserResponse(ResponseBase):
     _request: NewUserRequest
     _result: NewUserResult
 
-    def __init__(self, request: NewUserRequest, result: NewUserResult) -> None:
-        super().__init__(request, result)
-        assert isinstance(request, NewUserRequest)
+    def __init__(self, result: NewUserResult) -> None:
+        super().__init__(result)
+
         assert isinstance(result, NewUserResult)
 
     def build(self):
         # fmt: on
-        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._request.operation_id}\\final\\"  # fmt: off
+        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._result.operation_id}\\final\\"  # fmt: off
 
 
 # region Buddy
 
 
 class AddBuddyResponse(ResponseBase):
-    def __init__(self, request: AddBuddyRequest, result: AddBuddyResult) -> None:
-        assert issubclass(type(request), AddBuddyRequest)
+    def __init__(self, result: AddBuddyResult) -> None:
         assert issubclass(type(result), AddBuddyResult)
-        super().__init__(request, result)
+        super().__init__( result)
 
     def build(self) -> None:
         # return super().build()
@@ -134,8 +134,8 @@ class BlockListResponse(ResponseBase):
 class BuddyListResponse(ResponseBase):
     _result: BuddyListResult
 
-    def __init__(self, request: RequestBase, result: BuddyListResult):
-        super().__init__(request, result)
+    def __init__(self, result: BuddyListResult):
+        super().__init__(result)
 
     def build(self):
         # \bdy\< num in list >\list\< profileid list - comma delimited >\final\
@@ -147,10 +147,10 @@ class BuddyListResponse(ResponseBase):
 class StatusInfoResponse(ResponseBase):
     _result: StatusInfoResult
 
-    def __init__(self, request: StatusInfoRequest, result: StatusInfoResult):
-        assert isinstance(request, StatusInfoRequest)
+    def __init__(self, result: StatusInfoResult):
+
         assert isinstance(result, StatusInfoResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         # \bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\\qport\\hport\\sessflags\\rstatus\\gameType\\gameVnt\\gameMn\\product\\qmodeflags\
@@ -173,10 +173,10 @@ class GetProfileResponse(ResponseBase):
     _result: GetProfileResult
     _request: GetProfileRequest
 
-    def __init__(self, request: GetProfileRequest, result: GetProfileResult):
-        assert isinstance(request, GetProfileRequest)
+    def __init__(self, result: GetProfileResult):
+
         assert isinstance(result, GetProfileResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         self.sending_buffer = (
@@ -190,7 +190,7 @@ class GetProfileResponse(ResponseBase):
 
         self.sending_buffer += (
             f"\\sig\\+{generate_random_string(10, StringType.HEX)}"
-            + f"\\id\\{self._request.operation_id}\\final\\"
+            + f"\\id\\{self._result.operation_id}\\final\\"
         )
 
 
@@ -198,14 +198,14 @@ class NewProfileResponse(ResponseBase):
     _request: NewProfileRequest
     _result: NewProfileResult
 
-    def __init__(self, request: NewProfileRequest, result: NewProfileResult):
-        assert isinstance(request, NewProfileRequest)
+    def __init__(self, result: NewProfileResult):
+
         assert isinstance(result, NewProfileResult)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self):
         # fmt: off
-        self.sending_buffer = f"\\npr\\\\profileid\\{self.sending_buffer}\\id\\{self._request.operation_id}\\final\\"
+        self.sending_buffer = f"\\npr\\\\profileid\\{self.sending_buffer}\\id\\{self._result.operation_id}\\final\\"
         # fmt: on
 
 
@@ -218,13 +218,9 @@ class RegisterCDKeyResposne(ResponseBase):
 
 
 class RegisterNickResponse(ResponseBase):
-    _request: RegisterNickRequest
-
-    def __init__(self, request: RegisterNickRequest) -> None:
-        assert isinstance(request, RegisterNickRequest)
-        self._request = request
-
+    _result: RegisterNickResult
+    
     def build(self) -> None:
         # fmt: off
-        self.sending_buffer = f"\\rn\\\\id\\{self._request.operation_id}\\final\\" 
+        self.sending_buffer = f"\\rn\\\\id\\{self._result.operation_id}\\final\\" 
         # fmt: on

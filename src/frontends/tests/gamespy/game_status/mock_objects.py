@@ -44,23 +44,29 @@ def create_client() -> Client:
         config,
         GetPlayerDataHandler,
         GetPlayerDataResult(
-            **{"keyvalues": {"hello": "hello_value", "hi": "hi_value"}}
+            keyvalues={"hello": "hello_value", "hi": "hi_value"},
+            local_id=0,
+            profile_id=0
         ).model_dump(),
     )
     create_mock_url(
         config,
         GetProfileIdHandler,
-        GetProfileIdResult(**{"profile_id": 1}).model_dump(),
+        GetProfileIdResult.model_validate(
+            {"profile_id": 1, "local_id": 0}).model_dump(),
     )
     create_mock_url(config, UpdateGameHandler, {"message": "ok"})
     create_mock_url(
-        config, AuthPlayerHandler, AuthPlayerResult(**{"profile_id": 1}).model_dump()
+        config, AuthPlayerHandler, AuthPlayerResult.model_validate(
+            {"profile_id": 1, "local_id": 0}).model_dump(mode="json")
     )
     create_mock_url(config, NewGameHandler, {"message": "ok"})
     create_mock_url(
         config,
         AuthGameHandler,
-        AuthGameResult(**{"session_key": "123456"}).model_dump(),
+        AuthGameResult(session_key="123456",
+                       local_id=0,
+                       game_name="gmtest").model_dump(),
     )
 
     return cast(Client, conn._client)

@@ -64,7 +64,8 @@ class LoginHandler(HandlerBase):
         assert self._request.nick is not None
         is_exsit = data.is_email_exist(self._request.email)
         if not is_exsit:
-            raise GPLoginBadEmailException(f"email: {self._request.email} is invalid.")
+            raise GPLoginBadEmailException(
+                f"email: {self._request.email} is invalid.")
         self._data = data.get_user_infos_by_nick_email(
             self._request.nick, self._request.email, self._session
         )
@@ -85,7 +86,12 @@ class LoginHandler(HandlerBase):
     def _result_construct(self) -> None:
         if self._data is None:
             raise GPLoginException("User is not exist.")
-        self._result = LoginResult(data=self._data)
+        self._result = LoginResult(data=self._data,
+                                   operation_id=self._request.operation_id,
+                                   type=self._request.type,
+                                   partner_id=self._request.partner_id,
+                                   user_challenge=self._request.user_challenge,
+                                   user_data=self._request.user_data)
 
 
 class LogoutHandler(HandlerBase):
@@ -114,7 +120,8 @@ class BuddyListHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = BuddyListResult(profile_ids=self.data)
+        self._result = BuddyListResult(
+            profile_ids=self.data, operation_id=self._request.operation_id)
 
 
 class BlockListHandler(HandlerBase):
@@ -126,7 +133,7 @@ class BlockListHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = BlockListResult(profile_ids=self.data)
+        self._result = BlockListResult(profile_ids=self.data,operation_id=self._request.operation_id)
 
 
 class BuddyStatusInfoHandler(HandlerBase):
@@ -229,7 +236,7 @@ class GetProfileHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = GetProfileResult(user_profile=self.data)
+        self._result = GetProfileResult(user_profile=self.data,operation_id=self._request.operation_id)
 
 
 class NewProfileHandler(HandlerBase):

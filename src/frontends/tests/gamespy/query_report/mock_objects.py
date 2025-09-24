@@ -20,7 +20,7 @@ def create_client() -> Client:
         logger=logger)
     config = CONFIG.servers["QueryReport"]
     create_mock_url(config, HeartBeatHandler, HeartBeatResult.model_validate(
-        {"remote_ip": conn.remote_ip, "remote_port": conn.remote_port}).model_dump(mode='json'))
+        {"remote_ip": conn.remote_ip, "remote_port": conn.remote_port, "instant_key": "123", "command_name": 3}).model_dump(mode='json'))
     create_mock_url(config, AvailableHandler, {"message": "ok"})
     create_mock_url(config, KeepAliveHandler, {"message": "ok"})
     return cast(Client, conn._client)

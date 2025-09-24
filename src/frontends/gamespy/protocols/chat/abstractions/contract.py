@@ -69,13 +69,11 @@ SERVER_DOMAIN = "unispy.net"
 class ResponseBase(lib.ResponseBase):
     sending_buffer: str
     _result: ResultBase
-    _request: RequestBase
 
-    def __init__(self, request: RequestBase, result: ResultBase | None) -> None:
-        super().__init__(request, result)
+    def __init__(self, result: ResultBase) -> None:
+        super().__init__(result)
         if result is not None:
             assert issubclass(type(result), ResultBase)
-        assert issubclass(type(request), RequestBase)
 
     @staticmethod
     def build_irc_user_prefix(nick_name: str, user_name: str):

@@ -40,20 +40,21 @@ class LoginResultBase(lib.ResultBase):
     profile_nick: str
     unique_nick: str
     cdkey_hash: str
+    version: int
+    namespace_id: int
+    partner_code: int
 
 
 class LoginResponseBase(lib.ResponseBase):
-    _request: LoginRequestBase
     _result: LoginResultBase
     _content: SoapEnvelop = SoapEnvelop("http://gamespy.net/AuthService/")
     _expiretime: int = int(
         (datetime.datetime.now() + datetime.timedelta(days=1)).timestamp()
     )
 
-    def __init__(self, request: LoginRequestBase, result: LoginResultBase) -> None:
-        assert isinstance(request, LoginRequestBase)
+    def __init__(self, result: LoginResultBase) -> None:
         assert isinstance(result, LoginResultBase)
-        super().__init__(request, result)
+        super().__init__(result)
 
     def build(self) -> None:
         self._build_context()
@@ -63,9 +64,9 @@ class LoginResponseBase(lib.ResponseBase):
         self._content.add("responseCode", "h")
         self._content.add("certificate")
         self._content.add("length", self._result.length)
-        self._content.add("version", self._request.version)
-        self._content.add("partnercode", self._request.partner_code)
-        self._content.add("namespaceid", self._request.namespace_id)
+        self._content.add("version", self._result.version)
+        self._content.add("partnercode", self._result.partner_code)
+        self._content.add("namespaceid", self._result.namespace_id)
         self._content.add("userid", self._result.user_id)
         self._content.add("profileid", self._result.profile_id)
         self._content.add("expiretime", self._expiretime)
@@ -86,11 +87,11 @@ class LoginResponseBase(lib.ResponseBase):
         data_to_hash.extend(
             self._result.length.to_bytes(4, byteorder="little"))
         data_to_hash.extend(
-            self._request.version.to_bytes(4, byteorder="little"))
+            self._result.version.to_bytes(4, byteorder="little"))
         data_to_hash.extend(
-            self._request.partner_code.to_bytes(4, byteorder="little"))
+            self._result.partner_code.to_bytes(4, byteorder="little"))
         data_to_hash.extend(
-            self._request.namespace_id.to_bytes(4, byteorder="little"))
+            self._result.namespace_id.to_bytes(4, byteorder="little"))
         data_to_hash.extend(
             self._result.user_id.to_bytes(4, byteorder="little"))
         data_to_hash.extend(

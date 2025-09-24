@@ -100,12 +100,22 @@ class ServerLauncherBase:
         send heartbeat to backends
         """
         assert isinstance(json_str, str)
+        self._get_data_from_backends(url, json_str=json_str)
+
+    @final
+    def _get_data_from_backends(self, url: str, is_post: bool = True, json_str: str | None = None):
         try:
-            # post our server config to backends to register
-            resp = requests.post(url=url, data=json_str)
+            if is_post:
+                # post our server config to backends to register
+                resp = requests.post(url=url, data=json_str)
+            else:
+                resp = requests.get(url=url)
+
+            data = resp.json()
             if resp.status_code != 200:
-                message = resp.json()
-                raise UniSpyException(message["error"])
+                raise UniSpyException(data["error"])
+            else:
+                return data
         except requests.ConnectionError:
             raise UniSpyException(
                 f"backend server: {CONFIG.backend.url} not available."

@@ -13,12 +13,12 @@ class AuthGameHandler(CmdHandlerBase):
         assert isinstance(request, AuthGameRequest)
         super().__init__(client, request)
         self._result_cls = AuthGameResult
+        self._response_cls = AuthGameResponse
 
     def _response_construct(self) -> None:
         self._client.info.session_key = self._result.session_key
-        self._client.info.game_name = self._request.game_name
+        self._client.info.game_name = self._result.game_name
         self._client.info.is_game_authenticated = True
-        self._response = AuthGameResponse(self._request, self._result)
 
 
 class AuthPlayerHandler(CmdHandlerBase):
@@ -30,7 +30,7 @@ class AuthPlayerHandler(CmdHandlerBase):
         self._result_cls = AuthPlayerResult
 
     def _response_construct(self) -> None:
-        self._response = AuthPlayerResponse(self._request, self._result)
+        self._response = AuthPlayerResponse(self._result)
 
 
 class GetPlayerDataHandler(CmdHandlerBase):
@@ -42,7 +42,7 @@ class GetPlayerDataHandler(CmdHandlerBase):
         self._result_cls = GetPlayerDataResult
 
     def _response_construct(self) -> None:
-        self._response = GetPlayerDataResponse(self._request, self._result)
+        self._response = GetPlayerDataResponse(self._result)
 
 
 class GetProfileIdHandler(CmdHandlerBase):
@@ -54,7 +54,7 @@ class GetProfileIdHandler(CmdHandlerBase):
         self._result_cls = GetProfileIdResult
 
     def _response_construct(self) -> None:
-        self._response = GetProfileIdResponse(self._request, self._result)
+        self._response = GetProfileIdResponse(self._result)
 
 
 class NewGameHandler(CmdHandlerBase):

@@ -4,6 +4,11 @@ from frontends.gamespy.protocols.query_report.v2.aggregates.enums import PacketT
 
 
 @final
+class AvailableResult(ResultBase):
+    packet_type: PacketType = PacketType.AVALIABLE_CHECK
+
+
+@final
 class ChallengeResult(ResultBase):
     packet_type: PacketType = PacketType.CHALLENGE
 

@@ -5,6 +5,7 @@ from frontends.gamespy.protocols.game_status.abstractions.contracts import Resul
 @final
 class AuthGameResult(ResultBase):
     session_key: str
+    game_name: str
 
 
 @final
@@ -15,6 +16,7 @@ class AuthPlayerResult(ResultBase):
 @final
 class GetPlayerDataResult(ResultBase):
     keyvalues: dict[str, str]
+    profile_id: int
 
 
 @final

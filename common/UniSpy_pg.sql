@@ -5334,7 +5334,7 @@ COPY unispy.messages (id, namespaceid, type, from_user, to_user, date, message) 
 -- Data for Name: nat_result_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.nat_result_caches (id, public_ip_address1, public_ip_address2, update_time) FROM stdin;
+COPY unispy.nat_result_caches (id, public_ip, private_ip, is_success, port_mapping_type, port_type, client_index, game_name, update_time) FROM stdin;
 \.
 
 
@@ -5369,7 +5369,7 @@ COPY unispy.pstorage (id, profileid, ptype, dindex, data) FROM stdin;
 -- Data for Name: relay_server_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.relay_server_caches (server_id, public_ip_address, public_port, client_count) FROM stdin;
+COPY unispy.relay_server_caches (id, public_ip, public_port, client_count, update_time) FROM stdin;
 \.
 
 

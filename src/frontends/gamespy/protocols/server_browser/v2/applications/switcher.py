@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING, Optional, cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.server_browser.aggregates.exceptions import (
     ServerBrowserException,
 )
@@ -11,6 +10,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     P2PGroupRoomListHandler,
@@ -31,7 +31,7 @@ class Switcher(SwitcherBase):
 
     def _process_raw_request(self) -> None:
         if len(self._raw_request) < 4:
-            raise UniSpyException("Invalid request")
+            raise SBException("Invalid request")
         name = self._raw_request[2]
         if name not in RequestType:
             self._client.log_debug(f"Request: {name} is not a valid request.")

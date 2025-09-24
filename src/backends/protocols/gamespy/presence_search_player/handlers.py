@@ -12,12 +12,12 @@ from backends.protocols.gamespy.presence_search_player.requests import (
     UniqueSearchRequest,
     ValidRequest,
 )
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
     SearchType,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     CheckException,
+    GPException,
 )
 from frontends.gamespy.protocols.presence_search_player.contracts.results import (
     CheckResult,
@@ -34,6 +34,7 @@ from frontends.gamespy.protocols.presence_search_player.contracts.results import
     UniqueSearchResult,
     ValidResult,
 )
+
 
 class CheckHandler(HandlerBase):
     """
@@ -58,7 +59,8 @@ class CheckHandler(HandlerBase):
             self._session,
         )
         if self._profile_id is None:
-            raise CheckException(f"No pid found with email{self._request.email}")
+            raise CheckException(
+                f"No pid found with email{self._request.email}")
 
     def _result_construct(self) -> None:
         assert self._profile_id is not None
@@ -150,7 +152,8 @@ class NicksHandler(HandlerBase):
         )
         self.result_data = []
         for nick, unique in self.temp_list:
-            self.result_data.append(NickResultData(nick=nick, uniquenick=unique))
+            self.result_data.append(
+                NickResultData(nick=nick, uniquenick=unique))
 
     def _result_construct(self) -> None:
         self._result = NicksResult(data=self.result_data)
@@ -197,7 +200,8 @@ class OthersListHandler(HandlerBase):
     def _result_construct(self) -> None:
         temp = []
         for profile_id, uniquenick in self._data:
-            temp.append(OthersListData(profile_id=profile_id, unique_nick=uniquenick))
+            temp.append(OthersListData(
+                profile_id=profile_id, unique_nick=uniquenick))
         self._result = OthersListResult(data=temp)
 
 
@@ -232,7 +236,7 @@ class SearchHandler(HandlerBase):
                 self._request.email, self._session
             )
         else:
-            raise UniSpyException("search type invalid")
+            raise GPException("search type invalid")
 
     def _result_construct(self) -> None:
         data = []
@@ -272,7 +276,9 @@ class UniqueSearchHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = UniqueSearchResult(is_uniquenick_exist=self._is_exist)
+        self._result = UniqueSearchResult(
+            is_uniquenick_exist=self._is_exist,
+            preferred_nick=self._request.preferred_nick)
 
 
 class ValidHandler(HandlerBase):
@@ -280,7 +286,8 @@ class ValidHandler(HandlerBase):
     _result: ValidResult
 
     def _data_operate(self) -> None:
-        self._is_exist = data.is_email_exist(self._request.email, self._session)
+        self._is_exist = data.is_email_exist(
+            self._request.email, self._session)
 
     def _result_construct(self) -> None:
         self._result = ValidResult(is_account_valid=self._is_exist)

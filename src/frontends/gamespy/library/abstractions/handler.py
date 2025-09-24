@@ -29,6 +29,7 @@ class CmdHandlerBase:
     the result type class, use to deserialize json data from backend\n
     the initialization of _result_cls must after call super().__init__()
     """
+    _response_cls: "Type[ResponseBase]|None"
     _debug: bool = False
     """
     whether is in debug mode, if in debug mode exception will raise from handler
@@ -42,6 +43,7 @@ class CmdHandlerBase:
         self._client = client
         self._request = request
         self._result_cls = None
+        self._response_cls = None
         self._result = None
         self._response = None
         self._is_uploading = True
@@ -112,7 +114,8 @@ class CmdHandlerBase:
         self._client.log_network_upload(f"[{self._url}] {json_str}")
         try:
             response = requests.post(
-                self._url, data=json_str, headers={"Content-Type": "application/json"}
+                self._url, data=json_str, headers={
+                    "Content-Type": "application/json"}
             )
         except requests.exceptions.ConnectionError:
             if CONFIG.unittest.is_raise_except:
@@ -158,7 +161,8 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         if self._result_cls is None:
-            raise UniSpyException("_result_cls can not be null when feach data.")
+            raise UniSpyException(
+                "_result_cls can not be null when feach data.")
         assert issubclass(self._result_cls, ResultBase)
         self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
         if "result" not in self._http_result:
@@ -167,6 +171,10 @@ class CmdHandlerBase:
 
     def _response_construct(self) -> None:
         """construct response here in specific child class"""
+        if self._response_cls is not None:
+            assert self._result is not None
+            self._response = self._response_cls(
+                result=self._result)
         pass
 
     def _response_send(self) -> None:

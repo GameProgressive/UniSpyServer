@@ -33,6 +33,7 @@ class RequestBase(lib.RequestBase):
 
 
 class ResultBase(lib.ResultBase):
+    local_id: int
     pass
 
 

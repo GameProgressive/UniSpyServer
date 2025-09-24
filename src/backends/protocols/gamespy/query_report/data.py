@@ -7,8 +7,8 @@ from backends.library.database.pg_orm import (
     Games,
     GameServerCaches,
 )
-from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
+from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
@@ -207,9 +207,9 @@ def update_game_server(
 def refresh_game_server_cache(instant_key: str, session: Session):
     cache = get_server_info_with_instant_key(instant_key, session)
     if cache is None:
-        raise UniSpyException(
+        raise QRException(
             "no game server cache found, please check the database")
-    cache.update_time = datetime.now() # type: ignore
+    cache.update_time = datetime.now()  # type: ignore
     session.commit()
 
 

@@ -27,7 +27,8 @@ class AuthGameHandler(HandlerBase):
         self.session_key = "11111"
 
     def _result_construct(self) -> None:
-        self._result = AuthGameResult(session_key=self.session_key)
+        self._result = AuthGameResult(
+            session_key=self.session_key, local_id=self._request.local_id, game_name=self._request.game_name)
 
 
 class AuthPlayerHandler(HandlerBase):
@@ -36,7 +37,8 @@ class AuthPlayerHandler(HandlerBase):
     def _data_operate(self):
         match self._request.auth_type:
             case AuthMethod.PARTNER_ID_AUTH:
-                self.data = data.get_profile_id_by_token(token=self._request.auth_token)
+                self.data = data.get_profile_id_by_token(
+                    token=self._request.auth_token)
             case AuthMethod.PROFILE_ID_AUTH:
                 self.data = data.get_profile_id_by_profile_id(
                     profile_id=self._request.profile_id
@@ -49,7 +51,8 @@ class AuthPlayerHandler(HandlerBase):
                 raise GSException("Invalid auth type")
 
     def _result_construct(self):
-        self._result = AuthPlayerResult(profile_id=self.data)
+        self._result = AuthPlayerResult(
+            profile_id=self.data, local_id=self._request.local_id)
 
 
 class GetPlayerDataHandler(HandlerBase):
@@ -63,7 +66,10 @@ class GetPlayerDataHandler(HandlerBase):
         )
 
     def _result_construct(self):
-        self._result = GetPlayerDataResult(keyvalues=self.data)
+        self._result = GetPlayerDataResult(
+            keyvalues=self.data,
+            local_id=self._request.local_id,
+            profile_id=self._request.profile_id)
 
 
 class GetProfileIdHandler(HandlerBase):
@@ -75,7 +81,9 @@ class GetProfileIdHandler(HandlerBase):
         )
 
     def _result_construct(self):
-        self._result = GetProfileIdResult(profile_id=self.data)
+        self._result = GetProfileIdResult(
+            profile_id=self.data,
+            local_id=self._request.local_id)
 
 
 class NewGameHandler(HandlerBase):

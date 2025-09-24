@@ -92,7 +92,7 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
             self._servers_info_buffers.extend(group_id_bytes)
             # get gamespy format dict
             gamespy_dict = room.get_gamespy_dict()
-            for key in self._request.keys:
+            for key in self._result.keys:
                 self._servers_info_buffers.extend(NTS_STRING_FLAG)
                 value = (
                     gamespy_dict[key]
@@ -113,7 +113,7 @@ class ServerMainListResponse(ServerListUpdateOptionResponseBase):
         for info in self._result.servers_info:
             header = build_server_info_header(self._result.flag, info)
             self._servers_info_buffers.extend(header)
-            for key in self._request.keys:
+            for key in self._result.keys:
                 self._servers_info_buffers.extend(NTS_STRING_FLAG)
                 if key in info.server_data.keys():
                     self._servers_info_buffers.extend(

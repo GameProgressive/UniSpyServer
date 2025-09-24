@@ -30,6 +30,6 @@ class HandlerTests(unittest.TestCase):
         # cookie length check
         self.assertEqual(len(client1.listener.pool), 1)
         clients = list(client1.listener.pool.values())[0]
-        self.assertEqual(clients, 2)
+        self.assertEqual(len(clients), 2)
         client1.on_received(ping_raw)
         pass

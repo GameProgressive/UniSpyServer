@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.game_status.aggregations.enums import (
 
 class RequestBase(lib.RequestBase):
     raw_request: str
-    local_id: int | None = None
+    local_id: int
     request_dict: dict[str, str]
 
 

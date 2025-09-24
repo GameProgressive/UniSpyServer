@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResultBase
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPStatusCode
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPStatusCode, LoginType
 
 # region General
 
@@ -20,6 +20,10 @@ class LoginData(BaseModel):
 
 class LoginResult(ResultBase):
     data: LoginData
+    user_data: str
+    type: LoginType
+    partner_id: int
+    user_challenge: str
 
 
 class NewUserResult(ResultBase):
@@ -36,6 +40,7 @@ class AddBuddyResult(ResultBase):
 
 class BlockListResult(ResultBase):
     profile_ids: list[int]
+    operation_id: int
 
 
 class BuddyListResult(ResultBase):
@@ -57,7 +62,6 @@ class StatusInfoResult(ResultBase):
     game_variant: str
     game_map_name: str
     quiet_mode_flags: str
-
 
 
 class StatusResult(ResultBase):
@@ -84,3 +88,7 @@ class GetProfileResult(ResultBase):
 
 class NewProfileResult(ResultBase):
     profile_id: int
+
+
+class RegisterNickResult(ResultBase):
+    pass

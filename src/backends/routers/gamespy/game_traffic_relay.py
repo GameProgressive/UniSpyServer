@@ -7,7 +7,6 @@ from backends.protocols.gamespy.game_traffic_relay.requests import (
     GtrHeartBeatRequest,
 )
 from backends.urls import GAME_TRAFFIC_RELAY
-from frontends.gamespy.library.exceptions.general import UniSpyException
 
 router = APIRouter()
 
