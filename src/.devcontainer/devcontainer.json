@@ -25,7 +25,7 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r requirements.txt"
+	"postCreateCommand": "echo '127.0.0.1 unispy_backends' | sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt"
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
