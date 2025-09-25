@@ -77,8 +77,11 @@ class P2PGroupRoomListHandler(HandlerBase):
 class ServerMainListHandler(HandlerBase):
     _request: ServerListRequest
     _caches: list[GameServerInfo]
+    _secret_key: str
 
     def _data_operate(self):
+        self._secret_key = data.get_secret_key(
+            self._request.game_name, self._session)
         self._caches = data.get_server_info_list_with_game_name(
             self._request.game_name, self._session
         )
@@ -92,7 +95,7 @@ class ServerMainListHandler(HandlerBase):
         self._result = ServerMainListResult(
             client_remote_ip=self._request.client_ip,
             flag=GameServerFlags.HAS_KEYS_FLAG,
-            game_secret_key="",
+            game_secret_key=self._secret_key,
             servers_info=self._caches,
             keys=self._request.keys
         )

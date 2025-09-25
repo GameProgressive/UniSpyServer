@@ -146,9 +146,10 @@ class PingResponse(ResponseBase):
         self._result = result
 
     def build(self) -> None:
-        self.sending_buffer = (
-            f":{self._result.requester_irc_prefix} {ResponseCode.PONG.value}\r\n"
+        requester_irc_prefix = ResponseBase.build_irc_user_prefix(
+            self._result.nick_name, self._result.user_name
         )
+        self.sending_buffer = f":{requester_irc_prefix} {ResponseCode.PONG.value}\r\n"
 
 
 class UserIPResponse(ResponseBase):
@@ -234,7 +235,9 @@ class GetCKeyResponse(ResponseBase):
     def build(self) -> None:
         self.sending_buffer = ""
         for info in self._result.infos:
-            self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.GETCKEY.value} * {self._result.channel_name} {info.nick_name} {self._result.cookie} {info.user_values}\r\n"  # noqa
+            value_str = ChannelResponseBase.build_value_str(
+                self._result.keys, info.key_values)
+            self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.GETCKEY.value} * {self._result.channel_name} {info.nick_name} {self._result.cookie} {value_str}\r\n"  # noqa
 
         self.sending_buffer += f"{SERVER_DOMAIN} {ResponseCode.ENDGETCKEY.value} * {self._result.channel_name} {self._result.cookie} :End Of GETCKEY.\r\n"  # noqa
 
@@ -342,7 +345,6 @@ class SetChannelKeyResponse(ChannelResponseBase):
     def __init__(self, result: SetChannelKeyResult) -> None:
         super().__init__(result)
         assert isinstance(result, SetChannelKeyResult)
-
 
     def build(self) -> None:
         setter_irc_prefix = ResponseBase.build_irc_user_prefix(

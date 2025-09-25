@@ -41,6 +41,16 @@ class Heartbeathandler(HandlerBase):
             str(self._request.instant_key), self._session
         )
         if cache is None:
+            # todo check whether these data can be null at first heartbeat
+            if self._request.player_data is None:
+                raise QRException(
+                    "player data in first heartbeat can not be null")
+            if self._request.server_data is None:
+                raise QRException(
+                    "server data in first heartbeat can not be null")
+            if self._request.team_data is None:
+                raise QRException(
+                    "team data in first heartbeat can not be null")
             cache = GameServerCaches(
                 instant_key=self._request.instant_key,
                 server_id=self._request.server_id,

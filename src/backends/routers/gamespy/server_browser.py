@@ -37,7 +37,7 @@ def server_info(request: ServerInfoRequest):
     return handler.response
 
 
-@router.post(f"{SERVER_BROWSER_V2}/ServerListHandler")
+@router.post(f"{SERVER_BROWSER_V2}/ServerMainListHandler")
 def server_list(request: ServerListRequest):
     handler = ServerMainListHandler(request)
     handler.handle()

@@ -61,13 +61,14 @@ class ServerListUpdateOptionRequestBase(RequestBase):
     client_challenge: str
     update_option: ServerListUpdateOption
     keys: list[str]
-    filter: str
+    filter: str | None
     source_ip: str
     max_servers: int
 
     def __init__(self, raw_request: bytes):
         assert isinstance(raw_request, bytes)
         super().__init__(raw_request)
+        self.filter = None
 
 
 class ServerListUpdateOptionResultBase(ResultBase):
@@ -96,14 +97,16 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
             ip_to_4_bytes(self._result.client_remote_ip))
         self._servers_info_buffers.extend(
             QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
+        assert len(self._servers_info_buffers) == 22
 
-    def build_crypt_header(self) -> list:
+    def build_crypt_header(self) -> bytearray:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
-        crypt_header = []
+        crypt_header = bytearray()
         crypt_header.append(2 ^ 0xEC)
         crypt_header.extend([0, 0])  # message length?
         crypt_header.append(len(SERVER_CHALLENGE) ^ 0xEA)
         crypt_header.extend(get_bytes(SERVER_CHALLENGE))
+        assert len(crypt_header) == 14
         return crypt_header
 
     def build_server_keys(self) -> None:

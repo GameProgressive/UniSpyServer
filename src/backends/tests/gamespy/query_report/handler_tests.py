@@ -1,7 +1,7 @@
 import unittest
 
-from backends.protocols.gamespy.query_report.handlers import Heartbeathandler, AvaliableHandler
-from backends.protocols.gamespy.query_report.requests import HeartBeatRequest, AvaliableRequest
+from backends.protocols.gamespy.query_report.handlers import Heartbeathandler, AvaliableHandler, KeepAliveHandler
+from backends.protocols.gamespy.query_report.requests import HeartBeatRequest, AvaliableRequest, KeepAliveRequest
 
 
 class HandlerTests(unittest.IsolatedAsyncioTestCase):
@@ -20,3 +20,11 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         handler = AvaliableHandler(new_req)
         handler.handle()
         pass
+
+    def test_keep_alive(self):
+        request = {"raw_request": "\bg\\xd4\\xcbl", "command_name": 8, "instant_key": "1741998956",
+                   "client_ip": "172.19.0.4", "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613", "client_port": 11111}
+        new_req = KeepAliveRequest(**request)
+        handler = KeepAliveHandler(new_req)
+        handler.handle()
+        self.assertIsNotNone(new_req.instant_key)

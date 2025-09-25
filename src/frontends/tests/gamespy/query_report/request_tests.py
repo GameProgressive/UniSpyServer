@@ -54,6 +54,9 @@ class RequestTest(unittest.TestCase):
         request.parse()
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual("2921297764", request.instant_key)
+        assert request.player_data is not None
+        assert request.team_data is not None
+        assert request.server_data is not None
         self.assertEqual(6, len(request.player_data))
         self.assertEqual(19, len(request.server_data))
         self.assertEqual(2, len(request.team_data))

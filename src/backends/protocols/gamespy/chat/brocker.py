@@ -8,7 +8,7 @@ import backends.protocols.gamespy.chat.data as data
 from sqlalchemy.orm import Session
 
 
-class ClientManager:
+class WebsocketManager:
     """
     current: single server mode
     client1 -> frontend1 -> backend1 (rest api)
@@ -63,7 +63,8 @@ class ClientManager:
     async def broadcast(self, message: BrockerMessage, ws_client: WebSocket):
         exclude_addr = self.get_address_str(ws_client)
         with Session(ENGINE) as session:
-            wss = data.get_websocket_addr_by_channel_name(message.channel_name, session)
+            wss = data.get_websocket_addr_by_channel_name(
+                message.channel_name, session)
         if exclude_addr in wss:
             wss.remove(exclude_addr)
         for ws_addr in wss:
@@ -73,4 +74,4 @@ class ClientManager:
                 self.logger.info(f"[cast] [send] {message.model_dump_json()}")
 
 
-MANAGER = ClientManager()
+MANAGER = WebsocketManager()

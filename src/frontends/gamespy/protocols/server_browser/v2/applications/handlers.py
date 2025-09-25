@@ -37,6 +37,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 )
 from frontends.gamespy.protocols.server_browser.v2.abstractions.handlers import (
     CmdHandlerBase,
+    ServerListUpdateOptionHandlerBase,
 )
 
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
@@ -92,7 +93,8 @@ class AdHocHandler(CmdHandlerBase):
                 == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
             )
         ):
-            client.log_info(f"Sending AdHoc message {self._message.status} to client")
+            client.log_info(
+                f"Sending AdHoc message {self._message.status} to client")
             client.send(self.response)
 
 
@@ -129,13 +131,10 @@ class ServerInfoHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
         self._result_cls = ServerInfoResult
-
-    def _response_construct(self) -> None:
-        if self._result.game_server_info is not None:
-            self._response = UpdateServerInfoResponse(self._result)
+        self._response_cls = UpdateServerInfoResponse
 
 
-class ServerMainListHandler(CmdHandlerBase):
+class ServerMainListHandler(ServerListUpdateOptionHandlerBase):
     _request: ServerListRequest
     _result: ServerMainListResult
     _result_cls: type[ServerMainListResult]
@@ -143,12 +142,10 @@ class ServerMainListHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
         self._result_cls = ServerMainListResult
-
-    def _response_construct(self) -> None:
-        self._response = ServerMainListResponse(self._result)
+        self._response_cls = ServerMainListResponse
 
 
-class P2PGroupRoomListHandler(CmdHandlerBase):
+class P2PGroupRoomListHandler(ServerListUpdateOptionHandlerBase):
     _request: ServerListRequest
     _result: P2PGroupRoomListResult
     _result_cls: type[P2PGroupRoomListResult]
@@ -156,12 +153,10 @@ class P2PGroupRoomListHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
         self._result_cls = P2PGroupRoomListResult
-
-    def _response_construct(self) -> None:
-        self._response = P2PGroupRoomListResponse(self._result)
+        self._response_cls = P2PGroupRoomListResponse
 
 
-class ServerNetworkInfoListHandler(CmdHandlerBase):
+class ServerNetworkInfoListHandler(ServerListUpdateOptionHandlerBase):
     _request: ServerListRequest
     _result: ServerNetworkInfoListResult
     _result_cls: type[ServerNetworkInfoListResult]
@@ -169,49 +164,4 @@ class ServerNetworkInfoListHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
         self._result_cls = ServerNetworkInfoListResult
-
-    def _response_construct(self) -> None:
-        self._response = ServerNetworkInfoListResponse(self._result)
-
-
-# class ServerListHandler(CmdHandlerBase):
-#     _request: ServerListRequest
-#     _result: ServerMainListResult
-#     _result_cls: (
-#         type[ServerMainListResult]
-#         | type[P2PGroupRoomListResult]
-#         | type[ServerInfoResult]
-#     )
-
-#     def _request_check(self) -> None:
-#         super()._request_check()
-#         match self._request.update_option:
-#             case option if option in [
-#                 ServerListUpdateOption.SERVER_MAIN_LIST,
-#                 ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
-#                 ServerListUpdateOption.LIMIT_RESULT_COUNT,
-#                 ServerListUpdateOption.SERVER_FULL_MAIN_LIST,
-#             ]:
-#                 self._result_cls = ServerMainListResult
-#             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-#                 self._result_cls = P2PGroupRoomListResult
-#             case _:
-#                 raise ServerBrowserException("unknown serverlist update option type")
-
-#     def _response_construct(self) -> None:
-#         match self._request.update_option:
-#             case option if option in [
-#                 ServerListUpdateOption.SERVER_MAIN_LIST,
-#                 ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
-#                 ServerListUpdateOption.LIMIT_RESULT_COUNT,
-#                 ServerListUpdateOption.SERVER_FULL_MAIN_LIST,
-#             ]:
-#                 self._response = ServerMainListResponse(self._request, self._result)
-#             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-#                 self._response = P2PGroupRoomListResponse(self._request, self._result)
-#             case ServerListUpdateOption.SERVER_FULL_MAIN_LIST:
-#                 self._response = ServerNetworkInfoListResponse(
-#                     self._request, self._result
-#                 )
-#             case _:
-#                 raise ServerBrowserException("unknown serverlist update option type")
+        self._response_cls = ServerNetworkInfoListResponse

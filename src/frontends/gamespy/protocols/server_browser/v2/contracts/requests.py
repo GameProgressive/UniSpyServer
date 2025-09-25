@@ -37,7 +37,7 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         remain_data = remain_data[filter_index + 1 :]
 
         keys_index = remain_data.index(0)
-        self.keys = remain_data[:keys_index].decode().split("\\")
+        self.keys = remain_data[1:keys_index].decode().split("\\")
         remain_data = remain_data[keys_index + 1 :]
 
         byte_update_options = remain_data[:4]

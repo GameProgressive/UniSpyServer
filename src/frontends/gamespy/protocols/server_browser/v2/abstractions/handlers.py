@@ -32,16 +32,14 @@ class ServerListUpdateOptionHandlerBase(CmdHandlerBase):
     _response: ServerListUpdateOptionResponseBase
 
     def _data_operate(self) -> None:
-        # send to backend to query the game secret key
-        secretkey = None
-        if secretkey is None:
-            raise NotImplementedError("not implemented")
-        self._client.info.game_secret_key = secretkey
+        # query game secret key
+        super()._data_operate()
+        self._client.info.client_challenge = self._request.client_challenge
+        self._client.info.game_secret_key = self._result.game_secret_key
         # use secret key to construct _client.crypto
         self._client.crypto = EnctypeX(
             self._client.info.game_secret_key, self._client.info.client_challenge
         )
-        pass
 
     def _response_send(self) -> None:
         self._response.build()

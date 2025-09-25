@@ -38,7 +38,8 @@ class NickResult(ResultBase):
 
 
 class PingResult(ResultBase):
-    requester_irc_prefix: str
+    nick_name:str
+    user_name:str
 
 
 class QuitResult(ResultBase):
@@ -92,11 +93,12 @@ class GetChannelKeyResult(ResultBase):
 class GetCKeyResult(ResultBase):
     class GetCKeyInfos(BaseModel):
         nick_name: str
-        user_values: list[str]
+        key_values: dict
     infos: list[GetCKeyInfos]
     """ nick_name:str, user_values:str"""
     channel_name: str
     cookie: str
+    keys: list[str]
 
 
 class ModeResult(ResultBase):

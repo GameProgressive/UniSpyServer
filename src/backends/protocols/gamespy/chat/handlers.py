@@ -70,6 +70,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     NickResult,
     NoticeResult,
     PartResult,
+    PingResult,
     PrivateResult,
     SetCKeyResult,
     SetChannelKeyResult,
@@ -163,6 +164,17 @@ class MessageHandlerBase(ChannelHandlerBase):
 
 
 # region General
+
+class PingHandler(HandlerBase):
+
+    def _result_construct(self) -> None:
+        assert self._user is not None
+        assert isinstance(self._user.nick_name, str)
+        assert isinstance(self._user.user_name, str)
+        self._result = PingResult(
+            nick_name=self._user.nick_name,
+            user_name=self._user.user_name
+        )
 
 
 class CdKeyHandler(HandlerBase):
@@ -540,14 +552,16 @@ class GetCKeyHandler(ChannelHandlerBase):
             assert isinstance(d.nick_name, str)
             assert isinstance(d.key_values, dict)
             info = GetCKeyResult.GetCKeyInfos(
-                nick_name=d.nick_name, user_values=list(d.key_values.values())
+                nick_name=d.nick_name,
+                key_values=d.key_values
             )
             infos.append(info)
 
         self._result = GetCKeyResult(
             infos=infos,
             channel_name=self._request.channel_name,
-            cookie=self._request.cookie
+            cookie=self._request.cookie,
+            keys=self._request.keys
         )
 
 

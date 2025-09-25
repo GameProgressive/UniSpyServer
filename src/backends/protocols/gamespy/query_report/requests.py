@@ -33,9 +33,9 @@ class ClientMessageRequest(RequestBase):
 
 
 class HeartBeatRequest(RequestBase):
-    server_data: dict[str, object]
-    player_data: list[dict[str, object]]
-    team_data: list[dict[str, object]]
+    server_data: dict[str, object] | None
+    player_data: list[dict[str, object]] | None
+    team_data: list[dict[str, object]] | None
     server_status: GameServerStatus
     group_id: int | None
     game_name: str

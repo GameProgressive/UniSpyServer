@@ -47,7 +47,7 @@ class Switcher(SwitcherBase):
             self._client = cast(Client, self._client)
         match name:
             case RequestType.SERVER_LIST_REQUEST:
-                update_option_index = raw_request.find(b"\x00\x00\x00\x00") + 1
+                update_option_index = raw_request.find(b"\x00\x00\x00\x00",6)
                 update_option_bytes = raw_request[
                     update_option_index : update_option_index + 4
                 ]

@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
 
 
 def get_all_groups() -> dict:
@@ -134,6 +135,14 @@ def get_server_info_with_game_name(
     return result
 
 
+def get_secret_key(game_name: str, session: Session) -> str:
+    result = session.query(Games.secretkey).where(
+        Games.gamename == game_name).first()
+    if result is None:
+        raise SBException(f"{game_name} secret key not found in database")
+    return result[0]
+
+
 def get_server_info_list_with_game_name(
     game_name: str, session: Session
 ) -> list[GameServerInfo]:
@@ -144,7 +153,29 @@ def get_server_info_list_with_game_name(
     )
     data = []
     for s in result:
-        data.append(GameServerInfo(**s.__dict__))
+        assert isinstance(s.server_id, UUID)
+        assert isinstance(s.host_ip_address, str)
+        assert isinstance(s.instant_key, str)
+        assert isinstance(s.game_name, str)
+        assert isinstance(s.query_report_port, int)
+        assert isinstance(s.update_time, datetime)
+        assert isinstance(s.status, GameServerStatus)
+        assert isinstance(s.server_data, dict)
+        assert isinstance(s.player_data, list)
+        assert isinstance(s.team_data, list)
+
+        data.append(GameServerInfo(
+            server_id=s.server_id,
+            host_ip_address=s.host_ip_address,
+            instant_key=s.instant_key,
+            game_name=s.game_name,
+            query_report_port=s.query_report_port,
+            last_heart_beat_received_time=s.update_time,
+            status=s.status,
+            server_data=s.server_data,
+            player_data=s.player_data,
+            team_data=s.team_data
+        ))
     return data
 
 
@@ -186,9 +217,9 @@ def update_game_server(
     game_name: str,
     query_report_port: int,
     server_status: GameServerStatus,
-    player_data: list[dict[str, object]],
-    server_data: dict[str, object],
-    team_data: list[dict[str, object]],
+    player_data: list[dict[str, object]] | None,
+    server_data: dict[str, object] | None,
+    team_data: list[dict[str, object]] | None,
     session: Session,
 ) -> None:
     cache.instant_key = instant_key  # type: ignore
@@ -198,9 +229,12 @@ def update_game_server(
     cache.query_report_port = query_report_port  # type: ignore
     cache.update_time = datetime.now()  # type: ignore
     cache.status = server_status  # type: ignore
-    cache.player_data = player_data  # type: ignore
-    cache.server_data = server_data  # type: ignore
-    cache.team_data = team_data  # type: ignore
+    if player_data is not None:
+        cache.player_data = player_data  # type: ignore
+    if server_data is not None:
+        cache.server_data = server_data  # type: ignore
+    if team_data is not None:
+        cache.team_data = team_data  # type: ignore
     session.commit()
 
 

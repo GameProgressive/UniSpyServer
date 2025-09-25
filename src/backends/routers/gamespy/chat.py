@@ -1,5 +1,5 @@
 from backends.library.abstractions.contracts import OKResponse
-from backends.protocols.gamespy.chat.brocker_manager import MANAGER
+from backends.protocols.gamespy.chat.brocker import MANAGER
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,

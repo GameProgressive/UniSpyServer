@@ -19,7 +19,7 @@ class ServerListUpdateOptionRequestBase(RequestBase):
     client_challenge: str
     update_option: ServerListUpdateOption
     keys: list[str]
-    filter: str
+    filter: str | None = None
     max_servers: int | None = None
     source_ip: str | None = None
     query_options: int | None = None

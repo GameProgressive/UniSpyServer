@@ -11,8 +11,8 @@ QUERY_REPORT_DEFAULT_PORT = 6500
 
 def build_server_info_header(
     flag: GameServerFlags, server_info: GameServerInfo
-) -> list[int]:
-    header = []
+) -> bytearray:
+    header = bytearray()
     # add key flag
     header.append(flag.value)
     # we add server public ip here
@@ -33,7 +33,7 @@ def build_server_info_header(
     return header
 
 
-def check_nat_neg_flag(header: list[int], server_info: GameServerInfo):
+def check_nat_neg_flag(header: bytearray, server_info: GameServerInfo):
     if "natneg" in server_info.server_data:
         nat_neg_flag = int(server_info.server_data["natneg"])
         unsolicited_udp = header[0] & GameServerFlags.UNSOLICITED_UDP_FLAG.value
@@ -41,14 +41,14 @@ def check_nat_neg_flag(header: list[int], server_info: GameServerInfo):
             header[0] ^= GameServerFlags.CONNECT_NEGOTIATE_FLAG.value
 
 
-def check_unsolicited_udp(header: list[int], server_info: GameServerInfo):
+def check_unsolicited_udp(header: bytearray, server_info: GameServerInfo):
     if "allow_unsolicited_udp" in server_info.server_data:
         unsolicited_udp = int(server_info.server_data["unsolicitedudp"])
         if unsolicited_udp == 1:
             header[0] ^= GameServerFlags.UNSOLICITED_UDP_FLAG.value
 
 
-def check_private_ip(header: list[int], server_info: GameServerInfo):
+def check_private_ip(header: bytearray, server_info: GameServerInfo):
     #!when game create a channel chat, it will use both the public ip and private ip to build the name.
     #!known game: Worm3d
     # todo
@@ -59,7 +59,7 @@ def check_private_ip(header: list[int], server_info: GameServerInfo):
             header.extend(bytes_address)
 
 
-def check_non_standard_port(header: list[int], server_info: GameServerInfo):
+def check_non_standard_port(header: bytearray, server_info: GameServerInfo):
     # !! only dedicated server have different query report port and host port
     # !! but peer server have same query report port and host port
     # todo we have to check when we need send host port or query report port
@@ -69,7 +69,7 @@ def check_non_standard_port(header: list[int], server_info: GameServerInfo):
         header.extend(hton_port)
 
 
-def check_non_standard_private_port(header: list[int], server_info: GameServerInfo):
+def check_non_standard_private_port(header: bytearray, server_info: GameServerInfo):
     if "localport" in server_info.server_data:
         local_port = server_info.server_data["localport"]
         if local_port != "" and local_port != QUERY_REPORT_DEFAULT_PORT:
@@ -78,7 +78,7 @@ def check_non_standard_private_port(header: list[int], server_info: GameServerIn
             header.extend(port)
 
 
-def check_icmp_support(header: list[int], server_info: GameServerInfo):
+def check_icmp_support(header: bytearray, server_info: GameServerInfo):
     if "icmp_address" in server_info.server_data:
         header[0] ^= GameServerFlags.ICMP_IP_FLAG.value
         bytes_address = inet_aton(server_info.server_data["icmp_address"])

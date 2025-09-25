@@ -188,13 +188,11 @@ class NickHandler(CmdHandlerBase):
         assert isinstance(request, NickRequest)
         super().__init__(client, request)
         self._result_cls = NickResult
+        self._response_cls = NickResponse
 
     def _data_operate(self) -> None:
         super()._data_operate()
         self._client.info.nick_name = self._request.nick_name
-
-    def _response_construct(self) -> None:
-        self._response = NickResponse(self._result)
 
 
 class PingHandler(CmdHandlerBase):
@@ -204,10 +202,9 @@ class PingHandler(CmdHandlerBase):
     def __init__(self, client: ClientBase, request: PingRequest):
         assert isinstance(request, PingRequest)
         super().__init__(client, request)
-        raise NotImplementedError()
+        self._result_cls = PingResult
+        self._response_cls = PingResponse
 
-    def _response_construct(self) -> None:
-        self._response = PingResponse(self._result)
 
 
 class QuitHandler(CmdHandlerBase):
