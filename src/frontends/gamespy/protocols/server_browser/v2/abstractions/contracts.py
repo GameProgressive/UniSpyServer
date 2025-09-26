@@ -96,8 +96,8 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
         self._servers_info_buffers.extend(
             ip_to_4_bytes(self._result.client_remote_ip))
         self._servers_info_buffers.extend(
-            QUERY_REPORT_DEFAULT_PORT.to_bytes(4))
-        assert len(self._servers_info_buffers) == 22
+            QUERY_REPORT_DEFAULT_PORT.to_bytes(2))
+        assert len(self._servers_info_buffers) == 20
 
     def build_crypt_header(self) -> bytearray:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes

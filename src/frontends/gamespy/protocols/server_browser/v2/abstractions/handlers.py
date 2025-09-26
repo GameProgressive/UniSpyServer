@@ -41,11 +41,3 @@ class ServerListUpdateOptionHandlerBase(CmdHandlerBase):
             self._client.info.game_secret_key, self._client.info.client_challenge
         )
 
-    def _response_send(self) -> None:
-        self._response.build()
-        head_buffer = self._response.sending_buffer[:14]
-        body_buffer = self._response.sending_buffer[14:]
-        encrypted_body_buffer = self._client.crypto.encrypt(body_buffer)
-        buffer = head_buffer + encrypted_body_buffer
-        self._client.log_network_sending(buffer)
-        self._client.connection.send(buffer)

@@ -11,7 +11,7 @@ class Byte:
             raise ValueError("byte should be in 0 to 256")
         self.value = value
 
-    def _clamp(self, value):
+    def _clamp(self, value) -> int:
         """clamp value in 0 to 255"""
         return value % 256
 
@@ -181,8 +181,9 @@ class EnctypeX(EncryptBase):
         self._enc_params.index_4 = Byte(11)
         self._enc_params.register = [Byte(i) for i in range(256, 0, -1)]
 
-    def byte_shift(self, b):
+    def byte_shift(self, b: Byte) -> Byte:
         self._enc_params.index_1 += self._enc_params.register[self._enc_params.index_0.value]
+        self._enc_params.index_0 += Byte(1)
         swap_temp_storage = self._enc_params.register[self._enc_params.index_4.value]
         self._enc_params.register[self._enc_params.index_4.value] = self._enc_params.register[
             self._enc_params.index_1.value
@@ -196,21 +197,17 @@ class EnctypeX(EncryptBase):
         self._enc_params.register[self._enc_params.index_0.value] = swap_temp_storage
         self._enc_params.index_2 += self._enc_params.register[swap_temp_storage.value]
 
-        self._enc_params.index_4 = (
-            b ^ self._enc_params.register[
-                (
-                    self._enc_params.register[self._enc_params.index_2.value]
-                    + self._enc_params.register[self._enc_params.index_0.value]
-                ).value
-            ] ^ self._enc_params.register[
-                self._enc_params.register[
-                    (
-                        self._enc_params.register[self._enc_params.index_3.value]
-                        + self._enc_params.register[self._enc_params.index_4.value]
-                        + self._enc_params.register[self._enc_params.index_1.value]
-                    ).value
-                ].value
-            ]
+        part1 = (
+            self._enc_params.register[self._enc_params.index_2.value]
+            + self._enc_params.register[self._enc_params.index_0.value]
+        ).value % 256
+        part2 = (self._enc_params.register[self._enc_params.index_3.value].value
+                 + self._enc_params.register[self._enc_params.index_4.value].value
+                 + self._enc_params.register[self._enc_params.index_1.value].value) % 256
+        part3 = self._enc_params.register[part2].value
+        self._enc_params.index_4 = Byte(
+            b.value ^ self._enc_params.register[part1].value
+            ^ self._enc_params.register[part3].value
         )
         self._enc_params.index_3 = b
 
@@ -252,7 +249,7 @@ class EnctypeX(EncryptBase):
         body_buffer = plain_text[14:]
         cipher_body = bytearray(body_buffer)
         for i in range(len(body_buffer)):
-            c = self.byte_shift(body_buffer[i])
+            c = self.byte_shift(Byte(body_buffer[i]))
             cipher_body[i] = c.value
         cipher_body = bytes(cipher_body)
         cipher = head_buffer+cipher_body
