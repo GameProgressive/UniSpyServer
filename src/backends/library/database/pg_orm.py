@@ -321,6 +321,17 @@ class GameServerCaches(Base):
     update_time = Column(DateTime, nullable=False, default=datetime.now())
 
 
+class FrontendInfo(Base):
+    __tablename__ = "frontend_info"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    server_id = Column(UUID, nullable=False)
+    server_name = Column(String, nullable=False)
+    external_ip = Column(String, nullable=False)
+    listening_ip = Column(INET, nullable=False)
+    listening_port = Column(Integer, nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
+
+
 ENGINE = create_engine(CONFIG.postgresql.url)
 with ENGINE.connect() as conn:
     conn.execute(text("SELECT 1")).first()

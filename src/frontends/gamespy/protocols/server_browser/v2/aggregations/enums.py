@@ -9,15 +9,15 @@ class PlayerSearchOptions(IntEnum):
 
 
 class QueryType(IntEnum):
-    BASIC = 1
-    FULL = 2
-    ICMP = 3
+    BASIC = 0
+    FULL = 1
+    ICMP = 2
 
 
 class DataKeyType(IntEnum):
-    STRING = 1
-    BYTE = 2
-    SHORT = 3
+    STRING = 0
+    BYTE = 1
+    SHORT = 2
 
 
 class RequestType(IntEnum):
@@ -27,6 +27,7 @@ class RequestType(IntEnum):
     KEEP_ALIVE_REPLY = 0x03
     MAP_LOOP_REQUEST = 0x04
     PLAYER_SEARCH_REQUEST = 0x05
+
 
 class ResponseType(IntEnum):
     PUSH_KEYS_MESSAGE = 1
@@ -45,7 +46,10 @@ class ProtocolVersion(IntEnum):
 class ServerListUpdateOption(IntEnum):
     SERVER_MAIN_LIST = 0
     SEND_FIELD_FOR_ALL = 1
-    SERVER_FULL_MAIN_LIST = 2
+    SERVER_FULL_INFO_LIST = 2
+    """
+    get the full info of a server
+    """
     P2P_SERVER_MAIN_LIST = 4
     ALTERNATE_SOURCE_IP = 8
     P2P_GROUP_ROOM_LIST = 32

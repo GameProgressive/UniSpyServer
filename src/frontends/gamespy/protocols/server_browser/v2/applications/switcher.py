@@ -15,7 +15,7 @@ from frontends.gamespy.protocols.server_browser.v2.applications.client import Cl
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     P2PGroupRoomListHandler,
     SendMessageHandler,
-    ServerNetworkInfoListHandler,
+    ServerFullInfoListHandler,
     ServerInfoHandler,
     ServerMainListHandler,
 )
@@ -28,6 +28,7 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
 
 class Switcher(SwitcherBase):
     _raw_request: bytes
+    _client: Client
 
     def _process_raw_request(self) -> None:
         if len(self._raw_request) < 4:
@@ -47,32 +48,47 @@ class Switcher(SwitcherBase):
             self._client = cast(Client, self._client)
         match name:
             case RequestType.SERVER_LIST_REQUEST:
-                update_option_index = raw_request.find(b"\x00\x00\x00\x00",6)
+                # todo check if all game follow this pattern, +2 is calc by sdk server info request
+                update_option_index = raw_request.find(
+                    b"\x00\x00\x00\x00", 6)+2
                 update_option_bytes = raw_request[
-                    update_option_index : update_option_index + 4
+                    update_option_index: update_option_index + 4
                 ]
                 update_option = ServerListUpdateOption(
                     int.from_bytes(update_option_bytes)
                 )
-                if update_option in [
-                    ServerListUpdateOption.SERVER_MAIN_LIST,
-                    ServerListUpdateOption.P2P_SERVER_MAIN_LIST,
-                    ServerListUpdateOption.LIMIT_RESULT_COUNT,
-                ]:
-                    return ServerMainListHandler(self._client, ServerListRequest(req))
-                elif update_option == ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-                    return P2PGroupRoomListHandler(self._client, ServerListRequest(req))
-                elif update_option == ServerListUpdateOption.SERVER_FULL_MAIN_LIST:
-                    return ServerNetworkInfoListHandler(
-                        self._client, ServerListRequest(req)
-                    )
-                else:
-                    raise ServerBrowserException(
-                        "unknown serverlist update option type"
-                    )
+                handler = self.__create_cmd_by_update_option(
+                    update_option, req)
+                return handler
             case RequestType.SERVER_INFO_REQUEST:
                 return ServerInfoHandler(self._client, ServerInfoRequest(req))
             case RequestType.SEND_MESSAGE_REQUEST:
                 return SendMessageHandler(self._client, SendMessageRequest(req))
             case _:
                 return None
+
+    def __create_cmd_by_update_option(self, update_option: ServerListUpdateOption, request: bytes) -> CmdHandlerBase:
+        match update_option:
+            case (ServerListUpdateOption.SERVER_MAIN_LIST
+                  | ServerListUpdateOption.P2P_SERVER_MAIN_LIST
+                  | ServerListUpdateOption.LIMIT_RESULT_COUNT):
+                return ServerMainListHandler(self._client, ServerListRequest(request))
+            case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
+                return P2PGroupRoomListHandler(self._client, ServerListRequest(request))
+            case ServerListUpdateOption.SERVER_FULL_INFO_LIST:
+                return ServerFullInfoListHandler(self._client, ServerListRequest(request))
+            case _:
+                raise ServerBrowserException(
+                    "unknown serverlist update option type")
+
+    @staticmethod
+    def get_update_option(raw_request: bytes) -> ServerListUpdateOption:
+        update_option_index = raw_request.find(
+            b"\x00\x00\x00\x00", 6)+2
+        update_option_bytes = raw_request[
+            update_option_index: update_option_index + 4
+        ]
+        update_option = ServerListUpdateOption(
+            int.from_bytes(update_option_bytes, byteorder='big')
+        )
+        return update_option

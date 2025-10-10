@@ -114,7 +114,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
             message=self._response.sending_buffer,
         )
         assert self._client.brocker
-        self._client.brocker.publish_message(msg)
+        self._client.brocker.publish_message(msg.model_dump_json())
         self._client.log_network_broadcast(msg)
 
 

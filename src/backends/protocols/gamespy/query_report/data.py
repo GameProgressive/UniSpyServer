@@ -17,10 +17,14 @@ from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
 )
 from sqlalchemy.orm import Session
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+
+
+def __expire_time():
+    return datetime.now() - timedelta(5)
 
 
 def get_all_groups() -> dict:
@@ -111,13 +115,25 @@ def get_peer_group_channel(
     return data
 
 
-def get_server_info_with_instant_key(
+def get_game_server_cache_by_ip_port(ip: str, port: int, session: Session) -> GameServerCaches | None:
+    result = (
+        session.query(GameServerCaches)
+        .where(GameServerCaches.host_ip_address == ip,
+               GameServerCaches.query_report_port == port,
+               GameServerCaches.update_time >= __expire_time())
+        .first()
+    )
+    return result
+
+
+def get_game_server_cache_with_instant_key(
     instant_key: str, session: Session
 ) -> GameServerCaches | None:
     assert isinstance(instant_key, str)
     result = (
         session.query(GameServerCaches)
-        .where(GameServerCaches.instant_key == instant_key)
+        .where(GameServerCaches.instant_key == instant_key,
+               GameServerCaches.update_time >= __expire_time())
         .first()
     )
     return result
@@ -148,7 +164,9 @@ def get_server_info_list_with_game_name(
 ) -> list[GameServerInfo]:
     result = (
         session.query(GameServerCaches)
-        .where(GameServerCaches.game_name == game_name)
+        .where(GameServerCaches.game_name == game_name,
+               GameServerCaches.update_time >= __expire_time(),
+               GameServerCaches.avaliable == True)
         .all()
     )
     data = []
@@ -179,6 +197,15 @@ def get_server_info_list_with_game_name(
     return data
 
 
+def check_game_server_cache_conflict(ip: str, port: int, instant_key: str, session: Session):
+    cache = get_server_info_with_ip_and_port(
+        ip, port, session)
+    if cache is not None:
+        if cache.instant_key != instant_key:
+            session.delete(cache)
+            session.commit()
+
+
 def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> GameServerInfo | None:
     assert isinstance(ip, str)
     assert isinstance(port, int)
@@ -187,7 +214,7 @@ def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> Ga
         .where(
             GameServerCaches.host_ip_address == ip,
             GameServerCaches.query_report_port == port,
-        )
+            GameServerCaches.update_time >= __expire_time())
         .first()
     )
     if result is None:
@@ -204,12 +231,12 @@ def remove_server_info(info: GameServerCaches, session: Session) -> None:
 # todo finish the GameServerCaches creation
 
 
-def create_game_server(info: GameServerCaches, session: Session) -> None:
+def create_game_server_cache(info: GameServerCaches, session: Session) -> None:
     session.add(info)
     session.commit()
 
 
-def update_game_server(
+def update_game_server_cache(
     cache: GameServerCaches,
     instant_key: str,
     server_id: UUID,
@@ -239,7 +266,7 @@ def update_game_server(
 
 
 def refresh_game_server_cache(instant_key: str, session: Session):
-    cache = get_server_info_with_instant_key(instant_key, session)
+    cache = get_game_server_cache_with_instant_key(instant_key, session)
     if cache is None:
         raise QRException(
             "no game server cache found, please check the database")
@@ -247,5 +274,11 @@ def refresh_game_server_cache(instant_key: str, session: Session):
     session.commit()
 
 
-if __name__ == "__main__":
-    get_all_groups()
+def clean_expired_game_server_cache(session: Session):
+    session.query(GameServerCaches).where(
+        GameServerCaches.update_time < __expire_time()
+    ).delete()
+    session.commit()
+
+    if __name__ == "__main__":
+        get_all_groups()

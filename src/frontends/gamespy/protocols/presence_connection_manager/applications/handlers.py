@@ -152,6 +152,7 @@ class BlockListHandler(CmdHandlerBase):
     def __init__(self, client: Client) -> None:
         assert isinstance(client, Client)
         self._is_fetching = False
+        raise NotImplementedError()
 
     def _response_construct(self) -> None:
         self._response = BlockListResponse(self._result)

@@ -1,8 +1,10 @@
+import asyncio
 from datetime import datetime
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import ENGINE, GameServerCaches
 from backends.protocols.gamespy.query_report.requests import (
     AvaliableRequest,
+    ClientMessageRequest,
     HeartBeatRequest,
     KeepAliveRequest,
 )
@@ -33,13 +35,17 @@ class ChallengeHandler(HandlerBase):
             session.commit()
 
 
-class Heartbeathandler(HandlerBase):
+class HeartbeatHandler(HandlerBase):
     _request: HeartBeatRequest
 
     def _data_operate(self) -> None:
-        cache = data.get_server_info_with_instant_key(
-            str(self._request.instant_key), self._session
+        # clean the expired server cache
+        data.clean_expired_game_server_cache(self._session)
+
+        cache = data.get_game_server_cache_by_ip_port(
+            self._request.client_ip, self._request.client_port, self._session
         )
+
         if cache is None:
             # todo check whether these data can be null at first heartbeat
             if self._request.player_data is None:
@@ -63,9 +69,9 @@ class Heartbeathandler(HandlerBase):
                 team_data=self._request.team_data,
                 avaliable=True,
             )
-            data.create_game_server(cache, self._session)
+            data.create_game_server_cache(cache, self._session)
         else:
-            data.update_game_server(
+            data.update_game_server_cache(
                 cache=cache,
                 instant_key=self._request.instant_key,
                 server_id=self._request.server_id,
@@ -87,3 +93,13 @@ class KeepAliveHandler(HandlerBase):
         assert isinstance(self._request.instant_key, str)
         data.refresh_game_server_cache(
             self._request.instant_key, self._session)
+
+
+class ClientMessageHandler(HandlerBase):
+    _request: ClientMessageRequest
+
+    def _response_construct(self) -> None:
+        # todo use websocket to send the message to qr client, but how to determine which qr router should be received
+        # currently we just use broadcast message to all qr frontends
+        from backends.protocols.gamespy.query_report.broker import MANAGER
+        MANAGER.broadcast(self._request.model_dump_json())

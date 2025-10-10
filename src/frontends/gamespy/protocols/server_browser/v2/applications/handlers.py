@@ -22,12 +22,12 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.responses import (
     DeleteServerInfoResponse,
     P2PGroupRoomListResponse,
     ServerMainListResponse,
-    ServerNetworkInfoListResponse,
+    ServerFullInfoListResponse,
     UpdateServerInfoResponse,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
-    ServerNetworkInfoListResult,
+    ServerFullInfoListResult,
     ServerInfoResult,
     ServerMainListResult,
 )
@@ -100,28 +100,12 @@ class AdHocHandler(CmdHandlerBase):
 
 class SendMessageHandler(CmdHandlerBase):
     _request: SendMessageRequest
-    _result: GameServerInfo
 
     def __init__(self, client: Client, request: SendMessageRequest) -> None:
         assert isinstance(request, SendMessageRequest)
-        # super().__init__(client, request)
-        assert isinstance(client, Client)
-
-    def _response_construct(self) -> None:
-        message = ClientMessageRequest()
-        message.server_browser_sender_id = self._client.server_config.server_id
-        message.natneg_message = self._request.client_message
-        message.instant_key = self._result.instant_key
-        message.target_ip_address = self._result.host_ip_address
-        message.target_port = self._result.query_report_port
-        message.command_name = RequestType.CLIENT_MESSAGE
-
-    def _response_send(self) -> None:
-        """
-        QueryReport.V2.Application.StorageOperation.Persistance.PublishClientMessage(message);
-            _client.LogInfo($"Send client message to QueryReport Server: {gameServer.ServerID} [{StringExtensions.ConvertByteToHexString(message.NatNegMessage)}]");
-        """
-        raise NotImplementedError()
+        super().__init__(client, request)
+        self._is_fetching = False
+        # we just need send the message to backend, then backend will send to queryreport frontend, query report frontend will handle for us
 
 
 class ServerInfoHandler(CmdHandlerBase):
@@ -156,12 +140,17 @@ class P2PGroupRoomListHandler(ServerListUpdateOptionHandlerBase):
         self._response_cls = P2PGroupRoomListResponse
 
 
-class ServerNetworkInfoListHandler(ServerListUpdateOptionHandlerBase):
+class ServerFullInfoListHandler(ServerListUpdateOptionHandlerBase):
+    """
+    In sbctest.c 
+    line 392 ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate);
+    will get the full info of a server such as: player data, server data, team data
+    """
     _request: ServerListRequest
-    _result: ServerNetworkInfoListResult
-    _result_cls: type[ServerNetworkInfoListResult]
+    _result: ServerFullInfoListResult
+    _result_cls: type[ServerFullInfoListResult]
 
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
-        self._result_cls = ServerNetworkInfoListResult
-        self._response_cls = ServerNetworkInfoListResponse
+        self._result_cls = ServerFullInfoListResult
+        self._response_cls = ServerFullInfoListResponse

@@ -11,6 +11,7 @@ from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import
     ResultBase,
     ServerListUpdateOptionResultBase,
 )
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags
 
 
 class ServerInfoResult(AdHocResultBase):
@@ -23,10 +24,12 @@ class P2PGroupRoomListResult(ServerListUpdateOptionResultBase):
 
 class ServerMainListResult(ServerListUpdateOptionResultBase):
     servers_info: list[GameServerInfo]
+    flag: GameServerFlags = GameServerFlags.HAS_KEYS_FLAG
 
 
-class ServerNetworkInfoListResult(ServerListUpdateOptionResultBase):
+class ServerFullInfoListResult(ServerListUpdateOptionResultBase):
     servers_info: list[GameServerInfo]
+    flag: GameServerFlags = GameServerFlags.HAS_FULL_RULES_FLAG
 
 
 class SendMessageResult(ResultBase):

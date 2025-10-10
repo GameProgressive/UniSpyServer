@@ -24,24 +24,25 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         remain_data = self.raw_request[9:]
         dev_game_name_index = remain_data.index(0)
         self.dev_game_name = remain_data[:dev_game_name_index].decode()
-        remain_data = remain_data[dev_game_name_index + 1 :]
+        remain_data = remain_data[dev_game_name_index + 1:]
         game_name_index = remain_data.index(0)
         self.game_name = remain_data[:game_name_index].decode()
-        remain_data = remain_data[game_name_index + 1 :]
+        remain_data = remain_data[game_name_index + 1:]
         self.client_challenge = remain_data[:8].decode()
         remain_data = remain_data[8:]
 
         filter_index = remain_data.index(0)
         if filter_index > 0:
             self.filter = remain_data[:filter_index].decode()
-        remain_data = remain_data[filter_index + 1 :]
+        remain_data = remain_data[filter_index + 1:]
 
         keys_index = remain_data.index(0)
         self.keys = remain_data[1:keys_index].decode().split("\\")
-        remain_data = remain_data[keys_index + 1 :]
+        remain_data = remain_data[keys_index + 1:]
 
         byte_update_options = remain_data[:4]
-        self.update_option = ServerListUpdateOption(int.from_bytes(byte_update_options))
+        self.update_option = ServerListUpdateOption(
+            int.from_bytes(byte_update_options))
         remain_data = remain_data[4:]
 
         if self.update_option & ServerListUpdateOption.ALTERNATE_SOURCE_IP:
@@ -57,6 +58,7 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
 class SendMessageRequest(AdHocRequestBase):
     prefix_message: bytes
     client_message: bytes
+    natneg_cookie: int
 
     def __init__(self, raw_request: bytes | None = None) -> None:
         if raw_request is not None:
@@ -65,6 +67,7 @@ class SendMessageRequest(AdHocRequestBase):
     def parse(self) -> None:
         super().parse()
         self.client_message = self.raw_request[9:]
+        self.natneg_cookie = int.from_bytes(self.client_message[6:10])
 
 
 class ServerInfoRequest(AdHocRequestBase):

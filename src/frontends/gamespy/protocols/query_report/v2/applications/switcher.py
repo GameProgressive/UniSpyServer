@@ -9,7 +9,7 @@ from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     ChallengeRequest,
     ClientMessageAckRequest,
     EchoRequest,
-    HeartBeatRequest,
+    HeartbeatRequest,
     KeepAliveRequest,
 )
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.query_report.v2.applications.handlers import (
     ChallengeHanler,
     ClientMessageAckHandler,
     EchoHandler,
-    HeartBeatHandler,
+    HeartbeatHandler,
     KeepAliveHandler,
 )
 
@@ -43,7 +43,7 @@ class Switcher(SwitcherBase):
             self._client = cast(Client, self._client)
         match name:
             case RequestType.HEARTBEAT:
-                return HeartBeatHandler(self._client, HeartBeatRequest(raw_request))
+                return HeartbeatHandler(self._client, HeartbeatRequest(raw_request))
             case RequestType.CHALLENGE:
                 return ChallengeHanler(self._client, ChallengeRequest(raw_request))
             case RequestType.AVALIABLE_CHECK:

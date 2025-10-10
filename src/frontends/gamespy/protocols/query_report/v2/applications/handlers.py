@@ -8,20 +8,20 @@ from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     ClientMessageAckRequest,
     ClientMessageRequest,
     EchoRequest,
-    HeartBeatRequest,
+    HeartbeatRequest,
     KeepAliveRequest,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.responses import (
     AvailableResponse,
     ChallengeResponse,
     ClientMessageResponse,
-    HeartBeatResponse,
+    HeartbeatResponse,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.results import (
     AvailableResult,
     ChallengeResult,
     ClientMessageResult,
-    HeartBeatResult,
+    HeartbeatResult,
 )
 
 
@@ -76,24 +76,24 @@ class EchoHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
-class HeartBeatHandler(CmdHandlerBase):
-    _request: HeartBeatRequest
-    _result: HeartBeatResult
-    _result_cls: type[HeartBeatResult]
+class HeartbeatHandler(CmdHandlerBase):
+    _request: HeartbeatRequest
+    _result: HeartbeatResult
+    _result_cls: type[HeartbeatResult]
 
-    def __init__(self, client: Client, request: HeartBeatRequest) -> None:
-        assert isinstance(request, HeartBeatRequest)
+    def __init__(self, client: Client, request: HeartbeatRequest) -> None:
+        assert isinstance(request, HeartbeatRequest)
         super().__init__(client, request)
         self._is_fetching = False
 
     def _response_construct(self) -> None:
-        self._result = HeartBeatResult(
+        self._result = HeartbeatResult(
             remote_ip=self._client.connection.remote_ip,
             remote_port=self._client.connection.remote_port,
             instant_key=self._request.instant_key,
             command_name=self._request.command_name
         )
-        self._response = HeartBeatResponse(self._result)
+        self._response = HeartbeatResponse(self._result)
 
 
 class KeepAliveHandler(CmdHandlerBase):

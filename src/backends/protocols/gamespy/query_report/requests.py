@@ -25,11 +25,11 @@ class ClientMessageAckRequest(RequestBase):
 
 class ClientMessageRequest(RequestBase):
     server_browser_sender_id: UUID4
-    natneg_message: bytes
+    target_query_report_id: UUID4
+    natneg_message: str
     target_ip_address: str
-    target_port: str
-    message_key: int
-    cookie: int
+    target_port: int
+    command_name: None = None
 
 
 class HeartBeatRequest(RequestBase):

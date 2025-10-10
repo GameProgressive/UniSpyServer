@@ -48,16 +48,15 @@ class ClientMessageRequest(RequestBase):
     def __init__(self, raw_request: bytes | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
+    
 
 
-class HeartBeatRequest(RequestBase):
+class HeartbeatRequest(RequestBase):
     server_data: dict[str, str] | None
     player_data: list[dict[str, str]] | None
     team_data: list[dict[str, str]] | None
     server_status: GameServerStatus
     group_id: int | None
-    remote_ip: str
-    remote_port: int
     game_name: str
 
     def __init__(self, raw_request: bytes) -> None:
@@ -119,7 +118,6 @@ class HeartBeatRequest(RequestBase):
         else:
             raise QRException("HeartBeat request is invalid.")
 
-
     def parse_server_data(self, server_data_str: str):
         self.server_data = {}
         key_value_array = server_data_str.split("\0")
@@ -141,7 +139,7 @@ class HeartBeatRequest(RequestBase):
         else:
             self.server_status = GameServerStatus(
                 int(self.server_data["statechanged"]))
-            
+
         if "groupid" in self.server_data:
             group_id = 0
             if not int(self.server_data["groupid"], group_id):

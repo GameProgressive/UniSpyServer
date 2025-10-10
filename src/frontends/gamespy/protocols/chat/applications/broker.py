@@ -1,6 +1,6 @@
 
 
-from frontends.gamespy.library.network.brockers import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
 
 
 # class Brocker(WebSocketBrocker):

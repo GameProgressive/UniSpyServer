@@ -161,9 +161,7 @@ class ListHandler(PostLoginHandlerBase):
         assert isinstance(request, ListRequest)
         super().__init__(client, request)
         self._result_cls = ListResult
-
-    def _response_construct(self) -> None:
-        self._response = ListResponse(self._result)
+        self._response_cls = ListResponse
 
 
 class LoginHandler(CmdHandlerBase):
@@ -174,9 +172,7 @@ class LoginHandler(CmdHandlerBase):
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
         self._result_cls = LoginResult
-
-    def _response_construct(self) -> None:
-        self._response = LoginResponse(self._result)
+        self._response_cls = LoginResponse
 
 
 class NickHandler(CmdHandlerBase):
@@ -204,7 +200,6 @@ class PingHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._result_cls = PingResult
         self._response_cls = PingResponse
-
 
 
 class QuitHandler(CmdHandlerBase):
@@ -235,9 +230,6 @@ class UserHandler(CmdHandlerBase):
     def _data_operate(self) -> None:
         super()._data_operate()
         self._client.info.user_name = self._request.user_name
-
-    def _request_check(self) -> None:
-        super()._request_check()
 
 
 class UserIPHandler(CmdHandlerBase):
@@ -404,10 +396,8 @@ class SetChannelKeyHandler(ChannelHandlerBase):
         assert isinstance(request, SetChannelKeyRequest)
         super().__init__(client, request)
         self._result_cls = SetChannelKeyResult
+        self._response_cls = SetChannelKeyResponse
         self._is_broadcast = True
-
-    def _response_construct(self):
-        self._response = SetChannelKeyResponse(self._result)
 
 
 class SetCKeyHandler(ChannelHandlerBase):

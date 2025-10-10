@@ -10,6 +10,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags imp
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import ServerListRequest
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
+    ServerFullInfoListResult,
     ServerInfoResult,
     ServerMainListResult,
 )
@@ -130,9 +131,33 @@ class ServerMainListResponse(ServerListUpdateOptionResponseBase):
         self.sending_buffer = bytes(self._servers_info_buffers)
 
 
-class ServerNetworkInfoListResponse(ServerListUpdateOptionResponseBase):
+class ServerFullInfoListResponse(ServerMainListResponse):
+    _result: ServerFullInfoListResult
 
     def build(self) -> None:
         super().build()
+        self.__build_servers_full_info()
         self.sending_buffer = bytes(self._servers_info_buffers)
-        raise NotImplementedError()
+
+    def __build_servers_full_info(self):
+        for info in self._result.servers_info:
+            header = build_server_info_header(self._result.flag, info)
+            self._servers_info_buffers.extend(header)
+
+            for key, value in info.server_data.items():
+                self.__add_key_value_to_buffer(key, value)
+
+            for item in info.player_data:
+                for key, value in item.items():
+                    self.__add_key_value_to_buffer(key, value)
+
+            for item in info.team_data:
+                for key, value in item.items():
+                    self.__add_key_value_to_buffer(key, value)
+
+    def __add_key_value_to_buffer(self, key, value):
+        self._servers_info_buffers.extend(
+            get_bytes(key))
+        self._servers_info_buffers.extend(STRING_SPLITER)
+        self._servers_info_buffers.extend(get_bytes(value))
+        self._servers_info_buffers.extend(STRING_SPLITER)

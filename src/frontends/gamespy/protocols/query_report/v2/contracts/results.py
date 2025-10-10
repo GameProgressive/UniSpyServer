@@ -27,7 +27,7 @@ class EchoResult(ResultBase):
 
 
 @final
-class HeartBeatResult(ResultBase):
+class HeartbeatResult(ResultBase):
     """
     this result is replied in unispy server
     """

@@ -1,11 +1,18 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-
-from backends.protocols.gamespy.query_report.broker import MANAGER
-from backends.protocols.gamespy.query_report.handlers import AvaliableHandler, Heartbeathandler, KeepAliveHandler
+from contextlib import asynccontextmanager
+from backends.protocols.gamespy.query_report.broker import MANAGER, BROCKER
+from backends.protocols.gamespy.query_report.handlers import AvaliableHandler, HeartbeatHandler, KeepAliveHandler
 from backends.protocols.gamespy.query_report.requests import AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest
 from backends.urls import QUERY_REPORT
 
-router = APIRouter()
+
+@asynccontextmanager
+async def launch_brocker(router: APIRouter):
+    BROCKER.subscribe()
+    yield
+
+router = APIRouter(lifespan=launch_brocker)
+
 
 @router.websocket(f"{QUERY_REPORT}/ws")
 async def websocket_endpoint(ws: WebSocket):
@@ -14,17 +21,17 @@ async def websocket_endpoint(ws: WebSocket):
         MANAGER.connect(ws)
     try:
         while True:
-            data = await ws.receive_json()
-            msg = MANAGER.process_message(data)
-            await MANAGER.broadcast(msg, ws)
+            _ = await ws.receive_json()
+            # query report do not process ws client message
     except WebSocketDisconnect:
         if ws.client is not None:
             MANAGER.disconnect(ws)
-        # todo remove chat info by websocket
         print("Client disconnected")
-@router.post(f"{QUERY_REPORT}/HeartBeatHandler")
+
+
+@router.post(f"{QUERY_REPORT}/HeartbeatHandler")
 def heartbeat(request: HeartBeatRequest):
-    handler = Heartbeathandler(request)
+    handler = HeartbeatHandler(request)
     handler.handle()
     return handler._response
 

@@ -1,11 +1,13 @@
 from ipaddress import IPv4Address
 from uuid import UUID
-from fastapi import FastAPI, status
+from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
+from backends.library.database.pg_orm import ENGINE
+from backends.services.register import register_services
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
@@ -61,8 +63,10 @@ def handle_unispy_exception(_, exc: Exception):
 
 
 @app.post("/")
-def home(request: ServerConfig) -> dict:
+def home(request: Request, config: ServerConfig,) -> dict:
     # todo add the server config to our database
+    assert request.client is not None
+    # response = register_services(config, request.client.host)
     return {"status": "online"}
 
 

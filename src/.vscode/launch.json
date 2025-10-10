@@ -136,47 +136,35 @@
             "justMyCode": true
         },
     ],
-    // "compounds": [
-    //     {
-    //         "name": "pcm",
-    //         "configurations": [
-    //             "backend",
-    //             "_pcm"
-    //         ]
-    //     },
-    //     {
-    //         "name": "psp",
-    //         "configurations": [
-    //             "backend",
-    //             "_psp"
-    //         ]
-    //     },
-    //     {
-    //         "name": "qr",
-    //         "configurations": [
-    //             "backend",
-    //             "_qr"
-    //         ]
-    //     },
-    //     {
-    //         "name": "sb",
-    //         "configurations": [
-    //             "backend",
-    //             "_sb"
-    //         ]
-    //     },
-    //     {
-    //         "name": "all",
-    //         "configurations": [
-    //             "_psp",
-    //             "_pcm",
-    //             "backend",
-    //             "_natneg",
-    //             "_gs",
-    //             "_sb",
-    //             "_qr",
-    //             "_web"
-    //         ]
-    //     },
-    // ]
+    "compounds": [
+        {
+            "name": "pcm_psp",
+            "configurations": [
+                "backend",
+                "pcm",
+                "psp"
+            ]
+        },
+        {
+            "name": "qr_sb",
+            "configurations": [
+                "backend",
+                "qr",
+                "sb"
+            ]
+        },
+        {
+            "name": "all_services",
+            "configurations": [
+                "backend",
+                "psp",
+                "pcm",
+                "natneg",
+                "gs",
+                "sb",
+                "qr",
+                "web"
+            ]
+        },
+    ]
 }

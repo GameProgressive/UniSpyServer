@@ -25,7 +25,17 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "echo '127.0.0.1 unispy_backends' | sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt"
+	"postCreateCommand": "echo '127.0.0.1 unispy_backends' | sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.vscode-pylance@2024.8.2",
+				"ms-python.python@2024.14.1",
+				"ms-python.debugpy@2024.8.0",
+				"ms-python.autopep8@2025.2.0"
+			]
+		}
+	}
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

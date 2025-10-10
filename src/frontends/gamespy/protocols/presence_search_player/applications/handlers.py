@@ -53,9 +53,7 @@ class OthersHandler(CmdHandlerBase):
         assert isinstance(request, OthersRequest)
         super().__init__(client, request)
         self._result_cls = OthersResult
-
-    def _response_construct(self):
-        self._response = OthersResponse(self._result)
+        self._response_cls = OthersResponse
 
 
 class OthersListHandler(CmdHandlerBase):
@@ -66,9 +64,7 @@ class OthersListHandler(CmdHandlerBase):
         assert isinstance(request, OthersListRequest)
         super().__init__(client, request)
         self._result_cls = OthersListResult
-
-    def _response_construct(self):
-        self._response = OthersListResponse(self._result)
+        self._response_cls = OthersListResponse
 
 
 class SearchHandler(CmdHandlerBase):
@@ -91,9 +87,7 @@ class SearchHandler(CmdHandlerBase):
         assert isinstance(request, SearchRequest)
         super().__init__(client, request)
         self._result_cls = SearchResult
-
-    def _response_construct(self):
-        self._response = SearchResponse(self._result)
+        self._response_cls = SearchResponse
 
 
 class SearchUniqueHandler(CmdHandlerBase):

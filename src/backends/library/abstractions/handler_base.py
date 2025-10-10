@@ -50,7 +50,6 @@ class HandlerBase:
             self._session = session
             self._request_check()
             self._data_operate()
-            self._session.commit()
             self._result_construct()
             self._response_construct()
 

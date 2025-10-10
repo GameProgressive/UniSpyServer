@@ -6,7 +6,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 
 
 class RequestBase(lib.RequestBase):
-    raw_request: bytes
+    raw_request: str
 
 
 class ServerListUpdateOptionRequestBase(RequestBase):

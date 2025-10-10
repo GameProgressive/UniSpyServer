@@ -1,7 +1,7 @@
 import unittest
 
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
-from frontends.gamespy.protocols.query_report.v2.contracts.requests import AvaliableRequest, ChallengeRequest, EchoRequest, HeartBeatRequest
+from frontends.gamespy.protocols.query_report.v2.contracts.requests import AvaliableRequest, ChallengeRequest, EchoRequest, HeartbeatRequest
 
 AVALIABLE_REQUEST = bytes([0x09,  # packet type
                            0x00, 0x00, 0x00, 0x00,  # instant key
@@ -50,7 +50,7 @@ class RequestTest(unittest.TestCase):
 
     def test_heartbeat(self):
 
-        request = HeartBeatRequest(HEARTBEAT_REQUEST)
+        request = HeartbeatRequest(HEARTBEAT_REQUEST)
         request.parse()
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual("2921297764", request.instant_key)

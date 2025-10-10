@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from frontends.gamespy.library.network.brockers import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
 from frontends.gamespy.protocols.query_report.v2.applications.handlers import ClientMessageHandler
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import ClientMessageRequest
 from types import MappingProxyType

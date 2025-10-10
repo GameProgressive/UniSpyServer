@@ -4,14 +4,14 @@ from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
     ClientMessageRequest,
-    HeartBeatRequest,
+    HeartbeatRequest,
     KeepAliveRequest
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.results import (
     AvailableResult,
     ChallengeResult,
     ClientMessageResult,
-    HeartBeatResult,
+    HeartbeatResult,
 )
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import ServerAvailability
 from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes, port_to_2_bytes
@@ -67,11 +67,11 @@ CHALLENGE = bytes([0x54, 0x54, 0x54, 0x00, 0x00])
 SPLITER = bytes([0x00, 0x00, 0x00, 0x00])
 
 
-class HeartBeatResponse(ResponseBase):
-    _result: HeartBeatResult
+class HeartbeatResponse(ResponseBase):
+    _result: HeartbeatResult
 
-    def __init__(self, result: HeartBeatResult) -> None:
-        assert isinstance(result, HeartBeatResult)
+    def __init__(self, result: HeartbeatResult) -> None:
+        assert isinstance(result, HeartbeatResult)
         super().__init__(result)
 
     def build(self) -> None:

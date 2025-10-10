@@ -44,6 +44,13 @@ def server_list(request: ServerListRequest):
     return handler.response
 
 
+@router.post(f"{SERVER_BROWSER_V2}/ServerFullInfoListHandler")
+def full_info_list(request: ServerListRequest):
+    handler = ServerMainListHandler(request)
+    handler.handle()
+    return handler.response
+
+
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI

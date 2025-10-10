@@ -28,9 +28,8 @@ class AuthPlayerHandler(CmdHandlerBase):
         assert isinstance(request, AuthPlayerRequest)
         super().__init__(client, request)
         self._result_cls = AuthPlayerResult
+        self._response_cls = AuthPlayerResponse
 
-    def _response_construct(self) -> None:
-        self._response = AuthPlayerResponse(self._result)
 
 
 class GetPlayerDataHandler(CmdHandlerBase):
@@ -40,9 +39,9 @@ class GetPlayerDataHandler(CmdHandlerBase):
         assert isinstance(request, GetPlayerDataRequest)
         super().__init__(client, request)
         self._result_cls = GetPlayerDataResult
+        self._response_cls = GetPlayerDataResponse
 
-    def _response_construct(self) -> None:
-        self._response = GetPlayerDataResponse(self._result)
+
 
 
 class GetProfileIdHandler(CmdHandlerBase):
@@ -52,9 +51,8 @@ class GetProfileIdHandler(CmdHandlerBase):
         assert isinstance(request, GetProfileIdRequest)
         super().__init__(client, request)
         self._result_cls = GetProfileIdResult
+        self._response_cls = GetProfileIdResponse
 
-    def _response_construct(self) -> None:
-        self._response = GetProfileIdResponse(self._result)
 
 
 class NewGameHandler(CmdHandlerBase):
