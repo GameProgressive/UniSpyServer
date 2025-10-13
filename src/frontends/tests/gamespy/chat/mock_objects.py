@@ -110,17 +110,16 @@ def create_client() -> Client:
     create_mock_url(
         config,
         GetCKeyHandler,
-        GetCKeyResult.model_validate(
-            {
-                "channel_name": "test",
-                "infos": [
-                    {
-                        "nick_name": "test_nick",
-                        "user_values": ["data", "key", "value", "data"],
-                    },
-                ],
-                "cookie": "000",
-            }
+
+        GetCKeyResult
+        (
+            channel_name="test",
+            infos=[GetCKeyResult.GetCKeyInfos(
+                nick_name="test_nick",
+                key_values={"hello": "hi"}
+            )],
+            cookie="000",
+            keys=["hello"]
         ).model_dump(),
     )
     create_mock_url(

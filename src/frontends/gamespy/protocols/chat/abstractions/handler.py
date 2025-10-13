@@ -29,7 +29,10 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     def _request_check(self) -> None:
         super()._request_check()
         assert self._client.brocker
-        self._request.websocket_address = self._client.brocker.ip_port
+        try:
+            self._request.websocket_address = self._client.brocker.ip_port
+        except:
+            raise ChatException("websocket is disconnected")
 
     def _handle_exception(self, ex: Exception) -> None:
         t_ex = type(ex)

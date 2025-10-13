@@ -25,7 +25,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions impor
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     SendMessageResult,
-    ServerInfoResult,
+    UpdateServerInfoResult,
     ServerMainListResult,
     ServerFullInfoListResult,
 )
@@ -128,11 +128,12 @@ class ServerFullInfoListHandler(HandlerBase):
         )
         if TYPE_CHECKING:
             self._caches = cast(list[GameServerInfo], self._caches)
+        all_keys = list(self._caches[0].server_data.keys())
         self._result = ServerFullInfoListResult(
             client_remote_ip=self._request.client_ip,
             game_secret_key=self._secret_key,
             servers_info=self._caches,
-            keys=self._request.keys
+            keys=all_keys
         )
 
 # region Adhoc
@@ -189,4 +190,4 @@ class ServerInfoHandler(HandlerBase):
         # TODO: check whether we need respond when gameserver not exist
         if self._data is None:
             return
-        self._result = ServerInfoResult(game_server_info=self._data)
+        self._result = UpdateServerInfoResult(game_server_info=self._data)

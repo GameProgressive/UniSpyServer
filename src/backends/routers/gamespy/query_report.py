@@ -1,15 +1,11 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from contextlib import asynccontextmanager
-from backends.protocols.gamespy.query_report.broker import MANAGER, BROCKER
-from backends.protocols.gamespy.query_report.handlers import AvaliableHandler, HeartbeatHandler, KeepAliveHandler
-from backends.protocols.gamespy.query_report.requests import AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest
+from backends.protocols.gamespy.query_report.broker import MANAGER, launch_brocker
+from backends.protocols.gamespy.query_report.handlers import (
+    AvaliableHandler, HeartbeatHandler, KeepAliveHandler)
+from backends.protocols.gamespy.query_report.requests import (
+    AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest)
 from backends.urls import QUERY_REPORT
 
-
-@asynccontextmanager
-async def launch_brocker(router: APIRouter):
-    BROCKER.subscribe()
-    yield
 
 router = APIRouter(lifespan=launch_brocker)
 

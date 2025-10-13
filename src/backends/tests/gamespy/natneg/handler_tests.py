@@ -16,12 +16,14 @@ class HandlerTests(unittest.TestCase):
         )  # fmt:skip
         r = fnt.InitRequest(raw)
         data = add_headers(r)
-        data["raw_request"] = data["raw_request"].decode("ascii", "backslashreplace")
+        data["raw_request"] = data["raw_request"].decode(
+            "ascii", "backslashreplace")
         request = InitRequest(**data)
         handler = InitHandler(request)
         handler.handle()
         pass
 
+    @unittest.skip("not implemented")
     def test_report(self):
         raise NotImplementedError()
 
@@ -35,7 +37,8 @@ class HandlerTests(unittest.TestCase):
         )  # fmt:skip
         r = fnt.ConnectRequest(raw)
         data = add_headers(r)
-        data["raw_request"] = data["raw_request"].decode("ascii", "backslashreplace")
+        data["raw_request"] = data["raw_request"].decode(
+            "ascii", "backslashreplace")
         request = ConnectRequest(**data)
         handler = ConnectHandler(request)
         handler.handle()

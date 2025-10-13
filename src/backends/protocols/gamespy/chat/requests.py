@@ -210,3 +210,10 @@ class PrivateRequest(MessageRequestBase):
 
 class UtmRequest(MessageRequestBase):
     pass
+
+
+class PublishMessageRequest(lib.RequestBase):
+    channel_name: str
+    sender_ip_address: str
+    sender_port: int
+    message: str

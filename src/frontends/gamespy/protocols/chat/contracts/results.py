@@ -64,7 +64,7 @@ class WhoIsResult(ResultBase):
     nick_name: str
     user_name: str
     public_ip_address: str
-    joined_channel_name: list[str]
+    joined_channels: list[str]
 
 
 class WhoResult(ResultBase):

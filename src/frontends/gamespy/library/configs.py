@@ -63,9 +63,6 @@ class BackendConfig(BaseModel):
     token_expire_time: int = 30
 
 
-
-
-
 class UnittestConfig(BaseModel):
     """
     unittest related config
@@ -98,13 +95,13 @@ if unispy_config is None:
     #     "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     # )
 if not os.path.exists(unispy_config):
-    raise Exception("Unispy server config file not exist, check UNISPY_CONFIG path.")
+    raise Exception(
+        "Unispy server config file not exist, check UNISPY_CONFIG path.")
 with open(unispy_config, "r") as f:
     import json
-
     config = json.load(f)
-    CONFIG = UniSpyServerConfig(**config)
-    pass
+CONFIG = UniSpyServerConfig.model_validate(config)
+pass
 
 if __name__ == "__main__":
     pass

@@ -1,13 +1,13 @@
-import asyncio
-from logging import Logger
-import logging
-from fastapi import WebSocket
+from contextlib import asynccontextmanager
+from fastapi import APIRouter, WebSocket
 from backends.library.database.pg_orm import ENGINE
-from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
+from backends.library.networks.redis_brocker import RedisBrocker
+from frontends.gamespy.library.configs import CONFIG
 
 import backends.protocols.gamespy.chat.data as data
 from sqlalchemy.orm import Session
 from backends.library.networks.ws_manager import WebsocketManager as WsManager
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 
 class WebsocketManager(WsManager):
@@ -29,11 +29,6 @@ class WebsocketManager(WsManager):
     client4 -> frontend4 <- backend4    <-   |
     """
 
-    def process_message(self, message: dict) -> BrockerMessage:
-        self.logger.info(f"[cast] [recv] {message}")
-        msg = BrockerMessage.model_validate(message)
-        return msg
-
     def _get_wss_in_channel(self, channel_name: str) -> list[WebSocket]:
         with Session(ENGINE) as session:
             ws_addrss = data.get_websocket_addr_by_channel_name(
@@ -44,15 +39,31 @@ class WebsocketManager(WsManager):
                     wss.append(self.client_pool[addr])
             return wss
 
-    def broadcast_channel_message(self, message: BrockerMessage, ws_client: WebSocket):
+    def broadcast_channel_message(self, channel_name: str, message: str, ws_client: WebSocket):
         """
             create redis pubsub to share message cross all backends
             currently we simply implement without redis pubsub
         """
         exclude_addr = self.get_address_str(ws_client)
-        wss = self._get_wss_in_channel(message.channel_name)
-        message_str = message.model_dump_json()
-        self.broadcast_except(message_str, wss, [exclude_addr])
+        wss = self._get_wss_in_channel(channel_name)
+        self.broadcast_except(message, wss, [exclude_addr])
+
+
+def handle_client_message(message: str):
+    from backends.protocols.gamespy.chat.requests import PublishMessageRequest
+    from backends.protocols.gamespy.chat.handlers import PublishMessageHandler
+    try:
+        request = PublishMessageRequest.model_validate(message)
+        PublishMessageHandler.broad_cast_loacl(request)
+    except Exception as e:
+        GLOBAL_LOGGER.error(str(e))
 
 
 MANAGER = WebsocketManager()
+BROCKER = RedisBrocker("chat", CONFIG.redis.url, handle_client_message)
+
+
+@asynccontextmanager
+async def launch_brocker(_: APIRouter):
+    BROCKER.subscribe()
+    yield

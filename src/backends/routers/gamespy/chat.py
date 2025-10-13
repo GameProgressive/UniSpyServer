@@ -1,6 +1,6 @@
 import asyncio
 from backends.library.abstractions.contracts import OKResponse
-from backends.protocols.gamespy.chat.brocker import MANAGER
+from backends.protocols.gamespy.chat.brocker import MANAGER, launch_brocker
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,
@@ -15,6 +15,7 @@ from backends.protocols.gamespy.chat.handlers import (
     NickHandler,
     PartHandler,
     PrivateHandler,
+    PublishMessageHandler,
     QuitHandler,
     UserHandler,
     WhoIsHandler,
@@ -38,6 +39,7 @@ from backends.protocols.gamespy.chat.requests import (
     NoticeRequest,
     PartRequest,
     PrivateRequest,
+    PublishMessageRequest,
     QuitRequest,
     SetChannelKeyRequest,
     SetGroupRequest,
@@ -53,13 +55,15 @@ from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
 
-router = APIRouter()
+router = APIRouter(lifespan=launch_brocker)
 client_pool = {}
 
 
-# @asynccontextmanager
-# async def launch_brocker(router: APIRouter):
-
+@router.post(f"{CHAT}/publish")
+def publish_message(request: PublishMessageRequest):
+    handler = PublishMessageHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.websocket(f"{CHAT}/ws")
@@ -69,9 +73,7 @@ async def websocket_endpoint(ws: WebSocket):
         MANAGER.connect(ws)
     try:
         while True:
-            data = await ws.receive_json()
-            msg = MANAGER.process_message(data)
-            MANAGER.broadcast_channel_message(msg, ws)
+            _ = await ws.receive_json()
     except WebSocketDisconnect:
         if ws.client is not None:
             MANAGER.disconnect(ws)

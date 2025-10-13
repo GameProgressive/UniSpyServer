@@ -14,7 +14,7 @@ from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags
 
 
-class ServerInfoResult(AdHocResultBase):
+class UpdateServerInfoResult(AdHocResultBase):
     pass
 
 

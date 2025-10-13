@@ -28,7 +28,7 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.responses import (
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     ServerFullInfoListResult,
-    ServerInfoResult,
+    UpdateServerInfoResult,
     ServerMainListResult,
 )
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
@@ -58,14 +58,14 @@ def get_clients(game_name: str):
 class AdHocHandler(CmdHandlerBase):
     _message: GameServerInfo
     # !fix this
-    _result: ServerInfoResult
+    _result: UpdateServerInfoResult
 
     def __init__(self, message: GameServerInfo) -> None:
         self._log_current_class()
         self._message = message
 
     def handle(self) -> None:
-        result = ServerInfoResult(game_server_info=self._message)
+        result = UpdateServerInfoResult(game_server_info=self._message)
         match self._message.status:
             case status if (
                 status == GameServerStatus.NORMAL
@@ -108,13 +108,13 @@ class SendMessageHandler(CmdHandlerBase):
         # we just need send the message to backend, then backend will send to queryreport frontend, query report frontend will handle for us
 
 
-class ServerInfoHandler(CmdHandlerBase):
+class UpdateServerInfoHandler(CmdHandlerBase):
     _request: ServerInfoRequest
-    _result: ServerInfoResult
+    _result: UpdateServerInfoResult
 
     def __init__(self, client: Client, request: RequestBase) -> None:
         super().__init__(client, request)
-        self._result_cls = ServerInfoResult
+        self._result_cls = UpdateServerInfoResult
         self._response_cls = UpdateServerInfoResponse
 
 
@@ -145,6 +145,17 @@ class ServerFullInfoListHandler(ServerListUpdateOptionHandlerBase):
     In sbctest.c 
     line 392 ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate);
     will get the full info of a server such as: player data, server data, team data
+    """
+    """
+    !! below is the source code of sb v2, adhocdata is directly follow the mainlist response
+    todo check if adhoc data is append after mainlist response
+    if (slist->state == sl_mainlist)
+		err = ProcessMainListData(slist);
+	if (err != sbe_noerror)
+		return err;
+	//always need to check this after mainlistdata, in case some extra data has some in (e.g. key list for push)
+	if (slist->state == sl_connected && slist->inbufferlen > 0)	
+		return ProcessAdHocData(slist);
     """
     _request: ServerListRequest
     _result: ServerFullInfoListResult

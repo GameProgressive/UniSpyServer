@@ -46,6 +46,7 @@ class GameTest(unittest.TestCase):
 
         sb_client = create_v2_client()
         for raw in sb_raws:
+            sb_client.crypto = None
             sb_client.on_received(raw)
 
     @responses.activate

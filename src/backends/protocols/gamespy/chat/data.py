@@ -18,6 +18,8 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
 )
 from sqlalchemy.orm import Session
 
+from frontends.gamespy.protocols.chat.contracts.results import WhoIsResult
+
 
 def is_nick_exist(nick_name: str, session: Session) -> bool:
     c = session.query(ChatUserCaches.nick_name).count()
@@ -328,7 +330,7 @@ def get_user_cache_by_ip_port(
     return result
 
 
-def get_whois_result(nick: str, session: Session) -> dict:
+def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     """
     nick is unique in chat
     """
@@ -346,13 +348,24 @@ def get_whois_result(nick: str, session: Session) -> dict:
         .where(ChatChannelUserCaches.nick_name == info.nick_name)
         .all()
     )
-    ret_dict = {
-        "nick_name": info.nick_name,
-        "user_name": info.user_name,
-        "remote_ip": info.remote_ip,
-        "channels": channels[0],
-    }
-    return ret_dict
+
+    if info.nick_name is None:
+        raise ChatException("nick name is missing")
+    if info.user_name is None:
+        raise ChatException("user name is missing")
+
+    assert isinstance(info.nick_name,str)
+    assert isinstance(info.user_name,str)
+    assert isinstance(info.remote_ip,str)
+    assert isinstance(channels,list)
+    re = WhoIsResult(
+        nick_name=info.nick_name,
+        user_name=info.user_name,
+        public_ip_address=info.remote_ip,
+        joined_channels=list(channels[0])
+    )
+
+    return re
 
 
 def get_websocket_addr_by_channel_name(

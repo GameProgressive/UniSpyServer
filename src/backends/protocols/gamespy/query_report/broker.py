@@ -1,17 +1,12 @@
-from logging import Logger
-import logging
-from fastapi import WebSocket
-from pydantic import BaseModel
-from backends.library.database.pg_orm import ENGINE
+from contextlib import asynccontextmanager
+
+from fastapi import APIRouter
 from backends.protocols.gamespy.query_report.handlers import ClientMessageHandler
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.library.networks.redis_brocker import RedisBrocker
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
-import backends.protocols.gamespy.chat.data as data
-from sqlalchemy.orm import Session
 from backends.library.networks.ws_manager import WebsocketManager as WsManager
 
 
@@ -29,6 +24,10 @@ def handle_client_message(message: str):
 
 
 MANAGER = WebsocketManager()
-
 BROCKER = RedisBrocker("master", CONFIG.redis.url, handle_client_message)
-# BROCKER.subscribe()
+
+
+@asynccontextmanager
+async def launch_brocker(_: APIRouter):
+    BROCKER.subscribe()
+    yield

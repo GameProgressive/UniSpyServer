@@ -80,7 +80,7 @@ class ServerListUpdateOptionResultBase(ResultBase):
 
 class ServerListUpdateOptionResponseBase(ResponseBase):
     _result: ServerListUpdateOptionResultBase
-    _servers_info_buffers: bytearray
+    _buffer: bytearray
 
     def __init__(
         self,
@@ -88,16 +88,16 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
     ) -> None:
         assert issubclass(type(result), ServerListUpdateOptionResultBase)
         super().__init__(result)
-        self._servers_info_buffers = bytearray()
+        self._buffer = bytearray()
 
     def build(self) -> None:
         crypt_header = self.build_crypt_header()
-        self._servers_info_buffers.extend(crypt_header)
-        self._servers_info_buffers.extend(
+        self._buffer.extend(crypt_header)
+        self._buffer.extend(
             ip_to_4_bytes(self._result.client_remote_ip))
-        self._servers_info_buffers.extend(
+        self._buffer.extend(
             QUERY_REPORT_DEFAULT_PORT.to_bytes(2))
-        assert len(self._servers_info_buffers) == 20
+        assert len(self._buffer) == 20
 
     def build_crypt_header(self) -> bytearray:
         # cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
@@ -111,15 +111,15 @@ class ServerListUpdateOptionResponseBase(ResponseBase):
 
     def build_server_keys(self) -> None:
         # we add the total number of the requested keys
-        self._servers_info_buffers.append(len(self._result.keys))
+        self._buffer.append(len(self._result.keys))
         # then we add the keys
         for key in self._result.keys:
-            self._servers_info_buffers.append(DataKeyType.STRING)
-            self._servers_info_buffers.extend(get_bytes(key))
-            self._servers_info_buffers.extend(STRING_SPLITER)
+            self._buffer.append(DataKeyType.STRING)
+            self._buffer.extend(get_bytes(key))
+            self._buffer.append(STRING_SPLITER)
 
     def build_unique_value(self):
-        self._servers_info_buffers.append(0)
+        self._buffer.append(0)
 
 
 class AdHocResultBase(ResultBase):

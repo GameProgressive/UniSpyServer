@@ -30,10 +30,10 @@
   },
   "redis": {
     "server": "unispy_redis",
-    "port": 5678,
+    "port": 6379,
     "user": "",
-    "password": "password",
-    "ssl": "true",
+    "password": "123456",
+    "ssl": "false",
     "ssl_host": ""
   },
   "servers": {

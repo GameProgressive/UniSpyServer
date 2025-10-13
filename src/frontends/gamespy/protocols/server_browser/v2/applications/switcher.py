@@ -16,7 +16,7 @@ from frontends.gamespy.protocols.server_browser.v2.applications.handlers import 
     P2PGroupRoomListHandler,
     SendMessageHandler,
     ServerFullInfoListHandler,
-    ServerInfoHandler,
+    UpdateServerInfoHandler,
     ServerMainListHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
@@ -48,26 +48,20 @@ class Switcher(SwitcherBase):
             self._client = cast(Client, self._client)
         match name:
             case RequestType.SERVER_LIST_REQUEST:
-                # todo check if all game follow this pattern, +2 is calc by sdk server info request
-                update_option_index = raw_request.find(
-                    b"\x00\x00\x00\x00", 6)+2
-                update_option_bytes = raw_request[
-                    update_option_index: update_option_index + 4
-                ]
-                update_option = ServerListUpdateOption(
-                    int.from_bytes(update_option_bytes)
-                )
-                handler = self.__create_cmd_by_update_option(
-                    update_option, req)
+                handler = self.__check_update_option(req)
                 return handler
             case RequestType.SERVER_INFO_REQUEST:
-                return ServerInfoHandler(self._client, ServerInfoRequest(req))
+                return UpdateServerInfoHandler(self._client, ServerInfoRequest(req))
             case RequestType.SEND_MESSAGE_REQUEST:
                 return SendMessageHandler(self._client, SendMessageRequest(req))
             case _:
                 return None
 
-    def __create_cmd_by_update_option(self, update_option: ServerListUpdateOption, request: bytes) -> CmdHandlerBase:
+    def __check_update_option(self, request: bytes) -> CmdHandlerBase:
+        """
+        check update option and create handler
+        """
+        update_option = self.get_update_option(request)
         match update_option:
             case (ServerListUpdateOption.SERVER_MAIN_LIST
                   | ServerListUpdateOption.P2P_SERVER_MAIN_LIST
@@ -83,6 +77,7 @@ class Switcher(SwitcherBase):
 
     @staticmethod
     def get_update_option(raw_request: bytes) -> ServerListUpdateOption:
+        # todo check if all game follow this pattern, +2 is calc by sdk server info request
         update_option_index = raw_request.find(
             b"\x00\x00\x00\x00", 6)+2
         update_option_bytes = raw_request[

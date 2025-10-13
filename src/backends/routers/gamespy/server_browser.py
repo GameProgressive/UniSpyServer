@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from backends.protocols.gamespy.server_browser.handlers import ServerInfoHandler, ServerMainListHandler
+from backends.protocols.gamespy.server_browser.handlers import ServerFullInfoListHandler, ServerInfoHandler, ServerMainListHandler
 from backends.protocols.gamespy.server_browser.requests import SendMessageRequest, ServerInfoRequest, ServerListRequest
 from backends.urls import SERVER_BROWSER_V2
 
@@ -39,6 +39,9 @@ def server_info(request: ServerInfoRequest):
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerMainListHandler")
 def server_list(request: ServerListRequest):
+    """ we send all server data to client to make it have HAS_FULL_RULES_FLAG 
+        and will not send ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate) to 
+    """
     handler = ServerMainListHandler(request)
     handler.handle()
     return handler.response
@@ -46,7 +49,7 @@ def server_list(request: ServerListRequest):
 
 @router.post(f"{SERVER_BROWSER_V2}/ServerFullInfoListHandler")
 def full_info_list(request: ServerListRequest):
-    handler = ServerMainListHandler(request)
+    handler = ServerFullInfoListHandler(request)
     handler.handle()
     return handler.response
 

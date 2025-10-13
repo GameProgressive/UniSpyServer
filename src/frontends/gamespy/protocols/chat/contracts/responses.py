@@ -175,9 +175,9 @@ class WhoIsResponse(ResponseBase):
     def build(self) -> None:
         self.sending_buffer = f":{SERVER_DOMAIN} {ResponseCode.WHOISUSER.value} {self._result.nick_name} {self._result.user_name} {self._result.user_name} {self._result.public_ip_address} * :{self._result.user_name}\r\n"  # noqa
 
-        if len(self._result.joined_channel_name) != 0:
+        if len(self._result.joined_channels) != 0:
             channel_name = ""
-            for name in self._result.joined_channel_name:
+            for name in self._result.joined_channels:
                 channel_name += f"@{name} "  # noqa
 
             self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.WHOISCHANNELS.value} {self._result.nick_name} {self._result.user_name} :{channel_name}\r\n"  # noqa

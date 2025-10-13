@@ -49,6 +49,12 @@ class ResponseTests(unittest.TestCase):
         correct = b'\xee\x00\x00\xe00000000000\x7f\x00\x00\x01\x19d\x05\x00hostname\x00\x00gametype\x00\x00mapname\x00\x00numplayers\x00\x00maxplayers\x00\x00P\x7f\x00\x00\x01\x1a\xf4\xffGameSpy QR2 Sample\x00\xff\x00\xff\x00\xff\x00\xff\x00\x00\xff\xff\xff\xff'
         self.assertTrue(response.sending_buffer == correct)
 
+    def test_server_list_with_filter(self):
+        """
+        filter: US servers with more than 5 players, or servers with a hostname containing 'GameSpy'
+        """
+        raw = b"\x00\x95\x00\x01\x03\x00\x00\x00\x00gmtest\x00gmtest\x000`mpW:[>(country = 'US' and numplayers > 5) or hostname like ' % GameSpy % '\x00\\hostname\\gametype\\mapname\\numplayers\\maxplayers\x00\x00\x00\x00\x00"
+
     def test_server_info_request(self):
         raw = b'\x00%\x00\x01\x03\x00\x00\x00\x00gmtest\x00gmtest\x00$(A:{<]p\x00\x00\x00\x00\x00\x02\x00\t\x01\xac\x13\x00\x05+g'
         option = Switcher.get_update_option(raw)
