@@ -40,7 +40,13 @@ class ConnectAckRequest(RequestBase):
     client_index: NatClientIndex
 
     def parse(self) -> None:
-        super().parse()
+        if len(self.raw_request) < 12:
+            return
+
+        self.version = int(self.raw_request[6])
+        self.command_name = RequestType(self.raw_request[7])
+        self.cookie = int.from_bytes(
+            self.raw_request[8:12])
         self.client_index = NatClientIndex(self.raw_request[13])
 
 

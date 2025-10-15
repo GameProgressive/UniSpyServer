@@ -22,8 +22,9 @@ def add_init_packet(info: InitPacketCaches, session: Session) -> None:
 
 def clean_expired_init_cache(session: Session) -> None:
     session.query(InitPacketCaches).where(
-        InitPacketCaches.update_time < datetime.now() - timedelta(seconds=30)
-    )
+        InitPacketCaches.update_time < datetime.now() - timedelta(minutes=5)
+    ).delete()
+    session.commit()
 
 
 def count_init_info(cookie: int, version: int, session: Session) -> int:
@@ -98,7 +99,7 @@ def update_nat_result_info(info: NatResultCaches, session: Session) -> None:
     assert isinstance(info, NatResultCaches)
 
     result = get_nat_result_info(info, session)
-    if result is not None:
+    if len(result) != 0:
         session.delete(result)
     store_nat_result_info(info, session)
 
@@ -110,7 +111,7 @@ def remove_nat_result_info(info: NatResultCaches, session: Session) -> None:
     session.commit()
 
 
-def get_nat_result_info(info: NatResultCaches, session: Session):
+def get_nat_result_info(info: NatResultCaches, session: Session) -> list:
     assert isinstance(info.cookie, int)
     assert isinstance(info.public_ip, str)
     result = get_nat_result_info_by_cookie_ip(

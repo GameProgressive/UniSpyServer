@@ -23,7 +23,7 @@ class RedisBrocker(BrockerBase):
     def get_message(self):
         self._subscriber.subscribe(self._name)
         while True:
-            m = self._subscriber.get_message(timeout=60)
+            m = self._subscriber.get_message(timeout=10)
             if m is not None:
                 if "data" not in m:
                     continue

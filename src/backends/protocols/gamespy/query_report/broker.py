@@ -1,13 +1,15 @@
 from contextlib import asynccontextmanager
+import logging
 
 from fastapi import APIRouter
 from backends.protocols.gamespy.query_report.handlers import ClientMessageHandler
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.library.networks.redis_brocker import RedisBrocker
 from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 from backends.library.networks.ws_manager import WebsocketManager as WsManager
+
+logger = logging.getLogger("backend")
 
 
 class WebsocketManager(WsManager):
@@ -20,7 +22,7 @@ def handle_client_message(message: str):
         handler = ClientMessageHandler(request)
         handler.handle()
     except Exception as e:
-        GLOBAL_LOGGER.error(str(e))
+        logger.error(str(e))
 
 
 MANAGER = WebsocketManager()

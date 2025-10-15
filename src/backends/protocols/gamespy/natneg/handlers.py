@@ -21,6 +21,7 @@ class InitHandler(HandlerBase):
         super().__init__(request)
 
     def _data_operate(self) -> None:
+        data.clean_expired_init_cache(self._session)
         info = data.get_init_cache(
             self._request.cookie,
             self._request.client_index,
@@ -169,7 +170,9 @@ class ReportHandler(HandlerBase):
             public_ip=init_cache.public_ip,
             private_ip=init_cache.private_ip,
             is_success=self._request.is_nat_success,
+            port_mapping_scheme=self._request.mapping_scheme,
             nat_type=self._request.nat_type,
+            port_type=self._request.port_type,
             client_index=self._request.client_index,
             game_name=self._request.game_name,
         )

@@ -1,7 +1,6 @@
 from frontends.gamespy.library.configs import CONFIG
 from datetime import datetime
 from sqlalchemy import (
-    BigInteger,
     Boolean,
     SmallInteger,
     Text,
@@ -21,6 +20,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortMappingScheme,
     NatPortType,
+    NatType,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     FriendRequestStatus,
@@ -222,10 +222,11 @@ class NatResultCaches(Base):
     __tablename__ = "nat_result_caches"
     id = Column(Integer, primary_key=True, autoincrement=True)
     cookie = Column(SmallInteger, nullable=False)
-    public_ip = Column(SmallInteger, nullable=False)
-    private_ip = Column(SmallInteger, nullable=False)
+    public_ip = Column(INET, nullable=False)
+    private_ip = Column(INET, nullable=False)
     is_success = Column(Boolean, nullable=False)
-    port_mapping_type = Column(IntEnum(NatPortMappingScheme), nullable=False)
+    port_mapping_scheme = Column(IntEnum(NatPortMappingScheme), nullable=False)
+    nat_type = Column(IntEnum(NatType), nullable=False)
     port_type = Column(IntEnum(NatPortType), nullable=False)
     client_index = Column(IntEnum(NatClientIndex), nullable=False)
     game_name = Column(String, nullable=True)

@@ -567,18 +567,21 @@ def clean_expired_user_cache(session: Session):
     session.query(ChatUserCaches).where(
         ChatUserCaches.update_time < (datetime.now() - timedelta(minutes=5))
     ).delete()
+    session.commit()
 
 
 def clean_expired_channel_cache(session: Session):
     session.query(ChatChannelCaches).where(
         ChatChannelCaches.update_time < (datetime.now() - timedelta(minutes=5))
     ).delete()
+    session.commit()
 
 
 def clean_expired_channel_user_cache(session: Session):
     session.query(ChatChannelUserCaches).where(
         ChatUserCaches.update_time < (datetime.now() - timedelta(minutes=5))
     ).delete()
+    session.commit()
 
 
 def _flush_chat_database():

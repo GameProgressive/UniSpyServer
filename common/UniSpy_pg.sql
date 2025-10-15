@@ -390,10 +390,11 @@ CREATE TABLE unispy.nat_result_caches (
     public_ip inet NOT NULL,
     private_ip inet NOT NULL,
     is_success boolean NOT NULL,
-    port_mapping_type smallint NOT NULL,
+    port_mapping_scheme smallint NOT NULL,
     port_type smallint NOT NULL,
+    nat_type smallint NOT NULL,
     client_index smallint NOT NULL,
-    game_name character varying[20] NOT NULL,
+    game_name character varying NOT NULL,
     update_time timestamp without time zone NOT NULL
 );
 
