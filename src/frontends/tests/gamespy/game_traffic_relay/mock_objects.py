@@ -22,11 +22,11 @@ def create_client(client_address: tuple = ("192.168.0.1", 0)) -> Client:
     logger = LogMock()
     conn = ConnectionMock(
         handler=handler,
-        config=CONFIG.servers["NatNegotiation"],
+        config=CONFIG.servers["GameTrafficRelay"],
         t_client=ClientMock,
         logger=logger,
     )
 
-    config = CONFIG.servers["NatNegotiation"]
+    config = CONFIG.servers["GameTrafficRelay"]
     create_mock_url(config, PingHandler, {"message": "ok"})
     return cast(Client, conn._client)

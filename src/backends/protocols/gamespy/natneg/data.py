@@ -90,17 +90,21 @@ def remove_init_info(info: InitPacketCaches, session: Session) -> None:
 
 def store_nat_result_info(info: NatResultCaches, session: Session) -> None:
     assert isinstance(info, NatResultCaches)
-
     session.add(info)
     session.commit()
 
 
 def update_nat_result_info(info: NatResultCaches, session: Session) -> None:
+    """
+    remove the exist record and store the newest record
+    """
     assert isinstance(info, NatResultCaches)
 
-    result = get_nat_result_info(info, session)
-    if len(result) != 0:
-        session.delete(result)
+    session.query(NatResultCaches).where(
+        NatResultCaches.cookie == info.cookie,
+        NatResultCaches.public_ip == info.public_ip,
+        NatResultCaches.private_ip == info.private_ip
+    ).delete()
     store_nat_result_info(info, session)
 
 
@@ -111,7 +115,7 @@ def remove_nat_result_info(info: NatResultCaches, session: Session) -> None:
     session.commit()
 
 
-def get_nat_result_info(info: NatResultCaches, session: Session) -> list:
+def get_nat_result_info(info: NatResultCaches, session: Session) -> list[NatResultCaches]:
     assert isinstance(info.cookie, int)
     assert isinstance(info.public_ip, str)
     result = get_nat_result_info_by_cookie_ip(

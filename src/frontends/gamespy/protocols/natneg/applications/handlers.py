@@ -1,5 +1,5 @@
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
+from frontends.gamespy.protocols.natneg.aggregations.enums import ConnectPacketStatus, RequestType
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,
@@ -69,7 +69,7 @@ class ConnectAckHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._client.log_info(
-            f"client: {self._request.client_index} is received the connect packet.")
+            f"client: {self._client.connection.remote_ip} index:{self._request.client_index} is received the connect packet.")
 
 
 class ConnectHandler(CmdHandlerBase):

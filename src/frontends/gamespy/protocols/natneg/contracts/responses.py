@@ -57,7 +57,7 @@ class ConnectResponse(ResponseBase):
         data = bytes()
         data += self.sending_buffer
         data += socket.inet_aton(self._result.ip)
-        data += self._result.port.to_bytes(2)[::-1]
+        data += self._result.port.to_bytes(2)
         data += self._result.got_your_data
         data += self._result.status.value.to_bytes(1)
         self.sending_buffer = data

@@ -1,5 +1,6 @@
 import unittest
 
+from frontends.gamespy.protocols.game_traffic_relay.applications.client import ConnectionListener
 from frontends.gamespy.protocols.game_traffic_relay.applications.handlers import (
     PingHandler,
 )
@@ -16,20 +17,15 @@ class HandlerTests(unittest.TestCase):
             b"\xfd\xfc\x1efj\xb2\x03\x07\x00\x00\x02\x9a\xc0\xa8\x01gl\xfd\x00\x00"
         )
         client1 = create_client(("127.0.0.1", 1234))
-        client1.connection.remote_ip = "127.0.0.1"
-        client1.connection.remote_port = 1234
         client1._log_prefix = "[127.0.0.1:1234]"
         client2 = create_client(("127.0.0.1", 1235))
-        client2.connection.remote_ip = "127.0.0.1"
-        client2.connection.remote_port = 1235
         client2._log_prefix = "[127.0.0.1:1235]"
-        handler = PingHandler(client1, PingRequest(ping_raw))
-        handler.handle()
-        handler = PingHandler(client2, PingRequest(ping_raw))
-        handler.handle()
+        client1.on_received(ping_raw)
+        client2.on_received(ping_raw)
         # cookie length check
-        self.assertEqual(len(client1.listener.pool), 1)
-        clients = list(client1.listener.pool.values())[0]
+        self.assertEqual(len(ConnectionListener.cookie_pool), 1)
+        clients = list(ConnectionListener.cookie_pool.values())[0]
         self.assertEqual(len(clients), 2)
+        client1 = create_client(("127.0.0.1", 1234))
         client1.on_received(ping_raw)
         pass

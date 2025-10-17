@@ -28,7 +28,7 @@ class PingRequest(RequestBase):
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
         self.cookie = int.from_bytes(
-            self.raw_request[8:12], byteorder="little")
+            self.raw_request[8:12])
         self.ip = socket.inet_ntoa(self.raw_request[12:16])
         self.port = int.from_bytes(self.raw_request[16:18])
         # port here is not in little endian

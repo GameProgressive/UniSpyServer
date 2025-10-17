@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
 )
 from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
 
-MAGIC_DATA = bytes([0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2])
+MAGIC_DATA = b"\xfd\xfc\x1e\x66\x6a\xb2"
 
 
 class RequestBase(lib.RequestBase):

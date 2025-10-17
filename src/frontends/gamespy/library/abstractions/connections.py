@@ -16,6 +16,10 @@ class ConnectionBase:
     logger: LogWriter
     handler: socketserver.BaseRequestHandler
     _client: ClientBase
+    ip_endpoint: str
+    """
+    <ip>:<port> string
+    """
 
     def __init__(
         self,

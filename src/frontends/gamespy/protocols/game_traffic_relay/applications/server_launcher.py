@@ -2,6 +2,7 @@ from frontends.gamespy.library.abstractions.server_launcher import ServerLaunche
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
+from frontends.gamespy.protocols.game_traffic_relay.applications.connection import ConnectionListener
 from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
     GtrHeartbeat,
 )
@@ -27,9 +28,9 @@ class ServerLauncher(ServerLauncherBase):
         assert self.config
         req = GtrHeartbeat(
             server_id=self.config.server_id,
-            public_ip_address=self._public_ip,
+            public_ip_address=self.config.public_address,
             public_port=self.config.listening_port,
-            client_count=len(Client.client_pool),
+            client_count=len(ConnectionListener.client_pool),
         )
         req_str = req.model_dump_json()
         self._heartbeat_to_backend(
