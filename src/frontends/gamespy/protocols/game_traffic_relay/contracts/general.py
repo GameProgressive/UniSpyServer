@@ -1,5 +1,6 @@
 from pydantic import BaseModel, UUID4
 
+from frontends.gamespy.library.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex, NatPortType
 
 
@@ -22,3 +23,8 @@ class GtrHeartbeat(BaseModel):
     public_ip_address: str
     public_port: int
     client_count: int
+
+
+class MessageRelayRequest(RequestBase):
+    raw_request: bytes
+    pass

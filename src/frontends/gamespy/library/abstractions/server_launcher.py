@@ -33,7 +33,7 @@ class ServerLauncherBase:
     config: ServerConfig
     logger: LogWriter | None
     server: NetworkServerBase | None
-    _schedular: Schedular
+    _conn_checker: Schedular
     _server_cls: type[NetworkServerBase]
     _client_cls: type[ClientBase]
 
@@ -137,8 +137,8 @@ class ServerLauncherBase:
         set the schedular to send heartbeat info to backend to keep the infomation update
         """
         #! temperarily use connect to backend function
-        self._schedular = Schedular(self._connect_to_backend, 30)
-        self._schedular.start()
+        self._conn_checker = Schedular(self._connect_to_backend, 30)
+        self._conn_checker.start()
 
     @final
     def _create_logger(self):

@@ -57,9 +57,14 @@ class LogManager:
         log_file_path = CONFIG.logging.path
         create_dir(log_file_path)
         file_name = f"{log_file_path}/{logger_name}.log"
+        if CONFIG.logging.min_log_level == "debug":
+            log_level = logging.DEBUG
+        else:
+            log_level = logging.INFO
+
         logging.basicConfig(
             filename=file_name,
-            level=logging.INFO,
+            level=log_level,
             format=f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
@@ -75,14 +80,10 @@ class LogManager:
             f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
-        file_handler.setLevel(
-            logging.DEBUG
-        )  # Set the desired log level for the console
         file_handler.setFormatter(formatter)
 
         # create console log handler
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
         console_handler.setFormatter(formatter)
         # create logger
         logger = logging.getLogger(logger_name)

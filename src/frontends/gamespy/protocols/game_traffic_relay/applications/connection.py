@@ -3,6 +3,7 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.extentions.schedular import Schedular
 
 if TYPE_CHECKING:
     from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
@@ -94,3 +95,5 @@ class ConnectionListener:
         # if current client is not in the pair
         if len(clients) == 1 and client not in clients:
             clients.append(client)
+
+

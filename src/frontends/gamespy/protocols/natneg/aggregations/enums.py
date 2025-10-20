@@ -14,7 +14,10 @@ class RequestType(Enum):
     NATIFY_REQUEST = 12
     REPORT = 13
     PRE_INIT = 15
-
+    RELAY_MSG = 100
+    """
+    unispy custom request type for GTR
+    """
 
 class NatPortType(Enum):
     GP = 0
