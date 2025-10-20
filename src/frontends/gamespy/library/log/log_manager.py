@@ -76,15 +76,19 @@ class LogManager:
             backupCount=7,
             encoding="utf-8",
         )
-        formatter = ColoredFormatter(
+        formater = logging.Formatter(
             f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
-        file_handler.setFormatter(formatter)
+        color_formatter = ColoredFormatter(
+            f"%(asctime)s [{logger_name}] [%(levelname)s]: %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+        file_handler.setFormatter(formater)
 
         # create console log handler
         console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
+        console_handler.setFormatter(color_formatter)
         # create logger
         logger = logging.getLogger(logger_name)
         logger.addHandler(file_handler)
