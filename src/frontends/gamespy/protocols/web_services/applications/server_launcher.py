@@ -11,7 +11,9 @@ class ServerLauncher(ServerLauncherBase):
             config_name="WebServices", client_cls=Client, server_cls=HttpServer
         )
 
-if __name__ == "__main__":
 
-    s = ServerLauncher()
-    s.start()
+if __name__ == "__main__":
+    from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    helper = DebugHelper(
+        "./frontends/gamespy/protocols/web_services", ServerLauncher)
+    helper.start()

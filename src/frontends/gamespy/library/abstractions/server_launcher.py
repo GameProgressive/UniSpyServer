@@ -11,7 +11,7 @@ from prettytable import PrettyTable
 from frontends.gamespy.library.abstractions.client import ClientBase
 from typing import final
 
-VERSION = 0.45
+VERSION = 0.46
 _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
     {
         "PresenceConnectionManager": "PCM",

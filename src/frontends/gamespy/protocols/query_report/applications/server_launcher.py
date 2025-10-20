@@ -15,5 +15,7 @@ class ServerLauncher(ServerLauncherBase):
 
 
 if __name__ == "__main__":
-    s = ServerLauncher()
-    s.start()
+    from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    helper = DebugHelper(
+        "./frontends/gamespy/protocols/query_report", ServerLauncher)
+    helper.start()

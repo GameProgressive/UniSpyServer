@@ -9,8 +9,10 @@ class ServerLauncher(ServerLauncherBase):
             config_name="ServerBrowserV2", client_cls=Client, server_cls=TcpServer
         )
 
-if __name__ == "__main__":
-    v2 = ServerLauncher()
-    v2.start()
-    # todo: add v1 server here
 
+if __name__ == "__main__":
+    from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    helper = DebugHelper(
+        "./frontends/gamespy/protocols/server_browser", ServerLauncher)
+    helper.start()
+    # todo: add v1 server here
