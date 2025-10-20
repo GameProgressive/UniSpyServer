@@ -68,17 +68,7 @@ def publish_message(request: PublishMessageRequest):
 
 @router.websocket(f"{CHAT}/ws")
 async def websocket_endpoint(ws: WebSocket):
-    await ws.accept()
-    if isinstance(ws, WebSocket) and ws.client is not None:
-        MANAGER.connect(ws)
-    try:
-        while True:
-            _ = await ws.receive_json()
-    except WebSocketDisconnect:
-        if ws.client is not None:
-            MANAGER.disconnect(ws)
-        # todo remove chat info by websocket
-        print("Client disconnected")
+    await MANAGER.process_websocket(ws)
 
 
 # region General

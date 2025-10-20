@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket
 from backends.protocols.gamespy.query_report.broker import MANAGER, launch_brocker
 from backends.protocols.gamespy.query_report.handlers import (
     AvaliableHandler, HeartbeatHandler, KeepAliveHandler)
@@ -12,17 +12,7 @@ router = APIRouter(lifespan=launch_brocker)
 
 @router.websocket(f"{QUERY_REPORT}/ws")
 async def websocket_endpoint(ws: WebSocket):
-    await ws.accept()
-    if isinstance(ws, WebSocket) and ws.client is not None:
-        MANAGER.connect(ws)
-    try:
-        while True:
-            _ = await ws.receive_json()
-            # query report do not process ws client message
-    except WebSocketDisconnect:
-        if ws.client is not None:
-            MANAGER.disconnect(ws)
-        print("Client disconnected")
+    await MANAGER.process_websocket(ws)
 
 
 @router.post(f"{QUERY_REPORT}/HeartbeatHandler")

@@ -1,6 +1,8 @@
 import asyncio
 import logging
-from fastapi import WebSocket
+from fastapi import WebSocket, WebSocketDisconnect
+
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 
 class WebsocketManager:
@@ -64,3 +66,20 @@ class WebsocketManager:
             if ws.client.host not in except_ip:
                 filtered_wss.append(ws)
         self._broadcast(message, filtered_wss)
+
+    async def process_websocket(self, ws: WebSocket):
+        """
+        process websocket connection here
+        """
+        await ws.accept()
+        if isinstance(ws, WebSocket) and ws.client is not None:
+            self.connect(ws)
+        try:
+            while True:
+                _ = await ws.receive_json()
+        except WebSocketDisconnect:
+            if ws.client is not None:
+                # remove chat info by websocket
+                self.disconnect(ws)
+                GLOBAL_LOGGER.info(
+                    f"websocket client: [{ws.client.host}:{ws.client.port} is disconnected")
