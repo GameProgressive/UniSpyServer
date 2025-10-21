@@ -12,7 +12,6 @@ class AddressCheckResult(CommonResultBase):
 
 class ConnectResult(ResultBase):
     is_both_client_ready: bool
-    got_your_data: bytes = bytes([1])
     status: ConnectPacketStatus | None
     ip: str | None
     port: int | None

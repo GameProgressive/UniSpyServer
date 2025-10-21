@@ -1,4 +1,5 @@
 from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
+from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.protocols.chat.contracts.results import (
     AtmResult,
     NoticeResult,
@@ -53,6 +54,7 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     AtmRequest,
     NoticeRequest,
     PrivateRequest,
+    PublishMessageRequest,
     UtmRequest,
     GetCKeyRequest,
     GetChannelKeyRequest,
@@ -81,7 +83,6 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     GetUdpRelayRequest,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType
-from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
 from frontends.gamespy.protocols.chat.abstractions.handler import (
     ChannelHandlerBase,
@@ -95,7 +96,7 @@ from frontends.gamespy.protocols.chat.abstractions.handler import (
 class CdKeyHandler(CmdHandlerBase):
     _request: CdkeyRequest
 
-    def __init__(self, client: ClientBase, request: CdkeyRequest):
+    def __init__(self, client: Client, request: CdkeyRequest):
         assert isinstance(request, CdkeyRequest)
         super().__init__(client, request)
         self._is_fetching = False
@@ -108,7 +109,7 @@ class CryptHandler(CmdHandlerBase):
     _request: CryptRequest
     _result: CryptResult
 
-    def __init__(self, client: ClientBase, request: RequestBase):
+    def __init__(self, client: Client, request: RequestBase):
         assert isinstance(request, CryptRequest)
         super().__init__(client, request)
         self._result_cls = CryptResult
@@ -129,7 +130,7 @@ class GetKeyHandler(CmdHandlerBase):
     _request: GetKeyRequest
     _result: GetKeyResult
 
-    def __init__(self, client: ClientBase, request: GetKeyRequest):
+    def __init__(self, client: Client, request: GetKeyRequest):
         assert isinstance(request, GetKeyRequest)
         super().__init__(client, request)
         self._result_cls = GetKeyResult
@@ -139,7 +140,7 @@ class GetKeyHandler(CmdHandlerBase):
 class GetUdpRelayHandler(CmdHandlerBase):
     _request: GetUdpRelayRequest
 
-    def __init__(self, client: ClientBase, request: GetUdpRelayRequest):
+    def __init__(self, client: Client, request: GetUdpRelayRequest):
         assert isinstance(request, GetUdpRelayRequest)
         super().__init__(client, request)
 
@@ -147,7 +148,7 @@ class GetUdpRelayHandler(CmdHandlerBase):
 class InviteHandler(CmdHandlerBase):
     _request: InviteRequest
 
-    def __init__(self, client: ClientBase, request: InviteRequest):
+    def __init__(self, client: Client, request: InviteRequest):
         assert isinstance(request, InviteRequest)
         super().__init__(client, request)
 
@@ -157,7 +158,7 @@ class ListHandler(PostLoginHandlerBase):
     _result: ListResult
     _result_cls: type[ListResult]
 
-    def __init__(self, client: ClientBase, request: ListRequest):
+    def __init__(self, client: Client, request: ListRequest):
         assert isinstance(request, ListRequest)
         super().__init__(client, request)
         self._result_cls = ListResult
@@ -168,7 +169,7 @@ class LoginHandler(CmdHandlerBase):
     _request: LoginRequest
     _result: LoginResult
 
-    def __init__(self, client: ClientBase, request: LoginRequest):
+    def __init__(self, client: Client, request: LoginRequest):
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
         self._result_cls = LoginResult
@@ -180,7 +181,7 @@ class NickHandler(CmdHandlerBase):
     _result: NickResult
     _result_cls: type[NickResult]
 
-    def __init__(self, client: ClientBase, request: NickRequest):
+    def __init__(self, client: Client, request: NickRequest):
         assert isinstance(request, NickRequest)
         super().__init__(client, request)
         self._result_cls = NickResult
@@ -195,7 +196,7 @@ class PingHandler(CmdHandlerBase):
     _request: PingRequest
     _result: PingResult
 
-    def __init__(self, client: ClientBase, request: PingRequest):
+    def __init__(self, client: Client, request: PingRequest):
         assert isinstance(request, PingRequest)
         super().__init__(client, request)
         self._result_cls = PingResult
@@ -205,7 +206,7 @@ class PingHandler(CmdHandlerBase):
 class QuitHandler(CmdHandlerBase):
     _request: QuitRequest
 
-    def __init__(self, client: ClientBase, request: QuitRequest):
+    def __init__(self, client: Client, request: QuitRequest):
         assert isinstance(request, QuitRequest)
         super().__init__(client, request)
         self._is_fetching = False
@@ -214,7 +215,7 @@ class QuitHandler(CmdHandlerBase):
 class SetKeyHandler(PostLoginHandlerBase):
     _request: SetKeyRequest
 
-    def __init__(self, client: ClientBase, request: SetKeyRequest):
+    def __init__(self, client: Client, request: SetKeyRequest):
         assert isinstance(request, SetKeyRequest)
         super().__init__(client, request)
 
@@ -222,7 +223,7 @@ class SetKeyHandler(PostLoginHandlerBase):
 class UserHandler(CmdHandlerBase):
     _request: UserRequest
 
-    def __init__(self, client: ClientBase, request: UserRequest):
+    def __init__(self, client: Client, request: UserRequest):
         assert isinstance(request, UserRequest)
         super().__init__(client, request)
         self._is_fetching = False
@@ -236,7 +237,7 @@ class UserIPHandler(CmdHandlerBase):
     _request: UserIPRequest
     _result: UserIPResult
 
-    def __init__(self, client: ClientBase, request: UserIPRequest):
+    def __init__(self, client: Client, request: UserIPRequest):
         assert isinstance(request, UserIPRequest)
         super().__init__(client, request)
         self._is_fetching = False
@@ -258,7 +259,7 @@ class WhoHandler(CmdHandlerBase):
     _request: WhoRequest
     _result: WhoResult
 
-    def __init__(self, client: ClientBase, request: WhoRequest):
+    def __init__(self, client: Client, request: WhoRequest):
         assert isinstance(request, WhoRequest)
         super().__init__(client, request)
         self._result_cls = WhoResult
@@ -269,7 +270,7 @@ class WhoIsHandler(CmdHandlerBase):
     _request: WhoIsRequest
     _result: WhoIsResult
 
-    def __init__(self, client: ClientBase, request: WhoIsRequest):
+    def __init__(self, client: Client, request: WhoIsRequest):
         assert isinstance(request, WhoIsRequest)
         super().__init__(client, request)
         self._result_cls = WhoIsResult
@@ -283,7 +284,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
     _request: GetChannelKeyRequest
     _result: GetChannelKeyResult
 
-    def __init__(self, client: ClientBase, request: GetChannelKeyRequest):
+    def __init__(self, client: Client, request: GetChannelKeyRequest):
         assert isinstance(request, GetChannelKeyRequest)
         super().__init__(client, request)
 
@@ -298,7 +299,7 @@ class GetCKeyHandler(ChannelHandlerBase):
     _request: GetCKeyRequest
     _result: GetCKeyResult
 
-    def __init__(self, client: ClientBase, request: GetCKeyRequest):
+    def __init__(self, client: Client, request: GetCKeyRequest):
         assert isinstance(request, GetCKeyRequest)
         super().__init__(client, request)
         self._result_cls = GetCKeyResult
@@ -309,7 +310,7 @@ class JoinHandler(ChannelHandlerBase):
     _request: JoinRequest
     _result: JoinResult
 
-    def __init__(self, client: ClientBase, request: JoinRequest):
+    def __init__(self, client: Client, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
         self._is_broadcast = True
@@ -334,7 +335,7 @@ class KickHandler(ChannelHandlerBase):
     _request: KickRequest
     _result: KickResult
 
-    def __init__(self, client: ClientBase, request: KickRequest):
+    def __init__(self, client: Client, request: KickRequest):
         assert isinstance(request, KickRequest)
         super().__init__(client, request)
         self._result_cls = KickResult
@@ -345,7 +346,7 @@ class ModeHandler(ChannelHandlerBase):
     _request: ModeRequest
     _result: ModeResult
 
-    def __init__(self, client: ClientBase, request: ModeRequest):
+    def __init__(self, client: Client, request: ModeRequest):
         assert isinstance(request, ModeRequest)
         super().__init__(client, request)
         self._result_cls = ModeResult
@@ -370,7 +371,7 @@ class NamesHandler(ChannelHandlerBase):
     _request: NamesRequest
     _result: NamesResult
 
-    def __init__(self, client: ClientBase, request: NamesRequest):
+    def __init__(self, client: Client, request: NamesRequest):
         assert isinstance(request, NamesRequest)
         super().__init__(client, request)
         self._result_cls = NamesResult
@@ -381,7 +382,7 @@ class PartHandler(ChannelHandlerBase):
     _request: PartRequest
     _result: PartResult
 
-    def __init__(self, client: ClientBase, request: PartRequest):
+    def __init__(self, client: Client, request: PartRequest):
         assert isinstance(request, PartRequest)
         super().__init__(client, request)
         self._result_cls = PartResult
@@ -392,7 +393,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
     _request: SetChannelKeyRequest
     _result: SetChannelKeyResult
 
-    def __init__(self, client: ClientBase, request: SetChannelKeyRequest):
+    def __init__(self, client: Client, request: SetChannelKeyRequest):
         assert isinstance(request, SetChannelKeyRequest)
         super().__init__(client, request)
         self._result_cls = SetChannelKeyResult
@@ -403,7 +404,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
 class SetCKeyHandler(ChannelHandlerBase):
     _request: SetCKeyRequest
 
-    def __init__(self, client: ClientBase, request: SetCKeyRequest):
+    def __init__(self, client: Client, request: SetCKeyRequest):
         assert isinstance(request, SetCKeyRequest)
         super().__init__(client, request)
         self._result_cls = SetCKeyResult
@@ -414,7 +415,7 @@ class TopicHandler(ChannelHandlerBase):
     _request: TopicRequest
     _result: TopicResult
 
-    def __init__(self, client: ClientBase, request: TopicRequest):
+    def __init__(self, client: Client, request: TopicRequest):
         assert isinstance(request, TopicRequest)
         super().__init__(client, request)
         self._result_cls = TopicResult
@@ -428,7 +429,7 @@ class ATMHandler(MessageHandlerBase):
     _request: AtmRequest
     _result: AtmResult
 
-    def __init__(self, client: ClientBase, request: AtmRequest):
+    def __init__(self, client: Client, request: AtmRequest):
         super().__init__(client, request)
         assert isinstance(request, AtmRequest)
         self._result_cls = AtmResult
@@ -439,7 +440,7 @@ class UTMHandler(MessageHandlerBase):
     _request: UtmRequest
     _result: UtmResult
 
-    def __init__(self, client: ClientBase, request: UtmRequest):
+    def __init__(self, client: Client, request: UtmRequest):
         assert isinstance(request, UtmRequest)
         super().__init__(client, request)
         self._result_cls = UtmResult
@@ -450,7 +451,7 @@ class NoticeHandler(MessageHandlerBase):
     _request: NoticeRequest
     _result: NoticeResult
 
-    def __init__(self, client: ClientBase, request: NoticeRequest):
+    def __init__(self, client: Client, request: NoticeRequest):
         assert isinstance(request, NoticeRequest)
         super().__init__(client, request)
         self._result_cls = NoticeResult
@@ -461,8 +462,16 @@ class PrivateHandler(MessageHandlerBase):
     _request: PrivateRequest
     _result: PrivateResult
 
-    def __init__(self, client: ClientBase, request: PrivateRequest):
+    def __init__(self, client: Client, request: PrivateRequest):
         assert isinstance(request, PrivateRequest)
         super().__init__(client, request)
         self._result_cls = PrivateResult
         self._response_cls = PrivateResponse
+
+
+# region publish message handler
+class PublishMessageHandler(CmdHandlerBase):
+    _request: PublishMessageRequest
+
+    def __init__(self, client: Client, request: RequestBase):
+        super().__init__(client, request)

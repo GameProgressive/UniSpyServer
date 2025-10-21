@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
+from frontends.gamespy.library.abstractions.server_launcher import ServerFactory, ServerLauncherBase
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.extentions.schedular import Schedular
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
@@ -25,7 +25,8 @@ class ServerLauncher(ServerLauncherBase):
 
     def _get_public_ip(self):
         url = f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/get_my_ip"
-        data = self._get_data_from_backends(url=url, is_post=False)
+        data = ServerLauncherBase.get_data_from_backends(
+            url=url, json_str="{}")
         self._public_ip = data['ip']
 
     def _gtr_heartbeat(self):
@@ -41,17 +42,17 @@ class ServerLauncher(ServerLauncherBase):
             f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/heartbeat", req_str
         )
 
-    def _connect_to_backend(self):
+    def connect_to_backend(self):
         """
         check backend availability
         """
-        assert self.logger is not None
+        assert self._logger is not None
         if CONFIG.unittest.is_collect_request:
-            self.logger.debug(
+            self._logger.debug(
                 "CONFIG.unittest.is_collect_request is enabled ignore send heartbeat to backend"
             )
             return
-        super()._connect_to_backend()
+        super().connect_to_backend()
         self._gtr_heartbeat()
 
     # region Expire Checker
@@ -74,6 +75,7 @@ class ServerLauncher(ServerLauncherBase):
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    gtr = ServerLauncher()
     helper = DebugHelper(
-        "./frontends/gamespy/protocols/game_traffic_relay", ServerLauncher)
+        "./frontends/gamespy/protocols/game_traffic_relay", ServerFactory([gtr]))
     helper.start()

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Callable
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 if TYPE_CHECKING:
-    from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
+    from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase, ServerFactory
 
 
 class FileChangeHandler(FileSystemEventHandler):
@@ -43,11 +43,11 @@ class FileChangeHandler(FileSystemEventHandler):
 class DebugHelper:
     _observer: object
     _folder_path: str
-    _launch_cls: type["ServerLauncherBase"]
+    _factory: "ServerFactory"
 
-    def __init__(self, folder_path: str, launch_cls: type["ServerLauncherBase"]) -> None:
+    def __init__(self, folder_path: str, factory: "ServerFactory") -> None:
         self._folder_path = folder_path
-        self._launch_cls = launch_cls
+        self._factory = factory
 
     def start(self):
         # Initialize the ArgumentParser
@@ -86,5 +86,4 @@ class DebugHelper:
             self._observer.stop()
 
     def __start_normal(self):
-        target = self._launch_cls()  # type: ignore
-        target.start()  # type: ignore
+        self._factory.start()

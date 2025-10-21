@@ -133,7 +133,7 @@ class LoginRequest(RequestBase):
 
             profile_nick_index = self._long_param.index("@")
             self.nick_name = self._long_param[0:profile_nick_index]
-            self.email = self._long_param[profile_nick_index + 1 :]
+            self.email = self._long_param[profile_nick_index + 1:]
             return
 
         self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
@@ -538,14 +538,16 @@ class SetCKeyRequest(ChannelRequestBase):
     is_broadcast: bool
     key_value_string: str
     key_values: dict[str, str]
-    
+
     def parse(self) -> None:
         super().parse()
         if self._cmd_params is None:
-            raise ChatException("The cmdParams from SETCKEY request are missing.")
+            raise ChatException(
+                "The cmdParams from SETCKEY request are missing.")
 
         if self._long_param is None:
-            raise ChatException("The longParam from SETCKEY request is missing.")
+            raise ChatException(
+                "The longParam from SETCKEY request is missing.")
 
         self.channel_name = self._cmd_params[0]
         self.nick_name = self._cmd_params[1]
@@ -603,3 +605,18 @@ class PrivateRequest(MessageRequestBase):
 
 class UtmRequest(MessageRequestBase):
     pass
+
+
+# region publish message
+
+class PublishMessageRequest(RequestBase):
+    """
+    this class is use to send broadcast message to backends
+    """
+
+    def parse(self) -> None:
+        """
+        we do not need to parse any irc request, we just send it to backend
+        """
+        pass
+        # return super().parse()

@@ -90,6 +90,9 @@ class NetworkServerBase:
         self._logger = logger
 
     def start(self):
+        """
+        server non-blocking start
+        """
         thread = threading.Thread(target=self._server.serve_forever)
         thread.start()
 

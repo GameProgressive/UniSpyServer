@@ -31,11 +31,12 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
 
 class ServerLauncherBase:
     config: ServerConfig
-    logger: LogWriter | None
-    server: NetworkServerBase | None
-    _conn_checker: Schedular
+    _config_name: str
     _server_cls: type[NetworkServerBase]
     _client_cls: type[ClientBase]
+    _logger: LogWriter
+    _server: NetworkServerBase
+    _available_checker: Schedular
 
     def __init__(
         self,
@@ -45,21 +46,96 @@ class ServerLauncherBase:
     ):
         assert issubclass(client_cls, ClientBase)
         assert issubclass(server_cls, NetworkServerBase)
+        assert isinstance(config_name, str)
         assert config_name in CONFIG.servers
         self.config = CONFIG.servers[config_name]
-        self.server = None
-        self.logger = None
         self._server_cls = server_cls
         self._client_cls = client_cls
         self._create_logger()
+        self._create_server()
+
+    @final
+    def _create_logger(self):
+        assert self.config is not None
+        short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
+        self._logger = LogManager.create(short_name)
+
+    @final
+    def _create_server(self):
+        assert self._logger is not None
+        assert self._server_cls is not None
+        assert self._client_cls is not None
+        self._server = self._server_cls(
+            self.config, self._client_cls, self._logger)
+
+    @final
+    def start(self):
+        self._server.start()
+
+    @staticmethod
+    def get_data_from_backends(url: str, json_str: str):
+        try:
+            # post our server config to backends to register
+            resp = requests.post(url=url, data=json_str)
+
+            data = resp.json()
+            if resp.status_code != 200:
+                raise UniSpyException(data["message"])
+            else:
+                return data
+        except requests.ConnectionError:
+            raise UniSpyException(
+                f"backend server: {CONFIG.backend.url} not available."
+            )
+
+    @final
+    def _heartbeat_to_backend(self, url: str, json_str: str):
+        """
+        send heartbeat to backends
+        """
+        assert isinstance(json_str, str)
+        ServerLauncherBase.get_data_from_backends(url, json_str=json_str)
+
+    def connect_to_backend(self):
+        """
+        check backend availability
+        """
+        assert self.config is not None
+        if CONFIG.unittest.is_collect_request:
+            return
+        self._heartbeat_to_backend(
+            CONFIG.backend.url, self.config.model_dump_json())
+
+    @final
+    def launch_heartbeat_schedular(self):
+        """
+        set the schedular to send heartbeat info to backend to keep the infomation update
+        """
+        #! temperarily use connect to backend function
+        self._available_checker = Schedular(self.connect_to_backend, 30)
+        self._available_checker.start()
+
+
+class ServerFactory:
+    _lauchers: list[ServerLauncherBase]
+
+    def __init__(
+        self,
+        launchers: list[ServerLauncherBase]
+    ):
+        self._lauchers = launchers
 
     def start(self):
         self._connect_to_backend()
         self.__show_unispy_logo()
-        self._launch_server()
-        self._launch_heartbeat_schedular()
+        self._launch_servers()
         print("Server successfully launched.")
         self._keep_running()
+
+    def _connect_to_backend(self):
+        for info in self._lauchers:
+            info.connect_to_backend()
+            info.launch_heartbeat_schedular()
 
     def __show_unispy_logo(self):
         # display logo
@@ -72,79 +148,24 @@ class ServerLauncherBase:
             "Listening Address",
             "Listening Port",
         ]
-        assert self.config is not None
-        table.add_row(
-            [
-                self.config.server_name,
-                self.config.public_address,
-                self.config.listening_port,
-            ]
-        )
+        for info in self._lauchers:
+            table.add_row(
+                [
+                    info.config.server_name,
+                    info.config.public_address,
+                    info.config.listening_port,
+                ]
+            )
         print(table)
 
     @final
-    def _launch_server(self) -> None:
+    def _launch_servers(self) -> None:
         """
         assign data in child class so the related instance can be created here
         """
-        assert self.logger is not None
-        assert self._server_cls is not None
-        assert self._client_cls is not None
-        self.server = self._server_cls(
-            self.config, self._client_cls, self.logger)
-        self.server.start()
 
-    @final
-    def _heartbeat_to_backend(self, url: str, json_str: str):
-        """
-        send heartbeat to backends
-        """
-        assert isinstance(json_str, str)
-        self._get_data_from_backends(url, json_str=json_str)
-
-    @final
-    def _get_data_from_backends(self, url: str, is_post: bool = True, json_str: str | None = None):
-        try:
-            if is_post:
-                # post our server config to backends to register
-                resp = requests.post(url=url, data=json_str)
-            else:
-                resp = requests.get(url=url)
-
-            data = resp.json()
-            if resp.status_code != 200:
-                raise UniSpyException(data["error"])
-            else:
-                return data
-        except requests.ConnectionError:
-            raise UniSpyException(
-                f"backend server: {CONFIG.backend.url} not available."
-            )
-
-    def _connect_to_backend(self):
-        """
-        check backend availability
-        """
-        assert self.config is not None
-        if CONFIG.unittest.is_collect_request:
-            return
-        self._heartbeat_to_backend(
-            CONFIG.backend.url, self.config.model_dump_json())
-
-    @final
-    def _launch_heartbeat_schedular(self):
-        """
-        set the schedular to send heartbeat info to backend to keep the infomation update
-        """
-        #! temperarily use connect to backend function
-        self._conn_checker = Schedular(self._connect_to_backend, 30)
-        self._conn_checker.start()
-
-    @final
-    def _create_logger(self):
-        assert self.config is not None
-        short_name = _SERVER_FULL_SHORT_NAME_MAPPING[self.config.server_name]
-        self.logger = LogManager.create(short_name)
+        for info in self._lauchers:
+            info.start()
 
     @final
     def _keep_running(self):
@@ -153,3 +174,4 @@ class ServerLauncherBase:
         while True:
             sleep(1)
             pass
+

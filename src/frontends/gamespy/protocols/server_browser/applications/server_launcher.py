@@ -1,4 +1,4 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
+from frontends.gamespy.library.abstractions.server_launcher import ServerFactory, ServerLauncherBase
 from frontends.gamespy.library.network.tcp_handler import TcpServer
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 
@@ -12,7 +12,8 @@ class ServerLauncher(ServerLauncherBase):
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    sb2 = ServerLauncher()
     helper = DebugHelper(
-        "./frontends/gamespy/protocols/server_browser", ServerLauncher)
+        "./frontends/gamespy/protocols/server_browser", ServerFactory([sb2]))
     helper.start()
     # todo: add v1 server here

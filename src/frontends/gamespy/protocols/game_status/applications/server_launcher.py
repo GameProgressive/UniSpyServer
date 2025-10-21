@@ -1,5 +1,5 @@
 from frontends.gamespy.protocols.game_status.applications.client import Client
-from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
+from frontends.gamespy.library.abstractions.server_launcher import ServerFactory, ServerLauncherBase
 from frontends.gamespy.library.network.tcp_handler import TcpServer
 
 
@@ -14,9 +14,9 @@ class ServerLauncher(ServerLauncherBase):
         )
 
 
-
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    gs = ServerLauncher()
     helper = DebugHelper(
-        "./frontends/gamespy/protocols/game_status", ServerLauncher)
+        "./frontends/gamespy/protocols/game_status", ServerFactory([gs]))
     helper.start()

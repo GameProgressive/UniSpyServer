@@ -1,4 +1,5 @@
 
+from typing import TYPE_CHECKING
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
@@ -62,10 +63,12 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     UTMHandler,
 )
 
+from frontends.gamespy.protocols.chat.applications.client import Client
+
 
 class Switcher(SwitcherBase):
     _raw_request: str
-    _client: ClientBase
+    _client: Client
 
     def __init__(self, client: ClientBase, raw_request: str) -> None:
         assert isinstance(raw_request, str)

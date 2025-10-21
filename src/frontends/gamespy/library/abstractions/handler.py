@@ -132,27 +132,25 @@ class CmdHandlerBase:
             raise UniSpyException(
                 f"failed to upload data to backends. reason: {response.text}"
             )
-        # match response.status_code:
-        #     case 200:
-        #         pass
-        #     case 450:
-        #         self._handle_upload_error()
-        #     case 500:
-        #         self._handle_upload_error()
-        #     case _:
-        #          raise UniSpyException(
-        #         f"failed to upload data to backends. reason: {response.text}"
-        #     )
 
-        if "error" in self._http_result:
-            self._handle_upload_error()
+        match response.status_code:
+            case 200:
+                pass
+            case 450:
+                self._handle_upload_error()
+            case 500:
+                self._handle_upload_error()
+            case _:
+                raise UniSpyException(
+                    f"failed to upload data to backends. reason: {response.text}"
+                )
 
     def _handle_upload_error(self):
         """
         handle the error message response from backend
         """
         # we raise the error as UniSpyException
-        raise UniSpyException(self._http_result["error"])
+        raise UniSpyException(self._http_result["message"])
 
     @final
     def _fetch_data(self):

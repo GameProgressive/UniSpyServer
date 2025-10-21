@@ -1,4 +1,4 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase
+from frontends.gamespy.library.abstractions.server_launcher import ServerFactory, ServerLauncherBase
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.natneg.applications.client import Client
 
@@ -16,6 +16,7 @@ class ServerLauncher(ServerLauncherBase):
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+    nn = ServerLauncher()
     helper = DebugHelper(
-        "./frontends/gamespy/protocols/natneg", ServerLauncher)
+        "./frontends/gamespy/protocols/natneg", ServerFactory([nn]))
     helper.start()

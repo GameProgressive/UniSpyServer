@@ -54,12 +54,12 @@ class ResponseBase(lib.ResponseBase):
         super().__init__(result)
 
     def build(self) -> None:
-        data = bytes()
-        data += MAGIC_DATA
-        data += self._result.version.to_bytes(1)
-        data += self._result.packet_type.value.to_bytes(1)
-        data += self._result.cookie.to_bytes(4)
-        self.sending_buffer = data
+        data = bytearray()
+        data.extend(MAGIC_DATA)
+        data.append(self._result.version)
+        data.append(self._result.packet_type.value)
+        data.extend(self._result.cookie.to_bytes(4))
+        self.sending_buffer = bytes(data)
 
 
 class CommonRequestBase(RequestBase):
@@ -85,11 +85,11 @@ class CommonResponseBase(ResponseBase):
 
     def build(self) -> None:
         super().build()
-        data = bytes()
-        data += self.sending_buffer
-        data += self._result.port_type.value.to_bytes(1)
-        data += self._result.client_index.value.to_bytes(1)
-        data += int(self._result.use_game_port).to_bytes(1)
-        data += ip_to_4_bytes(self._result.public_ip_addr)
-        data += self._result.public_port.to_bytes(2)
-        self.sending_buffer = data
+        data = bytearray()
+        data.extend(self.sending_buffer)
+        data.append(self._result.port_type.value)
+        data.append(self._result.client_index.value)
+        data.append(int(self._result.use_game_port))
+        data.extend(ip_to_4_bytes(self._result.public_ip_addr))
+        data.extend(self._result.public_port.to_bytes(2))
+        self.sending_buffer = bytes(data)
