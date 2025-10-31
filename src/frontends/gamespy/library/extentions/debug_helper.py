@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Callable
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 if TYPE_CHECKING:
-    from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase, ServerFactory
+    from frontends.gamespy.library.abstractions.server_launcher import ServerFactory
 
 
 class FileChangeHandler(FileSystemEventHandler):
@@ -82,7 +82,9 @@ class DebugHelper:
             self._observer.start()
             while True:
                 time.sleep(1)
-        except:
+        except Exception as e:
+            print(str(e))
+        finally:
             self._observer.stop()
 
     def __start_normal(self):

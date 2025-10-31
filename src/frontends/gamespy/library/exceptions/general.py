@@ -26,6 +26,8 @@ class UniSpyException(Exception):
             if issubclass(type(e), UniSpyException):
                 ex: UniSpyException = e  # type:ignore
                 client.log_error(ex.message)
+            elif issubclass(type(e), BrokenPipeError):
+                client.log_warn(f"client disconnect before message send")
             else:
                 client.log_error(traceback.format_exc())
         # if we are unittesting we raise the exception out

@@ -129,7 +129,6 @@ class ServerFactory:
         launchers: list[ServerLauncherBase]
     ):
         self._lauchers = launchers
-        self.stop_event = Event()  # Event for stopping threads
 
     def start(self):
         self._connect_to_backend()
@@ -182,7 +181,6 @@ class ServerFactory:
                 sleep(1)
                 pass
         except KeyboardInterrupt:
-            self.stop_event.set()
             for info in self._lauchers:
                 info.stop()
             print("\nUniSpy shutdown.")
