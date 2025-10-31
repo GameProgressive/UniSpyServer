@@ -76,6 +76,5 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     gtr = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/game_traffic_relay", ServerFactory([gtr]))
+    helper = DebugHelper("./frontends/", ServerFactory([gtr]))
     helper.start()

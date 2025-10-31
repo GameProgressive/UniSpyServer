@@ -36,7 +36,6 @@ class AddressCheckHandler(CmdHandlerBase):
         assert isinstance(client, Client)
         assert isinstance(request, AddressCheckRequest)
         super().__init__(client, request)
-        self._is_fetching = False
         self._is_uploading = False
 
     def _response_construct(self) -> None:
@@ -64,7 +63,6 @@ class ConnectAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ConnectAckRequest) -> None:
         assert isinstance(request, ConnectAckRequest)
         super().__init__(client, request)
-        self._is_fetching = False
         self._is_uploading = False
 
     def _response_construct(self) -> None:
@@ -75,13 +73,11 @@ class ConnectAckHandler(CmdHandlerBase):
 class ConnectHandler(CmdHandlerBase):
     _request: ConnectRequest
     _result: ConnectResult
-    _result_cls: type[ConnectResult]
+    _response: ConnectResponse
 
     def __init__(self, client: Client, request: ConnectRequest) -> None:
         assert isinstance(request, ConnectRequest)
         super().__init__(client, request)
-        self._result_cls = ConnectResult
-        self._response_cls = ConnectResponse
 
     def _response_construct(self) -> None:
         if not self._result.is_both_client_ready:
@@ -93,15 +89,13 @@ class ConnectHandler(CmdHandlerBase):
 
 class ErtAckHandler(CmdHandlerBase):
     _request: ErtAckRequest
-    _result: ErtAckResult
     _response: ErcAckResponse
 
     def __init__(self, client: Client, request: ErtAckRequest) -> None:
         assert isinstance(request, ErtAckRequest)
         super().__init__(client, request)
-        self._is_fetching = False
 
-    def _response_construct(self) -> None:
+    def _data_operate(self) -> None:
         """
         Natneg require fast response, so we do not wait for upload data.
         """
@@ -114,7 +108,6 @@ class ErtAckHandler(CmdHandlerBase):
             use_game_port=self._request.use_game_port,
             port_type=self._request.port_type
         )
-        self._response = ErcAckResponse(self._result)
 
 
 class InitHandler(CmdHandlerBase):
@@ -123,14 +116,13 @@ class InitHandler(CmdHandlerBase):
     """
 
     _request: InitRequest
-    _result: InitResult
-    _response: InitResponse
     _client: Client
+    _result: InitResult
+    # _response: InitResponse
 
     def __init__(self, client: Client, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
         super().__init__(client, request)
-        self._is_fetching = False
 
     def _response_construct(self):
         """
@@ -181,13 +173,10 @@ class InitHandler(CmdHandlerBase):
 
 class NatifyHandler(CmdHandlerBase):
     _request: NatifyRequest
-    _result: NatifyResult
-    _response: NatifyResponse
 
     def __init__(self, client: Client, request: NatifyRequest) -> None:
         assert isinstance(request, NatifyRequest)
         super().__init__(client, request)
-        self._is_fetching = False
         self._is_uploading = False
 
     def _response_construct(self):
@@ -208,9 +197,7 @@ class NatifyHandler(CmdHandlerBase):
 
 class ReportHandler(CmdHandlerBase):
     _request: ReportRequest
-    _result: ReportResult
 
     def __init__(self, client: Client, request: ReportRequest) -> None:
         assert isinstance(request, ReportRequest)
         super().__init__(client, request)
-        self._is_fetching = False

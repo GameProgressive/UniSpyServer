@@ -62,13 +62,14 @@ if TYPE_CHECKING:
 # region General
 
 
+@final
 class KeepAliveHandler(CmdHandlerBase):
     _request: KeepAliveRequest
 
-    def __init__(self, client: "Client", request: KeepAliveRequest) -> None:
+    def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        
 
     def _data_operate(self) -> None:
         # we set ip and data to request
@@ -80,44 +81,46 @@ class KeepAliveHandler(CmdHandlerBase):
         self._response = KeepAliveResponse()
 
 
+@final
 class LoginHandler(CmdHandlerBase):
     _request: LoginRequest
-    _result_cls: type[LoginResult]
     _result: LoginResult
+    _response: LoginResponse
 
-    def __init__(self, client: "Client", request: LoginRequest) -> None:
+    def __init__(self, client: Client, request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
         self._result_cls = LoginResult
         self._response_cls = LoginResponse
 
 
+@final
 class LogoutHandler(LoginedHandlerBase):
     _request: LogoutRequest
 
-    def __init__(self, client: "Client", request: LogoutRequest) -> None:
+    def __init__(self, client: Client, request: LogoutRequest) -> None:
         assert isinstance(request, LogoutRequest)
         super().__init__(client, request)
 
 
+@final
 # todo create new handler
 class NewUserHandler(CmdHandlerBase):
     _request: NewUserRequest
-    _result_cls: type[NewUserResult]
     _result: NewUserResult
+    _response: NewUserResponse
     # todo create seperate request and result
 
     def __init__(self, client: Client, request: NewUserRequest) -> None:
         assert isinstance(request, NewUserRequest)
         super().__init__(client, request)
-        self._result_cls = NewUserResult
-        self._response_cls = NewUserResponse
 
 
+@final
 class SdkRevisionHandler(CmdHandlerBase):
     _request: LoginRequest
 
-    def __init__(self, client: "Client", request: LoginRequest) -> None:
+    def __init__(self, client: Client, request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
 
@@ -140,35 +143,35 @@ class SdkRevisionHandler(CmdHandlerBase):
 # region Buddy
 
 
+@final
 class AddBuddyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         raise NotImplementedError()
         super().__init__(client, request)
 
 
+@final
 class BlockListHandler(CmdHandlerBase):
     _result: BlockListResult
+    _response: BlockListResponse
 
     def __init__(self, client: Client) -> None:
         assert isinstance(client, Client)
-        self._is_fetching = False
         raise NotImplementedError()
 
-    def _response_construct(self) -> None:
-        self._response = BlockListResponse(self._result)
 
-
+@final
 class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
-    _result_cls: type[BuddyListResult]
+    _response: BuddyListResponse
 
     def __init__(self, client):
         self._client = client
         assert isinstance(client, Client)
-        self._result_cls = BuddyListResult
-        self._response_cls = BuddyListResponse
+        raise NotImplementedError()
 
 
+@final
 class BuddyStatusInfoHandler(CmdHandlerBase):
     """
     This is what the message should look like.  Its broken up for easy viewing.
@@ -181,6 +184,7 @@ class BuddyStatusInfoHandler(CmdHandlerBase):
         super().__init__(client, request)
 
 
+@final
 class DelBuddyHandler(LoginedHandlerBase):
     _request: DelBuddyRequest
 
@@ -190,6 +194,7 @@ class DelBuddyHandler(LoginedHandlerBase):
         self._is_uploading = False
 
 
+@final
 class InviteToHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         raise NotImplementedError()
@@ -198,6 +203,7 @@ class InviteToHandler(LoginedHandlerBase):
     pass
 
 
+@final
 class StatusHandler(CmdHandlerBase):
     _request: StatusRequest
     _result: StatusResult
@@ -205,19 +211,19 @@ class StatusHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: StatusRequest) -> None:
         assert isinstance(request, StatusRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        
 
 
+@final
 class StatusInfoHandler(LoginedHandlerBase):
     _request: StatusInfoRequest
     _result: StatusInfoResult
-
+    _response: StatusInfoResponse
     # TODO: check if this implement is correct
+
     def __init__(self, client: Client, request: StatusInfoRequest) -> None:
         assert isinstance(request, StatusInfoRequest)
         super().__init__(client, request)
-        self._result_cls = StatusInfoResult
-        self._response_cls = StatusInfoResponse
 
     def _response_send(self) -> None:
         # todo: check if response is needed
@@ -234,31 +240,29 @@ class AddBlockHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AddBlockRequest) -> None:
         assert isinstance(request, AddBlockRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        
 
 
 @final
 class GetProfileHandler(CmdHandlerBase):
     _request: GetProfileRequest
     _result: GetProfileResult
+    _response: GetProfileResponse
 
     def __init__(self, client: Client, request: GetProfileRequest) -> None:
         assert isinstance(request, GetProfileRequest)
         super().__init__(client, request)
-        self._result_cls = GetProfileResult
-        self._response_cls = GetProfileResponse
 
 
 @final
 class NewProfileHandler(CmdHandlerBase):
     _request: NewProfileRequest
     _result: NewProfileResult
+    _response: NewProfileResponse
 
     def __init__(self, client: Client, request: NewProfileRequest) -> None:
         assert isinstance(request, NewProfileRequest)
         super().__init__(client, request)
-        self._result_cls = NewProfileResult
-        self._response_cls = NewProfileResponse
 
 
 @final
@@ -268,18 +272,18 @@ class RegisterCDKeyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterCDKeyRequest) -> None:
         assert isinstance(request, RegisterCDKeyRequest)
         super().__init__(client, request)
-        self._is_fetching = False
+        
 
 
 @final
 class RegisterNickHandler(CmdHandlerBase):
     _request: RegisterNickRequest
+    _result: RegisterNickResult
+    _response: RegisterNickResponse
 
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
         assert isinstance(request, RegisterNickRequest)
         super().__init__(client, request)
-        self._result_cls = RegisterNickResult
-        self._response_cls = RegisterNickResponse
 
 
 @final

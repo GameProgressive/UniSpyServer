@@ -17,6 +17,5 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     pcm = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/presence_connection_manager", ServerFactory([pcm]))
+    helper = DebugHelper("./frontends/", ServerFactory([pcm]))
     helper.start()

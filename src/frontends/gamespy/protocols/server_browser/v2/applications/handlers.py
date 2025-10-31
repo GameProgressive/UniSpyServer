@@ -104,40 +104,37 @@ class SendMessageHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: SendMessageRequest) -> None:
         assert isinstance(request, SendMessageRequest)
         super().__init__(client, request)
-        self._is_fetching = False
         # we just need send the message to backend, then backend will send to queryreport frontend, query report frontend will handle for us
 
 
 class UpdateServerInfoHandler(CmdHandlerBase):
     _request: ServerInfoRequest
     _result: UpdateServerInfoResult
+    _response: UpdateServerInfoResponse
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: ServerInfoRequest) -> None:
+        assert isinstance(request, ServerInfoRequest)
         super().__init__(client, request)
-        self._result_cls = UpdateServerInfoResult
-        self._response_cls = UpdateServerInfoResponse
 
 
 class ServerMainListHandler(ServerListUpdateOptionHandlerBase):
     _request: ServerListRequest
     _result: ServerMainListResult
-    _result_cls: type[ServerMainListResult]
+    _response: ServerMainListResponse
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: ServerListRequest) -> None:
+        assert isinstance(request, ServerListRequest)
         super().__init__(client, request)
-        self._result_cls = ServerMainListResult
-        self._response_cls = ServerMainListResponse
 
 
 class P2PGroupRoomListHandler(ServerListUpdateOptionHandlerBase):
     _request: ServerListRequest
     _result: P2PGroupRoomListResult
-    _result_cls: type[P2PGroupRoomListResult]
+    _response: P2PGroupRoomListResponse
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: ServerListRequest) -> None:
+        assert isinstance(request, ServerListRequest)
         super().__init__(client, request)
-        self._result_cls = P2PGroupRoomListResult
-        self._response_cls = P2PGroupRoomListResponse
 
 
 class ServerFullInfoListHandler(ServerListUpdateOptionHandlerBase):
@@ -159,9 +156,8 @@ class ServerFullInfoListHandler(ServerListUpdateOptionHandlerBase):
     """
     _request: ServerListRequest
     _result: ServerFullInfoListResult
-    _result_cls: type[ServerFullInfoListResult]
+    _response: ServerFullInfoListResponse
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: ServerListRequest) -> None:
+        assert isinstance(request, ServerListRequest)
         super().__init__(client, request)
-        self._result_cls = ServerFullInfoListResult
-        self._response_cls = ServerFullInfoListResponse

@@ -1,5 +1,6 @@
 from frontends.gamespy.library.extentions.encoding import get_bytes
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
+from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import PeerRoomInfo
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     AdHocResponseBase,
     ServerListUpdateOptionResponseBase,
@@ -78,7 +79,6 @@ class UpdateServerInfoResponse(AdHocResponseBase):
 
 
 class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
-    _request: ServerListRequest
     _result: P2PGroupRoomListResult
 
     def build(self) -> None:
@@ -89,9 +89,12 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
         self.sending_buffer = bytes(self._buffer)
 
     def _build_servers_full_info(self):
+        # we have to add a server with group ip 0 to make peer sdk finish the sb process
+        empty_info = PeerRoomInfo(game_name="", groupid=0, hostname="")
+        self._result.peer_room_info.append(empty_info)
         for room in self._result.peer_room_info:
             self._buffer.append(GameServerFlags.HAS_KEYS_FLAG)
-            group_id_bytes = room.group_id.to_bytes()
+            group_id_bytes = room.group_id.to_bytes(length=4)
             self._buffer.extend(group_id_bytes)
             # get gamespy format dict
             gamespy_dict = room.get_gamespy_dict()
@@ -104,7 +107,8 @@ class P2PGroupRoomListResponse(ServerListUpdateOptionResponseBase):
                 )
                 self._buffer.extend(get_bytes(value))
                 self._buffer.append(STRING_SPLITER)
-        end_flag = b"\x00"
+        # apped end flag
+        end_flag = b"\x00\x00\x00\x00"
         self._buffer.extend(end_flag)
 
 

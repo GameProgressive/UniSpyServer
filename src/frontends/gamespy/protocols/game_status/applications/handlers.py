@@ -12,8 +12,6 @@ class AuthGameHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AuthGameRequest) -> None:
         assert isinstance(request, AuthGameRequest)
         super().__init__(client, request)
-        self._result_cls = AuthGameResult
-        self._response_cls = AuthGameResponse
 
     def _response_construct(self) -> None:
         self._client.info.session_key = self._result.session_key
@@ -22,53 +20,45 @@ class AuthGameHandler(CmdHandlerBase):
 
 
 class AuthPlayerHandler(CmdHandlerBase):
-    _result_cls: type[AuthPlayerResult]
+    _request: AuthPlayerRequest
+    _result: AuthPlayerResult
+    _response: AuthPlayerResponse
 
     def __init__(self, client: Client, request: AuthPlayerRequest) -> None:
         assert isinstance(request, AuthPlayerRequest)
         super().__init__(client, request)
-        self._result_cls = AuthPlayerResult
-        self._response_cls = AuthPlayerResponse
-
 
 
 class GetPlayerDataHandler(CmdHandlerBase):
-    _result_cls: type[GetPlayerDataResult]
+    _result: GetPlayerDataResult
+    _response: GetPlayerDataResponse
 
     def __init__(self, client: Client, request: GetPlayerDataRequest) -> None:
         assert isinstance(request, GetPlayerDataRequest)
         super().__init__(client, request)
-        self._result_cls = GetPlayerDataResult
-        self._response_cls = GetPlayerDataResponse
-
-
 
 
 class GetProfileIdHandler(CmdHandlerBase):
-    _result_cls: type[GetProfileIdResult]
+    _result: GetProfileIdResult
+    _response: GetProfileIdResponse
 
     def __init__(self, client: Client, request: GetProfileIdRequest) -> None:
         assert isinstance(request, GetProfileIdRequest)
         super().__init__(client, request)
-        self._result_cls = GetProfileIdResult
-        self._response_cls = GetProfileIdResponse
-
 
 
 class NewGameHandler(CmdHandlerBase):
+    _request: NewGameRequest
+
     def __init__(self, client: Client, request: NewGameRequest) -> None:
         assert isinstance(request, NewGameRequest)
         super().__init__(client, request)
-        self._is_fetching = False
 
 
 class SetPlayerDataHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
         assert isinstance(request, SetPlayerDataRequest)
         super().__init__(client, request)
-        self._is_fetching = False
-
-
 
 
 class UpdateGameHandler(CmdHandlerBase):
@@ -82,5 +72,3 @@ class UpdateGameHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: UpdateGameRequest) -> None:
         assert isinstance(request, UpdateGameRequest)
         super().__init__(client, request)
-        self._is_fetching = False
-

@@ -1,4 +1,5 @@
 
+from typing import final
 from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
 from frontends.gamespy.protocols.presence_search_player.contracts.responses import CheckResponse, NewUserResponse, NicksResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
@@ -8,65 +9,61 @@ from frontends.gamespy.protocols.presence_search_player.abstractions.handler imp
 from frontends.gamespy.protocols.presence_search_player.applications.client import Client
 
 
+@final
 class CheckHandler(CmdHandlerBase):
-    _result_cls: type[CheckResult]
     _request: CheckRequest
     _result: CheckResult
+    _response: CheckResponse
 
     def __init__(self, client: Client, request: CheckRequest) -> None:
         assert isinstance(request, CheckRequest)
         super().__init__(client, request)
-        self._result_cls = CheckResult
-        self._response_cls = CheckResponse
 
 
+@final
 class NewUserHandler(CmdHandlerBase):
-    _result_cls: type[NewUserResult]
     _request: NewUserRequest
     _result: NewUserResult
+    _response: NewUserResponse
 
     def __init__(self, client: Client, request: NewUserRequest) -> None:
         assert isinstance(request, NewUserRequest)
         super().__init__(client, request)
-        self._result_cls = NewUserResult
-        self._response_cls = NewUserResponse
 
 
+@final
 class NicksHandler(CmdHandlerBase):
-    _result_cls: type[NicksResult]
     _request: NicksRequest
     _result: NicksResult
+    _response: NicksResponse
 
     def __init__(self, client: Client, request: NicksRequest) -> None:
         assert isinstance(request, NicksRequest)
         super().__init__(client, request)
-        self._result_cls = NicksResult
-        self._response_cls = NicksResponse
 
 
+@final
 class OthersHandler(CmdHandlerBase):
     _request: OthersRequest
-    _result_cls: type[OthersResult]
     _result: OthersResult
+    _response: OthersResponse
 
     def __init__(self, client: Client, request: OthersRequest) -> None:
         assert isinstance(request, OthersRequest)
         super().__init__(client, request)
-        self._result_cls = OthersResult
-        self._response_cls = OthersResponse
 
 
+@final
 class OthersListHandler(CmdHandlerBase):
-    _result_cls: type[OthersListResult]
     _result: OthersListResult
+    _response: OthersListResponse
 
     def __init__(self, client: Client, request: OthersListRequest) -> None:
         assert isinstance(request, OthersListRequest)
         super().__init__(client, request)
-        self._result_cls = OthersListResult
-        self._response_cls = OthersListResponse
 
 
+@final
 class SearchHandler(CmdHandlerBase):
     """
     last one we search with email this may get few profile so we can not return GPErrorCode
@@ -79,47 +76,41 @@ class SearchHandler(CmdHandlerBase):
     \\more\\<number of items>\\final\\
     \\search\\sesskey\\0\\profileid\\0\\namespaceid\\0\\nick\\gbr359_jordips\\gamename\\gbrome\\final\\
     """
-    _result_cls: type[SearchResult]
     _result: SearchResult
     _response: SearchResponse
 
     def __init__(self, client: Client, request: SearchRequest) -> None:
         assert isinstance(request, SearchRequest)
         super().__init__(client, request)
-        self._result_cls = SearchResult
-        self._response_cls = SearchResponse
 
 
+@final
 class SearchUniqueHandler(CmdHandlerBase):
     _result: SearchUniqueResult
-    _result_cls: type[SearchUniqueResult]
+    _response: SearchUniqueResponse
 
     def __init__(self, client: Client, request: SearchUniqueRequest) -> None:
         assert isinstance(request, SearchUniqueRequest)
         super().__init__(client, request)
-        self._result_cls = SearchUniqueResult
-        self._response_cls = SearchUniqueResponse
 
 
+@final
 class UniqueSearchHandler(CmdHandlerBase):
     _request: UniqueSearchRequest
     _result: UniqueSearchResult
-    _result_cls: type[UniqueSearchResult]
+    _response: UniqueSearchResponse
 
     def __init__(self, client: Client, request: UniqueSearchRequest) -> None:
         assert isinstance(request, UniqueSearchRequest)
         super().__init__(client, request)
-        self._result_cls = UniqueSearchResult
-        self._response_cls = UniqueSearchResponse
 
 
+@final
 class ValidHandler(CmdHandlerBase):
     _result: ValidResult
     _request: ValidRequest
-    _result_cls: type[ValidResult]
+    _response: ValidResponse
 
     def __init__(self, client: Client, request: ValidRequest) -> None:
         assert isinstance(request, ValidRequest)
         super().__init__(client, request)
-        self._result_cls = ValidResult
-        self._response_cls = ValidResponse

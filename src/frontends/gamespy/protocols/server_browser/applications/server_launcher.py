@@ -13,7 +13,6 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     sb2 = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/server_browser", ServerFactory([sb2]))
-    helper.start()
     # todo: add v1 server here
+    helper = DebugHelper("./frontends/", ServerFactory([sb2]))
+    helper.start()

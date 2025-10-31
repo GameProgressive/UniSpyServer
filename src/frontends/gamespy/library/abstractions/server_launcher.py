@@ -1,3 +1,4 @@
+from threading import Thread, Event
 from types import MappingProxyType
 
 from frontends.gamespy.library.abstractions.connections import NetworkServerBase
@@ -72,6 +73,10 @@ class ServerLauncherBase:
     def start(self):
         self._server.start()
 
+    @final
+    def stop(self):
+        self._server.stop()
+
     @staticmethod
     def get_data_from_backends(url: str, json_str: str):
         try:
@@ -124,6 +129,7 @@ class ServerFactory:
         launchers: list[ServerLauncherBase]
     ):
         self._lauchers = launchers
+        self.stop_event = Event()  # Event for stopping threads
 
     def start(self):
         self._connect_to_backend()
@@ -171,7 +177,12 @@ class ServerFactory:
     def _keep_running(self):
         print("Press ctr+c to Quit\n")
         from time import sleep
-        while True:
-            sleep(1)
-            pass
-
+        try:
+            while True:
+                sleep(1)
+                pass
+        except KeyboardInterrupt:
+            self.stop_event.set()
+            for info in self._lauchers:
+                info.stop()
+            print("\nUniSpy shutdown.")

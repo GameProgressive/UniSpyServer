@@ -17,6 +17,5 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     gs = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/game_status", ServerFactory([gs]))
+    helper = DebugHelper("./frontends/", ServerFactory([gs]))
     helper.start()

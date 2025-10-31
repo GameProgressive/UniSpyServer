@@ -7,9 +7,9 @@ import xml.etree.ElementTree as ET
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest
-from frontends.gamespy.protocols.web_services.modules.auth.handlers.general import LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
+from frontends.gamespy.protocols.web_services.modules.auth.applications.handlers import LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.requests import GetPurchaseHistoryRequest, GetStoreAvailabilityRequest
-from frontends.gamespy.protocols.web_services.modules.direct2game.handlers.general import GetPurchaseHistoryHandler, GetStoreAvailabilityHandler
+from frontends.gamespy.protocols.web_services.modules.direct2game.applications.handlers import GetPurchaseHistoryHandler, GetStoreAvailabilityHandler
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
 from frontends.gamespy.protocols.web_services.modules.sake.applications.handlers import CreateRecordHandler, GetMyRecordsHandler, SearchForRecordsHandler
 

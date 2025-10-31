@@ -1,7 +1,7 @@
 import json
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from typing import Type, final
+from typing import final
 import requests
 
 from frontends.gamespy.library.configs import CONFIG
@@ -20,34 +20,59 @@ class CmdHandlerBase:
     _client: "ClientBase"
     _request: "RequestBase"
     _result: "ResultBase | None"
+    """
+    the result instance, create by annotation in child class
+    """
     _response: "ResponseBase | None"
     """
-    the response instance, initialize as None in __init__
+    the response instance, create by annotation in child class
     """
-    _result_cls: "Type[ResultBase] | None"
+    _result_cls: type["ResultBase"] | None
     """
-    the result type class, use to deserialize json data from backend\n
-    the initialization of _result_cls must after call super().__init__()
+    the result class type, create by annotation in child class
     """
-    _response_cls: "Type[ResponseBase]|None"
+    _response_cls: type["ResponseBase"] | None
+    """
+    the response class type, create by annotation in child class
+    """
     _debug: bool = False
     """
     whether is in debug mode, if in debug mode exception will raise from handler
     """
     _is_uploading: bool
     _is_fetching: bool
+    """
+    this is auto assigned variable
+    """
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
         self._client = client
         self._request = request
-        self._result_cls = None
-        self._response_cls = None
+        # create class type by annotation
+        self._get_property_types()
         self._result = None
         self._response = None
         self._is_uploading = True
-        self._is_fetching = True
+        if self._result_cls is None:
+            self._is_fetching = False
+        else:
+            self._is_fetching = True
+
+    def _get_property_types(self):
+        if "_result" in self.__class__.__annotations__:
+            self._result_cls = self.__class__.__annotations__['_result']
+            if self._result_cls == ResultBase:
+                self._result_cls = None
+        else:
+            self._result_cls = None
+        if "_response" in self.__class__.__annotations__:
+            self._response_cls = self.__class__.__annotations__['_response']
+            if self._response_cls == ResponseBase:
+                self._response_cls = None
+        else:
+            self._response_cls = None
 
     def handle(self) -> None:
         try:
@@ -76,11 +101,11 @@ class CmdHandlerBase:
         """
         virtual function, can be override
         """
-        self._prepare_data()
         if self._is_uploading:
+            self._prepare_data()
             self._upload_data()
-        if self._is_fetching:
-            self._fetch_data()
+            if self._is_fetching:
+                self._fetch_data()
 
     def _prepare_data(self):
         self._temp_data = self._request.to_dict()
@@ -161,6 +186,7 @@ class CmdHandlerBase:
         if self._result_cls is None:
             raise UniSpyException(
                 "_result_cls can not be null when feach data.")
+
         assert issubclass(self._result_cls, ResultBase)
         self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
         if "result" not in self._http_result:
@@ -170,10 +196,10 @@ class CmdHandlerBase:
     def _response_construct(self) -> None:
         """construct response here in specific child class"""
         if self._response_cls is not None:
-            assert self._result is not None
-            self._response = self._response_cls(
-                result=self._result)
-        pass
+            if self._result is None:
+                raise UniSpyException(
+                    "result instance is required for response construction")
+            self._response = self._response_cls(result=self._result)
 
     def _response_send(self) -> None:
         """

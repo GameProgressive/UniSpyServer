@@ -98,3 +98,6 @@ class NetworkServerBase:
 
     def __del__(self):
         self._server.shutdown()
+
+    def stop(self):
+        self.__del__()

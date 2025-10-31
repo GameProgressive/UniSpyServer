@@ -17,6 +17,5 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     nn = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/natneg", ServerFactory([nn]))
+    helper = DebugHelper("./frontends/", ServerFactory([nn]))
     helper.start()

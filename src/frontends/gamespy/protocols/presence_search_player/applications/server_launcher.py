@@ -17,6 +17,5 @@ class ServerLauncher(ServerLauncherBase):
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
     psp = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/presence_search_player", ServerFactory([psp]))
+    helper = DebugHelper("./frontends/", ServerFactory([psp]))
     helper.start()

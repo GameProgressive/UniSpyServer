@@ -17,22 +17,18 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.resu
 class GetPurchaseHistoryHandler(CmdHandlerBase):
     _request: GetPurchaseHistoryRequest
     _result: GetPurchaseHistoryResult
+    _response: GetPurchaseHistoryResponse
 
     def __init__(self, client: Client, request: GetPurchaseHistoryRequest) -> None:
         assert isinstance(request, GetPurchaseHistoryRequest)
         super().__init__(client, request)
 
-    def _response_construct(self) -> None:
-        self._response = GetPurchaseHistoryResponse(self._result)
-
 
 class GetStoreAvailabilityHandler(CmdHandlerBase):
     _request: GetStoreAvailabilityRequest
     _result: GetStoreAvailabilityResult
+    _response: GetStoreAvailabilityResponse
 
     def __init__(self, client: Client, request: GetStoreAvailabilityRequest) -> None:
         assert isinstance(request, GetStoreAvailabilityRequest)
         super().__init__(client, request)
-
-    def _response_construct(self) -> None:
-        self._response = GetStoreAvailabilityResponse(self._result)

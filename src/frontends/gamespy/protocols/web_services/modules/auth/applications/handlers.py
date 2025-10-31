@@ -42,36 +42,34 @@ class LoginProfileHandler(CmdHandlerBase):
 class LoginProfileWithGameIdHandler(CmdHandlerBase):
     _request: LoginProfileWithGameIdRequest
     _result: LoginProfileResult
+    _response: LoginProfileWithGameIdResponse
 
-    def __init__(self, client: Client, request: RequestBase) -> None:
+    def __init__(self, client: Client, request: LoginProfileWithGameIdRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginProfileResult
-        self._response_cls = LoginProfileWithGameIdResponse
 
 
 class LoginPs3CertHandler(CmdHandlerBase):
     _request: LoginPs3CertRequest
     _result: LoginPs3CertResult
+    _response: LoginPs3CertResponse
 
     def __init__(self, client: Client, request: LoginPs3CertRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginPs3CertResult
-        self._response_cls = LoginPs3CertResponse
 
 
 class LoginPs3CertWithGameIdHandler(CmdHandlerBase):
     _request: LoginPs3CertWithGameIdRequest
     _result: LoginPs3CertResult
+    _response: LoginPs3CertWithGameIdResponse
 
     def __init__(self, client: Client, request: LoginPs3CertRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginPs3CertResult
-        self._response_cls = LoginPs3CertWithGameIdResponse
 
 
 class LoginRemoteAuthHandler(CmdHandlerBase):
     _request: LoginRemoteAuthRequest
     _result: LoginRemoteAuthResult
+    _response: LoginRemoteAuthResponse
 
     def __init__(self, client: Client, request: LoginRemoteAuthRequest) -> None:
         super().__init__(client, request)
@@ -82,28 +80,25 @@ class LoginRemoteAuthHandler(CmdHandlerBase):
 class LoginRemoteAuthWithGameIdHandler(CmdHandlerBase):
     _request: LoginRemoteAuthWithGameIdRequest
     _result: LoginRemoteAuthResult
+    _response: LoginRemoteAuthWithGameIdResponse
 
     def __init__(self, client: Client, request: LoginRemoteAuthWithGameIdRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginRemoteAuthResult
-        self._response_cls = LoginRemoteAuthWithGameIdResponse
 
 
 class LoginUniqueNickHandler(CmdHandlerBase):
     _request: LoginUniqueNickRequest
     _result: LoginUniqueNickResult
+    _response: LoginUniqueNickResponse
 
     def __init__(self, client: Client, request: LoginUniqueNickRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginUniqueNickResult
-        self._response_cls = LoginUniqueNickResponse
 
 
 class LoginUniqueNickWithGameIdHandler(CmdHandlerBase):
     _request: LoginUniqueNickWithGameIdRequest
     _result: LoginUniqueNickResult
+    _response: LoginUniqueNickWithGameIdResponse
 
     def __init__(self, client: Client, request: LoginUniqueNickWithGameIdRequest) -> None:
         super().__init__(client, request)
-        self._result_cls = LoginUniqueNickResult
-        self._response_cls = LoginUniqueNickWithGameIdResponse

@@ -17,6 +17,5 @@ if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
 
     chat = ServerLauncher()
-    helper = DebugHelper(
-        "./frontends/gamespy/protocols/chat", ServerFactory([chat]))
+    helper = DebugHelper("./frontends/", ServerFactory([chat]))
     helper.start()

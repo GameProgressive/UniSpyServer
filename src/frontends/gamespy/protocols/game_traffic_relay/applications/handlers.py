@@ -15,7 +15,6 @@ class PingHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: PingRequest) -> None:
         assert isinstance(request, PingRequest)
         super().__init__(client, request)
-        self._is_fetching = False
         self._is_uploading = False
 
     def _data_operate(self) -> None:
@@ -65,7 +64,7 @@ class MessageRelayHandler(CmdHandlerBase):
 
     def __init__(self, client: ClientBase, request: RequestBase) -> None:
         super().__init__(client, request)
-        self._is_fetching = False
+        
         self._is_uploading = False
 
     def _data_operate(self) -> None:
