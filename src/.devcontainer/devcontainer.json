@@ -5,7 +5,8 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"runArgs": [
 		"--network=unispy",
-		"--name=unispy_server_dev"
+		"--name=unispy_server_dev",
+		"--add-host=unispy_backends:127.0.0.1"
 	],
 	"image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -25,7 +26,7 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "echo '127.0.0.1 unispy_backends' | sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt",
+	"postCreateCommand": "sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt",
 	"customizations": {
 		"vscode": {
 			"extensions": [
