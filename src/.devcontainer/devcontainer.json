@@ -26,7 +26,7 @@
 		80
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo tee -a /etc/hosts && pip3 install --user -r requirements.txt",
+	"postCreateCommand": "pip3 install --user -r requirements.txt",
 	"customizations": {
 		"vscode": {
 			"extensions": [
