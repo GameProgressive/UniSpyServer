@@ -131,7 +131,7 @@ CREATE TABLE unispy.chat_user_caches (
 --
 
 CREATE TABLE unispy.chat_channel_caches (
-    channel_name character varying NOT NULL PRIMARY KEY,
+    channel_name character varying PRIMARY KEY NOT NULL,
     server_id uuid NOT NULL,
     creator character varying,
     game_name character varying NOT NULL,
@@ -159,6 +159,7 @@ ALTER TABLE unispy.chat_user_caches OWNER TO unispy;
 --
 
 CREATE TABLE unispy.chat_channel_user_caches (
+    id SERIAL PRIMARY KEY NOT NULL,
     nick_name character varying NOT NULL,
     user_name character varying NOT NULL,
     channel_name character varying NOT NULL,

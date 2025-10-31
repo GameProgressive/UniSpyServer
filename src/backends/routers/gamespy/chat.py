@@ -16,6 +16,7 @@ from backends.protocols.gamespy.chat.handlers import (
     PrivateHandler,
     PublishMessageHandler,
     QuitHandler,
+    SetCKeyHandler,
     SetKeyHandler,
     TopicHandler,
     UserHandler,
@@ -216,7 +217,9 @@ def set_channel_key(request: SetChannelKeyRequest) -> SetChannelKeyResponse:
 
 @router.post(f"{CHAT}/SetCKeyHandler", responses=RESPONSES_DEF)
 def set_c_key(request: SetCKeyRequest) -> SetCKeyResponse:
-    raise NotImplementedError()
+    handler = SetCKeyHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/SetGroupHandler", responses=RESPONSES_DEF)

@@ -3,6 +3,7 @@ from uuid import UUID
 from backends.library.database.pg_orm import (
     ENGINE,
     ChatChannelCaches,
+    ChatChannelUserCaches,
     GroupList,
     Games,
     GameServerCaches,
@@ -26,6 +27,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions impor
 def __expire_time():
     return datetime.now() - timedelta(5)
 
+
 def get_peer_staging_channels(
     game_name: str, group_id: int, session: Session
 ) -> list[GameServerInfo]:
@@ -45,7 +47,6 @@ def get_peer_staging_channels(
         t = {k: v for k, v in s.__dict__.items() if k != "_sa_instance_state"}
         data.append(GameServerInfo(**t))
     return data
-
 
 
 def get_peer_group_channel(
@@ -75,9 +76,24 @@ def get_peer_group_channel(
 
         if result is None:
             info = PeerRoomInfo(groupid=gd.groupid,
-                                  game_name=game_name, hostname=gd.roomname)
+                                game_name=game_name,
+                                hostname=gd.roomname)
         else:
-            info = PeerRoomInfo(**result.__dict__)
+            assert isinstance(result.channel_name, str)
+            
+            assert isinstance(result.max_num_user, int)
+            # todo get the peer room extra info
+            player_count = session.query(ChatChannelUserCaches).where(
+                ChatChannelUserCaches.channel_name == result.channel_name).count()
+            password = result.password if result.password is not None else ""
+            assert isinstance(password, str)
+            info = PeerRoomInfo(groupid=gd.groupid,
+                                game_name=game_name,
+                                hostname=result.channel_name,
+                                password=password,
+                                maxplayers=result.max_num_user,
+                                numplayers=player_count,
+                                )
 
         group_info.append(info)
     return group_info
@@ -247,6 +263,7 @@ def clean_expired_game_server_cache(session: Session):
         GameServerCaches.update_time < __expire_time()
     ).delete()
     session.commit()
+
 
 if __name__ == "__main__":
     pass

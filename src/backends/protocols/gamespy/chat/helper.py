@@ -83,15 +83,18 @@ class ChannelHelper:
 
         if channel.creator == user.nick_name:  # type:ignore
             is_creator = True
+            is_operator = True
         else:
             is_creator = False
+            is_operator = False
+        
         chan_user = ChatChannelUserCaches(
             server_id=user.server_id,
             nick_name=user.nick_name,
             user_name=user.user_name,
             channel_name=channel.channel_name,
             is_voiceable=True,
-            is_channel_operator=False,
+            is_channel_operator=is_operator,
             is_channel_creator=is_creator,
             remote_ip=user.remote_ip,
             remote_port=user.remote_port,

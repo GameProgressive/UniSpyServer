@@ -336,8 +336,8 @@ class ModeHandler(ChannelHandlerBase):
 
     def _request_check(self) -> None:
         super()._request_check()
-        # if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
-        #     self._is_fetching = False
+        if self._request.request_type == ModeRequestType.SET_CHANNEL_MODES:
+            self._is_fetching = False
         if self._request.request_type == [
             ModeRequestType.SET_CHANNEL_MODES,
             ModeRequestType.SET_CHANNEL_USER_MODES,

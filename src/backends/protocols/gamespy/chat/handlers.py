@@ -44,7 +44,7 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
-from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, KickResponse, ModeResponse, NamesResponse, NicksResponse, PartResponse, PingResponse, PrivateResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse
+from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, KickResponse, ModeResponse, NamesResponse, NicksResponse, PartResponse, PingResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     ModeRequestType,
@@ -101,20 +101,19 @@ class HandlerBase(hb.HandlerBase):
     def _request_check(self) -> None:
         self._get_user()
         self._check_user()
+        self._session.commit()
 
     def _get_user(self):
         self._user = data.get_user_cache_by_ip_port(
             self._request.client_ip, self._request.client_port, self._session
         )
-        if self._user is not None:
-            self._user.update_time = datetime.now()  # type: ignore
-            self._session.commit()
 
     def _check_user(self):
         if self._user is None:
             raise NoSuchNickException(
                 f"Can not find user with ip address: {self._request.client_ip}:{self._request.client_port}"
             )
+        self._user.update_time = datetime.now()  # type: ignore
 
 
 class ChannelHandlerBase(HandlerBase):
@@ -128,7 +127,8 @@ class ChannelHandlerBase(HandlerBase):
         self._channel_user = None
 
     def _request_check(self) -> None:
-        super()._request_check()
+        self._get_user()
+        self._check_user()
 
         self._get_channel()
         self._check_channel()
@@ -143,10 +143,13 @@ class ChannelHandlerBase(HandlerBase):
         )
 
     def _get_channel_user(self):
-        self._channel_user = data.get_channel_user_cache_by_name_and_ip_port(
+        assert self._user is not None
+        # typechecking require this step
+        nick = self._user.nick_name
+        assert isinstance(nick, str)
+        self._channel_user = data.get_channel_user_cache_by_nick_name(
             self._request.channel_name,
-            self._request.client_ip,
-            self._request.client_port,
+            nick,
             self._session,
         )
 
@@ -482,7 +485,7 @@ class JoinHandler(ChannelHandlerBase):
 
     def _data_operate(self) -> None:
         assert self._user is not None
-
+        
         if self._channel is None:
             self._channel = ChannelHelper.create(
                 server_id=self._request.server_id,
@@ -497,6 +500,7 @@ class JoinHandler(ChannelHandlerBase):
                 max_num_user=100,
                 session=self._session,
             )
+        
         self._channel_user = ChannelHelper.join(
             self._channel, self._user, self._session
         )
@@ -736,12 +740,13 @@ class SetChannelKeyHandler(ChannelHandlerBase):
         )
 
 
-class SetCkeyHandler(ChannelHandlerBase):
+class SetCKeyHandler(ChannelHandlerBase):
     """
     todo check if set channel_user or user keyvalue or set for other channeluser keyvalue
     """
 
     _request: SetCKeyRequest
+    response: SetCKeyResponse
 
     def _data_operate(self) -> None:
         assert self._channel_user is not None

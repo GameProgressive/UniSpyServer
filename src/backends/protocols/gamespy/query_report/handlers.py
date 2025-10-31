@@ -56,9 +56,7 @@ class HeartbeatHandler(HandlerBase):
             if self._request.server_data is None:
                 raise QRException(
                     "server data in first heartbeat can not be null")
-            if self._request.team_data is None:
-                raise QRException(
-                    "team data in first heartbeat can not be null")
+            # team data can be none in peertest sdk
             cache = GameServerCaches(
                 instant_key=self._request.instant_key,
                 server_id=self._request.server_id,

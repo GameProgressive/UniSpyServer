@@ -16,7 +16,7 @@
             "justMyCode": true
         },
         {
-            "name": "backend",
+            "name": "backends",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
@@ -31,6 +31,20 @@
                 "${workspaceFolder}/backends"
             ],
             "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "frontends",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/app.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },

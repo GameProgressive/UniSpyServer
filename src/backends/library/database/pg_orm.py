@@ -281,16 +281,15 @@ class ChatUserCaches(Base):
 
 class ChatChannelUserCaches(Base):
     __tablename__ = "chat_channel_user_caches"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     nick_name = Column(
         String,
         ForeignKey("chat_user_caches.nick_name"),
-        primary_key=True,
         nullable=False,
     )
     user_name = Column(
         String,
         ForeignKey("chat_user_caches.user_name"),
-        primary_key=True,
         nullable=False,
     )
     channel_name = Column(
@@ -315,9 +314,9 @@ class GameServerCaches(Base):
     game_name = Column(String, nullable=False)
     query_report_port = Column(Integer, nullable=False)
     status = Column(IntEnum(GameServerStatus))
-    player_data = Column(JSONB, nullable=False)
-    server_data = Column(JSONB, nullable=False)
-    team_data = Column(JSONB, nullable=False)
+    player_data = Column(JSONB, nullable=False, default={})
+    server_data = Column(JSONB, nullable=False, default=[])
+    team_data = Column(JSONB, nullable=False, default=[])
     avaliable = Column(Boolean, nullable=True)
     update_time = Column(DateTime, nullable=False, default=datetime.now())
 
