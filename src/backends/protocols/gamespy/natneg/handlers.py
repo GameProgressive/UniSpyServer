@@ -1,10 +1,12 @@
 from datetime import datetime, timezone
 from time import sleep
+from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import InitPacketCaches, NatResultCaches
 import backends.protocols.gamespy.natneg.data as data
 from backends.protocols.gamespy.natneg.helpers import NatProtocolHelper, NatStrategy
 from backends.protocols.gamespy.natneg.requests import ConnectRequest, InitRequest, ReportRequest
+from backends.protocols.gamespy.natneg.responses import ConnectResponse
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     ConnectPacketStatus,
     NatClientIndex,
@@ -15,6 +17,7 @@ from frontends.gamespy.protocols.natneg.contracts.results import ConnectResult
 
 class InitHandler(HandlerBase):
     _request: InitRequest
+    response: OKResponse
 
     def __init__(self, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
@@ -53,6 +56,7 @@ class ConnectHandler(HandlerBase):
     _request: ConnectRequest
     _strategy: NatStrategy | None
     _is_valid: bool
+    response: ConnectResponse
 
     def __init__(self, request: ConnectRequest) -> None:
         super().__init__(request)
@@ -154,6 +158,7 @@ class ConnectHandler(HandlerBase):
 
 class ReportHandler(HandlerBase):
     _request: ReportRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         init_cache = data.get_init_cache(

@@ -1,5 +1,6 @@
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import Users, Profiles, SubProfiles
+from backends.protocols.gamespy.chat.response import NicksResponse
 import backends.protocols.gamespy.presence_search_player.data as data
 from backends.protocols.gamespy.presence_search_player.requests import (
     CheckRequest,
@@ -12,6 +13,7 @@ from backends.protocols.gamespy.presence_search_player.requests import (
     UniqueSearchRequest,
     ValidRequest,
 )
+from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
     SearchType,
 )
@@ -43,6 +45,7 @@ class CheckHandler(HandlerBase):
 
     _request: CheckRequest
     _result: CheckResult
+    response: CheckResponse
 
     def _data_operate(self) -> None:
         if not data.verify_email(self._request.email, self._session):
@@ -70,6 +73,7 @@ class CheckHandler(HandlerBase):
 class NewUserHandler(HandlerBase):
     _request: NewUserRequest
     _result: NewUserResult
+    response: NewUserResponse
 
     def _data_operate(self) -> None:
         # check if user exist
@@ -142,6 +146,7 @@ class NewUserHandler(HandlerBase):
 class NicksHandler(HandlerBase):
     _request: NicksRequest
     _result: NicksResult
+    response: NicksResponse
 
     def _data_operate(self) -> None:
         self.temp_list = data.get_nick_and_unique_nick_list(
@@ -162,6 +167,7 @@ class NicksHandler(HandlerBase):
 class OthersHandler(HandlerBase):
     _request: OthersRequest
     _result: OthersResult
+    response: OthersResponse
 
     def _data_operate(self) -> None:
         self._data: list = data.get_friend_info_list(
@@ -191,6 +197,7 @@ class OthersHandler(HandlerBase):
 class OthersListHandler(HandlerBase):
     _request: OthersListRequest
     result: OthersListResult
+    response: OthersListResponse
 
     def _data_operate(self) -> None:
         self._data: list = data.get_matched_profile_info_list(
@@ -212,6 +219,7 @@ class OthersListHandler(HandlerBase):
 class SearchHandler(HandlerBase):
     _request: SearchRequest
     _result: SearchResult
+    response: SearchResponse
 
     def _data_operate(self) -> None:
         if self._request.request_type == SearchType.NICK_SEARCH:
@@ -249,6 +257,7 @@ class SearchHandler(HandlerBase):
 class SearchUniqueHandler(HandlerBase):
     _request: SearchUniqueRequest
     _result: SearchUniqueResult
+    response: SearchUniqueResponse
 
     def _data_operate(self) -> None:
         self._data = data.get_matched_info_by_uniquenick_and_namespaceids(
@@ -266,6 +275,7 @@ class SearchUniqueHandler(HandlerBase):
 class UniqueSearchHandler(HandlerBase):
     _request: UniqueSearchRequest
     _result: UniqueSearchResult
+    response: UniqueSearchResponse
 
     def _data_operate(self) -> None:
         self._is_exist = data.is_uniquenick_exist(
@@ -284,6 +294,7 @@ class UniqueSearchHandler(HandlerBase):
 class ValidHandler(HandlerBase):
     _request: ValidRequest
     _result: ValidResult
+    response: ValidResponse
 
     def _data_operate(self) -> None:
         self._is_exist = data.is_email_exist(

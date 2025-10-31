@@ -8,10 +8,6 @@ from sqlalchemy.orm import Session
 
 
 class DataFetchTests(unittest.TestCase):
-    def test_get_all_groups(self):
-        self.assertIsNotNone(data.PEER_GROUP_LIST)
-        self.assertIsInstance(data.PEER_GROUP_LIST, dict)
-
     def test_get_peer_staging_channels(self):
         cache = ChatChannelCaches(
             channel_name="#GSP!unispy_test_game_name!*",

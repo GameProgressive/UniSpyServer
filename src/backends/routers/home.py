@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
+from backends.library.abstractions.contracts import ErrorResponse
 from backends.library.database.pg_orm import ENGINE
 from backends.services.register import register_services
 from frontends.gamespy.library.exceptions.general import UniSpyException
@@ -13,8 +14,8 @@ from frontends.gamespy.library.log.log_manager import LogManager
 from frontends.gamespy.library.configs import ServerConfig
 from backends.routers.gamespy import (
     chat,
+    game_stats,
     game_traffic_relay,
-    gstats,
     natneg,
     presence_connection_manager,
     presence_search_player,
@@ -26,7 +27,7 @@ from backends.routers.gamespy import (
 app = FastAPI()
 
 app.include_router(chat.router)
-app.include_router(gstats.router)
+app.include_router(game_stats.router)
 app.include_router(game_traffic_relay.router)
 app.include_router(natneg.router)
 app.include_router(presence_connection_manager.router)
@@ -40,26 +41,31 @@ logger = LogManager.create("backend")
 
 @app.exception_handler(UniSpyException)
 def unispy_exception_handler(_, exc: UniSpyException):
+    str_error = exc.message
     logger.error(exc.message)
-    return JSONResponse({"error": exc.message, "exception": type(exc).__name__}, status_code=450)
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=450)
 
 
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(_, exc: RequestValidationError):
     str_error = str(exc.args)
     logger.error(str_error)
-    return JSONResponse({"error": str_error}, status_code=status.HTTP_400_BAD_REQUEST)
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @app.exception_handler(Exception)
-def handle_unispy_exception(_, exc: Exception):
+def general_exception_handler(_, exc: Exception):
     str_error = str(exc)
     if len(str_error) == 0:
         str_error = exc.__class__.__name__
     logger.error(str_error)
-    return JSONResponse(
-        {"error": str_error}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-    )
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @app.post("/")

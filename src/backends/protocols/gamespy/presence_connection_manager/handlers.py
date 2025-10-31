@@ -1,4 +1,4 @@
-from backends.library.abstractions.contracts import RequestBase
+from backends.library.abstractions.contracts import OKResponse, RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 import backends.protocols.gamespy.presence_connection_manager.data as data
 from backends.protocols.gamespy.presence_connection_manager.requests import (
@@ -21,6 +21,7 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     UpdateProfileRequest,
     UpdateUserInfoRequest,
 )
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, GetProfileResponse, LoginResponse
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginType,
 )
@@ -39,6 +40,7 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
 
 class KeepAliveHandler(HandlerBase):
     _request: KeepAliveRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         data.update_online_time(
@@ -48,6 +50,7 @@ class KeepAliveHandler(HandlerBase):
 
 class LoginHandler(HandlerBase):
     _request: LoginRequest
+    response: LoginResponse
 
     def _data_operate(self) -> None:
         if self._request.type == LoginType.NICK_EMAIL:
@@ -96,6 +99,7 @@ class LoginHandler(HandlerBase):
 
 class LogoutHandler(HandlerBase):
     _request: LogoutRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         # data.update_online_status(user_id=, status=LoginStatus.DISCONNECTED)
@@ -103,6 +107,8 @@ class LogoutHandler(HandlerBase):
 
 
 class NewUserHandler(HandlerBase):
+    response: OKResponse
+
     def __init__(self, request: NewUserRequest) -> None:
         raise NotImplementedError("Use presence search player newuser router")
         super().__init__(request)
@@ -113,6 +119,7 @@ class NewUserHandler(HandlerBase):
 
 class BuddyListHandler(HandlerBase):
     _request: BuddyListRequest
+    response: BuddyListResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_buddy_list(
@@ -126,6 +133,7 @@ class BuddyListHandler(HandlerBase):
 
 class BlockListHandler(HandlerBase):
     _request: BlockListRequest
+    response: BlockListResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_block_list(
@@ -133,7 +141,8 @@ class BlockListHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = BlockListResult(profile_ids=self.data,operation_id=self._request.operation_id)
+        self._result = BlockListResult(
+            profile_ids=self.data, operation_id=self._request.operation_id)
 
 
 class BuddyStatusInfoHandler(HandlerBase):
@@ -152,6 +161,7 @@ class BuddyStatusInfoHandler(HandlerBase):
 
 class DelBuddyHandler(HandlerBase):
     _request: DelBuddyRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         self.data = data.delete_friend_by_profile_id(
@@ -161,6 +171,7 @@ class DelBuddyHandler(HandlerBase):
 
 class AddBuddyHandler(HandlerBase):
     _request: AddBuddyRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         data.add_friend_request(
@@ -174,6 +185,7 @@ class AddBuddyHandler(HandlerBase):
 
 class AddBlockHandler(HandlerBase):
     _request: AddBlockRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         data.update_block(
@@ -204,6 +216,7 @@ class InviteToHandler(HandlerBase):
 
 class StatusHandler(HandlerBase):
     _request: StatusRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         data.update_status(
@@ -217,6 +230,7 @@ class StatusHandler(HandlerBase):
 
 class StatusInfoHandler(HandlerBase):
     _request: StatusInfoRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         raise NotImplementedError()
@@ -227,6 +241,7 @@ class StatusInfoHandler(HandlerBase):
 
 class GetProfileHandler(HandlerBase):
     _request: GetProfileRequest
+    response: GetProfileResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_profile_infos(
@@ -236,7 +251,8 @@ class GetProfileHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = GetProfileResult(user_profile=self.data,operation_id=self._request.operation_id)
+        self._result = GetProfileResult(
+            user_profile=self.data, operation_id=self._request.operation_id)
 
 
 class NewProfileHandler(HandlerBase):
@@ -245,6 +261,7 @@ class NewProfileHandler(HandlerBase):
     """
 
     _request: NewProfileRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         data.update_new_nick(
@@ -257,6 +274,7 @@ class NewProfileHandler(HandlerBase):
 
 class RegisterCDKeyHandler(HandlerBase):
     _request: RegisterCDKeyRequest
+    response: OKResponse
 
     def _data_operate(self):
         data.update_cdkey(
@@ -270,6 +288,7 @@ class RegisterNickHandler(HandlerBase):
     """
 
     _request: RegisterNickRequest
+    response: OKResponse
 
     def _data_operate(self):
         data.update_uniquenick(
@@ -284,6 +303,7 @@ class RemoveBlockHandler(HandlerBase):
 
 class UpdateProfileHandler(HandlerBase):
     _request: UpdateProfileRequest
+    response: OKResponse
 
     def _data_operate(self):
         data.update_profiles(
@@ -293,6 +313,7 @@ class UpdateProfileHandler(HandlerBase):
 
 class UpdateUserInfoHandler(HandlerBase):
     _request: UpdateUserInfoRequest
+    response: OKResponse
 
     def _data_operate(self):
         data.update_profiles(

@@ -26,40 +26,6 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions impor
 def __expire_time():
     return datetime.now() - timedelta(5)
 
-
-def get_all_groups() -> dict:
-    with Session(ENGINE) as session:
-        result = (
-            session.query(Games, GroupList)
-            .join(GroupList, (Games.gameid == GroupList.gameid))
-            .all()
-        )
-    if TYPE_CHECKING:
-        result = cast(list[tuple[Games, GroupList]], result)
-
-    # Group the results by Game name
-    grouped_result = {}
-    for game, group in result:
-        if game.gamename not in grouped_result:
-            temp_list = []
-            grouped_result[game.gamename] = temp_list
-        temp_list.append(
-            {
-                "game_id": group.gameid,
-                "game_name": game.gamename,
-                "group_id": group.groupid,
-                "room_name": group.roomname,
-                "secret_key": game.secretkey,
-            }
-        )
-
-    # Convert the grouped result to the desired format
-    return grouped_result
-
-
-PEER_GROUP_LIST = get_all_groups()
-
-
 def get_peer_staging_channels(
     game_name: str, group_id: int, session: Session
 ) -> list[GameServerInfo]:
@@ -81,38 +47,40 @@ def get_peer_staging_channels(
     return data
 
 
-def get_group_data_list_by_gamename(game_name: str) -> list[dict]:
-    assert isinstance(game_name, str)
-    if game_name not in PEER_GROUP_LIST:
-        raise ValueError(f"game name: {game_name} not in PEER_GROUP_LIST")
-    # the group id list length can not be 0
-    result = PEER_GROUP_LIST[game_name]
-    assert len(result) != 0
-    return result
-
 
 def get_peer_group_channel(
-    group_data: list[dict], session: Session
+    game_name: str, session: Session
 ) -> list[PeerRoomInfo]:
-    assert isinstance(group_data, list) and all(
-        isinstance(id, dict) for id in group_data
-    )
-    # Construct the group names based on the provided group_ids
-    group_names = [
-        f"{PeerRoom.GroupRoomPrefix}!{item['group_id']}" for item in group_data
-    ]
-
     # Query the database for channels matching the constructed group names
-    result = (
-        session.query(ChatChannelCaches)
-        .filter(ChatChannelCaches.channel_name.in_(group_names))
+    group_data = (
+        session.query(GroupList)
+        .select_from(Games)
+        .join(GroupList, (Games.gameid == GroupList.gameid))
+        .where(Games.gamename == game_name)
         .all()
     )
+    group_info: list[PeerRoomInfo] = []
+    for gd in group_data:
+        # get the group room info from GroupList
 
-    # Convert the result to a list of PeerRoomInfo objects
-    data = [PeerRoomInfo(**s.__dict__) for s in result]
+        # Construct the group names based on the provided group_ids
+        group_name = f"{PeerRoom.GroupRoomPrefix}!{gd.groupid}"
+        # Query the database for channels matching the constructed group names
+        result = (
+            session.query(ChatChannelCaches)
+            .where(ChatChannelCaches.channel_name == group_name
+                   ).first())
+        assert isinstance(gd.groupid, int)
+        assert isinstance(gd.roomname, str)
 
-    return data
+        if result is None:
+            info = PeerRoomInfo(groupid=gd.groupid,
+                                  game_name=game_name, hostname=gd.roomname)
+        else:
+            info = PeerRoomInfo(**result.__dict__)
+
+        group_info.append(info)
+    return group_info
 
 
 def get_game_server_cache_by_ip_port(ip: str, port: int, session: Session) -> GameServerCaches | None:
@@ -280,5 +248,5 @@ def clean_expired_game_server_cache(session: Session):
     ).delete()
     session.commit()
 
-    if __name__ == "__main__":
-        get_all_groups()
+if __name__ == "__main__":
+    pass

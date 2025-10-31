@@ -247,7 +247,7 @@ class ChannelHelper:
                             raise BadChannelKeyException(
                                 "ADD_CHANNEL_OPERATOR require nick name"
                             )
-                        u = data.get_channel_user_cache_by_name(
+                        u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
                         )
                         if u is None:
@@ -260,7 +260,7 @@ class ChannelHelper:
                             raise BadChannelKeyException(
                                 "REMOVE_CHANNEL_OPERATOR require nick name"
                             )
-                        u = data.get_channel_user_cache_by_name(
+                        u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
                         )
                         u.is_channel_operator = False  # type: ignore
@@ -270,7 +270,7 @@ class ChannelHelper:
                             raise BadChannelKeyException(
                                 "ENABLE_USER_VOICE_PERMISSION require nick name"
                             )
-                        u = data.get_channel_user_cache_by_name(
+                        u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
                         )
                         u.is_voiceable = True  # type: ignore
@@ -279,7 +279,7 @@ class ChannelHelper:
                             raise BadChannelKeyException(
                                 "DISABLE_USER_VOICE_PERMISSION require nick name"
                             )
-                        u = data.get_channel_user_cache_by_name(
+                        u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
                         )
                         u.is_voiceable = False  # type: ignore

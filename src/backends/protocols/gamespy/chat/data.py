@@ -227,13 +227,14 @@ def get_channel_by_name_and_ip_port(
 def check_channel_user_trash_data(
     channel: ChatChannelCaches, user: ChatUserCaches, session: Session
 ):
+    expire_time = datetime.now() - timedelta(minutes=2)
     assert isinstance(channel.channel_name, str)
     assert isinstance(user.nick_name, str)
-    exist_user = get_channel_user_cache_by_name(
+    exist_user = get_channel_user_cache_by_nick_name(
         channel.channel_name, user.nick_name, session
     )
     if exist_user is not None:
-        if exist_user.update_time <= datetime.now() - timedelta(minutes=2):  # type: ignore
+        if exist_user.update_time <= expire_time:  # type: ignore
             session.delete(exist_user)
             session.commit()
         else:
@@ -244,7 +245,7 @@ def check_channel_user_trash_data(
     # session.commit()
 
 
-def get_channel_user_cache_by_name(
+def get_channel_user_cache_by_nick_name(
     channel_name: str, nick_name: str, session: Session
 ) -> ChatChannelUserCaches | None:
     assert isinstance(channel_name, str)

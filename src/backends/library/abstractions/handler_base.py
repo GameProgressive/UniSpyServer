@@ -11,6 +11,8 @@ from frontends.gamespy.library.abstractions.contracts import ResultBase
 import logging
 from sqlalchemy.orm import Session
 
+from frontends.gamespy.library.exceptions.general import UniSpyException
+
 
 class HandlerBase:
     """
@@ -19,8 +21,9 @@ class HandlerBase:
 
     _request: RequestBase
     _result: ResultBase | None
-    _response: Response | None
+    response: Response
     """
+    response is created by child class annotation
     the response using to wrap data
     """
     # _data: object
@@ -28,22 +31,13 @@ class HandlerBase:
     the data get from database, can be any type
     """
 
-    @property
-    def response(self) -> dict | None:
-        """
-        the dict response which send to client
-        """
-        if self._response is None:
-            return None
-        return self._response.to_json_dict()
-
     def __init__(self, request: RequestBase) -> None:
         assert issubclass(type(request), RequestBase)
         self._request = request
         # decoupling the logging in home.py
         self.logger = logging.getLogger("backend")
         self._result = None
-        self._response = None
+        self.response = OKResponse()
 
     def handle(self) -> None:
         with Session(ENGINE) as session:
@@ -73,6 +67,13 @@ class HandlerBase:
         """
         # if there are no result, we send ok response
         if self._result is None:
-            self._response = OKResponse()
-        else:
-            self._response = DataResponse(result=self._result.model_dump(mode="json"))
+            return
+        if "response" not in self.__class__.__annotations__:
+            raise UniSpyException(
+                "write response type annotation in child class to create response instance.")
+        response_cls = self.__class__.__annotations__['response']
+        if not issubclass(response_cls, DataResponse):
+            raise UniSpyException(
+                "response type annotation must be a subclass of DataResponse")
+        self.response = response_cls(result=self._result)
+        # self.response = DataResponse(result=self._result)

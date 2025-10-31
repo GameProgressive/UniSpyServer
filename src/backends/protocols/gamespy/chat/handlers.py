@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import TYPE_CHECKING, cast
+from backends.library.abstractions.contracts import OKResponse
 import backends.library.abstractions.handler_base as hb
 
 
@@ -43,6 +44,7 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
+from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, KickResponse, ModeResponse, NamesResponse, NicksResponse, PartResponse, PingResponse, PrivateResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     ModeRequestType,
@@ -57,6 +59,7 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     NoSuchChannelException,
     NoSuchNickException,
 )
+from frontends.gamespy.protocols.chat.contracts.responses import NoticeResponse
 from frontends.gamespy.protocols.chat.contracts.results import (
     AtmResult,
     CryptResult,
@@ -170,6 +173,7 @@ class MessageHandlerBase(ChannelHandlerBase):
 # region General
 
 class PingHandler(HandlerBase):
+    response: PingResponse
 
     def _result_construct(self) -> None:
         assert self._user is not None
@@ -192,6 +196,7 @@ class CdKeyHandler(HandlerBase):
 
 class CryptHandler(HandlerBase):
     _request: CryptRequest
+    response: CryptResponse
 
     def _request_check(self) -> None:
         # we just clean the garbage data
@@ -228,6 +233,7 @@ class CryptHandler(HandlerBase):
 
 class GetKeyHandler(HandlerBase):
     _request: GetKeyRequest
+    response: GetKeyResponse
 
     def _data_operate(self) -> None:
         caches = data.get_user_cache_by_nick_name(
@@ -329,6 +335,7 @@ class LoginHandler(HandlerBase):
 
 class NickHandler(HandlerBase):
     _request: NickRequest
+    response: NicksResponse
 
     def _request_check(self) -> None:
         self._get_user()
@@ -393,6 +400,7 @@ class RegisterNickHandler(HandlerBase):
 
 class SetKeyHandler(HandlerBase):
     _request: SetKeyRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         user = data.get_user_cache_by_ip_port(
@@ -449,6 +457,7 @@ class WhoHandler(HandlerBase):
 
 class WhoIsHandler(HandlerBase):
     _request: WhoIsRequest
+    response: WhoIsResponse
 
     def _data_operate(self) -> None:
         self._data: WhoIsResult = data.get_whois_result(
@@ -463,6 +472,7 @@ class WhoIsHandler(HandlerBase):
 
 class JoinHandler(ChannelHandlerBase):
     _request: JoinRequest
+    response: JoinResponse
 
     def _request_check(self) -> None:
         self._get_user()
@@ -528,6 +538,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
 
 class GetCKeyHandler(ChannelHandlerBase):
     _request: GetCKeyRequest
+    response: GetCkeyResponse
 
     def _data_operate(self) -> None:
         match self._request.request_type:
@@ -542,7 +553,7 @@ class GetCKeyHandler(ChannelHandlerBase):
         )
 
     def get_channel_specific_user_key_value(self):
-        d = data.get_channel_user_cache_by_name(
+        d = data.get_channel_user_cache_by_nick_name(
             self._request.channel_name, self._request.nick_name, self._session
         )
         if d is not None:
@@ -573,6 +584,7 @@ class GetCKeyHandler(ChannelHandlerBase):
 class KickHandler(ChannelHandlerBase):
     _kickee: ChatChannelUserCaches | None
     _request: KickRequest
+    response: KickResponse
 
     def __init__(self, request: RequestBase) -> None:
         super().__init__(request)
@@ -582,7 +594,7 @@ class KickHandler(ChannelHandlerBase):
         super()._request_check()
         assert isinstance(self._channel, ChatChannelCaches)
         assert isinstance(self._channel.channel_name, str)
-        self._kickee = data.get_channel_user_cache_by_name(
+        self._kickee = data.get_channel_user_cache_by_nick_name(
             self._channel.channel_name, self._request.kickee_nick_name, self._session
         )
         if self._kickee is None:
@@ -616,6 +628,7 @@ class KickHandler(ChannelHandlerBase):
 
 class ModeHandler(ChannelHandlerBase):
     _request: ModeRequest
+    response: ModeResponse
 
     def _data_operate(self) -> None:
         assert self._channel
@@ -638,6 +651,7 @@ class ModeHandler(ChannelHandlerBase):
 
 class NamesHandler(ChannelHandlerBase):
     _request: NamesRequest
+    response: NamesResponse
 
     def _request_check(self) -> None:
         self._get_user()
@@ -670,6 +684,7 @@ class NamesHandler(ChannelHandlerBase):
 
 class PartHandler(ChannelHandlerBase):
     _request: PartRequest
+    response: PartResponse
 
     def _data_operate(self) -> None:
         assert self._channel
@@ -697,6 +712,7 @@ class PartHandler(ChannelHandlerBase):
 
 class SetChannelKeyHandler(ChannelHandlerBase):
     _request: SetChannelKeyRequest
+    response: SetChannelKeyResponse
 
     def _request_check(self) -> None:
         super()._request_check()
@@ -747,6 +763,7 @@ class SetCkeyHandler(ChannelHandlerBase):
 
 class TopicHandler(ChannelHandlerBase):
     _request: TopicRequest
+    response: TopicResponse
 
     def _data_operate(self) -> None:
         assert self._channel_user
@@ -773,6 +790,7 @@ class TopicHandler(ChannelHandlerBase):
 
 class AtmHandler(MessageHandlerBase):
     _request: AtmRequest
+    response: AtmResponse
 
     def _result_construct(self) -> None:
         assert self._user is not None
@@ -789,6 +807,7 @@ class AtmHandler(MessageHandlerBase):
 
 class UtmHandler(MessageHandlerBase):
     _request: UtmRequest
+    response: UtmResponse
 
     def _result_construct(self) -> None:
         assert self._user is not None
@@ -804,6 +823,7 @@ class UtmHandler(MessageHandlerBase):
 
 class NoticeHandler(MessageHandlerBase):
     _request: NoticeRequest
+    response: NoticeResponse
 
     def _result_construct(self) -> None:
         assert self._user is not None
@@ -819,6 +839,7 @@ class NoticeHandler(MessageHandlerBase):
 
 class PrivateHandler(MessageHandlerBase):
     _request: PrivateRequest
+    response: PrivateResponse
 
     def _result_construct(self) -> None:
         assert self._user is not None
@@ -834,6 +855,7 @@ class PrivateHandler(MessageHandlerBase):
 
 class PublishMessageHandler(hb.HandlerBase):
     _request: PublishMessageRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         # todo add checking on request validation, like broadcast key

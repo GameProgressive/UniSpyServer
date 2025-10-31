@@ -1,4 +1,5 @@
 from fastapi import APIRouter, WebSocket
+from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.query_report.broker import MANAGER, launch_brocker
 from backends.protocols.gamespy.query_report.handlers import (
     AvaliableHandler, HeartbeatHandler, KeepAliveHandler)
@@ -15,37 +16,37 @@ async def websocket_endpoint(ws: WebSocket):
     await MANAGER.process_websocket(ws)
 
 
-@router.post(f"{QUERY_REPORT}/HeartbeatHandler")
-def heartbeat(request: HeartBeatRequest):
+@router.post(f"{QUERY_REPORT}/HeartbeatHandler", responses=RESPONSES_DEF)
+def heartbeat(request: HeartBeatRequest)->OKResponse:
     handler = HeartbeatHandler(request)
     handler.handle()
-    return handler._response
+    return handler.response
 
 
-@router.post(f"{QUERY_REPORT}/ChallengeHanler")
-def challenge(request: ChallengeRequest):
+@router.post(f"{QUERY_REPORT}/ChallengeHanler", responses=RESPONSES_DEF)
+def challenge(request: ChallengeRequest)->OKResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{QUERY_REPORT}/AvailableHandler")
-def available(request: AvaliableRequest):
+@router.post(f"{QUERY_REPORT}/AvailableHandler", responses=RESPONSES_DEF)
+def available(request: AvaliableRequest)->OKResponse:
     handler = AvaliableHandler(request)
     handler.handle()
-    return handler._response
+    return handler.response
 
 
-@router.post(f"{QUERY_REPORT}/ClientMessageAckHandler")
-def client_message(request: ClientMessageRequest):
+@router.post(f"{QUERY_REPORT}/ClientMessageAckHandler", responses=RESPONSES_DEF)
+def client_message(request: ClientMessageRequest)->OKResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{QUERY_REPORT}/EchoHandler")
-def echo(request: EchoRequest):
+@router.post(f"{QUERY_REPORT}/EchoHandler", responses=RESPONSES_DEF)
+def echo(request: EchoRequest)->OKResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{QUERY_REPORT}/KeepAliveHandler")
-def keep_alive(request: KeepAliveRequest):
+@router.post(f"{QUERY_REPORT}/KeepAliveHandler", responses=RESPONSES_DEF)
+def keep_alive(request: KeepAliveRequest)->OKResponse:
     handler = KeepAliveHandler(request)
     handler.handle()
     return handler.response

@@ -1,3 +1,4 @@
+from typing import Dict
 from pydantic import BaseModel, UUID4
 
 
@@ -27,10 +28,19 @@ class OKResponse(Response):
 
 
 class DataResponse(OKResponse):
-    result: dict
+    result: BaseModel
     pass
 
 
 class ErrorResponse(Response):
-    # code: int
+    exception_name: str
     pass
+
+
+RESPONSES_DEF: Dict = {
+    400: {"model": ErrorResponse},
+    422: {"model": ErrorResponse},
+    500: {"model": ErrorResponse},
+    450: {"model": ErrorResponse}
+}
+"""Dict type is using to compatible with language checking"""

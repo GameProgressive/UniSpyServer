@@ -9,8 +9,9 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
 from typing import Union
 
 import backends.library.abstractions.contracts as lib
+from frontends.gamespy.protocols.natneg.contracts.results import ConnectResult
 
-
+# region Requests
 class RequestBase(lib.RequestBase):
     raw_request: str
     version: int
@@ -62,3 +63,4 @@ class ReportRequest(CommonRequestBase):
     game_name: str
     nat_type: NatType
     mapping_scheme: NatPortMappingScheme
+

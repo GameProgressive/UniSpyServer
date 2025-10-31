@@ -332,6 +332,163 @@ class RoomTest(unittest.TestCase):
                 print(e)
         pass
 
+    def test_peer(self):
+        """
+        peer test in gamespy sdk
+        """
+        test_msg = [
+            {
+                "raw_request": "CRYPT des 1 gmtest",
+                "command_name": "CRYPT",
+                "version_id": "1",
+                "gamename": "gmtest",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "USRIP",
+                "command_name": "USRIP",
+                "websocket_address": "127.0.0.1:59754",
+                "remote_ip": "172.19.0.5",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "USER ChatCUser 127.0.0.1 unispy_server_dev :ChatCName",
+                "command_name": "USER",
+                "user_name": "ChatCUser",
+                "local_ip_address": "127.0.0.1",
+                "server_name": "unispy_server_dev",
+                "name": "ChatCName",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "NICK ChatC238",
+                "command_name": "NICK",
+                "nick_name": "ChatC238",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "JOIN #GSP!gmtest ",
+                "password": None,
+                "command_name": "JOIN",
+                "channel_name": "#GSP!gmtest",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "NAMES #GSP!gmtest",
+                "command_name": "NAMES",
+                "channel_name": "#GSP!gmtest",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "MODE #GSP!gmtest",
+                "command_name": "MODE",
+                "channel_name": "#GSP!gmtest",
+                "mode_operations": {},
+                "request_type": 0,
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "PRIVMSG #GSP!gmtest :Hi",
+                "command_name": "PRIVMSG",
+                "channel_name": "#GSP!gmtest",
+                "type": 0,
+                "target_name": "#GSP!gmtest",
+                "message": "Hi",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "NAMES #GSP!gmtest",
+                "command_name": "NAMES",
+                "channel_name": "#GSP!gmtest",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "WHOIS ChatC238",
+                "command_name": "WHOIS",
+                "nick_name": "ChatC238",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "PRIVMSG #GSP!gmtest :Bye",
+                "command_name": "PRIVMSG",
+                "channel_name": "#GSP!gmtest",
+                "type": 0,
+                "target_name": "#GSP!gmtest",
+                "message": "Bye",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "PART #GSP!gmtest :",
+                "command_name": "PART",
+                "channel_name": "#GSP!gmtest",
+                "reason": "",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            },
+            {
+                "raw_request": "QUIT :Later!",
+                "command_name": "QUIT",
+                "reason": "Later!",
+                "websocket_address": "127.0.0.1:59754",
+                "client_ip": "172.19.0.5",
+                "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+                "client_port": 59258
+            }
+        ]
+        test_api = ["GameSpy/Chat/CryptHandler",
+                    "GameSpy/Chat/UserIPHandler",
+                    "GameSpy/Chat/UserHandler",
+                    "GameSpy/Chat/NickHandler",
+                    "GameSpy/Chat/JoinHandler",
+                    "GameSpy/Chat/NamesHandler",
+                    "GameSpy/Chat/ModeHandler",
+                    "GameSpy/Chat/PrivateHandler",
+                    "GameSpy/Chat/NamesHandler",
+                    "GameSpy/Chat/WhoIsHandler",
+                    "GameSpy/Chat/PrivateHandler",
+                    "GameSpy/Chat/PartHandler",
+                    "GameSpy/Chat/QuitHandler"]
+        for m, route in zip(test_msg, test_api):
+            try:
+                print(route)
+                client.post(url=route, json=m)
+            except:
+                pass
+
 
 if __name__ == "__main__":
     test = RoomTest()

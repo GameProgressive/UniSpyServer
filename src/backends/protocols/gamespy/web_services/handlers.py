@@ -15,6 +15,7 @@ from backends.protocols.gamespy.web_services.requests import (
     LoginUniqueNickRequest,
     SearchForRecordsRequest,
 )
+from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
     LoginProfileResult,
 )
@@ -26,6 +27,7 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.resu
 
 class LoginProfileHandler(HandlerBase):
     _request: LoginProfileRequest
+    response: LoginProfileResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_cdkey_email(
@@ -58,6 +60,7 @@ class LoginPS3CertHandler(HandlerBase):
 
 class LoginRemoteAuthHandler(HandlerBase):
     _request: LoginRemoteAuthRequest
+    response: LoginRemoteAuthRepsonse
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_authtoken(
@@ -79,6 +82,7 @@ class LoginRemoteAuthHandler(HandlerBase):
 
 class LoginUniqueNickHandler(HandlerBase):
     _request: LoginUniqueNickRequest
+    response: LoginUniqueNickResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_uniquenick(
@@ -141,6 +145,7 @@ class ReportAdUsageRequest(HandlerBase):
 
 class CreateRecordHandler(HandlerBase):
     _request: CreateRecordRequest
+    response: CreateRecordResponse
 
     def _data_operate(self) -> None:
         raise NotImplementedError()
@@ -148,6 +153,7 @@ class CreateRecordHandler(HandlerBase):
 
 class GetMyRecordsHandler(HandlerBase):
     _request: GetMyRecordsRequest
+    response: GetMyRecordsResponse
 
     def _data_operate(self):
         self.data = data.get_user_data(self._request.table_id, self._session)
@@ -156,6 +162,7 @@ class GetMyRecordsHandler(HandlerBase):
 
 class SearchForRecordsHandler(HandlerBase):
     _request: SearchForRecordsRequest
+    response: SearchForRecordsResponse
 
     def _data_operate(self) -> None:
-        return super()._data_operate()
+        raise NotImplementedError()

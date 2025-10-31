@@ -1,5 +1,4 @@
-import asyncio
-from datetime import datetime
+from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import ENGINE, GameServerCaches
 from backends.protocols.gamespy.query_report.requests import (
@@ -15,10 +14,12 @@ from sqlalchemy.orm import Session
 
 class AvaliableHandler(HandlerBase):
     _request: AvaliableRequest
+    response: OKResponse
 
 
 class ChallengeHandler(HandlerBase):
     _request: HeartBeatRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         with Session(ENGINE) as session:
@@ -37,6 +38,7 @@ class ChallengeHandler(HandlerBase):
 
 class HeartbeatHandler(HandlerBase):
     _request: HeartBeatRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         # clean the expired server cache
@@ -88,6 +90,7 @@ class HeartbeatHandler(HandlerBase):
 
 class KeepAliveHandler(HandlerBase):
     _request: KeepAliveRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         assert isinstance(self._request.instant_key, str)
@@ -97,6 +100,7 @@ class KeepAliveHandler(HandlerBase):
 
 class ClientMessageHandler(HandlerBase):
     _request: ClientMessageRequest
+    response: OKResponse
 
     def _response_construct(self) -> None:
         # todo use websocket to send the message to qr client, but how to determine which qr router should be received

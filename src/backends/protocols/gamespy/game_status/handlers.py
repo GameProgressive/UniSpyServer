@@ -1,3 +1,4 @@
+from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
 import backends.protocols.gamespy.game_status.data as data
 from backends.protocols.gamespy.game_status.requests import (
@@ -8,6 +9,7 @@ from backends.protocols.gamespy.game_status.requests import (
     NewGameRequest,
     SetPlayerDataRequest,
 )
+from backends.protocols.gamespy.game_status.response import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse
 from frontends.gamespy.protocols.game_status.aggregations.enums import AuthMethod
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 from frontends.gamespy.protocols.game_status.contracts.results import (
@@ -15,11 +17,13 @@ from frontends.gamespy.protocols.game_status.contracts.results import (
     AuthPlayerResult,
     GetPlayerDataResult,
     GetProfileIdResult,
+
 )
 
 
 class AuthGameHandler(HandlerBase):
     _request: AuthGameRequest
+    response: AuthGameResponse
 
     def _data_operate(self) -> None:
         # generate session key
@@ -33,6 +37,7 @@ class AuthGameHandler(HandlerBase):
 
 class AuthPlayerHandler(HandlerBase):
     _request: AuthPlayerRequest
+    response: AuthPlayerResponse
 
     def _data_operate(self):
         match self._request.auth_type:
@@ -57,6 +62,7 @@ class AuthPlayerHandler(HandlerBase):
 
 class GetPlayerDataHandler(HandlerBase):
     _request: GetPlayerDataRequest
+    response: GetPlayerDataResponse
 
     def _data_operate(self):
         self.data = data.get_player_data(
@@ -74,6 +80,7 @@ class GetPlayerDataHandler(HandlerBase):
 
 class GetProfileIdHandler(HandlerBase):
     _request: GetProfileIdRequest
+    response: GetProfileIdResponse
 
     def _data_operate(self):
         self.data = data.get_profile_id_by_cdkey(
@@ -87,10 +94,11 @@ class GetProfileIdHandler(HandlerBase):
 
 
 class NewGameHandler(HandlerBase):
-    _request: NewGameRequest
     """
     find game based on the session key, and create a space for the game data
     """
+    _request: NewGameRequest
+    response: OKResponse
 
     def _data_operate(self):
         self.data = data.create_new_game_data()
@@ -105,6 +113,7 @@ class SetPlayerDataHandler(HandlerBase):
 
 class UpdateGameHandler(HandlerBase):
     _request: SetPlayerDataRequest
+    response: OKResponse
 
     def _data_operate(self):
         raise NotImplementedError()

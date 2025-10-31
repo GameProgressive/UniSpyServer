@@ -11,7 +11,7 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         req = HeartBeatRequest(**request)
         handler = HeartbeatHandler(req)
         handler.handle()
-        handler._response
+        handler.response
 
     def test_available(self):
         request = {"raw_request": "\\t\\u0000\\u0000\\u0000\\u0000\\t\\u0000\\u0000\\u0000\\u0000gamespy\\u0000", "command_name": 9,

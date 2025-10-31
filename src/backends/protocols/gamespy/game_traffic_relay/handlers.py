@@ -12,12 +12,13 @@ import backends.protocols.gamespy.game_traffic_relay.data as data
 
 class GtrHeartBeatHandler(HandlerBase):
     _request: GtrHeartBeatRequest
+    response: OKResponse
 
-    def __init__(self, request: GtrHeartBeatRequest) -> None:
-        assert isinstance(request, GtrHeartBeatRequest)
-        self._request = request
-        self._result = None
-        self.logger = logging.getLogger("backend")
+    # def __init__(self, request: GtrHeartBeatRequest) -> None:
+    #     assert isinstance(request, GtrHeartBeatRequest)
+    #     self._request = request
+    #     self._result = None
+    #     self.logger = logging.getLogger("backend")
 
     def _data_operate(self) -> None:
         info = data.search_relay_server(

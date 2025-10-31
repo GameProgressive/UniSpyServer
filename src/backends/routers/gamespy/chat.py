@@ -1,5 +1,4 @@
-import asyncio
-from backends.library.abstractions.contracts import OKResponse
+from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse, Response
 from backends.protocols.gamespy.chat.brocker import MANAGER, launch_brocker
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
@@ -17,6 +16,8 @@ from backends.protocols.gamespy.chat.handlers import (
     PrivateHandler,
     PublishMessageHandler,
     QuitHandler,
+    SetKeyHandler,
+    TopicHandler,
     UserHandler,
     WhoIsHandler,
 )
@@ -41,6 +42,7 @@ from backends.protocols.gamespy.chat.requests import (
     PrivateRequest,
     PublishMessageRequest,
     QuitRequest,
+    SetCKeyRequest,
     SetChannelKeyRequest,
     SetGroupRequest,
     SetKeyRequest,
@@ -51,16 +53,17 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
+from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, ListResponse, ModeResponse, NamesResponse, NicksResponse, NoticeResponse, PartResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse, WhoResponse
 from backends.urls import CHAT
-from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, WebSocket
 
 
 router = APIRouter(lifespan=launch_brocker)
 client_pool = {}
 
 
-@router.post(f"{CHAT}/publish")
-def publish_message(request: PublishMessageRequest):
+@router.post(f"{CHAT}/PublishMessageHandler", responses=RESPONSES_DEF)
+def publish_message(request: PublishMessageRequest) -> OKResponse:
     handler = PublishMessageHandler(request)
     handler.handle()
     return handler.response
@@ -74,154 +77,162 @@ async def websocket_endpoint(ws: WebSocket):
 # region General
 
 
-@router.post(f"{CHAT}/CdKeyHandler")
-def cdkey(request: CdkeyRequest):
+@router.post(f"{CHAT}/CdKeyHandler", responses=RESPONSES_DEF)
+def cdkey(request: CdkeyRequest) -> Response:
     handler = CdKeyHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/GetKeyHandler")
-def getkey(request: GetKeyRequest):
+@router.post(f"{CHAT}/GetKeyHandler", responses=RESPONSES_DEF)
+def getkey(request: GetKeyRequest) -> GetKeyResponse:
     handler = GetKeyHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/GetUdpRelayHandler")
-def get_udp_relay(request: GetUdpRelayRequest):
+@router.post(f"{CHAT}/GetUdpRelayHandler", responses=RESPONSES_DEF)
+def get_udp_relay(request: GetUdpRelayRequest) -> Response:
     handler = GetUdpRelayHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/InviteHandler")
-def invite(request: InviteRequest):
+@router.post(f"{CHAT}/InviteHandler", responses=RESPONSES_DEF)
+def invite(request: InviteRequest) -> Response:
     handler = InviteHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/ListHandler")
-def list_data(request: ListRequest):
+@router.post(f"{CHAT}/ListHandler", responses=RESPONSES_DEF)
+def list_data(request: ListRequest) -> ListResponse:
     # handler = ListHandler
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/LoginHandler")
-def login(request: LoginRequest):
+@router.post(f"{CHAT}/LoginHandler", responses=RESPONSES_DEF)
+def login(request: LoginRequest) -> Response:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/NickHandler")
-def nick(request: NickRequest):
+@router.post(f"{CHAT}/NickHandler", responses=RESPONSES_DEF)
+def nick(request: NickRequest) -> NicksResponse:
     handler = NickHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/QuitHandler")
-def quit(request: QuitRequest):
+@router.post(f"{CHAT}/QuitHandler", responses=RESPONSES_DEF)
+def quit(request: QuitRequest) -> Response:
     handler = QuitHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/SetKeyHandler")
-def set_key(request: SetKeyRequest):
-    raise NotImplementedError()
+@router.post(f"{CHAT}/SetKeyHandler", responses=RESPONSES_DEF)
+def set_key(request: SetKeyRequest) -> OKResponse:
+    handler = SetKeyHandler(request)
+    handler.handle
+    return handler.response
 
 
-@router.post(f"{CHAT}/UserHandler")
-def user(request: UserRequest):
+@router.post(f"{CHAT}/UserHandler", responses=RESPONSES_DEF)
+def user(request: UserRequest) -> Response:
     handler = UserHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/UserIPHandler")
-def user_ip(request: UserIPRequest):
-    print(request)
+@router.post(f"{CHAT}/UserIPHandler", responses=RESPONSES_DEF)
+def user_ip(request: UserIPRequest) -> OKResponse:
     return OKResponse()
 
 
-@router.post(f"{CHAT}/WhoHandler")
-def who(request: WhoRequest):
+@router.post(f"{CHAT}/WhoHandler", responses=RESPONSES_DEF)
+def who(request: WhoRequest) -> WhoResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/WhoIsHandler")
-def whois(request: WhoIsRequest):
+@router.post(f"{CHAT}/WhoIsHandler", responses=RESPONSES_DEF)
+def whois(request: WhoIsRequest) -> WhoIsResponse:
     handler = WhoIsHandler(request)
     handler.handle()
     return handler.response
 
 
 # region channel
-@router.post(f"{CHAT}/GetChannelKeyHandler")
-def get_channel_key(request: GetChannelKeyRequest):
+@router.post(f"{CHAT}/GetChannelKeyHandler", responses=RESPONSES_DEF)
+def get_channel_key(request: GetChannelKeyRequest) -> Response:
     handler = GetChannelKeyHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/GetCKeyHandler")
-def get_ckey(request: GetCKeyRequest):
+@router.post(f"{CHAT}/GetCKeyHandler", responses=RESPONSES_DEF)
+def get_ckey(request: GetCKeyRequest) -> GetCkeyResponse:
     handler = GetCKeyHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/JoinHandler")
-def join(request: JoinRequest):
+@router.post(f"{CHAT}/JoinHandler", responses=RESPONSES_DEF)
+def join(request: JoinRequest) -> JoinResponse:
     handler = JoinHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/KickHandler")
-def kick(request: KickRequest):
+@router.post(f"{CHAT}/KickHandler", responses=RESPONSES_DEF)
+def kick(request: KickRequest) -> Response:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/ModeHandler")
-def mode(request: ModeRequest):
+@router.post(f"{CHAT}/ModeHandler", responses=RESPONSES_DEF)
+def mode(request: ModeRequest) -> ModeResponse | OKResponse:
     handler = ModeHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/NamesHandler")
-def names(request: NamesRequest):
+@router.post(f"{CHAT}/NamesHandler", responses=RESPONSES_DEF)
+def names(request: NamesRequest) -> NamesResponse:
     handler = NamesHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/PartHandler")
-def part(request: PartRequest):
+@router.post(f"{CHAT}/PartHandler", responses=RESPONSES_DEF)
+def part(request: PartRequest) -> PartResponse:
     handler = PartHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/SetChannelKeyHandler")
-def set_channel_key(request: SetChannelKeyRequest):
+@router.post(f"{CHAT}/SetChannelKeyHandler", responses=RESPONSES_DEF)
+def set_channel_key(request: SetChannelKeyRequest) -> SetChannelKeyResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/SetGroupHandler")
-def set_group(request: SetGroupRequest):
+@router.post(f"{CHAT}/SetCKeyHandler", responses=RESPONSES_DEF)
+def set_c_key(request: SetCKeyRequest) -> SetCKeyResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/TopicHandler")
-def topic(request: TopicRequest):
+@router.post(f"{CHAT}/SetGroupHandler", responses=RESPONSES_DEF)
+def set_group(request: SetGroupRequest) -> Response:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/CryptHandler")
-def crypt(request: CryptRequest):
+@router.post(f"{CHAT}/TopicHandler", responses=RESPONSES_DEF)
+def topic(request: TopicRequest) -> TopicResponse:
+    handler = TopicHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{CHAT}/CryptHandler", responses=RESPONSES_DEF)
+def crypt(request: CryptRequest) -> CryptResponse:
     handler = CryptHandler(request)
     handler.handle()
     return handler.response
@@ -230,25 +241,25 @@ def crypt(request: CryptRequest):
 # region Message
 
 
-@router.post(f"{CHAT}/ATMHandler")
-def atm(request: AtmRequest):
+@router.post(f"{CHAT}/ATMHandler", responses=RESPONSES_DEF)
+def atm(request: AtmRequest) -> AtmResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/NoticeHandler")
-def notice(request: NoticeRequest):
+@router.post(f"{CHAT}/NoticeHandler", responses=RESPONSES_DEF)
+def notice(request: NoticeRequest) -> NoticeResponse:
     raise NotImplementedError()
 
 
-@router.post(f"{CHAT}/PrivateHandler")
-def private(request: PrivateRequest):
+@router.post(f"{CHAT}/PrivateHandler", responses=RESPONSES_DEF)
+def private(request: PrivateRequest) -> PrivateResponse:
     handler = PrivateHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{CHAT}/UTMHandler")
-def utm(request: UtmRequest):
+@router.post(f"{CHAT}/UTMHandler", responses=RESPONSES_DEF)
+def utm(request: UtmRequest) -> UtmResponse:
     raise NotImplementedError()
 
 
