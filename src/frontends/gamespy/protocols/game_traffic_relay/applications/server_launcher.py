@@ -20,8 +20,11 @@ class ServerLauncher(ServerLauncherBase):
             client_cls=Client,
             server_cls=UdpServer,
         )
+
+    def start(self):
         self._get_public_ip()
         self._launch_connection_expire_checker()
+        super().start()
 
     def _get_public_ip(self):
         url = f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/get_my_ip"
