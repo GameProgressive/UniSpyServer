@@ -1,5 +1,5 @@
 from backends.library.abstractions.contracts import DataResponse
-from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
+from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult, SetPlayerDataResult
 
 
 class AuthGameResponse(DataResponse):
@@ -16,3 +16,7 @@ class GetPlayerDataResponse(DataResponse):
 
 class GetProfileIdResponse(DataResponse):
     result: GetProfileIdResult
+
+
+class SetPlayerDataResponse(DataResponse):
+    result: SetPlayerDataResult

@@ -4,6 +4,7 @@ from backends.protocols.gamespy.game_status.handlers import (
     AuthGameHandler,
     AuthPlayerHandler,
     GetPlayerDataHandler,
+    GetProfileIdHandler,
     NewGameHandler,
     SetPlayerDataHandler,
     UpdateGameHandler,
@@ -12,11 +13,12 @@ from backends.protocols.gamespy.game_status.requests import (
     AuthGameRequest,
     AuthPlayerRequest,
     GetPlayerDataRequest,
+    GetProfileIdRequest,
     NewGameRequest,
     SetPlayerDataRequest,
     UpdateGameRequest,
 )
-from backends.protocols.gamespy.game_status.response import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse
+from backends.protocols.gamespy.game_status.response import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse, SetPlayerDataResponse
 from backends.urls import GAMESTATUS
 
 router = APIRouter()
@@ -51,15 +53,22 @@ def get_player_data(request: GetPlayerDataRequest) -> GetPlayerDataResponse:
 
 
 @router.post(f"{GAMESTATUS}/SetPlayerDataHandler", responses=RESPONSES_DEF)
-def set_player_data(request: SetPlayerDataRequest) -> Response:
+def set_player_data(request: SetPlayerDataRequest) -> SetPlayerDataResponse:
     handler = SetPlayerDataHandler(request)
     handler.handle()
     return handler.response
 
 
 @router.post(f"{GAMESTATUS}/UpdateGameHandler", responses=RESPONSES_DEF)
-def updaet_game(request: UpdateGameRequest) -> OKResponse:
+def update_game(request: UpdateGameRequest) -> OKResponse:
     handler = UpdateGameHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{GAMESTATUS}/GetProfileIdHandler", responses=RESPONSES_DEF)
+def get_profileid(request: GetProfileIdRequest)->GetProfileIdResponse:
+    handler = GetProfileIdHandler(request)
     handler.handle()
     return handler.response
 

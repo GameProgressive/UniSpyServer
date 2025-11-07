@@ -8,7 +8,7 @@ class RequestBase(lib.RequestBase):
     command_name: str
     raw_request: str
     local_id: int | None
-    request_dict: dict[str, str]
+    _request_dict: dict[str, str]
 
     @staticmethod
     def convert_game_data_to_key_values(game_data: str):
@@ -17,17 +17,17 @@ class RequestBase(lib.RequestBase):
         convert_to_key_value(game_data)
 
     def parse(self) -> None:
-        self.request_dict = convert_to_key_value(self.raw_request)
+        self._request_dict = convert_to_key_value(self.raw_request)
 
-        if "lid" in self.request_dict:
+        if "lid" in self._request_dict:
             try:
-                self.local_id = int(self.request_dict["lid"])
+                self.local_id = int(self._request_dict["lid"])
             except:
                 raise GSException("local id is not valid.")
 
-        if "id" in self.request_dict:
+        if "id" in self._request_dict:
             try:
-                self.local_id = int(self.request_dict["id"])
+                self.local_id = int(self._request_dict["id"])
             except:
                 raise GSException("local id is not valid.")
 

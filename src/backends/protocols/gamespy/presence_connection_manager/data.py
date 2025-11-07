@@ -32,11 +32,11 @@ import backends.protocols.gamespy.presence_search_player.data as psp
 from sqlalchemy.orm import Session
 
 
-def is_email_exist(email: str):
-    return psp.is_email_exist(email)
+def is_email_exist(email: str, session: Session):
+    return psp.is_email_exist(email, session)
 
 
-def update_online_time(ip: str, port: int,session:Session):
+def update_online_time(ip: str, port: int, session: Session):
     if TYPE_CHECKING:
         assert isinstance(Users.lastip, Column)
 
@@ -47,8 +47,9 @@ def update_online_time(ip: str, port: int,session:Session):
     session.commit()
 
 
-def delete_friend_by_profile_id(profile_id: int,session:Session):
-    friend = session.query(Friends).where(Friends.friendid == profile_id).first()
+def delete_friend_by_profile_id(profile_id: int, session: Session):
+    friend = session.query(Friends).where(
+        Friends.friendid == profile_id).first()
     if friend is None:
         raise GPDatabaseException(
             f"friend deletion have errors on profile id:{profile_id}"
@@ -173,7 +174,8 @@ def get_user_info_list(
         assert isinstance(Profiles.nick, Column)
 
     result = (
-        session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+        session.query(Users.userid, Profiles.profileid,
+                      SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .where(Users.email == email, Profiles.nick == nick_name)
@@ -197,7 +199,8 @@ def get_user_info(
     #     assert isinstance(SubProfiles.namespaceid, Column)
 
     result = (
-        session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
+        session.query(Users.userid, Profiles.profileid,
+                      SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .where(
@@ -400,7 +403,8 @@ def update_block(
         assert isinstance(SubProfiles.session_key, Column)
 
     namespace_id = (
-        session.query(SubProfiles).where(SubProfiles.session_key == session_key).first()
+        session.query(SubProfiles).where(
+            SubProfiles.session_key == session_key).first()
     )
     result = (
         session.query(Blocked)
@@ -412,7 +416,8 @@ def update_block(
         .count()
     )
     if result == 0:
-        b = Blocked(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
+        b = Blocked(targetid=target_id, namespaceid=namespace_id,
+                    profileid=profile_id)
         session.add(b)
         session.commit()
 
@@ -429,7 +434,8 @@ def update_friend_info(
         )
         .count()
     )
-    f = Friends(targetid=target_id, namespaceid=namespace_id, profileid=profile_id)
+    f = Friends(targetid=target_id, namespaceid=namespace_id,
+                profileid=profile_id)
 
     if result == 0:
         session.add(f)
@@ -475,13 +481,13 @@ def update_unique_nick(subprofile_id: int, unique_nick: str, session: Session):
     session.commit()
 
 
-def update_subprofile_info(subprofile: SubProfiles,session:Session):
+def update_subprofile_info(subprofile: SubProfiles, session: Session):
     session.add(subprofile)
     session.commit()
 
 
 def add_friend_request(
-    profileid: int, targetid: int, namespace_id: int, reason: str,session:Session
+    profileid: int, targetid: int, namespace_id: int, reason: str, session: Session
 ) -> None:
     data = (
         session.query(FriendAddRequest)
@@ -504,7 +510,7 @@ def add_friend_request(
     session.commit()
 
 
-def get_status(session_key: str,session:Session) -> dict:
+def get_status(session_key: str, session: Session) -> dict:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
 
@@ -515,7 +521,8 @@ def get_status(session_key: str,session:Session) -> dict:
         .first()
     )
     if result is None:
-        raise GPStatusException("No profile found with the provided session key")
+        raise GPStatusException(
+            "No profile found with the provided session key")
 
     if TYPE_CHECKING:
         assert isinstance(result.statstring, str)
@@ -524,7 +531,7 @@ def get_status(session_key: str,session:Session) -> dict:
         result.extra_info["location"] = ""
     data = {
         "status_string": result.statstring,
-        "location_string": result.extra_info["location"],
+        "location_string": result.extra_info["locstring"],
         "current_status": result.status,
     }
     return data
@@ -535,7 +542,7 @@ def update_status(
     current_status: GPStatusCode,
     location_string: str,
     status_string: str,
-    session:Session
+    session: Session
 ):
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
@@ -547,17 +554,18 @@ def update_status(
         .first()
     )
     if result is None:
-        raise GPStatusException("No profile found with the provided session key")
+        raise GPStatusException(
+            "No profile found with the provided session key")
 
     result.statstring = status_string
     result.status = current_status
-    assert isinstance(result.extra_info, list)
-    result.extra_info.append(location_string)
+    assert isinstance(result.extra_info, dict)
+    result.extra_info['locstring'] = location_string
 
     session.commit()
 
 
-def update_new_nick(session_key: str, old_nick: str, new_nick: str,session:Session):
+def update_new_nick(session_key: str, old_nick: str, new_nick: str, session: Session):
     result = (
         session.query(Profiles)
         .join(SubProfiles)
@@ -569,30 +577,34 @@ def update_new_nick(session_key: str, old_nick: str, new_nick: str,session:Sessi
     session.commit()
 
 
-def update_cdkey(session_key: str, cdkey: str,session:Session):
+def update_cdkey(session_key: str, cdkey: str, session: Session):
     subprofile = (
-        session.query(SubProfiles).where(SubProfiles.session_key == session_key).first()
+        session.query(SubProfiles).where(
+            SubProfiles.session_key == session_key).first()
     )
     if subprofile is None:
-        raise GPDatabaseException(f"no subprofile found with session key:{session_key}")
+        raise GPDatabaseException(
+            f"no subprofile found with session key:{session_key}")
 
     subprofile.cdkeyenc = cdkey
 
     session.commit()
 
 
-def update_uniquenick(session_key: str, uniquenick: str,session:Session):
+def update_uniquenick(session_key: str, uniquenick: str, session: Session):
     subprofile = (
-        session.query(SubProfiles).where(SubProfiles.session_key == session_key).first()
+        session.query(SubProfiles).where(
+            SubProfiles.session_key == session_key).first()
     )
     if subprofile is None:
-        raise GPDatabaseException(f"no subprofile found with session key:{session_key}")
+        raise GPDatabaseException(
+            f"no subprofile found with session key:{session_key}")
 
     subprofile.uniquenick = uniquenick
     session.commit()
 
 
-def update_profiles(session_key: str, extra_info: dict,session:Session):
+def update_profiles(session_key: str, extra_info: dict, session: Session):
     profile = (
         session.query(Profiles)
         .join(SubProfiles)
@@ -600,7 +612,8 @@ def update_profiles(session_key: str, extra_info: dict,session:Session):
         .first()
     )
     if profile is None:
-        raise GPDatabaseException(f"no profile found with session key:{session_key}")
+        raise GPDatabaseException(
+            f"no profile found with session key:{session_key}")
     for key, value in extra_info.items():
         profile.extra_info[key] = value
 

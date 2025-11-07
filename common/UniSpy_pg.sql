@@ -492,7 +492,8 @@ CREATE TABLE unispy.pstorage (
     profileid integer NOT NULL,
     ptype integer NOT NULL,
     dindex integer NOT NULL,
-    data jsonb
+    data character varying NOT NULL,
+    update_time timestamp without time zone NOT NULL
 );
 
 
@@ -5336,7 +5337,7 @@ COPY unispy.messages (id, namespaceid, type, from_user, to_user, date, message) 
 -- Data for Name: nat_result_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.nat_result_caches (id, public_ip, private_ip, is_success, port_mapping_type, port_type, client_index, game_name, update_time) FROM stdin;
+COPY unispy.nat_result_caches (id, public_ip, private_ip, is_success, port_mapping_scheme, port_type, client_index, game_name, update_time) FROM stdin;
 \.
 
 
@@ -5388,7 +5389,7 @@ COPY unispy.sakestorage (id, tableid, data) FROM stdin;
 --
 
 COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
-1	1	spyguy_test	0	1	1	gmtests	encrypted_cdkey	0	8080	auth_token_example	session_key_example
+1	1	spyguy_test	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
 \.
 
 

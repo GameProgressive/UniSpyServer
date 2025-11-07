@@ -65,7 +65,7 @@ class LoginHandler(HandlerBase):
     def _nick_email_login(self) -> None:
         assert self._request.email is not None
         assert self._request.nick is not None
-        is_exsit = data.is_email_exist(self._request.email)
+        is_exsit = data.is_email_exist(self._request.email, self._session)
         if not is_exsit:
             raise GPLoginBadEmailException(
                 f"email: {self._request.email} is invalid.")
@@ -95,6 +95,7 @@ class LoginHandler(HandlerBase):
                                    partner_id=self._request.partner_id,
                                    user_challenge=self._request.user_challenge,
                                    user_data=self._request.user_data)
+    
 
 
 class LogoutHandler(HandlerBase):
@@ -211,7 +212,7 @@ class InviteToHandler(HandlerBase):
         # }
         # TODO
         # parse user to buddy message system
-        raise NotImplementedError()
+        raise NotImplementedError("whether need chat server to interact?")
 
 
 class StatusHandler(HandlerBase):

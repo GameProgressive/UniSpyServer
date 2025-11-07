@@ -1,19 +1,21 @@
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.game_status.applications.client import Client
 from frontends.gamespy.protocols.game_status.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
-from frontends.gamespy.protocols.game_status.contracts.responses import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse
-from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult
+from frontends.gamespy.protocols.game_status.contracts.responses import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse, SetPlayerDataResponse
+from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult, SetPlayerDataResult
 
 
 class AuthGameHandler(CmdHandlerBase):
     _request: AuthGameRequest
     _result: AuthGameResult
+    _response: AuthGameResponse
 
     def __init__(self, client: Client, request: AuthGameRequest) -> None:
         assert isinstance(request, AuthGameRequest)
         super().__init__(client, request)
 
-    def _response_construct(self) -> None:
+    def _data_operate(self) -> None:
+        super()._data_operate()
         self._client.info.session_key = self._result.session_key
         self._client.info.game_name = self._result.game_name
         self._client.info.is_game_authenticated = True
@@ -56,6 +58,10 @@ class NewGameHandler(CmdHandlerBase):
 
 
 class SetPlayerDataHandler(CmdHandlerBase):
+    _request: SetPlayerDataRequest
+    _result: SetPlayerDataResult
+    _response: SetPlayerDataResponse
+
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
         assert isinstance(request, SetPlayerDataRequest)
         super().__init__(client, request)

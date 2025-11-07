@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import cast
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.game_status.applications.client import Client
@@ -44,9 +45,10 @@ def create_client() -> Client:
         config,
         GetPlayerDataHandler,
         GetPlayerDataResult(
-            keyvalues={"hello": "hello_value", "hi": "hi_value"},
+            data="\\key1\\value1\\key2\\value2\\key3\\value3",
             local_id=0,
-            profile_id=0
+            profile_id=0,
+            modified=datetime.now()
         ).model_dump(),
     )
     create_mock_url(

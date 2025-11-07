@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
 
 
 class RequestBase(lib.RequestBase):
-    request_dict: Dict[str, str]
+    _request_dict: dict[str, str]
     raw_request: str
     command_name: str
     operation_id: int
@@ -20,17 +20,17 @@ class RequestBase(lib.RequestBase):
         self.namespace_id = 0
 
     def parse(self) -> None:
-        self.request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = list(self.request_dict.keys())[0]
-        if "id" in self.request_dict.keys():
+        self._request_dict = convert_to_key_value(self.raw_request)
+        self.command_name = list(self._request_dict.keys())[0]
+        if "id" in self._request_dict.keys():
             try:
-                self.operation_id = int(self.request_dict["id"])
+                self.operation_id = int(self._request_dict["id"])
             except ValueError:
                 raise GPParseException("operation id is invalid.")
 
-        if "namespaceid" in self.request_dict:
+        if "namespaceid" in self._request_dict:
             try:
-                self.namespace_id = int(self.request_dict["namespaceid"])
+                self.namespace_id = int(self._request_dict["namespaceid"])
             except ValueError:
                 raise GPParseException("namespaceid is incorrect.")
 

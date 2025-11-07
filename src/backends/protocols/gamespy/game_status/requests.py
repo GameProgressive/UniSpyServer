@@ -1,15 +1,16 @@
-from pydantic import Field
+from pydantic import Field, model_validator
 import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.game_status.aggregations.enums import (
     AuthMethod,
     PersistStorageType,
 )
+from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 
 
 class RequestBase(lib.RequestBase):
     raw_request: str
     local_id: int
-    request_dict: dict[str, str]
+    _request_dict: dict[str, str]
 
 
 class AuthGameRequest(RequestBase):
@@ -18,11 +19,11 @@ class AuthGameRequest(RequestBase):
 
 class AuthPlayerRequest(RequestBase):
     auth_type: AuthMethod
-    profile_id: int
-    auth_token: str
-    response: str
-    cdkey_hash: str
-    nick: str
+    profile_id: int | None = None
+    auth_token: str | None = None
+    cdkey_hash: str | None = None
+    response: str | None = None
+    nick: str | None = None
 
 
 class GetPlayerDataRequest(RequestBase):
@@ -35,7 +36,7 @@ class GetPlayerDataRequest(RequestBase):
 
 class GetProfileIdRequest(RequestBase):
     nick: str
-    cdkey: str
+    key_hash: str
 
 
 class NewGameRequest(RequestBase):
@@ -52,8 +53,9 @@ class SetPlayerDataRequest(RequestBase):
     storage_type: PersistStorageType
     data_index: int
     length: int
-    report: str
+    report: str | None = None
     data: str
+    is_key_value: bool
 
 
 class UpdateGameRequest(RequestBase):

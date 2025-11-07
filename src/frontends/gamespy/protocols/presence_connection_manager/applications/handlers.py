@@ -5,6 +5,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     AddBlockRequest,
+    AddBuddyRequest,
     GetProfileRequest,
     NewProfileRequest,
     NewUserRequest,
@@ -69,7 +70,6 @@ class KeepAliveHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
-        
 
     def _data_operate(self) -> None:
         # we set ip and data to request
@@ -90,8 +90,11 @@ class LoginHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
-        self._result_cls = LoginResult
-        self._response_cls = LoginResponse
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        handler = SdkRevisionHandler(self._client, self._request)
+        handler.handle()
 
 
 @final
@@ -123,20 +126,18 @@ class SdkRevisionHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: LoginRequest) -> None:
         assert isinstance(request, LoginRequest)
         super().__init__(client, request)
-
-    def _data_operate(self):
-        pass
+        self._is_fetching = False
+        self._is_uploading = False
 
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = self._request.sdk_revision_type
-        for operation in self._client.info.sdk_revision:
-            if operation == SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN:
-                BuddyListHandler(self._client).handle()
-                BlockListHandler(self._client).handle()
-                request = StatusInfoRequest()
-                request.profile_id = self._client.info.profile_id
-                request.namespace_id = int(self._client.info.namespace_id)
-                StatusInfoHandler(self._client, request).handle()
+        if SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN in self._client.info.sdk_revision:
+            BuddyListHandler(self._client).handle()
+            BlockListHandler(self._client).handle()
+            request = StatusInfoRequest()
+            request.profile_id = self._client.info.profile_id
+            request.namespace_id = int(self._client.info.namespace_id)
+            StatusInfoHandler(self._client, request).handle()
             # todo: add other revision operations
 
 
@@ -145,9 +146,10 @@ class SdkRevisionHandler(CmdHandlerBase):
 
 @final
 class AddBuddyHandler(CmdHandlerBase):
-    def __init__(self, client: Client, request: RequestBase) -> None:
-        raise NotImplementedError()
+    def __init__(self, client: Client, request: AddBuddyRequest) -> None:
+        assert isinstance(request, AddBuddyRequest)
         super().__init__(client, request)
+        self._is_fetching = False
 
 
 @final
@@ -211,7 +213,7 @@ class StatusHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: StatusRequest) -> None:
         assert isinstance(request, StatusRequest)
         super().__init__(client, request)
-        
+        self._is_fetching = False
 
 
 @final
@@ -240,7 +242,6 @@ class AddBlockHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AddBlockRequest) -> None:
         assert isinstance(request, AddBlockRequest)
         super().__init__(client, request)
-        
 
 
 @final
@@ -272,7 +273,6 @@ class RegisterCDKeyHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterCDKeyRequest) -> None:
         assert isinstance(request, RegisterCDKeyRequest)
         super().__init__(client, request)
-        
 
 
 @final

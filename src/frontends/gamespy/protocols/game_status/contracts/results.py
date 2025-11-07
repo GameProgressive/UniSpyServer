@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import final
 from frontends.gamespy.protocols.game_status.abstractions.contracts import ResultBase
 
@@ -15,10 +16,17 @@ class AuthPlayerResult(ResultBase):
 
 @final
 class GetPlayerDataResult(ResultBase):
-    keyvalues: dict[str, str]
+    data: str
     profile_id: int
+    modified: datetime
 
 
 @final
 class GetProfileIdResult(ResultBase):
     profile_id: int
+
+
+@final
+class SetPlayerDataResult(ResultBase):
+    profile_id: int
+    modified: datetime

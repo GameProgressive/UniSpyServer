@@ -181,7 +181,9 @@ class PStorage(Base):
         "profiles.profileid"), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
-    data = Column(JSONB)
+    data = Column(String,nullable=False)
+    update_time = Column(DateTime, nullable=False, default=datetime.now())
+
 
 
 class GameStatusSnapShot(Base):

@@ -20,7 +20,7 @@ class RequestBase(lib.RequestBase):
     command_name: str
     operation_id: int
     raw_request: str
-    request_dict: Dict[str, str]
+    _request_dict: Dict[str, str]
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
@@ -28,12 +28,12 @@ class RequestBase(lib.RequestBase):
 
     def parse(self):
         super().parse()
-        self.request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = list(self.request_dict.keys())[0]
+        self._request_dict = convert_to_key_value(self.raw_request)
+        self.command_name = list(self._request_dict.keys())[0]
 
-        if "id" in self.request_dict:
+        if "id" in self._request_dict:
             try:
-                self.operation_id = int(self.request_dict["id"])
+                self.operation_id = int(self._request_dict["id"])
             except Exception:
                 raise GPParseException("namespaceid is invalid.")
 

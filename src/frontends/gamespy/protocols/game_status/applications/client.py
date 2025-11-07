@@ -56,7 +56,7 @@ class Client(ClientBase):
             message = ""
             for t in temp:
                 complete_buffer = (t + "\\final\\").encode()
-                message += self.crypto.decrypt(complete_buffer).decode()
+                message += self.crypto.decrypt(complete_buffer).decode("ascii")
             return message.encode()
 
         return self.crypto.decrypt(buffer)
@@ -65,5 +65,12 @@ class Client(ClientBase):
         from frontends.gamespy.protocols.game_status.applications.switcher import (
             Switcher,
         )
-
-        return Switcher(self, buffer.decode())
+        # ! sometime the request will decode with exception, something happend in sdk,
+        # ! we do not process that here, let client login again will resolve the problem
+        try:
+            data_str = buffer.decode("ascii")
+        except UnicodeDecodeError:
+            self.log_warn(
+                f"can not decode {buffer} with ascii, change decode method to latin1")
+            data_str = buffer.decode("latin1")
+        return Switcher(self, data_str)

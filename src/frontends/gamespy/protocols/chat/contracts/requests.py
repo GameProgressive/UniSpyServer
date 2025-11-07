@@ -514,10 +514,12 @@ class PartRequest(ChannelRequestBase):
 class SetChannelKeyRequest(ChannelRequestBase):
     """
     sprintf(buffer, "SETCHANKEY %s :", channel);
+    BCAST is broadcast flag
     """
 
     key_value_string: str
     key_values: dict[str, str]
+    is_broadcast: bool
 
     def parse(self):
         super().parse()
@@ -526,11 +528,19 @@ class SetChannelKeyRequest(ChannelRequestBase):
         self._long_param = self._long_param[1:]
         self.key_value_string = self._long_param
         self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
-
+        is_broadcast = False
+        for key in self.key_values:
+            if "b_" in key:
+                is_broadcast = True
+                break
+        if is_broadcast:
+            self.cookie = "BCAST"
+            self.is_broadcast = True
 
 class SetCKeyRequest(ChannelRequestBase):
     """
     sprintf(buffer, "SETCKEY %s %s :", channel, user);
+    BCAST is broadcast flag
     """
 
     nick_name: str

@@ -168,6 +168,7 @@ class PartRequest(ChannelRequestBase):
 class SetChannelKeyRequest(ChannelRequestBase):
     key_value_string: str
     key_values: dict[str, str]
+    is_broadcast: bool
 
 
 class SetCKeyRequest(ChannelRequestBase):

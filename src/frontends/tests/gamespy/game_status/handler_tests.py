@@ -31,7 +31,8 @@ class HandlerTests(unittest.TestCase):
         request = SetPlayerDataRequest(raw)
         request.parse()
         self.assertEqual(1, request.profile_id)
-        self.assertEqual(PersistStorageType.PRIVATE_READ_WRITE, request.storage_type)
+        self.assertEqual(PersistStorageType.PRIVATE_READ_WRITE,
+                         request.storage_type)
         self.assertEqual(0, request.data_index)
         self.assertEqual("", request.data)
         self.assertEqual(111, request.length)
@@ -91,7 +92,8 @@ class HandlerTests(unittest.TestCase):
         request = GetPlayerDataRequest(raw)
         request.parse()
         self.assertEqual(0, request.profile_id)
-        self.assertEqual(PersistStorageType.PRIVATE_READ_ONLY, request.storage_type)
+        self.assertEqual(PersistStorageType.PRIVATE_READ_ONLY,
+                         request.storage_type)
         self.assertEqual(1, request.data_index)
         self.assertEqual(2, len(request.keys))
         self.assertEqual("hello", request.keys[0])
@@ -102,7 +104,7 @@ class HandlerTests(unittest.TestCase):
         request = GetProfileIdRequest(raw)
         request.parse()
         self.assertEqual("xiaojiuwo", request.nick)
-        self.assertEqual("00000", request.keyhash)
+        self.assertEqual("00000", request.key_hash)
         self.assertEqual(1, request.local_id)
 
     def test_new_game(self):
@@ -137,6 +139,13 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(True, request2.is_done)
         self.assertEqual("hello", request2.game_data)
         self.assertEqual(1, request2.connection_id)
+
+    def test_auth_player_2025_11_06(self):
+        raw = b'\\authp\\\\nick\\spyguy\\keyhash\\00000a308fd86a7eb92cbc8322b03a36\\resp\\a146083990caca4925e3144deb552817\\lid\\1,\x1fZ*&\r1~Shh\x08Db\x0eYKVA-<F[!Y~T$\x7fS\x04Zg\x18\x12W.$SR\x07g\x1dDVx.QV\x0b3\x1f\x13\x02\x7f,TRb>@Fn/\\final\\'
+        request = AuthPlayerRequest(raw)
+        client = create_client()
+        handler = AuthPlayerHandler(client, request)
+        handler.handle()
 
 
 if __name__ == "__main__":

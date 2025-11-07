@@ -65,11 +65,12 @@ def get_peer_group_channel(
         # get the group room info from GroupList
 
         # Construct the group names based on the provided group_ids
-        group_name = f"{PeerRoom.GroupRoomPrefix}!{gd.groupid}"
+        group_room_channel_name = f"{PeerRoom.GroupRoomPrefix}!{gd.groupid}"
+        channel_name_prefix_regex = f"{group_room_channel_name}!%"
         # Query the database for channels matching the constructed group names
         result = (
             session.query(ChatChannelCaches)
-            .where(ChatChannelCaches.channel_name == group_name
+            .where(ChatChannelCaches.channel_name == group_room_channel_name
                    ).first())
         assert isinstance(gd.groupid, int)
         assert isinstance(gd.roomname, str)
@@ -80,11 +81,13 @@ def get_peer_group_channel(
                                 hostname=gd.roomname)
         else:
             assert isinstance(result.channel_name, str)
-            
+
             assert isinstance(result.max_num_user, int)
             # todo get the peer room extra info
-            player_count = session.query(ChatChannelUserCaches).where(
+            waiting_player_count = session.query(ChatChannelUserCaches).where(
                 ChatChannelUserCaches.channel_name == result.channel_name).count()
+            playing_player_count = session.query(ChatChannelUserCaches).where(
+                ChatChannelUserCaches.channel_name.like(channel_name_prefix_regex)).count()
             password = result.password if result.password is not None else ""
             assert isinstance(password, str)
             info = PeerRoomInfo(groupid=gd.groupid,
@@ -92,7 +95,9 @@ def get_peer_group_channel(
                                 hostname=result.channel_name,
                                 password=password,
                                 maxplayers=result.max_num_user,
-                                numplayers=player_count,
+                                numplayers=waiting_player_count+playing_player_count,
+                                numwaiting=waiting_player_count,
+                                numplaying=playing_player_count
                                 )
 
         group_info.append(info)
