@@ -1,21 +1,21 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServerFactory, ServerLauncherBase
+from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory, ServiceBase
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.natneg.applications.client import Client
 
 
-class ServerLauncher(ServerLauncherBase):
+class Service(ServiceBase):
     server: UdpServer
 
     def __init__(self) -> None:
         super().__init__(
             config_name="NatNegotiation",
             client_cls=Client,
-            server_cls=UdpServer,
+            network_server_cls=UdpServer,
         )
 
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
-    nn = ServerLauncher()
-    helper = DebugHelper("./frontends/", ServerFactory([nn]))
+    nn = Service()
+    helper = DebugHelper("./frontends/", ServicesFactory([nn]))
     helper.start()

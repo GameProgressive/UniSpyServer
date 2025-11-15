@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from uuid import UUID
 from backends.library.database.pg_orm import RelayServerCaches
@@ -38,6 +38,16 @@ def update_relay_server(info: RelayServerCaches, session: Session):
 
 def create_relay_server(info: RelayServerCaches, session: Session):
     session.add(info)
+    session.commit()
+
+
+def check_expired_server(session: Session):
+    expire_time = datetime.now()-timedelta(seconds=30)
+    session.query(
+        RelayServerCaches
+    ).where(
+        RelayServerCaches.update_time < expire_time
+    ).delete()
     session.commit()
 
 

@@ -19,7 +19,7 @@ def register_services(config: ServerConfig, external_ip: str) -> dict:
                 server_id=config.server_id,
                 server_name=config.server_name,
                 external_ip="",
-                listening_ip=config.public_address,
+                listening_ip=config.listening_address,
                 listening_port=config.listening_port,
                 update_time=datetime.now()
             )

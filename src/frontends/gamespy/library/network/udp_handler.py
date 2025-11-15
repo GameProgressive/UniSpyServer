@@ -36,7 +36,7 @@ class UdpServer(NetworkServerBase):
     ) -> None:
         super().__init__(config, t_client, logger)
         self._server = socketserver.ThreadingUDPServer(
-            (self._config.public_address, self._config.listening_port),
+            (self._config.listening_address, self._config.listening_port),
             UdpHandler,
         )
         # inject the handler params to ThreadingUDPServer

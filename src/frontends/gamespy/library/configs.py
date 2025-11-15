@@ -41,7 +41,7 @@ class RedisConfig(BaseModel):
 class ServerConfig(BaseModel):
     server_id: UUID
     server_name: str
-    public_address: str
+    listening_address: str
     listening_port: int  # Ensures listening_port is between 1 and 65535
 
 
@@ -61,6 +61,7 @@ class BackendConfig(BaseModel):
     token_secret_key: str
     token_algorithm: str
     token_expire_time: int = 30
+    is_check_public_ip: bool
 
 
 class UnittestConfig(BaseModel):

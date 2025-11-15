@@ -1,21 +1,21 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServerLauncherBase, ServerFactory
+from frontends.gamespy.library.abstractions.server_launcher import ServiceBase, ServicesFactory
 from frontends.gamespy.library.network.tcp_handler import TcpServer
 from frontends.gamespy.protocols.chat.applications.client import Client
 
 
-class ServerLauncher(ServerLauncherBase):
+class Service(ServiceBase):
 
     def __init__(self) -> None:
         super().__init__(
             config_name="Chat",
             client_cls=Client,
-            server_cls=TcpServer,
+            network_server_cls=TcpServer,
         )
 
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
 
-    chat = ServerLauncher()
-    helper = DebugHelper("./frontends/", ServerFactory([chat]))
+    chat = Service()
+    helper = DebugHelper("./frontends/", ServicesFactory([chat]))
     helper.start()

@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 from enum import Enum
 from typing import TYPE_CHECKING
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.library.extentions.schedular import Schedular
 
 if TYPE_CHECKING:
     from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
@@ -84,16 +82,7 @@ class ConnectionListener:
             else:
                 raise UniSpyException(
                     f"cookie: {cookie} is alive, you can not neogotiate with exist connections")
-            # expire_time = datetime.now() - timedelta(minutes=5)
-            # if 2 clients are expired
-            # if all(client.info.last_receive_time < expire_time for client in clients):
-            #     client.log_info(
-            #         f"cookie:{cookie} is expired, replace with new clients")
-            #     ConnectionListener.cookie_pool[cookie] = [client]
-            #     return
 
         # if current client is not in the pair
         if len(clients) == 1 and client not in clients:
             clients.append(client)
-
-

@@ -57,7 +57,7 @@ class TcpServer(NetworkServerBase):
     ) -> None:
         super().__init__(config, t_client, logger)
         self._server = socketserver.ThreadingTCPServer(
-            (self._config.public_address, self._config.listening_port),
+            (self._config.listening_address, self._config.listening_port),
             TcpHandler,
             bind_and_activate=False
         )

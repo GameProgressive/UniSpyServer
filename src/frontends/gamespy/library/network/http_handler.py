@@ -60,7 +60,7 @@ class HttpServer(NetworkServerBase):
     ) -> None:
         super().__init__(config, t_client, logger)
         self._server = ThreadingHTTPServer(
-            (self._config.public_address, self._config.listening_port), HttpHandler
+            (self._config.listening_address, self._config.listening_port), HttpHandler
         )
         self._server.unispy_params = (self._config, self._client_cls, self._logger) # type: ignore
 

@@ -3,7 +3,8 @@
     "url": "http://unispy_backends:8080",
     "token_secret_key": "I love UniSpy",
     "token_algorithm": "HS256",
-    "token_expire_time": 30
+    "token_expire_time": 30,
+    "is_check_public_ip": false
   },
   "logging": {
     "path": "~/Downloads/unispy_server/log/",
@@ -40,67 +41,67 @@
     "PresenceConnectionManager": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "PresenceConnectionManager",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 29900
     },
     "PresenceSearchPlayer": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "PresenceSearchPlayer",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 29901
     },
     "CDKey": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "CDKey",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 29910
     },
     "ServerBrowserV1": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "ServerBrowserV1",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 28900
     },
     "ServerBrowserV2": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "ServerBrowserV2",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 28910
     },
     "QueryReport": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "QueryReport",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 27900
     },
     "NatNegotiation": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "NatNegotiation",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 27901
     },
     "GameStatus": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "GameStatus",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 29920
     },
     "Chat": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "Chat",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 6667
     },
     "WebServices": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "WebServices",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 80
     },
     "GameTrafficRelay": {
       "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
       "server_name": "GameTrafficRelay",
-      "public_address": "0.0.0.0",
+      "listening_address": "0.0.0.0",
       "listening_port": 10086
     }
   },

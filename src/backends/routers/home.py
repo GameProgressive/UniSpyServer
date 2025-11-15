@@ -8,10 +8,11 @@ import uvicorn
 
 from backends.library.abstractions.contracts import ErrorResponse
 from backends.library.database.pg_orm import ENGINE
+from backends.library.utils.misc import check_public_ip
 from backends.services.register import register_services
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
-from frontends.gamespy.library.configs import ServerConfig
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from backends.routers.gamespy import (
     chat,
     game_stats,
@@ -69,9 +70,10 @@ def general_exception_handler(_, exc: Exception):
 
 
 @app.post("/")
-def home(request: Request, config: ServerConfig,) -> dict:
+def home(request: Request, config: ServerConfig) -> dict:
     # todo add the server config to our database
     assert request.client is not None
+    check_public_ip(request.client.host, config.listening_address)
     # response = register_services(config, request.client.host)
     return {"status": "online"}
 
@@ -88,4 +90,4 @@ def get_auth_token(request: RegisterRequest):
 
 if __name__ == "__main__":
     uvicorn.run("backends.routers.home:app",
-                host="127.0.0.1", port=8080, reload=True)
+                host="0.0.0.0", port=8080, reload=True)
