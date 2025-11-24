@@ -1,3 +1,4 @@
+from enum import Enum
 import frontends.gamespy.library.abstractions.contracts as lib
 
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
@@ -14,6 +15,8 @@ class RequestBase(lib.RequestBase):
 
     def parse(self) -> None:
         self._request_dict = convert_to_key_value(self.raw_request)
+        if 'final' in self._request_dict:
+            del self._request_dict['final']
         self.command_name = list(self._request_dict.keys())[0]
 
 

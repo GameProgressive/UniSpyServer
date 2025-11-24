@@ -217,16 +217,15 @@ ALTER SEQUENCE unispy.friends_friendid_seq OWNED BY unispy.friends.friendid;
 --
 
 CREATE TABLE unispy.game_server_caches (
-    instant_key character varying(10) PRIMARY KEY NOT NULL UNIQUE,
+    id SERIAL PRIMARY KEY NOT NULL,
+    instant_key character varying(10),
     server_id uuid NOT NULL,
     host_ip_address inet NOT NULL,
     game_name character varying NOT NULL,
     query_report_port integer NOT NULL,
     update_time timestamp without time zone NOT NULL,
     status smallint not NULL,
-    player_data jsonb NOT NULL,
-    server_data jsonb NOT NULL,
-    team_data jsonb NOT NULL,
+    data jsonb NOT NULL,
     avaliable boolean
 );
 
@@ -807,7 +806,7 @@ COPY unispy.friends (friendid, profileid, targetid, namespaceid) FROM stdin;
 -- Data for Name: game_server_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.game_server_caches (instant_key, server_id, host_ip_address, game_name, query_report_port, update_time, status, player_data, server_data, team_data, avaliable) FROM stdin;
+COPY unispy.game_server_caches (instant_key, server_id, host_ip_address, game_name, query_report_port, update_time, status, data, avaliable) FROM stdin;
 \.
 
 

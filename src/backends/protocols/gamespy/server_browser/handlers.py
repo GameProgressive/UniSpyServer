@@ -4,7 +4,6 @@ from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.query_report.broker import BROCKER, MANAGER
 import backends.protocols.gamespy.query_report.data as data
-from backends.protocols.gamespy.query_report.handlers import ClientMessageHandler
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.protocols.gamespy.server_browser.requests import (
     AdHocRequestBase,
@@ -78,8 +77,11 @@ class ServerMainListHandler(HandlerBase):
         )
         # we just need server data
         for cache in self._caches:
-            cache.player_data = []
-            cache.team_data = []
+            filtered_data = {}
+            for key in self._request.keys:
+                if key in cache.data:
+                    filtered_data[key] = cache.data[key]
+            cache.data = filtered_data
 
     def _result_construct(self):
         assert isinstance(self._caches, list) and all(
@@ -114,7 +116,7 @@ class ServerFullInfoListHandler(HandlerBase):
         )
         if TYPE_CHECKING:
             self._caches = cast(list[GameServerInfo], self._caches)
-        all_keys = list(self._caches[0].server_data.keys())
+        all_keys = list(self._caches[0].data.keys())
         self._result = ServerFullInfoListResult(
             client_remote_ip=self._request.client_ip,
             game_secret_key=self._secret_key,

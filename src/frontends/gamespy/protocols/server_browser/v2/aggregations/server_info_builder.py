@@ -34,16 +34,16 @@ def build_server_info_header(
 
 
 def check_nat_neg_flag(header: bytearray, server_info: GameServerInfo):
-    if "natneg" in server_info.server_data:
-        nat_neg_flag = int(server_info.server_data["natneg"])
+    if "natneg" in server_info.data:
+        nat_neg_flag = int(server_info.data["natneg"])
         unsolicited_udp = header[0] & GameServerFlags.UNSOLICITED_UDP_FLAG.value
         if nat_neg_flag == 1 and unsolicited_udp == 0:
             header[0] ^= GameServerFlags.CONNECT_NEGOTIATE_FLAG.value
 
 
 def check_unsolicited_udp(header: bytearray, server_info: GameServerInfo):
-    if "allow_unsolicited_udp" in server_info.server_data:
-        unsolicited_udp = int(server_info.server_data["unsolicitedudp"])
+    if "allow_unsolicited_udp" in server_info.data:
+        unsolicited_udp = int(server_info.data["unsolicitedudp"])
         if unsolicited_udp == 1:
             header[0] ^= GameServerFlags.UNSOLICITED_UDP_FLAG.value
 
@@ -53,9 +53,9 @@ def check_private_ip(header: bytearray, server_info: GameServerInfo):
     #!known game: Worm3d
     # todo
     # if server_info.game_name in PEER_GROUP_LIST:
-        if "localip0" in server_info.server_data:
+        if "localip0" in server_info.data:
             header[0] ^= GameServerFlags.PRIVATE_IP_FLAG.value
-            bytes_address = inet_aton(server_info.server_data["localip0"])
+            bytes_address = inet_aton(server_info.data["localip0"])
             header.extend(bytes_address)
 
 
@@ -70,8 +70,8 @@ def check_non_standard_port(header: bytearray, server_info: GameServerInfo):
 
 
 def check_non_standard_private_port(header: bytearray, server_info: GameServerInfo):
-    if "localport" in server_info.server_data:
-        local_port = server_info.server_data["localport"]
+    if "localport" in server_info.data:
+        local_port = server_info.data["localport"]
         if local_port != "" and local_port != QUERY_REPORT_DEFAULT_PORT:
             header[0] ^= GameServerFlags.NON_STANDARD_PRIVATE_PORT_FLAG.value
             port = int(local_port).to_bytes(2, byteorder="big")
@@ -79,7 +79,7 @@ def check_non_standard_private_port(header: bytearray, server_info: GameServerIn
 
 
 def check_icmp_support(header: bytearray, server_info: GameServerInfo):
-    if "icmp_address" in server_info.server_data:
+    if "icmp_address" in server_info.data:
         header[0] ^= GameServerFlags.ICMP_IP_FLAG.value
-        bytes_address = inet_aton(server_info.server_data["icmp_address"])
+        bytes_address = inet_aton(server_info.data["icmp_address"])
         header.extend(bytes_address)

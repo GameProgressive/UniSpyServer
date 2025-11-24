@@ -1,15 +1,10 @@
 from concurrent.futures import ProcessPoolExecutor
 from typing import TYPE_CHECKING, cast
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
-from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
-    ClientMessageRequest,
-)
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
-    GameServerStatus,
-    RequestType,
-)
+
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     RequestBase,
 )

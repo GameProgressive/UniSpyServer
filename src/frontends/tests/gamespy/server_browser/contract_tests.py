@@ -2,12 +2,11 @@ from datetime import datetime
 import unittest
 from uuid import UUID
 
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
-    GameServerStatus,
-)
+
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     GameServerFlags,
     ServerListUpdateOption,
@@ -35,12 +34,10 @@ class ResponseTests(unittest.TestCase):
                     instant_key="12356",
                     game_name="gmtest",
                     query_report_port=6900,
-                    last_heart_beat_received_time=datetime.now(),
+                    update_time=datetime.now(),
                     status=GameServerStatus.NORMAL,
-                    server_data={"hostname": "GameSpy QR2 Sample", "gametype": "",
-                                 "mapname": "", "numplayers": "", "maxplayers": ""},
-                    player_data=[{}],
-                    team_data=[{}],
+                    data={"hostname": "GameSpy QR2 Sample", "gametype": "",
+                          "mapname": "", "numplayers": "", "maxplayers": ""},
                     host_ip_address="127.0.0.1",
                 )
             ],

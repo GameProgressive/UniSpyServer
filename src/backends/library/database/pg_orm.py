@@ -26,12 +26,12 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
     FriendRequestStatus,
     GPStatusCode,
 )
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
-    GameServerStatus,
-)
+
 import sqlalchemy as sa
 import enum
 from sqlalchemy.orm.decl_api import DeclarativeBase
+
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 
 
 class IntEnum(TypeDecorator):
@@ -181,9 +181,8 @@ class PStorage(Base):
         "profiles.profileid"), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
-    data = Column(String,nullable=False)
+    data = Column(String, nullable=False)
     update_time = Column(DateTime, nullable=False, default=datetime.now())
-
 
 
 class GameStatusSnapShot(Base):
@@ -310,15 +309,14 @@ class ChatChannelUserCaches(Base):
 
 class GameServerCaches(Base):
     __tablename__ = "game_server_caches"
-    instant_key = Column(String, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True)
+    instant_key = Column(String, nullable=True)
     server_id = Column(UUID, nullable=False)
     host_ip_address = Column(INET, nullable=False)
     game_name = Column(String, nullable=False)
     query_report_port = Column(Integer, nullable=False)
     status = Column(IntEnum(GameServerStatus))
-    player_data = Column(JSONB, nullable=False, default={})
-    server_data = Column(JSONB, nullable=False, default=[])
-    team_data = Column(JSONB, nullable=False, default=[])
+    data = Column(JSONB, nullable=False, default={})
     avaliable = Column(Boolean, nullable=True)
     update_time = Column(DateTime, nullable=False, default=datetime.now())
 

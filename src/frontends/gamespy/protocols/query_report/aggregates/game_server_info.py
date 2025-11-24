@@ -4,7 +4,9 @@ from uuid import UUID
 from pydantic import BaseModel
 
 from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
+
+NESSESARY_KEYS: list[str] = ["gamename", "hostname", "hostport"]
 
 
 class GameServerInfo(BaseModel):
@@ -14,11 +16,9 @@ class GameServerInfo(BaseModel):
     game_name: str
     query_report_port: int
 
-    last_heart_beat_received_time: datetime
+    update_time: datetime
     status: GameServerStatus
-    server_data: dict[str, str]
-    player_data: list[dict[str, str]]
-    team_data: list[dict[str, str]]
+    data:dict[str,str]
 
     @property
     def query_report_port_bytes(self) -> bytes:

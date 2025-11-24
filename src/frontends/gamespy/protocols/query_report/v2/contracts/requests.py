@@ -1,9 +1,9 @@
 
 from uuid import UUID
 from frontends.gamespy.library.extentions.encoding import get_string
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 
 
 PREFIX = bytes([0x09, 0x00, 0x00, 0x00, 0x00])
@@ -48,22 +48,13 @@ class ClientMessageRequest(RequestBase):
     def __init__(self, raw_request: bytes | None = None) -> None:
         if raw_request is not None:
             super().__init__(raw_request)
-    
 
 
 class HeartbeatRequest(RequestBase):
-    server_data: dict[str, str] | None
-    player_data: list[dict[str, str]] | None
-    team_data: list[dict[str, str]] | None
-    server_status: GameServerStatus
+    data: dict[str, str]
+    status: GameServerStatus
     group_id: int | None
     game_name: str
-
-    def __init__(self, raw_request: bytes) -> None:
-        super().__init__(raw_request)
-        self.server_data = None
-        self.player_data = None
-        self.team_data = None
 
     def parse(self):
         super().parse()
@@ -119,7 +110,7 @@ class HeartbeatRequest(RequestBase):
             raise QRException("HeartBeat request is invalid.")
 
     def parse_server_data(self, server_data_str: str):
-        self.server_data = {}
+        self.data = {}
         key_value_array = server_data_str.split("\0")
 
         for i in range(0, len(key_value_array), 2):
@@ -129,27 +120,23 @@ class HeartbeatRequest(RequestBase):
             temp_key = key_value_array[i]
             temp_value = key_value_array[i + 1]
 
-            if temp_key in self.server_data:
-                self.server_data[temp_key] = temp_value
+            if temp_key in self.data:
+                self.data[temp_key] = temp_value
             else:
-                self.server_data[temp_key] = temp_value
+                self.data[temp_key] = temp_value
 
-        if "statechanged" not in self.server_data:
-            self.server_status = GameServerStatus.NORMAL
+        if "statechanged" not in self.data:
+            self.status = GameServerStatus.NORMAL
         else:
-            self.server_status = GameServerStatus(
-                int(self.server_data["statechanged"]))
+            self.status = GameServerStatus(
+                int(self.data["statechanged"]))
 
-        if "groupid" in self.server_data:
-            group_id = 0
-            if not int(self.server_data["groupid"], group_id):
-                raise QRException("GroupId is invalid.")
-            self.group_id = group_id
+        if "groupid" in self.data:
+            self.group_id = int(self.data["groupid"])
         else:
             self.group_id = None
 
     def parse_player_data(self, player_data_str: str):
-        self.player_data = []
         player_count = int.from_bytes(player_data_str[0].encode())
         player_data_str = player_data_str[1:]
 
@@ -160,8 +147,8 @@ class HeartbeatRequest(RequestBase):
         values_str = player_data_str[index_of_key + 2:]
         values = values_str.split("\0")
 
+        key_value = {}
         for player_index in range(player_count):
-            key_value = {}
 
             for key_index in range(len(keys)):
                 temp_key = keys[key_index] + str(player_index)
@@ -172,10 +159,10 @@ class HeartbeatRequest(RequestBase):
                 else:
                     key_value[temp_key] = temp_value
 
-            self.player_data.append(key_value)
+        for key, value in key_value.items():
+            self.data[key] = value
 
     def parse_team_data(self, team_data_str: str):
-        self.team_data = []
         team_count = int.from_bytes(team_data_str[0].encode())
         team_data_str = team_data_str[1:]
 
@@ -186,8 +173,8 @@ class HeartbeatRequest(RequestBase):
         value_str = team_data_str[end_key_index + 2:]
         values = value_str.split("\0")
 
+        key_value = {}
         for team_index in range(team_count):
-            key_value = {}
 
             for key_index in range(len(keys)):
                 temp_key = keys[key_index] + str(team_index)
@@ -198,7 +185,8 @@ class HeartbeatRequest(RequestBase):
                 else:
                     key_value[temp_key] = temp_value
 
-            self.team_data.append(key_value)
+        for key, value in key_value.items():
+            self.data[key] = value
 
 
 class EchoRequest(RequestBase):

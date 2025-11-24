@@ -54,18 +54,10 @@ class UpdateServerInfoResponse(AdHocResponseBase):
             GameServerFlags.HAS_FULL_RULES_FLAG, self._result.game_server_info
         )
         self._buffer.extend(header)
-        if self._result.game_server_info.server_data is not None:
-            server_data = UpdateServerInfoResponse._build_kv(
-                self._result.game_server_info.server_data)
-            self._buffer.extend(server_data)
-        if self._result.game_server_info.player_data is not None:
-            for pd in self._result.game_server_info.player_data:
-                player_data = UpdateServerInfoResponse._build_kv(pd)
-                self._buffer.extend(player_data)
-        if self._result.game_server_info.team_data is not None:
-            for td in self._result.game_server_info.team_data:
-                team_data = UpdateServerInfoResponse._build_kv(td)
-                self._buffer.extend(team_data)
+        if self._result.game_server_info.data is not None:
+            data_str = UpdateServerInfoResponse._build_kv(
+                self._result.game_server_info.data)
+            self._buffer.extend(data_str)
 
     @staticmethod
     def _build_kv(data: dict) -> bytearray:
@@ -123,7 +115,7 @@ class ServerMainListResponse(ServerListUpdateOptionResponseBase):
     def __check_key_existance(self):
         for info in self._result.servers_info:
             for key in self._result.keys:
-                if key not in info.server_data:
+                if key not in info.data:
                     raise SBException(
                         f"key:{key} is not in server info, please check database")
 
@@ -132,7 +124,7 @@ class ServerMainListResponse(ServerListUpdateOptionResponseBase):
             last_header = build_server_info_header(self._result.flag, info)
             self._buffer.extend(last_header)
             for key in self._result.keys:
-                value = info.server_data[key]
+                value = info.data[key]
                 self.__add_key_value_to_buffer(value)
 
     def __build_tail(self):

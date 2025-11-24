@@ -3,7 +3,6 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 
 
-
 class SwitcherBase:
     """
     class member type hint can use class static member, but you can not initialize any class static member here! Init it in the __init__() function 
@@ -14,7 +13,7 @@ class SwitcherBase:
 
     def __init__(self, client: ClientBase, raw_request: bytes | str) -> None:
         assert isinstance(client, ClientBase)
-        assert isinstance(raw_request, bytes) or isinstance(raw_request, str)
+        assert isinstance(raw_request, str) or isinstance(raw_request, bytes)
         self._client: ClientBase = client
         self._raw_request: object = raw_request
         self._handlers: list[CmdHandlerBase] = []

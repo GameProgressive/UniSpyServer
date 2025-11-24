@@ -54,11 +54,13 @@ class ClientBase:
         lock = threading.Lock()
         with lock:
             ClientBase.pool[self.connection.ip_endpoint] = self
+        self.log_debug("client connected")
 
     def on_disconnected(self) -> None:
         lock = threading.Lock()
         with lock:
             del ClientBase.pool[self.connection.ip_endpoint]
+        self.log_debug("client disconnected")
 
     def _create_switcher(self, buffer: bytes) -> "SwitcherBase":  # type: ignore
         """
@@ -124,11 +126,13 @@ class ClientBase:
 
     def log_network_upload(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [upload]: {data}")
+
     def log_network_fetch(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [fetch]: {data}")
 
     def log_current_class(self, object: "CmdHandlerBase") -> None:
-        self.logger.debug(f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
+        self.logger.debug(
+            f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
 
 
 class EasyTimer:

@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.query_report.applications.client import Client
-from frontends.gamespy.protocols.query_report.v2.abstractions.cmd_handler_base import CmdHandlerBase
+from frontends.gamespy.protocols.query_report.v2.abstractions.handlers import CmdHandlerBase
 
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,

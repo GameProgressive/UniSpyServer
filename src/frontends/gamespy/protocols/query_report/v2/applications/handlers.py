@@ -1,6 +1,6 @@
 from typing import final
 from frontends.gamespy.protocols.query_report.applications.client import Client
-from frontends.gamespy.protocols.query_report.v2.abstractions.cmd_handler_base import (
+from frontends.gamespy.protocols.query_report.v2.abstractions.handlers import (
     CmdHandlerBase,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import (

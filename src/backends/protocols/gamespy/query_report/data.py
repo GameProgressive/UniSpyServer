@@ -9,6 +9,7 @@ from backends.library.database.pg_orm import (
     GameServerCaches,
 )
 from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
+from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
@@ -20,7 +21,6 @@ from sqlalchemy.orm import Session
 
 from datetime import datetime, timedelta
 
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
 
 
@@ -159,29 +159,25 @@ def get_server_info_list_with_game_name(
         .all()
     )
     data = []
-    for s in result:
-        assert isinstance(s.server_id, UUID)
-        assert isinstance(s.host_ip_address, str)
-        assert isinstance(s.instant_key, str)
-        assert isinstance(s.game_name, str)
-        assert isinstance(s.query_report_port, int)
-        assert isinstance(s.update_time, datetime)
-        assert isinstance(s.status, GameServerStatus)
-        assert isinstance(s.server_data, dict)
-        assert isinstance(s.player_data, list)
-        assert isinstance(s.team_data, list)
+    for info in result:
+        assert isinstance(info.server_id, UUID)
+        assert isinstance(info.host_ip_address, str)
+        assert isinstance(info.instant_key, str)
+        assert isinstance(info.game_name, str)
+        assert isinstance(info.query_report_port, int)
+        assert isinstance(info.update_time, datetime)
+        assert isinstance(info.status, GameServerStatus)
+        assert isinstance(info.data, dict)
 
         data.append(GameServerInfo(
-            server_id=s.server_id,
-            host_ip_address=s.host_ip_address,
-            instant_key=s.instant_key,
-            game_name=s.game_name,
-            query_report_port=s.query_report_port,
-            last_heart_beat_received_time=s.update_time,
-            status=s.status,
-            server_data=s.server_data,
-            player_data=s.player_data,
-            team_data=s.team_data
+            server_id=info.server_id,
+            host_ip_address=info.host_ip_address,
+            instant_key=info.instant_key,
+            game_name=info.game_name,
+            query_report_port=info.query_report_port,
+            update_time=info.update_time,
+            status=info.status,
+            data=info.data
         ))
     return data
 
@@ -227,15 +223,13 @@ def create_game_server_cache(info: GameServerCaches, session: Session) -> None:
 
 def update_game_server_cache(
     cache: GameServerCaches,
-    instant_key: str,
+    instant_key: str | None,
     server_id: UUID,
     host_ip_address: str,
     game_name: str,
     query_report_port: int,
     server_status: GameServerStatus,
-    player_data: list[dict[str, object]] | None,
-    server_data: dict[str, object] | None,
-    team_data: list[dict[str, object]] | None,
+    data: dict[str, str],
     session: Session,
 ) -> None:
     cache.instant_key = instant_key  # type: ignore
@@ -245,17 +239,12 @@ def update_game_server_cache(
     cache.query_report_port = query_report_port  # type: ignore
     cache.update_time = datetime.now()  # type: ignore
     cache.status = server_status  # type: ignore
-    if player_data is not None:
-        cache.player_data = player_data  # type: ignore
-    if server_data is not None:
-        cache.server_data = server_data  # type: ignore
-    if team_data is not None:
-        cache.team_data = team_data  # type: ignore
+    cache.data = data  # type: ignore
     session.commit()
 
 
-def refresh_game_server_cache(instant_key: str, session: Session):
-    cache = get_game_server_cache_with_instant_key(instant_key, session)
+def refresh_game_server_cache(client_ip: str, client_port: int, session: Session):
+    cache = get_game_server_cache_by_ip_port(client_ip, client_port, session)
     if cache is None:
         raise QRException(
             "no game server cache found, please check the database")
