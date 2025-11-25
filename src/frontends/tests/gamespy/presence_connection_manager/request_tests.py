@@ -29,8 +29,8 @@ REGISTER_NICK = (
 )
 
 
-LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\xxxx\\userid\\0\\profileid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\0\\profileid\\0\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\example_auth\\userid\\1\\profileid\\1\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\1\\profileid\\1\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@gamespy.com\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 
 ADD_BUDDY = "\\addbuddy\\\\sesskey\\0\\newprofileid\\0\\reason\\test\\final\\"
@@ -49,9 +49,9 @@ class RequestTests(unittest.TestCase):
         request.parse()
         self.assertEqual(LoginType.AUTH_TOKEN, request.type)
         self.assertEqual("xxxx", request.user_challenge)
-        self.assertEqual("xxxx", request.auth_token)
-        self.assertEqual(0, request.user_id)
-        self.assertEqual(0, request.profile_id)
+        self.assertEqual("example_auth", request.auth_token)
+        self.assertEqual(1, request.user_id)
+        self.assertEqual(1, request.profile_id)
         self.assertEqual(0, request.partner_id)
         self.assertEqual("xxxxx", request.response)
         self.assertEqual(True, request.firewall)
@@ -70,8 +70,8 @@ class RequestTests(unittest.TestCase):
         self.assertEqual("xxxx", request.user_challenge)
         self.assertEqual("spyguy", request.unique_nick)
         self.assertEqual(0, request.namespace_id)
-        self.assertEqual(0, request.user_id)
-        self.assertEqual(0, request.profile_id)
+        self.assertEqual(1, request.user_id)
+        self.assertEqual(1, request.profile_id)
         self.assertEqual(0, request.partner_id)
         self.assertEqual("xxxxx", request.response)
         self.assertEqual(True, request.firewall)

@@ -7,10 +7,10 @@ from frontends.gamespy.protocols.presence_search_player.applications.handlers im
 from frontends.tests.gamespy.presence_search_player.mock_objects import create_client
 CHECK1 = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
 
-SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\namespaceid\\0\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_3 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\nick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_4 = "\\search\\\\sesskey\\xxxx\\profileid\\0\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\namespaceid\\0\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\nick\\spyguy\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_3 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\nick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_4 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 
 SEARCH_UNIQUENICK = "\\searchunique\\\\sesskey\\xxxx\\profileid\\0\\uniquenick\\spyguy\\namespaces\\1,2,3,4,5\\gamename\\gmtest\\final\\"
 

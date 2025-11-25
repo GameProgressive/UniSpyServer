@@ -76,6 +76,7 @@ class HandlerTests(unittest.TestCase):
 
         # self.assertEqual()
 
+    @responses.activate
     def test_auth(self):
         raw = "\\auth\\\\gamename\\crysis2\\response\\xxxxx\\port\\30\\id\\1\\final\\"
         request = AuthGameRequest(raw)
@@ -84,6 +85,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(30, request.port)
         self.assertEqual(1, request.local_id)
 
+    @responses.activate
     def test_get_player_data(self):
         raw = (
             "\\getpd\\\\pid\\0\\ptype\\0\\dindex\\1\\keys\\hello\x01hi\\lid\\1\\final\\"
@@ -99,6 +101,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("hello", request.keys[0])
         self.assertEqual("hi", request.keys[1])
 
+    @responses.activate
     def test_get_profile_id(self):
         raw = "\\getpid\\\\nick\\xiaojiuwo\\keyhash\\00000\\lid\\1\\final\\"
         request = GetProfileIdRequest(raw)
@@ -107,6 +110,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("00000", request.key_hash)
         self.assertEqual(1, request.local_id)
 
+    @responses.activate
     def test_new_game(self):
         raw1 = "\\newgame\\\\connid\\123\\sesskey\\123456\\lid\\1\\final\\"
         request1 = NewGameRequest(raw1)
@@ -124,6 +128,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("123456789", request2.challenge)
         self.assertEqual(1, request2.local_id)
 
+    @responses.activate
     def test_update_game(self):
         raw1 = "\\updgame\\\\sesskey\\0\\done\\1\\gamedata\\hello\\lid\\1\\final\\"
         request1 = UpdateGameRequest(raw1)
@@ -140,8 +145,9 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("hello", request2.game_data)
         self.assertEqual(1, request2.connection_id)
 
+    @responses.activate
     def test_auth_player_2025_11_06(self):
-        raw = b'\\authp\\\\nick\\spyguy\\keyhash\\00000a308fd86a7eb92cbc8322b03a36\\resp\\a146083990caca4925e3144deb552817\\lid\\1,\x1fZ*&\r1~Shh\x08Db\x0eYKVA-<F[!Y~T$\x7fS\x04Zg\x18\x12W.$SR\x07g\x1dDVx.QV\x0b3\x1f\x13\x02\x7f,TRb>@Fn/\\final\\'
+        raw = '\\authp\\\\nick\\spyguy\\keyhash\\00000a308fd86a7eb92cbc8322b03a36\\resp\\a146083990caca4925e3144deb552817\\lid\\1\\final\\'
         request = AuthPlayerRequest(raw)
         client = create_client()
         handler = AuthPlayerHandler(client, request)

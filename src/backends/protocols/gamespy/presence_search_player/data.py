@@ -316,6 +316,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
 ) -> list[dict]:
     result = (
         session.query(
+            Users.email,
             Profiles.profileid,
             Profiles.nick,
             SubProfiles.uniquenick,

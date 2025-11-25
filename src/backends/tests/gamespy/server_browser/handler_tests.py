@@ -21,9 +21,11 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
         pass
 
+    @unittest.skip("not implemented")
     def test_p2p_group_room_list(self):
         raise NotImplementedError()
 
+    @unittest.skip("not implemented")
     def test_server_network_info_list(self):
         raise NotImplementedError()
 

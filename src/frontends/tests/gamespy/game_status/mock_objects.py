@@ -49,7 +49,7 @@ def create_client() -> Client:
             local_id=0,
             profile_id=0,
             modified=datetime.now()
-        ).model_dump(),
+        ).model_dump(mode="json"),
     )
     create_mock_url(
         config,

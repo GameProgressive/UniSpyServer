@@ -130,7 +130,7 @@ class CmdHandlerBase:
     def _upload_data(self):
         """
         whether need send data to backend
-        if child class do not require feach, overide this function to do nothing
+        if child class do not require fetch, overide this function to do nothing
         """
         self._url = self._get_url()
         json_str = json.dumps(

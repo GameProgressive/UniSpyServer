@@ -92,7 +92,7 @@ class DataFetchTests(TestCase):
 
     def test_is_uniquenick_exist(self):
         with Session(ENGINE) as session:
-            result1 = data.is_uniquenick_exist("spyguy_test", 0, "gmtests", session)
+            result1 = data.is_uniquenick_exist("spyguy", 0, "gmtests", session)
             self.assertTrue(result1)
 
             result2 = data.is_uniquenick_exist(

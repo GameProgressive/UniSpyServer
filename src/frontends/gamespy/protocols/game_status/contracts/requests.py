@@ -181,17 +181,7 @@ class SetPlayerDataRequest(RequestBase):
     is_key_value: bool
 
     def parse(self) -> None:
-        data_index = self.raw_request.index("data")+4
-        final_index = self.raw_request.index("final")
-        # we temperary save raw request and restore it later,
-        # for not geting error in super method
-        temp_raw = self.raw_request
-        # we get the data part out of the request
-        self.raw_request = self.raw_request[0:data_index] + \
-            self.raw_request[final_index:]
         super().parse()
-        self.raw_request = temp_raw
-        self._request_dict["data"] = temp_raw[data_index:final_index-2]
         if "pid" not in self._request_dict:
             raise GSException("pid is missing")
 

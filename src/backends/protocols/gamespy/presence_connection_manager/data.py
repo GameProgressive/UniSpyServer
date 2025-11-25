@@ -214,6 +214,18 @@ def get_user_info(
     return result
 
 
+_login_infos = [Users.userid,
+                Profiles.profileid,
+                SubProfiles.subprofileid,
+                Profiles.nick,
+                Users.email,
+                SubProfiles.uniquenick,
+                Users.password,
+                Users.emailverified,
+                Users.banned,
+                SubProfiles.namespaceid]
+
+
 def get_user_infos_by_uniquenick_namespace_id(
     unique_nick: str, namespace_id: int, session: Session
 ) -> LoginData | None:
@@ -231,16 +243,7 @@ def get_user_infos_by_uniquenick_namespace_id(
 
     result = (
         session.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+            *_login_infos
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -250,7 +253,22 @@ def get_user_infos_by_uniquenick_namespace_id(
         )
         .first()
     )
-
+    data = {
+        "user_id": result[0],
+        "profile_id": result[1],
+        "sub_profile_id": result[2],
+        "nick": result[3],
+        "email": result[4],
+        "unique_nick": result[5],
+        "password_hash": result[6],
+        "email_verified_flag": result[7],
+        "banned_flag": result[8],
+        "namespace_id": result[9],
+    }
+    if result is not None:
+        return LoginData(**data)  # type: ignore
+    else:
+        return None
     return result
 
 
@@ -271,16 +289,7 @@ def get_user_infos_by_nick_email(
 
     result = (
         session.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+            *_login_infos
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -328,16 +337,7 @@ def get_user_infos_by_authtoken(auth_token: str, session: Session) -> LoginData 
 
     result = (
         session.query(
-            Users.userid,
-            Profiles.profileid,
-            SubProfiles.subprofileid,
-            Profiles.nick,
-            Users.email,
-            SubProfiles.uniquenick,
-            Users.password,
-            Users.emailverified,
-            Users.banned,
-            SubProfiles.namespaceid,
+            *_login_infos
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)

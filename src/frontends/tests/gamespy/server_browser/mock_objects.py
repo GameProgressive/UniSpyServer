@@ -56,21 +56,13 @@ def create_v2_client() -> Client:
                     "instant_key": "123456",
                     "game_name": "Example Game",
                     "query_report_port": 8080,
-                    "last_heart_beat_received_time": "2023-10-01T12:00:00Z",
+                    "update_time": "2023-10-01T12:00:00Z",
                     "status": 3,
-                    "server_data": {
+                    "data": {
                         "max_players": "100",
                         "current_players": "50",
                         "region": "US-East",
                     },
-                    "player_data": [
-                        {"player_id": "player1", "player_name": "Player One"},
-                        {"player_id": "player2", "player_name": "Player Two"},
-                    ],
-                    "team_data": [
-                        {"team_id": "team1", "team_name": "Team Alpha"},
-                        {"team_id": "team2", "team_name": "Team Beta"},
-                    ],
                 }
             }
         ).model_dump(mode="json"),

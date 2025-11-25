@@ -88,14 +88,13 @@ class LoginHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         if self._data is None:
-            raise GPLoginException("User is not exist.")
-        self._result = LoginResult(data=self._data,
-                                   operation_id=self._request.operation_id,
+            raise GPLoginException("User do not exist.")
+        self._result = LoginResult(operation_id=self._request.operation_id,
+                                   data=self._data,
+                                   user_data=self._request.user_data,
                                    type=self._request.type,
                                    partner_id=self._request.partner_id,
-                                   user_challenge=self._request.user_challenge,
-                                   user_data=self._request.user_data)
-    
+                                   user_challenge=self._request.user_challenge)
 
 
 class LogoutHandler(HandlerBase):

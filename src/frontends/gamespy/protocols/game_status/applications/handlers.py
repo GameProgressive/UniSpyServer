@@ -59,8 +59,6 @@ class NewGameHandler(CmdHandlerBase):
 
 class SetPlayerDataHandler(CmdHandlerBase):
     _request: SetPlayerDataRequest
-    _result: SetPlayerDataResult
-    _response: SetPlayerDataResponse
 
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
         assert isinstance(request, SetPlayerDataRequest)

@@ -1,6 +1,5 @@
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import Users, Profiles, SubProfiles
-from backends.protocols.gamespy.chat.response import NicksResponse
 import backends.protocols.gamespy.presence_search_player.data as data
 from backends.protocols.gamespy.presence_search_player.requests import (
     CheckRequest,
@@ -13,7 +12,7 @@ from backends.protocols.gamespy.presence_search_player.requests import (
     UniqueSearchRequest,
     ValidRequest,
 )
-from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
+from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, NicksResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
     SearchType,
 )
@@ -156,7 +155,7 @@ class NicksHandler(HandlerBase):
             self._session,
         )
         self.result_data = []
-        for nick, unique in self.temp_list:
+        for nick, unique  in self.temp_list:
             self.result_data.append(
                 NickResultData(nick=nick, uniquenick=unique))
 

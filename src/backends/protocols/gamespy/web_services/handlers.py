@@ -18,6 +18,7 @@ from backends.protocols.gamespy.web_services.requests import (
 from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
     LoginProfileResult,
+    LoginRemoteAuthResult,
 )
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import (
     GetPurchaseHistoryResult,
@@ -68,7 +69,7 @@ class LoginRemoteAuthHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = LoginProfileResult(
+        self._result = LoginRemoteAuthResult(
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],

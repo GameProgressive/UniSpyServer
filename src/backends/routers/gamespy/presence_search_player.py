@@ -2,12 +2,11 @@ from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF
 
-from backends.protocols.gamespy.chat.response import NicksResponse
 from backends.protocols.gamespy.presence_search_player.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler, OthersListHandler, SearchHandler, SearchUniqueHandler, UniqueSearchHandler, ValidHandler
 
 from backends.protocols.gamespy.presence_search_player.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
-from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
+from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, NicksResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
 
 from backends.urls import PRESENCE_SEARCH_PLAYER
 
