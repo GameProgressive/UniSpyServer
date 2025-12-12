@@ -137,7 +137,7 @@ def get_info_by_uniquenick(
     result = (
         session.query(Users, Profiles, SubProfiles)
         .join(Users, Users.userid == Profiles.userid)
-        .join(Profiles, Profiles.profileid == SubProfiles.profileid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
         .where(
             SubProfiles.uniquenick == uniquenick,
             SubProfiles.namespaceid == namespace_id,

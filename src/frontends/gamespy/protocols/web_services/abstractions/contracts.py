@@ -31,11 +31,6 @@ class ResponseBase(lib.ResponseBase):
 
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
-        if not hasattr(self, "_content"):
-            raise WebException(
-                "Soap envelope content must be initialized in response sub class"
-            )
-        assert isinstance(self._content, SoapEnvelop)
         super().__init__(result)
 
     def build(self) -> None:

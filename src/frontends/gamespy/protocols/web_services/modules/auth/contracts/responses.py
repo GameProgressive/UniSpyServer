@@ -1,3 +1,4 @@
+from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
 from frontends.gamespy.protocols.web_services.modules.auth.abstractions.general import LoginResponseBase
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
     LoginProfileRequest,
@@ -69,4 +70,10 @@ class LoginUniqueNickResponse(LoginResponseBase):
 class LoginUniqueNickWithGameIdResponse(LoginResponseBase):
     def build(self) -> None:
         self._content.add("LoginUniqueNickWithGameIdResult")
+        super().build()
+
+
+class CreateUserAccountResponse(LoginResponseBase):
+    def build(self) -> None:
+        self._content.add("CreateUserAccountResult")
         super().build()

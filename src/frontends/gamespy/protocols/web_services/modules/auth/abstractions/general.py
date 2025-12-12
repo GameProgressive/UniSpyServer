@@ -47,21 +47,23 @@ class LoginResultBase(lib.ResultBase):
 
 class LoginResponseBase(lib.ResponseBase):
     _result: LoginResultBase
-    _content: SoapEnvelop = SoapEnvelop("http://gamespy.net/AuthService/")
-    _expiretime: int = int(
-        (datetime.datetime.now() + datetime.timedelta(days=1)).timestamp()
-    )
+    _content: SoapEnvelop
+    _expiretime: int
 
     def __init__(self, result: LoginResultBase) -> None:
         assert isinstance(result, LoginResultBase)
         super().__init__(result)
+        self._content = SoapEnvelop("http://gamespy.net/AuthService/")
+        self._expiretime = int(
+            (datetime.datetime.now() + datetime.timedelta(days=1)).timestamp()
+        )
 
     def build(self) -> None:
         self._build_context()
         super().build()
 
     def _build_context(self):
-        self._content.add("responseCode", "h")
+        self._content.add("responseCode", "0")
         self._content.add("certificate")
         self._content.add("length", self._result.length)
         self._content.add("version", self._result.version)
@@ -78,7 +80,7 @@ class LoginResponseBase(lib.ResponseBase):
         self._content.add("serverdata", ClientInfo.SERVER_DATA)
         hash_str = self.__compute_hash()
         self._content.add("signature", ClientInfo.SIGNATURE_PREFIX + hash_str)
-        self._content.back_to_parent_element()
+        self._content.go_to_content_element()
         self._content.add("peerkeyprivate", ClientInfo.PEER_KEY_EXPONENT)
 
     def __compute_hash(self) -> str:

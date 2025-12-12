@@ -69,7 +69,7 @@ class Users(Base):
     )
     banned: Column[bool] = Column(Boolean, default=False, nullable=False)
     deleted: Column[bool] = Column(Boolean, default=False, nullable=False)
-
+    
 
 class Profiles(Base):
     __tablename__ = "profiles"

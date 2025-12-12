@@ -121,7 +121,14 @@ class LoginUniqueNickRequest(AuthRequestBase):
     password: str
 
 
+class CreateUserAccountRequest(AuthRequestBase):
+    email: str
+    profile_nick: str
+    uniquenick: str
+    password: str
+
 # D2G
+
 
 class Direct2GameRequestBase(lib.RequestBase):
     pass

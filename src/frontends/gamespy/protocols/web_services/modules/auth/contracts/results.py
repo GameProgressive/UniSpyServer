@@ -16,3 +16,7 @@ class LoginRemoteAuthResult(LoginResultBase):
 
 class LoginUniqueNickResult(LoginResultBase):
     pass
+
+
+class CreateUserAccountResult(LoginResultBase):
+    pass

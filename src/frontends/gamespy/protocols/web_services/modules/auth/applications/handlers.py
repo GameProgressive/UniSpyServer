@@ -2,6 +2,7 @@ from frontends.gamespy.protocols.web_services.abstractions.contracts import Requ
 from frontends.gamespy.protocols.web_services.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
+    CreateUserAccountRequest,
     LoginProfileRequest,
     LoginProfileWithGameIdRequest,
     LoginPs3CertRequest,
@@ -12,6 +13,7 @@ from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests im
     LoginUniqueNickWithGameIdRequest,
 )
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.responses import (
+    CreateUserAccountResponse,
     LoginProfileResponse,
     LoginProfileWithGameIdResponse,
     LoginPs3CertResponse,
@@ -22,6 +24,7 @@ from frontends.gamespy.protocols.web_services.modules.auth.contracts.responses i
     LoginUniqueNickWithGameIdResponse,
 )
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
+    CreateUserAccountResult,
     LoginProfileResult,
     LoginPs3CertResult,
     LoginRemoteAuthResult,
@@ -101,4 +104,15 @@ class LoginUniqueNickWithGameIdHandler(CmdHandlerBase):
     _response: LoginUniqueNickWithGameIdResponse
 
     def __init__(self, client: Client, request: LoginUniqueNickWithGameIdRequest) -> None:
+        assert isinstance(request, LoginUniqueNickWithGameIdRequest)
+        super().__init__(client, request)
+
+
+class CreateUserAccountHandler(CmdHandlerBase):
+    _request: CreateUserAccountRequest
+    _result: CreateUserAccountResult
+    _response: CreateUserAccountResponse
+
+    def __init__(self, client: Client, request: CreateUserAccountRequest) -> None:
+        assert isinstance(request, CreateUserAccountRequest)
         super().__init__(client, request)

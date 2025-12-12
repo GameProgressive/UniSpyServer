@@ -1,7 +1,9 @@
 from backends.library.abstractions.contracts import DataResponse
-from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import LoginProfileResult, LoginPs3CertResult, LoginRemoteAuthResult, LoginUniqueNickResult
+from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import CreateUserAccountResult, LoginProfileResult, LoginPs3CertResult, LoginRemoteAuthResult, LoginUniqueNickResult
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import GetPurchaseHistoryResult
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, SearchForRecordsResult
+
+# region Auth
 
 
 class LoginProfileResponse(DataResponse):
@@ -24,8 +26,15 @@ class GetPurchaceHistoryResponse(DataResponse):
     result: GetPurchaseHistoryResult
 
 
+class CreateUserAccountResponse(DataResponse):
+    result: CreateUserAccountResult
+
+
+
 # class GetTargettedAdResponse(DataResponse):
 #     result: GetTargettedAdResult
+
+# region Sake
 
 
 class CreateRecordResponse(DataResponse):

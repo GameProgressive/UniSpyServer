@@ -6,6 +6,7 @@ from backends.library.abstractions.handler_base import HandlerBase
 import backends.protocols.gamespy.web_services.data as data
 from backends.protocols.gamespy.web_services.requests import (
     CreateRecordRequest,
+    CreateUserAccountRequest,
     GetMyRecordsRequest,
     GetPurchaseHistoryRequest,
     GetStoreAvailabilityRequest,
@@ -19,6 +20,7 @@ from backends.protocols.gamespy.web_services.responses import CreateRecordRespon
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
     LoginProfileResult,
     LoginRemoteAuthResult,
+    LoginUniqueNickResult,
 )
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import (
     GetPurchaseHistoryResult,
@@ -93,7 +95,7 @@ class LoginUniqueNickHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = LoginProfileResult(
+        self._result = LoginUniqueNickResult(
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
@@ -103,6 +105,10 @@ class LoginUniqueNickHandler(HandlerBase):
             namespace_id=self._request.namespace_id,
             partner_code=self._request.partner_code
         )
+
+
+class CreateUserAccountHandler(HandlerBase):
+    _request: CreateUserAccountRequest
 
 
 # region d2g
