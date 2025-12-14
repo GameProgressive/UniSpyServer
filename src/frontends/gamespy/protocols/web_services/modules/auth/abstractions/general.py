@@ -53,7 +53,6 @@ class LoginResponseBase(lib.ResponseBase):
     def __init__(self, result: LoginResultBase) -> None:
         assert isinstance(result, LoginResultBase)
         super().__init__(result)
-        self._content = SoapEnvelop("http://gamespy.net/AuthService/")
         self._expiretime = int(
             (datetime.datetime.now() + datetime.timedelta(days=1)).timestamp()
         )

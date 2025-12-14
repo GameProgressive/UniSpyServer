@@ -54,7 +54,6 @@ class ResultBase(lib.ResultBase):
 
 class ResponseBase(lib.ResponseBase):
     def __init__(self, result: ResultBase) -> None:
-        self._content = SoapEnvelop(NAMESPACE)
         super().__init__(result)
 
 

@@ -13,5 +13,4 @@ class ResultBase(lib.ResultBase):
 
 
 class ResponseBase(lib.ResponseBase):
-    _content: SoapEnvelop = SoapEnvelop(NAMESPACE)
-    pass
+    _content: SoapEnvelop
