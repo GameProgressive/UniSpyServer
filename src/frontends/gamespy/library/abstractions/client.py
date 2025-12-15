@@ -96,12 +96,13 @@ class ClientBase:
             buffer = sending_buffer
         else:
             raise UniSpyException("not supported buffer type")
-        self.log_network_sending(buffer)
 
         if self.crypto is not None:
             buffer = self.crypto.encrypt(buffer)
 
         self.connection.send(buffer)
+
+        self.log_network_sending(buffer)
 
     def log_debug(self, message: str) -> None:
         self.logger.debug(f"{self._log_prefix}: {message}")

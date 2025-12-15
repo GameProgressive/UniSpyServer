@@ -15,9 +15,9 @@ class HttpConnection(ConnectionBase):
         assert isinstance(data, bytes)
         self.handler.send_response(200)
         self.handler.send_header("Content-type", "text/xml")
+        self.handler.send_header("Content-Length", str(len(data)))
         self.handler.end_headers()
         self.handler.wfile.write(data)
-
 
 class HttpHandler(BaseHTTPRequestHandler):
     conn: HttpConnection

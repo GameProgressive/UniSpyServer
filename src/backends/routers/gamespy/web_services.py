@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, GetMyRecordsHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler
+from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, GetMyRecordsHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler
 from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
 from backends.urls import WEB_SERVICES
-from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest
+from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest
 
 router = APIRouter()
 
@@ -68,7 +68,15 @@ def login_uniquenick_with_game_id(request: LoginUniqueNickRequest) -> LoginUniqu
     return login_uniquenick(request)
 
 
+@router.post(f"{WEB_SERVICES}/CreateUserAccountHandler", responses=RESPONSES_DEF)
+def create_user_account(request: CreateUserAccountRequest):
+    handler = CreateUserAccountHandler(request)
+    handler.handle()
+    return handler.response
+
 # SAKE services
+
+
 @router.post(f"{WEB_SERVICES}/CreateRecordHandler", responses=RESPONSES_DEF)
 def create_record(request: CreateRecordRequest) -> CreateRecordResponse:
     handler = CreateRecordHandler(request)

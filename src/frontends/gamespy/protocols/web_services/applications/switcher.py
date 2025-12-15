@@ -6,8 +6,8 @@ import xml.etree.ElementTree as ET
 
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
-from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest
-from frontends.gamespy.protocols.web_services.modules.auth.applications.handlers import LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
+from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import CreateUserAccountRequest, LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest
+from frontends.gamespy.protocols.web_services.modules.auth.applications.handlers import CreateUserAccountHandler, LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.requests import GetPurchaseHistoryRequest, GetStoreAvailabilityRequest
 from frontends.gamespy.protocols.web_services.modules.direct2game.applications.handlers import GetPurchaseHistoryHandler, GetStoreAvailabilityHandler
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
@@ -23,7 +23,10 @@ class Switcher(SwitcherBase):
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
-        name_node = ET.fromstring(self._raw_request)[0][0]
+        try:
+            name_node = ET.fromstring(self._raw_request)[0][0]
+        except Exception as e:
+            raise WebException(f"xml serialization failed: {str(e)}")
         if name_node is None:
             raise WebException("name node is missing from soap request")
         if name_node.tag is None:
@@ -67,7 +70,8 @@ class Switcher(SwitcherBase):
                 return LoginUniqueNickHandler(self._client, LoginUniqueNickRequest(raw_request))
             case "LoginUniqueNickWithGameId":
                 return LoginUniqueNickWithGameIdHandler(self._client, LoginUniqueNickWithGameIdRequest(raw_request))
-
+            case "CreateUserAccount":
+                return CreateUserAccountHandler(self._client, CreateUserAccountRequest(raw_request))
             # Direct2Game services
 
             case "GetStoreAvailability":

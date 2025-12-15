@@ -123,7 +123,7 @@ class LoginUniqueNickRequest(AuthRequestBase):
 
 class CreateUserAccountRequest(AuthRequestBase):
     email: str
-    profile_nick: str
+    nick: str
     uniquenick: str
     password: str
 

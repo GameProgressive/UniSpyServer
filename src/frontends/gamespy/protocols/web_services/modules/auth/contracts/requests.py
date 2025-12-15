@@ -147,7 +147,7 @@ class LoginUniqueNickWithGameIdRequest(LoginUniqueNickRequest):
 
 class CreateUserAccountRequest(LoginRequestBase):
     email: str
-    profile_nick: str
+    nick: str
     uniquenick: str
     password: str
 
@@ -158,17 +158,17 @@ class CreateUserAccountRequest(LoginRequestBase):
             raise AuthException("email is missing")
         self.email = email.text
 
-        profile_nick = self._content_element.find(
+        nick = self._content_element.find(
             f".//{{{NAMESPACE}}}profilenick")
-        if profile_nick is None or profile_nick.text is None:
+        if nick is None or nick.text is None:
             raise AuthException("password is missing")
-        self.profile_nick = profile_nick.text
+        self.nick = nick.text
 
         uniquenick = self._content_element.find(
             f".//{{{NAMESPACE}}}uniquenick")
         if uniquenick is None or uniquenick.text is None:
             raise AuthException("password is missing")
-        self.pasuniquenicksword = uniquenick.text
+        self.uniquenick = uniquenick.text
 
         password = self._content_element.find(
             f".//{{{NAMESPACE}}}password//{{{NAMESPACE}}}Value")

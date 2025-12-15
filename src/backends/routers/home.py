@@ -22,7 +22,7 @@ from backends.routers.gamespy import (
     presence_search_player,
     query_report,
     server_browser,
-    webservices,
+    web_services,
 )
 
 app = FastAPI()
@@ -35,7 +35,7 @@ app.include_router(presence_connection_manager.router)
 app.include_router(presence_search_player.router)
 app.include_router(query_report.router)
 app.include_router(server_browser.router)
-app.include_router(webservices.router)
+app.include_router(web_services.router)
 
 logger = LogManager.create("backend")
 

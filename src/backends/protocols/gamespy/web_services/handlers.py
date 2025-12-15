@@ -3,6 +3,8 @@
 # region auth
 from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
+from backends.protocols.gamespy.presence_search_player.handlers import NewUserHandler
+from backends.protocols.gamespy.presence_search_player.requests import NewUserRequest
 import backends.protocols.gamespy.web_services.data as data
 from backends.protocols.gamespy.web_services.requests import (
     CreateRecordRequest,
@@ -16,8 +18,9 @@ from backends.protocols.gamespy.web_services.requests import (
     LoginUniqueNickRequest,
     SearchForRecordsRequest,
 )
-from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
+from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, CreateUserAccountResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
+    CreateUserAccountResult,
     LoginProfileResult,
     LoginRemoteAuthResult,
     LoginUniqueNickResult,
@@ -109,6 +112,28 @@ class LoginUniqueNickHandler(HandlerBase):
 
 class CreateUserAccountHandler(HandlerBase):
     _request: CreateUserAccountRequest
+    response: CreateUserAccountResponse
+
+    def _data_operate(self) -> None:
+        dump = self._request.model_dump()
+        dump["operation_id"] = 0
+        dump["product_id"] = 0
+        req = NewUserRequest.model_validate(dump)
+        h = NewUserHandler(req)
+        h.handle()
+        self.data = h._result
+
+    def _result_construct(self) -> None:
+        self._result = CreateUserAccountResult(
+            user_id=self.data.user_id,
+            profile_id=self.data.profile_id,
+            profile_nick=self._request.nick,
+            unique_nick=self._request.uniquenick,
+            cdkey_hash="",
+            version=3,
+            namespace_id=self._request.namespace_id,
+            partner_code=self._request.partner_code
+        )
 
 
 # region d2g
