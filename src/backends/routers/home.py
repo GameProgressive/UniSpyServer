@@ -45,7 +45,10 @@ def unispy_exception_handler(_, exc: UniSpyException):
     str_error = exc.message
     logger.error(exc.message)
     err_resp = ErrorResponse(
-        message=str_error, exception_name=type(exc).__name__)
+        message=str_error,
+        exception_name=type(exc).__name__,
+        exception_data=exc.__dict__
+    )
     return JSONResponse(err_resp.model_dump(mode="json"), status_code=450)
 
 

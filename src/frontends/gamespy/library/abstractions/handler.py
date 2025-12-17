@@ -1,7 +1,7 @@
 import json
 from frontends.gamespy.library.abstractions.client import ClientBase
-from frontends.gamespy.library.exceptions.general import UniSpyException
-from typing import final
+from frontends.gamespy.library.exceptions.general import UniSpyException, UniSpyExceptionValidator
+from typing import TYPE_CHECKING, cast, final
 import requests
 
 from frontends.gamespy.library.configs import CONFIG
@@ -44,23 +44,39 @@ class CmdHandlerBase:
     """
     this is auto assigned variable
     """
+    _exceptions_mapping: dict[str, type[UniSpyException]]
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
         assert issubclass(type(client), ClientBase)
         assert issubclass(type(request), RequestBase)
+        self._result = None
+        self._response = None
         self._client = client
         self._request = request
         # create class type by annotation
         self._get_property_types()
-        self._result = None
-        self._response = None
+        # get the exception dict
+        self._get_exception_mappings()
+        # set whether need backend featching
+        self._set_fetching()
+
+    def _set_fetching(self):
         self._is_uploading = True
         if self._result_cls is None:
             self._is_fetching = False
         else:
             self._is_fetching = True
 
+    def _get_exception_mappings(self):
+        if "_exceptions_mapping" in self.__class__.__annotations__:
+            if len(self._exceptions_mapping) == 0:
+                raise UniSpyException(
+                    "init _exceptions_mapping in child class")
+
     def _get_property_types(self):
+        """
+        get result and response type by annotations
+        """
         if "_result" in self.__class__.__annotations__:
             self._result_cls = self.__class__.__annotations__['_result']
             if self._result_cls == ResultBase:
@@ -150,9 +166,12 @@ class CmdHandlerBase:
             else:
                 raise UniSpyException("backends is not avaliable")
 
-        # todo http code to determine object type
         if response.status_code in [200, 450, 500]:
             self._http_result = response.json()
+            # immidiatly show the http response
+            self._client.log_network_fetch(
+                f"[{self._url}] {self._http_result}")
+
         else:
             raise UniSpyException(
                 f"failed to upload data to backends. reason: {response.text}"
@@ -175,7 +194,17 @@ class CmdHandlerBase:
         handle the error message response from backend
         """
         # we raise the error as UniSpyException
-        raise UniSpyException(self._http_result["message"])
+        exp_name = self._http_result["exception_name"]
+        if exp_name in self._exceptions_mapping:
+            exp_cls = self._exceptions_mapping[exp_name]
+            init_params = exp_cls.get_init_params(
+                exp_cls, self._http_result["exception_data"])
+            exp_instance = exp_cls(**init_params)
+            raise exp_instance
+        else:
+            self._client.log_warn(
+                "no exception class found, use default unispy exception")
+            raise UniSpyException(self._http_result["message"])
 
     @final
     def _fetch_data(self):
@@ -188,7 +217,6 @@ class CmdHandlerBase:
                 "_result_cls can not be null when feach data.")
 
         assert issubclass(self._result_cls, ResultBase)
-        self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
         if "result" not in self._http_result:
             raise UniSpyException("result can not be empty when feach data")
         self._result = self._result_cls(**self._http_result["result"])

@@ -9,7 +9,7 @@ from backends.library.database.pg_orm import (
     Users,
     SakeStorage,
 )
-from frontends.gamespy.protocols.web_services.modules.auth.exceptions.general import (
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
     AuthException,
 )
 from frontends.gamespy.protocols.web_services.modules.sake.exceptions.general import (
@@ -26,7 +26,7 @@ def is_user_exist(
     email: str,
     password: str,
     session: Session,
-) -> None:
+) -> bool:
     result = (
         session.query(Profiles)
         .join(Users)
@@ -41,6 +41,12 @@ def is_user_exist(
         )
         .first()
     )
+
+    if result is None:
+        return False
+    else:
+        return True
+
     if result is None:
         raise AuthException(
             "No account exists with the provided email address.")
@@ -48,7 +54,7 @@ def is_user_exist(
 
 def get_info_by_cdkey_email(
     uniquenick: str, namespace_id: int, cdkey: str, email: str, session: Session
-) -> tuple[int, int, str, str, str]:
+) -> tuple[int, int, str, str, str] | None:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
@@ -74,9 +80,8 @@ def get_info_by_cdkey_email(
     )
 
     if result is None:
-        raise AuthException(
-            "No account exists with the provided uniquenick and namespace id."
-        )
+        return None
+
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
@@ -97,7 +102,7 @@ def get_info_by_cdkey_email(
 
 def get_info_by_authtoken(
     auth_token: str, session: Session
-) -> tuple[int, int, str, str, str]:
+) -> tuple[int, int, str, str, str] | None:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
@@ -114,7 +119,7 @@ def get_info_by_authtoken(
         .first()
     )
     if result is None:
-        raise AuthException("No account exists with the provided authtoken.")
+        return None
 
     userid, profileid, nick, uniquenick, cdkeyenc = result
     assert isinstance(userid, int)
@@ -129,7 +134,7 @@ def get_info_by_authtoken(
 
 def get_info_by_uniquenick(
     uniquenick: str, namespace_id: int, session: Session
-) -> tuple[int, int, str, str, str]:
+) -> tuple[int, int, str, str, str] | None:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
@@ -146,9 +151,7 @@ def get_info_by_uniquenick(
     )
 
     if result is None:
-        raise AuthException(
-            "No account exists with the provided uniquenick and namespace id."
-        )
+        return None
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]

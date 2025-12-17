@@ -7,6 +7,7 @@ from frontends.gamespy.protocols.chat.abstractions.contract import (
     ResultBase,
 )
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
+    EXCEPTIONS,
     ChatException,
     NoSuchNickException,
 )
@@ -23,6 +24,7 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     _result: ResultBase
 
     def __init__(self, client: ClientBase, request: RequestBase):
+        self._exceptions_mapping = EXCEPTIONS
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
 

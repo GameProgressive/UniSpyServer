@@ -34,6 +34,7 @@ class DataResponse(OKResponse):
 
 class ErrorResponse(Response):
     exception_name: str
+    exception_data: dict | None = None
     pass
 
 

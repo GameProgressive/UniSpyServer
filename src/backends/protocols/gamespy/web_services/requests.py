@@ -1,6 +1,7 @@
 
 from pydantic import BaseModel
 import backends.library.abstractions.contracts as lib
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import ResponseName
 
 
 class SakeRequestBase(lib.RequestBase):
@@ -97,6 +98,7 @@ class AuthRequestBase(lib.RequestBase):
     partner_code: int
     namespace_id: int
     game_id: int | None = None
+    response_name: ResponseName
 
 
 class LoginProfileRequest(AuthRequestBase):

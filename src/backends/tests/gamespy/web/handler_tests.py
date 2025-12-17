@@ -2,7 +2,7 @@ import unittest
 
 from backends.protocols.gamespy.web_services.handlers import LoginRemoteAuthHandler
 from backends.protocols.gamespy.web_services.requests import LoginRemoteAuthRequest
-from frontends.gamespy.protocols.web_services.modules.auth.exceptions.general import AuthException
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import AuthException
 
 
 class HandlerTests(unittest.TestCase):

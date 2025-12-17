@@ -47,6 +47,7 @@ class ResultBase(BaseModel):
 class ResponseBase:
     sending_buffer: object
     _result: ResultBase
+
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         self._result = result

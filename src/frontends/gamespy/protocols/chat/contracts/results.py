@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
 from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultBase
-from frontends.gamespy.protocols.chat.aggregates.enums import WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import IRCErrorCode, WhoRequestType
 
 # region General
 
@@ -38,8 +38,8 @@ class NickResult(ResultBase):
 
 
 class PingResult(ResultBase):
-    nick_name:str
-    user_name:str
+    nick_name: str
+    user_name: str
 
 
 class QuitResult(ResultBase):
@@ -189,3 +189,18 @@ class PrivateResult(MessageResultBase):
 
 class UtmResult(MessageResultBase):
     pass
+
+# # region Exception
+
+
+# class ExceptionResult(ResultBase):
+#     error_code: IRCErrorCode
+
+
+# class ChannelExceptionResult(ExceptionResult):
+#     channel_name: str
+
+
+# class NickNameInUseExceptionResult(ExceptionResult):
+#     new_nick: str
+#     old_nick: str

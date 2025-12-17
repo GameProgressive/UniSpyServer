@@ -70,13 +70,15 @@ class ChannelHelper:
         if ModeName.INVITED_ONLY in channel_modes:
             if user.nick_name not in channel.invited_nicks:
                 raise InviteOnlyChanException(
-                    f"You can only join channel: {channel.channel_name} when you are in invite list"
+                    f"You can only join channel: {channel.channel_name} when you are in invite list",
+                    channel.channel_name
                 )
 
         # 2 check if user is in ban list, if it is user can not join
         if user.nick_name in channel.banned_nicks:
             raise BannedFromChanException(
-                "can not join channel, because you are in ban list"
+                "can not join channel, because you are in ban list",
+                channel.channel_name
             )
 
         data.check_channel_user_trash_data(channel, user, session)
@@ -87,7 +89,7 @@ class ChannelHelper:
         else:
             is_creator = False
             is_operator = False
-        
+
         chan_user = ChatChannelUserCaches(
             server_id=user.server_id,
             nick_name=user.nick_name,
@@ -134,15 +136,20 @@ class ChannelHelper:
         assert isinstance(kickee.channel_name, str)
         if kicker.channel_name != channel.channel_name:  # type:ignore
             raise BadChannelKeyException(
-                f"kicker is not in channel: {channel.channel_name}"
+                f"kicker is not in channel: {channel.channel_name}",
+                channel.channel_name
             )
         if kickee.channel_name != channel.channel_name:  # type:ignore
             raise BadChannelKeyException(
-                f"kickee is not in channel: {channel.channel_name}"
+                f"kickee is not in channel: {channel.channel_name}",
+                channel.channel_name
+
             )
         if not kicker.is_channel_operator:  # type:ignore
             raise BadChannelKeyException(
-                "kick failed, kicker is not channel operator")
+                "kick failed, kicker is not channel operator",
+                channel.channel_name
+            )
         session.delete(kickee)
         session.commit()
 
@@ -152,9 +159,11 @@ class ChannelHelper:
         inviter: ChatChannelUserCaches,
         invitee: ChatUserCaches,
     ) -> None:
+        assert isinstance(channel.channel_name, str)
         if str(inviter.channel_name) != str(channel.channel_name):
             raise InviteOnlyChanException(
-                f"The inviter:{inviter.nick_name} is not a user in channel:{channel.channel_name}."
+                f"The inviter:{inviter.nick_name} is not a user in channel:{channel.channel_name}",
+                channel.channel_name
             )
 
         assert isinstance(channel.invited_nicks, list)
@@ -181,7 +190,8 @@ class ChannelHelper:
         is_exist = data.is_channel_exist(channel_name, game_name, session)
         if is_exist:
             raise NoSuchChannelException(
-                f"Channel: {channel_name} is already exist, can not create a new one"
+                f"Channel: {channel_name} is already exist, can not create a new one",
+                channel_name
             )
         cache = ChatChannelCaches(
             server_id=server_id,
@@ -210,6 +220,7 @@ class ChannelHelper:
     ):
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(changer, ChatChannelUserCaches)
+        assert isinstance(channel.channel_name, str)
         channel_modes = cast(list, channel.modes)
         for flag, operation in request.mode_operations.items():
             match flag:
@@ -248,20 +259,24 @@ class ChannelHelper:
                     if operation == ModeOperation.SET:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
-                                "ADD_CHANNEL_OPERATOR require nick name"
+                                "ADD_CHANNEL_OPERATOR require nick name",
+                                channel.channel_name
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
                         )
                         if u is None:
                             raise BadChannelKeyException(
-                                f"no user found with nick name:{request.nick_name}"
+                                f"no user found with nick name:{request.nick_name}",
+                                channel.channel_name
                             )
                         u.is_channel_operator = True  # type: ignore
                     else:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
-                                "REMOVE_CHANNEL_OPERATOR require nick name"
+                                "REMOVE_CHANNEL_OPERATOR require nick name",
+                                channel.channel_name
+
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -271,7 +286,8 @@ class ChannelHelper:
                     if operation == ModeOperation.SET:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
-                                "ENABLE_USER_VOICE_PERMISSION require nick name"
+                                "ENABLE_USER_VOICE_PERMISSION require nick name",
+                                channel.channel_name
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -280,7 +296,8 @@ class ChannelHelper:
                     else:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
-                                "DISABLE_USER_VOICE_PERMISSION require nick name"
+                                "DISABLE_USER_VOICE_PERMISSION require nick name",
+                                channel.channel_name
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session

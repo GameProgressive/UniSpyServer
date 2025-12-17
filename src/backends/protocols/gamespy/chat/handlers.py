@@ -156,7 +156,8 @@ class ChannelHandlerBase(HandlerBase):
     def _check_channel(self):
         if self._channel is None:
             raise NoSuchChannelException(
-                f"Can not find channel with name: {self._request.channel_name}"
+                f"Can not find channel with name: {self._request.channel_name}",
+                self._request.channel_name
             )
         self._channel.update_time = datetime.now()  # type: ignore
 
@@ -277,7 +278,8 @@ class InviteHandler(HandlerBase):
         )
         if chann is None:
             raise NoSuchChannelException(
-                "you have to be in this channel to invite your friends"
+                "you have to be in this channel to invite your friends",
+                self._request.channel_name
             )
 
         assert isinstance(chann.invited_nicks, list)
@@ -485,7 +487,7 @@ class JoinHandler(ChannelHandlerBase):
 
     def _data_operate(self) -> None:
         assert self._user is not None
-        
+
         if self._channel is None:
             self._channel = ChannelHelper.create(
                 server_id=self._request.server_id,
@@ -500,7 +502,7 @@ class JoinHandler(ChannelHandlerBase):
                 max_num_user=100,
                 session=self._session,
             )
-        
+
         self._channel_user = ChannelHelper.join(
             self._channel, self._user, self._session
         )
@@ -603,7 +605,8 @@ class KickHandler(ChannelHandlerBase):
         )
         if self._kickee is None:
             raise BadChannelKeyException(
-                f"kickee is not a user of channel:{self._channel.channel_name}"
+                f"kickee is not a user of channel:{self._channel.channel_name}",
+                self._channel.channel_name
             )
 
     def _data_operate(self) -> None:
@@ -778,7 +781,8 @@ class TopicHandler(ChannelHandlerBase):
         else:
             if not self._channel_user.is_channel_operator:
                 raise NoSuchChannelException(
-                    "inorder to set channel topic, you have to be channel operator"
+                    "inorder to set channel topic, you have to be channel operator",
+                    self._request.channel_name
                 )
             self._data: str = self._request.channel_topic
             self._channel.topic = self._request.channel_topic  # type:ignore

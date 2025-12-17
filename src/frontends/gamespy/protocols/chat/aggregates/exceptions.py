@@ -1,62 +1,53 @@
+from frontends.gamespy.library.abstractions.contracts import ResponseBase
 from frontends.gamespy.protocols.chat.abstractions.contract import SERVER_DOMAIN
 from frontends.gamespy.protocols.chat.aggregates.enums import IRCErrorCode
 
-from frontends.gamespy.library.exceptions.general import UniSpyException as ER
+from frontends.gamespy.library.exceptions.general import UniSpyException as ER, get_exceptions_dict
 
 
 class ChatException(ER):
-    pass
+    def __init__(self, message: str):
+        self.message = message
 
 
-class IRCException(ChatException):
-    error_code: "IRCErrorCode"
-    sending_buffer: "str"
+class IRCException(ChatException, ResponseBase):
+    error_code: IRCErrorCode
 
-    def __init__(self, message: "str", error_code: "IRCErrorCode") -> None:
-        super().__init__(message)
-        assert isinstance(error_code, IRCErrorCode)
+    def __init__(self, message: str, error_code: IRCErrorCode) -> None:
+        ChatException.__init__(self, message)
         self.error_code = error_code
 
     def build(self):
-        raise ChatException(
+        raise NotImplementedError(
             "IRCException is abstracted class, should not be initialized")
 
 
 class IRCChannelException(IRCException):
     channel_name: str
 
-    def __init__(self, message: str, error_code: IRCErrorCode) -> None:
+    def __init__(self, message: str,
+                 channel_name: str,
+                 error_code: IRCErrorCode) -> None:
         super().__init__(message, error_code)
+        self.channel_name = channel_name
 
     def build(self):
         self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code} * {self.channel_name} :{self.message}\r\n"  # noqa: E501
 
 
 class ErrOneUSNickNameException(IRCException):
-    def __init__(
-        self,
-        message: "str",
-        error_code: "IRCErrorCode" = IRCErrorCode.ERR_ONE_US_NICK_NAME,
-    ) -> None:
-        super().__init__(message, error_code)
+    def __init__(self, message: str) -> None:
+        super().__init__(message, IRCErrorCode.ERR_ONE_US_NICK_NAME)
 
 
 class LoginFailedException(IRCException):
-    def __init__(
-        self,
-        message: "str",
-        error_code: "IRCErrorCode" = IRCErrorCode.LOGIN_FAILED,
-    ) -> None:
-        super().__init__(message, error_code)
+    def __init__(self, message: str,) -> None:
+        super().__init__(message, IRCErrorCode.LOGIN_FAILED)
 
 
 class MoreParametersException(IRCException):
-    def __init__(
-        self,
-        message: "str",
-        error_code: "IRCErrorCode" = IRCErrorCode.MORE_PARAMETERS,
-    ) -> None:
-        super().__init__(message, error_code)
+    def __init__(self, message: str,) -> None:
+        super().__init__(message, IRCErrorCode.MORE_PARAMETERS)
 
 
 class NickNameInUseException(IRCException):
@@ -68,9 +59,8 @@ class NickNameInUseException(IRCException):
         old_nick: str,
         new_nick: str,
         message: str,
-        error_code: IRCErrorCode = IRCErrorCode.NICK_NAME_IN_USE,
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, IRCErrorCode.NICK_NAME_IN_USE)
         self.old_nick = old_nick
         self.new_nick = new_nick
 
@@ -79,38 +69,34 @@ class NickNameInUseException(IRCException):
 
 
 class NoSuchNickException(IRCException):
-    def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.NO_SUCH_NICK
-    ) -> None:
-        super().__init__(message, error_code)
+    def __init__(self, message: str) -> None:
+        super().__init__(message, IRCErrorCode.NO_SUCH_NICK)
 
 
 class NoUniqueNickException(IRCException):
-    def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.NO_UNIQUE_NICK
-    ) -> None:
-        super().__init__(message, error_code)
+    def __init__(self, message: str) -> None:
+        super().__init__(message, IRCErrorCode.NO_UNIQUE_NICK)
 
 
 class RegisterNickFaildException(IRCException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.REGISTER_NICK_FAILED
+        self, message: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, IRCErrorCode.REGISTER_NICK_FAILED)
 
 
 class TooManyChannelsException(IRCException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.TOO_MANY_CHANNELS
+        self, message: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, IRCErrorCode.TOO_MANY_CHANNELS)
 
 
 class UniqueNickExpiredException(IRCException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.UNIQUE_NICK_EXPIRED
+        self, message: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, IRCErrorCode.UNIQUE_NICK_EXPIRED)
 
 
 # region Channel Exceptions
@@ -118,41 +104,51 @@ class UniqueNickExpiredException(IRCException):
 
 class BadChannelMaskException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.BAD_CHAN_MASK
+        self,
+        message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.BAD_CHAN_MASK)
 
 
 class BadChannelKeyException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.BAD_CHANNEL_KEY
+        self, message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.BAD_CHANNEL_KEY)
 
 
 class BannedFromChanException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.BANNED_FROM_CHAN
+        self, message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.BANNED_FROM_CHAN)
 
 
 class ChannelIsFullException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.CHANNEL_IS_FULL
+        self, message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.CHANNEL_IS_FULL)
 
 
 class InviteOnlyChanException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.INVITE_ONLY_CHAN
+        self, message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.INVITE_ONLY_CHAN)
 
 
 class NoSuchChannelException(IRCChannelException):
     def __init__(
-        self, message: str, error_code: IRCErrorCode = IRCErrorCode.NO_SUCH_CHANNEL
+        self, message: str,
+        channel_name: str
     ) -> None:
-        super().__init__(message, error_code)
+        super().__init__(message, channel_name, IRCErrorCode.NO_SUCH_CHANNEL)
+
+
+EXCEPTIONS = get_exceptions_dict(__name__)

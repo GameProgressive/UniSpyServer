@@ -1,7 +1,7 @@
 import frontends.gamespy.library.abstractions.handler as lib
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import EXCEPTIONS
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
-
 
 class CmdHandlerBase(lib.CmdHandlerBase):
     _client: Client
@@ -10,3 +10,4 @@ class CmdHandlerBase(lib.CmdHandlerBase):
         assert isinstance(client, Client)
         assert issubclass(type(request), RequestBase)
         super().__init__(client, request)
+

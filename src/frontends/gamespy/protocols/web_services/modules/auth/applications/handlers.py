@@ -1,6 +1,6 @@
 from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.web_services.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.protocols.web_services.applications.client import Client
+from frontends.gamespy.protocols.web_services.modules.auth.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
     CreateUserAccountRequest,
     LoginProfileRequest,

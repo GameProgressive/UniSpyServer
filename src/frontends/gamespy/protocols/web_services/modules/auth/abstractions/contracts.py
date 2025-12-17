@@ -2,7 +2,8 @@ import hashlib
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
-from frontends.gamespy.protocols.web_services.modules.auth.exceptions.general import AuthException
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, ResponseName
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import ParseException
 import datetime
 
 NAMESPACE = "http://gamespy.net/AuthService/"
@@ -12,24 +13,29 @@ class LoginRequestBase(lib.RequestBase):
     version: int
     partner_code: int
     namespace_id: int
+    response_name: ResponseName
 
     def parse(self) -> None:
         super().parse()
         version_node = self._content_element.find(
             f".//{{{NAMESPACE}}}version")
         if version_node is None or version_node.text is None:
-            raise AuthException("version is missing from the request.")
+            raise ParseException(
+                "version is missing from the request", self.response_name)
         self.version = int(version_node.text)
         partner_id_node = self._content_element.find(
             f".//{{{NAMESPACE}}}partnercode")
         if partner_id_node is None or partner_id_node.text is None:
-            raise AuthException("partner id is missing from the request.")
+            raise ParseException(
+                "partner id is missing from the request", self.response_name)
         self.partner_code = int(partner_id_node.text)
         namespace_id_node = self._content_element.find(
             f".//{{{NAMESPACE}}}namespaceid")
         if namespace_id_node is None or namespace_id_node.text is None:
-            raise AuthException("namespace id is missing from the request.")
+            raise ParseException(
+                "namespace id is missing from the request", self.response_name)
         self.namespace_id = int(namespace_id_node.text)
+
 
 
 class LoginResultBase(lib.ResultBase):
@@ -62,7 +68,7 @@ class LoginResponseBase(lib.ResponseBase):
         super().build()
 
     def _build_context(self):
-        self._content.add("responseCode", "0")
+        self._content.add("responseCode", AuthCode.SUCCESS)
         self._content.add("certificate")
         self._content.add("length", self._result.length)
         self._content.add("version", self._result.version)

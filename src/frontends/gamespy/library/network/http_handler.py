@@ -14,10 +14,11 @@ class HttpConnection(ConnectionBase):
     def send(self, data: bytes) -> None:
         assert isinstance(data, bytes)
         self.handler.send_response(200)
-        self.handler.send_header("Content-type", "text/xml")
+        self.handler.send_header("Content-type", "application/xml")
         self.handler.send_header("Content-Length", str(len(data)))
         self.handler.end_headers()
         self.handler.wfile.write(data)
+
 
 class HttpHandler(BaseHTTPRequestHandler):
     conn: HttpConnection
@@ -31,6 +32,9 @@ class HttpHandler(BaseHTTPRequestHandler):
         self.conn.on_received(data.encode())
 
     def log_message(self, format, *args):
+        """
+        override BaseHTTPRequestHandler to not print any log 
+        """
         pass
 
 

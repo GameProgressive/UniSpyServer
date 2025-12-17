@@ -19,6 +19,7 @@ from backends.protocols.gamespy.web_services.requests import (
     SearchForRecordsRequest,
 )
 from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, CreateUserAccountResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import UserNotFoundException
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
     CreateUserAccountResult,
     LoginProfileResult,
@@ -44,7 +45,12 @@ class LoginProfileHandler(HandlerBase):
             session=self._session,
         )
 
+        if self.data is None:
+            raise UserNotFoundException(
+                "No account exists with the provided uniquenick and namespace id.", self._request.response_name)
+
     def _result_construct(self) -> None:
+        assert self.data is not None
         self._result = LoginProfileResult(
             user_id=self.data[0],
             profile_id=self.data[1],
@@ -73,7 +79,12 @@ class LoginRemoteAuthHandler(HandlerBase):
             auth_token=self._request.auth_token, session=self._session
         )
 
+        if self.data is None:
+            raise UserNotFoundException(
+                "No account exists with the provided authtoken.", self._request.response_name)
+
     def _result_construct(self) -> None:
+        assert self.data is not None
         self._result = LoginRemoteAuthResult(
             user_id=self.data[0],
             profile_id=self.data[1],
@@ -96,8 +107,12 @@ class LoginUniqueNickHandler(HandlerBase):
             namespace_id=self._request.namespace_id,
             session=self._session,
         )
+        if self.data is None:
+            raise UserNotFoundException(
+                "No account exists with the provided uniquenick and namespace id.", self._request.response_name)
 
     def _result_construct(self) -> None:
+        assert self.data is not None
         self._result = LoginUniqueNickResult(
             user_id=self.data[0],
             profile_id=self.data[1],

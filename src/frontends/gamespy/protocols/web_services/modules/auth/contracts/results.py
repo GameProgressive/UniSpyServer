@@ -1,4 +1,7 @@
-from frontends.gamespy.protocols.web_services.modules.auth.abstractions.general import LoginResultBase
+
+from frontends.gamespy.protocols.web_services.abstractions.contracts import ResultBase
+from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contracts import LoginResultBase
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode
 
 
 class LoginProfileResult(LoginResultBase):
@@ -20,3 +23,7 @@ class LoginUniqueNickResult(LoginResultBase):
 
 class CreateUserAccountResult(LoginResultBase):
     pass
+
+
+# region Exception
+
