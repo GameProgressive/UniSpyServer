@@ -1,0 +1,139 @@
+from enum import Enum, IntEnum
+
+
+class SearchType(IntEnum):
+    NICK_SEARCH = 0
+    NICK_EMAIL_SEARCH = 1
+    UNIQUENICK_NAMESPACEID_SEARCH = 2
+    EMAIL_SEARCH = 3
+
+# region Error code
+
+
+class GPErrorCode(IntEnum):
+    # General.
+    GENERAL = 0x0000
+    PARSE = 0x0001
+    NOT_LOGGED_IN = 0x0002
+    BAD_SESSION_KEY = 0x0003
+    DATABASE_ERROR = 0x0004
+    NETWORK = 0x0005
+    FORCED_DISCONNECT = 0x0006
+    CONNECTION_CLOSE = 0x0007
+    UDP_LAYER = 0x0008
+
+    # Login.
+    LOGIN = 0x0100
+    LOGIN_TIME_OUT = 0x0101
+    LOGIN_BAD_NICK = 0x0102
+    LOGIN_BAD_EMAIL = 0x0103
+    LOGIN_BAD_PASSWORD = 0x0104
+    LOGIN_BAD_PROFILE = 0x0105
+    LOGIN_PROFILE_DELETED = 0x0106
+    LOGIN_CONNECTION_FAILED = 0x0107
+    LOGIN_SERVER_AUTH_FAILED = 0x0108
+    LOGIN_BAD_UNIQUENICK = 0x0109
+    LOGIN_BAD_PRE_AUTH = 0x010A
+    LOGIN_BAD_LOGIN_TICKET = 0x010B
+    LOGIN_TICKET_EXPIRED = 0x010C
+
+    # Newuser.
+    NEW_USER = 0x0200
+    NEW_USER_BAD_NICK = 0x0201
+    NEW_USER_BAD_PASSWORDS = 0x0202
+    NEW_USER_UNIQUENICK_INVALID = 0x0203
+    NEW_USER_UNIQUENICK_IN_USE = 0x0204
+
+    # Updateui.
+    UPDATE_UI = 0x0300
+    UPDATE_UI_BAD_EMAIL = 0x0301
+
+    # Newprofile.
+    NEW_PROFILE = 0x0400
+    NEW_PROFILE_BAD_NICK = 0x0401
+    NEW_PROFILE_BAD_OLD_NICK = 0x0402
+
+    # Updatepro.
+    UPDATE_PRO = 0x0500
+    UPDATE_PRO_BAD_NICK = 0x0501
+
+    # Addbuddy.
+    ADD_BUDDY = 0x0600
+    ADD_BUDDY_BAD_FORM = 0x0601
+    ADD_BUDDY_BAD_NEW = 0x0602
+    ADD_BUDDY_ALREADY_BUDDY = 0x0603
+
+    # Authadd.
+    AUTH_ADD = 0x0700
+    AUTH_ADD_BAD_FORM = 0x0701
+    AUTH_ADD_BAD_SIG = 0x0702
+
+    # Status.
+    STATUS = 0x0800
+
+    # Bm.
+    BM = 0x0900
+    BM_NOT_BUDDY = 0x0901
+    BM_EXT_INFO_NOT_SUPPORTED = 0x0902
+    BM_BUDDY_OFFLINE = 0x0903
+
+    # Getprofile.
+    GET_PROFILE = 0x0A00
+    GET_PROFILE_BAD_PROFILE = 0x0A01
+
+    # Delbuddy.
+    DEL_BUDDY = 0x0B00
+    DEL_BUDDY_NOT_BUDDY = 0x0B01
+
+    # Delprofile.
+    DEL_PROFILE = 0x0C00
+    DEL_PROFILE_LAST_PROFILE = 0x0C01
+
+    # Search.
+    SEARCH = 0x0D00
+    SEARCH_CONNECTION_FAILED = 0x0D01
+    SEARCH_TIME_OUT = 0x0D02
+
+    # Check.
+    CHECK = 0x0E00
+    CHECK_BAD_MAIL = 0x0E01
+    CHECK_BAD_NICK = 0x0E02
+    CHECK_BAD_PASSWORD = 0x0E03
+
+    # Revoke.
+    REVOKE = 0x0F00
+    REVOKE_NOT_BUDDY = 0x0F01
+
+    # Registeruniquenick.
+    REGISTER_UNIQUENICK = 0x1000
+    REGISTER_UNIQUENICK_TAKEN = 0x1001
+    REGISTER_UNIQUENICK_RESERVED = 0x1002
+    REGISTER_UNIQUENICK_BAD_NAMESPACE = 0x1003
+
+    # Register UniSpy.Server.CDkey.
+    REGISTER_CDKEY = 0x1100
+    REGISTER_CDKEY_BAD_KEY = 0x1101
+    REGISTER_CDKEY_ALREADY_SET = 0x1102
+    REGISTER_CDKEY_ALREADY_TAKEN = 0x1103
+
+    # AddBlock.
+    ADD_BLOCK = 0x1200
+    ADD_BLOCK_ALREADY_BLOCKED = 0x1201
+
+    # RemoveBlock.
+    REMOVE_BLOCK = 0x1300
+    REMOVE_BLOCK_NOT_BLOCKED = 0x1301
+
+
+
+class RequestType(Enum):
+    CHECK = "check"
+    NEWUSER = "newuser"
+    NICKS = "nicks"
+    OTHERS = "others"
+    OTHERSLIST = "otherslist"
+    PMATCH = "pmatch"
+    SEARCH = "search"
+    SEARCHUNIQUE = "searchunique"
+    UNIQUESearch = "uniquesearch"
+    VALID = "valid"

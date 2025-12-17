@@ -1,0 +1,31 @@
+services:
+  redis:
+    image: redis
+    container_name: unispy_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 123456
+    networks:
+      - unispy
+
+  postgresql:
+    image: postgres:14
+    container_name: unispy_postgresql
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: unispy
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: unispy
+    volumes:
+      - ./common/UniSpy_pg.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - unispy
+
+networks:
+  unispy:
+    external: true
+    name: unispy
+    driver: bridge

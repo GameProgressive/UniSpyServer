@@ -1,0 +1,13 @@
+pyfiglet == 1.0.2
+prettytable == 3.11.0
+psycopg2-binary == 2.9.10
+sqlalchemy == 2.0.36
+email_validator == 2.1.1
+requests == 2.32.3
+fastapi[standard] == 0.115.4
+xmltodict == 0.14.2
+responses == 0.25.3
+redis == 5.2.0
+websockets == 15.0.1
+schedule == 1.2.2
+watchdog == 6.0.0

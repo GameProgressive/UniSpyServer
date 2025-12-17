@@ -1,0 +1,93 @@
+from ipaddress import IPv4Address
+from uuid import UUID
+from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+import uvicorn
+
+from backends.library.abstractions.contracts import ErrorResponse
+from backends.library.database.pg_orm import ENGINE
+from backends.library.utils.misc import check_public_ip
+from backends.services.register import register_services
+from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.log.log_manager import LogManager
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from backends.routers.gamespy import (
+    chat,
+    game_stats,
+    game_traffic_relay,
+    natneg,
+    presence_connection_manager,
+    presence_search_player,
+    query_report,
+    server_browser,
+    web_services,
+)
+
+app = FastAPI()
+
+app.include_router(chat.router)
+app.include_router(game_stats.router)
+app.include_router(game_traffic_relay.router)
+app.include_router(natneg.router)
+app.include_router(presence_connection_manager.router)
+app.include_router(presence_search_player.router)
+app.include_router(query_report.router)
+app.include_router(server_browser.router)
+app.include_router(web_services.router)
+
+logger = LogManager.create("backend")
+
+
+@app.exception_handler(UniSpyException)
+def unispy_exception_handler(_, exc: UniSpyException):
+    str_error = exc.message
+    logger.error(exc.message)
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=450)
+
+
+@app.exception_handler(RequestValidationError)
+def validation_exception_handler(_, exc: RequestValidationError):
+    str_error = str(exc.args)
+    logger.error(str_error)
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_400_BAD_REQUEST)
+
+
+@app.exception_handler(Exception)
+def general_exception_handler(_, exc: Exception):
+    str_error = str(exc)
+    if len(str_error) == 0:
+        str_error = exc.__class__.__name__
+    logger.error(str_error)
+    err_resp = ErrorResponse(
+        message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@app.post("/")
+def home(request: Request, config: ServerConfig) -> dict:
+    # todo add the server config to our database
+    assert request.client is not None
+    check_public_ip(request.client.host, config.listening_address)
+    # response = register_services(config, request.client.host)
+    return {"status": "online"}
+
+
+class RegisterRequest(BaseModel):
+    server_id: UUID
+    client_ip: IPv4Address
+
+
+@app.post("/token")
+def get_auth_token(request: RegisterRequest):
+    pass
+
+
+if __name__ == "__main__":
+    uvicorn.run("backends.routers.home:app",
+                host="0.0.0.0", port=8080, reload=True)

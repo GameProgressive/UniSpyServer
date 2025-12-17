@@ -1,0 +1,112 @@
+{
+  "backend": {
+    "url": "http://unispy_backends:8080",
+    "token_secret_key": "I love UniSpy",
+    "token_algorithm": "HS256",
+    "token_expire_time": 30,
+    "is_check_public_ip": false
+  },
+  "logging": {
+    "path": "~/Downloads/unispy_server/log/",
+    "min_log_level": "debug"
+  },
+  "postgresql": {
+    "server": "unispy_postgresql",
+    "port": 5432,
+    "database": "unispy",
+    "username": "unispy",
+    "password": "123456",
+    "ssl_mode": "allow",
+    "trust_server_cert": "false",
+    "ssl_key": "",
+    "ssl_password": "",
+    "root_cert": ""
+  },
+  "mongodb": {
+    "server": "127.0.0.1",
+    "port": 5432,
+    "username": "unispy",
+    "password": "123456",
+    "database": null
+  },
+  "redis": {
+    "server": "unispy_redis",
+    "port": 6379,
+    "user": "",
+    "password": "123456",
+    "ssl": "false",
+    "ssl_host": ""
+  },
+  "servers": {
+    "PresenceConnectionManager": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "PresenceConnectionManager",
+      "listening_address": "0.0.0.0",
+      "listening_port": 29900
+    },
+    "PresenceSearchPlayer": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "PresenceSearchPlayer",
+      "listening_address": "0.0.0.0",
+      "listening_port": 29901
+    },
+    "CDKey": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "CDKey",
+      "listening_address": "0.0.0.0",
+      "listening_port": 29910
+    },
+    "ServerBrowserV1": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "ServerBrowserV1",
+      "listening_address": "0.0.0.0",
+      "listening_port": 28900
+    },
+    "ServerBrowserV2": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "ServerBrowserV2",
+      "listening_address": "0.0.0.0",
+      "listening_port": 28910
+    },
+    "QueryReport": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "QueryReport",
+      "listening_address": "0.0.0.0",
+      "listening_port": 27900
+    },
+    "NatNegotiation": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "NatNegotiation",
+      "listening_address": "0.0.0.0",
+      "listening_port": 27901
+    },
+    "GameStatus": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "GameStatus",
+      "listening_address": "0.0.0.0",
+      "listening_port": 29920
+    },
+    "Chat": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "Chat",
+      "listening_address": "0.0.0.0",
+      "listening_port": 6667
+    },
+    "WebServices": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "WebServices",
+      "listening_address": "0.0.0.0",
+      "listening_port": 80
+    },
+    "GameTrafficRelay": {
+      "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
+      "server_name": "GameTrafficRelay",
+      "listening_address": "0.0.0.0",
+      "listening_port": 10086
+    }
+  },
+  "unittest": {
+    "is_raise_except": false,
+    "is_collect_request": false
+  }
+}

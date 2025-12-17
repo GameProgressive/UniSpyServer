@@ -1,0 +1,180 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "backends",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "backends.routers.home:app", // Replace with your module name if different
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8080",
+                "--reload", // Optional: enables auto-reload on code changes
+                "--reload-dir",
+                "${workspaceFolder}/backends"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "frontends",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/app.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "pcm",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/presence_connection_manager/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "psp",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/presence_search_player/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "chat",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/chat/applications/server_launcher.py",
+            "args": [
+                "--debug"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "gs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/game_status/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "gtr",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/game_traffic_relay/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "natneg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/natneg/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "qr",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/query_report/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "sb",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/server_browser/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "web",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "frontends/gamespy/protocols/web_services/applications/server_launcher.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--debug"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "justMyCode": true
+        },
+    ],
+}

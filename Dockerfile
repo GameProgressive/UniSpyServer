@@ -1,0 +1,14 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.12-slim
+
+# Set the working directory in the container
+WORKDIR /unispy-server
+
+# Copy the requirements file into the container
+COPY src/requirements.txt .
+
+# Install the dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apt update
+RUN apt install -y curl

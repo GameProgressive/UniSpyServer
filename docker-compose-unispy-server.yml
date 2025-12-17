@@ -1,0 +1,205 @@
+services:
+  backends:
+    container_name: unispy_backends
+    image: unispy-python
+    restart: always
+    working_dir: /unispy-server/src
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+    volumes:
+      - ./:/unispy-server/
+      - ./log:/root/Downloads/unispy-server/log/
+    ports:
+      - "8080:8080"
+    command: uvicorn --host 0.0.0.0 --port 8080 backends.routers.home:app
+    healthcheck:
+      test: curl --silent --show-error http://localhost:8080 >/dev/null 2>&1 || exit 1
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 2s
+    networks:
+      - unispy
+  chat:
+    image: unispy-python
+    container_name: unispy-chat
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "6667:6667"
+    command: python -u src/frontends/gamespy/protocols/chat/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+  gs:
+    image: unispy-python
+    container_name: unispy-gs
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "29920:29920"
+    command: python -u src/frontends/gamespy/protocols/game_status/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+
+
+  pcm:
+    image: unispy-python
+    container_name: unispy-pcm
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "29900:29900"
+    command: python -u src/frontends/gamespy/protocols/presence_connection_manager/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+  psp:
+    image: unispy-python
+    container_name: unispy-psp
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "29901:29901"
+    command: python -u src/frontends/gamespy/protocols/presence_search_player/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+  qr:
+    image: unispy-python
+    container_name: unispy-qr
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "27900:27900"
+    command: python -u src/frontends/gamespy/protocols/query_report/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+  sb:
+    image: unispy-python
+    container_name: unispy-sb
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "28910:28910"
+      - "28900:28900"
+    command: python -u src/frontends/gamespy/protocols/query_report/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+
+  natneg:
+    image: unispy-python
+    container_name: unispy-natneg
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "27901:27901"
+    command: python -u src/frontends/gamespy/protocols/natneg/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+  web:
+    image: unispy-python
+    container_name: unispy-web
+    restart: always
+    environment:
+      - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+      - UNISPY_CONFIG=/unispy-server/common/config.json
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/unispy-server/
+    ports:
+      - "80:80"
+    command: python -u src/frontends/gamespy/protocols/web_services/applications/server_launcher.py
+    depends_on:
+      backends:
+        condition: service_healthy
+    networks:
+      - unispy
+
+  # gtr:
+  #   image: unispy-python
+  #   container_name: unispy-gtr
+  #   restart: always
+  #   environment:
+  #     - PYTHONPATH=/unispy-server/src:${PYTHONPATH:-}
+  #     - UNISPY_CONFIG=/unispy-server/common/config.json
+  #     - PYTHONUNBUFFERED=1
+  #   volumes:
+  #     - ./:/unispy-server/
+  #   ports:
+  #     - "10086:10086"
+  #   command: python -u src/frontends/gamespy/protocols/game_traffic_relay/applications/server_launcher.py
+  #   depends_on:
+  #     backends:
+  #       condition: service_healthy
+  #   networks:
+  #     - unispy
+
+
+
+
+networks:
+  unispy:
+    external: true
+    name: unispy
+    driver: bridge

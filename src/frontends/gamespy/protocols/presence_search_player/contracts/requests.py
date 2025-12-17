@@ -1,0 +1,317 @@
+from frontends.gamespy.library.extentions.gamespy_utils import is_email_format_correct
+from frontends.gamespy.library.extentions.password_encoder import process_password
+from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import (
+    RequestBase,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    SearchType,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    GPParseException,
+)
+
+
+class CheckRequest(RequestBase):
+    # \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
+    nick: str
+    password: str
+    email: str
+    partner_id: int
+
+    def parse(self):
+        super().parse()
+        self.password = process_password(self._request_dict)
+        if "nick" not in self._request_dict or "email" not in self._request_dict:
+            raise GPParseException("check request is incompelete.")
+
+        if not is_email_format_correct(self._request_dict["email"]):
+            raise GPParseException(" email format is incorrect.")
+
+        self.nick = self._request_dict["nick"]
+        self.email = self._request_dict["email"]
+
+        if "partner_id" in self._request_dict.keys():
+            try:
+                self.partner_id = int(self._request_dict["partner_id"])
+            except Exception:
+                raise GPParseException(
+                    "no partner id found, check whether need implement the default partnerid"
+                )
+        else:
+            self.partner_id = 1
+
+
+class NewUserRequest(RequestBase):
+    product_id: int
+    game_port: int
+    cd_key: str
+    nick: str
+    email: str
+    password: str
+    partner_id: int
+    game_name: str
+    uniquenick: str
+
+    def parse(self):
+        super().parse()
+        self.password = process_password(self._request_dict)
+
+        if "nick" not in self._request_dict:
+            raise GPParseException("nickname is missing.")
+        if "email" not in self._request_dict:
+            raise GPParseException("email is missing.")
+        if not is_email_format_correct(self._request_dict["email"]):
+            raise GPParseException("email format is incorrect.")
+        self.nick = self._request_dict["nick"]
+        self.email = self._request_dict["email"]
+
+        if "uniquenick" in self._request_dict and "namespaceid" in self._request_dict:
+            if "namespaceid" in self._request_dict:
+                try:
+                    self.namespace_id = int(self._request_dict["namespaceid"])
+                except ValueError:
+                    raise GPParseException("namespaceid is incorrect.")
+
+            self.uniquenick = self._request_dict["uniquenick"]
+        self.parse_other_info()
+
+    def parse_other_info(self):
+        if "partnerid" in self._request_dict:
+            try:
+                self.partner_id = int(self._request_dict["partnerid"])
+            except ValueError:
+                raise GPParseException("partnerid is incorrect.")
+        else:
+            self.partner_id = 0
+        if "productid" in self._request_dict:
+            try:
+                self.product_id = int(self._request_dict["productid"])
+            except ValueError:
+                raise GPParseException("productid is incorrect.")
+        else:
+            # we give default product id here
+            self.product_id = 0
+
+        if "gamename" in self._request_dict:
+            self.game_name = self._request_dict["gamename"]
+
+        if "port" in self._request_dict:
+            try:
+                self.game_port = int(self._request_dict["port"])
+            except ValueError:
+                raise GPParseException("port is incorrect.")
+
+        if "cdkey" in self._request_dict:
+            self.cd_key = self._request_dict["cdkey"]
+
+
+class NicksRequest(RequestBase):
+    password: str
+    email: str
+    is_require_uniquenicks: bool
+
+    def parse(self):
+        super().parse()
+        self.is_require_uniquenicks = True
+        self.password = process_password(self._request_dict)
+        if "email" not in self._request_dict.keys():
+            raise GPParseException("email is missing.")
+
+        self.email = self._request_dict["email"]
+
+        if "pass" in self._request_dict.keys():
+            self.is_require_uniquenicks = False
+
+
+class OthersListRequest(RequestBase):
+    profile_ids: list[int] = []
+    namespace_id: int = 0
+
+    def parse(self) -> None:
+        super().parse()
+        if "opids" not in self._request_dict or "namespaceid" not in self._request_dict:
+            raise GPParseException("opids or namespaceid is missing.")
+
+        try:
+            self.profile_ids = [
+                int(opid) for opid in self._request_dict["opids"].strip("|").split("|")
+            ]
+        except:
+            raise GPParseException("opids is incorrect")
+
+
+class OthersRequest(RequestBase):
+    profile_id: int
+    game_name: str
+
+    def parse(self):
+        super().parse()
+
+        if "gamename" not in self._request_dict:
+            raise GPParseException("gamename is missing.")
+
+        self.game_name = self._request_dict["gamename"]
+
+        if (
+            "profileid" not in self._request_dict
+            or "namespaceid" not in self._request_dict
+        ):
+            raise GPParseException("profileid or namespaceid is missing.")
+
+        if "profileid" not in self._request_dict:
+            raise GPParseException("profileid is incorrect.")
+
+        try:
+            self.profile_id = int(self._request_dict["profileid"])
+        except ValueError:
+            raise GPParseException("profileid is incorrect.")
+
+
+class SearchRequest(RequestBase):
+    skip_num: int
+    request_type: SearchType
+    game_name: str
+    profile_id: int
+    partner_id: int
+    email: str
+    nick: str
+    uniquenick: str
+    session_key: str
+    firstname: str
+    lastname: str
+    icquin: str
+
+    def __init__(self, raw_request: str) -> None:
+        super().__init__(raw_request)
+        self.skip_num = 0
+        self.partner_id = 0
+
+    def parse(self) -> None:
+        super().parse()
+
+        if (
+            "profileid" not in self._request_dict
+            and "nick" not in self._request_dict
+            and "email" not in self._request_dict
+            and "namespaceid" not in self._request_dict
+            and "gamename" not in self._request_dict
+            and "sesskey" not in self._request_dict
+        ):
+            raise GPParseException("Search request is incomplete.")
+
+        self.session_key = self._request_dict["sesskey"]
+
+        if "firstname" in self._request_dict:
+            self.firstname = self._request_dict["firstname"]
+
+        if "lastname" in self._request_dict:
+            self.lastname = self._request_dict["lastname"]
+
+        if "icquin" in self._request_dict:
+            self.icquin = self._request_dict["icquin"]
+
+        if "gamename" in self._request_dict:
+            self.game_name = self._request_dict["gamename"]
+
+        if "profileid" in self._request_dict:
+            try:
+                self.profile_id = int(self._request_dict["profileid"])
+            except ValueError:
+                raise GPParseException("profileid is incorrect.")
+
+        if "partnerid" in self._request_dict:
+            try:
+                self.partner_id = int(self._request_dict["partnerid"])
+            except ValueError:
+                raise GPParseException("partnerid is incorrect.")
+
+        if "skip" in self._request_dict:
+            try:
+                self.skip_num = int(self._request_dict["skip"])
+            except ValueError:
+                raise GPParseException("skip number is incorrect.")
+
+        if "uniquenick" in self._request_dict and "namespaceid" in self._request_dict:
+            self.request_type = SearchType.UNIQUENICK_NAMESPACEID_SEARCH
+            self.uniquenick = self._request_dict["uniquenick"]
+        elif "nick" in self._request_dict and "email" in self._request_dict:
+            self.request_type = SearchType.NICK_EMAIL_SEARCH
+            self.nick = self._request_dict["nick"]
+            self.email = self._request_dict["email"]
+        elif "nick" in self._request_dict:
+            self.request_type = SearchType.NICK_SEARCH
+            self.nick = self._request_dict["nick"]
+        elif "email" in self._request_dict:
+            self.request_type = SearchType.EMAIL_SEARCH
+            self.email = self._request_dict["email"]
+        else:
+            raise GPParseException("unknown search type.")
+
+
+class SearchUniqueRequest(RequestBase):
+    uniquenick: str
+    namespace_ids: list[int]
+
+    def parse(self):
+        super().parse()
+        self.namespace_ids = []
+        if (
+            "uniquenick" not in self._request_dict
+            or "namespaces" not in self._request_dict
+        ):
+            raise GPParseException("searchunique request is incomplete.")
+
+        try:
+            self.uniquenick = self._request_dict["uniquenick"]
+        except KeyError:
+            raise GPParseException("uniquenick is missing.")
+
+        try:
+            self.namespace_ids = [
+                int(namespace_id)
+                for namespace_id in self._request_dict["namespaces"]
+                .lstrip(",")
+                .split(",")
+            ]
+        except ValueError:
+            raise GPParseException("namespaces is incorrect.")
+
+
+class UniqueSearchRequest(RequestBase):
+    preferred_nick: str
+    game_name: str
+
+    def parse(self):
+        super().parse()
+
+        if "preferrednick" not in self._request_dict:
+            raise GPParseException("preferrednick is missing.")
+
+        self.preferred_nick = self._request_dict["preferrednick"]
+
+        if "gamename" not in self._request_dict:
+            raise GPParseException("gamename is missing.")
+
+        self.game_name = self._request_dict["gamename"]
+
+        if "namespaceid" not in self._request_dict:
+            raise GPParseException("namespaceid is missing.")
+
+        try:
+            self.namespace_id = int(self._request_dict["namespaceid"])
+        except ValueError:
+            raise GPParseException("namespaceid is incorrect.")
+
+
+class ValidRequest(RequestBase):
+    email: str
+
+    def parse(self):
+        super().parse()
+
+        if "email" not in self._request_dict or not is_email_format_correct(
+            self._request_dict["email"]
+        ):
+            raise GPParseException("valid request is incomplete.")
+
+        self.email = self._request_dict["email"]
