@@ -17,25 +17,37 @@ class LoginRequestBase(lib.RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        version_node = self._content_element.find(
-            f".//{{{NAMESPACE}}}version")
-        if version_node is None or version_node.text is None:
-            raise ParseException(
-                "version is missing from the request", self.response_name)
-        self.version = int(version_node.text)
-        partner_id_node = self._content_element.find(
-            f".//{{{NAMESPACE}}}partnercode")
-        if partner_id_node is None or partner_id_node.text is None:
-            raise ParseException(
-                "partner id is missing from the request", self.response_name)
-        self.partner_code = int(partner_id_node.text)
-        namespace_id_node = self._content_element.find(
-            f".//{{{NAMESPACE}}}namespaceid")
-        if namespace_id_node is None or namespace_id_node.text is None:
-            raise ParseException(
-                "namespace id is missing from the request", self.response_name)
-        self.namespace_id = int(namespace_id_node.text)
+        self.version = self._get_int("version")
+        self.partner_code = self._get_int("partnercode")
+        self.namespace_id = self._get_int("namespaceid")
 
+    def _get_int(self, attr_name: str) -> int:
+        try:
+            result = super()._get_int(attr_name)
+        except:
+            raise ParseException(f"{attr_name} is missing",
+                                 self.response_name)
+        return result
+
+    def _get_str(self, attr_name: str) -> str:
+        try:
+            result = super()._get_str(attr_name)
+        except:
+            raise ParseException(f"{attr_name} is missing",
+                                 self.response_name)
+        return result
+
+    def _get_value(self, attr_name: str) -> object:
+        value = super()._get_value(attr_name)
+        if value is None:
+            raise ParseException(f"{attr_name} is missing",
+                                 self.response_name)
+        return value
+
+    def _parse_password(self):
+        password = self._get_value("password")
+        assert isinstance(password, dict)
+        return password['Value']
 
 
 class LoginResultBase(lib.ResultBase):
@@ -45,7 +57,7 @@ class LoginResultBase(lib.ResultBase):
     profile_id: int
     profile_nick: str
     unique_nick: str
-    cdkey_hash: str
+    cdkey_hash: str | None = None
     version: int
     namespace_id: int
     partner_code: int
@@ -68,7 +80,7 @@ class LoginResponseBase(lib.ResponseBase):
         super().build()
 
     def _build_context(self):
-        self._content.add("responseCode", AuthCode.SUCCESS)
+        self._content.add("responseCode", AuthCode.SUCCESS.value)
         self._content.add("certificate")
         self._content.add("length", self._result.length)
         self._content.add("version", self._result.version)
@@ -79,7 +91,8 @@ class LoginResponseBase(lib.ResponseBase):
         self._content.add("expiretime", self._expiretime)
         self._content.add("profilenick", self._result.profile_nick)
         self._content.add("uniquenick", self._result.unique_nick)
-        self._content.add("cdkeyhash", self._result.cdkey_hash)
+        if self._result.cdkey_hash is not None:
+            self._content.add("cdkeyhash", self._result.cdkey_hash)
         self._content.add("peerkeymodulus", ClientInfo.PEER_KEY_MODULUS)
         self._content.add("peerkeyexponent", ClientInfo.PEER_KEY_EXPONENT)
         self._content.add("serverdata", ClientInfo.SERVER_DATA)
@@ -106,7 +119,8 @@ class LoginResponseBase(lib.ResponseBase):
         data_to_hash.extend(self._expiretime.to_bytes(4, byteorder="little"))
         data_to_hash.extend(self._result.profile_nick.encode("ascii"))
         data_to_hash.extend(self._result.unique_nick.encode("ascii"))
-        data_to_hash.extend(self._result.cdkey_hash.encode("ascii"))
+        if self._result.cdkey_hash is not None:
+            data_to_hash.extend(self._result.cdkey_hash.encode("ascii"))
 
         data_to_hash.extend(bytes.fromhex(ClientInfo.PEER_KEY_MODULUS))
         data_to_hash.append(0x01)

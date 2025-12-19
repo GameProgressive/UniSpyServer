@@ -1,21 +1,102 @@
 import frontends.gamespy.library.abstractions.contracts as lib
-import xml.etree.ElementTree as ET
-
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
+import xmltodict
+
+
+def remove_namespace(data):
+    if isinstance(data, dict):
+        return {key.split(':')[-1]: remove_namespace(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [remove_namespace(item) for item in data]
+    else:
+        return data
+
+
+def find_key_in_nested_dict(nested_dict, target_key):
+    found_values = []
+
+    # Base case: If the input is a dictionary
+    if isinstance(nested_dict, dict):
+        for key, value in nested_dict.items():
+            if key == target_key:
+                found_values.append(value)  # Add the value if the key is found
+            found_values.extend(find_key_in_nested_dict(
+                value, target_key))  # Search recursively
+
+    # If the input is a list, iterate through elements
+    elif isinstance(nested_dict, list):
+        for item in nested_dict:
+            found_values.extend(find_key_in_nested_dict(item, target_key))
+
+    return found_values
+
+
+def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
+    # Base case: If the input is a dictionary
+    if isinstance(nested_dict, dict):
+        for key, value in nested_dict.items():
+            if key == target_key:
+                return value  # Return the value if the key is found
+            # Recursively search in the value
+            found_value = find_first_key_in_nested_dict(value, target_key)
+            if found_value is not None:
+                return found_value  # Return the found value if any
+
+    # If the input is a list, iterate through elements
+    elif isinstance(nested_dict, list):
+        for item in nested_dict:
+            found_value = find_first_key_in_nested_dict(item, target_key)
+            if found_value is not None:
+                return found_value  # Return found value if any
+
+    return None  # Return None if the key is not found
 
 
 class RequestBase(lib.RequestBase):
     raw_request: str
-    _content_element: ET.Element
+    _request_dict: dict
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        xelements = ET.fromstring(self.raw_request)
-        self._content_element = xelements[0][0]
+        parsed_data = xmltodict.parse(self.raw_request)
+        processed_data = remove_namespace(parsed_data)
+        assert isinstance(processed_data, dict)
+        self._request_dict = processed_data["Envelope"]["Body"]
+
+    def _get_int(self, attr_name: str) -> int:
+        result_str = RequestBase._get_str(self, attr_name)
+        result = int(result_str)
+        return result
+
+    def _get_str(self, attr_name: str) -> str:
+        assert isinstance(attr_name, str)
+        value = self._get_value_by_key(attr_name)
+        if value is None:
+            raise WebException(f"{attr_name} is missing")
+        assert isinstance(value, str)
+        return value
+
+    def _get_value_by_key(self, key: str) -> object | None:
+        value = find_first_key_in_nested_dict(self._request_dict, key)
+        return value
+
+    def _get_value(self, attr_name: str) -> object:
+        value = self._get_value_by_key(attr_name)
+        if value is None:
+            raise WebException(f"{attr_name} is missing")
+        return value
+
+    def _get_dict(self, attr_name: str) -> dict:
+        value = self._get_value_by_key(attr_name)
+        if value is None:
+            raise WebException(f"{attr_name} is missing")
+        if not isinstance(value, dict):
+            raise WebException(f"{attr_name} is not a dict")
+        return value
 
 
 class ResultBase(lib.ResultBase):
