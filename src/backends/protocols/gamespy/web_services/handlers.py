@@ -131,8 +131,6 @@ class CreateUserAccountHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         dump = self._request.model_dump()
-        dump["operation_id"] = 0
-        dump["product_id"] = 0
         req = NewUserRequest.model_validate(dump)
         h = NewUserHandler(req)
         h.handle()

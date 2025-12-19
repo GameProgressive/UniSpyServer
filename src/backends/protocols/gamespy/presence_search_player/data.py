@@ -118,7 +118,7 @@ def get_sub_profile(
         .where(
             SubProfiles.profileid == profile_id,
             SubProfiles.namespaceid == namespace_id,
-            SubProfiles.namespaceid == product_id,
+            SubProfiles.productid == product_id,
         )
         .first()
     )

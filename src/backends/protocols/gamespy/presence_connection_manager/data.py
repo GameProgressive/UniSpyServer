@@ -139,14 +139,14 @@ def get_profile_infos(
         assert isinstance(profile.profileid, int)
         assert isinstance(subprofile.uniquenick, str)
         assert isinstance(user.email, str)
-        assert isinstance(Profiles.extra_info, dict)
+        assert isinstance(profile.extra_info, dict)
 
     data = GetProfileData(
         nick=profile.nick,
         profile_id=profile.profileid,
         unique_nick=subprofile.uniquenick,
         email=user.email,
-        extra_infos=Profiles.extra_info,
+        extra_infos=profile.extra_info,
     )
 
     return data

@@ -134,7 +134,7 @@ def get_info_by_authtoken(
 
 def get_info_by_uniquenick(
     uniquenick: str, namespace_id: int, session: Session
-) -> tuple[int, int, str, str, str] | None:
+) -> tuple[int, int, str, str, str | None] | None:
     """
     return [user_id,profile_id,profile_nick,unique_nick,cdkey_hash]
     """
@@ -159,7 +159,7 @@ def get_info_by_uniquenick(
     assert isinstance(profile.profileid, int)
     assert isinstance(profile.nick, str)
     assert isinstance(subprofile.uniquenick, str)
-    assert isinstance(subprofile.cdkeyenc, str)
+    assert isinstance(subprofile.cdkeyenc, str) or subprofile.cdkeyenc is None
 
     return (
         user.userid,

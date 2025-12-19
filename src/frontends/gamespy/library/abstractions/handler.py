@@ -181,15 +181,15 @@ class CmdHandlerBase:
             case 200:
                 pass
             case 450:
-                self._handle_upload_error()
+                self._handle_unispy_error()
             case 500:
-                self._handle_upload_error()
+                self._handle_general_error()
             case _:
                 raise UniSpyException(
                     f"failed to upload data to backends. reason: {response.text}"
                 )
 
-    def _handle_upload_error(self):
+    def _handle_unispy_error(self):
         """
         handle the error message response from backend
         """
@@ -205,6 +205,9 @@ class CmdHandlerBase:
             self._client.log_warn(
                 "no exception class found, use default unispy exception")
             raise UniSpyException(self._http_result["message"])
+
+    def _handle_general_error(self):
+        raise UniSpyException(self._http_result["message"])
 
     @final
     def _fetch_data(self):

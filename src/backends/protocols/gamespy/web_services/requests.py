@@ -97,7 +97,7 @@ class AuthRequestBase(lib.RequestBase):
     version: int
     partner_code: int
     namespace_id: int
-    game_id: int | None = None
+    game_id: int
     response_name: ResponseName
 
 
@@ -128,6 +128,10 @@ class CreateUserAccountRequest(AuthRequestBase):
     nick: str
     uniquenick: str
     password: str
+    operation_id: int = 0
+    product_id: int = 1
+    game_id: int | None = None
+
 
 # D2G
 

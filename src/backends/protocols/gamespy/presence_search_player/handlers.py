@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import TYPE_CHECKING, cast
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import Users, Profiles, SubProfiles
 import backends.protocols.gamespy.presence_search_player.data as data
@@ -109,11 +111,13 @@ class NewUserHandler(HandlerBase):
         )
 
     def _create_user(self) -> None:
-        user_dict = {}
-        for key, value in self._request.__dict__.items():
-            if key in Users.__dict__:
-                user_dict[key] = value
-        self.user = Users(**user_dict)
+        self.user = Users(
+            email=self._request.email,
+            password=self._request.password,
+            lastip=self._request.client_ip,
+            lastonline=datetime.now(),
+            createdate=datetime.now()
+        )
         self._session.add(self.user)
         self._session.commit()
 
@@ -126,18 +130,23 @@ class NewUserHandler(HandlerBase):
         assert self.user is not None
         assert isinstance(self.user.userid, int)
         profile_dict["userid"] = self.user.userid
-        self.profile = Profiles(**profile_dict)
+        self.profile = Profiles(
+            userid=self.user.userid,
+            nick=self._request.nick,
+        )
         self._session.add(self.profile)
         self._session.commit()
 
     def _create_subprofile(self) -> None:
-        subprofile_dict = {}
-        for key, value in self._request.__dict__.items():
-            if key in SubProfiles.__dict__:
-                subprofile_dict[key] = value
-        assert self.profile is not None
-        subprofile_dict["profileid"] = self.profile.profileid
-        self.subprofile = SubProfiles(**subprofile_dict)
+        self.subprofile = SubProfiles(
+            profileid=self.profile.profileid,  # type: ignore
+            uniquenick=self._request.uniquenick,
+            namespaceid=self._request.namespace_id,
+            partnerid=self._request.partner_id,
+            productid=self._request.product_id,
+            gamename=self._request.game_name,
+            cdkeyenc=self._request.cd_key,
+        )
         self._session.add(self.subprofile)
         self._session.commit()
 
@@ -155,7 +164,7 @@ class NicksHandler(HandlerBase):
             self._session,
         )
         self.result_data = []
-        for nick, unique  in self.temp_list:
+        for nick, unique in self.temp_list:
             self.result_data.append(
                 NickResultData(nick=nick, uniquenick=unique))
 

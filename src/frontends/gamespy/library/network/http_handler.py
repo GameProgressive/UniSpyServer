@@ -6,6 +6,7 @@ from frontends.gamespy.library.abstractions.connections import (
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
+import xml.etree.ElementTree as ET
 
 
 class HttpConnection(ConnectionBase):
@@ -16,6 +17,7 @@ class HttpConnection(ConnectionBase):
         self.handler.send_response(200)
         self.handler.send_header("Content-type", "application/xml")
         self.handler.send_header("Content-Length", str(len(data)))
+        self.handler.send_header("SessionToken", "example_token")
         self.handler.end_headers()
         self.handler.wfile.write(data)
 
