@@ -1,14 +1,7 @@
 
-import xml.etree.ElementTree as ET
-
-from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.generals import (
-    RequestBase,
-    NAMESPACE,
-)
-import xmltodict
-
-from frontends.gamespy.protocols.web_services.modules.sake.exceptions.general import SakeException
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
+    RequestBase,)
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
 
 
 class CreateRecordRequest(RequestBase):
@@ -20,6 +13,12 @@ class CreateRecordRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.values = self._get_dict("values")
+
+    def _get_dict(self, attr_name: str) -> dict:
+        try:
+            return super()._get_dict(attr_name)
+        except:
+            raise SakeException(f"{attr_name} is missing")
 
 
 class DeleteRecordRequest(RequestBase):

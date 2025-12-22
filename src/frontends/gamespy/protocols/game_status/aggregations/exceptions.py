@@ -3,4 +3,6 @@ from frontends.gamespy.library.exceptions.general import UniSpyException, get_ex
 
 class GSException(UniSpyException):
     pass
+
+
 EXCEPTIONS = get_exceptions_dict(__name__)

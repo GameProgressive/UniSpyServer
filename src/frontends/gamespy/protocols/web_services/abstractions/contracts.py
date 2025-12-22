@@ -53,6 +53,41 @@ def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
     return None  # Return None if the key is not found
 
 
+# class HttpData:
+#     path: str
+#     headers: dict
+#     body: str
+
+#     def __init__(self, path: str, headers: dict, body: str) -> None:
+
+#         self.path = path
+#         self.headers = headers
+#         self.body = body
+
+#     def __str__(self) -> str:
+#         json_str = json.dumps(self.__dict__)
+#         return json_str
+
+#     @staticmethod
+#     def from_bytes(buffer: bytes) -> "HttpData":
+#         assert isinstance(buffer, bytes)
+#         json_dict = json.loads(buffer)
+#         data = HttpData(**json_dict)
+#         return data
+
+#     @staticmethod
+#     def from_str(buffer: str) -> "HttpData":
+#         assert isinstance(buffer, str)
+#         json_dict = json.loads(buffer)
+#         data = HttpData(**json_dict)
+#         return data
+
+#     def to_bytes(self) -> bytes:
+#         j_str = json.dumps(self.__dict__)
+#         j_bytes = j_str.encode()
+#         return j_bytes
+
+
 class RequestBase(lib.RequestBase):
     raw_request: str
     _request_dict: dict

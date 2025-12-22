@@ -2,7 +2,9 @@ from frontends.gamespy.library.abstractions.contracts import ResponseBase
 from frontends.gamespy.protocols.chat.abstractions.contract import SERVER_DOMAIN
 from frontends.gamespy.protocols.chat.aggregates.enums import IRCErrorCode
 
-from frontends.gamespy.library.exceptions.general import UniSpyException as ER, get_exceptions_dict
+from frontends.gamespy.library.exceptions.general import UniSpyException as ER, UniSpyExceptionValidator, get_exceptions_dict
+
+import abc
 
 
 class ChatException(ER):
@@ -17,13 +19,18 @@ class IRCException(ChatException, ResponseBase):
         ChatException.__init__(self, message)
         self.error_code = error_code
 
+    @abc.abstractmethod
     def build(self):
-        raise NotImplementedError(
-            "IRCException is abstracted class, should not be initialized")
+        pass
 
 
-class IRCChannelException(IRCException):
+class IrcChannelExceptionValidator(UniSpyExceptionValidator):
     channel_name: str
+
+
+class IrcChannelException(IRCException):
+    channel_name: str
+    _validator: IrcChannelExceptionValidator
 
     def __init__(self, message: str,
                  channel_name: str,
@@ -50,9 +57,15 @@ class MoreParametersException(IRCException):
         super().__init__(message, IRCErrorCode.MORE_PARAMETERS)
 
 
+class NickNameInUseExceptionValidator(UniSpyExceptionValidator):
+    old_nick: str
+    new_nick: str
+
+
 class NickNameInUseException(IRCException):
     old_nick: str
     new_nick: str
+    _validator: NickNameInUseExceptionValidator
 
     def __init__(
         self,
@@ -102,7 +115,7 @@ class UniqueNickExpiredException(IRCException):
 # region Channel Exceptions
 
 
-class BadChannelMaskException(IRCChannelException):
+class BadChannelMaskException(IrcChannelException):
     def __init__(
         self,
         message: str,
@@ -111,7 +124,7 @@ class BadChannelMaskException(IRCChannelException):
         super().__init__(message, channel_name, IRCErrorCode.BAD_CHAN_MASK)
 
 
-class BadChannelKeyException(IRCChannelException):
+class BadChannelKeyException(IrcChannelException):
     def __init__(
         self, message: str,
         channel_name: str
@@ -119,7 +132,7 @@ class BadChannelKeyException(IRCChannelException):
         super().__init__(message, channel_name, IRCErrorCode.BAD_CHANNEL_KEY)
 
 
-class BannedFromChanException(IRCChannelException):
+class BannedFromChanException(IrcChannelException):
     def __init__(
         self, message: str,
         channel_name: str
@@ -127,7 +140,7 @@ class BannedFromChanException(IRCChannelException):
         super().__init__(message, channel_name, IRCErrorCode.BANNED_FROM_CHAN)
 
 
-class ChannelIsFullException(IRCChannelException):
+class ChannelIsFullException(IrcChannelException):
     def __init__(
         self, message: str,
         channel_name: str
@@ -135,7 +148,7 @@ class ChannelIsFullException(IRCChannelException):
         super().__init__(message, channel_name, IRCErrorCode.CHANNEL_IS_FULL)
 
 
-class InviteOnlyChanException(IRCChannelException):
+class InviteOnlyChanException(IrcChannelException):
     def __init__(
         self, message: str,
         channel_name: str
@@ -143,7 +156,7 @@ class InviteOnlyChanException(IRCChannelException):
         super().__init__(message, channel_name, IRCErrorCode.INVITE_ONLY_CHAN)
 
 
-class NoSuchChannelException(IRCChannelException):
+class NoSuchChannelException(IrcChannelException):
     def __init__(
         self, message: str,
         channel_name: str

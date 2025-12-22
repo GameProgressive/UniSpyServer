@@ -72,7 +72,7 @@ class GetPlayerDataRequest(RequestBase):
     is_get_all_data: bool = False
     keys: list[str]
 
-    def __init__(self, raw_request: object) -> None:
+    def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.keys = []
 
@@ -238,7 +238,7 @@ class UpdateGameRequest(RequestBase):
     game_data_dict: dict[str, str]
     session_key: str
 
-    def __init__(self, raw_request: object) -> None:
+    def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.connection_id = None
 

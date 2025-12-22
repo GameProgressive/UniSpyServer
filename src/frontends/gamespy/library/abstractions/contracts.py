@@ -5,26 +5,20 @@ from pydantic import BaseModel
 
 class RequestBase:
     command_name: object
-    raw_request: object
+    raw_request:  bytes | str
 
-    def __init__(self, raw_request: object) -> None:
+    def __init__(self, raw_request: bytes | str) -> None:
         """
         raw_request is for gamespy protocol\n
         json_dict is for restapi deserialization
         """
         super().__init__()
-        if raw_request is None:
-            raise Exception("raw_request should not be None")
 
-        if raw_request is not None:
-            if (not isinstance(raw_request, bytes)) and (
-                not isinstance(raw_request, str)
-            ):
-                raise Exception("Unsupported raw_request type")
-            self.raw_request = raw_request
-            return
-        # self.command_name = None
-        # self.raw_request = None
+        if (not isinstance(raw_request, bytes)) and (
+            not isinstance(raw_request, str)
+        ):
+            raise Exception("Unsupported raw_request type")
+        self.raw_request = raw_request
 
     def parse(self) -> None:
         pass

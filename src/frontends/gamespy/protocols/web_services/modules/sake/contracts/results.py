@@ -1,7 +1,7 @@
 from typing import OrderedDict
 
 from pydantic import BaseModel
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.generals import ResultBase
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResultBase
 
 
 class CreateRecordResult(ResultBase):

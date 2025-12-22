@@ -1,5 +1,9 @@
+from http.server import BaseHTTPRequestHandler
+from typing import cast
+
 from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.http_handler import HttpConnection
 from frontends.gamespy.library.configs import ServerConfig
@@ -38,6 +42,38 @@ class Client(ClientBase):
         self.info = ClientInfo()
         self.is_log_raw = False
 
-    def _create_switcher(self, buffer:  bytes) -> SwitcherBase:
-        from frontends.gamespy.protocols.web_services.applications.switcher import Switcher
-        return Switcher(self, buffer.decode())
+    def on_received(self, buffer: bytes) -> None:
+        """
+        http server do not have custom encryption
+        """
+        if not isinstance(buffer, bytes):
+            raise UniSpyException("buffer type is invalid")
+        self.log_network_receving(buffer)
+        switcher = self._create_switcher(buffer)
+        if switcher is not None:
+            switcher.handle()
+
+    def _create_switcher(self, buffer: bytes) -> SwitcherBase | None:
+        """
+        this function overide is different than super class \n
+        http request need check route, if route url is not in our process list \n
+        we log error and return None
+        """
+        import frontends.gamespy.protocols.web_services.modules.altas.applications.switcher as altas
+        import frontends.gamespy.protocols.web_services.modules.auth.applications.switcher as auth
+        import frontends.gamespy.protocols.web_services.modules.sake.applications.switcher as sake
+        http_h = cast(BaseHTTPRequestHandler, self.connection.handler)
+
+        if "sakefileserver/uploadstream.aspx" in http_h.path \
+                or "SakeFileServer/download.aspx" in http_h.path:
+            return sake.Switcher(self, buffer.decode())
+        elif "SakeStorageServer/Public/StorageServer.asmx" in http_h.path:
+            return sake.Switcher(self, buffer.decode())
+        elif "AuthService/AuthService.asmx" in http_h.path:
+            return auth.Switcher(self, buffer.decode())
+        elif "/CompetitionService/CompetitionService.asmx" in http_h.path \
+                or "/AtlasDataServices/GameConfig.asmx" in http_h.path:
+            return altas.Switcher(self, buffer.decode())
+        else:
+            self.log_error(f"unsupported url:{http_h.requestline}")
+            return None

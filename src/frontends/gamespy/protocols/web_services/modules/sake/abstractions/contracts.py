@@ -1,20 +1,22 @@
-import frontends.gamespy.protocols.web_services.abstractions.handler as h
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
-from frontends.gamespy.protocols.web_services.modules.sake.exceptions.general import SakeException
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import SakePlatform
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
 
 NAMESPACE = "http://gamespy.net/sake"
 
 
 class RequestBase(lib.RequestBase):
     game_id: int
+    table_id: str
     secret_key: str | None
     login_ticket: str | None
-    table_id: str
+    platform: SakePlatform
 
     def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.secret_key = None
         self.login_ticket = None
+        self.platform = SakePlatform.Windows
 
     def parse(self) -> None:
         super().parse()
@@ -30,6 +32,24 @@ class RequestBase(lib.RequestBase):
 
         self.table_id = self._get_str("tableid")
 
+    def parse_headers(self, headers: dict):
+        """
+        parse headers from http request
+        """
+        pass
+        if "GameID" not in headers:
+            raise SakeException("game id is missing")
+        self.game_id = int(headers["GameID"])
+
+        if "ProfileID" not in headers:
+            raise SakeException("profile id is missing")
+        self.profile_id = int(headers["ProfileID"])
+
+        if "SessionToken" not in headers:
+            raise SakeException("session token is missing")
+        self.session_tocken = headers["SessionToken"]
+        self.platform = SakePlatform.Unity
+
     def _get_str(self, attr_name: str) -> str:
         try:
             value = super()._get_str(attr_name)
@@ -42,7 +62,7 @@ class RequestBase(lib.RequestBase):
         result = int(value)
         return result
 
-    
+
 class ResultBase(lib.ResultBase):
     pass
 
@@ -51,7 +71,3 @@ class ResponseBase(lib.ResponseBase):
     def __init__(self, result: ResultBase) -> None:
         super().__init__(result)
 
-
-class CmdHandlerBase(h.CmdHandlerBase):
-    _request: "RequestBase"
-    _result: "ResultBase"

@@ -12,7 +12,7 @@ from backends.library.database.pg_orm import (
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
     AuthException,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.exceptions.general import (
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
 )
 from sqlalchemy.orm import Session

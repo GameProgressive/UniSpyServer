@@ -1,5 +1,5 @@
 from frontends.gamespy.protocols.web_services.applications.client import Client
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.generals import CmdHandlerBase
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import CreateRecordResponse, GetMyRecordResponse, SearchForRecordsResponse
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, SearchForRecordsResult

@@ -1,4 +1,4 @@
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.generals import ResponseBase
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResponseBase
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, SearchForRecordsRequest
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, SearchForRecordsResult
 
