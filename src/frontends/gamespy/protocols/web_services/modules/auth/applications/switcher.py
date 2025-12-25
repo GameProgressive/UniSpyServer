@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.applications.client import Client
+from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.applications.switcher as web
 from frontends.gamespy.protocols.web_services.modules.auth.applications.handlers import CreateUserAccountHandler, LoginProfileHandler, LoginProfileWithGameIdHandler, LoginRemoteAuthHandler, LoginRemoteAuthWithGameIdHandler, LoginUniqueNickHandler, LoginUniqueNickWithGameIdHandler
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import CreateUserAccountRequest, LoginProfileRequest, LoginProfileWithGameIdRequest, LoginRemoteAuthRequest, LoginRemoteAuthWithGameIdRequest, LoginUniqueNickRequest, LoginUniqueNickWithGameIdRequest
@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests im
 
 class Switcher(web.Switcher):
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
         match name:
             # Auth services
             case "LoginProfile":

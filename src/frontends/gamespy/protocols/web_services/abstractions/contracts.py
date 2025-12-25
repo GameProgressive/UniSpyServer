@@ -1,4 +1,5 @@
 import frontends.gamespy.library.abstractions.contracts as lib
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 import xmltodict
@@ -89,15 +90,15 @@ def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
 
 
 class RequestBase(lib.RequestBase):
-    raw_request: str
+    raw_request: HttpData
     _request_dict: dict
 
-    def __init__(self, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
+    def __init__(self, raw_request: HttpData) -> None:
+        assert isinstance(raw_request, HttpData)
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        parsed_data = xmltodict.parse(self.raw_request)
+        parsed_data = xmltodict.parse(self.raw_request.body)
         processed_data = remove_namespace(parsed_data)
         assert isinstance(processed_data, dict)
         self._request_dict = processed_data["Envelope"]["Body"]
@@ -143,11 +144,12 @@ class ResponseBase(lib.ResponseBase):
     """
     Soap envelope content, should be initialized in response sub class
     """
-    sending_buffer: str
+    _result: ResultBase
+    sending_buffer: HttpData
 
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         super().__init__(result)
 
     def build(self) -> None:
-        self.sending_buffer = str(self._content)
+        self.sending_buffer = HttpData(body=str(self._content))

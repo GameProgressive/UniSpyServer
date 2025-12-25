@@ -1,8 +1,8 @@
-from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 import xml.etree.ElementTree as ET
 
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 
@@ -11,16 +11,16 @@ class Switcher(SwitcherBase):
     """
     abstract class of web switcher
     """
-    _raw_request: str
+    _raw_request: HttpData
     _client: Client
 
-    def __init__(self, client: Client, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
+    def __init__(self, client: Client, raw_request: HttpData) -> None:
+        assert isinstance(raw_request, HttpData)
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
         try:
-            name_node = ET.fromstring(self._raw_request)[0][0]
+            name_node = ET.fromstring(self._raw_request.body)[0][0]
         except Exception as e:
             raise WebException(f"xml serialization failed: {str(e)}")
         if name_node is None:

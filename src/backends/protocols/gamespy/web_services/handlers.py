@@ -52,6 +52,7 @@ class LoginProfileHandler(HandlerBase):
     def _result_construct(self) -> None:
         assert self.data is not None
         self._result = LoginProfileResult(
+            session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
@@ -86,6 +87,7 @@ class LoginRemoteAuthHandler(HandlerBase):
     def _result_construct(self) -> None:
         assert self.data is not None
         self._result = LoginRemoteAuthResult(
+            session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
@@ -114,6 +116,7 @@ class LoginUniqueNickHandler(HandlerBase):
     def _result_construct(self) -> None:
         assert self.data is not None
         self._result = LoginUniqueNickResult(
+            session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
@@ -138,11 +141,11 @@ class CreateUserAccountHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = CreateUserAccountResult(
+            session_token="example_token",
             user_id=self.data.user_id,
             profile_id=self.data.profile_id,
             profile_nick=self._request.nick,
             unique_nick=self._request.uniquenick,
-            cdkey_hash="",
             version=3,
             namespace_id=self._request.namespace_id,
             partner_code=self._request.partner_code

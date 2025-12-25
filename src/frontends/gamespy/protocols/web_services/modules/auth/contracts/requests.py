@@ -1,3 +1,4 @@
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contracts import (
     NAMESPACE,
     LoginRequestBase,
@@ -12,7 +13,7 @@ class LoginProfileRequest(LoginRequestBase):
     cdkey: str
     password: str
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_PROFILE
 
@@ -26,7 +27,7 @@ class LoginProfileRequest(LoginRequestBase):
 class LoginProfileWithGameIdRequest(LoginProfileRequest):
     game_id: int
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_PROFILE_WITH_GAME_ID
 
@@ -40,7 +41,7 @@ class LoginPs3CertRequest(LoginRequestBase):
     game_id: int
     npticket: str
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_PS3_CERT
 
@@ -54,7 +55,7 @@ class LoginPs3CertRequest(LoginRequestBase):
 class LoginPs3CertWithGameIdRequest(LoginPs3CertRequest):
     game_id: int
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_PS3_CERT_WITH_GAME_ID
 
@@ -67,7 +68,7 @@ class LoginRemoteAuthRequest(LoginRequestBase):
     auth_token: str
     challenge: str
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_REMOTE_AUTH
 
@@ -81,7 +82,7 @@ class LoginRemoteAuthRequest(LoginRequestBase):
 class LoginRemoteAuthWithGameIdRequest(LoginRemoteAuthRequest):
     game_id: int
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_REMOTE_AUTH_WITH_GAME_ID
 
@@ -94,7 +95,7 @@ class LoginUniqueNickRequest(LoginRequestBase):
     uniquenick: str
     password: str
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_UNIQUENICK
 
@@ -107,7 +108,7 @@ class LoginUniqueNickRequest(LoginRequestBase):
 class LoginUniqueNickWithGameIdRequest(LoginUniqueNickRequest):
     game_id: int
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.LOGIN_UNIQUENICK_WITH_GAME_ID
 
@@ -123,7 +124,7 @@ class CreateUserAccountRequest(LoginRequestBase):
     password: str
     game_id: int
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.response_name = ResponseName.CREATE_USER_ACCOUNT
 

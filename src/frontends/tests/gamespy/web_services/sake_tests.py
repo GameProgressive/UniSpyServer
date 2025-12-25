@@ -2,6 +2,7 @@ import unittest
 
 import responses
 
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRandomRecordsRequest, GetRecordLimitRequest, GetSpecificRecordsRequest, RateRecordRequest, SearchForRecordsRequest, UpdateRecordRequest
 
 
@@ -40,7 +41,8 @@ SAMUZOMBIE2_GET_MY_RECORD = """<?xml version="1.0" encoding="UTF-8"?> <SOAP-ENV:
 class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_record_limit(self):
-        request = GetRecordLimitRequest(GET_RECORD_LIMIT)
+        request = GetRecordLimitRequest(
+            HttpData(path="", headers={}, body=GET_RECORD_LIMIT))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -49,7 +51,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_rate_record(self):
-        request = RateRecordRequest(RATE_RECORD)
+        request = RateRecordRequest(
+            HttpData(path="", headers={}, body=RATE_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -60,7 +63,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_random_records(self):
-        request = GetRandomRecordsRequest(GET_RANDOM_RECORDS)
+        request = GetRandomRecordsRequest(
+            HttpData(path="", headers={}, body=GET_RANDOM_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -72,7 +76,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_specific_record(self):
-        request = GetSpecificRecordsRequest(GET_SPECIFIC_RECORDS)
+        request = GetSpecificRecordsRequest(
+            HttpData(path="", headers={}, body=GET_SPECIFIC_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -88,7 +93,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_my_record(self):
-        request = GetMyRecordsRequest(GET_MY_RECORDS)
+        request = GetMyRecordsRequest(
+            HttpData(path="", headers={}, body=GET_MY_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -112,7 +118,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_search_for_records(self):
-        request = SearchForRecordsRequest(SEARCH_FOR_RECORDS)
+        request = SearchForRecordsRequest(
+            HttpData(path="", headers={}, body=SEARCH_FOR_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -127,7 +134,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_delete_record(self):
-        request = DeleteRecordRequest(DELETE_RECORD)
+        request = DeleteRecordRequest(
+            HttpData(path="", headers={}, body=DELETE_RECORD))
         request.parse()
 
         self.assertEqual(0, request.game_id)
@@ -138,7 +146,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_update_record(self):
-        request = UpdateRecordRequest(UPDATE_RECORD)
+        request = UpdateRecordRequest(
+            HttpData(path="", headers={}, body=UPDATE_RECORD))
         request.parse()
 
         self.assertEqual(0, request.game_id)
@@ -154,7 +163,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_create_record(self):
-        request = CreateRecordRequest(CREATE_RECORD)
+        request = CreateRecordRequest(
+            HttpData(path="", headers={}, body=CREATE_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -170,7 +180,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_samuzombie2_get_my_records(self):
-        request = GetMyRecordsRequest(SAMUZOMBIE2_GET_MY_RECORD)
+        request = GetMyRecordsRequest(
+            HttpData(path="", headers={}, body=SAMUZOMBIE2_GET_MY_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
 

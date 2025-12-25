@@ -4,6 +4,8 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
+from frontends.gamespy.library.network.http_handler import HttpData
+
 
 def get_string(data: bytes) -> str:
     return data.decode("ascii")
@@ -25,7 +27,9 @@ class UniSpyJsonEncoder(json.JSONEncoder):
             return obj.value
         elif isinstance(obj, UUID):
             return str(obj)
-        elif isinstance(obj,BaseModel):
+        elif isinstance(obj, BaseModel):
             return obj.model_dump_json()
+        elif isinstance(obj, HttpData):
+            return obj.__dict__
         # Fallback to the default method for other types
         return super().default(obj)

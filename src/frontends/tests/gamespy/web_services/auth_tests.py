@@ -2,6 +2,7 @@ import unittest
 
 import responses
 
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import CreateUserAccountRequest, LoginProfileWithGameIdRequest, LoginPs3CertRequest, LoginRemoteAuthRequest, LoginUniqueNickRequest
 
 LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
@@ -116,19 +117,20 @@ CREATE_USER_ACCOUNT = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelop
 class AuthTests(unittest.TestCase):
     @responses.activate
     def test_create_user_account(self):
-        request = CreateUserAccountRequest(CREATE_USER_ACCOUNT)
+        request = CreateUserAccountRequest(
+            HttpData(path="", headers={}, body=CREATE_USER_ACCOUNT))
         request.parse()
         pass
 
     @responses.activate
     def test_crysis_auth(self):
 
-        request = LoginUniqueNickRequest(CRYSIS)
+        request = LoginUniqueNickRequest(HttpData(path="", headers={}, body=CRYSIS))
         request.parse()
 
     @responses.activate
     def test_login_profile(self):
-        request = LoginProfileWithGameIdRequest(LOGIN_PROFILE)
+        request = LoginProfileWithGameIdRequest(HttpData(path="", headers={}, body=LOGIN_PROFILE))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
@@ -142,7 +144,7 @@ class AuthTests(unittest.TestCase):
         # handler.handle()
 
     def test_login_ps3_cert(self):
-        request = LoginPs3CertRequest(LOGIN_PS3_CERT)
+        request = LoginPs3CertRequest(HttpData(path="", headers={}, body=LOGIN_PS3_CERT))
         request.parse()
         self.assertEqual(0, request.version)
         self.assertEqual(0, request.game_id)
@@ -152,7 +154,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual("0001", request.npticket)
 
     def test_remote_auth(self):
-        request = LoginRemoteAuthRequest(LOGIN_REMOTE_AUTH)
+        request = LoginRemoteAuthRequest(HttpData(path="", headers={}, body=LOGIN_REMOTE_AUTH))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
@@ -162,7 +164,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual("XXXXXXXXXXX", request.challenge)
 
     def test_login_uniquenick(self):
-        request = LoginUniqueNickRequest(LOGIN_UNIQUENICK)
+        request = LoginUniqueNickRequest(HttpData(path="", headers={}, body=LOGIN_UNIQUENICK))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.partner_code)

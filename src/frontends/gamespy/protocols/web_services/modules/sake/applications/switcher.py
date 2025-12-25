@@ -1,14 +1,14 @@
-from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.applications.client import Client
+from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.applications.switcher as web
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
 from frontends.gamespy.protocols.web_services.modules.sake.applications.handlers import CreateRecordHandler, GetMyRecordsHandler, SearchForRecordsHandler
 
 
 class Switcher(web.Switcher):
+    _raw_request: HttpData
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
         match name:
             case "CreateRecord":
                 return CreateRecordHandler(self._client, CreateRecordRequest(raw_request))

@@ -6,20 +6,33 @@ from frontends.gamespy.library.abstractions.connections import (
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
-import xml.etree.ElementTree as ET
+
+
+class HttpData:
+    path: str | None
+    headers: dict | None
+    body: str
+
+    def __init__(self,  body: str, headers: dict | None = None, path: str | None = None,) -> None:
+        self.path = path
+        self.headers = headers
+        self.body = body
 
 
 class HttpConnection(ConnectionBase):
     handler: BaseHTTPRequestHandler
 
-    def send(self, data: bytes) -> None:
-        assert isinstance(data, bytes)
+    def send(self, data: HttpData) -> None:
+        assert isinstance(data, HttpData)
         self.handler.send_response(200)
         self.handler.send_header("Content-type", "application/xml")
-        self.handler.send_header("Content-Length", str(len(data)))
-        self.handler.send_header("SessionToken", "example_token")
+        self.handler.send_header("Content-Length", str(len(data.body)))
+        if data.headers is not None:
+            for key, value in data.headers.items():
+                self.handler.send_header(key, value)
         self.handler.end_headers()
-        self.handler.wfile.write(data)
+        body_bytes = data.body.encode()
+        self.handler.wfile.write(body_bytes)
 
 
 class HttpHandler(BaseHTTPRequestHandler):

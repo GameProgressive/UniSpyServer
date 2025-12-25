@@ -4,21 +4,34 @@ import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import ResponseName
 
 
-class SakeRequestBase(lib.RequestBase):
+class HttpData(BaseModel):
+    path: str
+    headers: dict
+    body: str
+
+
+class WebRequestBase(lib.RequestBase):
+    raw_request: HttpData
+    """
+    only dotnet sdk will send this data
+    """
+
+# region Sake
+
+
+class SakeRequestBase(WebRequestBase):
     game_id: int
     secret_key: str
     login_ticket: str
+    """
+    in c sdk called login_ticket \n
+    in c# sdk called session_token
+    """
     table_id: int
 
 
-class CreateRecordData(BaseModel):
-    name: str
-    type: str
-    value: str
-
-
 class CreateRecordRequest(SakeRequestBase):
-    values: list[CreateRecordData]
+    values: list[dict]
 
 
 class DeleteRecordRequest(SakeRequestBase):
@@ -91,9 +104,9 @@ class UpdateRecordRequest(SakeRequestBase):
     values: list[UpdateRecordData]
 
 
-# Auth
+# region Auth
 
-class AuthRequestBase(lib.RequestBase):
+class AuthRequestBase(WebRequestBase):
     version: int
     partner_code: int
     namespace_id: int
@@ -133,10 +146,10 @@ class CreateUserAccountRequest(AuthRequestBase):
     game_id: int | None = None
 
 
-# D2G
+# region D2G
 
 
-class Direct2GameRequestBase(lib.RequestBase):
+class Direct2GameRequestBase(WebRequestBase):
     pass
 
 

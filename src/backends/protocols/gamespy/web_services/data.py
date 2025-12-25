@@ -160,13 +160,12 @@ def get_info_by_uniquenick(
     assert isinstance(profile.nick, str)
     assert isinstance(subprofile.uniquenick, str)
     assert isinstance(subprofile.cdkeyenc, str) or subprofile.cdkeyenc is None
-
     return (
         user.userid,
         profile.profileid,
         profile.nick,
         subprofile.uniquenick,
-        subprofile.cdkeyenc,
+        subprofile.cdkeyenc
     )
 
 

@@ -1,5 +1,6 @@
 import abc
 from frontends.gamespy.library.exceptions.general import UniSpyExceptionValidator, get_exceptions_dict
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, ResponseName
@@ -15,7 +16,9 @@ class AuthException(WebException):
     command_name: ResponseName
     _validator: AuthExceptionValidator
 
-    def __init__(self, message: str, response_code: AuthCode, command_name: ResponseName) -> None:
+    def __init__(self, message: str,
+                 response_code: AuthCode,
+                 command_name: ResponseName) -> None:
         super().__init__(message)
         self.response_code = response_code
         self.command_name = command_name
@@ -24,7 +27,9 @@ class AuthException(WebException):
     def build(self) -> None:
         xml = SoapEnvelop(self.command_name.value)
         xml.add("responseCode", self.response_code.value)
-        self.sending_buffer = str(xml)
+        self.sending_buffer = HttpData(
+            body=str(xml),
+            headers={"Error": self.message})
 
 
 class LoginServerInitFailedException(AuthException):

@@ -1,5 +1,5 @@
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 
 
 class SakeException(WebException):
@@ -8,6 +8,8 @@ class SakeException(WebException):
     """
 
     def build(self) -> None:
-        soap = SoapEnvelop("Sake")
-        soap.add("Error", self.message)
-        raise NotImplementedError()
+        self.sending_buffer = HttpData(
+            body="", headers={
+                "Error": self.message
+            }
+        )

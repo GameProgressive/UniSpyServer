@@ -11,7 +11,8 @@ from frontends.gamespy.library.log.log_manager import LogWriter
 
 
 class UdpConnection(ConnectionBase):
-    def send(self, data) -> None:
+    def send(self, data: bytes) -> None:
+        assert isinstance(data, bytes)
         conn: socket.socket = self.handler.request[1]
         conn.sendto(data, self.handler.client_address)
 
@@ -40,7 +41,8 @@ class UdpServer(NetworkServerBase):
             UdpHandler,
         )
         # inject the handler params to ThreadingUDPServer
-        self._server.unispy_params = (self._config, self._client_cls, self._logger)  # type: ignore
+        self._server.unispy_params = (  # type: ignore
+            self._config, self._client_cls, self._logger)
 
     def __exit__(self, *args):
         self._server.__exit__(*args)

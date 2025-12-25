@@ -1,4 +1,5 @@
 
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
     RequestBase,)
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
@@ -109,7 +110,7 @@ class SearchForRecordsRequest(RequestBase):
     sort: str | None
     filter: str | None
 
-    def __init__(self, raw_request: str) -> None:
+    def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
         self.filter = None
         self.sort = None

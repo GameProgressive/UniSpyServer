@@ -13,7 +13,8 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
 class TcpConnection(ConnectionBase):
-    def send(self, data) -> None:
+    def send(self, data: bytes) -> None:
+        assert isinstance(data, bytes)
         sock: socket.socket = self.handler.request
         sock.sendall(data)
 

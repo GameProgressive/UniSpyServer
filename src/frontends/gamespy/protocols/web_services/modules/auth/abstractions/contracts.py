@@ -1,12 +1,46 @@
 import hashlib
+from typing import TYPE_CHECKING, cast
+from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, ResponseName
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import ParseException
 import datetime
-
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
+from cryptography.hazmat.primitives.asymmetric import utils as asym_utils
 NAMESPACE = "http://gamespy.net/AuthService/"
+
+
+def decrypt_rsa(cipher: str) -> str:
+    private_key = serialization.load_pem_private_key(
+        ClientInfo.PASSWORD_ENCRYPT_PRIVATE_KEY.encode(),
+        password=None,  # Set this if your key is encrypted
+        backend=default_backend())
+    if TYPE_CHECKING:
+        private_key = cast(RSAPrivateKey, private_key)
+    plaintext = private_key.decrypt(bytes.fromhex(cipher), padding.PKCS1v15())
+    assert isinstance(plaintext, bytes)
+    plaintext_hex = bytes.hex(plaintext)
+    return plaintext_hex
+
+
+def sign_rsa(plan_text: bytes) -> str:
+    private_key = serialization.load_pem_private_key(
+        ClientInfo.PASSWORD_ENCRYPT_PRIVATE_KEY.encode(),
+        password=None,  # Set this if your key is encrypted
+        backend=default_backend())
+    if TYPE_CHECKING:
+        private_key = cast(RSAPrivateKey, private_key)
+    sig = private_key.sign(plan_text,
+                           padding.PKCS1v15(),
+                           algorithm=hashes.MD5())
+    assert isinstance(sig, bytes)
+    sig_hex = bytes.hex(sig)
+    return sig_hex
 
 
 class LoginRequestBase(lib.RequestBase):
@@ -45,22 +79,36 @@ class LoginRequestBase(lib.RequestBase):
         return value
 
     def _parse_password(self):
-        password = self._get_value("password")
-        assert isinstance(password, dict)
-        return password['Value']
+        password_dict = self._get_value("password")
+        assert isinstance(password_dict, dict)
+        enc_password = password_dict['Value']
+        password = decrypt_rsa(enc_password)
+        import hashlib
+        hash_obj = hashlib.sha256()
+        hash_obj.update(password.encode("utf-8"))
+        hash_hex = hash_obj.hexdigest()
+        return hash_hex
 
 
-class LoginResultBase(lib.ResultBase):
+class ResultBase(lib.ResultBase):
+    response_code: int = 0
+
+
+class LoginResultBase(ResultBase):
     response_code: int = 0
     length: int = 303
     user_id: int
     profile_id: int
     profile_nick: str
     unique_nick: str
-    cdkey_hash: str | None = None
     version: int
     namespace_id: int
     partner_code: int
+    cdkey_hash: str | None = None
+    session_token: str
+    """
+    c# version data, equal to pcm login_ticket
+    """
 
 
 class LoginResponseBase(lib.ResponseBase):
@@ -77,7 +125,12 @@ class LoginResponseBase(lib.ResponseBase):
 
     def build(self) -> None:
         self._build_context()
-        super().build()
+        body = str(self._content)
+        headers = {
+            "SessionToken": self._result.session_token,
+            "Content-Length": len(body)
+        }
+        self.sending_buffer = HttpData(headers=headers, body=body)
 
     def _build_context(self):
         self._content.add("responseCode", AuthCode.SUCCESS.value)
@@ -97,11 +150,19 @@ class LoginResponseBase(lib.ResponseBase):
         self._content.add("peerkeyexponent", ClientInfo.PEER_KEY_EXPONENT)
         self._content.add("serverdata", ClientInfo.SERVER_DATA)
         hash_str = self.__compute_hash()
-        self._content.add("signature", ClientInfo.SIGNATURE_PREFIX + hash_str)
+        # signature = ClientInfo.SIGNATURE_PREFIX + hash_str
+        signature = sign_rsa(hash_str).upper()
+        # sig_reverse = int.from_bytes(bytes.fromhex(signature)).to_bytes(len(bytes.fromhex(signature)),"big").hex()
+        #! dotnet sdk donot verify signature
+        #! c sdk verify signature
+        self._content.add("signature", signature)
         self._content.go_to_content_element()
-        self._content.add("peerkeyprivate", ClientInfo.PEER_KEY_EXPONENT)
+        self._content.add("peerkeyprivate", ClientInfo.PEER_KEY_PRIVATE)
+        """
+        This peer private key is using for p2p key exchange, not for client to web server authentication
+        """
 
-    def __compute_hash(self) -> str:
+    def __compute_hash(self) -> bytes:
         """return md5 str"""
         data_to_hash = bytearray()
         data_to_hash.extend(
@@ -123,12 +184,8 @@ class LoginResponseBase(lib.ResponseBase):
             data_to_hash.extend(self._result.cdkey_hash.encode("ascii"))
 
         data_to_hash.extend(bytes.fromhex(ClientInfo.PEER_KEY_MODULUS))
-        data_to_hash.append(0x01)
-
+        data_to_hash.extend(int(ClientInfo.PEER_KEY_EXPONENT,16).to_bytes(3))
         # server data should be convert to bytes[128] then added to list
         data_to_hash.extend(bytes.fromhex(ClientInfo.SERVER_DATA))
 
-        hash_object = hashlib.md5()
-        hash_object.update(data_to_hash)
-        hash_string = hash_object.hexdigest()
-        return hash_string
+        return bytes(data_to_hash)

@@ -44,11 +44,11 @@ class ConnectionBase:
         self._client.on_received(data)
 
     @abc.abstractmethod
-    def send(self, data: bytes) -> None:
-        assert isinstance(data, bytes)
+    def send(self, data: object) -> None:
+        assert data is not None
         if not self._is_started:
             raise Exception("Server is not running.")
-        assert isinstance(data, bytes)
+        assert isinstance(data, object)
 
 
 class UcpConnectionBase(ConnectionBase):

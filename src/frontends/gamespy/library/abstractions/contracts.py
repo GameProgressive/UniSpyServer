@@ -1,22 +1,27 @@
 import abc
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
+if TYPE_CHECKING:
+    from frontends.gamespy.library.network.http_handler import HttpData
 
 
 class RequestBase:
     command_name: object
-    raw_request:  bytes | str
+    raw_request:  "bytes | str | HttpData"
 
-    def __init__(self, raw_request: bytes | str) -> None:
+    def __init__(self, raw_request: "bytes | str | HttpData") -> None:
         """
         raw_request is for gamespy protocol\n
         json_dict is for restapi deserialization
         """
         super().__init__()
+        from frontends.gamespy.library.network.http_handler import HttpData
 
-        if (not isinstance(raw_request, bytes)) and (
-            not isinstance(raw_request, str)
-        ):
+        if (not isinstance(raw_request, bytes)) \
+            and (not isinstance(raw_request, str)
+                 and (not isinstance(raw_request, HttpData))
+                 ):
             raise Exception("Unsupported raw_request type")
         self.raw_request = raw_request
 

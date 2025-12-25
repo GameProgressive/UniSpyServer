@@ -13,6 +13,7 @@ class LoginPs3CertResult(LoginResultBase):
     partner_challenge: str
 
 
+
 class LoginRemoteAuthResult(LoginResultBase):
     pass
 
@@ -26,4 +27,3 @@ class CreateUserAccountResult(LoginResultBase):
 
 
 # region Exception
-

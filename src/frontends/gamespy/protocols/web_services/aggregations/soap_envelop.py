@@ -23,7 +23,7 @@ class SoapEnvelop:
             self.current_element[name] = str(value)
 
     def __str__(self) -> str:
-        xml_str: str = xmltodict.unparse(self.content)
+        xml_str: str = xmltodict.unparse(self.content).replace("\n","")
         return xml_str
 
 
