@@ -542,7 +542,7 @@ ALTER TABLE unispy.relay_server_caches OWNER TO unispy;
 
 CREATE TABLE unispy.sakestorage (
     id SERIAL PRIMARY KEY NOT NULL,
-    tableid integer NOT NULL,
+    tableid character varying NOT NULL,
     data jsonb
 );
 

@@ -25,7 +25,6 @@ class LoginResult(ResultBase):
     partner_id: int
     user_challenge: str
 
-
 class NewUserResult(ResultBase):
     user_id: int
     profile_id: int

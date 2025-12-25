@@ -1,7 +1,7 @@
 from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordLimitRequest, GetSpecificRecordsRequest, RateRecordRequest, SearchForRecordsRequest
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import CreateRecordResponse, GetMyRecordResponse, SearchForRecordsResponse
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, SearchForRecordsResult
 
@@ -36,6 +36,22 @@ class SearchForRecordsHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: SearchForRecordsRequest) -> None:
         assert isinstance(request, SearchForRecordsRequest)
         super().__init__(client, request)
+
+
+class GetSpecificRecordsHansler(CmdHandlerBase):
+    _request: GetSpecificRecordsRequest
+
+
+class DeleteRecordHandler(CmdHandlerBase):
+    _request: DeleteRecordRequest
+
+
+class RateRecordHandler(CmdHandlerBase):
+    _request: RateRecordRequest
+
+
+class GetRecordLimitHandler(CmdHandlerBase):
+    _request: GetRecordLimitRequest
 
 # region CloudFile
 

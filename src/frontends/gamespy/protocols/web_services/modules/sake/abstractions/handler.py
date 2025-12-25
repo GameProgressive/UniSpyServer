@@ -2,6 +2,7 @@ from typing import cast
 from http.server import BaseHTTPRequestHandler
 import frontends.gamespy.protocols.web_services.abstractions.handler as h
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import RequestBase, ResultBase
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import EXCEPTIONS
 
 
 class CmdHandlerBase(h.CmdHandlerBase):
@@ -13,4 +14,4 @@ class CmdHandlerBase(h.CmdHandlerBase):
         super().__init__(client, request)
         self._http_handler = cast(
             BaseHTTPRequestHandler, self._client.connection.handler)
-            
+        self._exceptions_mapping = EXCEPTIONS

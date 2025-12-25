@@ -23,6 +23,7 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
 )
 from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, GetProfileResponse, LoginResponse
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    LoginStatus,
     LoginType,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
@@ -102,8 +103,8 @@ class LogoutHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        # data.update_online_status(user_id=, status=LoginStatus.DISCONNECTED)
-        raise NotImplementedError()
+        data.update_online_status(user_id=self._request.user_id,
+                                  status=LoginStatus.DISCONNECTED, session=self._session)
 
 
 class NewUserHandler(HandlerBase):

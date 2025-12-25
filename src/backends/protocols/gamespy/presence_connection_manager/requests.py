@@ -9,6 +9,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 )
 
 from backends.library.abstractions.contracts import RequestBase
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPException
 
 
 class ErrorOnParse(RequestBase):
@@ -35,6 +36,7 @@ class BlockListRequest(RequestBase):
     profile_id: int
     namespace_id: int
     operation_id: int
+    raw_request: str | None = None
 
 
 class AddBuddyRequest(RequestBase):
@@ -131,22 +133,24 @@ class LoginRequest(RequestBase):
         super().model_post_init(__context)
         if self.type == LoginType.AUTH_TOKEN:
             if self.auth_token is None:
-                raise ValidationError("authtoken is missing.")
+                raise GPException("authtoken is missing.")
         elif self.type == LoginType.UNIQUENICK_NAMESPACE_ID:
             if self.unique_nick is None:
-                raise ValidationError("unique nick is missing.")
+                raise GPException("unique nick is missing.")
             if self.namespace_id is None:
-                raise ValidationError("namespace is missing.")
+                raise GPException("namespace is missing.")
         elif self.type == LoginType.NICK_EMAIL:
             if self.nick is None:
-                raise ValidationError("nick name is missing.")
+                raise GPException("nick name is missing.")
             if self.email is None:
-                raise ValidationError("email is missing.")
+                raise GPException("email is missing.")
         else:
-            raise ValidationError(f"request type {self.type} not found.")
+            raise GPException(f"request type {self.type} not found.")
 
 
 class LogoutRequest(RequestBase):
+    session_key: str
+    user_id: int
     pass
 
 

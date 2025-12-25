@@ -11,9 +11,9 @@ router = APIRouter()
 # Altas services
 
 
-@router.post(f"{WEB_SERVICES}/CreateRecordHandler", responses=RESPONSES_DEF)
-def create_matchless_session(request):
-    raise NotImplementedError()
+# @router.post(f"{WEB_SERVICES}/CreateRecordHandler", responses=RESPONSES_DEF)
+# def create_matchless_session(request):
+#     raise NotImplementedError()
 
 
 @router.post(f"{WEB_SERVICES}/CreateSessionHandler", responses=RESPONSES_DEF)

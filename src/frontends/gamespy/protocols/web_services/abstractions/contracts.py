@@ -102,6 +102,7 @@ class RequestBase(lib.RequestBase):
         processed_data = remove_namespace(parsed_data)
         assert isinstance(processed_data, dict)
         self._request_dict = processed_data["Envelope"]["Body"]
+        self.command_name = list(self._request_dict.keys())[0]
 
     def _get_int(self, attr_name: str) -> int:
         result_str = RequestBase._get_str(self, attr_name)

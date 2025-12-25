@@ -82,7 +82,8 @@ class Client(ClientBase):
         data = HttpData(path=http_h.path, headers=dict(
             http_h.headers), body=buffer.decode())
         if "sakefileserver/uploadstream.aspx" in http_h.path \
-                or "SakeFileServer/download.aspx" in http_h.path:
+                or "SakeFileServer/download.aspx" in http_h.path\
+                or "SakeStorageServer/StorageServer.asmx" in http_h.path:
             return sake.Switcher(self, data)
         elif "SakeStorageServer/Public/StorageServer.asmx" in http_h.path:
             return sake.Switcher(self, data)

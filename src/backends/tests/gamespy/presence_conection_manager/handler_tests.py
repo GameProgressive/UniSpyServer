@@ -55,7 +55,7 @@ class HandlerTest(unittest.TestCase):
     @unittest.skip("not implemented")
     @responses.activate
     def test_buddy_list(self):
-        r = pcm.BuddyListRequest(profile_id=1, namespace_id=0)
+        r = pcm.BuddyListRequest(profile_id=1, namespace_id=0, operation_id=1)
         data = add_headers(r)
         request = bkr.BuddyListRequest(**data)
         handler = bkh.BuddyListHandler(request)
@@ -65,7 +65,7 @@ class HandlerTest(unittest.TestCase):
     @unittest.skip("not implemented")
     @responses.activate
     def test_block_list(self):
-        r = pcm.BlockListRequest(profile_id=1, namespace_id=0)
+        r = pcm.BlockListRequest(profile_id=1, namespace_id=0, operation_id=1)
         data = add_headers(r)
         request = bkr.BlockListRequest(**data)
         handler = bkh.BlockListHandler(request)

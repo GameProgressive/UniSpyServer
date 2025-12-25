@@ -4,7 +4,7 @@ from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, ResponseName
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, CommandName
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import ParseException
 import datetime
 from cryptography.hazmat.primitives import hashes, serialization
@@ -47,20 +47,21 @@ class LoginRequestBase(lib.RequestBase):
     version: int
     partner_code: int
     namespace_id: int
-    response_name: ResponseName
+    command_name: CommandName
 
     def parse(self) -> None:
         super().parse()
         self.version = self._get_int("version")
         self.partner_code = self._get_int("partnercode")
         self.namespace_id = self._get_int("namespaceid")
+        self.command_name = CommandName(self.command_name)
 
     def _get_int(self, attr_name: str) -> int:
         try:
             result = super()._get_int(attr_name)
         except:
             raise ParseException(f"{attr_name} is missing",
-                                 self.response_name)
+                                 self.command_name)
         return result
 
     def _get_str(self, attr_name: str) -> str:
@@ -68,14 +69,14 @@ class LoginRequestBase(lib.RequestBase):
             result = super()._get_str(attr_name)
         except:
             raise ParseException(f"{attr_name} is missing",
-                                 self.response_name)
+                                 self.command_name)
         return result
 
     def _get_value(self, attr_name: str) -> object:
         value = super()._get_value(attr_name)
         if value is None:
             raise ParseException(f"{attr_name} is missing",
-                                 self.response_name)
+                                 self.command_name)
         return value
 
     def _parse_password(self):
@@ -184,7 +185,7 @@ class LoginResponseBase(lib.ResponseBase):
             data_to_hash.extend(self._result.cdkey_hash.encode("ascii"))
 
         data_to_hash.extend(bytes.fromhex(ClientInfo.PEER_KEY_MODULUS))
-        data_to_hash.extend(int(ClientInfo.PEER_KEY_EXPONENT,16).to_bytes(3))
+        data_to_hash.extend(int(ClientInfo.PEER_KEY_EXPONENT, 16).to_bytes(3))
         # server data should be convert to bytes[128] then added to list
         data_to_hash.extend(bytes.fromhex(ClientInfo.SERVER_DATA))
 

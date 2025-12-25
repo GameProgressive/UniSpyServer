@@ -5,29 +5,16 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 SERVER_CHALLENGE = "0000000000"
 
 
-class LoginChallengeProof:
+def generate_proof(userData: str, loginType: LoginType, partnerID: int, challenge1: str, challenge2: str, password_hash: str):
+    temp_user_data = userData
 
-    def __init__(
-        self, userData: str, loginType: LoginType, partnerID: int, challenge1: str, challenge2: str, passwordHash: str
-    ):
-        self.userData = userData
-        self.loginType = loginType
-        self.partnerID = partnerID
-        self.challenge1 = challenge1
-        self.challenge2 = challenge2
-        self.passwordHash = passwordHash
+    if partnerID is not None:
+        if (
+            partnerID != GPPartnerId.GAMESPY.value
+            and loginType != LoginType.AUTH_TOKEN
+        ):
+            temp_user_data = f"{partnerID}@{userData}"
 
-    def generate_proof(self):
-        tempUserData = self.userData
-
-        if self.partnerID is not None:
-            if (
-                self.partnerID != GPPartnerId.GAMESPY.value
-                and self.loginType != LoginType.AUTH_TOKEN
-            ):
-                tempUserData = f"{self.partnerID}@{self.userData}"
-
-        responseString = f"{self.passwordHash} {
-            ' ' * 48}{tempUserData}{self.challenge1}{self.challenge2}{self.passwordHash}"
-        hashString = hashlib.md5(responseString.encode()).hexdigest()
-        return hashString
+    data_to_hash = f"{password_hash} {' ' * 47}{temp_user_data}{challenge1}{challenge2}{password_hash}"
+    hash_hex = hashlib.md5(data_to_hash.encode()).hexdigest()
+    return hash_hex

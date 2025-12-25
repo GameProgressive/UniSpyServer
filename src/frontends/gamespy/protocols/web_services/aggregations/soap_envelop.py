@@ -11,7 +11,7 @@ class SoapEnvelop:
         self.current_element = {}
         self.content = {root_name: self.current_element}
         self._root_name = root_name
-
+    
     def go_to_content_element(self):
         self.current_element = self.content[self._root_name]
 

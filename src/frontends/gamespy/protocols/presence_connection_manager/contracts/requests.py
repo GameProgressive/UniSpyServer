@@ -123,6 +123,7 @@ class LoginRequest(RequestBase):
             SdkRevisionType.GPIREMOTE_AUTH_IDS_NOTIFICATION,
             SdkRevisionType.GPINEW_CD_KEY_REGISTRATION,
         ]
+        self.firewall = True
 
     def parse(self):
         super().parse()
@@ -204,7 +205,15 @@ class LoginRequest(RequestBase):
 
 @final
 class LogoutRequest(RequestBase):
-    pass
+    session_key: str
+    user_id: int
+
+    def parse(self):
+        self._request_dict = convert_to_key_value(self.raw_request)
+        self.command_name = list(self._request_dict.keys())[0]
+        if "sesskey" not in self._request_dict:
+            raise GPException("session key is missing")
+        self.session_key = self._request_dict['sesskey']
 
 
 @final
@@ -287,11 +296,12 @@ class BuddyListRequest(RequestBase):
     profile_id: int
     namespace_id: int
 
-    def __init__(self, profile_id: int, namespace_id: int) -> None:
+    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
         assert isinstance(profile_id, int)
         assert isinstance(namespace_id, int)
         self.profile_id = profile_id
         self.namespace_id = namespace_id
+        self.operation_id = operation_id
 
     def parse(self):
         pass
@@ -301,11 +311,12 @@ class BlockListRequest(RequestBase):
     profile_id: int
     namespace_id: int
 
-    def __init__(self, profile_id: int, namespace_id: int) -> None:
+    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
         assert isinstance(profile_id, int)
         assert isinstance(namespace_id, int)
         self.profile_id = profile_id
         self.namespace_id = namespace_id
+        self.operation_id = operation_id
 
     def parse(self):
         pass
@@ -391,10 +402,10 @@ class StatusInfoRequest(RequestBase):
     game_variant: str
     game_map_name: str
     quiet_mode_flags: str
+    raw_request: str | None
 
     def __init__(self, raw_request: str | None = None) -> None:
-        if raw_request is not None:
-            self.raw_request = raw_request
+        self.raw_request = raw_request
 
     def parse(self):
         super().parse()

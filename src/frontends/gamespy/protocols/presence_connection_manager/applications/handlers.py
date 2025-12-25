@@ -1,11 +1,14 @@
 from typing import final
 
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    LoginStatus,
     SdkRevisionType,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     AddBlockRequest,
     AddBuddyRequest,
+    BlockListRequest,
+    BuddyListRequest,
     GetProfileRequest,
     NewProfileRequest,
     NewUserRequest,
@@ -93,6 +96,11 @@ class LoginHandler(CmdHandlerBase):
 
     def _response_send(self) -> None:
         super()._response_send()
+        self._client.info.profile_id = self._result.data.profile_id
+        self._client.info.namespace_id = self._result.data.namespace_id
+        self._client.info.sdk_revision = self._request.sdk_revision_type
+        self._client.info.user_id = self._result.data.user_id
+        self._client.info.login_status = LoginStatus.COMPLETED
         handler = SdkRevisionHandler(self._client, self._request)
         handler.handle()
 
@@ -104,6 +112,10 @@ class LogoutHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: LogoutRequest) -> None:
         assert isinstance(request, LogoutRequest)
         super().__init__(client, request)
+
+    def _request_check(self) -> None:
+        super()._request_check()
+        self._request.user_id = self._client.info.user_id
 
 
 @final
@@ -132,12 +144,18 @@ class SdkRevisionHandler(CmdHandlerBase):
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = self._request.sdk_revision_type
         if SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN in self._client.info.sdk_revision:
-            BuddyListHandler(self._client).handle()
-            BlockListHandler(self._client).handle()
-            request = StatusInfoRequest()
-            request.profile_id = self._client.info.profile_id
-            request.namespace_id = int(self._client.info.namespace_id)
-            StatusInfoHandler(self._client, request).handle()
+            BuddyListHandler(self._client, BuddyListRequest(
+                self._client.info.profile_id,
+                self._client.info.namespace_id,
+                self._request.operation_id)).handle()
+            BlockListHandler(self._client, BlockListRequest(
+                self._client.info.profile_id,
+                self._client.info.namespace_id,
+                self._request.operation_id)).handle()
+            # request = StatusInfoRequest()
+            # request.profile_id = self._client.info.profile_id
+            # request.namespace_id = int(self._client.info.namespace_id)
+            # StatusInfoHandler(self._client, request).handle()
             # todo: add other revision operations
 
 
@@ -157,20 +175,11 @@ class BlockListHandler(CmdHandlerBase):
     _result: BlockListResult
     _response: BlockListResponse
 
-    def __init__(self, client: Client) -> None:
-        assert isinstance(client, Client)
-        raise NotImplementedError()
-
 
 @final
 class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
     _response: BuddyListResponse
-
-    def __init__(self, client):
-        self._client = client
-        assert isinstance(client, Client)
-        raise NotImplementedError()
 
 
 @final

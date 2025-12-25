@@ -35,8 +35,9 @@ class RequestBase(lib.RequestBase):
             try:
                 self.operation_id = int(self._request_dict["id"])
             except Exception:
-                raise GPParseException("namespaceid is invalid.")
-
+                raise GPParseException("operation is invalid")
+        else:
+            raise GPParseException("operation id is missing")
 
 class ResultBase(lib.ResultBase):
     operation_id: int

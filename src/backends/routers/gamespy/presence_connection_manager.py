@@ -2,9 +2,9 @@ from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
-from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
-from backends.protocols.gamespy.presence_connection_manager.requests import GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
-from backends.protocols.gamespy.presence_connection_manager.responses import GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, BlockListHandler, BuddyListHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
+from backends.protocols.gamespy.presence_connection_manager.requests import BlockListRequest, BuddyListRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, GetProfileResponse, LoginResponse
 from backends.urls import PRESENCE_CONNECTION_MANAGER
 
 
@@ -91,6 +91,20 @@ def status(request: StatusRequest) -> OKResponse:
 @router.post(f"{PRESENCE_CONNECTION_MANAGER}/StatusInfoHandler", responses=RESPONSES_DEF)
 def status_info(request: StatusInfoRequest) -> OKResponse:
     handler = StatusInfoHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyListHandler", responses=RESPONSES_DEF)
+def buddy_list(request: BuddyListRequest) -> BuddyListResponse:
+    handler = BuddyListHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BlockListHandler", responses=RESPONSES_DEF)
+def block_list(request: BlockListRequest) -> BlockListResponse:
+    handler = BlockListHandler(request)
     handler.handle()
     return handler.response
 

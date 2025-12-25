@@ -12,6 +12,7 @@ from backends.library.database.pg_orm import (
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
     AuthException,
 )
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
 )
@@ -180,43 +181,46 @@ def get_info_by_uniquenick(
 # region sake
 
 
-def get_user_data(table_id: int, session: Session) -> dict:
+def get_user_data(table_id: str, session: Session) -> dict:
     result = (
         session.query(SakeStorage.data).where(
             SakeStorage.tableid == table_id).first()
     )
-
+    if result is None:
+        result = {}
     if TYPE_CHECKING:
         result = cast(dict, result)
     return result
 
 
-def update_user_data(table_id: int, data: dict, session: Session) -> None:
+def update_user_data(table_id: int, data: dict, command_name: CommandName, session: Session) -> None:
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).first()
     if result is None:
-        raise SakeException("user data not found")
+        raise SakeException("user data not found",command_name)
     assert isinstance(result.data, dict)
     for key, value in result.data.items():
         if key in data:
             if data[key] is None or data[key] == "":
-                raise SakeException(f"the value of {key} should not be None.")
+                raise SakeException(f"the value of {key} should not be None.",command_name)
             if value == data[key]:
                 continue
             result.data[key] = data[key]
 
 
-def create_records(table_id: int, data: dict, session: Session) -> None:
-    assert isinstance(table_id, int)
+def create_records(table_id: str, data: dict, command_name: CommandName, session: Session) -> int:
+    assert isinstance(table_id, str)
     assert isinstance(data, dict)
 
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).count()
 
     if result != 0:
-        raise SakeException("Records already existed")
+        raise SakeException("Records already existed",command_name)
 
-    sake = SakeStorage(table_id=table_id, data=data)
+    sake = SakeStorage(tableid=table_id, data=data)
 
     session.add(sake)
     session.commit()
+    assert isinstance(sake.id, int)
+    return sake.id

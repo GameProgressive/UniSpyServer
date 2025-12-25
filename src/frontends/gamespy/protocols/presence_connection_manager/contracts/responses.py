@@ -1,24 +1,19 @@
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
-    RequestBase,
     ResponseBase,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
-    LoginChallengeProof,
+    generate_proof
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     LOGIN_TICKET,
     SESSION_KEY,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
-    KeepAliveRequest,
     LoginRequest,
     NewUserRequest,
-    AddBuddyRequest,
-    StatusInfoRequest,
     GetProfileRequest,
     NewProfileRequest,
-    RegisterNickRequest,
 )
 
 from frontends.gamespy.library.extentions.gamespy_ramdoms import (
@@ -51,8 +46,8 @@ class KeepAliveResponse(ResponseBase):
 
 
 class LoginResponse(ResponseBase):
-    _result: LoginResult
     _request: LoginRequest
+    _result: LoginResult
 
     def __init__(self, result: LoginResult):
         super().__init__(result)
@@ -60,19 +55,14 @@ class LoginResponse(ResponseBase):
         assert isinstance(result, LoginResult)
 
     def build(self):
-        response_proof = LoginChallengeProof(
+        response_proof = generate_proof(
             self._result.user_data,
             self._result.type,
             self._result.partner_id,
-            self._result.user_challenge,
             SERVER_CHALLENGE,
-            self._result.data.password_hash,
-        ).generate_proof()
-        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{
-            response_proof
-        }\\userid\\{self._result.data.user_id}\\profileid\\{
-            self._result.data.profile_id
-        }"
+            self._result.user_challenge,
+            self._result.data.password_hash,)
+        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{response_proof}\\userid\\{self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
 
         if self._result.data.unique_nick is not None:
             self.sending_buffer += "\\uniquenick\\" + self._result.data.unique_nick
@@ -219,7 +209,7 @@ class RegisterCDKeyResposne(ResponseBase):
 
 class RegisterNickResponse(ResponseBase):
     _result: RegisterNickResult
-    
+
     def build(self) -> None:
         # fmt: off
         self.sending_buffer = f"\\rn\\\\id\\{self._result.operation_id}\\final\\" 

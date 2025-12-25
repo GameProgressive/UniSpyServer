@@ -19,7 +19,7 @@ class CreateRecordRequest(RequestBase):
         try:
             return super()._get_dict(attr_name)
         except:
-            raise SakeException(f"{attr_name} is missing")
+            raise SakeException(f"{attr_name} is missing", self.command_name)
 
 
 class DeleteRecordRequest(RequestBase):

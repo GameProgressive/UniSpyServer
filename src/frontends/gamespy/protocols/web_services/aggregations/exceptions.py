@@ -7,7 +7,7 @@ class WebException(UniSpyException, ResponseBase):
     sending_buffer: HttpData
 
     def __init__(self, message: str) -> None:
-        self.message = message
+        super().__init__(message)
 
 
 EXCEPTIONS = get_exceptions_dict(__name__)

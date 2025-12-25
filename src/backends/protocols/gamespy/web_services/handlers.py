@@ -18,7 +18,15 @@ from backends.protocols.gamespy.web_services.requests import (
     LoginUniqueNickRequest,
     SearchForRecordsRequest,
 )
-from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, CreateUserAccountResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
+from backends.protocols.gamespy.web_services.responses import (
+    CreateRecordResponse,
+    CreateUserAccountResponse,
+    GetMyRecordsResponse,
+    LoginProfileResponse,
+    LoginRemoteAuthRepsonse,
+    LoginUniqueNickResponse,
+    SearchForRecordsResponse)
+
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import UserNotFoundException
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
     CreateUserAccountResult,
@@ -30,6 +38,7 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.resu
     GetPurchaseHistoryResult,
     GetStoreAvailabilityResult,
 )
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult
 
 
 class LoginProfileHandler(HandlerBase):
@@ -47,7 +56,7 @@ class LoginProfileHandler(HandlerBase):
 
         if self.data is None:
             raise UserNotFoundException(
-                "No account exists with the provided uniquenick and namespace id.", self._request.response_name)
+                "No account exists with the provided uniquenick and namespace id.", self._request.command_name)
 
     def _result_construct(self) -> None:
         assert self.data is not None
@@ -82,7 +91,7 @@ class LoginRemoteAuthHandler(HandlerBase):
 
         if self.data is None:
             raise UserNotFoundException(
-                "No account exists with the provided authtoken.", self._request.response_name)
+                "No account exists with the provided authtoken.", self._request.command_name)
 
     def _result_construct(self) -> None:
         assert self.data is not None
@@ -111,7 +120,7 @@ class LoginUniqueNickHandler(HandlerBase):
         )
         if self.data is None:
             raise UserNotFoundException(
-                "No account exists with the provided uniquenick and namespace id.", self._request.response_name)
+                "No account exists with the provided uniquenick and namespace id.", self._request.command_name)
 
     def _result_construct(self) -> None:
         assert self.data is not None
@@ -196,7 +205,21 @@ class CreateRecordHandler(HandlerBase):
     response: CreateRecordResponse
 
     def _data_operate(self) -> None:
-        raise NotImplementedError()
+        self._record_id: int = data.create_records(
+            table_id=self._request.table_id,
+            data=self._request.values,
+            command_name=self._request.command_name,
+            session=self._session
+        )
+
+    def _result_construct(self) -> None:
+        self._result = CreateRecordResult(
+            command_name=self._request.command_name,
+            login_ticket=self._request.login_ticket,
+            table_id=self._request.table_id,
+            record_id=self._record_id,
+            fields=self._request.values
+        )
 
 
 class GetMyRecordsHandler(HandlerBase):
@@ -205,7 +228,13 @@ class GetMyRecordsHandler(HandlerBase):
 
     def _data_operate(self):
         self.data = data.get_user_data(self._request.table_id, self._session)
-        raise NotImplementedError()
+
+    def _result_construct(self) -> None:
+        self._result = GetMyRecordsResult(
+            command_name=self._request.command_name,
+            login_ticket=self._request.login_ticket,
+            records=self.data
+        )
 
 
 class SearchForRecordsHandler(HandlerBase):

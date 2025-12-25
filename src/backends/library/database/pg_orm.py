@@ -198,7 +198,7 @@ class GameStatusSnapShot(Base):
 class SakeStorage(Base):
     __tablename__ = "sakestorage"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    tableid = Column(Integer, nullable=False)
+    tableid = Column(String, nullable=False)
     data: Column[JSONB] = Column(JSONB, nullable=False)
 
 

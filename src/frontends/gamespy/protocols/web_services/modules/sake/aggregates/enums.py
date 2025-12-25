@@ -1,34 +1,25 @@
 from enum import Enum
 
 
-class ResponseName(Enum):
-    SUCCESS = 0
-    SECRET_KEY_INVALID = 1
-    SERVICE_DISABLED = 2
-    DATABASE_UNAVAILABLE = 3
-    LOGIN_TICKET_INVALID = 4
-    LOGIN_TICKET_EXPIRED = 5
-    TABLE_NOT_FOUND = 6
-    RECORD_NOT_FOUND = 7
-    FIELD_NOT_FOUND = 8
-    FIELD_TYPE_INVALID = 9
-    NO_PERMISSION = 10
-    RECORD_LIMIT_REACHED = 11
-    NOT_RATABLE = 12
-    NOT_OWNED = 13
-    FILTER_INVALID = 14
-    SORT_INVALID = 15
-    TARGET_FILTER_INVALID = 16
-    CERTIFICATE_INVALID = 17
-    ALREADY_REPORTED = 18
-    RECORD_LOCKED = 19
-    CONSTRUCTOR_ERROR = 20
-    ERROR_CREATING_REQUEST = 21
-    ERROR_SENDING_REQUEST = 22
-    HTTP_ERROR = 23
-    RESPONSE_PARSE_ERROR = 24
-    NO_FILE_DATA_ERROR = 25
-    ERROR = 26
+class SakeCode(Enum):
+    SUCCESS = "Success"
+    SECRET_KEY_INVALID = "SecretKeyInvalid"
+    SERVICE_DISABLED = "ServiceDisabled"
+    DATABASE_UNAVAILABLE = "DatabaseUnavailable"
+    LOGIN_TICKET_INVALID = "LoginTicketInvalid"
+    LOGIN_TICKET_EXPIRED = "LoginTicketExpired"
+    TABLE_NOT_FOUND = "TableNotFound"
+    RECORD_NOT_FOUND = "RecordNotFound"
+    FIELD_NOT_FOUND = "FieldNotFound"
+    FIELD_TYPE_INVALID = "FieldTypeInvalid"
+    NO_PERMISSION = "NoPermission"
+    RECORD_LIMIT_REACHED = "RecordLimitReached"
+    ALREADY_RATED = "AlreadyRated"
+    NOT_RATABLE = "NotRateable"
+    NOT_OWNED = "NotOwned"
+    FILTER_INVALID = "FilterInvalid"
+    SORT_INVALID = "SortInvalid"
+    TARGET_FILTER_INVALID = "TargetFilterInvalid"
 
 
 class SakePlatform(Enum):
@@ -37,3 +28,14 @@ class SakePlatform(Enum):
     """
     Windows = "WINDOWS"
     Unity = "UNITY"
+
+
+class CommandName(Enum):
+    CREATE_RECORD = "CreateRecord"
+    GET_MY_RECORD = "GetMyRecord"
+    SEARCH_FOR_RECORD = "SearchForRecord"
+    GET_SPECIFIC_RECORD = "GetSpecificRecord"
+    GET_RAMDOM_RECORD = "GetRamdomRecord"
+    GET_RECORD_LIMIT = "GetRecordLimit"
+    RATE_RECORD = "RateRecord"
+    DELETE_RECORD = "DeleteRecord"

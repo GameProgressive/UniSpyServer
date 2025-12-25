@@ -1,7 +1,8 @@
 
 from pydantic import BaseModel
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import ResponseName
+import frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums as auth
+import frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums as sake
 
 
 class HttpData(BaseModel):
@@ -15,6 +16,7 @@ class WebRequestBase(lib.RequestBase):
     """
     only dotnet sdk will send this data
     """
+    command_name: str
 
 # region Sake
 
@@ -27,59 +29,40 @@ class SakeRequestBase(WebRequestBase):
     in c sdk called login_ticket \n
     in c# sdk called session_token
     """
-    table_id: int
+    table_id: str
+    command_name: sake.CommandName
 
 
 class CreateRecordRequest(SakeRequestBase):
-    values: list[dict]
+    values: dict
 
 
 class DeleteRecordRequest(SakeRequestBase):
     record_id: int
 
 
-class GetMyRecordsData(BaseModel):
-    name: str
-    value: str
-
-
 class GetMyRecordsRequest(SakeRequestBase):
-    fields: list[GetMyRecordsData]
-
-
-class GetRandomRecordsData(BaseModel):
-    name: str
-    value: str
+    fields: dict
 
 
 class GetRandomRecordsRequest(SakeRequestBase):
     max: int
-    fields: list[GetRandomRecordsData]
+    fields: dict
 
 
 class GetRecordLimitRequest(SakeRequestBase):
     pass
 
 
-class GetSpecificRecordsData(BaseModel):
-    name: str
-    type: str
-
-
 class GetSpecificRecordsRequest(SakeRequestBase):
 
-    record_ids: list[GetSpecificRecordsData]
-    fields: list[GetSpecificRecordsData]
+    record_ids: list
+    fields: dict
 
 
 class RateRecordRequest(SakeRequestBase):
     record_id: str
     rating: str
-
-
-class SearchForRecordsData(BaseModel):
-    name: str
-    type: str
 
 
 class SearchForRecordsRequest(SakeRequestBase):
@@ -90,18 +73,12 @@ class SearchForRecordsRequest(SakeRequestBase):
     surrounding: str
     owner_ids: str
     cache_flag: str
-    fields: list[SearchForRecordsData]
-
-
-class UpdateRecordData(BaseModel):
-    name: str
-    type: str
-    value: str
+    fields: dict
 
 
 class UpdateRecordRequest(SakeRequestBase):
     record_id: str
-    values: list[UpdateRecordData]
+    values: list
 
 
 # region Auth
@@ -111,7 +88,7 @@ class AuthRequestBase(WebRequestBase):
     partner_code: int
     namespace_id: int
     game_id: int
-    response_name: ResponseName
+    command_name: auth.CommandName
 
 
 class LoginProfileRequest(AuthRequestBase):

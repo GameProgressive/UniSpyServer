@@ -317,8 +317,9 @@ def get_user_infos_by_nick_email(
 def update_online_status(user_id: int, status: LoginStatus, session: Session):
     if TYPE_CHECKING:
         assert isinstance(Users.userid, Column)
-    raise NotImplementedError("implement sesskey")
     result = session.query(Users).where(Users.userid == user_id).first()
+    result.lastonline = datetime.now()
+    session.commit()
 
 
 def get_user_infos_by_authtoken(auth_token: str, session: Session) -> LoginData | None:

@@ -1,6 +1,6 @@
 from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import SakePlatform
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName, SakePlatform
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
 
 NAMESPACE = "http://gamespy.net/sake"
@@ -16,6 +16,7 @@ class RequestBase(lib.RequestBase):
     c sdk require gp to get login_ticket
     dotnet sdk require auth service to get session token
     """
+    command_name: CommandName
 
     def __init__(self, raw_request: HttpData) -> None:
         super().__init__(raw_request)
@@ -24,6 +25,7 @@ class RequestBase(lib.RequestBase):
 
     def parse(self) -> None:
         super().parse()
+        self.command_name = CommandName(self.command_name)
         self.game_id = self._get_int("gameid")
 
         secret_key = self._get_value_by_key("secretKey")
@@ -35,9 +37,11 @@ class RequestBase(lib.RequestBase):
             self.login_ticket = self._get_str("loginTicket")
         else:
             if self.raw_request.headers is None:
-                raise SakeException("headers is missing in c# version gamespy")
+                raise SakeException(
+                    "headers is missing in c# version gamespy", self.command_name)
             if "SessionToken" not in self.raw_request.headers:
-                raise SakeException("session token is missing")
+                raise SakeException(
+                    "session token is missing", self.command_name)
             self.login_ticket = self.raw_request.headers["SessionToken"]
         self.table_id = self._get_str("tableid")
 
@@ -55,7 +59,8 @@ class RequestBase(lib.RequestBase):
             #     raise SakeException("profile id is missing")
             # self.profile_id = int(self.raw_request.headers["ProfileID"])
             if "SessionToken" not in self.raw_request.headers:
-                raise SakeException("session token is missing")
+                raise SakeException(
+                    "session token is missing", self.command_name)
             self.login_ticket = self.raw_request.headers["SessionToken"]
 
     def _get_str(self, attr_name: str) -> str:
@@ -63,7 +68,8 @@ class RequestBase(lib.RequestBase):
             value = super()._get_str(attr_name)
             return value
         except:
-            raise SakeException(f"{attr_name} is missing from the request.")
+            raise SakeException(
+                f"{attr_name} is missing from the request.", self.command_name)
 
     def _get_int(self, attr_name: str) -> int:
         value = self._get_str(attr_name)
@@ -73,6 +79,12 @@ class RequestBase(lib.RequestBase):
 
 class ResultBase(lib.ResultBase):
     login_ticket: str
+    command_name: CommandName
+    """
+    CreateRecordResponse,
+    UpdateRecordResponse,
+    ....
+    """
     pass
 
 

@@ -1,22 +1,36 @@
 from typing import OrderedDict
 
-from pydantic import BaseModel
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResultBase
 
 
 class CreateRecordResult(ResultBase):
     table_id: str
-    record_id: str
-    fields: list
+    record_id: int
+    fields: dict
 
 
 class GetMyRecordsResult(ResultBase):
-    class GetMyRecordsInfo(BaseModel):
-        field_name: str
-        field_type: str
-        field_value: str
-    records: list[GetMyRecordsInfo]
+    records: dict
 
 
 class SearchForRecordsResult(ResultBase):
     user_data: OrderedDict[str, str]
+
+
+class GetSpecificRecordsResult(ResultBase):
+    records: dict
+
+
+class GetRandomRecordsResult(ResultBase):
+    records: dict
+
+
+class GetRecordLimitResult(ResultBase):
+    pass
+
+
+class RateRecordResult(ResultBase):
+    pass
+
+class DeleteRecordResult(ResultBase):
+    pass

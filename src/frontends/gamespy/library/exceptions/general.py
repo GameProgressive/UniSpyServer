@@ -63,10 +63,10 @@ class UniSpyException(Exception):
         for exp_cls in exp_cls.mro():
             # Update annotations if they exist in the current class
             if issubclass(exp_cls, UniSpyException):
-                if exp_cls == UniSpyException:
-                    break
                 for key, value in exp_cls.__annotations__.items():
                     if key not in annotations:
+                        if "key" in annotations:
+                            continue
                         annotations[key] = value
         if "_validator" not in annotations:
             raise UniSpyException(

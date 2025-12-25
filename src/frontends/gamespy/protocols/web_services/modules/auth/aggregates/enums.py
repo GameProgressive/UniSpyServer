@@ -17,13 +17,13 @@ class AuthCode(Enum):
     INVALID_ACCESS_KEY = 201
 
 
-class ResponseName(Enum):
-    LOGIN_PROFILE = "LoginProfileResult"
-    LOGIN_PROFILE_WITH_GAME_ID = "LoginProfileWithGameIdResult"
-    LOGIN_PS3_CERT = "LoginPs3CertResult"
-    LOGIN_PS3_CERT_WITH_GAME_ID = "LoginPs3CertWithGameIdResult"
+class CommandName(Enum):
+    LOGIN_PROFILE = "LoginProfile"
+    LOGIN_PROFILE_WITH_GAME_ID = "LoginProfileWithGameId"
+    LOGIN_PS3_CERT = "LoginPs3Cert"
+    LOGIN_PS3_CERT_WITH_GAME_ID = "LoginPs3CertWithGameId"
     LOGIN_REMOTE_AUTH = "LoginRemoteAuth"
-    LOGIN_REMOTE_AUTH_WITH_GAME_ID = "LoginRemoteAuthWithGameIdResult"
+    LOGIN_REMOTE_AUTH_WITH_GAME_ID = "LoginRemoteAuthWithGameId"
     LOGIN_UNIQUENICK = "LoginUniqueNick"
-    LOGIN_UNIQUENICK_WITH_GAME_ID = "LoginUniqueNickWithGameIdResult"
+    LOGIN_UNIQUENICK_WITH_GAME_ID = "LoginUniqueNickWithGameId"
     CREATE_USER_ACCOUNT = "CreateUserAccount"

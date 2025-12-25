@@ -10,6 +10,8 @@ class Switcher(web.Switcher):
 
     def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
         match name:
+            case "GetSpecificRecords":
+                raise NotImplementedError()
             case "CreateRecord":
                 return CreateRecordHandler(self._client, CreateRecordRequest(raw_request))
             case "DeleteRecord":
