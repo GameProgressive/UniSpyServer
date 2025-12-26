@@ -11,7 +11,7 @@ class SoapEnvelop:
         self.current_element = {}
         self.content = {root_name: self.current_element}
         self._root_name = root_name
-    
+
     def go_to_content_element(self):
         self.current_element = self.content[self._root_name]
 
@@ -20,10 +20,13 @@ class SoapEnvelop:
             self.current_element[name] = {}
             self.current_element = self.current_element[name]
         else:
-            self.current_element[name] = str(value)
+            if isinstance(value, dict) or isinstance(value, list):
+                self.current_element[name] = value
+            else:
+                self.current_element[name] = str(value)
 
     def __str__(self) -> str:
-        xml_str: str = xmltodict.unparse(self.content).replace("\n","")
+        xml_str: str = xmltodict.unparse(self.content).replace("\n", "")
         return xml_str
 
 

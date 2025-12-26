@@ -42,12 +42,12 @@ class DeleteRecordRequest(SakeRequestBase):
 
 
 class GetMyRecordsRequest(SakeRequestBase):
-    fields: dict
+    fields: list[str]
 
 
 class GetRandomRecordsRequest(SakeRequestBase):
     max: int
-    fields: dict
+    fields: list[str]
 
 
 class GetRecordLimitRequest(SakeRequestBase):
@@ -69,16 +69,16 @@ class SearchForRecordsRequest(SakeRequestBase):
     filter: str
     sort: str
     offset: str
-    max: str
+    max: int
     surrounding: str
-    owner_ids: str
+    owner_ids: str | None
     cache_flag: str
-    fields: dict
+    fields: list[str]
 
 
 class UpdateRecordRequest(SakeRequestBase):
     record_id: str
-    values: list
+    values: dict
 
 
 # region Auth

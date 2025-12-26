@@ -32,10 +32,11 @@ class SakePlatform(Enum):
 
 class CommandName(Enum):
     CREATE_RECORD = "CreateRecord"
-    GET_MY_RECORD = "GetMyRecord"
-    SEARCH_FOR_RECORD = "SearchForRecord"
-    GET_SPECIFIC_RECORD = "GetSpecificRecord"
-    GET_RAMDOM_RECORD = "GetRamdomRecord"
+    GET_MY_RECORD = "GetMyRecords"
+    SEARCH_FOR_RECORD = "SearchForRecords"
+    GET_SPECIFIC_RECORD = "GetSpecificRecords"
+    GET_RAMDOM_RECORD = "GetRandomRecords"
     GET_RECORD_LIMIT = "GetRecordLimit"
     RATE_RECORD = "RateRecord"
     DELETE_RECORD = "DeleteRecord"
+    UPDATE_RECORD = "UpdateRecord"

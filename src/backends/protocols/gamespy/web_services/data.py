@@ -180,6 +180,24 @@ def get_info_by_uniquenick(
 
 # region sake
 
+def search_for_data(table_id: str, max_num: int, session: Session) -> list[dict]:
+    """
+    max_num default to 100
+    """
+    result = (
+        session.query(SakeStorage.data).where(
+            SakeStorage.tableid == table_id).limit(max_num).all()
+    )
+    if result is None:
+        result = []
+    if TYPE_CHECKING:
+        result = cast(list, result)
+
+    temp = []
+    for item in result:
+        temp.append(item[0])
+    return temp
+
 
 def get_user_data(table_id: str, session: Session) -> dict:
     result = (
@@ -187,22 +205,25 @@ def get_user_data(table_id: str, session: Session) -> dict:
             SakeStorage.tableid == table_id).first()
     )
     if result is None:
-        result = {}
+        temp = {}
     if TYPE_CHECKING:
-        result = cast(dict, result)
-    return result
+        result = cast(tuple, result)
+    temp: dict = result[0]
+    assert isinstance(temp, dict)
+    return temp
 
 
 def update_user_data(table_id: int, data: dict, command_name: CommandName, session: Session) -> None:
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).first()
     if result is None:
-        raise SakeException("user data not found",command_name)
+        raise SakeException("user data not found", command_name)
     assert isinstance(result.data, dict)
     for key, value in result.data.items():
         if key in data:
             if data[key] is None or data[key] == "":
-                raise SakeException(f"the value of {key} should not be None.",command_name)
+                raise SakeException(
+                    f"the value of {key} should not be None.", command_name)
             if value == data[key]:
                 continue
             result.data[key] = data[key]
@@ -216,7 +237,7 @@ def create_records(table_id: str, data: dict, command_name: CommandName, session
         SakeStorage.tableid == table_id).count()
 
     if result != 0:
-        raise SakeException("Records already existed",command_name)
+        raise SakeException("Records already existed", command_name)
 
     sake = SakeStorage(tableid=table_id, data=data)
 
@@ -224,3 +245,32 @@ def create_records(table_id: str, data: dict, command_name: CommandName, session
     session.commit()
     assert isinstance(sake.id, int)
     return sake.id
+
+
+def update_record(table_id: str, data: dict, command_name: CommandName, session: Session) -> int:
+    """
+    update record with new data and returns record id
+    """
+    assert isinstance(data, dict)
+    result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).first()
+
+    if result is None:
+        raise SakeException("Records not existed", command_name)
+    assert isinstance(result.data, dict)
+
+    result.data = data  # type: ignore
+    session.commit()
+    record_id: int = cast(int, result.id)
+    return record_id
+
+
+def delete_record(table_id: str, command_name: CommandName, session: Session) -> None:
+    result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).first()
+
+    if result is None:
+        raise SakeException("Records not existed", command_name)
+
+    session.delete(result)
+    session.commit()

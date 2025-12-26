@@ -1,6 +1,4 @@
-# region altas
 
-# region auth
 from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.presence_search_player.handlers import NewUserHandler
@@ -9,6 +7,7 @@ import backends.protocols.gamespy.web_services.data as data
 from backends.protocols.gamespy.web_services.requests import (
     CreateRecordRequest,
     CreateUserAccountRequest,
+    DeleteRecordRequest,
     GetMyRecordsRequest,
     GetPurchaseHistoryRequest,
     GetStoreAvailabilityRequest,
@@ -17,15 +16,18 @@ from backends.protocols.gamespy.web_services.requests import (
     LoginRemoteAuthRequest,
     LoginUniqueNickRequest,
     SearchForRecordsRequest,
+    UpdateRecordRequest,
 )
 from backends.protocols.gamespy.web_services.responses import (
     CreateRecordResponse,
     CreateUserAccountResponse,
+    DeleteRecordResponse,
     GetMyRecordsResponse,
     LoginProfileResponse,
     LoginRemoteAuthRepsonse,
     LoginUniqueNickResponse,
-    SearchForRecordsResponse)
+    SearchForRecordsResponse,
+    UpdateRecordResponse)
 
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import UserNotFoundException
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import (
@@ -38,7 +40,11 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.resu
     GetPurchaseHistoryResult,
     GetStoreAvailabilityResult,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, SearchForRecordsResult, UpdateRecordResult
+
+# region altas
+
+# region auth
 
 
 class LoginProfileHandler(HandlerBase):
@@ -218,22 +224,67 @@ class CreateRecordHandler(HandlerBase):
             login_ticket=self._request.login_ticket,
             table_id=self._request.table_id,
             record_id=self._record_id,
-            fields=self._request.values
+        )
+
+
+class UpdateRecordHandler(HandlerBase):
+    _request: UpdateRecordRequest
+    response: UpdateRecordResponse
+
+    def _data_operate(self) -> None:
+        self._record_id = data.update_record(
+            self._request.table_id,
+            self._request.values,
+            self._request.command_name,
+            self._session
+        )
+
+    def _result_construct(self) -> None:
+        self._result = UpdateRecordResult(
+            command_name=self._request.command_name,
+            login_ticket=self._request.login_ticket,
+            table_id=self._request.table_id,
+            record_id=self._record_id,
+        )
+
+
+class DeleteRecordHandler(HandlerBase):
+    _request: DeleteRecordRequest
+    response: DeleteRecordResponse
+
+    def _data_operate(self) -> None:
+        data.delete_record(self._request.table_id,
+                           self._request.command_name,
+                           self._session)
+
+    def _result_construct(self) -> None:
+        self._result = DeleteRecordResult(
+            login_ticket=self._request.login_ticket,
+            command_name=self._request.command_name
         )
 
 
 class GetMyRecordsHandler(HandlerBase):
+    """
+    todo find sub profile id by login ticket
+    """
     _request: GetMyRecordsRequest
     response: GetMyRecordsResponse
 
     def _data_operate(self):
-        self.data = data.get_user_data(self._request.table_id, self._session)
+        self._data = data.get_user_data(self._request.table_id, self._session)
+       # search values by keys
+        keys = self._request.fields
+        self.filtered_values = []
+        for value in self._data['RecordField']:
+            if value['name'] in keys:
+                self.filtered_values.append(value)
 
     def _result_construct(self) -> None:
         self._result = GetMyRecordsResult(
             command_name=self._request.command_name,
             login_ticket=self._request.login_ticket,
-            records=self.data
+            values=self.filtered_values
         )
 
 
@@ -242,4 +293,22 @@ class SearchForRecordsHandler(HandlerBase):
     response: SearchForRecordsResponse
 
     def _data_operate(self) -> None:
-        raise NotImplementedError()
+        self._data = data.search_for_data(
+            self._request.table_id, self._request.max, self._session)
+        # search values by keys
+        keys = self._request.fields
+        self._filterd_data: list[list[dict]] = []
+        for record in self._data:
+            filtered_values = []
+            for record in record.values():
+                for value in record:
+                    if value['name'] in keys:
+                        filtered_values.append(value)
+            self._filterd_data.append(filtered_values)
+
+    def _result_construct(self) -> None:
+        self._result = SearchForRecordsResult(
+            login_ticket=self._request.login_ticket,
+            command_name=self._request.command_name,
+            values=self._filterd_data
+        )

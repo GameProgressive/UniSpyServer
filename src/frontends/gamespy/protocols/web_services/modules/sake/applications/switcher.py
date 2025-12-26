@@ -1,8 +1,8 @@
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.applications.switcher as web
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest
-from frontends.gamespy.protocols.web_services.modules.sake.applications.handlers import CreateRecordHandler, GetMyRecordsHandler, SearchForRecordsHandler
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, GetMyRecordsRequest, SearchForRecordsRequest, UpdateRecordRequest
+from frontends.gamespy.protocols.web_services.modules.sake.applications.handlers import CreateRecordHandler, GetMyRecordsHandler, SearchForRecordsHandler, UpdateRecordHandler
 
 
 class Switcher(web.Switcher):
@@ -28,7 +28,7 @@ class Switcher(web.Switcher):
             case "SearchForRecords":
                 return SearchForRecordsHandler(self._client, SearchForRecordsRequest(raw_request))
             case "UpdateRecord":
-                raise NotImplementedError()
+                return UpdateRecordHandler(self._client, UpdateRecordRequest(raw_request))
             case _:
                 self._client.log_error(f"Unknown {name} request received")
                 return None

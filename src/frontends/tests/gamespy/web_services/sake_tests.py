@@ -36,13 +36,14 @@ CREATE_RECORD = """<?xml version="1.0" encoding="UTF-8"?> <SOAP-ENV:Envelope xml
 """
 SAMUZOMBIE2_GET_MY_RECORD = """<?xml version="1.0" encoding="UTF-8"?> <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://gamespy.net/sake"><SOAP-ENV:Body><ns1:GetMyRecords><ns1:gameid>0</ns1:gameid><ns1:certificate><ns1:length>303</ns1:length><ns1:version>1</ns1:version><ns1:partnercode>0</ns1:partnercode><ns1:namespaceid>0</ns1:namespaceid><ns1:userid>1</ns1:userid><ns1:profileid>1</ns1:profileid><ns1:expiretime>1766112278</ns1:expiretime><ns1:profilenick>UniSpy</ns1:profilenick><ns1:uniquenick>UniSpy</ns1:uniquenick><ns1:cdkeyhash></ns1:cdkeyhash><ns1:peerkeymodulus>aefb5064bbd1eb632fa8d57aab1c49366ce0ee3161cbef19f2b7971b63b811790ecbf6a47b34c55f65a0766b40c261c5d69c394cd320842dd2bccba883d30eae8fdba5d03b21b09bfc600dcb30b1b2f3fbe8077630b006dcb54c4254f14891762f72e7bbfe743eb8baf65f9e8c8d11ebe46f6b59e986b4c394cfbc2c8606e29f</ns1:peerkeymodulus><ns1:peerkeyexponent>000001</ns1:peerkeyexponent><ns1:serverdata>95980bf5011ce73f2866b995a272420c36f1e8b4ac946f0b5bfe87c9fef0811036da00cfa85e77e00af11c924d425ec06b1dd052feab1250376155272904cbf9da831b0ce3d52964424c0a426b869e2c0ad11ffa3e70496e27ea250adb707a96b3496bff190eafc0b6b9c99db75b02c2a822bb1b5b3d954e7b2c0f9b1487e3e1</ns1:serverdata><ns1:signature>0001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF003020300C06082A864886F70D0205050004106c8c997569806a4b994653842cd80c45</ns1:signature><ns1:timestamp></ns1:timestamp></ns1:certificate><ns1:proof>380E1E55DF5600FE67EE74C667C27AAE</ns1:proof><ns1:tableid>UserData</ns1:tableid><ns1:fields><ns1:string>recordid</ns1:string><ns1:string>ownerid</ns1:string></ns1:fields></ns1:GetMyRecords></SOAP-ENV:Body></SOAP-ENV:Envelope>
 """
+SAMZOMBIE2_HEADERS = {"SessionToken": "example_token"}
 
 
 class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_record_limit(self):
         request = GetRecordLimitRequest(
-            HttpData(path="", headers={}, body=GET_RECORD_LIMIT))
+            HttpData(body=GET_RECORD_LIMIT))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -52,7 +53,7 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_rate_record(self):
         request = RateRecordRequest(
-            HttpData(path="", headers={}, body=RATE_RECORD))
+            HttpData(body=RATE_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -64,20 +65,20 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_random_records(self):
         request = GetRandomRecordsRequest(
-            HttpData(path="", headers={}, body=GET_RANDOM_RECORDS))
+            HttpData(body=GET_RANDOM_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("levels", request.table_id)
         self.assertEqual(1, request.max)
-        self.assertEqual("recordid", request.fields['string'][0])
-        self.assertEqual("score", request.fields['string'][1])
+        self.assertEqual("recordid", request.fields[0])
+        self.assertEqual("score", request.fields[1])
 
     @responses.activate
     def test_get_specific_record(self):
         request = GetSpecificRecordsRequest(
-            HttpData(path="", headers={}, body=GET_SPECIFIC_RECORDS))
+            HttpData(body=GET_SPECIFIC_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -94,32 +95,32 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_my_record(self):
         request = GetMyRecordsRequest(
-            HttpData(path="", headers={}, body=GET_MY_RECORDS))
+            HttpData(body=GET_MY_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("test", request.table_id)
 
-        self.assertEqual("recordid", request.fields['string'][0])
-        self.assertEqual("ownerid", request.fields["string"][1])
-        self.assertEqual("MyByte", request.fields["string"][2])
-        self.assertEqual("MyShort", request.fields["string"][3])
-        self.assertEqual("MyInt", request.fields["string"][4])
-        self.assertEqual("MyFloat", request.fields["string"][5])
-        self.assertEqual("MyAsciiString", request.fields["string"][6])
-        self.assertEqual("MyUnicodeString", request.fields["string"][7])
-        self.assertEqual("MyBoolean", request.fields["string"][8])
-        self.assertEqual("MyDateAndTime", request.fields["string"][9])
-        self.assertEqual("MyBinaryData", request.fields["string"][10])
-        self.assertEqual("MyFileID", request.fields["string"][11])
-        self.assertEqual("num_ratings", request.fields["string"][12])
-        self.assertEqual("average_rating", request.fields["string"][13])
+        self.assertEqual("recordid", request.fields[0])
+        self.assertEqual("ownerid", request.fields[1])
+        self.assertEqual("MyByte", request.fields[2])
+        self.assertEqual("MyShort", request.fields[3])
+        self.assertEqual("MyInt", request.fields[4])
+        self.assertEqual("MyFloat", request.fields[5])
+        self.assertEqual("MyAsciiString", request.fields[6])
+        self.assertEqual("MyUnicodeString", request.fields[7])
+        self.assertEqual("MyBoolean", request.fields[8])
+        self.assertEqual("MyDateAndTime", request.fields[9])
+        self.assertEqual("MyBinaryData", request.fields[10])
+        self.assertEqual("MyFileID", request.fields[11])
+        self.assertEqual("num_ratings", request.fields[12])
+        self.assertEqual("average_rating", request.fields[13])
 
     @responses.activate
     def test_search_for_records(self):
         request = SearchForRecordsRequest(
-            HttpData(path="", headers={}, body=SEARCH_FOR_RECORDS))
+            HttpData(body=SEARCH_FOR_RECORDS))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -135,7 +136,7 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_delete_record(self):
         request = DeleteRecordRequest(
-            HttpData(path="", headers={}, body=DELETE_RECORD))
+            HttpData(body=DELETE_RECORD))
         request.parse()
 
         self.assertEqual(0, request.game_id)
@@ -147,7 +148,7 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_update_record(self):
         request = UpdateRecordRequest(
-            HttpData(path="", headers={}, body=UPDATE_RECORD))
+            HttpData(body=UPDATE_RECORD))
         request.parse()
 
         self.assertEqual(0, request.game_id)
@@ -164,7 +165,7 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_create_record(self):
         request = CreateRecordRequest(
-            HttpData(path="", headers={}, body=CREATE_RECORD))
+            HttpData(body=CREATE_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -181,7 +182,7 @@ class SakeTests(unittest.TestCase):
     @responses.activate
     def test_samuzombie2_get_my_records(self):
         request = GetMyRecordsRequest(
-            HttpData(path="", headers={}, body=SAMUZOMBIE2_GET_MY_RECORD))
+            HttpData(headers=SAMZOMBIE2_HEADERS, body=SAMUZOMBIE2_GET_MY_RECORD))
         request.parse()
         self.assertEqual(0, request.game_id)
 

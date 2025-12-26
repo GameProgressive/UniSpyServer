@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, GetMyRecordsHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler
-from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse
+from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, DeleteRecordHandler, GetMyRecordsHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler, UpdateRecordHandler
+from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, DeleteRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse, UpdateRecordResponse
 from backends.urls import WEB_SERVICES
-from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest
+from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, DeleteRecordRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest, UpdateRecordRequest
 
 router = APIRouter()
 
@@ -84,9 +84,18 @@ def create_record(request: CreateRecordRequest) -> CreateRecordResponse:
     return handler.response
 
 
+@router.post(f"{WEB_SERVICES}/UpdateRecordHandler", responses=RESPONSES_DEF)
+def update_record(request: UpdateRecordRequest) -> UpdateRecordResponse:
+    handler = UpdateRecordHandler(request)
+    handler.handle()
+    return handler.response
+
+
 @router.post(f"{WEB_SERVICES}/DeleteRecordHandler", responses=RESPONSES_DEF)
-def delete_record(request) -> OKResponse:
-    raise NotImplementedError()
+def delete_record(request: DeleteRecordRequest) -> DeleteRecordResponse:
+    handler = DeleteRecordHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{WEB_SERVICES}/GetMyRecordsHandler", responses=RESPONSES_DEF)
@@ -116,11 +125,6 @@ def search_for_records(request: SearchForRecordsRequest) -> SearchForRecordsResp
     handler = SearchForRecordsHandler(request)
     handler.handle()
     return handler.response
-
-
-@router.post(f"{WEB_SERVICES}/UpdateRecordHandler", responses=RESPONSES_DEF)
-def update_record(request):
-    raise NotImplementedError()
 
 
 if __name__ == "__main__":

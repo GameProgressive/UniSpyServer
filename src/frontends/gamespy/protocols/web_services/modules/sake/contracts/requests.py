@@ -31,21 +31,21 @@ class DeleteRecordRequest(RequestBase):
 
 
 class GetMyRecordsRequest(RequestBase):
-    fields: dict
+    fields: list
 
     def parse(self) -> None:
         super().parse()
-        self.fields = self._get_dict("fields")
+        self.fields = self._get_dict("fields")['string']
 
 
 class GetRandomRecordsRequest(RequestBase):
     max: int
-    fields: dict
+    fields: list
 
     def parse(self) -> None:
         super().parse()
         self.max = self._get_int("max")
-        self.fields = self._get_dict("fields")
+        self.fields = self._get_dict("fields")['string']
 
 
 class GetRecordLimitRequest(RequestBase):
@@ -93,7 +93,7 @@ class RateRecordRequest(RequestBase):
 
 class SearchForRecordsRequest(RequestBase):
     offset: str
-    max: str
+    max: int
     surrounding: str
     cache_flag: str
     fields: dict
@@ -125,7 +125,7 @@ class SearchForRecordsRequest(RequestBase):
         if sort is not None:
             self.sort = self._get_str("sort")
         self.offset = self._get_str("offset")
-        self.max = self._get_str("max")
+        self.max = self._get_int("max")
 
         self.surrounding = self._get_str("surrounding")
 
@@ -133,7 +133,7 @@ class SearchForRecordsRequest(RequestBase):
         if owner_ids is not None:
             self.owner_ids = self._get_str("ownerids")
         self.cache_flag = self._get_str("cacheFlag")
-        self.fields = self._get_dict("fields")
+        self.fields = self._get_dict("fields")['string']
 
 
 class UpdateRecordRequest(RequestBase):

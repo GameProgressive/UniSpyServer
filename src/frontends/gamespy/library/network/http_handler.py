@@ -18,6 +18,57 @@ class HttpData:
         self.headers = headers
         self.body = body
 
+    @staticmethod
+    def from_bytes(raw: bytes) -> "HttpData":
+        raw_http = raw.decode()
+        # Split the request into lines
+        lines = raw_http.split('\n')
+        
+        # Get the request line (e.g. GET /path HTTP/1.1)
+        if lines:
+            request_line = lines[0].strip()
+            parts = request_line.split()
+            if len(parts) >= 2:
+                path = parts[1]
+
+        # Process headers
+        headers = {}
+        for line in lines[1:]:
+            line = line.strip()
+            if line:  # Non-empty line
+                if ':' in line:
+                    key, value = line.split(':', 1)
+                    headers[key.strip()] = value.strip()
+                else:
+                    # If you encounter an empty line, assume the body follows
+                    break
+
+        # Join remaining lines as body
+        if lines[len(headers) + 1:]:
+            body = '\n'.join(lines[len(headers) + 1:]).strip()
+        data = HttpData(
+            body=body, path=path, headers=headers
+        )
+        return data
+
+    def to_bytes(self):
+        http_str = str(self)
+        return http_str.encode()
+
+    def __str__(self) -> str:
+        path_str = ""
+        if self.path is not None:
+            path_str = self.path
+        header_str = ""
+        if self.headers is not None:
+            header_str = '\n'.join(
+                f"{key}: {value}" for key, value in self.headers.items())
+        body_str = ""
+        if self.body is not None:
+            body_str = self.body
+        http_str = f"{path_str}\n{header_str}\n\n{body_str}"
+        return http_str
+
 
 class HttpConnection(ConnectionBase):
     handler: BaseHTTPRequestHandler
@@ -81,6 +132,8 @@ class TestClient(ClientBase):
 
 
 if __name__ == "__main__":
+    HttpData(body="hello", headers={"session": "1"}, path="data")
+    HttpData.from_bytes(b"\n\n\nhello")
     # create_http_server(list(CONFIG.servers.values())[0], ClientBase)
     from frontends.tests.gamespy.library.mock_objects import LogMock
 

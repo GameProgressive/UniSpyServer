@@ -6,15 +6,20 @@ from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contract
 class CreateRecordResult(ResultBase):
     table_id: str
     record_id: int
-    fields: dict
+    # fields: dict
+
+
+class UpdateRecordResult(ResultBase):
+    table_id: str
+    record_id: int
 
 
 class GetMyRecordsResult(ResultBase):
-    records: dict
+    values: list[dict]
 
 
 class SearchForRecordsResult(ResultBase):
-    user_data: OrderedDict[str, str]
+    values: list[list[dict]]
 
 
 class GetSpecificRecordsResult(ResultBase):
@@ -31,6 +36,7 @@ class GetRecordLimitResult(ResultBase):
 
 class RateRecordResult(ResultBase):
     pass
+
 
 class DeleteRecordResult(ResultBase):
     pass

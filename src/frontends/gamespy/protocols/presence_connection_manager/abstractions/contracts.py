@@ -19,6 +19,10 @@ def normalize_request(message: str):
 class RequestBase(lib.RequestBase):
     command_name: str
     operation_id: int
+    """
+    todo some request do not have operation id we just set it to 0 as default
+    todo check this in future
+    """
     raw_request: str
     _request_dict: Dict[str, str]
 
@@ -37,7 +41,9 @@ class RequestBase(lib.RequestBase):
             except Exception:
                 raise GPParseException("operation is invalid")
         else:
-            raise GPParseException("operation id is missing")
+            self.operation_id = 0
+            # raise GPParseException("operation id is missing")
+
 
 class ResultBase(lib.ResultBase):
     operation_id: int
