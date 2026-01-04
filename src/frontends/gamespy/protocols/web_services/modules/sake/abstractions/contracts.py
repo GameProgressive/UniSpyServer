@@ -1,7 +1,12 @@
 from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName, SakePlatform
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import (
+    CommandName,
+    SakePlatform,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
+    SakeException,
+)
 
 NAMESPACE = "http://gamespy.net/sake"
 
@@ -18,7 +23,7 @@ class RequestBase(lib.RequestBase):
     """
     command_name: CommandName
 
-    def __init__(self, raw_request: HttpData) -> None:
+    def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.secret_key = None
         self.platform = SakePlatform.Windows
@@ -36,13 +41,14 @@ class RequestBase(lib.RequestBase):
         if login_ticket is not None:
             self.login_ticket = self._get_str("loginTicket")
         else:
-            if self.raw_request.headers is None:
+            if self._http_data.headers is None:
                 raise SakeException(
-                    "headers is missing in c# version gamespy", self.command_name)
-            if "SessionToken" not in self.raw_request.headers:
+                    "headers is missing in c# version gamespy", self.command_name
+                )
+            if "SessionToken" not in self._http_data.headers:
                 raise SakeException(
                     "session token is missing", self.command_name)
-            self.login_ticket = self.raw_request.headers["SessionToken"]
+            self.login_ticket = self._http_data.headers["SessionToken"]
         self.table_id = self._get_str("tableid")
 
     def parse_headers(self):
@@ -50,26 +56,39 @@ class RequestBase(lib.RequestBase):
         parse headers from http request
         """
         # todo check profileid is same in xml body
-        if self.raw_request.headers is not None:
-            # if "GameID" not in self.raw_request.headers:
+        if self._http_data.headers is not None:
+            # if "GameID" not in self._http_data.headers:
             #     raise SakeException("game id is missing")
-            # self.game_id = int(self.raw_request.headers["GameID"])
+            # self.game_id = int(self._http_data.headers["GameID"])
 
-            # if "ProfileID" not in self.raw_request.headers:
+            # if "ProfileID" not in self._http_data.headers:
             #     raise SakeException("profile id is missing")
-            # self.profile_id = int(self.raw_request.headers["ProfileID"])
-            if "SessionToken" not in self.raw_request.headers:
+            # self.profile_id = int(self._http_data.headers["ProfileID"])
+            if "SessionToken" not in self._http_data.headers:
                 raise SakeException(
                     "session token is missing", self.command_name)
-            self.login_ticket = self.raw_request.headers["SessionToken"]
+            self.login_ticket = self._http_data.headers["SessionToken"]
+
+    def _get_record_field(self) -> list:
+        rf = self._get_dict("values")
+        if "RecordField" not in rf:
+            raise SakeException("No record field tag found", self.command_name)
+        values = rf["RecordField"]
+        if isinstance(values, dict) and len(values) == 2 and "name" in values and "value" in values:
+            values = [values]
+        if not isinstance(values, list):
+            raise SakeException(
+                "record field value is not dict", self.command_name)
+        return values
 
     def _get_str(self, attr_name: str) -> str:
         try:
             value = super()._get_str(attr_name)
             return value
-        except:
+        except Exception as _:
             raise SakeException(
-                f"{attr_name} is missing from the request.", self.command_name)
+                f"{attr_name} is missing from the request.", self.command_name
+            )
 
     def _get_int(self, attr_name: str) -> int:
         value = self._get_str(attr_name)
@@ -96,8 +115,16 @@ class ResponseBase(lib.ResponseBase):
 
     def build(self) -> None:
         """
-        in c# sdk session token is like login ticket 
+        in c# sdk session token is like login ticket
         """
-        self.sending_buffer = HttpData(str(self._content), headers={
-            "SessionToken": self._result.login_ticket
-        })
+        body = str(self._content)
+        headers = {
+            "SessionToken": self._result.login_ticket,
+            "Content-Length": len(body)
+        }
+        self.sending_buffer = str(
+            HttpData(
+                body=body,
+                headers=headers
+            )
+        )

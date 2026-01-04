@@ -64,12 +64,16 @@ class Client(ClientBase):
         """
         if not isinstance(buffer, bytes):
             raise UniSpyException("buffer type is invalid")
-        self.log_network_receving(buffer)
-        switcher = self._create_switcher(buffer)
+        http_h = cast(BaseHTTPRequestHandler, self.connection.handler)
+        data = HttpData(path=http_h.path, headers=dict(
+            http_h.headers), body=buffer.decode())
+        http_raw = str(data)
+        self.log_network_receving(http_raw)
+        switcher = self._create_switcher(http_raw)
         if switcher is not None:
             switcher.handle()
 
-    def _create_switcher(self, buffer: bytes) -> SwitcherBase | None:
+    def _create_switcher(self, buffer: str) -> SwitcherBase | None:
         """
         this function overide is different than super class \n
         http request need check route, if route url is not in our process list \n
@@ -79,19 +83,17 @@ class Client(ClientBase):
         import frontends.gamespy.protocols.web_services.modules.auth.applications.switcher as auth
         import frontends.gamespy.protocols.web_services.modules.sake.applications.switcher as sake
         http_h = cast(BaseHTTPRequestHandler, self.connection.handler)
-        data = HttpData(path=http_h.path, headers=dict(
-            http_h.headers), body=buffer.decode())
         if "sakefileserver/uploadstream.aspx" in http_h.path \
                 or "SakeFileServer/download.aspx" in http_h.path\
                 or "SakeStorageServer/StorageServer.asmx" in http_h.path:
-            return sake.Switcher(self, data)
+            return sake.Switcher(self, buffer)
         elif "SakeStorageServer/Public/StorageServer.asmx" in http_h.path:
-            return sake.Switcher(self, data)
+            return sake.Switcher(self, buffer)
         elif "AuthService/AuthService.asmx" in http_h.path:
-            return auth.Switcher(self, data)
+            return auth.Switcher(self, buffer)
         elif "/CompetitionService/CompetitionService.asmx" in http_h.path \
                 or "/AtlasDataServices/GameConfig.asmx" in http_h.path:
-            return altas.Switcher(self, data)
+            return altas.Switcher(self, buffer)
         else:
             self.log_error(f"unsupported url:{http_h.requestline}")
             return None

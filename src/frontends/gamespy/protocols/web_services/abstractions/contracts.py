@@ -54,54 +54,21 @@ def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
     return None  # Return None if the key is not found
 
 
-# class HttpData:
-#     path: str
-#     headers: dict
-#     body: str
-
-#     def __init__(self, path: str, headers: dict, body: str) -> None:
-
-#         self.path = path
-#         self.headers = headers
-#         self.body = body
-
-#     def __str__(self) -> str:
-#         json_str = json.dumps(self.__dict__)
-#         return json_str
-
-#     @staticmethod
-#     def from_bytes(buffer: bytes) -> "HttpData":
-#         assert isinstance(buffer, bytes)
-#         json_dict = json.loads(buffer)
-#         data = HttpData(**json_dict)
-#         return data
-
-#     @staticmethod
-#     def from_str(buffer: str) -> "HttpData":
-#         assert isinstance(buffer, str)
-#         json_dict = json.loads(buffer)
-#         data = HttpData(**json_dict)
-#         return data
-
-#     def to_bytes(self) -> bytes:
-#         j_str = json.dumps(self.__dict__)
-#         j_bytes = j_str.encode()
-#         return j_bytes
-
-
 class RequestBase(lib.RequestBase):
-    raw_request: HttpData
+    raw_request: str
     _request_dict: dict
-
-    def __init__(self, raw_request: HttpData) -> None:
-        assert isinstance(raw_request, HttpData)
+    _http_data: HttpData
+    def __init__(self, raw_request: str) -> None:
+        assert isinstance(raw_request, str)
         super().__init__(raw_request)
 
     def parse(self) -> None:
-        parsed_data = xmltodict.parse(self.raw_request.body)
+        self._http_data = HttpData.from_str(self.raw_request)
+        assert self._http_data.body is not None
+        parsed_data = xmltodict.parse(self._http_data.body)
         processed_data = remove_namespace(parsed_data)
         assert isinstance(processed_data, dict)
-        self._request_dict = processed_data["Envelope"]["Body"]
+        self._request_dict = processed_data["Envelope"]["Body"] # type: ignore
         self.command_name = list(self._request_dict.keys())[0]
 
     def _get_int(self, attr_name: str) -> int:
@@ -146,11 +113,11 @@ class ResponseBase(lib.ResponseBase):
     Soap envelope content, should be initialized in response sub class
     """
     _result: ResultBase
-    sending_buffer: HttpData
+    sending_buffer: str
 
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         super().__init__(result)
 
     def build(self) -> None:
-        self.sending_buffer = HttpData(body=str(self._content))
+        self.sending_buffer = str(HttpData(body=str(self._content)))

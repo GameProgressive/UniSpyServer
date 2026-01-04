@@ -12,9 +12,9 @@ class HttpData(BaseModel):
 
 
 class WebRequestBase(lib.RequestBase):
-    raw_request: HttpData
+    raw_request: str
     """
-    only dotnet sdk will send this data
+    we combine path, headers, body to a raw request and send to backend
     """
     command_name: str
 
@@ -23,7 +23,7 @@ class WebRequestBase(lib.RequestBase):
 
 class SakeRequestBase(WebRequestBase):
     game_id: int
-    secret_key: str
+    secret_key: str | None
     login_ticket: str
     """
     in c sdk called login_ticket \n
@@ -34,7 +34,7 @@ class SakeRequestBase(WebRequestBase):
 
 
 class CreateRecordRequest(SakeRequestBase):
-    values: dict
+    records: list
 
 
 class DeleteRecordRequest(SakeRequestBase):
@@ -78,7 +78,7 @@ class SearchForRecordsRequest(SakeRequestBase):
 
 class UpdateRecordRequest(SakeRequestBase):
     record_id: str
-    values: dict
+    records: list
 
 
 # region Auth

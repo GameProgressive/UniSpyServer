@@ -98,6 +98,10 @@ class ResultBase(lib.ResultBase):
 class LoginResultBase(ResultBase):
     response_code: int = 0
     length: int = 303
+    """
+    the length of certificate tag and its childen\n
+    currently hard coded, no effect on anything
+    """
     user_id: int
     profile_id: int
     profile_nick: str
@@ -131,7 +135,7 @@ class LoginResponseBase(lib.ResponseBase):
             "SessionToken": self._result.session_token,
             "Content-Length": len(body)
         }
-        self.sending_buffer = HttpData(headers=headers, body=body)
+        self.sending_buffer = str(HttpData(headers=headers, body=body))
 
     def _build_context(self):
         self._content.add("responseCode", AuthCode.SUCCESS.value)

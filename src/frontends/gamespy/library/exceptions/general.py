@@ -37,6 +37,8 @@ class UniSpyException(Exception):
             ex_type = type(e)
             # first we check if it is a ResponseBase
             if issubclass(ex_type, ResponseBase):
+                ex: UniSpyException = e  # type:ignore
+                client.log_error(ex.message)
                 exp_resp = e
                 if TYPE_CHECKING:
                     exp_resp = cast(ResponseBase, e)

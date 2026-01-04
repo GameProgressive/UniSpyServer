@@ -27,11 +27,11 @@ class SakeException(WebException):
         content = SoapEnvelop(f"{self.command_name.value}Response")
         content.add(f"{self.command_name.value}Result",
                     SakeCode.DATABASE_UNAVAILABLE.value)
-        self.sending_buffer = HttpData(
-            body=str(content), headers={
-                "Error": self.message
-            }
-        )
+        self.sending_buffer = str(
+            HttpData(
+                body=str(content),
+                headers={"Error": self.message}
+            ))
 
 
 EXCEPTIONS = get_exceptions_dict(__name__)

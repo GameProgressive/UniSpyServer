@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
     from frontends.gamespy.library.abstractions.contracts import ResponseBase
     from frontends.gamespy.library.abstractions.client import ClientInfoBase
-    from frontends.gamespy.library.network.http_handler import HttpData
 
 
 class ClientInfoBase:
@@ -88,7 +87,6 @@ class ClientBase:
 
     def send(self, response: "ResponseBase") -> None:
         from frontends.gamespy.library.abstractions.contracts import ResponseBase
-        from frontends.gamespy.library.network.http_handler import HttpData
         assert response is not None
         assert issubclass(type(response), ResponseBase)
         response.build()
@@ -96,8 +94,6 @@ class ClientBase:
         if isinstance(sending_buffer, str):
             buffer = Encoding.get_bytes(sending_buffer)
         elif isinstance(sending_buffer, bytes):
-            buffer = sending_buffer
-        elif isinstance(sending_buffer, HttpData):
             buffer = sending_buffer
         else:
             raise UniSpyException("not supported buffer type")
@@ -120,12 +116,8 @@ class ClientBase:
     def log_error(self, message: str) -> None:
         self.logger.error(f"{self._log_prefix}: {message}")
 
-    def log_network_sending(self, data: "str | bytes | HttpData") -> None:
-        from frontends.gamespy.library.network.http_handler import HttpData
-        if isinstance(data, HttpData):
-            self.logger.info(f"{self._log_prefix} [send]: {data.body}")
-        else:
-            self.logger.info(f"{self._log_prefix} [send]: {data}")
+    def log_network_sending(self, data: str | bytes) -> None:
+        self.logger.info(f"{self._log_prefix} [send]: {data}")
 
     def log_network_broadcast(self, data: object) -> None:
         self.logger.info(f"{self._log_prefix} [cast]: {data}")

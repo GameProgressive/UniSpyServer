@@ -37,12 +37,12 @@ class GetMyRecordResponse(ResponseBase):
     _result: GetMyRecordsResult
 
     def build(self) -> None:
-        self._content = SoapEnvelop("GetMyRecordResponse")
-        self._content.add("GetMyRecordResult", SakeCode.SUCCESS.value)
+        self._content = SoapEnvelop("GetMyRecordsResponse")
+        self._content.add("GetMyRecordsResult", SakeCode.SUCCESS.value)
         self._content.add("values")
-
-        self._content.add("ArrayOfRecordValue", {
-            "RecordValue": self._result.values})
+        if len(self._result.records) != 0:
+            self._content.add("ArrayOfRecordValue", {
+                "RecordValue": self._result.records})
         super().build()
 
 
@@ -72,12 +72,14 @@ class SearchForRecordsResponse(ResponseBase):
         """
         self._content = SoapEnvelop("SearchForRecordsResponse")
         self._content.add("SearchForRecordsResult", "Success")
+
         self._content.add("values")
-        for record in self._result.values:
-            record_value = []
-            for values in record:
-                record_value.append(values['value'])
-            self._content.add("ArrayOfRecordValue", {
-                              "RecordValue": record_value})
+        if len(self._result.records_list) != 0:
+            for record in self._result.records_list:
+                record_value = []
+                for values in record:
+                    record_value.append(values['value'])
+                self._content.add("ArrayOfRecordValue", {
+                    "RecordValue": record_value})
 
         super().build()

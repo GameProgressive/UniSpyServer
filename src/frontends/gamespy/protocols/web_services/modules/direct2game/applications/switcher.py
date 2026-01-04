@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.requ
 
 class Switcher(web.Switcher):
 
-    def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
         match name:
             # Altas services
             case "GetStoreAvailability":

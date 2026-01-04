@@ -116,7 +116,7 @@ class NewUserHandler(HandlerBase):
             password=self._request.password,
             lastip=self._request.client_ip,
             lastonline=datetime.now(),
-            createdate=datetime.now()
+            createddate=datetime.now()
         )
         self._session.add(self.user)
         self._session.commit()

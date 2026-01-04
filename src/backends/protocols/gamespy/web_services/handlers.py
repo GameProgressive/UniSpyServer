@@ -213,7 +213,7 @@ class CreateRecordHandler(HandlerBase):
     def _data_operate(self) -> None:
         self._record_id: int = data.create_records(
             table_id=self._request.table_id,
-            data=self._request.values,
+            data=self._request.records,
             command_name=self._request.command_name,
             session=self._session
         )
@@ -234,7 +234,7 @@ class UpdateRecordHandler(HandlerBase):
     def _data_operate(self) -> None:
         self._record_id = data.update_record(
             self._request.table_id,
-            self._request.values,
+            self._request.records,
             self._request.command_name,
             self._session
         )
@@ -276,7 +276,7 @@ class GetMyRecordsHandler(HandlerBase):
        # search values by keys
         keys = self._request.fields
         self.filtered_values = []
-        for value in self._data['RecordField']:
+        for value in self._data:
             if value['name'] in keys:
                 self.filtered_values.append(value)
 
@@ -284,7 +284,7 @@ class GetMyRecordsHandler(HandlerBase):
         self._result = GetMyRecordsResult(
             command_name=self._request.command_name,
             login_ticket=self._request.login_ticket,
-            values=self.filtered_values
+            records=self.filtered_values
         )
 
 
@@ -310,5 +310,5 @@ class SearchForRecordsHandler(HandlerBase):
         self._result = SearchForRecordsResult(
             login_ticket=self._request.login_ticket,
             command_name=self._request.command_name,
-            values=self._filterd_data
+            records_list=self._filterd_data
         )

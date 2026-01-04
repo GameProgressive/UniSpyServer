@@ -118,21 +118,21 @@ class AuthTests(unittest.TestCase):
     @responses.activate
     def test_create_user_account(self):
         request = CreateUserAccountRequest(
-            HttpData(body=CREATE_USER_ACCOUNT))
+            str(HttpData(body=CREATE_USER_ACCOUNT)))
         request.parse()
         pass
 
     @unittest.skip("old request password encryption problem")
     @responses.activate
     def test_crysis_auth(self):
-        request = LoginUniqueNickRequest(HttpData(body=CRYSIS))
+        request = LoginUniqueNickRequest(str(HttpData(body=CRYSIS)))
         request.parse()
 
     @unittest.skip("old request password encryption problem")
     @responses.activate
     def test_login_profile(self):
         request = LoginProfileWithGameIdRequest(
-            HttpData(body=LOGIN_PROFILE))
+            str(HttpData(body=LOGIN_PROFILE)))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
@@ -146,7 +146,7 @@ class AuthTests(unittest.TestCase):
         # handler.handle()
 
     def test_login_ps3_cert(self):
-        request = LoginPs3CertRequest(HttpData(body=LOGIN_PS3_CERT))
+        request = LoginPs3CertRequest(str(HttpData(body=LOGIN_PS3_CERT)))
         request.parse()
         self.assertEqual(0, request.version)
         self.assertEqual(0, request.game_id)
@@ -156,7 +156,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual("0001", request.npticket)
 
     def test_remote_auth(self):
-        request = LoginRemoteAuthRequest(HttpData(body=LOGIN_REMOTE_AUTH))
+        request = LoginRemoteAuthRequest(str(HttpData(body=LOGIN_REMOTE_AUTH)))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
@@ -167,7 +167,7 @@ class AuthTests(unittest.TestCase):
 
     @unittest.skip("old request password encryption problem")
     def test_login_uniquenick(self):
-        request = LoginUniqueNickRequest(HttpData(body=LOGIN_UNIQUENICK))
+        request = LoginUniqueNickRequest(str(HttpData(body=LOGIN_UNIQUENICK)))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.partner_code)

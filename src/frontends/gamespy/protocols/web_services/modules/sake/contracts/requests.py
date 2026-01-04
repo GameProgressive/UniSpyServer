@@ -1,24 +1,25 @@
-
-from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
-    RequestBase,)
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
+    RequestBase,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
+    SakeException,
+)
 
 
 class CreateRecordRequest(RequestBase):
-    values: dict
+    records: list
     """
     (name,type,value)
     """
 
     def parse(self) -> None:
         super().parse()
-        self.values = self._get_dict("values")
+        self.records = self._get_record_field()
 
     def _get_dict(self, attr_name: str) -> dict:
         try:
             return super()._get_dict(attr_name)
-        except:
+        except Exception as _:
             raise SakeException(f"{attr_name} is missing", self.command_name)
 
 
@@ -35,7 +36,12 @@ class GetMyRecordsRequest(RequestBase):
 
     def parse(self) -> None:
         super().parse()
-        self.fields = self._get_dict("fields")['string']
+        fields = self._get_dict("fields")["string"]
+        if isinstance(fields, str):
+            fields = [fields]
+        if not isinstance(fields, list):
+            raise SakeException("fields is not list type", self.command_name)
+        self.fields = fields
 
 
 class GetRandomRecordsRequest(RequestBase):
@@ -45,7 +51,7 @@ class GetRandomRecordsRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.max = self._get_int("max")
-        self.fields = self._get_dict("fields")['string']
+        self.fields = self._get_dict("fields")["string"]
 
 
 class GetRecordLimitRequest(RequestBase):
@@ -53,7 +59,6 @@ class GetRecordLimitRequest(RequestBase):
 
 
 class GetSpecificRecordsRequest(RequestBase):
-
     record_ids: dict
     """
     [
@@ -94,8 +99,8 @@ class RateRecordRequest(RequestBase):
 class SearchForRecordsRequest(RequestBase):
     offset: str
     max: int
-    surrounding: str
-    cache_flag: str
+    surrounding: str | None
+    cache_flag: str | None
     fields: dict
     """
     [
@@ -110,11 +115,13 @@ class SearchForRecordsRequest(RequestBase):
     sort: str | None
     filter: str | None
 
-    def __init__(self, raw_request: HttpData) -> None:
+    def __init__(self, raw_request: str) -> None:
         super().__init__(raw_request)
         self.filter = None
         self.sort = None
         self.owner_ids = None
+        self.surrounding = None
+        self.catch_flag = None
 
     def parse(self) -> None:
         super().parse()
@@ -127,18 +134,23 @@ class SearchForRecordsRequest(RequestBase):
         self.offset = self._get_str("offset")
         self.max = self._get_int("max")
 
-        self.surrounding = self._get_str("surrounding")
+        surrounding = self._get_value_by_key("surrounding")
+        if surrounding is not None:
+            self.surrounding = self._get_str("surrounding")
 
         owner_ids = self._get_value_by_key("ownerids")
         if owner_ids is not None:
-            self.owner_ids = self._get_str("ownerids")
-        self.cache_flag = self._get_str("cacheFlag")
-        self.fields = self._get_dict("fields")['string']
+            owner_dict = self._get_dict("ownerids")
+            self.owner_ids = list(owner_dict.values())[0]
+        cache_flag = self._get_value_by_key("cacheFlag")
+        if cache_flag is not None:
+            self.cache_flag = self._get_str("cacheFlag")
+            self.fields = self._get_dict("fields")["string"]
 
 
 class UpdateRecordRequest(RequestBase):
     record_id: str
-    values: dict
+    records: list
     """
     [
     (field_name,field_type,field_value),
@@ -152,4 +164,4 @@ class UpdateRecordRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.record_id = self._get_str("recordid")
-        self.values = self._get_dict("values")
+        self.records = self._get_record_field()

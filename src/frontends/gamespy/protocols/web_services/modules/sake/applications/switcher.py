@@ -6,9 +6,9 @@ from frontends.gamespy.protocols.web_services.modules.sake.applications.handlers
 
 
 class Switcher(web.Switcher):
-    _raw_request: HttpData
+    _raw_request: str
 
-    def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
         match name:
             case "GetSpecificRecords":
                 raise NotImplementedError()

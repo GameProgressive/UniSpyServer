@@ -11,16 +11,18 @@ class Switcher(SwitcherBase):
     """
     abstract class of web switcher
     """
-    _raw_request: HttpData
+    _raw_request: str
     _client: Client
 
-    def __init__(self, client: Client, raw_request: HttpData) -> None:
-        assert isinstance(raw_request, HttpData)
+    def __init__(self, client: Client, raw_request: str) -> None:
+        assert isinstance(raw_request, str)
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
         try:
-            name_node = ET.fromstring(self._raw_request.body)[0][0]
+            data = HttpData.from_str(self._raw_request)
+            assert data.body is not None
+            name_node = ET.fromstring(data.body)[0][0]
         except Exception as e:
             raise WebException(f"xml serialization failed: {str(e)}")
         if name_node is None:

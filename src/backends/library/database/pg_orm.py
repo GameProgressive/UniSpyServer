@@ -89,9 +89,9 @@ class SubProfiles(Base):
     __tablename__ = "subprofiles"
 
     subprofileid = Column(
-        Integer, ForeignKey("profiles.profileid"), primary_key=True, autoincrement=True
+        Integer,  primary_key=True, autoincrement=True
     )
-    profileid: Column[int] = Column(Integer, nullable=False)
+    profileid: Column[int] = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
     uniquenick: Column[str] = Column(String)
     namespaceid: Column[int] = Column(Integer, nullable=False, default=0)
     partnerid: Column[int] = Column(Integer, nullable=False, default=0)

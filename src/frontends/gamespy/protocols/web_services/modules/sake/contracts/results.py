@@ -1,5 +1,3 @@
-from typing import OrderedDict
-
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResultBase
 
 
@@ -15,11 +13,11 @@ class UpdateRecordResult(ResultBase):
 
 
 class GetMyRecordsResult(ResultBase):
-    values: list[dict]
+    records: list[dict]
 
 
 class SearchForRecordsResult(ResultBase):
-    values: list[list[dict]]
+    records_list: list[list[dict]]
 
 
 class GetSpecificRecordsResult(ResultBase):

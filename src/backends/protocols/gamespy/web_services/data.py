@@ -199,18 +199,18 @@ def search_for_data(table_id: str, max_num: int, session: Session) -> list[dict]
     return temp
 
 
-def get_user_data(table_id: str, session: Session) -> dict:
+def get_user_data(table_id: str, session: Session) -> list:
     result = (
-        session.query(SakeStorage.data).where(
+        session.query(SakeStorage).where(
             SakeStorage.tableid == table_id).first()
     )
+    data = []
     if result is None:
-        temp = {}
-    if TYPE_CHECKING:
-        result = cast(tuple, result)
-    temp: dict = result[0]
-    assert isinstance(temp, dict)
-    return temp
+        return data
+    if result.data is None:
+        return data
+    data:list = result.data # type: ignore
+    return data
 
 
 def update_user_data(table_id: int, data: dict, command_name: CommandName, session: Session) -> None:
@@ -229,9 +229,9 @@ def update_user_data(table_id: int, data: dict, command_name: CommandName, sessi
             result.data[key] = data[key]
 
 
-def create_records(table_id: str, data: dict, command_name: CommandName, session: Session) -> int:
+def create_records(table_id: str, data: list, command_name: CommandName, session: Session) -> int:
     assert isinstance(table_id, str)
-    assert isinstance(data, dict)
+    assert isinstance(data, list)
 
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).count()
@@ -247,17 +247,17 @@ def create_records(table_id: str, data: dict, command_name: CommandName, session
     return sake.id
 
 
-def update_record(table_id: str, data: dict, command_name: CommandName, session: Session) -> int:
+def update_record(table_id: str, data: list, command_name: CommandName, session: Session) -> int:
     """
     update record with new data and returns record id
     """
-    assert isinstance(data, dict)
+    assert isinstance(data, list)
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).first()
 
     if result is None:
         raise SakeException("Records not existed", command_name)
-    assert isinstance(result.data, dict)
+    assert isinstance(result.data, list)
 
     result.data = data  # type: ignore
     session.commit()

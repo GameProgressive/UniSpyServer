@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests im
 
 class Switcher(web.Switcher):
 
-    def _create_cmd_handlers(self, name: str, raw_request: HttpData) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
         match name:
             # Auth services
             case "LoginProfile":

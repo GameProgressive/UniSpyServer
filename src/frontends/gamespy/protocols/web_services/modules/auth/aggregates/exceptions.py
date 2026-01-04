@@ -27,9 +27,9 @@ class AuthException(WebException):
     def build(self) -> None:
         xml = SoapEnvelop(self.command_name.value)
         xml.add("responseCode", self.response_code.value)
-        self.sending_buffer = HttpData(
+        self.sending_buffer = str(HttpData(
             body=str(xml),
-            headers={"Error": self.message})
+            headers={"Error": self.message}))
 
 
 class LoginServerInitFailedException(AuthException):
