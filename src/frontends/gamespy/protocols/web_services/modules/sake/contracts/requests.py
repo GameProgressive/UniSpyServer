@@ -165,3 +165,12 @@ class UpdateRecordRequest(RequestBase):
         super().parse()
         self.record_id = self._get_str("recordid")
         self.records = self._get_record_field()
+
+
+class GetRecordCountRequest(RequestBase):
+    filter: str
+    
+    def parse(self) -> None:
+        super().parse()
+        self.filter = self._get_str("filter")
+

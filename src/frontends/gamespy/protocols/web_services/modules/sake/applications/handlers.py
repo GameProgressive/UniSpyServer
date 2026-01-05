@@ -1,9 +1,9 @@
 from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.applications.client import Client
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordLimitRequest, GetSpecificRecordsRequest, RateRecordRequest, SearchForRecordsRequest, UpdateRecordRequest
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import CreateRecordResponse, GetMyRecordResponse, SearchForRecordsResponse, UpdateRecordResponse
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, SearchForRecordsResult, UpdateRecordResult
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordCountRequest, GetRecordLimitRequest, GetSpecificRecordsRequest, RateRecordRequest, SearchForRecordsRequest, UpdateRecordRequest
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import CreateRecordResponse, GetMyRecordsResponse, GetRecordCountResponse, SearchForRecordsResponse, UpdateRecordResponse
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
 
 # General
 
@@ -21,7 +21,7 @@ class CreateRecordHandler(CmdHandlerBase):
 class GetMyRecordsHandler(CmdHandlerBase):
     _request: GetMyRecordsRequest
     _result: GetMyRecordsResult
-    _response: GetMyRecordResponse
+    _response: GetMyRecordsResponse
 
     def __init__(self, client: Client, request: GetMyRecordsRequest) -> None:
         assert isinstance(request, GetMyRecordsRequest)
@@ -58,6 +58,12 @@ class UpdateRecordHandler(CmdHandlerBase):
     _request: UpdateRecordRequest
     _result: UpdateRecordResult
     _response: UpdateRecordResponse
+
+
+class GetRecordCountHandler(CmdHandlerBase):
+    _request: GetRecordCountRequest
+    _result: GetRecordCountResult
+    _response: GetRecordCountResponse
 # region CloudFile
 
 

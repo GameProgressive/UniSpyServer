@@ -1,14 +1,14 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, DeleteRecordHandler, GetMyRecordsHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler, UpdateRecordHandler
-from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, DeleteRecordResponse, GetMyRecordsResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse, UpdateRecordResponse
+from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, DeleteRecordHandler, GetMyRecordsHandler, GetRecordCountHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler, UpdateRecordHandler
+from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, DeleteRecordResponse, GetMyRecordsResponse, GetRecordCountResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse, UpdateRecordResponse
 from backends.urls import WEB_SERVICES
-from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, DeleteRecordRequest, GetMyRecordsRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest, UpdateRecordRequest
+from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordCountRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest, UpdateRecordRequest
 
 router = APIRouter()
 
-# Altas services
+# region Altas
 
 
 # @router.post(f"{WEB_SERVICES}/CreateRecordHandler", responses=RESPONSES_DEF)
@@ -31,7 +31,7 @@ def submit_report(request):
     raise NotImplementedError()
 
 
-# Auth services
+# region Auth
 @router.post(f"{WEB_SERVICES}/LoginProfileHandler", responses=RESPONSES_DEF)
 def login_profile(request: LoginProfileRequest) -> LoginProfileResponse:
     handler = LoginProfileHandler(request)
@@ -74,7 +74,7 @@ def create_user_account(request: CreateUserAccountRequest):
     handler.handle()
     return handler.response
 
-# SAKE services
+# region SAKE
 
 
 @router.post(f"{WEB_SERVICES}/CreateRecordHandler", responses=RESPONSES_DEF)
@@ -123,6 +123,13 @@ def rate_record(request):
 @router.post(f"{WEB_SERVICES}/SearchForRecordsHandler", responses=RESPONSES_DEF)
 def search_for_records(request: SearchForRecordsRequest) -> SearchForRecordsResponse:
     handler = SearchForRecordsHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{WEB_SERVICES}/GetRecordCountHandler", responses=RESPONSES_DEF)
+def get_record_count(request: GetRecordCountRequest) -> GetRecordCountResponse:
+    handler = GetRecordCountHandler(request)
     handler.handle()
     return handler.response
 

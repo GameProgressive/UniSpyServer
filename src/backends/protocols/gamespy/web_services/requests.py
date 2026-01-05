@@ -81,7 +81,10 @@ class UpdateRecordRequest(SakeRequestBase):
     records: list
 
 
+class GetRecordCountRequest(SakeRequestBase):
+    filter: str
 # region Auth
+
 
 class AuthRequestBase(WebRequestBase):
     version: int

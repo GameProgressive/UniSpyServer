@@ -3,6 +3,7 @@ import unittest
 import responses
 
 from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import (
     CreateRecordRequest,
     DeleteRecordRequest,
@@ -71,7 +72,8 @@ SAMUZOMBIE2_SEARCH_FOR_RECORD = """<?xml version="1.0" encoding="UTF-8"?><SOAP-E
 class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_record_limit(self):
-        request = GetRecordLimitRequest(str(HttpData.from_dict(GET_RECORD_LIMIT)))
+        request = GetRecordLimitRequest(
+            str(HttpData.from_dict(GET_RECORD_LIMIT)))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -91,7 +93,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_random_records(self):
-        request = GetRandomRecordsRequest(str(HttpData.from_dict(GET_RANDOM_RECORDS)))
+        request = GetRandomRecordsRequest(
+            str(HttpData.from_dict(GET_RANDOM_RECORDS)))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -145,7 +148,8 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_search_for_records(self):
-        request = SearchForRecordsRequest(str(HttpData.from_dict(SEARCH_FOR_RECORDS)))
+        request = SearchForRecordsRequest(
+            str(HttpData.from_dict(SEARCH_FOR_RECORDS)))
         request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -182,7 +186,8 @@ class SakeTests(unittest.TestCase):
 
         # TODO: Deserialization of RecordFields
         self.assertEqual("MyByte", request.records[0]["name"])
-        self.assertEqual("123", request.records[0]["value"]["byteValue"]["value"])
+        self.assertEqual(
+            "123", request.records[0]["value"]["byteValue"]["value"])
 
     @responses.activate
     def test_create_record(self):
@@ -194,7 +199,8 @@ class SakeTests(unittest.TestCase):
         self.assertEqual("test", request.table_id)
 
         self.assertEqual("MyAsciiString", request.records[0]["name"])
-        self.assertEqual("asciiStringValue", list(request.records[0]["value"])[0])
+        self.assertEqual("asciiStringValue", list(
+            request.records[0]["value"])[0])
         self.assertEqual(
             "this is a record", request.records[0]["value"]["asciiStringValue"]["value"]
         )
@@ -224,6 +230,13 @@ class SakeTests(unittest.TestCase):
         )
         request.parse()
         self.assertEqual(5989, request.game_id)
+
+    def test_records_format_convert(self):
+        records = [{"name": "MyAsciiString", "value": {
+            "asciiStringValue": {"value": "this is a record"}}}]
+        values, types = RecordConverter.to_searchable_format(records)
+        records2 = RecordConverter.to_gamespy_format(values, types)
+        self.assertEqual(records, records2)
 
 
 if __name__ == "__main__":

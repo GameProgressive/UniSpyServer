@@ -69,7 +69,7 @@ class Users(Base):
     )
     banned: Column[bool] = Column(Boolean, default=False, nullable=False)
     deleted: Column[bool] = Column(Boolean, default=False, nullable=False)
-    
+
 
 class Profiles(Base):
     __tablename__ = "profiles"
@@ -91,7 +91,8 @@ class SubProfiles(Base):
     subprofileid = Column(
         Integer,  primary_key=True, autoincrement=True
     )
-    profileid: Column[int] = Column(Integer, ForeignKey("profiles.profileid"), nullable=False)
+    profileid: Column[int] = Column(
+        Integer, ForeignKey("profiles.profileid"), nullable=False)
     uniquenick: Column[str] = Column(String)
     namespaceid: Column[int] = Column(Integer, nullable=False, default=0)
     partnerid: Column[int] = Column(Integer, nullable=False, default=0)
@@ -199,7 +200,8 @@ class SakeStorage(Base):
     __tablename__ = "sakestorage"
     id = Column(Integer, primary_key=True, autoincrement=True)
     tableid = Column(String, nullable=False)
-    data: Column[JSONB] = Column(JSONB, nullable=False)
+    record: Column[JSONB] = Column(JSONB, nullable=False)
+    record_type: Column[JSONB] = Column(JSONB, nullable=False)
 
 
 class InitPacketCaches(Base):

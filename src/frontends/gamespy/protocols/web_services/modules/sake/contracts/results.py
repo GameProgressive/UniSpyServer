@@ -14,10 +14,12 @@ class UpdateRecordResult(ResultBase):
 
 class GetMyRecordsResult(ResultBase):
     records: list[dict]
+    fields: list[str]
 
 
 class SearchForRecordsResult(ResultBase):
     records_list: list[list[dict]]
+    fields: list[str]
 
 
 class GetSpecificRecordsResult(ResultBase):
@@ -30,6 +32,10 @@ class GetRandomRecordsResult(ResultBase):
 
 class GetRecordLimitResult(ResultBase):
     pass
+
+
+class GetRecordCountResult(ResultBase):
+    count: int
 
 
 class RateRecordResult(ResultBase):

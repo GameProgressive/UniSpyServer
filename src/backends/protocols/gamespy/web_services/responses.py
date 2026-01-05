@@ -1,7 +1,7 @@
 from backends.library.abstractions.contracts import DataResponse
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.results import CreateUserAccountResult, LoginProfileResult, LoginPs3CertResult, LoginRemoteAuthResult, LoginUniqueNickResult
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import GetPurchaseHistoryResult
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, SearchForRecordsResult, UpdateRecordResult
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
 
 # region Auth
 
@@ -54,3 +54,7 @@ class SearchForRecordsResponse(DataResponse):
 
 class DeleteRecordResponse(DataResponse):
     result: DeleteRecordResult
+
+
+class GetRecordCountResponse(DataResponse):
+    result: GetRecordCountResult

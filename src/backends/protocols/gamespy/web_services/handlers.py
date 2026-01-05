@@ -10,6 +10,7 @@ from backends.protocols.gamespy.web_services.requests import (
     DeleteRecordRequest,
     GetMyRecordsRequest,
     GetPurchaseHistoryRequest,
+    GetRecordCountRequest,
     GetStoreAvailabilityRequest,
     LoginPS3CertRequest,
     LoginProfileRequest,
@@ -23,6 +24,7 @@ from backends.protocols.gamespy.web_services.responses import (
     CreateUserAccountResponse,
     DeleteRecordResponse,
     GetMyRecordsResponse,
+    GetRecordCountResponse,
     LoginProfileResponse,
     LoginRemoteAuthRepsonse,
     LoginUniqueNickResponse,
@@ -40,7 +42,9 @@ from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.resu
     GetPurchaseHistoryResult,
     GetStoreAvailabilityResult,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, SearchForRecordsResult, UpdateRecordResult
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import SakeException
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
 
 # region altas
 
@@ -211,9 +215,10 @@ class CreateRecordHandler(HandlerBase):
     response: CreateRecordResponse
 
     def _data_operate(self) -> None:
+
         self._record_id: int = data.create_records(
             table_id=self._request.table_id,
-            data=self._request.records,
+            records=self._request.records,
             command_name=self._request.command_name,
             session=self._session
         )
@@ -267,24 +272,23 @@ class DeleteRecordHandler(HandlerBase):
 class GetMyRecordsHandler(HandlerBase):
     """
     todo find sub profile id by login ticket
+    ! the records number should match the fileds number
     """
     _request: GetMyRecordsRequest
     response: GetMyRecordsResponse
 
     def _data_operate(self):
-        self._data = data.get_user_data(self._request.table_id, self._session)
-       # search values by keys
-        keys = self._request.fields
-        self.filtered_values = []
-        for value in self._data:
-            if value['name'] in keys:
-                self.filtered_values.append(value)
+        self._data = data.get_my_records(self._request.table_id,
+                                           self._request.fields,
+                                           self._request.command_name,
+                                           self._session)
 
     def _result_construct(self) -> None:
         self._result = GetMyRecordsResult(
             command_name=self._request.command_name,
             login_ticket=self._request.login_ticket,
-            records=self.filtered_values
+            records=self._data,
+            fields=self._request.fields
         )
 
 
@@ -293,22 +297,33 @@ class SearchForRecordsHandler(HandlerBase):
     response: SearchForRecordsResponse
 
     def _data_operate(self) -> None:
-        self._data = data.search_for_data(
-            self._request.table_id, self._request.max, self._session)
-        # search values by keys
-        keys = self._request.fields
-        self._filterd_data: list[list[dict]] = []
-        for record in self._data:
-            filtered_values = []
-            for record in record.values():
-                for value in record:
-                    if value['name'] in keys:
-                        filtered_values.append(value)
-            self._filterd_data.append(filtered_values)
+        self._data = data.search_for_record(
+            self._request.table_id, 
+            self._request.max,
+            self._request.fields,
+            self._request.command_name, 
+            self._session)
 
     def _result_construct(self) -> None:
         self._result = SearchForRecordsResult(
             login_ticket=self._request.login_ticket,
             command_name=self._request.command_name,
-            records_list=self._filterd_data
+            records_list=self._data,
+            fields=self._request.fields
+        )
+
+
+class GetRecordCountHandler(HandlerBase):
+    _request: GetRecordCountRequest
+    response: GetRecordCountResponse
+
+    def _data_operate(self) -> None:
+        self._count = data.count_for_record(
+            self._request.filter, self._request.command_name, self._session)
+
+    def _result_construct(self) -> None:
+        self._result = GetRecordCountResult(
+            login_ticket=self._request.login_ticket,
+            command_name=self._request.command_name,
+            count=self._count
         )

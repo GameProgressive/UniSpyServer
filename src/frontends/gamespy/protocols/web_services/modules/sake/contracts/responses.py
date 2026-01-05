@@ -1,7 +1,7 @@
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResponseBase
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import SakeCode
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, SearchForRecordsResult, UpdateRecordResult
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
 
 
 class CreateRecordResponse(ResponseBase):
@@ -33,16 +33,20 @@ class DeleteRecordResponse(ResponseBase):
         super().build()
 
 
-class GetMyRecordResponse(ResponseBase):
+class GetMyRecordsResponse(ResponseBase):
     _result: GetMyRecordsResult
 
     def build(self) -> None:
+        """
+        only need the value elements
+        """
         self._content = SoapEnvelop("GetMyRecordsResponse")
         self._content.add("GetMyRecordsResult", SakeCode.SUCCESS.value)
         self._content.add("values")
         if len(self._result.records) != 0:
+            values = [record['value'] for record in self._result.records]
             self._content.add("ArrayOfRecordValue", {
-                "RecordValue": self._result.records})
+                "RecordValue": values})
         super().build()
 
 
@@ -50,6 +54,9 @@ class SearchForRecordsResponse(ResponseBase):
     _result: SearchForRecordsResult
 
     def build(self) -> None:
+        """
+        only need the value elements
+        """
         """
         <?xml version="1.0" encoding="utf-8"?>
             <SearchForRecordsResponse>
@@ -82,4 +89,14 @@ class SearchForRecordsResponse(ResponseBase):
                 self._content.add("ArrayOfRecordValue", {
                     "RecordValue": record_value})
 
+        super().build()
+
+
+class GetRecordCountResponse(ResponseBase):
+    _result: GetRecordCountResult
+
+    def build(self) -> None:
+        self._content = SoapEnvelop("GetRecordCountResponse")
+        self._content.add("GetRecordCountResult", "Success")
+        self._content.add("count", self._result.count)
         super().build()

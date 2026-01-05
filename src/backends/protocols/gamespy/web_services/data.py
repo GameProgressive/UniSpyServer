@@ -3,6 +3,8 @@
 # region auth
 
 from typing import TYPE_CHECKING, cast
+
+from sqlalchemy import ColumnExpressionArgument, Integer, and_
 from backends.library.database.pg_orm import (
     Profiles,
     SubProfiles,
@@ -17,6 +19,8 @@ from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions
     SakeException,
 )
 from sqlalchemy.orm import Session
+
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
 
 
 def is_user_exist(
@@ -179,67 +183,124 @@ def get_info_by_uniquenick(
 # region racing
 
 # region sake
+def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:
+    processed_filter = filter.replace(
+        " &gt; ", ">").replace(" &lt; ", "<").replace(" &ge ", ">=").replace(" &le ", "<=")
 
-def search_for_data(table_id: str, max_num: int, session: Session) -> list[dict]:
+    condition = processed_filter.split(" AND ")
+    sql_cons = []
+
+    for con in condition:
+        if ">=" in con:
+            name,  value = con.split(">=")
+            sql_cons.append(SakeStorage.record[name].cast(
+                Integer) >= int(value))
+            continue
+        if "<=" in con:
+            name,  value = con.split("<=")
+            sql_cons.append(SakeStorage.record[name].cast(
+                Integer) <= int(value))
+            continue
+        if ">" in con:
+            name,  value = con.split(">")
+            sql_cons.append(
+                SakeStorage.record[name].cast(Integer) > int(value))
+            continue
+        if "<" in con:
+            name,  value = con.split("<")
+            sql_cons.append(
+                SakeStorage.record[name].cast(Integer) < int(value))
+            continue
+        if "=" in con:
+            name,  value = con.split("=")
+            sql_cons.append(SakeStorage.record[name] == value)
+    return and_(*sql_cons)
+
+
+def count_for_record(filter: str, command_name: CommandName, session: Session) -> int:
+    try:
+        conditions: ColumnExpressionArgument[bool] = _filter_to_sql_con(filter)
+    except Exception as _:
+        raise SakeException("query filter convertion error", command_name)
+
+    result = session.query(SakeStorage).where(conditions).count()
+    return result
+
+# def _check_record_integrety(sake:SakeStorage)->bool:
+
+
+def _get_filtered_record(sake: SakeStorage, fields: list, command_name: CommandName) -> list:
+    """
+    get filterd record, return with gamespy format
+    """
+    assert isinstance(sake.record, dict)
+    assert isinstance(sake.record_type, dict)
+
+    filtered_record = dict(sake.record)  # type: ignore
+    record_type = dict(sake.record_type)  # type: ignore
+    filtered_key_value = {}
+    filtered_key_type = {}
+    for f in fields:
+        if f not in filtered_record:
+            raise SakeException(f"{f} not in record", command_name)
+        filtered_key_value[f] = filtered_record[f]
+        filtered_key_type[f] = record_type[f]
+    filtered_record = RecordConverter.to_gamespy_format(
+        filtered_key_value, filtered_key_type)
+    return filtered_record
+
+
+
+def search_for_record(table_id: str, max_num: int, fields: list, command_name: CommandName, session: Session) -> list[list[dict]]:
     """
     max_num default to 100
+    search and get the value that key in fields
     """
     result = (
-        session.query(SakeStorage.data).where(
+        session.query(SakeStorage).where(
             SakeStorage.tableid == table_id).limit(max_num).all()
     )
-    if result is None:
-        result = []
-    if TYPE_CHECKING:
-        result = cast(list, result)
 
-    temp = []
+    records = []
     for item in result:
-        temp.append(item[0])
-    return temp
+        record = _get_filtered_record(item, fields, command_name)
+        records.append(record)
+
+    return records
 
 
-def get_user_data(table_id: str, session: Session) -> list:
+def get_my_records(table_id: str, fields: list[str], command_name: CommandName, session: Session) -> list[dict]:
+    """
+    search and filtered the record by fields
+    """
     result = (
         session.query(SakeStorage).where(
             SakeStorage.tableid == table_id).first()
     )
-    data = []
     if result is None:
-        return data
-    if result.data is None:
-        return data
-    data:list = result.data # type: ignore
-    return data
+        return []
+
+    record = _get_filtered_record(result, fields, command_name)
+    return record
 
 
-def update_user_data(table_id: int, data: dict, command_name: CommandName, session: Session) -> None:
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).first()
-    if result is None:
-        raise SakeException("user data not found", command_name)
-    assert isinstance(result.data, dict)
-    for key, value in result.data.items():
-        if key in data:
-            if data[key] is None or data[key] == "":
-                raise SakeException(
-                    f"the value of {key} should not be None.", command_name)
-            if value == data[key]:
-                continue
-            result.data[key] = data[key]
-
-
-def create_records(table_id: str, data: list, command_name: CommandName, session: Session) -> int:
+def create_records(table_id: str, records: list[dict], command_name: CommandName, session: Session) -> int:
     assert isinstance(table_id, str)
-    assert isinstance(data, list)
+    assert isinstance(records, list)
 
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).count()
 
     if result != 0:
         raise SakeException("Records already existed", command_name)
+    try:
+        key_values, key_types = RecordConverter.to_searchable_format(records)
+    except Exception as _:
+        raise SakeException("record convertion error", command_name)
 
-    sake = SakeStorage(tableid=table_id, data=data)
+    sake = SakeStorage(tableid=table_id,
+                       record=key_values,
+                       record_type=key_types)
 
     session.add(sake)
     session.commit()
@@ -247,19 +308,24 @@ def create_records(table_id: str, data: list, command_name: CommandName, session
     return sake.id
 
 
-def update_record(table_id: str, data: list, command_name: CommandName, session: Session) -> int:
+def update_record(table_id: str, records: list, command_name: CommandName, session: Session) -> int:
     """
     update record with new data and returns record id
     """
-    assert isinstance(data, list)
+    assert isinstance(records, list)
     result = session.query(SakeStorage).where(
         SakeStorage.tableid == table_id).first()
 
     if result is None:
-        raise SakeException("Records not existed", command_name)
-    assert isinstance(result.data, list)
+        raise SakeException("Records do not existed", command_name)
 
-    result.data = data  # type: ignore
+    try:
+        key_values, key_types = RecordConverter.to_searchable_format(records)
+    except Exception as _:
+        raise SakeException("record convertion error", command_name)
+
+    result.record = key_values  # type: ignore
+    result.record_type = key_types  # type: ignore
     session.commit()
     record_id: int = cast(int, result.id)
     return record_id
@@ -274,3 +340,9 @@ def delete_record(table_id: str, command_name: CommandName, session: Session) ->
 
     session.delete(result)
     session.commit()
+
+
+if __name__ == "__main__":
+    filter = "collectionID=5 AND version=11 AND attackerID=0 AND attackRating &gt; 30 AND attackRating &lt; 120"
+    con = _filter_to_sql_con(filter)
+    pass
