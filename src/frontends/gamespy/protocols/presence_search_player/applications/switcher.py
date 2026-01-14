@@ -1,5 +1,6 @@
-from typing import TYPE_CHECKING, Optional, cast
+from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import RequestType
 from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
@@ -12,6 +13,7 @@ from frontends.gamespy.protocols.presence_search_player.applications.client impo
 
 class Switcher(SwitcherBase):
     _raw_request: str
+    _client: Client
 
     def __init__(self, client: Client, raw_request: str):
         assert isinstance(client, Client)
@@ -22,10 +24,9 @@ class Switcher(SwitcherBase):
         if self._raw_request[0] != "\\":
             self._client.log_info("Invalid request received!")
             return
-        raw_requests = [
-            r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
+        raw_requests = split_nested_kv_str(self._raw_request)
         for raw_request in raw_requests:
-            name = raw_request.strip("\\").split("\\", 1)[0]
+            name = get_kv_str_name(raw_request)
             if name not in RequestType:
                 self._client.log_debug(
                     f"Request: {name} is not a valid request.")
@@ -34,9 +35,6 @@ class Switcher(SwitcherBase):
 
     def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
-        if TYPE_CHECKING:
-            self._client = cast(Client, self._client)
-
         match name:
             case RequestType.CHECK:
                 return CheckHandler(self._client, CheckRequest(raw_request))

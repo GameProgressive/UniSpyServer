@@ -1,4 +1,5 @@
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import RequestType
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import KeepAliveRequest, LoginRequest, LogoutRequest, StatusInfoRequest, StatusRequest, AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, NewUserRequest, RegisterNickRequest, UpdateProfileRequest
 from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import AddBlockHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
@@ -21,10 +22,9 @@ class Switcher(SwitcherBase):
     def _process_raw_request(self) -> None:
         if self._raw_request[0] != "\\":
             raise GPParseException("Request format is invalid")
-        raw_requests = [
-            r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
+        raw_requests = split_nested_kv_str(self._raw_request)
         for raw_request in raw_requests:
-            name = raw_request.strip("\\").split("\\")[0]
+            name = get_kv_str_name(raw_request)
             if name not in RequestType:
                 self._client.log_debug(
                     f"Request: {name} is not a valid request.")

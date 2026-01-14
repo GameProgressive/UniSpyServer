@@ -1,7 +1,7 @@
 
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import Client
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPException
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import EXCEPTIONS, GPException
 
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     RequestBase,
@@ -18,6 +18,8 @@ class CmdHandlerBase(lib.CmdHandlerBase):
     def __init__(self, client: Client, request: RequestBase) -> None:
         assert isinstance(client, Client)
         assert issubclass(type(request), RequestBase)
+        self._exceptions_mapping = EXCEPTIONS
+
         super().__init__(client, request)
 
     def _handle_exception(self, ex) -> None:
