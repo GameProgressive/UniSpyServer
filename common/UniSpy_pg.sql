@@ -543,8 +543,7 @@ ALTER TABLE unispy.relay_server_caches OWNER TO unispy;
 CREATE TABLE unispy.sakestorage (
     id SERIAL PRIMARY KEY NOT NULL,
     tableid character varying NOT NULL,
-    record jsonb,
-    record_type jsonb
+    record jsonb
 );
 
 
@@ -5380,7 +5379,7 @@ COPY unispy.relay_server_caches (id, public_ip, public_port, client_count, updat
 -- Data for Name: sakestorage; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.sakestorage (id, tableid, record, record_type) FROM stdin;
+COPY unispy.sakestorage (id, tableid, record) FROM stdin;
 \.
 
 

@@ -34,7 +34,7 @@ class SakeRequestBase(WebRequestBase):
 
 
 class CreateRecordRequest(SakeRequestBase):
-    records: list
+    records: dict
 
 
 class DeleteRecordRequest(SakeRequestBase):
@@ -78,7 +78,7 @@ class SearchForRecordsRequest(SakeRequestBase):
 
 class UpdateRecordRequest(SakeRequestBase):
     record_id: str
-    records: list
+    records: dict
 
 
 class GetRecordCountRequest(SakeRequestBase):

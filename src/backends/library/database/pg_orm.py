@@ -201,7 +201,6 @@ class SakeStorage(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     tableid = Column(String, nullable=False)
     record: Column[JSONB] = Column(JSONB, nullable=False)
-    record_type: Column[JSONB] = Column(JSONB, nullable=False)
 
 
 class InitPacketCaches(Base):

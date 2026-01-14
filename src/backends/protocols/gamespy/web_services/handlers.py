@@ -279,9 +279,9 @@ class GetMyRecordsHandler(HandlerBase):
 
     def _data_operate(self):
         self._data = data.get_my_records(self._request.table_id,
-                                           self._request.fields,
-                                           self._request.command_name,
-                                           self._session)
+                                         self._request.fields,
+                                         self._request.command_name,
+                                         self._session)
 
     def _result_construct(self) -> None:
         self._result = GetMyRecordsResult(
@@ -298,10 +298,11 @@ class SearchForRecordsHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.search_for_record(
-            self._request.table_id, 
+            self._request.table_id,
             self._request.max,
+            self._request.filter,
             self._request.fields,
-            self._request.command_name, 
+            self._request.command_name,
             self._session)
 
     def _result_construct(self) -> None:
