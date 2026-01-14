@@ -1,5 +1,6 @@
 from typing import cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.game_status.aggregations.enums import RequestType
 from frontends.gamespy.protocols.game_status.applications.client import Client
@@ -22,7 +23,7 @@ class Switcher(SwitcherBase):
         raw_requests = [
             r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
-            name = raw_request.strip("\\").split("\\", 1)[0]
+            name = get_kv_str_name(raw_request)
             if name not in RequestType:
                 self._client.log_debug(
                     f"Request: {name} is not a valid request.")

@@ -11,7 +11,7 @@ if __name__ == "__main__":
     from frontends.gamespy.protocols.presence_connection_manager.applications.server_launcher import Service as pcm
     from frontends.gamespy.protocols.presence_search_player.applications.server_launcher import Service as psp
     from frontends.gamespy.protocols.query_report.applications.server_launcher import Service as qr
-    from frontends.gamespy.protocols.server_browser.applications.server_launcher import Service as sb
+    from frontends.gamespy.protocols.server_browser.applications.server_launcher import ServiceV2 as sb
     from frontends.gamespy.protocols.web_services.applications.server_launcher import Service as web
 
     from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory
