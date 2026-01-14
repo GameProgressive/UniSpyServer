@@ -99,3 +99,17 @@ def format_network_message(
         tempLog = convert_nonprintable_bytes_to_hex_string(message)
 
     return f"[{type}] {tempLog}"
+
+
+def get_kv_str_name(kv_str: str) -> str:
+    """
+    get the command name of the key value string\n
+    eg: \\gamename\\\\key1\\value1\\key2\\value2
+    """
+    name = kv_str.strip("\\").split("\\", 1)[0]
+    return name
+
+
+def split_nested_kv_str(kv_str: str) -> list[str]:
+    kv_list = [r+"\\final\\" for r in kv_str.split("\\final\\") if r]
+    return kv_list

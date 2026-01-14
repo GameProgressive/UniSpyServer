@@ -13,12 +13,12 @@ class UpdateRecordResult(ResultBase):
 
 
 class GetMyRecordsResult(ResultBase):
-    records: list[dict]
+    records: dict
     fields: list[str]
 
 
 class SearchForRecordsResult(ResultBase):
-    records_list: list[list[dict]]
+    records_list: list[dict]
     fields: list[str]
 
 

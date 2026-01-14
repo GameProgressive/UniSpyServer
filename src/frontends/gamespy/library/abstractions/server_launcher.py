@@ -17,7 +17,7 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
         "PresenceConnectionManager": "PCM",
         "PresenceSearchPlayer": "PSP",
         "CDKey": "CDKey",
-        "ServerBrwoserV1": "SBv1",
+        "ServerBrowserV1": "SBv1",
         "ServerBrowserV2": "SBv2",
         "QueryReport": "QR",
         "NatNegotiation": "NN",

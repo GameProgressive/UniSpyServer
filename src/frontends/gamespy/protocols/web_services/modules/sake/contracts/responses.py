@@ -1,6 +1,7 @@
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResponseBase
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import SakeCode
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
 from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, DeleteRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
 
 
@@ -44,7 +45,8 @@ class GetMyRecordsResponse(ResponseBase):
         self._content.add("GetMyRecordsResult", SakeCode.SUCCESS.value)
         self._content.add("values")
         if len(self._result.records) != 0:
-            values = [record['value'] for record in self._result.records]
+            gamespy_record = RecordConverter.to_gamespy_format(self._result.records)
+            values = [record['value'] for record in gamespy_record]
             self._content.add("ArrayOfRecordValue", {
                 "RecordValue": values})
         super().build()
@@ -83,8 +85,9 @@ class SearchForRecordsResponse(ResponseBase):
         self._content.add("values")
         if len(self._result.records_list) != 0:
             for record in self._result.records_list:
+                gamespy_record = RecordConverter.to_gamespy_format(record)
                 record_value = []
-                for values in record:
+                for values in gamespy_record:
                     record_value.append(values['value'])
                 self._content.add("ArrayOfRecordValue", {
                     "RecordValue": record_value})

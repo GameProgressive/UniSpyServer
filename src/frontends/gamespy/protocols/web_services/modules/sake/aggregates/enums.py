@@ -40,3 +40,16 @@ class CommandName(Enum):
     RATE_RECORD = "RateRecord"
     DELETE_RECORD = "DeleteRecord"
     UPDATE_RECORD = "UpdateRecord"
+
+
+class SakeRecordType(Enum):
+    BYTE = "byteValue"
+    SHORT = "shortValue"
+    INT = "intValue"
+    INT64 = "int64Value"
+    FLOAT = "floatValue"
+    ASCII = "asciiStringValue"
+    UNICODE = "unicodeStringValue"
+    BOOL = "booleanValue"
+    DATE = "dateAndTimeValue"
+    BINARY = "binaryDataValue"

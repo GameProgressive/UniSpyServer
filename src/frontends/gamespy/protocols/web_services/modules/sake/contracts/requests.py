@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions
 
 
 class CreateRecordRequest(RequestBase):
-    records: list
+    records: dict
     """
     (name,type,value)
     """
@@ -15,6 +15,7 @@ class CreateRecordRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.records = self._get_record_field()
+        
 
     def _get_dict(self, attr_name: str) -> dict:
         try:
@@ -127,7 +128,10 @@ class SearchForRecordsRequest(RequestBase):
         super().parse()
         filter = self._get_value_by_key("filter")
         if filter is not None:
-            self.filter = self._get_str("filter")
+            filter_str = self._get_str("filter")
+            self.filter = filter_str.replace(
+                " &gt; ", " > ").replace(" &lt; ", " < ").replace(" &ge ", " >= ").replace(" &le ", " <= ")
+            
         sort = self._get_value_by_key("sort")
         if sort is not None:
             self.sort = self._get_str("sort")
@@ -150,7 +154,7 @@ class SearchForRecordsRequest(RequestBase):
 
 class UpdateRecordRequest(RequestBase):
     record_id: str
-    records: list
+    records: dict
     """
     [
     (field_name,field_type,field_value),
@@ -169,8 +173,7 @@ class UpdateRecordRequest(RequestBase):
 
 class GetRecordCountRequest(RequestBase):
     filter: str
-    
+
     def parse(self) -> None:
         super().parse()
         self.filter = self._get_str("filter")
-

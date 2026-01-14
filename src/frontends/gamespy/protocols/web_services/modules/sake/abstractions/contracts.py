@@ -7,6 +7,7 @@ from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums impo
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
 )
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
 
 NAMESPACE = "http://gamespy.net/sake"
 
@@ -69,7 +70,7 @@ class RequestBase(lib.RequestBase):
                     "session token is missing", self.command_name)
             self.login_ticket = self._http_data.headers["SessionToken"]
 
-    def _get_record_field(self) -> list:
+    def _get_record_field(self) -> dict:
         rf = self._get_dict("values")
         if "RecordField" not in rf:
             raise SakeException("No record field tag found", self.command_name)
@@ -79,7 +80,8 @@ class RequestBase(lib.RequestBase):
         if not isinstance(values, list):
             raise SakeException(
                 "record field value is not dict", self.command_name)
-        return values
+        s_value = RecordConverter.to_searchable_format(values)
+        return s_value
 
     def _get_str(self, attr_name: str) -> str:
         try:
