@@ -234,8 +234,8 @@ class SakeTests(unittest.TestCase):
     def test_records_format_convert(self):
         records = [{"name": "MyAsciiString", "value": {
             "asciiStringValue": {"value": "this is a record"}}}]
-        values, types = RecordConverter.to_searchable_format(records)
-        records2 = RecordConverter.to_gamespy_format(values, types)
+        values = RecordConverter.to_searchable_format(records)
+        records2 = RecordConverter.to_gamespy_format(values)
         self.assertEqual(records, records2)
 
 
