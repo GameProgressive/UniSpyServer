@@ -6,7 +6,7 @@
 
 UniSpy is a GameSpy Project that aims to create GameSpy services.
 
-The server is written in C# and is inspired by the old OpenSpy project.
+The server is written in python and is inspired by the old OpenSpy project.
 
 ## Information & Documentation
 See the [wiki](https://github.com/GameProgressive/UniSpyServer/wiki) for more information about project and the UniSpy Server.
