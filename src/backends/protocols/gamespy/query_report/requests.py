@@ -4,7 +4,6 @@ import backends.library.abstractions.contracts as lib
 
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType as V2RequestType
-
 from frontends.gamespy.protocols.query_report.v1.aggregates.enums import RequestType as V1RequestType
 
 
@@ -44,7 +43,7 @@ class HeartBeatRequest(RequestBase):
 
 
 
-class LegacyHeartbeatRequest(lib.RequestBase):
+class HeartbeatRequestV1(lib.RequestBase):
     command_name: V1RequestType
     raw_request: str
     query_id: str

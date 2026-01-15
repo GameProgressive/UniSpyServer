@@ -1,17 +1,16 @@
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
-from backends.library.abstractions.contracts import RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.query_report.broker import BROCKER, MANAGER
 import backends.protocols.gamespy.query_report.data as data
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
-from backends.protocols.gamespy.server_browser.requests import (
+from backends.protocols.gamespy.server_browser.v2.requests import (
     AdHocRequestBase,
     SendMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
-from backends.protocols.gamespy.server_browser.responses import P2PGroupRoomListResponse, SendMessageResponse, ServerFullInfoListResponse, ServerInfoResponse
+from backends.protocols.gamespy.server_browser.v2.responses import P2PGroupRoomListResponse, SendMessageResponse, ServerFullInfoListResponse, ServerInfoResponse, ServerInfoResponse, ServerMainListResponse
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
@@ -30,10 +29,10 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     ServerMainListResult,
     ServerFullInfoListResult,
 )
-from backends.protocols.gamespy.server_browser.responses import ServerInfoResponse, ServerMainListResponse
-
 
 # region Server list
+
+
 class P2PGroupRoomListHandler(HandlerBase):
     _request: ServerListRequest
     _caches: list[PeerRoomInfo]

@@ -9,6 +9,7 @@ class RequestBase(lib.RequestBase):
     raw_request: str
 
 
+
 class ServerListUpdateOptionRequestBase(RequestBase):
     request_version: int
     protocol_version: int

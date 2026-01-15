@@ -185,9 +185,9 @@ class SakeTests(unittest.TestCase):
         self.assertEqual("158", request.record_id)
 
         # TODO: Deserialization of RecordFields
-        self.assertEqual("MyByte", request.records[0]["name"])
+        self.assertEqual("MyByte", list(request.records)[0])
         self.assertEqual(
-            "123", request.records[0]["value"]["byteValue"]["value"])
+            "123", request.records['MyByte']["value"])
 
     @responses.activate
     def test_create_record(self):
@@ -198,12 +198,12 @@ class SakeTests(unittest.TestCase):
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("test", request.table_id)
 
-        self.assertEqual("MyAsciiString", request.records[0]["name"])
-        self.assertEqual("asciiStringValue", list(
-            request.records[0]["value"])[0])
+        self.assertEqual("MyAsciiString", list(request.records)[0])
+        self.assertEqual("asciiStringValue",
+                         request.records['MyAsciiString']['type'])
         self.assertEqual(
-            "this is a record", request.records[0]["value"]["asciiStringValue"]["value"]
-        )
+            "this is a record",
+            request.records['MyAsciiString']['value'])
 
     @responses.activate
     def test_samuzombie2_get_my_records(self):

@@ -6,7 +6,7 @@ from backends.protocols.gamespy.query_report.requests import (
     ClientMessageRequest,
     HeartBeatRequest,
     KeepAliveRequest,
-    LegacyHeartbeatRequest,
+    HeartbeatRequestV1,
 )
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
@@ -85,12 +85,12 @@ class HeartbeatHandler(HandlerBase):
             )
 
 
-class LegacyHeartbeatHandler(HandlerBase):
+class HeartbeatHandlerV1(HandlerBase):
     """
     same as HeartbeatHandler
     The v1 protocol heartbeat do not have instantkey
     """
-    _request: LegacyHeartbeatRequest
+    _request: HeartbeatRequestV1
     response: OKResponse
 
     def _data_operate(self) -> None:

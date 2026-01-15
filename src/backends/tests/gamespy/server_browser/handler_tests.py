@@ -1,9 +1,9 @@
 import unittest
-from backends.protocols.gamespy.server_browser.handlers import (
+from backends.protocols.gamespy.server_browser.v2.handlers import (
     ServerInfoHandler,
     ServerMainListHandler,
 )
-from backends.protocols.gamespy.server_browser.requests import (
+from backends.protocols.gamespy.server_browser.v2.requests import (
     ServerInfoRequest,
     ServerListRequest,
 )

@@ -2,9 +2,9 @@ from fastapi import APIRouter, WebSocket
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.query_report.broker import MANAGER, launch_brocker
 from backends.protocols.gamespy.query_report.handlers import (
-    AvaliableHandler, HeartbeatHandler, KeepAliveHandler, LegacyHeartbeatHandler)
+    AvaliableHandler, HeartbeatHandler, KeepAliveHandler, HeartbeatHandlerV1)
 from backends.protocols.gamespy.query_report.requests import (
-    AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest, LegacyHeartbeatRequest)
+    AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest, HeartbeatRequestV1)
 from backends.urls import QUERY_REPORT
 
 
@@ -53,8 +53,8 @@ def keep_alive(request: KeepAliveRequest) -> OKResponse:
 
 
 @router.post(f"{QUERY_REPORT}/LegacyHeartbeatHandler", responses=RESPONSES_DEF)
-def legacy_heartbeat(request: LegacyHeartbeatRequest) -> OKResponse:
-    handler = LegacyHeartbeatHandler(request)
+def legacy_heartbeat(request: HeartbeatRequestV1) -> OKResponse:
+    handler = HeartbeatHandlerV1(request)
     handler.handle()
     return handler.response
 

@@ -3,9 +3,10 @@ from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
-from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import Modifier, RequestType
 from frontends.gamespy.protocols.server_browser.v1.applications.client import Client
+from frontends.gamespy.protocols.server_browser.v1.applications.handlers import GroupListHandler, ServerInfoHandler, ServerListCompressHandler
+from frontends.gamespy.protocols.server_browser.v1.contracts.requests import ServerListRequest
 from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
 
 
@@ -42,14 +43,16 @@ class Switcher(SwitcherBase):
         request_dict = convert_to_key_value(raw_request)
         modifier = request_dict.get("list")
         if modifier is None:
-            raise QRException("modifier is missing")
+            raise SBException("modifier is missing")
         modifier = Modifier(modifier)
-        
-        raise NotImplementedError("Server list is not implemented")
+
+        # raise NotImplementedError("Server list is not implemented")
         match modifier:
             case Modifier.COMPRESS:
-                pass
+                return ServerListCompressHandler(self._client, ServerListRequest(self._raw_request))
             case Modifier.INFO:
-                pass
+                return ServerInfoHandler(self._client, ServerListRequest(self._raw_request))
             case Modifier.GROUPS:
-                pass
+                return GroupListHandler(self._client, ServerListRequest(self._raw_request))
+            case _:
+                raise SBException(f"unknown modifier {modifier}")

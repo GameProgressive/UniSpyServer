@@ -8,6 +8,13 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     ServerFullInfoListResult,
 )
 
+# region v1
+
+
+
+
+# region v2
+
 
 class ServerFullInfoListResponse(DataResponse):
     result: ServerFullInfoListResult
