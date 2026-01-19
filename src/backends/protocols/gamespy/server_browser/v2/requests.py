@@ -8,9 +8,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 class RequestBase(lib.RequestBase):
     raw_request: str
 
-
-
-class ServerListUpdateOptionRequestBase(RequestBase):
+class ServerListRequest(RequestBase):
     request_version: int
     protocol_version: int
     encoding_version: int
@@ -24,10 +22,6 @@ class ServerListUpdateOptionRequestBase(RequestBase):
     max_servers: int | None = None
     source_ip: str | None = None
     query_options: int | None = None
-
-
-class ServerListRequest(ServerListUpdateOptionRequestBase):
-    pass
 
 
 class AdHocRequestBase(RequestBase):

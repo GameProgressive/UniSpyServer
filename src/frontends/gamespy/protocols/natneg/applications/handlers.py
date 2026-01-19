@@ -117,7 +117,7 @@ class InitHandler(CmdHandlerBase):
 
     _request: InitRequest
     _client: Client
-    _result: InitResult
+    # _result: InitResult
     # _response: InitResponse
 
     def __init__(self, client: Client, request: InitRequest) -> None:

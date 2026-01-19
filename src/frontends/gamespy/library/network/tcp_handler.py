@@ -50,9 +50,9 @@ class TcpHandler(socketserver.BaseRequestHandler):
             except Exception as e:
                 self.conn.on_disconnected()
                 if str(e):
-                    self.server.unispy_params.logger.error(e)  # type: ignore
+                    self.server.unispy_params[2].error(e)  # type: ignore
                 else:
-                    self.server.unispy_params.logger.error(type(e).__name__)  # type: ignore
+                    self.server.unispy_params[2].error(type(e).__name__)  # type: ignore
         pass
 
 
@@ -67,7 +67,7 @@ class TcpServer(NetworkServerBase):
             TcpHandler,
             bind_and_activate=False
         )
-        self._server.allow_reuse_address = True  # type:ignore
+        self._server.allow_reuse_address = True
         self._server.unispy_params = (  # type: ignore
             self._config, self._client_cls, self._logger)
         self._server.server_bind()

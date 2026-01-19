@@ -40,6 +40,7 @@ class UdpServer(NetworkServerBase):
             (self._config.listening_address, self._config.listening_port),
             UdpHandler,
         )
+        self._server.allow_reuse_address = True
         # inject the handler params to ThreadingUDPServer
         self._server.unispy_params = (  # type: ignore
             self._config, self._client_cls, self._logger)

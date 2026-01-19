@@ -40,6 +40,7 @@ class IntEnum(TypeDecorator):
     def __init__(self, enumtype, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._enumtype = enumtype
+        self.cache_ok = True
 
     def process_bind_param(self, value: enum.Enum, dialect):
         return value.value
@@ -48,9 +49,6 @@ class IntEnum(TypeDecorator):
         return self._enumtype(value)
 
 
-# Base: DeclarativeMeta = declarative_base()
-# if TYPE_CHECKING:
-#     Base = cast(DeclarativeMeta, Base)
 class Base(DeclarativeBase):
     pass
 
@@ -77,7 +75,7 @@ class Profiles(Base):
     profileid: Column[int] = Column(
         Integer, primary_key=True, autoincrement=True)
     userid: Column[int] = Column(
-        Integer, ForeignKey("users.userid"), nullable=False)
+        Integer, ForeignKey(Users.userid), nullable=False)
     nick: Column[str] = Column(String, nullable=False)
     serverflag: Column[int] = Column(Integer, nullable=False, default=0)
     status = Column(IntEnum(GPStatusCode), default=GPStatusCode.OFFLINE)
@@ -92,7 +90,7 @@ class SubProfiles(Base):
         Integer,  primary_key=True, autoincrement=True
     )
     profileid: Column[int] = Column(
-        Integer, ForeignKey("profiles.profileid"), nullable=False)
+        Integer, ForeignKey(Profiles.profileid), nullable=False)
     uniquenick: Column[str] = Column(String)
     namespaceid: Column[int] = Column(Integer, nullable=False, default=0)
     partnerid: Column[int] = Column(Integer, nullable=False, default=0)
@@ -110,7 +108,7 @@ class Blocked(Base):
 
     blockid = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+        Profiles.profileid), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     targetid = Column(Integer, nullable=False)
 
@@ -120,7 +118,7 @@ class Friends(Base):
 
     friendid = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+        Profiles.profileid), nullable=False)
     targetid = Column(Integer, nullable=False)
     namespaceid = Column(Integer, nullable=False)
 
@@ -130,9 +128,9 @@ class FriendAddRequest(Base):
 
     addrequestid = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+        Profiles.profileid), nullable=False)
     targetid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+        Profiles.profileid), nullable=False)
     namespaceid = Column(Integer, nullable=False)
     reason = Column(String, nullable=False)
     status = Column(
@@ -154,7 +152,7 @@ class Games(Base):
 class GroupList(Base):
     __tablename__ = "grouplist"
     groupid = Column(Integer, primary_key=True)
-    gameid = Column(Integer, ForeignKey("games.gameid"), nullable=False)
+    gameid = Column(Integer, ForeignKey(Games.gameid), nullable=False)
     roomname = Column(Text, nullable=False)
 
 
@@ -179,7 +177,7 @@ class PStorage(Base):
     __tablename__ = "pstorage"
     id = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
-        "profiles.profileid"), nullable=False)
+        Profiles.profileid), nullable=False)
     ptype = Column(Integer, nullable=False)
     dindex = Column(Integer, nullable=False)
     data = Column(String, nullable=False)
@@ -286,7 +284,7 @@ class ChatChannelUserCaches(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nick_name = Column(
         String,
-        ForeignKey("chat_user_caches.nick_name"),
+        ForeignKey(ChatUserCaches.nick_name),
         nullable=False,
     )
     user_name = Column(
@@ -295,7 +293,7 @@ class ChatChannelUserCaches(Base):
         nullable=False,
     )
     channel_name = Column(
-        String, ForeignKey("chat_channel_caches.channel_name"), nullable=False
+        String, ForeignKey(ChatChannelCaches.channel_name), nullable=False
     )
     server_id = Column(UUID, nullable=False)
     update_time = Column(DateTime, nullable=False, default=datetime.now())
