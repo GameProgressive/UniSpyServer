@@ -15,7 +15,6 @@ class CreateRecordRequest(RequestBase):
     def parse(self) -> None:
         super().parse()
         self.records = self._get_record_field()
-        
 
     def _get_dict(self, attr_name: str) -> dict:
         try:
@@ -131,7 +130,7 @@ class SearchForRecordsRequest(RequestBase):
             filter_str = self._get_str("filter")
             self.filter = filter_str.replace(
                 " &gt; ", " > ").replace(" &lt; ", " < ").replace(" &ge ", " >= ").replace(" &le ", " <= ")
-            
+
         sort = self._get_value_by_key("sort")
         if sort is not None:
             self.sort = self._get_str("sort")
@@ -172,8 +171,8 @@ class UpdateRecordRequest(RequestBase):
 
 
 class GetRecordCountRequest(RequestBase):
-    filter: str
+    cache_flag: str
 
     def parse(self) -> None:
         super().parse()
-        self.filter = self._get_str("filter")
+        self.cache_flag = self._get_str("cacheFlag")

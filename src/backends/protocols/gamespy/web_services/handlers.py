@@ -320,7 +320,7 @@ class GetRecordCountHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._count = data.count_for_record(
-            self._request.filter, self._request.command_name, self._session)
+            self._request.table_id, self._request.command_name, self._session)
 
     def _result_construct(self) -> None:
         self._result = GetRecordCountResult(

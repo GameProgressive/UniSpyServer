@@ -82,7 +82,7 @@ class UpdateRecordRequest(SakeRequestBase):
 
 
 class GetRecordCountRequest(SakeRequestBase):
-    filter: str
+    cache_flag: str
 # region Auth
 
 

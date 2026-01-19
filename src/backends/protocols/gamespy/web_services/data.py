@@ -228,13 +228,9 @@ def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:
     return and_(*sql_cons)
 
 
-def count_for_record(filter: str, command_name: CommandName, session: Session) -> int:
-    try:
-        queries: ColumnExpressionArgument[bool] = _filter_to_sql_con(filter)
-    except Exception as _:
-        raise SakeException("query filter convertion error", command_name)
-
-    result = session.query(SakeStorage).where(queries).count()
+def count_for_record(table_id: str, command_name: CommandName, session: Session) -> int:
+    result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).count()
     return result
 
 # def _check_record_integrety(sake:SakeStorage)->bool:

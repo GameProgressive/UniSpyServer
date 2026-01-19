@@ -40,7 +40,7 @@ class CommandName(Enum):
     RATE_RECORD = "RateRecord"
     DELETE_RECORD = "DeleteRecord"
     UPDATE_RECORD = "UpdateRecord"
-
+    GET_RECORD_COUNT = "GetRecordCount"
 
 class SakeRecordType(Enum):
     BYTE = "byteValue"
