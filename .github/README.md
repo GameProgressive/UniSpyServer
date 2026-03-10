@@ -32,10 +32,13 @@ This project is licensed under the [GNU Affero General Public License v3.0](../L
 
 ## How to run
 * Run ```docker network create unispy``` to setup a network for unispy
+* Run ```docker build -f Dockerfile -t unispy-python .``` to build the docker image used for compose services
 * Run ```docker compose -f docker-compose-unispy-env.yml up -d``` to setup postgresql and redis
-* Run ```export UNISPY_CONFIG='<path of config.json>'``` to setup env config file path, remember replace symbol ```<path of config.json>``` with config file path
-* Open with vscode:
-  * Use vscode to open the src folder and reopen in devcontainer (make sure your vscode have devcontainer extension)
-* open with github codespace:
-  * add ```unispy_config = "<path of config.json>"``` after the line of ```unispy_config = os.environ.get("UNISPY_CONFIG")``` in config.py  (for unittest working)
-  * github codespace vscode web can not install devcontainer, the project can not running in docker network ```unispy```. Therefore, replace ```"server": "unispy_postgresql"``` and ```"server": "unispy_redis"``` to ```"server": "localhost"``` in config.json to use localhost postgres and redis in docker (we already setup)
+* Run ```export UNISPY_CONFIG='<path of config.json>'``` to setup env config file path, remember replace symbol ```<path of config.json>``` with config file path (This is optional, if not config env the program will read the config file in common folder by default)
+
+## How to develop
+* Open with local vscode:
+  * Use vscode to open the src folder in devcontainer (make sure your vscode have devcontainer extension)
+  * Run ```pip install -r requirements.txt``` to install the pip packages
+* Open with github codespace:
+  * Github codespace vscode web can not install devcontainer, the project can not running in docker network ```unispy```. Therefore, replace ```http://unispy_backends:8080``` to ```http://localhost:8080``` and ```unispy_postgresql```, ```unispy_redis``` to ```localhost``` in config.json to use localhost postgres and redis in docker (we already setup in docker-compose-unispy-env.yml)
