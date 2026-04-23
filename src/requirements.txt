@@ -3,7 +3,7 @@ prettytable == 3.11.0
 psycopg2-binary == 2.9.10
 sqlalchemy == 2.0.36
 email_validator == 2.1.1
-requests == 2.32.3
+requests == 2.32.4
 fastapi[standard] == 0.115.4
 xmltodict == 0.14.2
 responses == 0.25.3
