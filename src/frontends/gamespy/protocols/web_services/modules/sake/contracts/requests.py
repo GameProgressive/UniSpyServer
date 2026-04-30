@@ -121,7 +121,6 @@ class SearchForRecordsRequest(RequestBase):
         self.sort = None
         self.owner_ids = None
         self.surrounding = None
-        self.catch_flag = None
 
     def parse(self) -> None:
         super().parse()
@@ -145,10 +144,6 @@ class SearchForRecordsRequest(RequestBase):
         if owner_ids is not None:
             owner_dict = self._get_dict("ownerids")
             self.owner_ids = list(owner_dict.values())[0]
-        cache_flag = self._get_value_by_key("cacheFlag")
-        if cache_flag is not None:
-            self.cache_flag = self._get_str("cacheFlag")
-            self.fields = self._get_dict("fields")["string"]
 
 
 class UpdateRecordRequest(RequestBase):
@@ -171,8 +166,4 @@ class UpdateRecordRequest(RequestBase):
 
 
 class GetRecordCountRequest(RequestBase):
-    cache_flag: str
-
-    def parse(self) -> None:
-        super().parse()
-        self.cache_flag = self._get_str("cacheFlag")
+    pass

@@ -1,4 +1,3 @@
-import hashlib
 from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib

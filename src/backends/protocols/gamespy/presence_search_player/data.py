@@ -1,12 +1,14 @@
 from typing import TYPE_CHECKING, cast
 from sqlalchemy import Column
 from backends.library.database.pg_orm import (
-    Friends,
+    Friendlist,
     Profiles,
     SubProfiles,
     Users,
 )
 from sqlalchemy.orm import Session
+
+from frontends.gamespy.protocols.presence_search_player.contracts.results import SearchResultData
 
 
 def db_commit(session: Session) -> None:
@@ -168,10 +170,10 @@ def get_friend_info_list(
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .join(Friends, Profiles.profileid == Friends.friendid)
+        .join(Friendlist, Profiles.profileid == Friendlist.profileid)
         # todo check whether friends table join is correct
         .where(
-            Friends.profileid == profile_id,
+            Friendlist.profileid == profile_id,
             SubProfiles.namespaceid == namespace_id,
             SubProfiles.gamename == game_name,
         )
@@ -353,7 +355,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
 
 def get_matched_info_by_uniquenick_and_namespaceids(
     unique_nick: str, namespace_ids: list[int], session: Session
-) -> list[dict]:
+) -> list[SearchResultData]:
     result = (
         session.query(
             Profiles.profileid,
@@ -369,21 +371,22 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         )
         .all()
     )
-    data: list[dict] = []
+    data: list[SearchResultData] = []
     for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
         lastname = extra_info.get("lastname", "")
-        t = {
-            "profile_id": profile_id,
-            "nick": nick,
-            "uniquenick": uniquenick,
-            "email": email,
-            "namespace_id": namespace_id,
-            "firstname": firstname,
-            "lastname": lastname,
-        }
+        t = SearchResultData(
+            profile_id=profile_id,
+            nick=nick,
+            uniquenick=unique_nick,
+            email=email,
+            namespace_id=namespace_id,
+            firstname=firstname,
+            lastname=lastname
+        )
+
         data.append(t)
 
     return data

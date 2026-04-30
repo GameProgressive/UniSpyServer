@@ -1,5 +1,5 @@
 from backends.library.abstractions.contracts import DataResponse
-from frontends.gamespy.protocols.presence_connection_manager.contracts.results import BlockListResult, BuddyListResult, GetProfileResult, LoginResult
+from frontends.gamespy.protocols.presence_connection_manager.contracts.results import BlockListResult, BuddyListResult, BuddyMessageFriendAddResult, GetProfileResult, LoginResult
 
 
 class LoginResponse(DataResponse):
@@ -16,3 +16,7 @@ class BlockListResponse(DataResponse):
 
 class GetProfileResponse(DataResponse):
     result: GetProfileResult
+
+
+class BuddyMessageFriendAddResponse(DataResponse):
+    result: BuddyMessageFriendAddResult

@@ -108,7 +108,7 @@ class RequestTests(unittest.TestCase):
     def test_add_block(self) -> None:
         request = AddBlockRequest(ADD_BLOCK)
         request.parse()
-        self.assertEqual(0, request.taget_id)
+        self.assertEqual(0, request.taget_profile_id)
 
     def test_get_profile(self) -> None:
         request = GetProfileRequest(GET_PROFILE)
@@ -151,13 +151,13 @@ class RequestTests(unittest.TestCase):
     def test_add_buddy(self) -> None:
         request = AddBuddyRequest(ADD_BUDDY)
         request.parse()
-        self.assertEqual(0, request.friend_profile_id)
+        self.assertEqual(0, request.target_profile_id)
         self.assertEqual("test", request.reason)
 
     def test_del_buddy(self) -> None:
         request = DelBuddyRequest(DEL_BUDDY)
         request.parse()
-        self.assertEqual(0, request.friend_profile_id)
+        self.assertEqual(0, request.target_profile_id)
 
     def test_invite_to(self) -> None:
         request = InviteToRequest(INVITE_TO)

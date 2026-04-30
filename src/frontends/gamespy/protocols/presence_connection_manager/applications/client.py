@@ -20,6 +20,7 @@ class ClientInfo(ClientInfoBase):
     login_status: LoginStatus
     namespace_id: int
     sdk_revision: list[SdkRevisionType]
+    session_key: str
 
     def __init__(self) -> None:
         super().__init__()

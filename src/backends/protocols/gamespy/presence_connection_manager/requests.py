@@ -20,9 +20,15 @@ class ErrorOnParse(RequestBase):
 
 
 class AddBlockRequest(RequestBase):
-    taget_id: int
-    profile_id: int
-    session_key: str
+    taget_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
+
+
+class RemoveBlockRequest(RequestBase):
+    target_profile_id: int
+    namespace_id: int
+    sender_profile_id: int
 
 
 class BuddyListRequest(RequestBase):
@@ -40,16 +46,33 @@ class BlockListRequest(RequestBase):
 
 
 class AddBuddyRequest(RequestBase):
-    profile_id: int
-    target_id: int
+    target_profile_id: int
+    sender_profile_id: int
     namespace_id: int
     reason: str
 
 
-class DelBuddyRequest(RequestBase):
+class BuddyMessageFriendAddRequest(RequestBase):
     profile_id: int
-    target_id: int
     namespace_id: int
+    operation_id: int
+    raw_request: str | None = None
+
+
+class DelBuddyRequest(RequestBase):
+    target_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
+    session_key: str
+
+
+class AuthAddBuddyRequest(RequestBase):
+    session_key: str
+    receiver_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
+    sig: str
+    auto_sync: bool
 
 
 class InviteToRequest(RequestBase):

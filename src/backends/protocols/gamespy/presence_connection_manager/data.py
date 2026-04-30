@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column
 from backends.library.database.pg_orm import (
-    Blocked,
-    FriendAddRequest,
-    Friends,
+    Blacklist,
+    FriendRequest,
+    Friendlist,
     Profiles,
     SubProfiles,
     Users,
@@ -27,7 +27,9 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPException,
 )
 import backends.protocols.gamespy.presence_search_player.data as psp
-
+from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
+    BuddyMessageFriendAddData,
+)
 # region General
 from sqlalchemy.orm import Session
 
@@ -47,9 +49,11 @@ def update_online_time(ip: str, port: int, session: Session):
     session.commit()
 
 
-def delete_friend_by_profile_id(profile_id: int, session: Session):
-    friend = session.query(Friends).where(
-        Friends.friendid == profile_id).first()
+def del_buddy(target_profile_id: int, session_key: str, session: Session):
+    friend = session.query(Friendlist).where(
+        Friendlist.targetid == target_profile_id,
+        SubProfiles.session_key == session_key
+    ).first()
     if friend is None:
         raise GPDatabaseException(
             f"friend deletion have errors on profile id:{profile_id}"
@@ -63,8 +67,8 @@ def get_blocked_profile_id_list(
     profile_id: int, namespace_id: int, session: Session
 ) -> list[int]:
     result = (
-        session.query(Blocked.targetid)
-        .where(Blocked.profileid == profile_id, Blocked.namespaceid == namespace_id)
+        session.query(Blacklist.targetid)
+        .where(Blacklist.profileid == profile_id, Blacklist.namespaceid == namespace_id)
         .all()
     )
     if TYPE_CHECKING:
@@ -76,8 +80,8 @@ def get_friend_profile_id_list(
     profile_id: int, namespace_id: int, session: Session
 ) -> list[int]:
     result = (
-        session.query(Friends.targetid)
-        .where(Friends.profileid == profile_id, Friends.namespaceid == namespace_id)
+        session.query(Friendlist.targetid)
+        .where(Friendlist.profileid == profile_id, Friendlist.namespaceid == namespace_id)
         .all()
     )
     if TYPE_CHECKING:
@@ -107,21 +111,13 @@ def get_profile_infos(
         assert isinstance(SubProfiles.namespaceid, Column)
         assert isinstance(SubProfiles.session_key, Column)
 
-        namespace_id = (
-            session.query(SubProfiles.namespaceid)
-            .where(SubProfiles.session_key == session_key)
-            .first()
-        )
-    if namespace_id is None:
-        raise GPException("namespace not found")
-
     result = (
         session.query(Users, Profiles, SubProfiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
         .join(Users, Profiles.userid == Users.userid)
         .where(
             Profiles.profileid == profile_id,
-            SubProfiles.namespaceid == namespace_id,
+            SubProfiles.session_key == session_key
         )
         .first()
     )
@@ -133,7 +129,7 @@ def get_profile_infos(
 
     user: Users = result[0]
     profile: Profiles = result[1]
-    subprofile: SubProfiles = result[3]
+    subprofile: SubProfiles = result[2]
     if TYPE_CHECKING:
         assert isinstance(profile.nick, str)
         assert isinstance(profile.profileid, int)
@@ -189,14 +185,14 @@ def get_user_info_list(
 def get_user_info(
     unique_nick: str, namespace_id: int, session: Session
 ) -> tuple[int, int, int]:
-    # if TYPE_CHECKING:
-    #     assert isinstance(Profiles.profileid, Column)
-    #     assert isinstance(Profiles.userid, Column)
-    #     assert isinstance(Users.userid, Column)
-    #     assert isinstance(Users.email, Column)
-    #     assert isinstance(Profiles.nick, Column)
-    #     assert isinstance(SubProfiles.uniquenick, Column)
-    #     assert isinstance(SubProfiles.namespaceid, Column)
+    if TYPE_CHECKING:
+        assert isinstance(Profiles.profileid, Column)
+        assert isinstance(Profiles.userid, Column)
+        assert isinstance(Users.userid, Column)
+        assert isinstance(Users.email, Column)
+        assert isinstance(Profiles.nick, Column)
+        assert isinstance(SubProfiles.uniquenick, Column)
+        assert isinstance(SubProfiles.namespaceid, Column)
 
     result = (
         session.query(Users.userid, Profiles.profileid,
@@ -253,23 +249,22 @@ def get_user_infos_by_uniquenick_namespace_id(
         )
         .first()
     )
-    data = {
-        "user_id": result[0],
-        "profile_id": result[1],
-        "sub_profile_id": result[2],
-        "nick": result[3],
-        "email": result[4],
-        "unique_nick": result[5],
-        "password_hash": result[6],
-        "email_verified_flag": result[7],
-        "banned_flag": result[8],
-        "namespace_id": result[9],
-    }
-    if result is not None:
-        return LoginData(**data)  # type: ignore
-    else:
+
+    if result is None:
         return None
-    return result
+
+    login = LoginData(
+        user_id=result[0],
+        profile_id=result[1],
+        sub_profile_id=result[2],
+        nick=result[3],
+        email=result[4],
+        unique_nick=result[5],
+        password_hash=result[6],
+        email_verified_flag=result[7],
+        banned_flag=result[8],
+        namespace_id=result[9])
+    return login
 
 
 def get_user_infos_by_nick_email(
@@ -296,22 +291,21 @@ def get_user_infos_by_nick_email(
         .where(Users.email == email, Profiles.nick == nick)
         .first()
     )
-    data = {
-        "user_id": result[0],
-        "profile_id": result[1],
-        "sub_profile_id": result[2],
-        "nick": result[3],
-        "email": result[4],
-        "unique_nick": result[5],
-        "password_hash": result[6],
-        "email_verified_flag": result[7],
-        "banned_flag": result[8],
-        "namespace_id": result[9],
-    }
-    if result is not None:
-        return LoginData(**data)  # type: ignore
-    else:
+    if result is None:
         return None
+
+    login = LoginData(
+        user_id=result[0],
+        profile_id=result[1],
+        sub_profile_id=result[2],
+        nick=result[3],
+        email=result[4],
+        unique_nick=result[5],
+        password_hash=result[6],
+        email_verified_flag=result[7],
+        banned_flag=result[8],
+        namespace_id=result[9])
+    return login
 
 
 def update_online_status(user_id: int, status: LoginStatus, session: Session):
@@ -346,31 +340,29 @@ def get_user_infos_by_authtoken(auth_token: str, session: Session) -> LoginData 
         .first()
     )
 
-    if result is not None:
-        keys = [
-            "user_id",
-            "profile_id",
-            "sub_profile_id",
-            "nick",
-            "email",
-            "unique_nick",
-            "password_hash",
-            "email_verified_flag",
-            "banned_flag",
-            "namespace_id",
-        ]
-        data = {key: result[i] for i, key in enumerate(keys)}
-        return LoginData(**data)  # type: ignore
-    else:
+    if result is None:
         return None
+
+    login = LoginData(
+        user_id=result[0],
+        profile_id=result[1],
+        sub_profile_id=result[2],
+        nick=result[3],
+        email=result[4],
+        unique_nick=result[5],
+        password_hash=result[6],
+        email_verified_flag=result[7],
+        banned_flag=result[8],
+        namespace_id=result[9])
+    return login
 
 
 def get_block_list(profile_id: int, namespace_id: int, session: Session) -> list[int]:
     result = (
-        session.query(Blocked.targetid)
+        session.query(Blacklist.targetid)
         .where(
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+            Blacklist.namespaceid == namespace_id,
+            Blacklist.profileid == profile_id,
         )
         .all()
     )
@@ -383,60 +375,172 @@ def get_block_list(profile_id: int, namespace_id: int, session: Session) -> list
 
 
 def get_buddy_list(profile_id: int, namespace_id: int, session: Session) -> list[int]:
+    pass
     result = (
-        session.query(Friends.targetid)
+        session.query(Friendlist.targetid)
         .where(
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+            Friendlist.profileid == profile_id,
+            Friendlist.namespaceid == namespace_id
         )
         .all()
     )
-    # assert isinstance(result, list)
-    if TYPE_CHECKING:
-        result = cast(list[int], result)
-    return result
+
+    data = [r[0] for r in result]
+    return data
 
 
-def update_block(
-    profile_id: int, target_id: int, session_key: str, session: Session
+def add_block(
+    profile_id: int, target_id: int, namespace_id: int, session: Session
 ) -> None:
     if TYPE_CHECKING:
         assert isinstance(SubProfiles.session_key, Column)
 
-    namespace_id = (
-        session.query(SubProfiles).where(
-            SubProfiles.session_key == session_key).first()
-    )
     result = (
-        session.query(Blocked)
+        session.query(Blacklist)
+        .join(SubProfiles, SubProfiles.namespaceid == Blacklist.namespaceid)
         .where(
-            Blocked.targetid == target_id,
-            Blocked.namespaceid == namespace_id,
-            Blocked.profileid == profile_id,
+            Blacklist.targetid == target_id,
+            Blacklist.profileid == profile_id,
+            SubProfiles.namespaceid == namespace_id,
         )
-        .count()
+        .first()
     )
-    if result == 0:
-        b = Blocked(targetid=target_id, namespaceid=namespace_id,
-                    profileid=profile_id)
+    if result is None:
+        b = Blacklist(targetid=target_id,
+                      namespaceid=namespace_id,
+                      profileid=profile_id)
         session.add(b)
         session.commit()
+
+
+def remove_block(
+    profile_id: int, target_id: int, namespace_id: int, session: Session
+):
+    result = (
+        session.query(Blacklist)
+        .join(SubProfiles, SubProfiles.namespaceid == Blacklist.namespaceid)
+        .where(
+            Blacklist.targetid == target_id,
+            Blacklist.profileid == profile_id,
+            SubProfiles.namespaceid == namespace_id,
+        )
+        .first()
+    )
+    if result is None:
+        return
+    session.delete(result)
+    session.commit()
+
+
+def add_buddy(
+    sender_profile_id: int, receiver_profile_id: int, namespace_id: int, reason: str, session: Session
+) -> None:
+    is_buddy_exist = (session.query(Friendlist).where(
+        FriendRequest.sender_profileid == sender_profile_id,
+        FriendRequest.receiver_profileid == receiver_profile_id,
+        FriendRequest.namespaceid == namespace_id
+    ).count())
+
+    if is_buddy_exist != 0:
+        raise GPAddBuddyException("buddy is already added, ignore the request")
+
+    data = (
+        session.query(FriendRequest)
+        .join(SubProfiles, SubProfiles.namespaceid == FriendRequest.namespaceid)
+        .where(
+            FriendRequest.sender_profileid == sender_profile_id,
+            FriendRequest.receiver_profileid == receiver_profile_id,
+            SubProfiles.namespaceid == namespace_id
+        )
+        .first()
+    )
+    if data is not None:
+        data.update_time = datetime.now()
+        return
+
+    request = FriendRequest(
+        sender_profileid=sender_profile_id,
+        receiver_profileid=receiver_profile_id,
+        namespaceid=namespace_id,
+        reason=reason,
+        update_time=datetime.now()
+    )
+    session.add(request)
+    session.commit()
+
+
+def get_friend_add_info(profile_id: int, namespace_id: int, session: Session) -> list[BuddyMessageFriendAddData]:
+    result = (session.query(FriendRequest)
+              .join(SubProfiles, SubProfiles.namespaceid == FriendRequest.namespaceid)
+              .where(FriendRequest.sender_profileid == profile_id,
+                     SubProfiles.namespaceid == namespace_id)
+              .all())
+    data = []
+    for r in result:
+        d = BuddyMessageFriendAddData(
+            from_profile_id=r.sender_profileid,
+            date=r.update_time,
+            message=r.reason,
+            signature="fake_signature"
+        )
+        data.append(d)
+    return data
+
+
+def set_friendship_bidirectional(sender_profile_id: int, receiver_profile_id: int, namespace_id: int, session: Session):
+    result = (session.query(FriendRequest)
+              .where(FriendRequest.sender_profileid == sender_profile_id,
+                     FriendRequest.receiver_profileid == receiver_profile_id,
+                     FriendRequest.namespaceid == namespace_id)
+              .first())
+    if result is None:
+        raise GPAddBuddyException("no friend add request found")
+
+    from_to = (session.query(Friendlist)
+               .where(Friendlist.profileid == sender_profile_id,
+                      Friendlist.targetid == receiver_profile_id,
+                      Friendlist.namespaceid == namespace_id)
+               .count())
+    to_from = (session.query(Friendlist)
+               .where(Friendlist.profileid == receiver_profile_id,
+                      Friendlist.targetid == sender_profile_id,
+                      Friendlist.namespaceid == namespace_id)
+               .count())
+
+    if from_to == 0:
+        from_to_relation = Friendlist(
+            profileid=sender_profile_id,
+            targetid=receiver_profile_id,
+            namespaceid=namespace_id
+        )
+        session.add(from_to_relation)
+
+    if to_from == 0:
+        to_from_relation = Friendlist(
+            profileid=receiver_profile_id,
+            targetid=sender_profile_id,
+            namespaceid=namespace_id
+        )
+        session.add(to_from_relation)
+
+    session.delete(result)
+    session.commit()
 
 
 def update_friend_info(
     target_id: int, profile_id: int, namespace_id: int, session: Session
 ):
     result = (
-        session.query(Friends)
+        session.query(Friendlist)
         .where(
-            Friends.targetid == target_id,
-            Friends.namespaceid == namespace_id,
-            Friends.profileid == profile_id,
+            Friendlist.targetid == target_id,
+            Friendlist.namespaceid == namespace_id,
+            Friendlist.profileid == profile_id,
         )
         .count()
     )
-    f = Friends(targetid=target_id, namespaceid=namespace_id,
-                profileid=profile_id)
+    f = Friendlist(targetid=target_id, namespaceid=namespace_id,
+                   profileid=profile_id)
 
     if result == 0:
         session.add(f)
@@ -484,30 +588,6 @@ def update_unique_nick(subprofile_id: int, unique_nick: str, session: Session):
 
 def update_subprofile_info(subprofile: SubProfiles, session: Session):
     session.add(subprofile)
-    session.commit()
-
-
-def add_friend_request(
-    profileid: int, targetid: int, namespace_id: int, reason: str, session: Session
-) -> None:
-    data = (
-        session.query(FriendAddRequest)
-        .where(
-            FriendAddRequest.profileid == profileid,
-            FriendAddRequest.targetid == targetid,
-            FriendAddRequest.namespaceid == namespace_id,
-        )
-        .first()
-    )
-    if data is not None:
-        raise GPAddBuddyException("Request is existed, add friend ignored")
-    request = FriendAddRequest(
-        profileid=profileid,
-        targetid=targetid,
-        namespaceid=namespace_id,
-        reason=reason,
-    )
-    session.add(request)
     session.commit()
 
 

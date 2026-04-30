@@ -66,7 +66,7 @@ class RateRecordRequest(SakeRequestBase):
 
 
 class SearchForRecordsRequest(SakeRequestBase):
-    filter: str
+    filter: str | None
     sort: str
     offset: str
     max: int

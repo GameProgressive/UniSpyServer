@@ -103,41 +103,42 @@ class SubProfiles(Base):
     session_key: Column[str] = Column(String)
 
 
-class Blocked(Base):
-    __tablename__ = "blocked"
+class Blacklist(Base):
+    __tablename__ = "black_list"
 
-    blockid = Column(Integer, primary_key=True, autoincrement=True)
-    profileid = Column(Integer, ForeignKey(
-        Profiles.profileid), nullable=False)
-    namespaceid = Column(Integer, nullable=False)
-    targetid = Column(Integer, nullable=False)
-
-
-class Friends(Base):
-    __tablename__ = "friends"
-
-    friendid = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
         Profiles.profileid), nullable=False)
     targetid = Column(Integer, nullable=False)
-    namespaceid = Column(Integer, nullable=False)
+    namespaceid = Column(Integer, ForeignKey(
+        SubProfiles.namespaceid), nullable=False)
+    update_time = Column(DateTime, default=datetime.now())
 
 
-class FriendAddRequest(Base):
-    __tablename__ = "addrequests"
+class FriendRequest(Base):
+    __tablename__ = "friend_request"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    sender_profileid = Column(Integer, ForeignKey(
+        Profiles.profileid), nullable=False)
+    receiver_profileid = Column(Integer, ForeignKey(
+        Profiles.profileid), nullable=False)
+    namespaceid = Column(Integer, ForeignKey(
+        SubProfiles.namespaceid), nullable=False)
+    reason = Column(String, nullable=False)
+    update_time = Column(DateTime, nullable=False)
 
-    addrequestid = Column(Integer, primary_key=True, autoincrement=True)
+
+class Friendlist(Base):
+    __tablename__ = "friend_list"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
     profileid = Column(Integer, ForeignKey(
         Profiles.profileid), nullable=False)
     targetid = Column(Integer, ForeignKey(
         Profiles.profileid), nullable=False)
-    namespaceid = Column(Integer, nullable=False)
-    reason = Column(String, nullable=False)
-    status = Column(
-        IntEnum(FriendRequestStatus),
-        nullable=False,
-        default=FriendRequestStatus.PENDING,
-    )
+    namespaceid = Column(Integer, ForeignKey(
+        SubProfiles.namespaceid), nullable=False)
+    update_time = Column(DateTime, default=datetime.now())
 
 
 class Games(Base):
@@ -146,7 +147,7 @@ class Games(Base):
     gamename = Column(String, nullable=False)
     secretkey = Column(String, nullable=False)
     description = Column(String(4095), nullable=False)
-    disabled = Column(Boolean, nullable=False)
+    disabled = Column(Boolean, default=datetime.now())
 
 
 class GroupList(Base):

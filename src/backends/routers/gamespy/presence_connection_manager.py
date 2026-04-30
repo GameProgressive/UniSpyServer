@@ -2,9 +2,9 @@ from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
-from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, BlockListHandler, BuddyListHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
-from backends.protocols.gamespy.presence_connection_manager.requests import BlockListRequest, BuddyListRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, AddBuddyHandler, AuthAddBuddyHandler, BlockListHandler, BuddyListHandler, BuddyMessageFriendAddHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
+from backends.protocols.gamespy.presence_connection_manager.requests import AddBuddyRequest, AuthAddBuddyRequest, BlockListRequest, BuddyListRequest, BuddyMessageFriendAddRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
 from backends.urls import PRESENCE_CONNECTION_MANAGER
 
 
@@ -44,6 +44,27 @@ def add_block(request: AddBlockRequest) -> OKResponse:
     handler = AddBlockHandler(request)
     handler.handle()
     return handler.response
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/AddBuddyHandler", responses=RESPONSES_DEF)
+def add_buddy(request: AddBuddyRequest) -> OKResponse:
+    handler = AddBuddyHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler", responses=RESPONSES_DEF)
+def buddy_message_friend_add(request: BuddyMessageFriendAddRequest) -> BuddyMessageFriendAddResponse:
+    handler = BuddyMessageFriendAddHandler(request)
+    handler.handle()
+    return handler.response
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/AuthAddBuddyHandler", responses=RESPONSES_DEF)
+def auth_add_buddy_handler(request: AuthAddBuddyRequest) -> OKResponse:
+    handler = AuthAddBuddyHandler(request)
+    handler.handle()
+    return OKResponse()
 
 
 @router.post(f"{PRESENCE_CONNECTION_MANAGER}/GetProfileHandler", responses=RESPONSES_DEF)

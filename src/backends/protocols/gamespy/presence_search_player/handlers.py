@@ -273,11 +273,7 @@ class SearchUniqueHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        data = []
-        for d in self._data:
-            dd = SearchResultData(**d)
-            data.append(dd)
-        self._result = SearchUniqueResult(data=data)
+        self._result = SearchUniqueResult(data=self._data)
 
 
 class UniqueSearchHandler(HandlerBase):
