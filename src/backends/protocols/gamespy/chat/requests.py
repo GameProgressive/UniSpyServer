@@ -1,3 +1,5 @@
+from typing import Any
+
 import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
@@ -57,10 +59,22 @@ class LoginPreAuthRequest(RequestBase):
 class LoginRequest(RequestBase):
     request_type: LoginRequestType
     namespace_id: int
-    nick_name: str
+    nick_name: str | None = None
     email: str
-    unique_nick: str
+    unique_nick: str | None = None
     password_hash: str
+
+    def model_post_init(self, _) -> None:
+        if (
+            self.request_type == LoginRequestType.NICK_AND_EMAIL_LOGIN
+            and self.nick_name is None
+        ):
+            raise ValueError("nick name is missing")
+        if (
+            self.request_type == LoginRequestType.UNIQUE_NICK_LOGIN
+            and self.unique_nick is None
+        ):
+            raise ValueError("uniquenick is missing")
 
 
 class NickRequest(RequestBase):

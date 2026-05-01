@@ -26,6 +26,7 @@ from backends.protocols.gamespy.chat.requests import (
     KickRequest,
     ListRequest,
     LoginPreAuthRequest,
+    LoginRequest,
     ModeRequest,
     NamesRequest,
     NickRequest,
@@ -44,9 +45,29 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
-from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, KickResponse, ModeResponse, NamesResponse, NicksResponse, PartResponse, PingResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse
+from backends.protocols.gamespy.chat.response import (
+    AtmResponse,
+    CryptResponse,
+    GetCkeyResponse,
+    GetKeyResponse,
+    JoinResponse,
+    KickResponse,
+    LoginResponse,
+    ModeResponse,
+    NamesResponse,
+    NicksResponse,
+    PartResponse,
+    PingResponse,
+    PrivateResponse,
+    SetCKeyResponse,
+    SetChannelKeyResponse,
+    TopicResponse,
+    UtmResponse,
+    WhoIsResponse,
+)
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
+    LoginRequestType,
     ModeRequestType,
     TopicRequestType,
     WhoRequestType,
@@ -69,6 +90,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     JoinResult,
     KickResult,
     ListResult,
+    LoginResult,
     ModeResult,
     NamesResult,
     NamesResultData,
@@ -157,7 +179,7 @@ class ChannelHandlerBase(HandlerBase):
         if self._channel is None:
             raise NoSuchChannelException(
                 f"Can not find channel with name: {self._request.channel_name}",
-                self._request.channel_name
+                self._request.channel_name,
             )
         self._channel.update_time = datetime.now()  # type: ignore
 
@@ -176,6 +198,7 @@ class MessageHandlerBase(ChannelHandlerBase):
 
 # region General
 
+
 class PingHandler(HandlerBase):
     response: PingResponse
 
@@ -184,8 +207,7 @@ class PingHandler(HandlerBase):
         assert isinstance(self._user.nick_name, str)
         assert isinstance(self._user.user_name, str)
         self._result = PingResult(
-            nick_name=self._user.nick_name,
-            user_name=self._user.user_name
+            nick_name=self._user.nick_name, user_name=self._user.user_name
         )
 
 
@@ -254,7 +276,7 @@ class GetKeyHandler(HandlerBase):
         self._result = GetKeyResult(
             nick_name=self._request.nick_name,
             values=self._values,
-            cookie=self._request.cookie
+            cookie=self._request.cookie,
         )
 
 
@@ -279,7 +301,7 @@ class InviteHandler(HandlerBase):
         if chann is None:
             raise NoSuchChannelException(
                 "you have to be in this channel to invite your friends",
-                self._request.channel_name
+                self._request.channel_name,
             )
 
         assert isinstance(chann.invited_nicks, list)
@@ -333,9 +355,25 @@ class LoginPreAuthHandler(HandlerBase):
         raise NotImplementedError("should this access to PCM's api?")
 
 
-class LoginHandler(HandlerBase):
+class LoginHandler(hb.HandlerBase):
+    _request: LoginRequest
+    response: LoginResponse
+
     def _data_operate(self) -> None:
-        raise NotImplementedError("should this access to PCM's api?")
+        if self._request.request_type == LoginRequestType.NICK_AND_EMAIL_LOGIN:
+            assert self._request.nick_name is not None
+            self._data = data.get_login_info_by_nick_email(
+                self._request.nick_name,
+                self._request.email,
+                self._request.password_hash,
+                self._session,
+            )
+        else:
+            assert self._request.unique_nick is not None
+            raise NotImplementedError("chat uniquenick login not implemented")
+
+    def _result_construct(self) -> None:
+        self._result = LoginResult(user_id=self._data[0], profile_id=self._data[1])
 
 
 class NickHandler(HandlerBase):
@@ -399,8 +437,7 @@ class QuitHandler(HandlerBase):
 
 class RegisterNickHandler(HandlerBase):
     def _data_operate(self) -> None:
-        raise NotImplementedError(
-            "we do not know which unique nick should be updated")
+        raise NotImplementedError("we do not know which unique nick should be updated")
 
 
 class SetKeyHandler(HandlerBase):
@@ -412,8 +449,7 @@ class SetKeyHandler(HandlerBase):
             self._request.client_ip, self._request.client_port, self._session
         )
         if user is None:
-            raise NoSuchNickException(
-                "The ip and port is not find in database")
+            raise NoSuchNickException("The ip and port is not find in database")
 
         user.key_value = self._request.key_values  # type:ignore
         self._session.commit()
@@ -455,9 +491,12 @@ class WhoHandler(HandlerBase):
         for d in self._data:
             info = WhoResult.WhoInfo(**d)
             infos.append(info)
-        self._result = WhoResult(infos=infos,
-                                 request_type=self._request.request_type,
-                                 channel_name=self._request.channel_name, nick_name=self._request.nick_name)
+        self._result = WhoResult(
+            infos=infos,
+            request_type=self._request.request_type,
+            channel_name=self._request.channel_name,
+            nick_name=self._request.nick_name,
+        )
 
 
 class WhoIsHandler(HandlerBase):
@@ -466,7 +505,8 @@ class WhoIsHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data: WhoIsResult = data.get_whois_result(
-            self._request.nick_name, self._session)
+            self._request.nick_name, self._session
+        )
 
     def _result_construct(self) -> None:
         self._result = self._data
@@ -518,7 +558,7 @@ class JoinHandler(ChannelHandlerBase):
         self._result = JoinResult(
             joiner_nick_name=self._channel_user.nick_name,
             joiner_user_name=self._channel_user.user_name,
-            channel_name=self._request.channel_name
+            channel_name=self._request.channel_name,
         )
 
 
@@ -538,7 +578,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
             key_values=dict(self._channel.key_values),
             nick_name=self._user.nick_name,
             user_name=self._user.user_name,
-            cookie=self._request.cookie
+            cookie=self._request.cookie,
         )
 
 
@@ -574,8 +614,7 @@ class GetCKeyHandler(ChannelHandlerBase):
             assert isinstance(d.nick_name, str)
             assert isinstance(d.key_values, dict)
             info = GetCKeyResult.GetCKeyInfos(
-                nick_name=d.nick_name,
-                key_values=d.key_values
+                nick_name=d.nick_name, key_values=d.key_values
             )
             infos.append(info)
 
@@ -583,7 +622,7 @@ class GetCKeyHandler(ChannelHandlerBase):
             infos=infos,
             channel_name=self._request.channel_name,
             cookie=self._request.cookie,
-            keys=self._request.keys
+            keys=self._request.keys,
         )
 
 
@@ -606,7 +645,7 @@ class KickHandler(ChannelHandlerBase):
         if self._kickee is None:
             raise BadChannelKeyException(
                 f"kickee is not a user of channel:{self._channel.channel_name}",
-                self._channel.channel_name
+                self._channel.channel_name,
             )
 
     def _data_operate(self) -> None:
@@ -629,7 +668,7 @@ class KickHandler(ChannelHandlerBase):
             kicker_user_name=self._channel_user.user_name,
             kicker_nick_name=self._channel_user.nick_name,
             kickee_nick_name=self._request.kickee_nick_name,
-            reason=self._request.reason
+            reason=self._request.reason,
         )
 
 
@@ -713,7 +752,7 @@ class PartHandler(ChannelHandlerBase):
             leaver_user_name=self._channel_user.user_name,
             is_channel_creator=self._channel_user.is_channel_creator,
             channel_name=self._channel.channel_name,
-            reason=self._request.reason
+            reason=self._request.reason,
         )
 
 
@@ -728,7 +767,8 @@ class SetChannelKeyHandler(ChannelHandlerBase):
         assert isinstance(self._channel_user.is_channel_operator, bool)
         if self._channel_user.is_channel_operator:
             ChannelHelper.update_channel_key_values(
-                self._request.key_values, self._channel, self._session)
+                self._request.key_values, self._channel, self._session
+            )
 
     def _result_construct(self) -> None:
         assert self._channel_user
@@ -739,7 +779,7 @@ class SetChannelKeyHandler(ChannelHandlerBase):
             setter_nick_name=self._channel_user.nick_name,
             setter_user_name=self._channel_user.user_name,
             channel_name=self._request.channel_name,
-            key_value=self._request.key_values
+            key_value=self._request.key_values,
         )
 
 
@@ -765,7 +805,7 @@ class SetCKeyHandler(ChannelHandlerBase):
             setter_user_name=self._channel_user.user_name,
             channel_name=self._request.channel_name,
             key_value=self._request.key_values,
-            cookie=self._request.cookie
+            cookie=self._request.cookie,
         )
 
 
@@ -782,7 +822,7 @@ class TopicHandler(ChannelHandlerBase):
             if not self._channel_user.is_channel_operator:
                 raise NoSuchChannelException(
                     "inorder to set channel topic, you have to be channel operator",
-                    self._request.channel_name
+                    self._request.channel_name,
                 )
             self._data: str = self._request.channel_topic
             self._channel.topic = self._request.channel_topic  # type:ignore
@@ -810,7 +850,7 @@ class AtmHandler(MessageHandlerBase):
             sender_nick_name=self._user.nick_name,
             sender_user_name=self._user.user_name,
             target_name=self._request.target_name,
-            message=self._request.message
+            message=self._request.message,
         )
 
 
@@ -824,9 +864,10 @@ class UtmHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = UtmResult(
-            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            sender_nick_name=self._user.nick_name,
+            sender_user_name=self._user.user_name,
             target_name=self._request.target_name,
-            message=self._request.message
+            message=self._request.message,
         )
 
 
@@ -840,9 +881,10 @@ class NoticeHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = NoticeResult(
-            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            sender_nick_name=self._user.nick_name,
+            sender_user_name=self._user.user_name,
             target_name=self._request.target_name,
-            message=self._request.message
+            message=self._request.message,
         )
 
 
@@ -856,9 +898,10 @@ class PrivateHandler(MessageHandlerBase):
         assert isinstance(self._user.user_name, str)
 
         self._result = PrivateResult(
-            sender_nick_name=self._user.nick_name, sender_user_name=self._user.user_name,
+            sender_nick_name=self._user.nick_name,
+            sender_user_name=self._user.user_name,
             target_name=self._request.target_name,
-            message=self._request.message
+            message=self._request.message,
         )
 
 
@@ -878,7 +921,8 @@ class PublishMessageHandler(hb.HandlerBase):
             # if websocket is not none means the frontend that gamespy client connect to is connecting to this backend
             # then we just broad cast on this channel
             MANAGER.broadcast_channel_message(
-                request.channel_name, request.model_dump_json(), ws)
+                request.channel_name, request.model_dump_json(), ws
+            )
 
     @staticmethod
     def broadcast_global(request: PublishMessageRequest):
