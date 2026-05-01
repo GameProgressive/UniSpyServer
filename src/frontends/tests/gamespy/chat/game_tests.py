@@ -79,3 +79,13 @@ class GameTests(unittest.TestCase):
         for raw in raws:
             client.on_received(raw.encode())
             client.crypto = None
+
+
+    @responses.activate
+    def test_empire_earth_2(self):
+        raws = ["CRYPT des 1 eearth2\r\n",
+        "LOGIN 1 * 25f9e794323b453885f5181f1b624d0b :MyProfile@MyProfile@gmail.com\r\n"]
+        client = create_client()
+        for raw in raws:
+            client.on_received(raw.encode())
+            client.crypto = None

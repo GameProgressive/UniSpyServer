@@ -246,6 +246,9 @@ class RequestType(Enum):
     LOGOUT = "logout"
     NEWUSER = "newuser"
     ADDBLOCK = "addblock"
+    REMOVEBLOCK = "removeblock"
+    ADDBUDDY = "addbuddy"
+    AUTHADD = "authadd"
     GETPROFILE = "getprofile"
     NEWPROFILE = "newprofile"
     REGISTERCDKEY = "registercdkey"
@@ -254,6 +257,7 @@ class RequestType(Enum):
     STATUS = "status"
     STATUSINFO = "statusinfo"
     INVITETO = "inviteto"
+    PEER_AUTH = "auth"
 
 
 class FriendRequestStatus(IntEnum):
@@ -263,5 +267,5 @@ class FriendRequestStatus(IntEnum):
 
 
 if __name__ == "__main__":
-    
+
     pass

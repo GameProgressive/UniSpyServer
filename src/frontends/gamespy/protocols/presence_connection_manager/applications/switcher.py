@@ -1,14 +1,57 @@
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import RequestType
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import KeepAliveRequest, LoginRequest, LogoutRequest, StatusInfoRequest, StatusRequest, AddBlockRequest, GetProfileRequest, NewProfileRequest, RegisterCDKeyRequest, NewUserRequest, RegisterNickRequest, UpdateProfileRequest
-from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import AddBlockHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPParseException
+from frontends.gamespy.library.extentions.string_extentions import (
+    get_kv_str_name,
+    split_nested_kv_str,
+)
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    RequestType,
+)
+from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
+    AddBuddyRequest,
+    AuthAddBuddyRequest,
+    KeepAliveRequest,
+    LoginRequest,
+    LogoutRequest,
+    RemoveBlockRequest,
+    StatusInfoRequest,
+    StatusRequest,
+    AddBlockRequest,
+    GetProfileRequest,
+    NewProfileRequest,
+    RegisterCDKeyRequest,
+    NewUserRequest,
+    RegisterNickRequest,
+    UpdateProfileRequest,
+)
+from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import (
+    AddBlockHandler,
+    AddBuddyHandler,
+    AuthAddBuddyHandler,
+    GetProfileHandler,
+    KeepAliveHandler,
+    LoginHandler,
+    LogoutHandler,
+    NewProfileHandler,
+    NewUserHandler,
+    RegisterCDKeyHandler,
+    RegisterNickHandler,
+    RemoveBlockHandler,
+    StatusHandler,
+    StatusInfoHandler,
+    UpdateProfileHandler,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    GPParseException,
+)
 
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import CmdHandlerBase
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
+    CmdHandlerBase,
+)
 from typing import TYPE_CHECKING, Optional, cast
 
-from frontends.gamespy.protocols.presence_connection_manager.applications.client import Client
+from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+    Client,
+)
 
 
 class Switcher(SwitcherBase):
@@ -31,7 +74,9 @@ class Switcher(SwitcherBase):
                 continue
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(
+        self, name: RequestType, raw_request: str
+    ) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         assert isinstance(raw_request, str)
         if TYPE_CHECKING:
@@ -64,5 +109,15 @@ class Switcher(SwitcherBase):
             case RequestType.INVITETO:
                 raise NotImplementedError(
                     "InviteToHandler is not implemented.")
+            case RequestType.PEER_AUTH:
+                raise NotImplementedError("peer auth is not implemented")
+            case RequestType.ADDBUDDY:
+                return AddBuddyHandler(self._client, AddBuddyRequest(raw_request))
+            case RequestType.ADDBLOCK:
+                return AddBlockHandler(self._client, AddBlockRequest(raw_request))
+            case RequestType.AUTHADD:
+                return AuthAddBuddyHandler(self._client, AuthAddBuddyRequest(raw_request))
+            case RequestType.REMOVEBLOCK:
+                return RemoveBlockHandler(self._client, RemoveBlockRequest(raw_request))
             case _:
                 return None

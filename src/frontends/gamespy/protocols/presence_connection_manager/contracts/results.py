@@ -1,7 +1,7 @@
+from datetime import datetime
 from pydantic import BaseModel
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResultBase
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPStatusCode, LoginType
-
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import BuddyMessageType, GPStatusCode, LoginType
 # region General
 
 
@@ -25,6 +25,7 @@ class LoginResult(ResultBase):
     partner_id: int
     user_challenge: str
 
+
 class NewUserResult(ResultBase):
     user_id: int
     profile_id: int
@@ -44,6 +45,53 @@ class BlockListResult(ResultBase):
 
 class BuddyListResult(ResultBase):
     profile_ids: list[int]
+
+
+# region Buddy Message
+class BuddyMessageDataBase(BaseModel):
+    from_profile_id: int
+    date: datetime
+    msg_type: BuddyMessageType
+
+
+class BuddyMessageResultBase(ResultBase):
+    data: list[BuddyMessageDataBase]
+
+
+class BuddyMessageResult(BuddyMessageResultBase):
+    class BuddyMessageData(BuddyMessageDataBase):
+        message: str
+        msg_type: BuddyMessageType = BuddyMessageType.BM_MESSAGE
+
+    data: list[BuddyMessageData]
+
+
+class BuddyMessageUTMData(BuddyMessageDataBase):
+    message: str
+    msg_type: BuddyMessageType = BuddyMessageType.BM_UTM
+
+
+class BuddyMessageFriendAddData(BuddyMessageDataBase):
+    message: str
+    signature: str
+    """
+    todo check whether need 32 byte str
+    """
+    msg_type: BuddyMessageType = BuddyMessageType.BM_REQUEST
+
+
+class BuddyMessageFriendAddResult(BuddyMessageResultBase):
+    data: list[BuddyMessageFriendAddData]
+
+
+class BuddyMessageAuthData(BuddyMessageDataBase):
+    msg_type: BuddyMessageType = BuddyMessageType.BM_AUTH
+    pass
+
+
+class BuddyMessageRevokeData(BuddyMessageDataBase):
+    msg_type: BuddyMessageType = BuddyMessageType.BM_REVOKE
+    pass
 
 
 class StatusInfoResult(ResultBase):

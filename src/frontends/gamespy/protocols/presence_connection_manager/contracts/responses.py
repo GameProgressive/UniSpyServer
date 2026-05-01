@@ -1,5 +1,6 @@
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     ResponseBase,
+    ResultBase,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
@@ -22,6 +23,7 @@ from frontends.gamespy.library.extentions.gamespy_ramdoms import (
 )
 
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
+    BuddyMessageFriendAddResult,
     GetProfileResult,
     NewProfileResult,
     AddBuddyResult,
@@ -132,6 +134,22 @@ class BuddyListResponse(ResponseBase):
         self.sending_buffer = f"\\bdy\\{len(self._result.profile_ids)}\\list\\"
         self.sending_buffer += ",".join(str(pid) for pid in self._result.profile_ids)
         self.sending_buffer += "\\final\\"
+
+class BuddyMessageFriendAddResponse(ResponseBase):
+    _result:BuddyMessageFriendAddResult
+
+    def __init__(self, result: BuddyMessageFriendAddResult) -> None:
+        super().__init__(result)
+
+    def build(self):
+        self.sending_buffer  = ""
+        for data in self._result.data:
+            self.sending_buffer += f"\\bm\\{data.msg_type.value}"
+            self.sending_buffer += f"\\f\\{data.from_profile_id}"
+            date = int(data.date.timestamp())
+            self.sending_buffer += f"\\date\\{date}"
+            self.sending_buffer += "\\final\\"
+
 
 
 class StatusInfoResponse(ResponseBase):

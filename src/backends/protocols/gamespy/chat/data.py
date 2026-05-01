@@ -355,15 +355,15 @@ def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     if info.user_name is None:
         raise ChatException("user name is missing")
 
-    assert isinstance(info.nick_name,str)
-    assert isinstance(info.user_name,str)
-    assert isinstance(info.remote_ip,str)
-    assert isinstance(channels,list)
+    assert isinstance(info.nick_name, str)
+    assert isinstance(info.user_name, str)
+    assert isinstance(info.remote_ip, str)
+    assert isinstance(channels, list)
     re = WhoIsResult(
         nick_name=info.nick_name,
         user_name=info.user_name,
         public_ip_address=info.remote_ip,
-        joined_channels=list(channels[0])
+        joined_channels=list(channels[0]),
     )
 
     return re
@@ -595,6 +595,47 @@ def _flush_chat_database():
         session.query(ChatUserCaches).delete()
         session.query(ChatChannelCaches).delete()
         session.commit()
+
+
+# region Login
+def get_login_info_by_nick_email(
+    nick: str, email: str, password: str,namespace_id:int, session: Session
+) -> tuple[int,int]:
+    result = (
+        session.query(Users.userid, Profiles.profileid)
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .where(Users.email == email, 
+               Profiles.nick == nick, 
+               Users.password == password, 
+               SubProfiles.namespaceid == namespace_id)
+        .first()
+    )
+    
+    if result is None:
+        raise ChatException("user login info is incorrect")
+    else:
+        return tuple(result)
+
+
+def get_login_info_by_uniquenick(
+    uniquenick: str, namespace_id: int, password: str, session: Session
+) -> tuple[int,int]:
+    result = (
+        session.query(Users.userid, Profiles.profileid)
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .where(SubProfiles.uniquenick == uniquenick, 
+               SubProfiles.namespaceid == namespace_id,
+               Users.password == password)
+        .first()
+    )
+    
+    if result is None:
+        raise ChatException("user login info is incorrect")
+    else:
+        return tuple(result)
+
 
 
 if __name__ == "__main__":

@@ -7,13 +7,16 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     AddBlockRequest,
     AddBuddyRequest,
+    AuthAddBuddyRequest,
     BlockListRequest,
     BuddyListRequest,
+    BuddyMessageFriendAddRequest,
     GetProfileRequest,
     NewProfileRequest,
     NewUserRequest,
     RegisterCDKeyRequest,
     RegisterNickRequest,
+    RemoveBlockRequest,
     UpdateProfileRequest,
     DelBuddyRequest,
     StatusInfoRequest,
@@ -25,6 +28,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
     BlockListResult,
     BuddyListResult,
+    BuddyMessageFriendAddResult,
     NewUserResult,
     RegisterNickResult,
     StatusInfoResult,
@@ -36,6 +40,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
 from frontends.gamespy.protocols.presence_connection_manager.contracts.responses import (
     BlockListResponse,
     BuddyListResponse,
+    BuddyMessageFriendAddResponse,
     NewUserResponse,
     StatusInfoResponse,
     GetProfileResponse,
@@ -73,12 +78,6 @@ class KeepAliveHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
-
-    def _data_operate(self) -> None:
-        # we set ip and data to request
-        self._request.client_ip = self._client.connection.remote_ip
-        self._request.client_port = self._client.connection.remote_port
-        super()._data_operate()
 
     def _response_construct(self) -> None:
         self._response = KeepAliveResponse()
@@ -143,15 +142,31 @@ class SdkRevisionHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = self._request.sdk_revision_type
+        # todo check whether need to send friend add requests
+        # bmh = BuddyMessageFriendAddHandler(self._client, BuddyMessageFriendAddRequest(
+        #     self._client.info.profile_id,
+        #     self._client.info.namespace_id,
+        #     self._request.operation_id
+        # ))
+        # bmh.handle()
         if SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN in self._client.info.sdk_revision:
-            BuddyListHandler(self._client, BuddyListRequest(
+            bdy = BuddyListHandler(self._client, BuddyListRequest(
                 self._client.info.profile_id,
                 self._client.info.namespace_id,
-                self._request.operation_id)).handle()
-            BlockListHandler(self._client, BlockListRequest(
+                self._request.operation_id))
+            bdy.handle()
+            bl = BlockListHandler(self._client, BlockListRequest(
                 self._client.info.profile_id,
                 self._client.info.namespace_id,
-                self._request.operation_id)).handle()
+                self._request.operation_id))
+            bl.handle()
+
+            bs = BuddyStatusHandler(self._client, BuddyStatusRequest(
+                self._client.info.profile_id,
+                self._client.info.namespace_id,
+                self._request.operation_id
+            ))
+            bs.handle()
             # request = StatusInfoRequest()
             # request.profile_id = self._client.info.profile_id
             # request.namespace_id = int(self._client.info.namespace_id)
@@ -164,10 +179,34 @@ class SdkRevisionHandler(CmdHandlerBase):
 
 @final
 class AddBuddyHandler(CmdHandlerBase):
+    _request: AddBuddyRequest
+
     def __init__(self, client: Client, request: AddBuddyRequest) -> None:
         assert isinstance(request, AddBuddyRequest)
         super().__init__(client, request)
         self._is_fetching = False
+
+    def _data_operate(self) -> None:
+        self._request.sender_profile_id = self._client.info.profile_id
+        self._request.namespace_id = self._client.info.namespace_id
+        self._client.connection.send(
+            "\\bm\\2\\f\\3\\date\\1777530486\\msg\\|signed|11111111111111111111111111111111\\final\\".encode())
+        super()._data_operate()
+
+
+@final
+class AuthAddBuddyHandler(CmdHandlerBase):
+    _request: AuthAddBuddyRequest
+
+    def __init__(self, client: Client, request: AuthAddBuddyRequest) -> None:
+        assert isinstance(request, AuthAddBuddyRequest)
+        super().__init__(client, request)
+        self._is_fetching = False
+
+    def _data_operate(self) -> None:
+        self._request.sender_profile_id = self._client.info.profile_id
+        self._request.namespace_id = self._client.info.namespace_id
+        super()._data_operate()
 
 
 @final
@@ -180,6 +219,15 @@ class BlockListHandler(CmdHandlerBase):
 class BuddyListHandler(LoginedHandlerBase):
     _result: BuddyListResult
     _response: BuddyListResponse
+
+
+@final
+class BuddyMessageFriendAddHandler(LoginedHandlerBase):
+    """
+    get the friend add request from server
+    """
+    _result: BuddyMessageFriendAddResult
+    _response: BuddyMessageFriendAddResponse
 
 
 @final
@@ -203,6 +251,11 @@ class DelBuddyHandler(LoginedHandlerBase):
         assert isinstance(request, DelBuddyRequest)
         super().__init__(client, request)
         self._is_uploading = False
+
+    def _data_operate(self) -> None:
+        self._request.sender_profile_id = self._client.info.profile_id
+        self._request.namespace_id = self._client.info.namespace_id
+        super()._data_operate()
 
 
 @final
@@ -251,6 +304,26 @@ class AddBlockHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AddBlockRequest) -> None:
         assert isinstance(request, AddBlockRequest)
         super().__init__(client, request)
+        self._is_fetching = False
+
+    def _data_operate(self) -> None:
+        self._request.sender_profile_id = self._client.info.profile_id
+        self._request.namespace_id = self._client.info.namespace_id
+        super()._data_operate()
+
+
+class RemoveBlockHandler(CmdHandlerBase):
+    _request: RemoveBlockRequest
+
+    def __init__(self, client: Client, request: RemoveBlockRequest) -> None:
+        assert isinstance(request, RemoveBlockRequest)
+        super().__init__(client, request)
+        self._is_fetching = False
+
+    def _data_operate(self) -> None:
+        self._request.sender_profile_id = self._client.info.profile_id
+        self._request.namespace_id = self._client.info.namespace_id
+        super()._data_operate()
 
 
 @final
@@ -293,13 +366,6 @@ class RegisterNickHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: RegisterNickRequest) -> None:
         assert isinstance(request, RegisterNickRequest)
         super().__init__(client, request)
-
-
-@final
-class RemoveBlockHandler(CmdHandlerBase):
-    def __init__(self, client: Client, request: RequestBase) -> None:
-        super().__init__(client, request)
-        raise NotImplementedError()
 
 
 @final

@@ -4,8 +4,10 @@ import backends.protocols.gamespy.presence_connection_manager.data as data
 from backends.protocols.gamespy.presence_connection_manager.requests import (
     AddBlockRequest,
     AddBuddyRequest,
+    AuthAddBuddyRequest,
     BlockListRequest,
     BuddyListRequest,
+    BuddyMessageFriendAddRequest,
     DelBuddyRequest,
     GetProfileRequest,
     InviteToRequest,
@@ -16,12 +18,13 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     NewUserRequest,
     RegisterCDKeyRequest,
     RegisterNickRequest,
+    RemoveBlockRequest,
     StatusInfoRequest,
     StatusRequest,
     UpdateProfileRequest,
     UpdateUserInfoRequest,
 )
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
     LoginType,
@@ -29,6 +32,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
     BlockListResult,
     BuddyListResult,
+    BuddyMessageFriendAddResult,
     GetProfileResult,
     LoginResult,
 )
@@ -66,13 +70,12 @@ class LoginHandler(HandlerBase):
     def _nick_email_login(self) -> None:
         assert self._request.email is not None
         assert self._request.nick is not None
-        is_exsit = data.is_email_exist(self._request.email, self._session)
-        if not is_exsit:
-            raise GPLoginBadEmailException(
-                f"email: {self._request.email} is invalid.")
         self._data = data.get_user_infos_by_nick_email(
             self._request.nick, self._request.email, self._session
         )
+        if not self._data:
+            raise GPLoginBadEmailException(
+                f"email: {self._request.email} is invalid.")
 
     def _unique_nick_login(self) -> None:
         assert self._request.unique_nick is not None
@@ -89,7 +92,8 @@ class LoginHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         if self._data is None:
-            raise GPLoginException("User do not exist.")
+            raise GPLoginException("login information is incorrect.")
+
         self._result = LoginResult(operation_id=self._request.operation_id,
                                    data=self._data,
                                    user_data=self._request.user_data,
@@ -129,7 +133,8 @@ class BuddyListHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = BuddyListResult(
-            profile_ids=self.data, operation_id=self._request.operation_id)
+            profile_ids=self.data,
+            operation_id=self._request.operation_id)
 
 
 class BlockListHandler(HandlerBase):
@@ -165,8 +170,10 @@ class DelBuddyHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        self.data = data.delete_friend_by_profile_id(
-            self._request.target_id, self._session
+        self.data = data.del_buddy(
+            self._request.target_profile_id,
+            self._request.session_key,
+            self._session
         )
 
 
@@ -175,12 +182,41 @@ class AddBuddyHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        data.add_friend_request(
-            self._request.profile_id,
-            self._request.target_id,
+        data.add_buddy(
+            self._request.sender_profile_id,
+            self._request.target_profile_id,
             self._request.namespace_id,
             self._request.reason,
-            self._session,
+            self._session)
+
+
+class BuddyMessageFriendAddHandler(HandlerBase):
+    _request: BuddyMessageFriendAddRequest
+    response: BuddyMessageFriendAddResponse
+
+    def _data_operate(self) -> None:
+        self._data = data.get_friend_add_info(
+            self._request.profile_id, self._request.namespace_id, self._session)
+
+    def _result_construct(self) -> None:
+        self._result = BuddyMessageFriendAddResult(
+            operation_id=self._request.operation_id,
+            data=self._data
+        )
+
+
+class AuthAddBuddyHandler(HandlerBase):
+    """
+    authenticate the add buddy request
+    """
+    _request: AuthAddBuddyRequest
+
+    def _data_operate(self) -> None:
+        self._data = data.set_friendship_bidirectional(
+            self._request.sender_profile_id,
+            self._request.receiver_profile_id,
+            self._request.namespace_id,
+            self._session
         )
 
 
@@ -189,10 +225,10 @@ class AddBlockHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        data.update_block(
-            self._request.profile_id,
-            self._request.taget_id,
-            self._request.session_key,
+        data.add_block(
+            self._request.sender_profile_id,
+            self._request.taget_profile_id,
+            self._request.namespace_id,
             self._session,
         )
 
@@ -298,8 +334,13 @@ class RegisterNickHandler(HandlerBase):
 
 
 class RemoveBlockHandler(HandlerBase):
-    def _data_operate(self):
-        raise NotImplementedError()
+    _request: RemoveBlockRequest
+
+    def _data_operate(self) -> None:
+        data.remove_block(self._request.sender_profile_id,
+                          self._request.target_profile_id,
+                          self._request.namespace_id,
+                          self._session)
 
 
 class UpdateProfileHandler(HandlerBase):

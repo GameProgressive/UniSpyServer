@@ -9,6 +9,7 @@ from backends.protocols.gamespy.chat.handlers import (
     GetUdpRelayHandler,
     InviteHandler,
     JoinHandler,
+    LoginHandler,
     ModeHandler,
     NamesHandler,
     NickHandler,
@@ -54,7 +55,7 @@ from backends.protocols.gamespy.chat.requests import (
     WhoIsRequest,
     WhoRequest,
 )
-from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, ListResponse, ModeResponse, NamesResponse, NicksResponse, NoticeResponse, PartResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse, WhoResponse
+from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, ListResponse, LoginResponse, ModeResponse, NamesResponse, NicksResponse, NoticeResponse, PartResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse, WhoResponse
 from backends.urls import CHAT
 from fastapi import APIRouter, FastAPI, WebSocket
 
@@ -113,8 +114,10 @@ def list_data(request: ListRequest) -> ListResponse:
 
 
 @router.post(f"{CHAT}/LoginHandler", responses=RESPONSES_DEF)
-def login(request: LoginRequest) -> Response:
-    raise NotImplementedError()
+def login(request: LoginRequest) -> LoginResponse:
+    handler = LoginHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/NickHandler", responses=RESPONSES_DEF)

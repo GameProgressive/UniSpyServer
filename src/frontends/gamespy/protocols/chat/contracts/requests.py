@@ -112,31 +112,34 @@ class LoginPreAuth(RequestBase):
 class LoginRequest(RequestBase):
     request_type: LoginRequestType
     namespace_id: int
-    nick_name: str
+    nick_name: str|None
     email: str
-    unique_nick: str
+    unique_nick: str|None
     password_hash: str
 
     def parse(self):
         super().parse()
+
         try:
             self.namespace_id = int(self._cmd_params[0])
         except Exception:
             raise ChatException("The namespaceid format is incorrect.")
 
         if self._cmd_params[1] == "*":
+            self.unique_nick = None
             self.request_type = LoginRequestType.NICK_AND_EMAIL_LOGIN
             self.password_hash = self._cmd_params[2]
             assert isinstance(self._long_param, str)
             if self._long_param.count("@") != 2:
                 raise ChatException("The profile nick format is incorrect.")
 
-            profile_nick_index = self._long_param.index("@")
-            self.nick_name = self._long_param[0:profile_nick_index]
-            self.email = self._long_param[profile_nick_index + 1:]
+            splited_long_params = self._long_param.split("@", 1)
+            self.nick_name = splited_long_params[0]
+            self.email = splited_long_params[1]
             return
 
         self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
+        self.nick_name = None
         self.unique_nick = self._cmd_params[1]
         self.password_hash = self._cmd_params[2]
 
@@ -537,6 +540,7 @@ class SetChannelKeyRequest(ChannelRequestBase):
             self.cookie = "BCAST"
             self.is_broadcast = True
 
+
 class SetCKeyRequest(ChannelRequestBase):
     """
     sprintf(buffer, "SETCKEY %s %s :", channel, user);
@@ -552,12 +556,10 @@ class SetCKeyRequest(ChannelRequestBase):
     def parse(self) -> None:
         super().parse()
         if self._cmd_params is None:
-            raise ChatException(
-                "The cmdParams from SETCKEY request are missing.")
+            raise ChatException("The cmdParams from SETCKEY request are missing.")
 
         if self._long_param is None:
-            raise ChatException(
-                "The longParam from SETCKEY request is missing.")
+            raise ChatException("The longParam from SETCKEY request is missing.")
 
         self.channel_name = self._cmd_params[0]
         self.nick_name = self._cmd_params[1]
@@ -618,6 +620,7 @@ class UtmRequest(MessageRequestBase):
 
 
 # region publish message
+
 
 class PublishMessageRequest(RequestBase):
     """

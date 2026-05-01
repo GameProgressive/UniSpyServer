@@ -147,9 +147,9 @@ class ValidResponse(ResponseBase):
 
     def build(self):
         if self._result.is_account_valid:
-            self.sendingbuffer = "\\vr\\1\\final\\"
+            self.sending_buffer = "\\vr\\1\\final\\"
         else:
-            self.sendingbuffer = "\\vr\\0\\final\\"
+            self.sending_buffer = "\\vr\\0\\final\\"
 
 
 class UniqueSearchResponse(ResponseBase):

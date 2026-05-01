@@ -29,8 +29,8 @@ class ListResult(ResultBase):
 
 
 class LoginResult(ResultBase):
-    profile_id: int
     user_id: int
+    profile_id: int
 
 
 class NickResult(ResultBase):

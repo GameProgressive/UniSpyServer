@@ -1,3 +1,5 @@
+from backends.library.database.pg_orm import GameServerCaches
+from sqlalchemy import ColumnExpressionArgument, Integer, and_
 from typing import TYPE_CHECKING,  cast
 from uuid import UUID
 from backends.library.database.pg_orm import (
@@ -257,6 +259,54 @@ def clean_expired_game_server_cache(session: Session):
         GameServerCaches.update_time < __expire_time()
     ).delete()
     session.commit()
+
+
+# region Json query
+
+
+def _get_specific_condition(con: str):
+    if ">=" in con:
+        name,  value = con.split(" >= ")
+        return GameServerCaches.data[name]['value'].cast(
+            Integer) >= int(value)
+    if "<=" in con:
+        name,  value = con.split(" <= ")
+        return GameServerCaches.data[name]['value'].cast(
+            Integer) <= int(value)
+    if ">" in con:
+        name,  value = con.split(" > ")
+        return GameServerCaches.data[name]['value'].cast(Integer) > int(value)
+    if "<" in con:
+        name,  value = con.split(" < ")
+        return GameServerCaches.data[name]['value'].cast(Integer) < int(value)
+    if "=" in con:
+        name,  value = con.split(" = ")
+        return GameServerCaches.data[name]['value'] == value
+
+
+def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:
+    # todo build or queries
+    # currently we only support AND condition
+    sql_cons = []
+    and_conditions = filter.split(" AND ")
+    for and_c in and_conditions:
+        qq = _get_specific_condition(and_c)
+        sql_cons.append(qq)
+
+    # or_queries = []
+    # or_condition = filter.split(" OR ")
+    # for or_c in or_condition:
+    #     and_conditions = filter.split(" AND ")
+    #     and_queries = []
+    #     for and_c in and_conditions:
+    #         qq = _get_specific_condition(and_c)
+    #         and_queries.append(qq)
+
+    #     or_queries.append(qq)
+
+    if len(sql_cons) == 1:
+        return sql_cons[0]
+    return and_(*sql_cons)
 
 
 if __name__ == "__main__":

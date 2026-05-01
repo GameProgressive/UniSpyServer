@@ -109,7 +109,7 @@ class LoginRequest(RequestBase):
     partner id default is 0
     """
     game_name: str
-    quiet_mode_flags: int
+    quiet_mode_flags: QuietModeType
     firewall: bool
 
     def __init__(self, raw_request: str) -> None:
@@ -292,6 +292,7 @@ class NewUserRequest(RequestBase):
 # region Buddy
 
 
+@final
 class BuddyListRequest(RequestBase):
     profile_id: int
     namespace_id: int
@@ -307,6 +308,7 @@ class BuddyListRequest(RequestBase):
         pass
 
 
+@final
 class BlockListRequest(RequestBase):
     profile_id: int
     namespace_id: int
@@ -323,9 +325,63 @@ class BlockListRequest(RequestBase):
 
 
 @final
+class BuddyMessageFriendAddRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
+        assert isinstance(profile_id, int)
+        assert isinstance(namespace_id, int)
+        self.profile_id = profile_id
+        self.namespace_id = namespace_id
+        self.operation_id = operation_id
+
+    def parse(self):
+        pass
+
+
+@final
+class AuthAddBuddyRequest(RequestBase):
+    """
+    verify the friend add request after the client accept the friend invitation
+    """
+    session_key: str
+    namespace_id: int
+    sender_profile_id: int
+    receiver_profile_id: int
+    sig: str
+    auto_sync: bool
+
+    def parse(self):
+        super().parse()
+        if "sesskey" not in self._request_dict:
+            raise GPParseException("session key is missing.")
+        self.session_key = self._request_dict['sesskey']
+
+        if "fromprofileid" not in self._request_dict:
+            raise GPParseException("fromprofileid is missing.")
+        try:
+            self.receiver_profile_id = int(self._request_dict["fromprofileid"])
+        except Exception:
+            raise GPParseException("fromprofileid format is incorrect.")
+
+        if "sig" not in self._request_dict:
+            raise GPParseException("sig is missing.")
+        self.sig = self._request_dict['sig']
+
+        try:
+            self.auto_sync = bool(self._request_dict.get("autoSync"))
+        except Exception:
+            raise GPParseException("autoSync format is incorrect.")
+
+
+@final
 class AddBuddyRequest(RequestBase):
-    friend_profile_id: int
-    reason: str
+    sender_profile_id: int
+    target_profile_id: int
+    namespace_id: int
+    reason: str | None
+    signature: str | None
 
     def parse(self):
         super().parse()
@@ -336,16 +392,19 @@ class AddBuddyRequest(RequestBase):
         ):
             raise GPParseException("addbuddy request is invalid.")
         try:
-            self.friend_profile_id = int(self._request_dict["newprofileid"])
+            self.target_profile_id = int(self._request_dict["newprofileid"])
         except Exception:
             raise GPParseException("newprofileid format is incorrect.")
 
-        self.reason = self._request_dict["reason"]
+        self.reason = self._request_dict.get("reason")
+        self.signature = self._request_dict.get("syncrequested")
 
 
 @final
 class DelBuddyRequest(RequestBase):
-    friend_profile_id: int
+    target_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
 
     def parse(self):
         super().parse()
@@ -353,7 +412,7 @@ class DelBuddyRequest(RequestBase):
             raise GPParseException("delprofileid is missing.")
 
         try:
-            self.friend_profile_id = int(self._request_dict["delprofileid"])
+            self.target_profile_id = int(self._request_dict["delprofileid"])
         except Exception:
             raise GPParseException("delprofileid format is incorrect.")
 
@@ -483,7 +542,9 @@ class StatusRequest(RequestBase):
 
 @final
 class AddBlockRequest(RequestBase):
-    taget_id: int
+    taget_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
 
     def parse(self):
         super().parse()
@@ -492,7 +553,24 @@ class AddBlockRequest(RequestBase):
             raise GPParseException("profileid is missing")
 
         try:
-            self.taget_id = int(self._request_dict["profileid"])
+            self.taget_profile_id = int(self._request_dict["profileid"])
+        except ValueError:
+            raise GPParseException("profileid format is incorrect")
+
+
+class RemoveBlockRequest(RequestBase):
+    session_key: str
+    taget_profile_id: int
+    sender_profile_id: int
+    namespace_id: int
+
+    def parse(self):
+        super().parse()
+        if "profileid" not in self._request_dict:
+            raise GPParseException("profileid is missing")
+
+        try:
+            self.taget_profile_id = int(self._request_dict["profileid"])
         except ValueError:
             raise GPParseException("profileid format is incorrect")
 
@@ -562,12 +640,10 @@ class RegisterCDKeyRequest(RequestBase):
 
         if "sesskey" not in self._request_dict:
             raise GPParseException("sesskey is missing")
-
         self.session_key = self._request_dict["sesskey"]
 
         if "cdkeyenc" not in self._request_dict:
             raise GPParseException("cdkeyenc is missing")
-
         self.cdkey_enc = self._request_dict["cdkeyenc"]
 
 
@@ -582,12 +658,10 @@ class RegisterNickRequest(RequestBase):
 
         if "sesskey" not in self._request_dict:
             raise GPParseException("sesskey is missing")
-
         self.session_key = self._request_dict["sesskey"]
 
         if "uniquenick" not in self._request_dict:
             raise GPParseException("uniquenick is missing")
-
         self.unique_nick = self._request_dict["uniquenick"]
 
         if "partnerid" in self._request_dict:
@@ -634,3 +708,15 @@ class UpdateUserInfoRequest(RequestBase):
     def parse(self):
         super().parse()
         self.extra_infos = validate_extra_infos(self._request_dict)
+
+
+# region Peer
+@final
+class AuthRequest(RequestBase):
+    nick: str
+    sig: str
+
+    def parse(self):
+        super().parse()
+        self.nick = self._request_dict['nick']
+        self.sig = self._request_dict['sig']

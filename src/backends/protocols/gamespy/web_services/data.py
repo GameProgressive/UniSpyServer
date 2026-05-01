@@ -233,8 +233,6 @@ def count_for_record(table_id: str, command_name: CommandName, session: Session)
         SakeStorage.tableid == table_id).count()
     return result
 
-# def _check_record_integrety(sake:SakeStorage)->bool:
-
 
 def _get_filtered_record(sake: SakeStorage, fields: list, command_name: CommandName) -> dict:
     """
@@ -251,15 +249,19 @@ def _get_filtered_record(sake: SakeStorage, fields: list, command_name: CommandN
     return filtered_key_value
 
 
-def search_for_record(table_id: str, max_num: int, filter: str, fields: list[str], command_name: CommandName, session: Session) -> list[dict]:
+def search_for_record(table_id: str, max_num: int, filter: str | None, fields: list[str], command_name: CommandName, session: Session) -> list[dict]:
     """
     max_num default to 100
     search and get the value that key in fields
     """
-    queries = _filter_to_sql_con(filter)
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id,
-        queries).limit(max_num).all()
+    if filter is None:
+        result = session.query(SakeStorage).where(
+        SakeStorage.tableid == table_id).limit(max_num).all()
+    else:
+        queries = _filter_to_sql_con(filter)
+        result = session.query(SakeStorage).where(
+            SakeStorage.tableid == table_id,
+            queries).limit(max_num).all()
     records = []
     for item in result:
         record = _get_filtered_record(item, fields, command_name)

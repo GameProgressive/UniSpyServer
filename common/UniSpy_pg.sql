@@ -40,23 +40,23 @@ SET default_table_access_method = heap;
 -- Name: addrequests; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.addrequests (
-    addrequestid SERIAL PRIMARY KEY NOT NULL,
-    profileid integer NOT NULL,
-    targetid integer NOT NULL,
+CREATE TABLE unispy.friend_request (
+    id SERIAL PRIMARY KEY NOT NULL,
+    sender_profileid integer NOT NULL,
+    receiver_profileid integer NOT NULL,
     namespaceid integer NOT NULL,
     reason character varying NOT NULL,
-    status smallint NOT NULL
+    update_time timestamp without time zone NOT NULL
 );
 
 
-ALTER TABLE unispy.addrequests OWNER TO unispy;
+ALTER TABLE unispy.friend_request OWNER TO unispy;
 
 --
--- Name: addrequests_addrequestid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: addrequests_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.addrequests_addrequestid_seq
+-- CREATE SEQUENCE unispy.friend_request_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -65,34 +65,36 @@ ALTER TABLE unispy.addrequests OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.addrequests_addrequestid_seq OWNER TO unispy;
+ALTER TABLE unispy.friend_request_id_seq OWNER TO unispy;
 
 --
--- Name: addrequests_addrequestid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: addrequests_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.addrequests_addrequestid_seq OWNED BY unispy.addrequests.addrequestid;
+ALTER SEQUENCE unispy.friend_request_id_seq OWNED BY unispy.friend_request.id;
 
 
 --
 -- Name: blocked; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.blocked (
-    blockid SERIAL PRIMARY KEY NOT NULL,
+CREATE TABLE unispy.black_list (
+    id SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     namespaceid integer NOT NULL,
-    targetid integer NOT NULL
+    targetid integer NOT NULL,
+    update_time timestamp without time zone NOT NULL
+
 );
 
 
-ALTER TABLE unispy.blocked OWNER TO unispy;
+ALTER TABLE unispy.black_list OWNER TO unispy;
 
 --
--- Name: blocked_blockid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: blocked_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.blocked_blockid_seq
+-- CREATE SEQUENCE unispy.black_list_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -101,13 +103,13 @@ ALTER TABLE unispy.blocked OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.blocked_blockid_seq OWNER TO unispy;
+ALTER TABLE unispy.black_list_id_seq OWNER TO unispy;
 
 --
--- Name: blocked_blockid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: blocked_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.blocked_blockid_seq OWNED BY unispy.blocked.blockid;
+ALTER SEQUENCE unispy.black_list_id_seq OWNED BY unispy.black_list.id;
 
 
 --
@@ -180,21 +182,22 @@ ALTER TABLE unispy.chat_channel_user_caches OWNER TO unispy;
 -- Name: friends; Type: TABLE; Schema: unispy; Owner: unispy
 --
 
-CREATE TABLE unispy.friends (
-    friendid SERIAL PRIMARY KEY NOT NULL,
+CREATE TABLE unispy.friend_list (
+    id SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     targetid integer NOT NULL,
-    namespaceid integer NOT NULL
+    namespaceid integer NOT NULL,
+    update_time timestamp without time zone NOT NULL
 );
 
 
-ALTER TABLE unispy.friends OWNER TO unispy;
+ALTER TABLE unispy.friend_list OWNER TO unispy;
 
 --
--- Name: friends_friendid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: friends_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.friends_friendid_seq
+-- CREATE SEQUENCE unispy.friend_list_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -203,13 +206,13 @@ ALTER TABLE unispy.friends OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.friends_friendid_seq OWNER TO unispy;
+ALTER TABLE unispy.friend_list_id_seq OWNER TO unispy;
 
 --
--- Name: friends_friendid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: friends_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.friends_friendid_seq OWNED BY unispy.friends.friendid;
+ALTER SEQUENCE unispy.friend_list_id_seq OWNED BY unispy.friend_list.id;
 
 
 --
@@ -671,24 +674,24 @@ ALTER SEQUENCE unispy.users_userid_seq OWNED BY unispy.users.userid;
 
 
 --
--- Name: addrequests addrequestid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: addrequests id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.addrequests ALTER COLUMN addrequestid SET DEFAULT nextval('unispy.addrequests_addrequestid_seq'::regclass);
-
-
---
--- Name: blocked blockid; Type: DEFAULT; Schema: unispy; Owner: unispy
---
-
-ALTER TABLE ONLY unispy.blocked ALTER COLUMN blockid SET DEFAULT nextval('unispy.blocked_blockid_seq'::regclass);
+ALTER TABLE ONLY unispy.friend_request ALTER COLUMN id SET DEFAULT nextval('unispy.friend_request_id_seq'::regclass);
 
 
 --
--- Name: friends friendid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: blocked id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
--- ALTER TABLE ONLY unispy.friends ALTER COLUMN friendid SET DEFAULT nextval('unispy.friends_friendid_seq'::regclass);
+ALTER TABLE ONLY unispy.black_list ALTER COLUMN id SET DEFAULT nextval('unispy.black_list_id_seq'::regclass);
+
+
+--
+-- Name: friends id; Type: DEFAULT; Schema: unispy; Owner: unispy
+--
+
+-- ALTER TABLE ONLY unispy.friend_list ALTER COLUMN id SET DEFAULT nextval('unispy.friend_list_id_seq'::regclass);
 
 
 --
@@ -758,7 +761,7 @@ ALTER TABLE ONLY unispy.users ALTER COLUMN userid SET DEFAULT nextval('unispy.us
 -- Data for Name: addrequests; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.addrequests (addrequestid, profileid, targetid, namespaceid, reason, status) FROM stdin;
+COPY unispy.friend_request (id, sender_profileid, receiver_profileid, namespaceid, reason, update_time) FROM stdin;
 \.
 
 
@@ -766,7 +769,7 @@ COPY unispy.addrequests (addrequestid, profileid, targetid, namespaceid, reason,
 -- Data for Name: blocked; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.blocked (blockid, profileid, namespaceid, targetid) FROM stdin;
+COPY unispy.black_list (id, profileid, namespaceid, targetid) FROM stdin;
 \.
 
 
@@ -798,7 +801,7 @@ COPY unispy.chat_channel_user_caches (nick_name, channel_name, server_id, user_n
 -- Data for Name: friends; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.friends (friendid, profileid, targetid, namespaceid) FROM stdin;
+COPY unispy.friend_list (id, profileid, targetid, namespaceid) FROM stdin;
 \.
 
 
@@ -5356,6 +5359,9 @@ COPY unispy.partner (partnerid, partnername) FROM stdin;
 
 COPY unispy.profiles (profileid, userid, nick, serverflag, status, statstring, extra_info) FROM stdin;
 1	1	spyguy	0	0	I love UniSpy	{}
+2	2	gptestc1	0	0	I love UniSpy	{}
+3	3	gptestc2	0	0	I love UniSpy	{}
+4	4	gptestc3	0	0	I love UniSpy	{}
 \.
 
 
@@ -5389,6 +5395,9 @@ COPY unispy.sakestorage (id, tableid, record) FROM stdin;
 
 COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
 1	1	spyguy	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+2	2	gptestc1	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+3	3	gptestc2	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+4	4	gptestc3	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
 \.
 
 
@@ -5398,32 +5407,30 @@ COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partn
 
 COPY unispy.users (userid, email, password, emailverified, lastip, lastonline, createddate, banned, deleted) FROM stdin;
 1	spyguy@gamespy.com	4a7d1ed414474e4033ac29ccb8653d9b	t	\N	2022-01-19 20:01:49.828006	2022-01-19 20:01:49.828006	f	f
-2	uni@unispy.org	4a7d1ed414474e4033ac29ccb8653d9b	t	\N	2022-01-19 20:02:57.595514	2022-01-19 20:02:57.595514	f	f
-3	gptestc1@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.754069	2022-01-19 20:03:44.754069	f	f
-4	gptestc2@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.761986	2022-01-19 20:03:44.761986	f	f
-5	gptestc3@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.764527	2022-01-19 20:03:44.764527	f	f
+2	gptestc1@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.754069	2022-01-19 20:03:44.754069	f	f
+3	gptestc2@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.761986	2022-01-19 20:03:44.761986	f	f
+4	gptestc3@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.764527	2022-01-19 20:03:44.764527	f	f
 \.
 
-
 --
--- Name: addrequests_addrequestid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
---
-
-SELECT pg_catalog.setval('unispy.addrequests_addrequestid_seq', 1, false);
-
-
---
--- Name: blocked_blockid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: addrequests_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.blocked_blockid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.friend_request_id_seq', 1, false);
 
 
 --
--- Name: friends_friendid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: blocked_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.friends_friendid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.black_list_id_seq', 1, false);
+
+
+--
+-- Name: friends_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+--
+
+SELECT pg_catalog.setval('unispy.friend_list_id_seq', 1, false);
 
 
 --
@@ -5513,5 +5520,14 @@ ALTER TABLE ONLY unispy.chat_channel_user_caches
 
 ALTER TABLE ONLY unispy.chat_channel_user_caches
     ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name);
+
+
+
+-- make sure the sequences are owned by the correct columns
+SELECT setval(  pg_get_serial_sequence('unispy.profiles','profileid'),  COALESCE((SELECT MAX(profileid) FROM unispy.profiles), 1));
+SELECT setval(  pg_get_serial_sequence('unispy.users','userid'),  COALESCE((SELECT MAX(userid) FROM unispy.users), 1));
+SELECT setval(  pg_get_serial_sequence('unispy.subprofiles','subprofileid'),  COALESCE((SELECT MAX(subprofileid) FROM unispy.subprofiles), 1));
+
+
 
 -- PostgreSQL database dump complete
