@@ -109,7 +109,7 @@ class LoginRequest(RequestBase):
     partner id default is 0
     """
     game_name: str
-    quiet_mode_flags: int
+    quiet_mode_flags: QuietModeType
     firewall: bool
 
     def __init__(self, raw_request: str) -> None:

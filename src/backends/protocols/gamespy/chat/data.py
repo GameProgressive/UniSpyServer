@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
 )
 from sqlalchemy.orm import Session
 
-from frontends.gamespy.protocols.chat.contracts.results import LoginResult, WhoIsResult
+from frontends.gamespy.protocols.chat.contracts.results import WhoIsResult
 
 
 def is_nick_exist(nick_name: str, session: Session) -> bool:
@@ -599,12 +599,16 @@ def _flush_chat_database():
 
 # region Login
 def get_login_info_by_nick_email(
-    nick: str, email: str, password: str, session: Session
+    nick: str, email: str, password: str,namespace_id:int, session: Session
 ) -> tuple[int,int]:
     result = (
         session.query(Users.userid, Profiles.profileid)
         .join(Users, Profiles.userid == Users.userid)
-        .where(Users.email == email, Profiles.nick == nick, Users.password == password)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .where(Users.email == email, 
+               Profiles.nick == nick, 
+               Users.password == password, 
+               SubProfiles.namespaceid == namespace_id)
         .first()
     )
     
@@ -613,6 +617,24 @@ def get_login_info_by_nick_email(
     else:
         return tuple(result)
 
+
+def get_login_info_by_uniquenick(
+    uniquenick: str, namespace_id: int, password: str, session: Session
+) -> tuple[int,int]:
+    result = (
+        session.query(Users.userid, Profiles.profileid)
+        .join(Users, Profiles.userid == Users.userid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .where(SubProfiles.uniquenick == uniquenick, 
+               SubProfiles.namespaceid == namespace_id,
+               Users.password == password)
+        .first()
+    )
+    
+    if result is None:
+        raise ChatException("user login info is incorrect")
+    else:
+        return tuple(result)
 
 
 

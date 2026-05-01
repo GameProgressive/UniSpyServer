@@ -366,11 +366,17 @@ class LoginHandler(hb.HandlerBase):
                 self._request.nick_name,
                 self._request.email,
                 self._request.password_hash,
+                self._request.namespace_id,
                 self._session,
             )
         else:
             assert self._request.unique_nick is not None
-            raise NotImplementedError("chat uniquenick login not implemented")
+            self._data = data.get_login_info_by_uniquenick(
+                self._request.unique_nick,
+                self._request.namespace_id,
+                self._request.password_hash,
+                self._session
+            )
 
     def _result_construct(self) -> None:
         self._result = LoginResult(user_id=self._data[0], profile_id=self._data[1])

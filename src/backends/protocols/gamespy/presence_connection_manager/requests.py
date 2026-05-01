@@ -1,10 +1,7 @@
-from typing import Any, Optional, Union
-
-from pydantic import ValidationError
-
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     GPStatusCode,
     LoginType,
+    QuietModeType,
     SdkRevisionType,
 )
 
@@ -148,12 +145,14 @@ class LoginRequest(RequestBase):
     game_port: int
     partner_id: int
     game_name: str | None = None
-    quiet_mode_flags: int
+    quiet_mode_flags: QuietModeType | None = None
+    """
+    todo: this flag determines which buddy message is allowed to received after login
+    """
     firewall: bool
     operation_id: int
 
-    def model_post_init(self, __context: Any) -> None:
-        super().model_post_init(__context)
+    def model_post_init(self, _) -> None:
         if self.type == LoginType.AUTH_TOKEN:
             if self.auth_token is None:
                 raise GPException("authtoken is missing.")
