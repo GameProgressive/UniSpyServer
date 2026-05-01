@@ -5521,4 +5521,13 @@ ALTER TABLE ONLY unispy.chat_channel_user_caches
 ALTER TABLE ONLY unispy.chat_channel_user_caches
     ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name);
 
+
+
+-- make sure the sequences are owned by the correct columns
+SELECT setval(  pg_get_serial_sequence('unispy.profiles','profileid'),  COALESCE((SELECT MAX(profileid) FROM unispy.profiles), 1));
+SELECT setval(  pg_get_serial_sequence('unispy.users','userid'),  COALESCE((SELECT MAX(userid) FROM unispy.users), 1));
+SELECT setval(  pg_get_serial_sequence('unispy.subprofiles','subprofileid'),  COALESCE((SELECT MAX(subprofileid) FROM unispy.subprofiles), 1));
+
+
+
 -- PostgreSQL database dump complete
