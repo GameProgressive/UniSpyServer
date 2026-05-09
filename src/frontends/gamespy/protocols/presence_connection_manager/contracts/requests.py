@@ -291,11 +291,10 @@ class NewUserRequest(RequestBase):
 
 # region Buddy
 
-
-@final
-class BuddyListRequest(RequestBase):
+class BuddyRequestBase(RequestBase):
     profile_id: int
     namespace_id: int
+    operation_id: int
 
     def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
         assert isinstance(profile_id, int)
@@ -309,35 +308,29 @@ class BuddyListRequest(RequestBase):
 
 
 @final
-class BlockListRequest(RequestBase):
-    profile_id: int
-    namespace_id: int
-
-    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
-        assert isinstance(profile_id, int)
-        assert isinstance(namespace_id, int)
-        self.profile_id = profile_id
-        self.namespace_id = namespace_id
-        self.operation_id = operation_id
-
-    def parse(self):
-        pass
+class BuddyListRetriveRequest(BuddyRequestBase):
+    pass
 
 
 @final
-class BuddyMessageFriendAddRequest(RequestBase):
-    profile_id: int
-    namespace_id: int
+class BlockListRetriveRequest(BuddyRequestBase):
+    pass
 
-    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
-        assert isinstance(profile_id, int)
-        assert isinstance(namespace_id, int)
-        self.profile_id = profile_id
-        self.namespace_id = namespace_id
-        self.operation_id = operation_id
 
-    def parse(self):
-        pass
+@final
+class BuddyMessageFriendAddRequest(BuddyRequestBase):
+    """
+    retrive add buddy request message
+    """
+    pass
+
+
+@final
+class BuddyMessageRequest(BuddyRequestBase):
+    """
+    retrive friend message
+    """
+    pass
 
 
 @final

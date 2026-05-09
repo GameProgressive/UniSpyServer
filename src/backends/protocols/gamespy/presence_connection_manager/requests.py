@@ -31,14 +31,14 @@ class RemoveBlockRequest(RequestBase):
     sender_profile_id: int
 
 
-class BuddyListRequest(RequestBase):
+class BuddyListRetriveRequest(RequestBase):
     profile_id: int
     namespace_id: int
     raw_request: str | None = None
     operation_id: int
 
 
-class BlockListRequest(RequestBase):
+class BlockListRetriveRequest(RequestBase):
     profile_id: int
     namespace_id: int
     operation_id: int

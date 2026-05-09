@@ -2,6 +2,7 @@ from frontends.gamespy.protocols.presence_connection_manager.abstractions.contra
     ResponseBase,
     ResultBase,
 )
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import BuddyMessageType
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
     generate_proof
@@ -24,6 +25,7 @@ from frontends.gamespy.library.extentions.gamespy_ramdoms import (
 
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
     BuddyMessageFriendAddResult,
+    BuddyMessageResult,
     GetProfileResult,
     NewProfileResult,
     AddBuddyResult,
@@ -142,14 +144,28 @@ class BuddyMessageFriendAddResponse(ResponseBase):
         super().__init__(result)
 
     def build(self):
-        self.sending_buffer  = ""
+        self.sending_buffer = ""
         for data in self._result.data:
-            self.sending_buffer += f"\\bm\\{data.msg_type.value}"
+            self.sending_buffer += f"\\bm\\{BuddyMessageType.BM_REQUEST}"
             self.sending_buffer += f"\\f\\{data.from_profile_id}"
             date = int(data.date.timestamp())
             self.sending_buffer += f"\\date\\{date}"
             self.sending_buffer += "\\final\\"
 
+class BuddyMessageResponse(ResponseBase):
+    _result:BuddyMessageResult
+
+    def __init__(self, result: BuddyMessageResult) -> None:
+        super().__init__(result)
+
+    def build(self):
+        self.sending_buffer = ""
+        for data in self._result.data:
+            self.sending_buffer += f"\\bm\\{BuddyMessageType.BM_MESSAGE}"
+            self.sending_buffer += f"\\f\\{data.from_profile_id}"
+            date = int(data.date.timestamp())
+            self.sending_buffer += f"\\date\\{date}"
+            self.sending_buffer += f"\\message\\{data.message}"
 
 
 class StatusInfoResponse(ResponseBase):

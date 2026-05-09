@@ -2,9 +2,9 @@ from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
-from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, AddBuddyHandler, AuthAddBuddyHandler, BlockListHandler, BuddyListHandler, BuddyMessageFriendAddHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
-from backends.protocols.gamespy.presence_connection_manager.requests import AddBuddyRequest, AuthAddBuddyRequest, BlockListRequest, BuddyListRequest, BuddyMessageFriendAddRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, AddBuddyHandler, AuthAddBuddyHandler, BlockListRetriveHandler, BuddyListRetriveHandler, BuddyMessageFriendAddHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
+from backends.protocols.gamespy.presence_connection_manager.requests import AddBuddyRequest, AuthAddBuddyRequest, BlockListRetriveRequest, BuddyListRetriveRequest, BuddyMessageFriendAddRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListRetriveResponse, BuddyListRetriveResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
 from backends.urls import PRESENCE_CONNECTION_MANAGER
 
 
@@ -116,18 +116,30 @@ def status_info(request: StatusInfoRequest) -> OKResponse:
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyListHandler", responses=RESPONSES_DEF)
-def buddy_list(request: BuddyListRequest) -> BuddyListResponse:
-    handler = BuddyListHandler(request)
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyListRetriveHandler", responses=RESPONSES_DEF)
+def buddy_list(request: BuddyListRetriveRequest) -> BuddyListRetriveResponse:
+    handler = BuddyListRetriveHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BlockListHandler", responses=RESPONSES_DEF)
-def block_list(request: BlockListRequest) -> BlockListResponse:
-    handler = BlockListHandler(request)
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BlockListRetriveHandler", responses=RESPONSES_DEF)
+def block_list(request: BlockListRetriveRequest) -> BlockListRetriveResponse:
+    handler = BlockListRetriveHandler(request)
     handler.handle()
     return handler.response
+
+# region Buddy Message
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler", responses=RESPONSES_DEF)
+def buddy_add_request_message(request) -> None:
+    raise NotImplementedError()
+
+
+@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageHandler", responses=RESPONSES_DEF)
+def buddy_message(request):
+    raise NotImplementedError()
 
 
 if __name__ == "__main__":

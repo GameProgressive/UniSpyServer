@@ -5,8 +5,8 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     AddBlockRequest,
     AddBuddyRequest,
     AuthAddBuddyRequest,
-    BlockListRequest,
-    BuddyListRequest,
+    BlockListRetriveRequest,
+    BuddyListRetriveRequest,
     BuddyMessageFriendAddRequest,
     DelBuddyRequest,
     GetProfileRequest,
@@ -24,7 +24,7 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     UpdateProfileRequest,
     UpdateUserInfoRequest,
 )
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListResponse, BuddyListResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.responses import BlockListRetriveResponse, BuddyListRetriveResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
     LoginType,
@@ -122,9 +122,9 @@ class NewUserHandler(HandlerBase):
         # region Buddy
 
 
-class BuddyListHandler(HandlerBase):
-    _request: BuddyListRequest
-    response: BuddyListResponse
+class BuddyListRetriveHandler(HandlerBase):
+    _request: BuddyListRetriveRequest
+    response: BuddyListRetriveResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_buddy_list(
@@ -137,9 +137,9 @@ class BuddyListHandler(HandlerBase):
             operation_id=self._request.operation_id)
 
 
-class BlockListHandler(HandlerBase):
-    _request: BlockListRequest
-    response: BlockListResponse
+class BlockListRetriveHandler(HandlerBase):
+    _request: BlockListRetriveRequest
+    response: BlockListRetriveResponse
 
     def _data_operate(self) -> None:
         self.data = data.get_block_list(

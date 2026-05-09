@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class PeerRoomInfo(BaseModel):
     game_name: str
-    group_id: int = Field(..., alias='groupid')
+    group_id: int = Field(alias='groupid')
     room_name: str = Field(alias="hostname")
     number_of_waiting: int = Field(default=0, alias="numwaiting")
     max_waiting: int = Field(default=200, alias='maxwaiting')
@@ -18,6 +18,6 @@ class PeerRoomInfo(BaseModel):
         """
         return a immutable dict
         """
-        data = self.model_dump(mode="json")
+        data = self.model_dump(mode="json", by_alias=True)
         del data["game_name"]
         return data

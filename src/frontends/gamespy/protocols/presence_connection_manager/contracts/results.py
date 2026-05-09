@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import final
 from pydantic import BaseModel
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResultBase
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import BuddyMessageType, GPStatusCode, LoginType
@@ -51,49 +52,48 @@ class BuddyListResult(ResultBase):
 class BuddyMessageDataBase(BaseModel):
     from_profile_id: int
     date: datetime
-    msg_type: BuddyMessageType
 
 
 class BuddyMessageResultBase(ResultBase):
     data: list[BuddyMessageDataBase]
 
 
+@final
 class BuddyMessageResult(BuddyMessageResultBase):
     class BuddyMessageData(BuddyMessageDataBase):
         message: str
-        msg_type: BuddyMessageType = BuddyMessageType.BM_MESSAGE
 
     data: list[BuddyMessageData]
 
 
-class BuddyMessageUTMData(BuddyMessageDataBase):
-    message: str
-    msg_type: BuddyMessageType = BuddyMessageType.BM_UTM
+@final
+class BuddyMessageUTMResult(BuddyMessageResultBase):
+    class BuddyMessageUTMData(BuddyMessageDataBase):
+        message: str
 
 
-class BuddyMessageFriendAddData(BuddyMessageDataBase):
-    message: str
-    signature: str
-    """
-    todo check whether need 32 byte str
-    """
-    msg_type: BuddyMessageType = BuddyMessageType.BM_REQUEST
-
-
+@final
 class BuddyMessageFriendAddResult(BuddyMessageResultBase):
+    class BuddyMessageFriendAddData(BuddyMessageDataBase):
+        message: str
+        signature: str
+        """
+        todo check whether need 32 byte str
+        """
     data: list[BuddyMessageFriendAddData]
 
 
-class BuddyMessageAuthData(BuddyMessageDataBase):
-    msg_type: BuddyMessageType = BuddyMessageType.BM_AUTH
+@final
+class BuddyMessageAuthResult(BuddyMessageResultBase):
     pass
 
 
-class BuddyMessageRevokeData(BuddyMessageDataBase):
-    msg_type: BuddyMessageType = BuddyMessageType.BM_REVOKE
+@final
+class BuddyMessageRevokResult(BuddyMessageResultBase):
     pass
 
 
+@final
 class StatusInfoResult(ResultBase):
     profile_id: int
     product_id: int
@@ -111,6 +111,7 @@ class StatusInfoResult(ResultBase):
     quiet_mode_flags: str
 
 
+@final
 class StatusResult(ResultBase):
     status_string: str
     location_string: str
@@ -121,6 +122,7 @@ class StatusResult(ResultBase):
 
 # region Profile
 
+@final
 class GetProfileData(BaseModel):
     nick: str
     profile_id: int
@@ -129,13 +131,16 @@ class GetProfileData(BaseModel):
     extra_infos: dict
 
 
+@final
 class GetProfileResult(ResultBase):
     user_profile: GetProfileData
 
 
+@final
 class NewProfileResult(ResultBase):
     profile_id: int
 
 
+@final
 class RegisterNickResult(ResultBase):
     pass

@@ -6,11 +6,11 @@ class LoginResponse(DataResponse):
     result: LoginResult
 
 
-class BuddyListResponse(DataResponse):
+class BuddyListRetriveResponse(DataResponse):
     result: BuddyListResult
 
 
-class BlockListResponse(DataResponse):
+class BlockListRetriveResponse(DataResponse):
     result: BlockListResult
 
 

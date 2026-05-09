@@ -8,9 +8,11 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     AddBlockRequest,
     AddBuddyRequest,
     AuthAddBuddyRequest,
-    BlockListRequest,
-    BuddyListRequest,
+    BlockListRetriveRequest,
+    BuddyListRetriveRequest,
     BuddyMessageFriendAddRequest,
+    BuddyMessageFriendAddRequest,
+    BuddyMessageRequest,
     GetProfileRequest,
     NewProfileRequest,
     NewUserRequest,
@@ -29,6 +31,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     BlockListResult,
     BuddyListResult,
     BuddyMessageFriendAddResult,
+    BuddyMessageResult,
     NewUserResult,
     RegisterNickResult,
     StatusInfoResult,
@@ -41,6 +44,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.responses
     BlockListResponse,
     BuddyListResponse,
     BuddyMessageFriendAddResponse,
+    BuddyMessageResponse,
     NewUserResponse,
     StatusInfoResponse,
     GetProfileResponse,
@@ -143,30 +147,25 @@ class SdkRevisionHandler(CmdHandlerBase):
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = self._request.sdk_revision_type
         # todo check whether need to send friend add requests
-        # bmh = BuddyMessageFriendAddHandler(self._client, BuddyMessageFriendAddRequest(
-        #     self._client.info.profile_id,
-        #     self._client.info.namespace_id,
-        #     self._request.operation_id
-        # ))
-        # bmh.handle()
+        bmh = BuddyMessageFriendAddHandler(self._client, BuddyMessageFriendAddRequest(
+            self._client.info.profile_id,
+            self._client.info.namespace_id,
+            self._request.operation_id
+        ))
+        bmh.handle()
+
         if SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN in self._client.info.sdk_revision:
-            bdy = BuddyListHandler(self._client, BuddyListRequest(
+            bdy = BuddyListRetriveHandler(self._client, BuddyListRetriveRequest(
                 self._client.info.profile_id,
                 self._client.info.namespace_id,
                 self._request.operation_id))
             bdy.handle()
-            bl = BlockListHandler(self._client, BlockListRequest(
+            bl = BlockListRetriveHandler(self._client, BlockListRetriveRequest(
                 self._client.info.profile_id,
                 self._client.info.namespace_id,
                 self._request.operation_id))
             bl.handle()
 
-            bs = BuddyStatusHandler(self._client, BuddyStatusRequest(
-                self._client.info.profile_id,
-                self._client.info.namespace_id,
-                self._request.operation_id
-            ))
-            bs.handle()
             # request = StatusInfoRequest()
             # request.profile_id = self._client.info.profile_id
             # request.namespace_id = int(self._client.info.namespace_id)
@@ -210,24 +209,36 @@ class AuthAddBuddyHandler(CmdHandlerBase):
 
 
 @final
-class BlockListHandler(CmdHandlerBase):
+class BlockListRetriveHandler(CmdHandlerBase):
+    _request: BlockListRetriveRequest
     _result: BlockListResult
     _response: BlockListResponse
 
 
 @final
-class BuddyListHandler(LoginedHandlerBase):
+class BuddyListRetriveHandler(LoginedHandlerBase):
+    _request: BuddyListRetriveRequest
     _result: BuddyListResult
     _response: BuddyListResponse
+
+# region Buddy Message
 
 
 @final
 class BuddyMessageFriendAddHandler(LoginedHandlerBase):
     """
-    get the friend add request from server
+    retrive the friend add request from server
     """
+    _request: BuddyMessageFriendAddRequest
     _result: BuddyMessageFriendAddResult
     _response: BuddyMessageFriendAddResponse
+
+
+@final
+class BuddyMessageHandler(LoginedHandlerBase):
+    _request: BuddyMessageRequest
+    _result: BuddyMessageResult
+    _response: BuddyMessageResponse
 
 
 @final
