@@ -1,4 +1,7 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServiceBase, ServicesFactory
+from frontends.gamespy.library.abstractions.server_launcher import (
+    ServiceBase,
+    ServicesFactory,
+)
 from frontends.gamespy.library.network.tcp_handler import TcpServer
 from frontends.gamespy.protocols.chat.applications.client import Client
 

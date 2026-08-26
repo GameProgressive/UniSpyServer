@@ -1,4 +1,7 @@
-from frontends.gamespy.protocols.natneg.abstractions.contracts import CommonResultBase, ResultBase
+from frontends.gamespy.protocols.natneg.abstractions.contracts import (
+    CommonResultBase,
+    ResultBase,
+)
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     ConnectPacketStatus,
     PreInitState,

@@ -1,4 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
+from sqlalchemy.orm import Session
 
 from backends.library.database.pg_orm import (
     InitPacketCaches,
@@ -10,8 +12,6 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatPortType,
 )
 
-from sqlalchemy.orm import Session
-
 
 def add_init_packet(info: InitPacketCaches, session: Session) -> None:
     assert isinstance(info, InitPacketCaches)
@@ -22,7 +22,8 @@ def add_init_packet(info: InitPacketCaches, session: Session) -> None:
 
 def clean_expired_init_cache(session: Session) -> None:
     session.query(InitPacketCaches).where(
-        InitPacketCaches.update_time < datetime.now() - timedelta(minutes=5)
+        InitPacketCaches.update_time < datetime.now(
+            timezone.utc) - timedelta(minutes=5)
     ).delete()
     session.commit()
 

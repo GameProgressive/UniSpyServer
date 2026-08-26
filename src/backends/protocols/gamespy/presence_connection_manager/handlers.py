@@ -1,6 +1,6 @@
 from backends.library.abstractions.contracts import OKResponse, RequestBase
 from backends.library.abstractions.handler_base import HandlerBase
-import backends.protocols.gamespy.presence_connection_manager.data as data
+from backends.protocols.gamespy.presence_connection_manager import data
 from backends.protocols.gamespy.presence_connection_manager.requests import (
     AddBlockRequest,
     AddBuddyRequest,
@@ -24,7 +24,13 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     UpdateProfileRequest,
     UpdateUserInfoRequest,
 )
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListRetriveResponse, BuddyListRetriveResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.responses import (
+    BlockListRetriveResponse,
+    BuddyListRetriveResponse,
+    BuddyMessageFriendAddResponse,
+    GetProfileResponse,
+    LoginResponse,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
     LoginType,
@@ -40,6 +46,7 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPLoginBadEmailException,
     GPLoginException,
 )
+
 # region General
 
 
@@ -74,8 +81,7 @@ class LoginHandler(HandlerBase):
             self._request.nick, self._request.email, self._session
         )
         if not self._data:
-            raise GPLoginBadEmailException(
-                f"email: {self._request.email} is invalid.")
+            raise GPLoginBadEmailException(f"email: {self._request.email} is invalid.")
 
     def _unique_nick_login(self) -> None:
         assert self._request.unique_nick is not None
@@ -94,12 +100,14 @@ class LoginHandler(HandlerBase):
         if self._data is None:
             raise GPLoginException("login information is incorrect.")
 
-        self._result = LoginResult(operation_id=self._request.operation_id,
-                                   data=self._data,
-                                   user_data=self._request.user_data,
-                                   type=self._request.type,
-                                   partner_id=self._request.partner_id,
-                                   user_challenge=self._request.user_challenge)
+        self._result = LoginResult(
+            operation_id=self._request.operation_id,
+            data=self._data,
+            user_data=self._request.user_data,
+            type=self._request.type,
+            partner_id=self._request.partner_id,
+            user_challenge=self._request.user_challenge,
+        )
 
 
 class LogoutHandler(HandlerBase):
@@ -107,8 +115,11 @@ class LogoutHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        data.update_online_status(user_id=self._request.user_id,
-                                  status=LoginStatus.DISCONNECTED, session=self._session)
+        data.update_online_status(
+            user_id=self._request.user_id,
+            status=LoginStatus.DISCONNECTED,
+            session=self._session,
+        )
 
 
 class NewUserHandler(HandlerBase):
@@ -133,8 +144,8 @@ class BuddyListRetriveHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = BuddyListResult(
-            profile_ids=self.data,
-            operation_id=self._request.operation_id)
+            profile_ids=self.data, operation_id=self._request.operation_id
+        )
 
 
 class BlockListRetriveHandler(HandlerBase):
@@ -148,7 +159,8 @@ class BlockListRetriveHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = BlockListResult(
-            profile_ids=self.data, operation_id=self._request.operation_id)
+            profile_ids=self.data, operation_id=self._request.operation_id
+        )
 
 
 class BuddyStatusInfoHandler(HandlerBase):
@@ -171,9 +183,7 @@ class DelBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.del_buddy(
-            self._request.target_profile_id,
-            self._request.session_key,
-            self._session
+            self._request.target_profile_id, self._request.session_key, self._session
         )
 
 
@@ -187,7 +197,8 @@ class AddBuddyHandler(HandlerBase):
             self._request.target_profile_id,
             self._request.namespace_id,
             self._request.reason,
-            self._session)
+            self._session,
+        )
 
 
 class BuddyMessageFriendAddHandler(HandlerBase):
@@ -196,12 +207,12 @@ class BuddyMessageFriendAddHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.get_friend_add_info(
-            self._request.profile_id, self._request.namespace_id, self._session)
+            self._request.profile_id, self._request.namespace_id, self._session
+        )
 
     def _result_construct(self) -> None:
         self._result = BuddyMessageFriendAddResult(
-            operation_id=self._request.operation_id,
-            data=self._data
+            operation_id=self._request.operation_id, data=self._data
         )
 
 
@@ -209,6 +220,7 @@ class AuthAddBuddyHandler(HandlerBase):
     """
     authenticate the add buddy request
     """
+
     _request: AuthAddBuddyRequest
 
     def _data_operate(self) -> None:
@@ -216,7 +228,7 @@ class AuthAddBuddyHandler(HandlerBase):
             self._request.sender_profile_id,
             self._request.receiver_profile_id,
             self._request.namespace_id,
-            self._session
+            self._session,
         )
 
 
@@ -289,7 +301,8 @@ class GetProfileHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         self._result = GetProfileResult(
-            user_profile=self.data, operation_id=self._request.operation_id)
+            user_profile=self.data, operation_id=self._request.operation_id
+        )
 
 
 class NewProfileHandler(HandlerBase):
@@ -337,10 +350,12 @@ class RemoveBlockHandler(HandlerBase):
     _request: RemoveBlockRequest
 
     def _data_operate(self) -> None:
-        data.remove_block(self._request.sender_profile_id,
-                          self._request.target_profile_id,
-                          self._request.namespace_id,
-                          self._session)
+        data.remove_block(
+            self._request.sender_profile_id,
+            self._request.target_profile_id,
+            self._request.namespace_id,
+            self._session,
+        )
 
 
 class UpdateProfileHandler(HandlerBase):

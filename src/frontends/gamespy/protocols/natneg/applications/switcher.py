@@ -1,18 +1,8 @@
-
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.natneg.applications.client import Client
-from frontends.gamespy.protocols.natneg.contracts.requests import (
-    AddressCheckRequest,
-    ConnectAckRequest,
-    ConnectRequest,
-    ErtAckRequest,
-    InitRequest,
-    NatifyRequest,
-    ReportRequest,
-)
 from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
+from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.applications.handlers import (
     AddressCheckHandler,
     ConnectAckHandler,
@@ -21,6 +11,15 @@ from frontends.gamespy.protocols.natneg.applications.handlers import (
     InitHandler,
     NatifyHandler,
     ReportHandler,
+)
+from frontends.gamespy.protocols.natneg.contracts.requests import (
+    AddressCheckRequest,
+    ConnectAckRequest,
+    ConnectRequest,
+    ErtAckRequest,
+    InitRequest,
+    NatifyRequest,
+    ReportRequest,
 )
 
 

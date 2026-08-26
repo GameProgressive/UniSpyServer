@@ -3,10 +3,10 @@ from typing import cast
 
 from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.http_handler import HttpConnection, HttpData
-from frontends.gamespy.library.configs import ServerConfig
 
 
 class ClientInfo(ClientInfoBase):

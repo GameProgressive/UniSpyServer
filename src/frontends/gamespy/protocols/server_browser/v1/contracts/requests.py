@@ -1,5 +1,7 @@
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
-from frontends.gamespy.protocols.server_browser.v1.abstractions.contracts import RequestBase
+from frontends.gamespy.protocols.server_browser.v1.abstractions.contracts import (
+    RequestBase,
+)
 from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import Modifier
 
 

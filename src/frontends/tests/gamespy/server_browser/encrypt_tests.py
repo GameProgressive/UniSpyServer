@@ -1,6 +1,9 @@
 import unittest
 
-from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import Byte, EnctypeX
+from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import (
+    Byte,
+    EnctypeX,
+)
 
 
 class EncryptionTest(unittest.TestCase):

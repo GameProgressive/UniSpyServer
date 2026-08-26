@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from pydantic import BaseModel
+
 import frontends.gamespy.library.abstractions.contracts as lib
 
 

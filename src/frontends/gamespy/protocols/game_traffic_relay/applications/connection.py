@@ -4,7 +4,9 @@ from typing import TYPE_CHECKING
 from frontends.gamespy.library.exceptions.general import UniSpyException
 
 if TYPE_CHECKING:
-    from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
+    from frontends.gamespy.protocols.game_traffic_relay.applications.client import (
+        Client,
+    )
 
 
 class ConnectStatus(Enum):

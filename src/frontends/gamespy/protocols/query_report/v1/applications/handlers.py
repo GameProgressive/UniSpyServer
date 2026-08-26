@@ -1,9 +1,20 @@
 from frontends.gamespy.protocols.query_report.applications.client import Client
-from frontends.gamespy.protocols.query_report.v1.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.query_report.v1.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.query_report.v1.contracts.requests import LegacyHeartbeatRequest, HeartbeatPreRequest
-from frontends.gamespy.protocols.query_report.v1.contracts.responses import HeartbeatPreResponse
-from frontends.gamespy.protocols.query_report.v1.contracts.results import HeartbeatPreResult
+from frontends.gamespy.protocols.query_report.v1.abstractions.contracts import (
+    RequestBase,
+)
+from frontends.gamespy.protocols.query_report.v1.abstractions.handlers import (
+    CmdHandlerBase,
+)
+from frontends.gamespy.protocols.query_report.v1.contracts.requests import (
+    HeartbeatPreRequest,
+    LegacyHeartbeatRequest,
+)
+from frontends.gamespy.protocols.query_report.v1.contracts.responses import (
+    HeartbeatPreResponse,
+)
+from frontends.gamespy.protocols.query_report.v1.contracts.results import (
+    HeartbeatPreResult,
+)
 
 
 class HeartbeatPreHandler(CmdHandlerBase):
@@ -18,8 +29,8 @@ class HeartbeatPreHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._result = HeartbeatPreResult(
-            status=self._request.status,
-            game_name=self._request.game_name)
+            status=self._request.status, game_name=self._request.game_name
+        )
         self._response = HeartbeatPreResponse(self._result)
 
 

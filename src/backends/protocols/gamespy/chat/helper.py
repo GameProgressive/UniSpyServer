@@ -1,6 +1,7 @@
-from datetime import datetime
 from typing import cast
 from uuid import UUID
+
+from sqlalchemy.orm import Session
 
 from backends.library.database.pg_orm import (
     ENGINE,
@@ -8,7 +9,7 @@ from backends.library.database.pg_orm import (
     ChatChannelUserCaches,
     ChatUserCaches,
 )
-import backends.protocols.gamespy.chat.data as data
+from backends.protocols.gamespy.chat import data
 from backends.protocols.gamespy.chat.requests import ModeRequest
 from frontends.gamespy.protocols.chat.aggregates.enums import ModeName, ModeOperation
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
@@ -17,8 +18,6 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     InviteOnlyChanException,
     NoSuchChannelException,
 )
-
-from sqlalchemy.orm import Session
 
 
 class ChannelUserHelper:
@@ -67,23 +66,25 @@ class ChannelHelper:
         # 1 check if is a invited channel
         # 1.1 check if user is in a invited list
         channel_modes = [ModeName(m) for m in channel.modes]
-        if ModeName.INVITED_ONLY in channel_modes:
-            if user.nick_name not in channel.invited_nicks:
-                raise InviteOnlyChanException(
-                    f"You can only join channel: {channel.channel_name} when you are in invite list",
-                    channel.channel_name
-                )
+        if (
+            ModeName.INVITED_ONLY in channel_modes
+            and user.nick_name not in channel.invited_nicks
+        ):
+            raise InviteOnlyChanException(
+                f"You can only join channel: {channel.channel_name} when you are in invite list",
+                channel.channel_name,
+            )
 
         # 2 check if user is in ban list, if it is user can not join
         if user.nick_name in channel.banned_nicks:
             raise BannedFromChanException(
                 "can not join channel, because you are in ban list",
-                channel.channel_name
+                channel.channel_name,
             )
 
         data.check_channel_user_trash_data(channel, user, session)
 
-        if channel.creator == user.nick_name:  # type:ignore
+        if channel.creator == user.nick_name:  
             is_creator = True
             is_operator = True
         else:
@@ -115,7 +116,7 @@ class ChannelHelper:
         assert isinstance(quiter.channel_name, str)
         assert isinstance(channel.channel_name, str)
 
-        if quiter.channel_name != channel.channel_name:  # type:ignore
+        if quiter.channel_name != channel.channel_name:  
             print("user is not in channel, so can not quit")
             return
         session.delete(quiter)
@@ -134,21 +135,19 @@ class ChannelHelper:
         assert isinstance(kicker.channel_name, str)
         assert isinstance(channel.channel_name, str)
         assert isinstance(kickee.channel_name, str)
-        if kicker.channel_name != channel.channel_name:  # type:ignore
+        if kicker.channel_name != channel.channel_name:  
             raise BadChannelKeyException(
                 f"kicker is not in channel: {channel.channel_name}",
-                channel.channel_name
+                channel.channel_name,
             )
-        if kickee.channel_name != channel.channel_name:  # type:ignore
+        if kickee.channel_name != channel.channel_name:  
             raise BadChannelKeyException(
                 f"kickee is not in channel: {channel.channel_name}",
-                channel.channel_name
-
+                channel.channel_name,
             )
-        if not kicker.is_channel_operator:  # type:ignore
+        if not kicker.is_channel_operator:  
             raise BadChannelKeyException(
-                "kick failed, kicker is not channel operator",
-                channel.channel_name
+                "kick failed, kicker is not channel operator", channel.channel_name
             )
         session.delete(kickee)
         session.commit()
@@ -163,10 +162,10 @@ class ChannelHelper:
         if str(inviter.channel_name) != str(channel.channel_name):
             raise InviteOnlyChanException(
                 f"The inviter:{inviter.nick_name} is not a user in channel:{channel.channel_name}",
-                channel.channel_name
+                channel.channel_name,
             )
 
-        assert isinstance(channel.invited_nicks, list)
+        assert isinstance(invitee.nick_name, str)
         channel.invited_nicks.append(invitee.nick_name)
         with Session(ENGINE) as session:
             session.commit()
@@ -183,7 +182,7 @@ class ChannelHelper:
         max_num_user: int,
         key_values: dict,
         session: Session,
-        modes: list = [],
+        modes: list,
         creator: str | None = None,
     ) -> ChatChannelCaches:
         # check whether if channel exist, if not user is creator
@@ -191,7 +190,7 @@ class ChannelHelper:
         if is_exist:
             raise NoSuchChannelException(
                 f"Channel: {channel_name} is already exist, can not create a new one",
-                channel_name
+                channel_name,
             )
         cache = ChatChannelCaches(
             server_id=server_id,
@@ -226,21 +225,22 @@ class ChannelHelper:
             match flag:
                 case ModeName.USER_QUIET_FLAG:
                     if operation == ModeOperation.SET:
-                        if changer.is_channel_operator:  # type:ignore
-                            if flag.value not in channel_modes:
-                                channel_modes.append(flag.value)
+                        if (
+                            changer.is_channel_operator
+                            and flag.value not in channel_modes
+                        ):
+                            channel_modes.append(flag.value)
                     else:
-                        if changer.is_channel_operator:  # type:ignore
-                            if flag.value in channel_modes:
-                                channel_modes.remove(flag.value)
+                        if changer.is_channel_operator and flag.value in channel_modes:
+                            channel_modes.remove(flag.value)
                 case ModeName.CHANNEL_PASSWORD:
                     if operation == ModeOperation.SET:
                         assert isinstance(request.password, str)
-                        if changer.is_channel_operator:  # type:ignore
-                            channel.password = request.password  # type:ignore
+                        if changer.is_channel_operator:  
+                            channel.password = request.password  
                     else:
-                        if changer.is_channel_operator:  # type:ignore
-                            channel.password = None  # type:ignore
+                        if changer.is_channel_operator:  
+                            channel.password = None  
                 case ModeName.CHANNEL_USER_LIMITS:
                     if operation == ModeOperation.SET:
                         channel.max_num_user = request.limit_number  # type: ignore
@@ -251,6 +251,7 @@ class ChannelHelper:
                     if operation == ModeOperation.SET:
                         # type: ignore
                         if request.nick_name not in list(channel.banned_nicks):
+                            assert request.nick_name
                             channel.banned_nicks.append(request.nick_name)
                     else:
                         if request.nick_name in list(channel.banned_nicks):
@@ -260,7 +261,7 @@ class ChannelHelper:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
                                 "ADD_CHANNEL_OPERATOR require nick name",
-                                channel.channel_name
+                                channel.channel_name,
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -268,15 +269,14 @@ class ChannelHelper:
                         if u is None:
                             raise BadChannelKeyException(
                                 f"no user found with nick name:{request.nick_name}",
-                                channel.channel_name
+                                channel.channel_name,
                             )
                         u.is_channel_operator = True  # type: ignore
                     else:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
                                 "REMOVE_CHANNEL_OPERATOR require nick name",
-                                channel.channel_name
-
+                                channel.channel_name,
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -287,7 +287,7 @@ class ChannelHelper:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
                                 "ENABLE_USER_VOICE_PERMISSION require nick name",
-                                channel.channel_name
+                                channel.channel_name,
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -297,7 +297,7 @@ class ChannelHelper:
                         if request.nick_name is None:
                             raise BadChannelKeyException(
                                 "DISABLE_USER_VOICE_PERMISSION require nick name",
-                                channel.channel_name
+                                channel.channel_name,
                             )
                         u = data.get_channel_user_cache_by_nick_name(
                             request.channel_name, request.nick_name, session
@@ -309,8 +309,7 @@ class ChannelHelper:
     def get_all_user_nick_string(channel: ChatChannelCaches, session: Session) -> str:
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(
-            channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
         nicks = ""
         for user in users:
             assert isinstance(user.is_channel_creator, bool)
@@ -330,11 +329,12 @@ class ChannelHelper:
     ) -> list[ChatChannelUserCaches]:
         assert channel is not None
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(
-            channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
         return users
 
     @staticmethod
-    def update_channel_key_values(kv: dict, channel: ChatChannelCaches, session: Session):
-        channel.key_values = kv  # type:ignore
+    def update_channel_key_values(
+        kv: dict, channel: ChatChannelCaches, session: Session
+    ):
+        channel.key_values = kv  
         session.commit()

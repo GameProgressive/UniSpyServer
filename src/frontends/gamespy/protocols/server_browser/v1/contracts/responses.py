@@ -1,5 +1,11 @@
-from frontends.gamespy.protocols.server_browser.v1.abstractions.contracts import ResponseBase
-from frontends.gamespy.protocols.server_browser.v1.contracts.results import GroupListResult, ServerListCompressResult, ServerInfoResult
+from frontends.gamespy.protocols.server_browser.v1.abstractions.contracts import (
+    ResponseBase,
+)
+from frontends.gamespy.protocols.server_browser.v1.contracts.results import (
+    GroupListResult,
+    ServerInfoResult,
+    ServerListCompressResult,
+)
 
 
 class ServerInfoResponse(ResponseBase):

@@ -1,4 +1,7 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory, ServiceBase
+from frontends.gamespy.library.abstractions.server_launcher import (
+    ServiceBase,
+    ServicesFactory,
+)
 from frontends.gamespy.library.network.http_handler import HttpServer
 from frontends.gamespy.protocols.web_services.applications.client import Client
 

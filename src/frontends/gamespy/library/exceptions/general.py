@@ -16,6 +16,7 @@ class UniSpyExceptionValidator(BaseModel):
     The unispy exception validator
     convert http exception data to correct format
     """
+
     message: str
 
 
@@ -37,17 +38,19 @@ class UniSpyException(Exception):
             ex_type = type(e)
             # first we check if it is a ResponseBase
             if issubclass(ex_type, ResponseBase):
-                ex: UniSpyException = e  # type:ignore
+                assert isinstance(e, UniSpyException)
+                ex: UniSpyException = e
                 client.log_error(ex.message)
                 exp_resp = e
                 if TYPE_CHECKING:
                     exp_resp = cast(ResponseBase, e)
                 client.send(exp_resp)
             elif issubclass(ex_type, UniSpyException):
-                ex: UniSpyException = e  # type:ignore
+                assert isinstance(e, UniSpyException)
+                ex: UniSpyException = e
                 client.log_error(ex.message)
             elif issubclass(ex_type, BrokenPipeError):
-                client.log_warn(f"client disconnect before message send")
+                client.log_warn("client disconnect before message send")
 
             else:
                 client.log_error(traceback.format_exc())
@@ -62,19 +65,20 @@ class UniSpyException(Exception):
     @staticmethod
     def get_validator(exp_cls: type["UniSpyException"]) -> UniSpyExceptionValidator:
         annotations = {}
-        for exp_cls in exp_cls.mro():
+        for exp_cl in exp_cls.mro():
             # Update annotations if they exist in the current class
-            if issubclass(exp_cls, UniSpyException):
-                for key, value in exp_cls.__annotations__.items():
+            if issubclass(exp_cl, UniSpyException):
+                for key, value in exp_cl.__annotations__.items():
                     if key not in annotations:
                         if "key" in annotations:
                             continue
                         annotations[key] = value
         if "_validator" not in annotations:
             raise UniSpyException(
-                f"validator not found in exception class: {exp_cls.__name__}")
+                f"validator not found in exception class: {exp_cls.__name__}"
+            )
 
-        return annotations['_validator']
+        return annotations["_validator"]
 
     @staticmethod
     def get_init_params(exp_cls: type["UniSpyException"], data: dict) -> dict:
@@ -82,9 +86,13 @@ class UniSpyException(Exception):
         v_instance = validator_cls.model_validate(data)
         init_params = v_instance.model_dump()
         import inspect
+
         init_signature = inspect.signature(exp_cls.__init__)
-        init_params_filterd = {key: value for key, value in init_params.items()
-                               if key in init_signature.parameters}
+        init_params_filterd = {
+            key: value
+            for key, value in init_params.items()
+            if key in init_signature.parameters
+        }
         return init_params_filterd
 
 
@@ -101,6 +109,7 @@ class RedisConnectionException(UniSpyException):
 def get_exceptions_dict(module_name: str) -> dict[str, type[UniSpyException]]:
     import inspect
     import sys
+
     modules = inspect.getmembers(sys.modules[module_name], inspect.isclass)
     exceptions_dict = {}
     for exc_class in modules:

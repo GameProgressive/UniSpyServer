@@ -1,5 +1,5 @@
-from frontends.gamespy.library.network.http_handler import HttpData
 import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
+from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import (
     CommandName,
     SakePlatform,
@@ -7,7 +7,9 @@ from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums impo
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import (
+    RecordConverter,
+)
 
 NAMESPACE = "http://gamespy.net/sake"
 

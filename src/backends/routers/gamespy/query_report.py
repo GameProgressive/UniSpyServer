@@ -1,12 +1,23 @@
 from fastapi import APIRouter, WebSocket
+
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.query_report.broker import MANAGER, launch_brocker
 from backends.protocols.gamespy.query_report.handlers import (
-    AvaliableHandler, HeartbeatHandler, KeepAliveHandler, HeartbeatHandlerV1)
+    AvaliableHandler,
+    HeartbeatHandler,
+    HeartbeatHandlerV1,
+    KeepAliveHandler,
+)
 from backends.protocols.gamespy.query_report.requests import (
-    AvaliableRequest, ChallengeRequest, ClientMessageRequest, EchoRequest, HeartBeatRequest, KeepAliveRequest, HeartbeatRequestV1)
+    AvaliableRequest,
+    ChallengeRequest,
+    ClientMessageRequest,
+    EchoRequest,
+    HeartBeatRequest,
+    HeartbeatRequestV1,
+    KeepAliveRequest,
+)
 from backends.urls import QUERY_REPORT
-
 
 router = APIRouter(lifespan=launch_brocker)
 

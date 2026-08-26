@@ -1,8 +1,14 @@
-from typing import cast
 from http.server import BaseHTTPRequestHandler
+from typing import cast
+
 import frontends.gamespy.protocols.web_services.abstractions.handler as h
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import RequestBase, ResultBase
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import EXCEPTIONS
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
+    RequestBase,
+    ResultBase,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
+    EXCEPTIONS,
+)
 
 
 class CmdHandlerBase(h.CmdHandlerBase):

@@ -1,4 +1,5 @@
 from typing import cast
+
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
 from frontends.gamespy.protocols.game_traffic_relay.applications.handlers import (

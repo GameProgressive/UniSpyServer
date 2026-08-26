@@ -1,9 +1,33 @@
 from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.applications.client import Client
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import CreateRecordRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordCountRequest, GetRecordLimitRequest, GetSpecificRecordsRequest, RateRecordRequest, SearchForRecordsRequest, UpdateRecordRequest
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import CreateRecordResponse, GetMyRecordsResponse, GetRecordCountResponse, SearchForRecordsResponse, UpdateRecordResponse
-from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import CreateRecordResult, GetMyRecordsResult, GetRecordCountResult, SearchForRecordsResult, UpdateRecordResult
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import (
+    CmdHandlerBase,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.requests import (
+    CreateRecordRequest,
+    DeleteRecordRequest,
+    GetMyRecordsRequest,
+    GetRecordCountRequest,
+    GetRecordLimitRequest,
+    GetSpecificRecordsRequest,
+    RateRecordRequest,
+    SearchForRecordsRequest,
+    UpdateRecordRequest,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.responses import (
+    CreateRecordResponse,
+    GetMyRecordsResponse,
+    GetRecordCountResponse,
+    SearchForRecordsResponse,
+    UpdateRecordResponse,
+)
+from frontends.gamespy.protocols.web_services.modules.sake.contracts.results import (
+    CreateRecordResult,
+    GetMyRecordsResult,
+    GetRecordCountResult,
+    SearchForRecordsResult,
+    UpdateRecordResult,
+)
 
 # General
 

@@ -1,14 +1,17 @@
 from typing import TYPE_CHECKING, cast
+
 from sqlalchemy import Column
+from sqlalchemy.orm import Session
+
 from backends.library.database.pg_orm import (
     Friendlist,
     Profiles,
     SubProfiles,
     Users,
 )
-from sqlalchemy.orm import Session
-
-from frontends.gamespy.protocols.presence_search_player.contracts.results import SearchResultData
+from frontends.gamespy.protocols.presence_search_player.contracts.results import (
+    SearchResultData,
+)
 
 
 def db_commit(session: Session) -> None:
@@ -18,10 +21,8 @@ def db_commit(session: Session) -> None:
 def verify_email(email: str, session: Session):
     assert isinstance(email, str)
 
-    if session.query(Users).where(Users.email == email).count() == 1:
-        return True
-    else:
-        return False
+    count = session.query(Users).where(Users.email == email).count()
+    return count == 1
 
 
 def verify_email_and_password(email: str, password: str, session: Session):
@@ -33,9 +34,7 @@ def verify_email_and_password(email: str, password: str, session: Session):
         .where(Users.email == email, Users.password == password)
         .count()
     )
-    if result == 1:
-        return True
-    return False
+    return result == 1
 
 
 def get_profile_id(
@@ -259,7 +258,7 @@ def get_matched_info_by_email(email: str, session: Session) -> list[dict]:
         .all()
     )
     temp: list[dict] = []
-    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+    for email_r, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
@@ -268,7 +267,7 @@ def get_matched_info_by_email(email: str, session: Session) -> list[dict]:
             "profile_id": profile_id,
             "nick": nick,
             "uniquenick": uniquenick,
-            "email": email,
+            "email": email_r,
             "namespace_id": namespace_id,
             "firstname": firstname,
             "lastname": lastname,
@@ -295,7 +294,7 @@ def get_matched_info_by_nick_and_email(
         .all()
     )
     data: list[dict] = []
-    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+    for email_r, profile_id, nick, uniquenick, namespace_id, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
@@ -304,7 +303,7 @@ def get_matched_info_by_nick_and_email(
             "profile_id": profile_id,
             "nick": nick,
             "uniquenick": uniquenick,
-            "email": email,
+            "email": email_r,
             "namespace_id": namespace_id,
             "firstname": firstname,
             "lastname": lastname,
@@ -334,7 +333,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
         .all()
     )
     data: list[dict] = []
-    for email, profile_id, nick, uniquenick, namespace_id, extra_info in result:
+    for email, profile_id, nick, uniquenick, namespace_id_r, extra_info in result:
         if TYPE_CHECKING:
             extra_info = cast(dict, extra_info)
         firstname = extra_info.get("firstname", "")
@@ -344,7 +343,7 @@ def get_matched_info_by_uniquenick_and_namespaceid(
             "nick": nick,
             "uniquenick": uniquenick,
             "email": email,
-            "namespace_id": namespace_id,
+            "namespace_id": namespace_id_r,
             "firstname": firstname,
             "lastname": lastname,
         }
@@ -384,7 +383,7 @@ def get_matched_info_by_uniquenick_and_namespaceids(
             email=email,
             namespace_id=namespace_id,
             firstname=firstname,
-            lastname=lastname
+            lastname=lastname,
         )
 
         data.append(t)
@@ -406,10 +405,7 @@ def is_uniquenick_exist(
         .count()
     )
 
-    if result == 0:
-        return False
-    else:
-        return True
+    return result != 0
 
 
 def is_email_exist(email: str, session: Session) -> bool:
@@ -419,6 +415,4 @@ def is_email_exist(email: str, session: Session) -> bool:
 
     result = session.query(Users.userid).where(Users.email == email).count()
     # According to game <FSW> partnerid is not nessesary
-    if result == 0:
-        return False
-    return True
+    return result != 0

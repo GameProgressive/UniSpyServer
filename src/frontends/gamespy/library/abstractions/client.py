@@ -1,18 +1,18 @@
-from frontends.gamespy.library.encryption.encoding import Encoding
-from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.library.log.log_manager import LogWriter
-from frontends.gamespy.library.configs import ServerConfig
 import threading
 from typing import TYPE_CHECKING, Optional
 
+from frontends.gamespy.library.configs import ServerConfig
+from frontends.gamespy.library.encryption.encoding import Encoding
+from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.log.log_manager import LogWriter
 
 if TYPE_CHECKING:
+    from frontends.gamespy.library.abstractions.client import ClientInfoBase
     from frontends.gamespy.library.abstractions.connections import ConnectionBase
+    from frontends.gamespy.library.abstractions.contracts import ResponseBase
+    from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
     from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
     from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-    from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
-    from frontends.gamespy.library.abstractions.contracts import ResponseBase
-    from frontends.gamespy.library.abstractions.client import ClientInfoBase
 
 
 class ClientInfoBase:

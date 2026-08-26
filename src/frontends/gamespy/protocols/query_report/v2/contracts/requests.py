@@ -1,10 +1,12 @@
 
 from uuid import UUID
+
 from frontends.gamespy.library.extentions.encoding import get_string
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
-from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import RequestBase
-
+from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import (
+    RequestBase,
+)
 
 PREFIX = bytes([0x09, 0x00, 0x00, 0x00, 0x00])
 POSTFIX = bytes([0x00])

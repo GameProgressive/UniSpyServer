@@ -1,8 +1,13 @@
+import xmltodict
+
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.network.http_handler import HttpData
-from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
-import xmltodict
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
+    WebException,
+)
+from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
+    SoapEnvelop,
+)
 
 
 def remove_namespace(data):

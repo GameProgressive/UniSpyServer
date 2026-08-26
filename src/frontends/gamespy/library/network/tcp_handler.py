@@ -6,10 +6,9 @@ from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
     NetworkServerBase,
 )
-
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network import DATA_SIZE
-from frontends.gamespy.library.configs import CONFIG, ServerConfig
 
 
 class TcpConnection(ConnectionBase):

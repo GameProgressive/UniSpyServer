@@ -1,7 +1,14 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory, ServiceBase
+from frontends.gamespy.library.abstractions.server_launcher import (
+    ServiceBase,
+    ServicesFactory,
+)
 from frontends.gamespy.library.network.tcp_handler import TcpServer
-from frontends.gamespy.protocols.server_browser.v2.applications.client import Client as ClientV2
-from frontends.gamespy.protocols.server_browser.v1.applications.client import Client as ClientV1
+from frontends.gamespy.protocols.server_browser.v1.applications.client import (
+    Client as ClientV1,
+)
+from frontends.gamespy.protocols.server_browser.v2.applications.client import (
+    Client as ClientV2,
+)
 
 
 class ServiceV2(ServiceBase):

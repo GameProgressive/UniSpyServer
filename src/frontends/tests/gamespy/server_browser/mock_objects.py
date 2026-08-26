@@ -1,19 +1,20 @@
 from typing import cast
+
 from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
+from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
+    ServerMainListHandler,
+    UpdateServerInfoHandler,
+)
+from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
+    ServerMainListResult,
+    UpdateServerInfoResult,
+)
 from frontends.tests.gamespy.library.mock_objects import (
     ConnectionMock,
     LogMock,
     RequestHandlerMock,
     create_mock_url,
-)
-from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
-from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
-    UpdateServerInfoHandler,
-    ServerMainListHandler,
-)
-from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
-    UpdateServerInfoResult,
-    ServerMainListResult,
 )
 
 

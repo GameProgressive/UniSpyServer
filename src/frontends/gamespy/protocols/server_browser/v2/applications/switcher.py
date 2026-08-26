@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, Optional, cast
+
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.protocols.server_browser.aggregates.exceptions import (
     ServerBrowserException,
@@ -10,14 +11,16 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     P2PGroupRoomListHandler,
     SendMessageHandler,
     ServerFullInfoListHandler,
-    UpdateServerInfoHandler,
     ServerMainListHandler,
+    UpdateServerInfoHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
     SendMessageRequest,
@@ -63,27 +66,27 @@ class Switcher(SwitcherBase):
         """
         update_option = self.get_update_option(request)
         match update_option:
-            case (ServerListUpdateOption.SERVER_MAIN_LIST
-                  | ServerListUpdateOption.P2P_SERVER_MAIN_LIST
-                  | ServerListUpdateOption.LIMIT_RESULT_COUNT):
+            case (
+                ServerListUpdateOption.SERVER_MAIN_LIST
+                | ServerListUpdateOption.P2P_SERVER_MAIN_LIST
+                | ServerListUpdateOption.LIMIT_RESULT_COUNT
+            ):
                 return ServerMainListHandler(self._client, ServerListRequest(request))
             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
                 return P2PGroupRoomListHandler(self._client, ServerListRequest(request))
             case ServerListUpdateOption.SERVER_FULL_INFO_LIST:
-                return ServerFullInfoListHandler(self._client, ServerListRequest(request))
+                return ServerFullInfoListHandler(
+                    self._client, ServerListRequest(request)
+                )
             case _:
-                raise ServerBrowserException(
-                    "unknown serverlist update option type")
+                raise ServerBrowserException("unknown serverlist update option type")
 
     @staticmethod
     def get_update_option(raw_request: bytes) -> ServerListUpdateOption:
         # todo check if all game follow this pattern, +2 is calc by sdk server info request
-        update_option_index = raw_request.find(
-            b"\x00\x00\x00\x00", 6)+2
-        update_option_bytes = raw_request[
-            update_option_index: update_option_index + 4
-        ]
+        update_option_index = raw_request.find(b"\x00\x00\x00\x00", 6) + 2
+        update_option_bytes = raw_request[update_option_index : update_option_index + 4]
         update_option = ServerListUpdateOption(
-            int.from_bytes(update_option_bytes, byteorder='big')
+            int.from_bytes(update_option_bytes, byteorder="big")
         )
         return update_option

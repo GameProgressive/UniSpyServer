@@ -1,4 +1,6 @@
-from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
+    WebException,
+)
 from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import (
     NAMESPACE,
     RequestBase,

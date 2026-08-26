@@ -1,13 +1,20 @@
 import unittest
 
+import responses
+
 from frontends.gamespy.library.configs import CONFIG
+from frontends.gamespy.protocols.natneg.aggregations.enums import (
+    NatClientIndex,
+    NatPortType,
+    PreInitState,
+    RequestType,
+)
 from frontends.gamespy.protocols.natneg.applications.handlers import (
     AddressCheckHandler,
     ErtAckHandler,
     InitHandler,
     NatifyHandler,
 )
-import responses
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,
     ErtAckRequest,
@@ -15,13 +22,6 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
     NatifyRequest,
     PreInitRequest,
 )
-from frontends.gamespy.protocols.natneg.aggregations.enums import (
-    NatClientIndex,
-    NatPortType,
-    PreInitState,
-    RequestType,
-)
-
 from frontends.tests.gamespy.natneg.mock_objects import create_client
 
 CONFIG.unittest.is_raise_except = True
@@ -108,7 +108,7 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
         self.assertTrue(
             handler._response.sending_buffer
-            == b'\xfd\xfc\x1efj\xb2\x03\x03\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00'
+            == b"\xfd\xfc\x1efj\xb2\x03\x03\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
         )
 
     @responses.activate
@@ -135,7 +135,7 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
         self.assertTrue(
             handler._response.sending_buffer
-            == b'\xfd\xfc\x1efj\xb2\x03\x02\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00'
+            == b"\xfd\xfc\x1efj\xb2\x03\x02\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
         )
 
     @responses.activate

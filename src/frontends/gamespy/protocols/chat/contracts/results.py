@@ -1,7 +1,10 @@
 from pydantic import BaseModel
+
 from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
 from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultBase
-from frontends.gamespy.protocols.chat.aggregates.enums import IRCErrorCode, WhoRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    WhoRequestType,
+)
 
 # region General
 
@@ -22,6 +25,7 @@ class ListResult(ResultBase):
         channel_name: str
         total_channel_user: int
         channel_topic: str
+
     invoker_nick_name: str
     invoker_user_name: str
     channel_info_list: list[ListInfo] = []
@@ -79,6 +83,8 @@ class WhoResult(ResultBase):
     request_type: WhoRequestType
     channel_name: str
     nick_name: str
+
+
 # region Channel
 
 
@@ -94,6 +100,7 @@ class GetCKeyResult(ResultBase):
     class GetCKeyInfos(BaseModel):
         nick_name: str
         key_values: dict
+
     infos: list[GetCKeyInfos]
     """ nick_name:str, user_values:str"""
     channel_name: str
@@ -189,6 +196,7 @@ class PrivateResult(MessageResultBase):
 
 class UtmResult(MessageResultBase):
     pass
+
 
 # # region Exception
 

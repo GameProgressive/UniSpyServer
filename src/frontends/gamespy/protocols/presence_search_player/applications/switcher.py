@@ -1,14 +1,39 @@
-from typing import TYPE_CHECKING, cast
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
-from frontends.gamespy.protocols.presence_search_player.aggregates.enums import RequestType
-from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
-
-from frontends.gamespy.protocols.presence_search_player.applications.handlers import CheckHandler, NewUserHandler, NicksHandler, OthersHandler, OthersListHandler, SearchHandler, SearchUniqueHandler, UniqueSearchHandler, ValidHandler
-
-from frontends.gamespy.protocols.presence_search_player.abstractions.handler import CmdHandlerBase
-
-from frontends.gamespy.protocols.presence_search_player.applications.client import Client
+from frontends.gamespy.library.extentions.string_extentions import (
+    get_kv_str_name,
+    split_nested_kv_str,
+)
+from frontends.gamespy.protocols.presence_search_player.abstractions.handler import (
+    CmdHandlerBase,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    RequestType,
+)
+from frontends.gamespy.protocols.presence_search_player.applications.client import (
+    Client,
+)
+from frontends.gamespy.protocols.presence_search_player.applications.handlers import (
+    CheckHandler,
+    NewUserHandler,
+    NicksHandler,
+    OthersHandler,
+    OthersListHandler,
+    SearchHandler,
+    SearchUniqueHandler,
+    UniqueSearchHandler,
+    ValidHandler,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.requests import (
+    CheckRequest,
+    NewUserRequest,
+    NicksRequest,
+    OthersListRequest,
+    OthersRequest,
+    SearchRequest,
+    SearchUniqueRequest,
+    UniqueSearchRequest,
+    ValidRequest,
+)
 
 
 class Switcher(SwitcherBase):
@@ -28,12 +53,13 @@ class Switcher(SwitcherBase):
         for raw_request in raw_requests:
             name = get_kv_str_name(raw_request)
             if name not in RequestType:
-                self._client.log_debug(
-                    f"Request: {name} is not a valid request.")
+                self._client.log_debug(f"Request: {name} is not a valid request.")
                 continue
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(
+        self, name: RequestType, raw_request: str
+    ) -> CmdHandlerBase | None:
         assert isinstance(name, RequestType)
         match name:
             case RequestType.CHECK:
@@ -53,9 +79,13 @@ class Switcher(SwitcherBase):
             case RequestType.SEARCH:
                 return SearchHandler(self._client, SearchRequest(raw_request))
             case RequestType.SEARCHUNIQUE:
-                return SearchUniqueHandler(self._client, SearchUniqueRequest(raw_request))
+                return SearchUniqueHandler(
+                    self._client, SearchUniqueRequest(raw_request)
+                )
             case RequestType.UNIQUESearch:
-                return UniqueSearchHandler(self._client, UniqueSearchRequest(raw_request))
+                return UniqueSearchHandler(
+                    self._client, UniqueSearchRequest(raw_request)
+                )
             case RequestType.VALID:
                 return ValidHandler(self._client, ValidRequest(raw_request))
             case _:

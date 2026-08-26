@@ -1,7 +1,14 @@
 
 from typing import final
+
 from frontends.gamespy.library.abstractions.contracts import ResponseBase
-from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult, SetPlayerDataResult
+from frontends.gamespy.protocols.game_status.contracts.results import (
+    AuthGameResult,
+    AuthPlayerResult,
+    GetPlayerDataResult,
+    GetProfileIdResult,
+    SetPlayerDataResult,
+)
 
 
 @final

@@ -1,10 +1,16 @@
-from datetime import datetime, timedelta
-from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory, ServiceBase
+from datetime import datetime, timedelta, timezone
+
+from frontends.gamespy.library.abstractions.server_launcher import (
+    ServiceBase,
+    ServicesFactory,
+)
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
-from frontends.gamespy.protocols.game_traffic_relay.applications.connection import ConnectionListener
+from frontends.gamespy.protocols.game_traffic_relay.applications.connection import (
+    ConnectionListener,
+)
 from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
     GtrHeartbeat,
 )
@@ -40,7 +46,7 @@ class Service(ServiceBase):
     def __check_expired_connection(self):
         expired_time = datetime.now() - timedelta(seconds=30)
         try:
-            for key in ConnectionListener.cookie_pool.keys():
+            for key in ConnectionListener.cookie_pool:
                 pair = ConnectionListener.cookie_pool[key]
                 if pair[0].info.last_receive_time < expired_time:
                     del ConnectionListener.cookie_pool[key]

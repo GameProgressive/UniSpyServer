@@ -5,22 +5,26 @@
 from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import ColumnExpressionArgument, Integer, and_
+from sqlalchemy.orm import Session
+
 from backends.library.database.pg_orm import (
     Profiles,
+    SakeStorage,
     SubProfiles,
     Users,
-    SakeStorage,
 )
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
     AuthException,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import (
+    CommandName,
+)
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
 )
-from sqlalchemy.orm import Session
-
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import RecordConverter
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import (
+    RecordConverter,
+)
 
 
 def is_user_exist(
@@ -53,8 +57,7 @@ def is_user_exist(
         return True
 
     if result is None:
-        raise AuthException(
-            "No account exists with the provided email address.")
+        raise AuthException("No account exists with the provided email address.")
 
 
 def get_info_by_cdkey_email(
@@ -113,11 +116,13 @@ def get_info_by_authtoken(
     """
 
     result = (
-        session.query(Users.userid,
-                      Profiles.profileid,
-                      Profiles.nick,
-                      SubProfiles.uniquenick,
-                      SubProfiles.cdkeyenc)
+        session.query(
+            Users.userid,
+            Profiles.profileid,
+            Profiles.nick,
+            SubProfiles.uniquenick,
+            SubProfiles.cdkeyenc,
+        )
         .join(Profiles, Profiles.userid == Users.userid)
         .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
         .where(SubProfiles.authtoken == auth_token)
@@ -132,9 +137,7 @@ def get_info_by_authtoken(
     assert isinstance(nick, str)
     assert isinstance(uniquenick, str)
     assert isinstance(cdkeyenc, str)
-    return (
-        userid, profileid, nick, uniquenick, cdkeyenc
-    )
+    return (userid, profileid, nick, uniquenick, cdkeyenc)
 
 
 def get_info_by_uniquenick(
@@ -170,7 +173,7 @@ def get_info_by_uniquenick(
         profile.profileid,
         profile.nick,
         subprofile.uniquenick,
-        subprofile.cdkeyenc
+        subprofile.cdkeyenc,
     )
 
 
@@ -182,25 +185,24 @@ def get_info_by_uniquenick(
 
 # region racing
 
+
 # region sake
 def _get_specific_condition(con: str):
     if ">=" in con:
-        name,  value = con.split(" >= ")
-        return SakeStorage.record[name]['value'].cast(
-            Integer) >= int(value)
+        name, value = con.split(" >= ")
+        return SakeStorage.record[name]["value"].cast(Integer) >= int(value)
     if "<=" in con:
-        name,  value = con.split(" <= ")
-        return SakeStorage.record[name]['value'].cast(
-            Integer) <= int(value)
+        name, value = con.split(" <= ")
+        return SakeStorage.record[name]["value"].cast(Integer) <= int(value)
     if ">" in con:
-        name,  value = con.split(" > ")
-        return SakeStorage.record[name]['value'].cast(Integer) > int(value)
+        name, value = con.split(" > ")
+        return SakeStorage.record[name]["value"].cast(Integer) > int(value)
     if "<" in con:
-        name,  value = con.split(" < ")
-        return SakeStorage.record[name]['value'].cast(Integer) < int(value)
+        name, value = con.split(" < ")
+        return SakeStorage.record[name]["value"].cast(Integer) < int(value)
     if "=" in con:
-        name,  value = con.split(" = ")
-        return SakeStorage.record[name]['value'] == value
+        name, value = con.split(" = ")
+        return SakeStorage.record[name]["value"] == value
 
 
 def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:
@@ -229,12 +231,13 @@ def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:
 
 
 def count_for_record(table_id: str, command_name: CommandName, session: Session) -> int:
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).count()
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
     return result
 
 
-def _get_filtered_record(sake: SakeStorage, fields: list, command_name: CommandName) -> dict:
+def _get_filtered_record(
+    sake: SakeStorage, fields: list, command_name: CommandName
+) -> dict:
     """
     get filterd record, return with gamespy format
     """
@@ -249,19 +252,33 @@ def _get_filtered_record(sake: SakeStorage, fields: list, command_name: CommandN
     return filtered_key_value
 
 
-def search_for_record(table_id: str, max_num: int, filter: str | None, fields: list[str], command_name: CommandName, session: Session) -> list[dict]:
+def search_for_record(
+    table_id: str,
+    max_num: int,
+    filter: str | None,
+    fields: list[str],
+    command_name: CommandName,
+    session: Session,
+) -> list[dict]:
     """
     max_num default to 100
     search and get the value that key in fields
     """
     if filter is None:
-        result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).limit(max_num).all()
+        result = (
+            session.query(SakeStorage)
+            .where(SakeStorage.tableid == table_id)
+            .limit(max_num)
+            .all()
+        )
     else:
         queries = _filter_to_sql_con(filter)
-        result = session.query(SakeStorage).where(
-            SakeStorage.tableid == table_id,
-            queries).limit(max_num).all()
+        result = (
+            session.query(SakeStorage)
+            .where(SakeStorage.tableid == table_id, queries)
+            .limit(max_num)
+            .all()
+        )
     records = []
     for item in result:
         record = _get_filtered_record(item, fields, command_name)
@@ -269,14 +286,13 @@ def search_for_record(table_id: str, max_num: int, filter: str | None, fields: l
     return records
 
 
-def get_my_records(table_id: str, fields: list[str], command_name: CommandName, session: Session) -> dict:
+def get_my_records(
+    table_id: str, fields: list[str], command_name: CommandName, session: Session
+) -> dict:
     """
     search and filtered the record by fields
     """
-    result = (
-        session.query(SakeStorage).where(
-            SakeStorage.tableid == table_id).first()
-    )
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
     if result is None:
         return {}
 
@@ -284,31 +300,32 @@ def get_my_records(table_id: str, fields: list[str], command_name: CommandName, 
     return record
 
 
-def create_records(table_id: str, records: dict, command_name: CommandName, session: Session) -> int:
+def create_records(
+    table_id: str, records: dict, command_name: CommandName, session: Session
+) -> int:
     assert isinstance(table_id, str)
     assert isinstance(records, dict)
 
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).count()
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
 
     if result != 0:
         raise SakeException("Records already existed", command_name)
 
-    sake = SakeStorage(tableid=table_id,
-                       record=records)
+    sake = SakeStorage(tableid=table_id, record=records)
     session.add(sake)
     session.commit()
     assert isinstance(sake.id, int)
     return sake.id
 
 
-def update_record(table_id: str, records: dict, command_name: CommandName, session: Session) -> int:
+def update_record(
+    table_id: str, records: dict, command_name: CommandName, session: Session
+) -> int:
     """
     update record with new data and returns record id
     """
     assert isinstance(records, dict)
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).first()
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
         raise SakeException("Records do not existed", command_name)
@@ -320,8 +337,7 @@ def update_record(table_id: str, records: dict, command_name: CommandName, sessi
 
 
 def delete_record(table_id: str, command_name: CommandName, session: Session) -> None:
-    result = session.query(SakeStorage).where(
-        SakeStorage.tableid == table_id).first()
+    result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
         raise SakeException("Records not existed", command_name)

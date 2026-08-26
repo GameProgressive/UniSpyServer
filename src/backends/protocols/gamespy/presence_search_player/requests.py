@@ -1,10 +1,12 @@
-
 from backends.library.abstractions.contracts import RequestBase as RB
-from frontends.gamespy.protocols.presence_search_player.aggregates.enums import SearchType
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    SearchType,
+)
 
 
 class RequestBase(RB):
     operation_id: int
+
 
 # general
 

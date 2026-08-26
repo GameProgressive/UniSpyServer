@@ -1,11 +1,17 @@
 from typing import TYPE_CHECKING
+
 from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.connections import ConnectionBase
 from frontends.gamespy.library.abstractions.enctypt_base import EncryptBase
 from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
-from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import EnctypeX
-from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import ServerListUpdateOption
+from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import (
+    EnctypeX,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
+    ServerListUpdateOption,
+)
+
 if TYPE_CHECKING:
     from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 

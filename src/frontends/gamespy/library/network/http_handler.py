@@ -1,13 +1,14 @@
+import json
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
     NetworkServerBase,
 )
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
-import json
 
 
 class HttpData:

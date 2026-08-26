@@ -1,15 +1,16 @@
 from types import MappingProxyType
+from typing import final
 
-from frontends.gamespy.library.abstractions.connections import NetworkServerBase
-from frontends.gamespy.library.exceptions.general import UniSpyException
-import schedule
-from frontends.gamespy.library.log.log_manager import LogManager, LogWriter
-from frontends.gamespy.library.configs import CONFIG, ServerConfig
 import pyfiglet
 import requests
+import schedule
 from prettytable import PrettyTable
+
 from frontends.gamespy.library.abstractions.client import ClientBase
-from typing import final
+from frontends.gamespy.library.abstractions.connections import NetworkServerBase
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.log.log_manager import LogManager, LogWriter
 
 VERSION = 0.46
 _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(

@@ -1,10 +1,11 @@
 import threading
 from uuid import UUID
-from websockets import ConnectionClosed
-from frontends.gamespy.library.abstractions.brocker import BrockerBase
 
+from websockets import ConnectionClosed
+from websockets.sync.client import ClientConnection, connect
+
+from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from websockets.sync.client import connect, ClientConnection
 
 
 class WebSocketBrocker(BrockerBase):

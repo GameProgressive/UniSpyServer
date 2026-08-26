@@ -1,7 +1,9 @@
-
-from frontends.gamespy.library.abstractions.contracts import ResponseBase
 import frontends.gamespy.library.abstractions.handler as lib
-from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase, ResultBase
+from frontends.gamespy.library.abstractions.contracts import ResponseBase
+from frontends.gamespy.protocols.game_status.abstractions.contracts import (
+    RequestBase,
+    ResultBase,
+)
 from frontends.gamespy.protocols.game_status.applications.client import Client
 
 

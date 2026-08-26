@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import SakeRecordType
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import (
+    SakeRecordType,
+)
 
 
 class RecordContext(BaseModel):
@@ -11,22 +13,29 @@ class RecordContext(BaseModel):
 
 
 class RecordConverter:
-
     @staticmethod
     def to_searchable_format(record: list[dict]) -> dict:
         searchable_kv = {}
         for r in record:
             name = r["name"]
-            type = list(r['value'].keys())[0]
-            value = r['value'][type]['value']
+            type = list(r["value"].keys())[0]
+            value = r["value"][type]["value"]
             s_type = SakeRecordType(type)
-            if s_type in [SakeRecordType.INT, SakeRecordType.INT64, SakeRecordType.SHORT]:
+            if s_type in [
+                SakeRecordType.INT,
+                SakeRecordType.INT64,
+                SakeRecordType.SHORT,
+            ]:
                 value = int(value)
             elif s_type in [SakeRecordType.FLOAT]:
                 value = float(value)
             elif s_type in [SakeRecordType.BOOL]:
                 value = bool(value)
-            elif s_type in [SakeRecordType.UNICODE, SakeRecordType.ASCII, SakeRecordType.BINARY]:
+            elif s_type in [
+                SakeRecordType.UNICODE,
+                SakeRecordType.ASCII,
+                SakeRecordType.BINARY,
+            ]:
                 value = str(value)
             elif s_type in [SakeRecordType.DATE]:
                 # todo not implemented
@@ -50,7 +59,11 @@ class RecordConverter:
 
 
 if __name__ == "__main__":
-    records = [{"name": "MyAsciiString", "value": {
-        "asciiStringValue": {"value": "this is a record"}}}]
+    records = [
+        {
+            "name": "MyAsciiString",
+            "value": {"asciiStringValue": {"value": "this is a record"}},
+        }
+    ]
     values = RecordConverter.to_searchable_format(records)
     records2 = RecordConverter.to_gamespy_format(values)

@@ -1,13 +1,13 @@
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import APIRouter
+
+from backends.library.networks.redis_brocker import RedisBrocker
+from backends.library.networks.ws_manager import WebsocketManager as WsManager
 from backends.protocols.gamespy.query_report.handlers import ClientMessageHandler
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
-from backends.library.networks.redis_brocker import RedisBrocker
 from frontends.gamespy.library.configs import CONFIG
-
-from backends.library.networks.ws_manager import WebsocketManager as WsManager
 
 logger = logging.getLogger("backend")
 

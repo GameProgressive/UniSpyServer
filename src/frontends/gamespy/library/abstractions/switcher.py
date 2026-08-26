@@ -1,12 +1,14 @@
 from abc import abstractmethod
+
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 
 
 class SwitcherBase:
     """
-    class member type hint can use class static member, but you can not initialize any class static member here! Init it in the __init__() function 
+    class member type hint can use class static member, but you can not initialize any class static member here! Init it in the __init__() function
     """
+
     _handlers: list[CmdHandlerBase]
     _requests: list[tuple[object, object]]
     _raw_request: bytes | str
@@ -14,8 +16,7 @@ class SwitcherBase:
 
     def __init__(self, client: ClientBase, raw_request: bytes | str) -> None:
         assert isinstance(client, ClientBase)
-        assert isinstance(raw_request, str) \
-            or isinstance(raw_request, bytes)
+        assert isinstance(raw_request, (str, bytes))
         self._client = client
         self._raw_request = raw_request
         self._handlers = []
@@ -40,8 +41,7 @@ class SwitcherBase:
             for request in self._requests:
                 handler = self._create_cmd_handlers(request[0], request[1])
                 if handler is None:
-                    self._client.log_warn(
-                        f"Request: <{request[0]}> is ignored.")
+                    self._client.log_warn(f"Request: <{request[0]}> is ignored.")
                     continue
                 self._handlers.append(handler)
             if len(self._handlers) == 0:
@@ -57,5 +57,7 @@ class SwitcherBase:
         pass
 
     @abstractmethod
-    def _create_cmd_handlers(self, name: object, raw_request: object) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(
+        self, name: object, raw_request: object
+    ) -> CmdHandlerBase | None:
         pass

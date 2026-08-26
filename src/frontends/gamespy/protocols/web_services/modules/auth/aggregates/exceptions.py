@@ -1,9 +1,20 @@
 import abc
-from frontends.gamespy.library.exceptions.general import UniSpyExceptionValidator, get_exceptions_dict
+
+from frontends.gamespy.library.exceptions.general import (
+    UniSpyExceptionValidator,
+    get_exceptions_dict,
+)
 from frontends.gamespy.library.network.http_handler import HttpData
-from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, CommandName
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
+    WebException,
+)
+from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
+    SoapEnvelop,
+)
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import (
+    AuthCode,
+    CommandName,
+)
 
 
 class AuthExceptionValidator(UniSpyExceptionValidator):

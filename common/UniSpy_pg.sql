@@ -5394,10 +5394,10 @@ COPY unispy.sakestorage (id, tableid, record) FROM stdin;
 --
 
 COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
-1	1	spyguy	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
-2	2	gptestc1	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
-3	3	gptestc2	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
-4	4	gptestc3	0	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+1	1	spyguy	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+2	2	gptestc1	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+3	3	gptestc2	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
+4	4	gptestc3	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
 \.
 
 

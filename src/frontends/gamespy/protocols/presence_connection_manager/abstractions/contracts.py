@@ -1,17 +1,15 @@
-
+import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
 )
-from typing import Dict, Optional
-import frontends.gamespy.library.abstractions.contracts as lib
 
 
 def normalize_request(message: str):
     if "login" in message:
         message = message.replace("\\-", "\\")
         pos = message.index("\\", message.index("\\") + 1)
-        if message[pos: pos + 2] != "\\\\":
+        if message[pos : pos + 2] != "\\\\":
             message = message[:pos] + "\\" + message[pos:]
     return message
 
@@ -24,7 +22,7 @@ class RequestBase(lib.RequestBase):
     todo check this in future
     """
     raw_request: str
-    _request_dict: Dict[str, str]
+    _request_dict: dict[str, str]
 
     def __init__(self, raw_request: str) -> None:
         assert isinstance(raw_request, str)

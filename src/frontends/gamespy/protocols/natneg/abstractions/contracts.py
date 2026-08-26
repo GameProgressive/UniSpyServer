@@ -1,12 +1,12 @@
 
 import frontends.gamespy.library.abstractions.contracts as lib
+from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortType,
     RequestType,
     ResponseType,
 )
-from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
 
 MAGIC_DATA = b"\xfd\xfc\x1e\x66\x6a\xb2"
 

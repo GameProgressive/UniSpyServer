@@ -1,13 +1,18 @@
-
-from frontends.gamespy.protocols.presence_connection_manager.applications.client import Client
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import EXCEPTIONS, GPException
-
+import frontends.gamespy.library.abstractions.handler as lib
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     RequestBase,
     ResultBase,
 )
-import frontends.gamespy.library.abstractions.handler as lib
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    LoginStatus,
+)
+from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+    Client,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    EXCEPTIONS,
+    GPException,
+)
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):
@@ -29,7 +34,6 @@ class CmdHandlerBase(lib.CmdHandlerBase):
 
 
 class LoginedHandlerBase(CmdHandlerBase):
-
     def _request_check(self) -> None:
         if self._client.info.login_status != LoginStatus.COMPLETED:
             raise GPException("please login first.")

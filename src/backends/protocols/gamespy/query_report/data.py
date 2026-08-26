@@ -1,14 +1,15 @@
-from backends.library.database.pg_orm import GameServerCaches
-from sqlalchemy import ColumnExpressionArgument, Integer, and_
-from typing import TYPE_CHECKING,  cast
+from datetime import datetime, timedelta, timezone
 from uuid import UUID
+
+from sqlalchemy import ColumnExpressionArgument, Integer, and_
+from sqlalchemy.orm import Session
+
 from backends.library.database.pg_orm import (
-    ENGINE,
     ChatChannelCaches,
     ChatChannelUserCaches,
-    GroupList,
     Games,
     GameServerCaches,
+    GroupList,
 )
 from frontends.gamespy.protocols.chat.aggregates.peer_room import PeerRoom
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
@@ -19,11 +20,9 @@ from frontends.gamespy.protocols.query_report.aggregates.game_server_info import
 from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
     PeerRoomInfo,
 )
-from sqlalchemy.orm import Session
-
-from datetime import datetime, timedelta
-
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 
 
 def __expire_time():
@@ -187,10 +186,9 @@ def get_server_info_list_with_game_name(
 def check_game_server_cache_conflict(ip: str, port: int, instant_key: str, session: Session):
     cache = get_server_info_with_ip_and_port(
         ip, port, session)
-    if cache is not None:
-        if cache.instant_key != instant_key:
-            session.delete(cache)
-            session.commit()
+    if cache is not None and cache.instant_key != instant_key:
+        session.delete(cache)
+        session.commit()
 
 
 def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> GameServerInfo | None:

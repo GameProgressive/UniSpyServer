@@ -1,11 +1,28 @@
 from typing import cast
+
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.game_status.aggregations.enums import RequestType
 from frontends.gamespy.protocols.game_status.applications.client import Client
-from frontends.gamespy.protocols.game_status.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
-from frontends.gamespy.protocols.game_status.applications.handlers import AuthGameHandler, AuthPlayerHandler, GetPlayerDataHandler, GetProfileIdHandler, NewGameHandler, SetPlayerDataHandler, UpdateGameHandler
+from frontends.gamespy.protocols.game_status.applications.handlers import (
+    AuthGameHandler,
+    AuthPlayerHandler,
+    GetPlayerDataHandler,
+    GetProfileIdHandler,
+    NewGameHandler,
+    SetPlayerDataHandler,
+    UpdateGameHandler,
+)
+from frontends.gamespy.protocols.game_status.contracts.requests import (
+    AuthGameRequest,
+    AuthPlayerRequest,
+    GetPlayerDataRequest,
+    GetProfileIdRequest,
+    NewGameRequest,
+    SetPlayerDataRequest,
+    UpdateGameRequest,
+)
 
 
 class Switcher(SwitcherBase):

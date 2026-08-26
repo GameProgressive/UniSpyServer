@@ -1,21 +1,22 @@
 from typing import final
-from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
+
+from frontends.gamespy.library.extentions.gamespy_utils import (
+    convert_to_key_value,
+    is_email_format_correct,
+)
+from frontends.gamespy.library.extentions.password_encoder import process_password
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     RequestBase,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     GPStatusCode,
+    LoginType,
+    QuietModeType,
+    SdkRevisionType,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPException,
     GPParseException,
-)
-from frontends.gamespy.library.extentions.gamespy_utils import is_email_format_correct
-from frontends.gamespy.library.extentions.password_encoder import process_password
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
-    LoginType,
-    QuietModeType,
-    SdkRevisionType,
 )
 
 # region General
@@ -497,6 +498,19 @@ class StatusInfoRequest(RequestBase):
         self.game_type = self._request_dict["gametype"]
         self.game_variant = self._request_dict["gamevariant"]
         self.game_map_name = self._request_dict["gamemapname"]
+
+
+@final
+class BuddyStatusRetrieveRequest(RequestBase):
+    profile_id: int
+    namespace_id: int
+
+    def __init__(self, profile_id: int, namespace_id: int) -> None:
+        self.profile_id = profile_id
+        self.namespace_id = namespace_id
+
+    def parse(self):
+        pass
 
 
 @final

@@ -1,7 +1,19 @@
-from frontends.gamespy.protocols.server_browser.v1.abstractions.handlers import HandlerBase
-from frontends.gamespy.protocols.server_browser.v1.contracts.requests import ServerListRequest
-from frontends.gamespy.protocols.server_browser.v1.contracts.responses import GroupListResponse, ServerInfoResponse, ServerListCompressResponse
-from frontends.gamespy.protocols.server_browser.v1.contracts.results import ServerInfoResult, ServerListCompressResult, GroupListResult
+from frontends.gamespy.protocols.server_browser.v1.abstractions.handlers import (
+    HandlerBase,
+)
+from frontends.gamespy.protocols.server_browser.v1.contracts.requests import (
+    ServerListRequest,
+)
+from frontends.gamespy.protocols.server_browser.v1.contracts.responses import (
+    GroupListResponse,
+    ServerInfoResponse,
+    ServerListCompressResponse,
+)
+from frontends.gamespy.protocols.server_browser.v1.contracts.results import (
+    GroupListResult,
+    ServerInfoResult,
+    ServerListCompressResult,
+)
 
 
 class ServerInfoHandler(HandlerBase):

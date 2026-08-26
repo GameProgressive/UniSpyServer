@@ -1,8 +1,17 @@
 from datetime import datetime
 from typing import final
+
 from pydantic import BaseModel
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import ResultBase
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import BuddyMessageType, GPStatusCode, LoginType
+
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
+    ResultBase,
+)
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    BuddyMessageType,
+    GPStatusCode,
+    LoginType,
+)
+
 # region General
 
 
@@ -71,6 +80,8 @@ class BuddyMessageUTMResult(BuddyMessageResultBase):
     class BuddyMessageUTMData(BuddyMessageDataBase):
         message: str
 
+    data: list[BuddyMessageUTMData]
+
 
 @final
 class BuddyMessageFriendAddResult(BuddyMessageResultBase):
@@ -80,6 +91,7 @@ class BuddyMessageFriendAddResult(BuddyMessageResultBase):
         """
         todo check whether need 32 byte str
         """
+
     data: list[BuddyMessageFriendAddData]
 
 
@@ -117,10 +129,12 @@ class StatusResult(ResultBase):
     location_string: str
     current_status: GPStatusCode
 
+
 # class NewUserResult()
 
 
 # region Profile
+
 
 @final
 class GetProfileData(BaseModel):

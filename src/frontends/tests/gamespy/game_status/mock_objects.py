@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import cast
+
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.game_status.applications.client import Client
 from frontends.gamespy.protocols.game_status.applications.handlers import (

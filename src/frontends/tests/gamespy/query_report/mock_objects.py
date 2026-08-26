@@ -1,9 +1,21 @@
 from typing import cast
+
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.query_report.applications.client import Client
-from frontends.gamespy.protocols.query_report.v2.applications.handlers import AvailableHandler, HeartbeatHandler, KeepAliveHandler
-from frontends.gamespy.protocols.query_report.v2.contracts.results import HeartbeatResult
-from frontends.tests.gamespy.library.mock_objects import ConnectionMock, LogMock, RequestHandlerMock, create_mock_url
+from frontends.gamespy.protocols.query_report.v2.applications.handlers import (
+    AvailableHandler,
+    HeartbeatHandler,
+    KeepAliveHandler,
+)
+from frontends.gamespy.protocols.query_report.v2.contracts.results import (
+    HeartbeatResult,
+)
+from frontends.tests.gamespy.library.mock_objects import (
+    ConnectionMock,
+    LogMock,
+    RequestHandlerMock,
+    create_mock_url,
+)
 
 
 class ClientMock(Client):

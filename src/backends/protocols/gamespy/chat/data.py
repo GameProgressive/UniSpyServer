@@ -1,32 +1,29 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, cast
 
 from sqlalchemy import Column, func
+from sqlalchemy.orm import Session
+
 from backends.library.database.pg_orm import (
     ENGINE,
     ChatChannelCaches,
-    ChatUserCaches,
     ChatChannelUserCaches,
+    ChatUserCaches,
     Games,
-    Users,
     Profiles,
     SubProfiles,
+    Users,
 )
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     ChatException,
     NoSuchNickException,
 )
-from sqlalchemy.orm import Session
-
 from frontends.gamespy.protocols.chat.contracts.results import WhoIsResult
 
 
 def is_nick_exist(nick_name: str, session: Session) -> bool:
     c = session.query(ChatUserCaches.nick_name).count()
-    if c == 1:
-        return True
-    else:
-        return False
+    return c == 1
 
 
 def get_secret_key_by_game_name(game_name: str, session: Session) -> str | None:
@@ -116,11 +113,7 @@ def is_cdkey_valid(cdkey: str, session: Session) -> bool:
         assert isinstance(SubProfiles.cdkeyenc, Column)
 
         result = session.query(SubProfiles).where(SubProfiles.cdkeyenc == cdkey).count()
-    if result == 0:
-        return False
-
-    else:
-        return True
+    return result != 0
 
 
 # region Channel
@@ -135,10 +128,7 @@ def is_channel_exist(channel_name: str, game_name: str, session: Session) -> boo
         )
         .count()
     )
-    if channel_count == 1:
-        return True
-    else:
-        return False
+    return channel_count == 1
 
 
 def add_channel(channel: ChatChannelCaches, session: Session):
@@ -286,7 +276,7 @@ def get_channel_user_caches_by_name(
         session.query(ChatChannelUserCaches)
         .where(ChatChannelUserCaches.channel_name == channel_name)
         .all()
-    )  # type:ignore
+    )  
     return result
 
 
@@ -439,10 +429,7 @@ def is_user_exist(ip: str, port: int, session: Session) -> bool:
         )
         .count()
     )
-    if user_count == 1:
-        return True
-    else:
-        return False
+    return user_count == 1
 
 
 def update_client(cache: ChatChannelUserCaches, session: Session):
@@ -598,7 +585,6 @@ def _flush_chat_database():
 
 
 if __name__ == "__main__":
-    pass
     _flush_chat_database()
     #
     #     result = (

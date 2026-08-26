@@ -1,4 +1,5 @@
 from typing import final
+
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.game_status.aggregations.enums import (

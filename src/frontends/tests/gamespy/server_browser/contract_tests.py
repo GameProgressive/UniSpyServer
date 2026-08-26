@@ -1,12 +1,11 @@
-from datetime import datetime
 import unittest
+from datetime import datetime, timezone
 from uuid import UUID
 
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
-
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     GameServerFlags,
     ServerListUpdateOption,

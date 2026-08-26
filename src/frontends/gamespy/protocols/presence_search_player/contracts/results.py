@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
-from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import ResultBase
+from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import (
+    ResultBase,
+)
 
 
 class CheckResult(ResultBase):

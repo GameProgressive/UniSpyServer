@@ -1,22 +1,22 @@
 import unittest
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
-    AddBuddyRequest,
-    DelBuddyRequest,
-    InviteToRequest,
-    StatusRequest,
-    LoginRequest,
-    AddBlockRequest,
-    GetProfileRequest,
-    NewProfileRequest,
-    RegisterCDKeyRequest,
-    RegisterNickRequest,
-    UpdateProfileRequest,
-)
 
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginType,
     QuietModeType,
     SdkRevisionType,
+)
+from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
+    AddBlockRequest,
+    AddBuddyRequest,
+    DelBuddyRequest,
+    GetProfileRequest,
+    InviteToRequest,
+    LoginRequest,
+    NewProfileRequest,
+    RegisterCDKeyRequest,
+    RegisterNickRequest,
+    StatusRequest,
+    UpdateProfileRequest,
 )
 
 ADD_BLOCK = "\\addblock\\\\profileid\\0\\final\\"
@@ -30,8 +30,8 @@ REGISTER_NICK = (
 
 
 LOGIN_AUTH_TOKEN = "\\login\\\\challenge\\xxxx\\authtoken\\example_auth\\userid\\1\\profileid\\1\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\1\\profileid\\1\\namespaceid\\0\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
-LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@gamespy.com\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_UNIQUE_NICK = "\\login\\\\challenge\\xxxx\\uniquenick\\spyguy\\userid\\1\\profileid\\1\\namespaceid\\1\\partnerid\\0\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
+LOGIN_USER = "\\login\\\\challenge\\xxxx\\user\\spyguy@spyguy@gamespy.com\\userid\\0\\profileid\\0\\partnerid\\0\\namespaceid\\1\\response\\xxxxx\\firewall\\1\\port\\0000\\productid\\0\\gamename\\gmtest\\sdkrevision\\4\\quiet\\0\\id\\1\\final\\"
 
 ADD_BUDDY = "\\addbuddy\\\\sesskey\\0\\newprofileid\\0\\reason\\test\\final\\"
 DEL_BUDDY = "\\delbuddy\\\\sesskey\\0\\delprofileid\\0\\final\\"

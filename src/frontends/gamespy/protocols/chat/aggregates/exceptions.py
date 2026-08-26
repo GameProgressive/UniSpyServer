@@ -1,10 +1,13 @@
+import abc
+
 from frontends.gamespy.library.abstractions.contracts import ResponseBase
+from frontends.gamespy.library.exceptions.general import UniSpyException as ER
+from frontends.gamespy.library.exceptions.general import (
+    UniSpyExceptionValidator,
+    get_exceptions_dict,
+)
 from frontends.gamespy.protocols.chat.abstractions.contract import SERVER_DOMAIN
 from frontends.gamespy.protocols.chat.aggregates.enums import IRCErrorCode
-
-from frontends.gamespy.library.exceptions.general import UniSpyException as ER, UniSpyExceptionValidator, get_exceptions_dict
-
-import abc
 
 
 class ChatException(ER):

@@ -1,27 +1,25 @@
+import re
+
+from frontends.gamespy.library.extentions.string_extentions import (
+    convert_keystr_to_list,
+    convert_kvstring_to_dictionary,
+)
+from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
 from frontends.gamespy.protocols.chat.abstractions.handler import (
     ChannelRequestBase,
     MessageRequestBase,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
+    LoginRequestType,
     ModeName,
     ModeOperation,
     ModeRequestType,
     TopicRequestType,
-)
-
-import re
-from frontends.gamespy.library.extentions.string_extentions import (
-    convert_keystr_to_list,
-    convert_kvstring_to_dictionary,
-)
-from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
-from frontends.gamespy.protocols.chat.aggregates.enums import (
-    LoginRequestType,
     WhoRequestType,
 )
-from frontends.gamespy.protocols.chat.aggregates.exceptions import ChatException
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
+    ChatException,
     NickNameInUseException,
 )
 

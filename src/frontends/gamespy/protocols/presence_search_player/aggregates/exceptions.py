@@ -1,6 +1,11 @@
 from frontends.gamespy.library.abstractions.contracts import ResponseBase
-from frontends.gamespy.library.exceptions.general import UniSpyException, get_exceptions_dict
-from frontends.gamespy.protocols.presence_search_player.aggregates.enums import GPErrorCode
+from frontends.gamespy.library.exceptions.general import (
+    UniSpyException,
+    get_exceptions_dict,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
+    GPErrorCode,
+)
 
 
 class GPException(UniSpyException, ResponseBase):
@@ -72,7 +77,7 @@ class GPConnectionCloseException(GPException):
         self,
         message: str = "Client connection accidently closed.",
     ) -> None:
-        super().__init__(message,  GPErrorCode.CONNECTION_CLOSE)
+        super().__init__(message, GPErrorCode.CONNECTION_CLOSE)
 
 
 class GPBadSessionKeyException(GPException):
@@ -87,7 +92,7 @@ class GPAddBuddyException(GPException):
     def __init__(
         self,
         message: str = "Unknown error occur at add buddy.",
-        error_code: GPErrorCode = GPErrorCode.ADD_BUDDY
+        error_code: GPErrorCode = GPErrorCode.ADD_BUDDY,
     ) -> None:
         super().__init__(message, error_code)
 
@@ -113,7 +118,7 @@ class GPAddBuddyBadNewException(GPAddBuddyException):
         self,
         message: str = "The buddy name provided is invalid.",
     ) -> None:
-        super().__init__(message,  GPErrorCode.ADD_BUDDY_BAD_NEW)
+        super().__init__(message, GPErrorCode.ADD_BUDDY_BAD_NEW)
 
 
 class AuthAddException(GPException):
@@ -255,7 +260,7 @@ class GPLoginProfileDeletedException(GPLoginException):
         self,
         message: str = "Login connection failed.",
     ) -> None:
-        super().__init__(message,  GPErrorCode.LOGIN_PROFILE_DELETED)
+        super().__init__(message, GPErrorCode.LOGIN_PROFILE_DELETED)
 
 
 class GPLoginServerAuthFailedException(GPLoginException):
@@ -279,7 +284,7 @@ class GPLoginTimeOutException(GPLoginException):
         self,
         message: str = "Login timeout.",
     ) -> None:
-        super().__init__(message,  GPErrorCode.LOGIN_TIME_OUT)
+        super().__init__(message, GPErrorCode.LOGIN_TIME_OUT)
 
 
 class GPNewProfileException(GPException):

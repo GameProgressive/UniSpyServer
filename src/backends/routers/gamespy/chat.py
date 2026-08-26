@@ -1,10 +1,12 @@
+from fastapi import APIRouter, FastAPI, WebSocket
+
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse, Response
 from backends.protocols.gamespy.chat.brocker import MANAGER, launch_brocker
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,
-    GetCKeyHandler,
     GetChannelKeyHandler,
+    GetCKeyHandler,
     GetKeyHandler,
     GetUdpRelayHandler,
     InviteHandler,
@@ -26,8 +28,8 @@ from backends.protocols.gamespy.chat.requests import (
     AtmRequest,
     CdkeyRequest,
     CryptRequest,
-    GetCKeyRequest,
     GetChannelKeyRequest,
+    GetCKeyRequest,
     GetKeyRequest,
     GetUdpRelayRequest,
     InviteRequest,
@@ -43,21 +45,38 @@ from backends.protocols.gamespy.chat.requests import (
     PrivateRequest,
     PublishMessageRequest,
     QuitRequest,
-    SetCKeyRequest,
     SetChannelKeyRequest,
+    SetCKeyRequest,
     SetGroupRequest,
     SetKeyRequest,
     TopicRequest,
-    UtmRequest,
     UserIPRequest,
     UserRequest,
+    UtmRequest,
     WhoIsRequest,
     WhoRequest,
 )
-from backends.protocols.gamespy.chat.response import AtmResponse, CryptResponse, GetCkeyResponse, GetKeyResponse, JoinResponse, ListResponse, ModeResponse, NamesResponse, NicksResponse, NoticeResponse, PartResponse, PrivateResponse, SetCKeyResponse, SetChannelKeyResponse, TopicResponse, UtmResponse, WhoIsResponse, WhoResponse
+from backends.protocols.gamespy.chat.response import (
+    AtmResponse,
+    CryptResponse,
+    GetCkeyResponse,
+    GetKeyResponse,
+    JoinResponse,
+    ListResponse,
+    ModeResponse,
+    NamesResponse,
+    NicksResponse,
+    NoticeResponse,
+    PartResponse,
+    PrivateResponse,
+    SetChannelKeyResponse,
+    SetCKeyResponse,
+    TopicResponse,
+    UtmResponse,
+    WhoIsResponse,
+    WhoResponse,
+)
 from backends.urls import CHAT
-from fastapi import APIRouter, FastAPI, WebSocket
-
 
 router = APIRouter(lifespan=launch_brocker)
 client_pool = {}

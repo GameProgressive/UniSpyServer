@@ -8,7 +8,9 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     RequestType,
     ServerListUpdateOption,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 
 
 class ServerListRequest(ServerListUpdateOptionRequestBase):

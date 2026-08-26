@@ -2,11 +2,51 @@ from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.chat.requests import RegisterNickRequest
-from backends.protocols.gamespy.presence_connection_manager.handlers import AddBlockHandler, AddBuddyHandler, AuthAddBuddyHandler, BlockListRetriveHandler, BuddyListRetriveHandler, BuddyMessageFriendAddHandler, GetProfileHandler, KeepAliveHandler, LoginHandler, LogoutHandler, NewProfileHandler, NewUserHandler, RegisterCDKeyHandler, RegisterNickHandler, StatusHandler, StatusInfoHandler, UpdateProfileHandler
-from backends.protocols.gamespy.presence_connection_manager.requests import AddBuddyRequest, AuthAddBuddyRequest, BlockListRetriveRequest, BuddyListRetriveRequest, BuddyMessageFriendAddRequest, GetProfileRequest, LoginRequest, LogoutRequest, NewProfileRequest, RegisterCDKeyRequest, StatusInfoRequest, StatusRequest, UpdateProfileRequest, KeepAliveRequest, NewUserRequest, AddBlockRequest
-from backends.protocols.gamespy.presence_connection_manager.responses import BlockListRetriveResponse, BuddyListRetriveResponse, BuddyMessageFriendAddResponse, GetProfileResponse, LoginResponse
+from backends.protocols.gamespy.presence_connection_manager.handlers import (
+    AddBlockHandler,
+    AddBuddyHandler,
+    AuthAddBuddyHandler,
+    BlockListRetriveHandler,
+    BuddyListRetriveHandler,
+    BuddyMessageFriendAddHandler,
+    GetProfileHandler,
+    KeepAliveHandler,
+    LoginHandler,
+    LogoutHandler,
+    NewProfileHandler,
+    NewUserHandler,
+    RegisterCDKeyHandler,
+    RegisterNickHandler,
+    StatusHandler,
+    StatusInfoHandler,
+    UpdateProfileHandler,
+)
+from backends.protocols.gamespy.presence_connection_manager.requests import (
+    AddBlockRequest,
+    AddBuddyRequest,
+    AuthAddBuddyRequest,
+    BlockListRetriveRequest,
+    BuddyListRetriveRequest,
+    BuddyMessageFriendAddRequest,
+    GetProfileRequest,
+    KeepAliveRequest,
+    LoginRequest,
+    LogoutRequest,
+    NewProfileRequest,
+    NewUserRequest,
+    RegisterCDKeyRequest,
+    StatusInfoRequest,
+    StatusRequest,
+    UpdateProfileRequest,
+)
+from backends.protocols.gamespy.presence_connection_manager.responses import (
+    BlockListRetriveResponse,
+    BuddyListRetriveResponse,
+    BuddyMessageFriendAddResponse,
+    GetProfileResponse,
+    LoginResponse,
+)
 from backends.urls import PRESENCE_CONNECTION_MANAGER
-
 
 router = APIRouter()
 

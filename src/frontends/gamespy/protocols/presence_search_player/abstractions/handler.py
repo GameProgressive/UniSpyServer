@@ -1,7 +1,14 @@
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase as CHB
-from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.presence_search_player.applications.client import Client
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import EXCEPTIONS, GPException
+from frontends.gamespy.protocols.presence_search_player.abstractions.contracts import (
+    RequestBase,
+)
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    EXCEPTIONS,
+    GPException,
+)
+from frontends.gamespy.protocols.presence_search_player.applications.client import (
+    Client,
+)
 
 
 class CmdHandlerBase(CHB):

@@ -1,42 +1,48 @@
+from typing import final
+
+from frontends.gamespy.library.extentions.gamespy_ramdoms import (
+    StringType,
+    generate_random_string,
+)
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
     ResponseBase,
     ResultBase,
 )
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import BuddyMessageType
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    BuddyMessageType,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
-    generate_proof
+    generate_proof,
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     LOGIN_TICKET,
     SESSION_KEY,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
-    LoginRequest,
-    NewUserRequest,
     GetProfileRequest,
+    LoginRequest,
     NewProfileRequest,
+    NewUserRequest,
 )
-
-from frontends.gamespy.library.extentions.gamespy_ramdoms import (
-    StringType,
-    generate_random_string,
-)
-
 from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
-    BuddyMessageFriendAddResult,
-    BuddyMessageResult,
-    GetProfileResult,
-    NewProfileResult,
     AddBuddyResult,
     BlockListResult,
     BuddyListResult,
+    BuddyMessageAuthResult,
+    BuddyMessageDataBase,
+    BuddyMessageFriendAddResult,
+    BuddyMessageResult,
+    BuddyMessageResultBase,
+    BuddyMessageRevokResult,
+    BuddyMessageUTMResult,
+    GetProfileResult,
+    LoginResult,
+    NewProfileResult,
+    NewUserResult,
     RegisterNickResult,
     StatusInfoResult,
-    LoginResult,
-    NewUserResult,
 )
-
 
 # region General
 
@@ -65,7 +71,8 @@ class LoginResponse(ResponseBase):
             self._result.partner_id,
             SERVER_CHALLENGE,
             self._result.user_challenge,
-            self._result.data.password_hash,)
+            self._result.data.password_hash,
+        )
         self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{response_proof}\\userid\\{self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
 
         if self._result.data.unique_nick is not None:
@@ -95,7 +102,7 @@ class NewUserResponse(ResponseBase):
 class AddBuddyResponse(ResponseBase):
     def __init__(self, result: AddBuddyResult) -> None:
         assert issubclass(type(result), AddBuddyResult)
-        super().__init__( result)
+        super().__init__(result)
 
     def build(self) -> None:
         # return super().build()
@@ -137,35 +144,75 @@ class BuddyListResponse(ResponseBase):
         self.sending_buffer += ",".join(str(pid) for pid in self._result.profile_ids)
         self.sending_buffer += "\\final\\"
 
-class BuddyMessageFriendAddResponse(ResponseBase):
-    _result:BuddyMessageFriendAddResult
+
+# region Buddy Message
+class BuddyMessageResponseBase(ResponseBase):
+    _result: BuddyMessageResultBase
+    _type: BuddyMessageType
+
+    def build(self) -> None:
+        self.sending_buffer = ""
+        for data in self._result.data:
+            self.__build_message(data)
+
+    def __build_message(self, data: BuddyMessageDataBase) -> None:
+        self.sending_buffer += f"\\bm\\{BuddyMessageType.BM_REQUEST}"
+        self.sending_buffer += f"\\f\\{data.from_profile_id}"
+        date = int(data.date.timestamp())
+        self.sending_buffer += f"\\date\\{date}"
+        self._build_extra(data)
+        self.sending_buffer += "\\final\\"
+
+    def _build_extra(self, data: BuddyMessageDataBase) -> None:
+        """
+        build extra data here
+        """
+        pass
+
+
+@final
+class BuddyMessageFriendAddResponse(BuddyMessageResponseBase):
+    _result: BuddyMessageFriendAddResult
 
     def __init__(self, result: BuddyMessageFriendAddResult) -> None:
         super().__init__(result)
 
-    def build(self):
-        self.sending_buffer = ""
-        for data in self._result.data:
-            self.sending_buffer += f"\\bm\\{BuddyMessageType.BM_REQUEST}"
-            self.sending_buffer += f"\\f\\{data.from_profile_id}"
-            date = int(data.date.timestamp())
-            self.sending_buffer += f"\\date\\{date}"
-            self.sending_buffer += "\\final\\"
+    def _build_extra(
+        self, data: BuddyMessageFriendAddResult.BuddyMessageFriendAddData
+    ) -> None:
+        self.sending_buffer += f"\\msg\\{data.message}|signed|{data.signature}"
 
-class BuddyMessageResponse(ResponseBase):
-    _result:BuddyMessageResult
+
+@final
+class BuddyMessageResponse(BuddyMessageResponseBase):
+    _result: BuddyMessageResult
 
     def __init__(self, result: BuddyMessageResult) -> None:
         super().__init__(result)
 
-    def build(self):
-        self.sending_buffer = ""
-        for data in self._result.data:
-            self.sending_buffer += f"\\bm\\{BuddyMessageType.BM_MESSAGE}"
-            self.sending_buffer += f"\\f\\{data.from_profile_id}"
-            date = int(data.date.timestamp())
-            self.sending_buffer += f"\\date\\{date}"
-            self.sending_buffer += f"\\message\\{data.message}"
+    def _build_extra(self, data: BuddyMessageResult.BuddyMessageData) -> None:
+        self.sending_buffer += f"\\message\\{data.message}"
+
+
+@final
+class BuddyMessageUTMResponse(BuddyMessageResponseBase):
+    _result: BuddyMessageUTMResult
+
+    def __init__(self, result: BuddyMessageUTMResult) -> None:
+        super().__init__(result)
+
+    def _build_extra(self, data: BuddyMessageResult.BuddyMessageData) -> None:
+        self.sending_buffer += f"\\message\\{data.message}"
+
+
+@final
+class BuddyMessageRevokeResponse(BuddyMessageResponseBase):
+    _result: BuddyMessageRevokResult
+
+
+@final
+class BuddyMessageAuthResponse(BuddyMessageResponseBase):
+    _result: BuddyMessageAuthResult
 
 
 class StatusInfoResponse(ResponseBase):

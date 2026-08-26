@@ -1,4 +1,7 @@
-from frontends.gamespy.library.abstractions.server_launcher import ServicesFactory, ServiceBase
+from frontends.gamespy.library.abstractions.server_launcher import (
+    ServiceBase,
+    ServicesFactory,
+)
 from frontends.gamespy.library.network.udp_handler import UdpServer
 from frontends.gamespy.protocols.query_report.applications.client import Client
 

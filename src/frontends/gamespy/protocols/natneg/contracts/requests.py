@@ -1,7 +1,6 @@
-from socket import inet_ntoa
 import socket
 import struct
-
+from socket import inet_ntoa
 
 # from frontends.gamespy.library.extentions.string_extentions import IPEndPoint
 from frontends.gamespy.protocols.natneg.abstractions.contracts import (
@@ -27,8 +26,7 @@ class PingRequest(RequestBase):
     def parse(self) -> None:
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(
-            self.raw_request[8:12])
+        self.cookie = int.from_bytes(self.raw_request[8:12])
         self.ip = socket.inet_ntoa(self.raw_request[12:16])
         self.port = int.from_bytes(self.raw_request[16:18])
         # port here is not in little endian
@@ -45,8 +43,7 @@ class ConnectAckRequest(RequestBase):
 
         self.version = int(self.raw_request[6])
         self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(
-            self.raw_request[8:12])
+        self.cookie = int.from_bytes(self.raw_request[8:12])
         self.client_index = NatClientIndex(self.raw_request[13])
 
 
@@ -58,7 +55,14 @@ class ConnectRequest(CommonRequestBase):
     client_index: NatClientIndex
 
     @staticmethod
-    def build(version: int, command_name: RequestType, cookie: int, port_type: NatPortType, client_index: NatClientIndex, use_game_port: bool) -> bytes:
+    def build(
+        version: int,
+        command_name: RequestType,
+        cookie: int,
+        port_type: NatPortType,
+        client_index: NatClientIndex,
+        use_game_port: bool,
+    ) -> bytes:
         data = bytes()
         data += MAGIC_DATA
         data += version.to_bytes(1)
@@ -133,4 +137,4 @@ class ReportRequest(CommonRequestBase):
         self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
 
         end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23: 23 + end_index].decode("ascii")
+        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")

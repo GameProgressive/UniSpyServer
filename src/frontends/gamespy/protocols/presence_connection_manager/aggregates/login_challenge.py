@@ -1,6 +1,9 @@
 import hashlib
 
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import GPPartnerId, LoginType
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    GPPartnerId,
+    LoginType,
+)
 
 SERVER_CHALLENGE = "0000000000"
 

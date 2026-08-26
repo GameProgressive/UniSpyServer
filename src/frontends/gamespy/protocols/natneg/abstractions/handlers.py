@@ -1,6 +1,10 @@
-from frontends.gamespy.protocols.natneg.applications.client import Client
-from frontends.gamespy.protocols.natneg.abstractions.contracts import RequestBase, ResponseBase, ResultBase
 import frontends.gamespy.library.abstractions.handler as lib
+from frontends.gamespy.protocols.natneg.abstractions.contracts import (
+    RequestBase,
+    ResponseBase,
+    ResultBase,
+)
+from frontends.gamespy.protocols.natneg.applications.client import Client
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):

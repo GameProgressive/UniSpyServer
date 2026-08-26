@@ -1,10 +1,12 @@
-from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 import xml.etree.ElementTree as ET
 
+from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
+from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
+    WebException,
+)
 from frontends.gamespy.protocols.web_services.applications.client import Client
-from frontends.gamespy.protocols.web_services.aggregations.exceptions import WebException
 
 
 class Switcher(SwitcherBase):

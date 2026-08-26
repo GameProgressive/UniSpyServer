@@ -2,12 +2,26 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
-from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name, split_nested_kv_str
-from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import Modifier, RequestType
+from frontends.gamespy.library.extentions.string_extentions import (
+    get_kv_str_name,
+    split_nested_kv_str,
+)
+from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import (
+    Modifier,
+    RequestType,
+)
 from frontends.gamespy.protocols.server_browser.v1.applications.client import Client
-from frontends.gamespy.protocols.server_browser.v1.applications.handlers import GroupListHandler, ServerInfoHandler, ServerListCompressHandler
-from frontends.gamespy.protocols.server_browser.v1.contracts.requests import ServerListRequest
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v1.applications.handlers import (
+    GroupListHandler,
+    ServerInfoHandler,
+    ServerListCompressHandler,
+)
+from frontends.gamespy.protocols.server_browser.v1.contracts.requests import (
+    ServerListRequest,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 
 
 class Switcher(SwitcherBase):
@@ -26,12 +40,13 @@ class Switcher(SwitcherBase):
         for raw_request in raw_requests:
             name = get_kv_str_name(raw_request)
             if name not in RequestType:
-                self._client.log_debug(
-                    f"Request: {name} is not a valid request.")
+                self._client.log_debug(f"Request: {name} is not a valid request.")
                 continue
             self._requests.append((RequestType(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(
+        self, name: RequestType, raw_request: str
+    ) -> CmdHandlerBase | None:
 
         match name:
             case RequestType.SERVER_LIST:
@@ -49,10 +64,16 @@ class Switcher(SwitcherBase):
         # raise NotImplementedError("Server list is not implemented")
         match modifier:
             case Modifier.COMPRESS:
-                return ServerListCompressHandler(self._client, ServerListRequest(self._raw_request))
+                return ServerListCompressHandler(
+                    self._client, ServerListRequest(self._raw_request)
+                )
             case Modifier.INFO:
-                return ServerInfoHandler(self._client, ServerListRequest(self._raw_request))
+                return ServerInfoHandler(
+                    self._client, ServerListRequest(self._raw_request)
+                )
             case Modifier.GROUPS:
-                return GroupListHandler(self._client, ServerListRequest(self._raw_request))
+                return GroupListHandler(
+                    self._client, ServerListRequest(self._raw_request)
+                )
             case _:
                 raise SBException(f"unknown modifier {modifier}")

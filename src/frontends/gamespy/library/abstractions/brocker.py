@@ -1,6 +1,6 @@
 import abc
-from threading import Thread
-from typing import final, Callable
+from collections.abc import Callable
+from typing import final
 
 
 class BrockerBase:

@@ -1,7 +1,10 @@
-from pydantic import BaseModel, UUID4
+from pydantic import UUID4, BaseModel
 
 from frontends.gamespy.library.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.natneg.aggregations.enums import NatClientIndex, NatPortType
+from frontends.gamespy.protocols.natneg.aggregations.enums import (
+    NatClientIndex,
+    NatPortType,
+)
 
 
 class InitPacketInfo(BaseModel):

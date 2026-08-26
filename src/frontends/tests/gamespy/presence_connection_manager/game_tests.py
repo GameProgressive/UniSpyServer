@@ -1,8 +1,13 @@
 import unittest
 
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import StatusRequest
-from frontends.tests.gamespy.presence_connection_manager.mock_objects import create_client
 import responses
+
+from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
+    StatusRequest,
+)
+from frontends.tests.gamespy.presence_connection_manager.mock_objects import (
+    create_client,
+)
 
 
 class GameTest(unittest.TestCase):

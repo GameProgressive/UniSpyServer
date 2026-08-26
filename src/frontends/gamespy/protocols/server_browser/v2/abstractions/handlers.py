@@ -1,17 +1,16 @@
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase as CMB
-
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
+    RequestBase,
+    ResponseBase,
+    ResultBase,
     ServerListUpdateOptionRequestBase,
     ServerListUpdateOptionResponseBase,
     ServerListUpdateOptionResultBase,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import EnctypeX
-from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
-from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
-    RequestBase,
-    ResultBase,
-    ResponseBase,
+from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption import (
+    EnctypeX,
 )
+from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 
 
 class CmdHandlerBase(CMB):
@@ -40,4 +39,3 @@ class ServerListUpdateOptionHandlerBase(CmdHandlerBase):
         self._client.crypto = EnctypeX(
             self._client.info.game_secret_key, self._client.info.client_challenge
         )
-

@@ -1,9 +1,11 @@
 import unittest
-from backends.tests.utils import add_headers
-import frontends.gamespy.protocols.presence_connection_manager.contracts.requests as pcm
-import backends.protocols.gamespy.presence_connection_manager.requests as bkr
-import backends.protocols.gamespy.presence_connection_manager.handlers as bkh
+
 import responses
+
+import backends.protocols.gamespy.presence_connection_manager.handlers as bkh
+import backends.protocols.gamespy.presence_connection_manager.requests as bkr
+import frontends.gamespy.protocols.presence_connection_manager.contracts.requests as pcm
+from backends.tests.utils import add_headers
 from frontends.tests.gamespy.presence_connection_manager.request_tests import (
     LOGIN_AUTH_TOKEN,
     LOGIN_UNIQUE_NICK,

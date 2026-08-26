@@ -3,7 +3,13 @@ import unittest
 import responses
 
 from frontends.gamespy.library.network.http_handler import HttpData
-from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import CreateUserAccountRequest, LoginProfileWithGameIdRequest, LoginPs3CertRequest, LoginRemoteAuthRequest, LoginUniqueNickRequest
+from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
+    CreateUserAccountRequest,
+    LoginProfileWithGameIdRequest,
+    LoginPs3CertRequest,
+    LoginRemoteAuthRequest,
+    LoginUniqueNickRequest,
+)
 
 LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
     xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

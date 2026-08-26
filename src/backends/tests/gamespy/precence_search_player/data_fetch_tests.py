@@ -1,8 +1,10 @@
 # the tests related to database operations
 from unittest import TestCase
-from backends.library.database.pg_orm import ENGINE, Profiles, Users
-import backends.protocols.gamespy.presence_search_player.data as data
+
 from sqlalchemy.orm import Session
+
+from backends.library.database.pg_orm import ENGINE, Profiles, Users
+from backends.protocols.gamespy.presence_search_player import data
 
 
 class DataFetchTests(TestCase):
@@ -66,7 +68,7 @@ class DataFetchTests(TestCase):
     def test_get_nick_and_unique_nick_list(self):
         with Session(ENGINE) as session:
             result = data.get_nick_and_unique_nick_list(
-                "spyguy@gamespy.com", "4a7d1ed414474e4033ac29ccb8653d9b", 0, session
+                "spyguy@gamespy.com", "4a7d1ed414474e4033ac29ccb8653d9b", 1, session
             )
             self.assertIsInstance(result, list)
             self.assertEqual(len(result), 1)
@@ -74,7 +76,7 @@ class DataFetchTests(TestCase):
 
     def test_get_matched_profile_info_list(self):
         with Session(ENGINE) as session:
-            result = data.get_matched_profile_info_list([1], 0, session)
+            result = data.get_matched_profile_info_list([1], 1, session)
             self.assertIsInstance(result, list)
             self.assertNotEqual(len(result), 0)
 
@@ -92,11 +94,11 @@ class DataFetchTests(TestCase):
 
     def test_is_uniquenick_exist(self):
         with Session(ENGINE) as session:
-            result1 = data.is_uniquenick_exist("spyguy", 0, "gmtests", session)
+            result1 = data.is_uniquenick_exist("spyguy", 1, "gmtests", session)
             self.assertTrue(result1)
 
             result2 = data.is_uniquenick_exist(
-                "spyguy_not_uniquenick", 0, "gmtests", session
+                "spyguy_not_uniquenick", 1, "gmtests", session
             )
             self.assertFalse(result2)
 

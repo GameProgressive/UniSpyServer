@@ -1,13 +1,18 @@
-
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
-from frontends.gamespy.protocols.game_traffic_relay.applications.connection import ConnectStatus, ConnectionListener
+from frontends.gamespy.protocols.game_traffic_relay.applications.connection import (
+    ConnectionListener,
+    ConnectStatus,
+)
 from frontends.gamespy.protocols.game_traffic_relay.applications.handlers import (
     MessageRelayHandler,
-    PingHandler)
-from frontends.gamespy.protocols.game_traffic_relay.contracts.general import MessageRelayRequest
+    PingHandler,
+)
+from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
+    MessageRelayRequest,
+)
 from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
 from frontends.gamespy.protocols.natneg.contracts.requests import PingRequest
 
@@ -34,7 +39,8 @@ class Switcher(SwitcherBase):
         assert isinstance(name, RequestType)
         assert isinstance(raw_request, bytes)
         saved_client = ConnectionListener.get_client_by_ip(
-            self._client.connection.ip_endpoint)
+            self._client.connection.ip_endpoint
+        )
         if saved_client is None:
             client = self._client
         else:

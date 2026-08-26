@@ -1,12 +1,44 @@
-
 from typing import final
-from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest, NewUserRequest, NicksRequest, OthersListRequest, OthersRequest, SearchRequest, SearchUniqueRequest, UniqueSearchRequest, ValidRequest
 
-from frontends.gamespy.protocols.presence_search_player.contracts.responses import CheckResponse, NewUserResponse, NicksResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
-from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, NewUserResult, NicksResult, OthersListResult, OthersResult, SearchResult, SearchUniqueResult, UniqueSearchResult, ValidResult
-
-from frontends.gamespy.protocols.presence_search_player.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.protocols.presence_search_player.applications.client import Client
+from frontends.gamespy.protocols.presence_search_player.abstractions.handler import (
+    CmdHandlerBase,
+)
+from frontends.gamespy.protocols.presence_search_player.applications.client import (
+    Client,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.requests import (
+    CheckRequest,
+    NewUserRequest,
+    NicksRequest,
+    OthersListRequest,
+    OthersRequest,
+    SearchRequest,
+    SearchUniqueRequest,
+    UniqueSearchRequest,
+    ValidRequest,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.responses import (
+    CheckResponse,
+    NewUserResponse,
+    NicksResponse,
+    OthersListResponse,
+    OthersResponse,
+    SearchResponse,
+    SearchUniqueResponse,
+    UniqueSearchResponse,
+    ValidResponse,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.results import (
+    CheckResult,
+    NewUserResult,
+    NicksResult,
+    OthersListResult,
+    OthersResult,
+    SearchResult,
+    SearchUniqueResult,
+    UniqueSearchResult,
+    ValidResult,
+)
 
 
 @final
@@ -74,8 +106,9 @@ class SearchHandler(CmdHandlerBase):
     "\\\\bsr\\\\1\\\\nick\\\\mycrysis\\\\uniquenick\\\\1\\\\namespaceid\\\\0\\\\firstname\\\\jiangheng\\\\lastname\\\\kou\\\\email\\\\koujiangheng@live.cn\\\\bsrdone\\\\0\\\\final\\\\";
     client.Stream.SendAsync(sendingbuffer);
     \\more\\<number of items>\\final\\
-    \\search\\sesskey\\0\\profileid\\0\\namespaceid\\0\\nick\\gbr359_jordips\\gamename\\gbrome\\final\\
+    \\search\\sesskey\\0\\profileid\\0\\namespaceid\\1\\nick\\gbr359_jordips\\gamename\\gbrome\\final\\
     """
+
     _result: SearchResult
     _response: SearchResponse
 

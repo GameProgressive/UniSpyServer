@@ -1,18 +1,15 @@
 from ipaddress import IPv4Address
 from uuid import UUID
+
+import uvicorn
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-import uvicorn
 
 from backends.library.abstractions.contracts import ErrorResponse
 from backends.library.database.pg_orm import ENGINE
 from backends.library.utils.misc import check_public_ip
-from backends.services.register import register_services
-from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.library.log.log_manager import LogManager
-from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from backends.routers.gamespy import (
     chat,
     game_stats,
@@ -24,6 +21,10 @@ from backends.routers.gamespy import (
     server_browser,
     web_services,
 )
+from backends.services.register import register_services
+from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.exceptions.general import UniSpyException
+from frontends.gamespy.library.log.log_manager import LogManager
 
 app = FastAPI()
 
@@ -47,7 +48,7 @@ def unispy_exception_handler(_, exc: UniSpyException):
     err_resp = ErrorResponse(
         message=str_error,
         exception_name=type(exc).__name__,
-        exception_data=exc.__dict__
+        exception_data=exc.__dict__,
     )
     return JSONResponse(err_resp.model_dump(mode="json"), status_code=450)
 
@@ -56,9 +57,10 @@ def unispy_exception_handler(_, exc: UniSpyException):
 def validation_exception_handler(_, exc: RequestValidationError):
     str_error = str(exc.args)
     logger.error(str_error)
-    err_resp = ErrorResponse(
-        message=str_error, exception_name=type(exc).__name__)
-    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_400_BAD_REQUEST)
+    err_resp = ErrorResponse(message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(
+        err_resp.model_dump(mode="json"), status_code=status.HTTP_400_BAD_REQUEST
+    )
 
 
 @app.exception_handler(Exception)
@@ -67,9 +69,11 @@ def general_exception_handler(_, exc: Exception):
     if len(str_error) == 0:
         str_error = exc.__class__.__name__
     logger.error(str_error)
-    err_resp = ErrorResponse(
-        message=str_error, exception_name=type(exc).__name__)
-    return JSONResponse(err_resp.model_dump(mode="json"), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    err_resp = ErrorResponse(message=str_error, exception_name=type(exc).__name__)
+    return JSONResponse(
+        err_resp.model_dump(mode="json"),
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
 
 
 @app.post("/")
@@ -92,5 +96,4 @@ def get_auth_token(request: RegisterRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run("backends.routers.home:app",
-                host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("backends.routers.home:app", host="0.0.0.0", port=8080, reload=True)

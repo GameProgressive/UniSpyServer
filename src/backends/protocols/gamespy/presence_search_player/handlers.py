@@ -1,8 +1,8 @@
-from datetime import datetime
-from typing import TYPE_CHECKING, cast
+from datetime import datetime, timezone
+
 from backends.library.abstractions.handler_base import HandlerBase
-from backends.library.database.pg_orm import Users, Profiles, SubProfiles
-import backends.protocols.gamespy.presence_search_player.data as data
+from backends.library.database.pg_orm import Profiles, SubProfiles, Users
+from backends.protocols.gamespy.presence_search_player import data
 from backends.protocols.gamespy.presence_search_player.requests import (
     CheckRequest,
     NewUserRequest,
@@ -14,7 +14,17 @@ from backends.protocols.gamespy.presence_search_player.requests import (
     UniqueSearchRequest,
     ValidRequest,
 )
-from backends.protocols.gamespy.presence_search_player.responses import CheckResponse, NewUserResponse, NicksResponse, OthersListResponse, OthersResponse, SearchResponse, SearchUniqueResponse, UniqueSearchResponse, ValidResponse
+from backends.protocols.gamespy.presence_search_player.responses import (
+    CheckResponse,
+    NewUserResponse,
+    NicksResponse,
+    OthersListResponse,
+    OthersResponse,
+    SearchResponse,
+    SearchUniqueResponse,
+    UniqueSearchResponse,
+    ValidResponse,
+)
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
     SearchType,
 )

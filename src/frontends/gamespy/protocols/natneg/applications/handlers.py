@@ -1,5 +1,8 @@
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.natneg.aggregations.enums import ConnectPacketStatus, RequestType
+from frontends.gamespy.protocols.natneg.aggregations.enums import (
+    ConnectPacketStatus,
+    RequestType,
+)
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.contracts.requests import (
     AddressCheckRequest,

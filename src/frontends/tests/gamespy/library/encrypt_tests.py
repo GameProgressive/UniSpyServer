@@ -1,4 +1,5 @@
 import unittest
+
 from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
 from frontends.gamespy.library.encryption.xor_encryption import XorEncoding, XorType
 
@@ -18,7 +19,9 @@ class EncryptionTest(unittest.TestCase):
         raw = b"abcdefghijklmnopqrstuvwxyz"
         plaintext = XorEncoding.encode(raw, XorType.TYPE_1)
         self.assertEqual(
-            b"&\x03\x0e\x016\x16\x1e[--\n\x01\x08=\x1f\tB64\x15\x18\x13$\x08\x00I", plaintext)
+            b"&\x03\x0e\x016\x16\x1e[--\n\x01\x08=\x1f\tB64\x15\x18\x13$\x08\x00I",
+            plaintext,
+        )
 
 
 if __name__ == "__main__":

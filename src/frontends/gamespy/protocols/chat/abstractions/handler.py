@@ -1,21 +1,22 @@
+from typing import cast
+
+import frontends.gamespy.library.abstractions.handler as lib
 from backends.library.database.pg_orm import ChatChannelCaches
-from frontends.gamespy.protocols.chat.aggregates.enums import MessageType
+from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import (
     BrockerMessage,
     RequestBase,
     ResponseBase,
     ResultBase,
 )
+from frontends.gamespy.protocols.chat.aggregates.enums import MessageType
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     EXCEPTIONS,
     ChatException,
+    IRCException,
     NoSuchNickException,
 )
-from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.applications.client import Client
-from frontends.gamespy.protocols.chat.aggregates.exceptions import IRCException
-import frontends.gamespy.library.abstractions.handler as lib
-from typing import cast
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):
@@ -33,7 +34,7 @@ class CmdHandlerBase(lib.CmdHandlerBase):
         assert self._client.brocker
         try:
             self._request.websocket_address = self._client.brocker.ip_port
-        except:
+        except Exception:
             raise ChatException("websocket is disconnected")
 
     def _handle_exception(self, ex: Exception) -> None:
@@ -133,8 +134,7 @@ class MessageRequestBase(ChannelRequestBase):
     def parse(self):
         super().parse()
         if self.channel_name is None:
-            raise NoSuchNickException(
-                "the channel name is missing from the request")
+            raise NoSuchNickException("the channel name is missing from the request")
         if "#" in self.channel_name:
             self.type = MessageType.CHANNEL_MESSAGE
             self.target_name = self.channel_name

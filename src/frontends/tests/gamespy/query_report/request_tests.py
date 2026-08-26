@@ -1,7 +1,12 @@
 import unittest
 
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
-from frontends.gamespy.protocols.query_report.v2.contracts.requests import AvaliableRequest, ChallengeRequest, EchoRequest, HeartbeatRequest
+from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
+    AvaliableRequest,
+    ChallengeRequest,
+    EchoRequest,
+    HeartbeatRequest,
+)
 
 AVALIABLE_REQUEST = bytes([0x09,  # packet type
                            0x00, 0x00, 0x00, 0x00,  # instant key

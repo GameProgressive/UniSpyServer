@@ -1,7 +1,9 @@
-from datetime import datetime
+import base64
+from datetime import datetime, timezone
+
 from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
-import backends.protocols.gamespy.game_status.data as data
+from backends.protocols.gamespy.game_status import data
 from backends.protocols.gamespy.game_status.requests import (
     AuthGameRequest,
     AuthPlayerRequest,
@@ -10,7 +12,13 @@ from backends.protocols.gamespy.game_status.requests import (
     NewGameRequest,
     SetPlayerDataRequest,
 )
-from backends.protocols.gamespy.game_status.response import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse, SetPlayerDataResponse
+from backends.protocols.gamespy.game_status.response import (
+    AuthGameResponse,
+    AuthPlayerResponse,
+    GetPlayerDataResponse,
+    GetProfileIdResponse,
+    SetPlayerDataResponse,
+)
 from frontends.gamespy.protocols.game_status.aggregations.enums import AuthMethod
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 from frontends.gamespy.protocols.game_status.contracts.results import (
@@ -19,9 +27,7 @@ from frontends.gamespy.protocols.game_status.contracts.results import (
     GetPlayerDataResult,
     GetProfileIdResult,
     SetPlayerDataResult,
-
 )
-import base64
 
 
 class AuthGameHandler(HandlerBase):

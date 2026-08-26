@@ -1,9 +1,10 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-import backends.protocols.gamespy.server_browser.v2.handlers as v2
-import backends.protocols.gamespy.server_browser.v1.handlers as v1
 
+import backends.protocols.gamespy.server_browser.v1.handlers as v1
+import backends.protocols.gamespy.server_browser.v2.handlers as v2
+from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.urls import SERVER_BROWSER_V1, SERVER_BROWSER_V2
+
 router = APIRouter()
 # todo maybe implement this in websocket way
 

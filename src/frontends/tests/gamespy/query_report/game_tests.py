@@ -1,6 +1,7 @@
 import unittest
 
 import responses
+
 from frontends.tests.gamespy.query_report.mock_objects import create_client
 
 

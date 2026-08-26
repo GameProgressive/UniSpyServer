@@ -1,4 +1,6 @@
 import unittest
+
+import frontends.gamespy.protocols.server_browser.v2.contracts.requests as fnt
 from backends.protocols.gamespy.server_browser.v2.handlers import (
     ServerInfoHandler,
     ServerMainListHandler,
@@ -8,7 +10,6 @@ from backends.protocols.gamespy.server_browser.v2.requests import (
     ServerListRequest,
 )
 from backends.tests.utils import add_headers
-import frontends.gamespy.protocols.server_browser.v2.contracts.requests as fnt
 
 
 class HandlerTests(unittest.TestCase):

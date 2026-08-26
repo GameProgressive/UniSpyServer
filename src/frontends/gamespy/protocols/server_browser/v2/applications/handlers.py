@@ -1,13 +1,22 @@
 from concurrent.futures import ProcessPoolExecutor
 from typing import TYPE_CHECKING, cast
+
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
-
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     RequestBase,
 )
+from frontends.gamespy.protocols.server_browser.v2.abstractions.handlers import (
+    CmdHandlerBase,
+    ServerListUpdateOptionHandlerBase,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
+    # RequestType,
+    ServerListUpdateOption,
+)
+from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
     SendMessageRequest,
     ServerInfoRequest,
@@ -16,26 +25,16 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
 from frontends.gamespy.protocols.server_browser.v2.contracts.responses import (
     DeleteServerInfoResponse,
     P2PGroupRoomListResponse,
-    ServerMainListResponse,
     ServerFullInfoListResponse,
+    ServerMainListResponse,
     UpdateServerInfoResponse,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     ServerFullInfoListResult,
-    UpdateServerInfoResult,
     ServerMainListResult,
+    UpdateServerInfoResult,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
-    # RequestType,
-    ServerListUpdateOption,
-)
-from frontends.gamespy.protocols.server_browser.v2.abstractions.handlers import (
-    CmdHandlerBase,
-    ServerListUpdateOptionHandlerBase,
-)
-
-from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 
 
 def get_clients(game_name: str):
@@ -88,8 +87,7 @@ class AdHocHandler(CmdHandlerBase):
                 == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
             )
         ):
-            client.log_info(
-                f"Sending AdHoc message {self._message.status} to client")
+            client.log_info(f"Sending AdHoc message {self._message.status} to client")
             client.send(self.response)
 
 
@@ -134,10 +132,11 @@ class P2PGroupRoomListHandler(ServerListUpdateOptionHandlerBase):
 
 class ServerFullInfoListHandler(ServerListUpdateOptionHandlerBase):
     """
-    In sbctest.c 
+    In sbctest.c
     line 392 ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate);
     will get the full info of a server such as: player data, server data, team data
     """
+
     """
     !! below is the source code of sb v2, adhocdata is directly follow the mainlist response
     todo check if adhoc data is append after mainlist response

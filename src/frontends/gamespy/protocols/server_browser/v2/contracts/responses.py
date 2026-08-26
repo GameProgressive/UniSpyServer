@@ -1,24 +1,39 @@
 from frontends.gamespy.library.extentions.encoding import get_bytes
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
-from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import PeerRoomInfo
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    GameServerInfo,
+)
+from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
+    PeerRoomInfo,
+)
 from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import (
     AdHocResponseBase,
     ServerListUpdateOptionResponseBase,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
+    GameServerFlags,
+    ResponseType,
+)
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 from frontends.gamespy.protocols.server_browser.v2.aggregations.server_info_builder import (
     build_server_info_header,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import ALL_SERVER_END_FLAG, NTS_STRING_FLAG, STRING_SPLITER, SINGLE_SERVER_END_FLAG
-from frontends.gamespy.protocols.server_browser.v2.contracts.requests import ServerListRequest
+from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import (
+    ALL_SERVER_END_FLAG,
+    NTS_STRING_FLAG,
+    SINGLE_SERVER_END_FLAG,
+    STRING_SPLITER,
+)
+from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
+    ServerListRequest,
+)
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     ServerFullInfoListResult,
-    UpdateServerInfoResult,
     ServerMainListResult,
+    UpdateServerInfoResult,
 )
-
-from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags, ResponseType
 
 
 class DeleteServerInfoResponse(AdHocResponseBase):

@@ -1,4 +1,6 @@
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import ResultBase
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
+    ResultBase,
+)
 
 
 class CreateRecordResult(ResultBase):

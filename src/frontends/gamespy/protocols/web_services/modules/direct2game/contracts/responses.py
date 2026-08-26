@@ -1,5 +1,9 @@
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
-from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import ResponseBase
+from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
+    SoapEnvelop,
+)
+from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import (
+    ResponseBase,
+)
 from frontends.gamespy.protocols.web_services.modules.direct2game.contracts.results import (
     GetPurchaseHistoryResult,
     GetStoreAvailabilityResult,

@@ -1,10 +1,11 @@
-from datetime import datetime, timezone
 import unittest
+from datetime import datetime, timezone
 
 from pydantic import ValidationError
-from backends.library.database.pg_orm import ENGINE, ChatChannelCaches
-import backends.protocols.gamespy.query_report.data as data
 from sqlalchemy.orm import Session
+
+from backends.library.database.pg_orm import ENGINE, ChatChannelCaches
+from backends.protocols.gamespy.query_report import data
 
 
 class DataFetchTests(unittest.TestCase):
@@ -16,7 +17,7 @@ class DataFetchTests(unittest.TestCase):
             room_name="unispy_test_room_name",
             group_id=0,
             max_num_user=100,
-            update_time=datetime.now(timezone.utc),
+            update_time=datetime.now(),
         )
         with Session(ENGINE) as session:
             session.add(cache)

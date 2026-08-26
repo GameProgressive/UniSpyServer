@@ -1,11 +1,25 @@
 from fastapi import APIRouter
 
-from backends.library.abstractions.contracts import RESPONSES_DEF, DataResponse, OKResponse, Response
-from backends.protocols.gamespy.natneg.handlers import ConnectHandler, InitHandler, ReportHandler
-from backends.protocols.gamespy.natneg.requests import AddressCheckRequest, ConnectRequest,  ErtAckRequest, InitRequest, ReportRequest
+from backends.library.abstractions.contracts import (
+    RESPONSES_DEF,
+    DataResponse,
+    OKResponse,
+    Response,
+)
+from backends.protocols.gamespy.natneg.handlers import (
+    ConnectHandler,
+    InitHandler,
+    ReportHandler,
+)
+from backends.protocols.gamespy.natneg.requests import (
+    AddressCheckRequest,
+    ConnectRequest,
+    ErtAckRequest,
+    InitRequest,
+    ReportRequest,
+)
 from backends.protocols.gamespy.natneg.responses import ConnectResponse
 from backends.urls import NATNEG
-
 
 router = APIRouter()
 
@@ -44,6 +58,7 @@ def report(request: ReportRequest) -> OKResponse:
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     uvicorn.run(app, host="0.0.0.0", port=8080)

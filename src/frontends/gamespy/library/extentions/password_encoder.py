@@ -1,5 +1,5 @@
-import hashlib
 import base64
+import hashlib
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
 

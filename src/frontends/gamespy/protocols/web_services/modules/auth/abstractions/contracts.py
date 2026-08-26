@@ -1,16 +1,25 @@
-from typing import TYPE_CHECKING, cast
-from frontends.gamespy.library.network.http_handler import HttpData
-import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
-from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import AuthCode, CommandName
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import ParseException
 import datetime
-from cryptography.hazmat.primitives import hashes, serialization
+from typing import TYPE_CHECKING, cast
+
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
-from cryptography.hazmat.primitives.asymmetric import utils as asym_utils
+
+import frontends.gamespy.protocols.web_services.abstractions.contracts as lib
+from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
+    SoapEnvelop,
+)
+from frontends.gamespy.protocols.web_services.applications.client import ClientInfo
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import (
+    AuthCode,
+    CommandName,
+)
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
+    ParseException,
+)
+
 NAMESPACE = "http://gamespy.net/AuthService/"
 
 
@@ -124,7 +133,8 @@ class LoginResponseBase(lib.ResponseBase):
         assert isinstance(result, LoginResultBase)
         super().__init__(result)
         self._expiretime = int(
-            (datetime.datetime.now() + datetime.timedelta(days=1)).timestamp()
+            (datetime.datetime.now(datetime.timezone.utc) +
+             datetime.timedelta(days=1)).timestamp()
         )
 
     def build(self) -> None:

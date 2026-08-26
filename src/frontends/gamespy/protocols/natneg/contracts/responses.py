@@ -1,4 +1,5 @@
 import socket
+
 from frontends.gamespy.protocols.natneg.abstractions.contracts import (
     CommonResponseBase,
     ResponseBase,
@@ -39,9 +40,7 @@ class NatifyResponse(CommonResponseBase):
 class AddressCheckResponse(CommonResponseBase):
     _result: AddressCheckResult
 
-    def __init__(
-        self, result: AddressCheckResult
-    ) -> None:
+    def __init__(self, result: AddressCheckResult) -> None:
         assert isinstance(result, AddressCheckResult)
         super().__init__(result)
 

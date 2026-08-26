@@ -1,17 +1,18 @@
+from sqlalchemy.orm import Session
+
 from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.library.database.pg_orm import ENGINE, GameServerCaches
+from backends.protocols.gamespy.query_report import data
 from backends.protocols.gamespy.query_report.requests import (
     AvaliableRequest,
     ClientMessageRequest,
     HeartBeatRequest,
-    KeepAliveRequest,
     HeartbeatRequestV1,
+    KeepAliveRequest,
 )
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
-import backends.protocols.gamespy.query_report.data as data
-from sqlalchemy.orm import Session
 
 
 class AvaliableHandler(HandlerBase):
@@ -43,6 +44,7 @@ class HeartbeatHandler(HandlerBase):
     v2 protocol qr heartbeat
     this heartbeat have instantkey which is using for natneg
     """
+
     _request: HeartBeatRequest
     response: OKResponse
 
@@ -57,8 +59,7 @@ class HeartbeatHandler(HandlerBase):
         if cache is None:
             # todo check whether these data can be null at first heartbeat
             if len(self._request.data) == 0:
-                raise QRException(
-                    "data in first heartbeat can not be null")
+                raise QRException("data in first heartbeat can not be null")
             # team data can be none in peertest sdk
             cache = GameServerCaches(
                 instant_key=self._request.instant_key,
@@ -90,6 +91,7 @@ class HeartbeatHandlerV1(HandlerBase):
     same as HeartbeatHandler
     The v1 protocol heartbeat do not have instantkey
     """
+
     _request: HeartbeatRequestV1
     response: OKResponse
 
@@ -134,7 +136,8 @@ class KeepAliveHandler(HandlerBase):
     def _data_operate(self) -> None:
         assert isinstance(self._request.instant_key, str)
         data.refresh_game_server_cache(
-            self._request.client_ip, self._request.client_port, self._session)
+            self._request.client_ip, self._request.client_port, self._session
+        )
 
 
 class ClientMessageHandler(HandlerBase):
@@ -145,4 +148,5 @@ class ClientMessageHandler(HandlerBase):
         # todo use websocket to send the message to qr client, but how to determine which qr router should be received
         # currently we just use broadcast message to all qr frontends
         from backends.protocols.gamespy.query_report.broker import MANAGER
+
         MANAGER.broadcast(self._request.model_dump_json())

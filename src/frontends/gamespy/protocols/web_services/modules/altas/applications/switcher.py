@@ -1,7 +1,9 @@
-from typing import TYPE_CHECKING, cast
-from frontends.gamespy.protocols.web_services.applications.client import Client
+
 import frontends.gamespy.protocols.web_services.applications.switcher as web
-from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import CmdHandlerBase
+from frontends.gamespy.protocols.web_services.applications.client import Client
+from frontends.gamespy.protocols.web_services.modules.sake.abstractions.handler import (
+    CmdHandlerBase,
+)
 
 
 class Switcher(web.Switcher):

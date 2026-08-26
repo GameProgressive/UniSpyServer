@@ -1,8 +1,18 @@
-from typing import final
+from typing import TYPE_CHECKING, final
 
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
+    RequestBase,
+)
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
+    CmdHandlerBase,
+    LoginedHandlerBase,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
     SdkRevisionType,
+)
+from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+    Client,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     AddBlockRequest,
@@ -11,61 +21,48 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     BlockListRetriveRequest,
     BuddyListRetriveRequest,
     BuddyMessageFriendAddRequest,
-    BuddyMessageFriendAddRequest,
     BuddyMessageRequest,
+    BuddyStatusRetrieveRequest,
+    DelBuddyRequest,
     GetProfileRequest,
+    KeepAliveRequest,
+    LoginRequest,
+    LogoutRequest,
     NewProfileRequest,
     NewUserRequest,
     RegisterCDKeyRequest,
     RegisterNickRequest,
     RemoveBlockRequest,
-    UpdateProfileRequest,
-    DelBuddyRequest,
     StatusInfoRequest,
     StatusRequest,
-    KeepAliveRequest,
-    LoginRequest,
-    LogoutRequest,
-)
-from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
-    BlockListResult,
-    BuddyListResult,
-    BuddyMessageFriendAddResult,
-    BuddyMessageResult,
-    NewUserResult,
-    RegisterNickResult,
-    StatusInfoResult,
-    StatusResult,
-    GetProfileResult,
-    NewProfileResult,
-    LoginResult,
+    UpdateProfileRequest,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.responses import (
     BlockListResponse,
     BuddyListResponse,
     BuddyMessageFriendAddResponse,
     BuddyMessageResponse,
-    NewUserResponse,
-    StatusInfoResponse,
     GetProfileResponse,
-    NewProfileResponse,
-    RegisterNickResponse,
     KeepAliveResponse,
     LoginResponse,
+    NewProfileResponse,
+    NewUserResponse,
+    RegisterNickResponse,
+    StatusInfoResponse,
 )
-
-from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
-    Client,
+from frontends.gamespy.protocols.presence_connection_manager.contracts.results import (
+    BlockListResult,
+    BuddyListResult,
+    BuddyMessageFriendAddResult,
+    BuddyMessageResult,
+    GetProfileResult,
+    LoginResult,
+    NewProfileResult,
+    NewUserResult,
+    RegisterNickResult,
+    StatusInfoResult,
+    StatusResult,
 )
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
-    CmdHandlerBase,
-    LoginedHandlerBase,
-)
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
-    RequestBase,
-)
-from typing import TYPE_CHECKING
-
 
 if TYPE_CHECKING:
     from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
@@ -165,11 +162,17 @@ class SdkRevisionHandler(CmdHandlerBase):
                 self._client.info.namespace_id,
                 self._request.operation_id))
             bl.handle()
+        elif SdkRevisionType.GPINEW_REVOKE_NOTIFICATION in self._client.info.sdk_revision or SdkRevisionType.GPINEW_AUTH_NOTIFICATION in self._client.info.sdk_revision:
+            pass
+        elif SdkRevisionType.GPINEW_STATUS_NOTIFICATION in self._client.info.sdk_revision:
+            bs = BuddyStatusRetrieveHandler(self._client, BuddyStatusRetrieveRequest(
+                profile_id=self._client.info.profile_id,
+                namespace_id=self._client.info.namespace_id
+            ))
+            bs.handle()
+        else:
+            pass
 
-            # request = StatusInfoRequest()
-            # request.profile_id = self._client.info.profile_id
-            # request.namespace_id = int(self._client.info.namespace_id)
-            # StatusInfoHandler(self._client, request).handle()
             # todo: add other revision operations
 
 
@@ -189,7 +192,7 @@ class AddBuddyHandler(CmdHandlerBase):
         self._request.sender_profile_id = self._client.info.profile_id
         self._request.namespace_id = self._client.info.namespace_id
         self._client.connection.send(
-            "\\bm\\2\\f\\3\\date\\1777530486\\msg\\|signed|11111111111111111111111111111111\\final\\".encode())
+            b"\\bm\\2\\f\\3\\date\\1777530486\\msg\\|signed|11111111111111111111111111111111\\final\\")
         super()._data_operate()
 
 
@@ -287,6 +290,11 @@ class StatusHandler(CmdHandlerBase):
         assert isinstance(request, StatusRequest)
         super().__init__(client, request)
         self._is_fetching = False
+
+
+@final
+class BuddyStatusRetrieveHandler(LoginedHandlerBase):
+    pass
 
 
 @final

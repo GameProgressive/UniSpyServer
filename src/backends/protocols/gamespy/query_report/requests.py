@@ -1,10 +1,13 @@
-
 from pydantic import UUID4
-import backends.library.abstractions.contracts as lib
 
+import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType as V2RequestType
-from frontends.gamespy.protocols.query_report.v1.aggregates.enums import RequestType as V1RequestType
+from frontends.gamespy.protocols.query_report.v1.aggregates.enums import (
+    RequestType as V1RequestType,
+)
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
+    RequestType as V2RequestType,
+)
 
 
 class RequestBase(lib.RequestBase):
@@ -41,14 +44,13 @@ class HeartBeatRequest(RequestBase):
     game_name: str
 
 
-
-
 class HeartbeatRequestV1(lib.RequestBase):
     command_name: V1RequestType
     raw_request: str
     query_id: str
     game_name: str
     data: dict[str, str]
+
 
 class EchoRequest(RequestBase):
     pass

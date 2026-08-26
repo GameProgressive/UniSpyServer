@@ -1,4 +1,7 @@
-from frontends.gamespy.library.exceptions.general import UniSpyException, get_exceptions_dict
+from frontends.gamespy.library.exceptions.general import (
+    UniSpyException,
+    get_exceptions_dict,
+)
 
 
 class GSException(UniSpyException):

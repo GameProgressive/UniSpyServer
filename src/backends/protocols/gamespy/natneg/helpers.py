@@ -103,14 +103,14 @@ class NatProtocolHelper:
         if NatPortType.GP in self.address_infos:
             if (
                 self.address_infos[NatPortType.GP].cookie
-                != self.address_infos[NatPortType.NN1].cookie  # type:ignore
+                != self.address_infos[NatPortType.NN1].cookie  
                 or self.address_infos[NatPortType.GP].version
-                != self.address_infos[NatPortType.NN1].version  # type:ignore
+                != self.address_infos[NatPortType.NN1].version  
                 or self.address_infos[NatPortType.GP].client_index
-                # type:ignore
+                
                 != self.address_infos[NatPortType.NN1].client_index
                 or self.address_infos[NatPortType.GP].use_game_port
-                # type:ignore
+                
                 != self.address_infos[NatPortType.NN1].use_game_port
             ):
                 raise NatNegException("GP packet info is not correct")
@@ -128,33 +128,33 @@ class NatProtocolHelper:
 
         if (
             self.address_infos[NatPortType.NN1].cookie
-            != self.address_infos[NatPortType.NN2].cookie  # type:ignore
+            != self.address_infos[NatPortType.NN2].cookie  
             or self.address_infos[NatPortType.NN1].cookie
-            != self.address_infos[NatPortType.NN3].cookie  # type:ignore
+            != self.address_infos[NatPortType.NN3].cookie  
         ):  # type: ignore
             raise NatNegException("Broken cookie")
 
         if (
             self.address_infos[NatPortType.NN1].version
-            != self.address_infos[NatPortType.NN2].version  # type:ignore
+            != self.address_infos[NatPortType.NN2].version  
             or self.address_infos[NatPortType.NN1].version
-            != self.address_infos[NatPortType.NN3].version  # type:ignore
+            != self.address_infos[NatPortType.NN3].version  
         ):  # type: ignore
             raise NatNegException("Broken version")
 
         if (
             self.address_infos[NatPortType.NN1].client_index
-            != self.address_infos[NatPortType.NN2].client_index  # type:ignore
+            != self.address_infos[NatPortType.NN2].client_index  
             or self.address_infos[NatPortType.NN1].client_index
-            != self.address_infos[NatPortType.NN3].client_index  # type:ignore
+            != self.address_infos[NatPortType.NN3].client_index  
         ):  # type: ignore
             raise NatNegException("Broken client index")
 
         if (
             self.address_infos[NatPortType.NN1].use_game_port
-            != self.address_infos[NatPortType.NN2].use_game_port  # type:ignore
+            != self.address_infos[NatPortType.NN2].use_game_port  
             or self.address_infos[NatPortType.NN1].use_game_port
-            != self.address_infos[NatPortType.NN3].use_game_port  # type:ignore
+            != self.address_infos[NatPortType.NN3].use_game_port  
         ):  # type: ignore
             raise NatNegException("Broken use game port")
 
@@ -167,14 +167,14 @@ class NatProtocolHelper:
         if NatPortType.GP in self.address_infos:
             if (
                 self.address_infos[NatPortType.GP].cookie
-                != self.address_infos[NatPortType.NN1].cookie  # type:ignore
+                != self.address_infos[NatPortType.NN1].cookie  
                 or self.address_infos[NatPortType.GP].version
-                != self.address_infos[NatPortType.NN1].version  # type:ignore
+                != self.address_infos[NatPortType.NN1].version  
                 or self.address_infos[NatPortType.GP].client_index
-                # type:ignore
+                
                 != self.address_infos[NatPortType.NN1].client_index
                 or self.address_infos[NatPortType.GP].use_game_port
-                # type:ignore
+                
                 != self.address_infos[NatPortType.NN1].use_game_port
             ):  # type: ignore
                 raise NatNegException("GP packet info is not correct")
@@ -188,8 +188,8 @@ class NatProtocolHelper:
         nn1 = info.address_infos[NatPortType.NN1]
         nn2 = info.address_infos[NatPortType.NN2]
         # no nat
-        if nn1.public_ip == nn1.private_ip and (  # type:ignore
-            nn2.public_ip == nn2.private_ip and nn2.public_port == nn1.public_port  # type:ignore
+        if nn1.public_ip == nn1.private_ip and (  
+            nn2.public_ip == nn2.private_ip and nn2.public_port == nn1.public_port  
         ):  # type: ignore
             info.nat_type = NatType.NO_NAT
         # detect cone
@@ -216,22 +216,22 @@ class NatProtocolHelper:
 
         # no nat
         if (
-            nn1.public_ip == nn1.private_ip  # type:ignore
+            nn1.public_ip == nn1.private_ip  
             and (
-                nn2.public_ip == nn2.private_ip and nn2.public_port == nn2.private_port  # type:ignore
+                nn2.public_ip == nn2.private_ip and nn2.public_port == nn2.private_port  
             )
             and (
-                nn3.public_ip == nn3.private_ip and nn3.public_port == nn3.private_port  # type:ignore
+                nn3.public_ip == nn3.private_ip and nn3.public_port == nn3.private_port  
             )
         ):  # type: ignore
             info.nat_type = NatType.NO_NAT
         # detect cone
         elif (
-            nn1.public_ip == nn2.public_ip and nn1.public_port == nn2.public_port  # type:ignore
+            nn1.public_ip == nn2.public_ip and nn1.public_port == nn2.public_port  
         ) and (nn2.public_ip == nn3.public_ip and nn2.public_port == nn3.public_port):  # type: ignore
             info.nat_type = NatType.FULL_CONE
         elif (
-            nn1.public_ip == nn2.public_ip and nn1.public_port != nn2.public_port  # type:ignore
+            nn1.public_ip == nn2.public_ip and nn1.public_port != nn2.public_port  
         ) or (nn2.public_ip == nn3.public_ip and nn2.public_port != nn3.public_port):  # type: ignore
             info.nat_type = NatType.SYMMETRIC
             info.port_mapping = NatPortMappingScheme.INCREMENTAL

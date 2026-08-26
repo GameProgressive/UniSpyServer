@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import final
+
 from frontends.gamespy.protocols.game_status.abstractions.contracts import ResultBase
 
 

@@ -19,8 +19,12 @@ class Client(ClientBase):
         self.is_log_raw = True
 
     def _create_switcher(self, buffer: bytes):
-        from frontends.gamespy.protocols.query_report.v2.applications.switcher import Switcher as V2Switcher
-        from frontends.gamespy.protocols.query_report.v1.applications.switcher import Switcher as V1Switcher
+        from frontends.gamespy.protocols.query_report.v1.applications.switcher import (
+            Switcher as V1Switcher,
+        )
+        from frontends.gamespy.protocols.query_report.v2.applications.switcher import (
+            Switcher as V2Switcher,
+        )
         assert isinstance(buffer, bytes)
         # !! qr v1 doesn't actually need encryption because encryption isn't part of the main communication process. 
         if buffer[0] == ord("\\"):

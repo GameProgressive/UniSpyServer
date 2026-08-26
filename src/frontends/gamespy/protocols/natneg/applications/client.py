@@ -1,7 +1,7 @@
 from frontends.gamespy.library.abstractions.client import ClientBase
+from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.udp_handler import UdpConnection
-from frontends.gamespy.library.configs import ServerConfig
 
 
 class Client(ClientBase):

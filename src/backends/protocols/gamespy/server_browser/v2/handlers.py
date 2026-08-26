@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
+
+import backends.protocols.gamespy.query_report.data as data
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.query_report.broker import BROCKER, MANAGER
-import backends.protocols.gamespy.query_report.data as data
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.protocols.gamespy.server_browser.v2.requests import (
     AdHocRequestBase,
@@ -10,7 +11,13 @@ from backends.protocols.gamespy.server_browser.v2.requests import (
     ServerInfoRequest,
     ServerListRequest,
 )
-from backends.protocols.gamespy.server_browser.v2.responses import P2PGroupRoomListResponse, SendMessageResponse, ServerFullInfoListResponse, ServerInfoResponse, ServerInfoResponse, ServerMainListResponse
+from backends.protocols.gamespy.server_browser.v2.responses import (
+    P2PGroupRoomListResponse,
+    SendMessageResponse,
+    ServerFullInfoListResponse,
+    ServerInfoResponse,
+    ServerMainListResponse,
+)
 from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
     GameServerInfo,
 )
@@ -21,13 +28,15 @@ from frontends.gamespy.protocols.query_report.v2.aggregates.enums import Request
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     GameServerFlags,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import SBException
+from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions import (
+    SBException,
+)
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     SendMessageResult,
-    UpdateServerInfoResult,
-    ServerMainListResult,
     ServerFullInfoListResult,
+    ServerMainListResult,
+    UpdateServerInfoResult,
 )
 
 # region Server list
@@ -43,10 +52,10 @@ class P2PGroupRoomListHandler(HandlerBase):
         super().__init__(request)
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(
-            self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
         self._caches = data.get_peer_group_channel(
-            self._request.game_name, self._session)
+            self._request.game_name, self._session
+        )
 
     def _result_construct(self) -> None:
         assert isinstance(self._caches, list) and all(
@@ -58,7 +67,7 @@ class P2PGroupRoomListHandler(HandlerBase):
             flag=GameServerFlags.HAS_KEYS_FLAG,
             game_secret_key=self._secret_key,
             peer_room_info=self._caches,
-            keys=self._request.keys
+            keys=self._request.keys,
         )
 
 
@@ -69,8 +78,7 @@ class ServerMainListHandler(HandlerBase):
     response: ServerMainListResponse
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(
-            self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
         self._caches = data.get_server_info_list_with_game_name(
             self._request.game_name, self._session
         )
@@ -93,7 +101,7 @@ class ServerMainListHandler(HandlerBase):
             client_remote_ip=self._request.client_ip,
             game_secret_key=self._secret_key,
             servers_info=self._caches,
-            keys=self._request.keys
+            keys=self._request.keys,
         )
 
 
@@ -103,8 +111,7 @@ class ServerFullInfoListHandler(HandlerBase):
     response: ServerFullInfoListResponse
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(
-            self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
         self._caches = data.get_server_info_list_with_game_name(
             self._request.game_name, self._session
         )
@@ -120,8 +127,9 @@ class ServerFullInfoListHandler(HandlerBase):
             client_remote_ip=self._request.client_ip,
             game_secret_key=self._secret_key,
             servers_info=self._caches,
-            keys=all_keys
+            keys=all_keys,
         )
+
 
 # region Adhoc
 
@@ -137,16 +145,21 @@ class SendMessageHandler(HandlerBase):
     """
     client -> server browser -> backend -> sb-SendMessageHandler -> qr-ClientMessageHandler -> websocket -> query report -> client
     """
+
     _request: SendMessageRequest
     response: SendMessageResponse
 
     def _data_operate(self):
         # construct client message and invoke frontends qr server client message
         cache = data.get_game_server_cache_by_ip_port(
-            self._request.game_server_public_ip, self._request.game_server_public_port, self._session)
+            self._request.game_server_public_ip,
+            self._request.game_server_public_port,
+            self._session,
+        )
         if cache is None:
             raise SBException(
-                f"could not find game server: {self._request.game_server_public_ip}:{self._request.game_server_public_port}")
+                f"could not find game server: {self._request.game_server_public_ip}:{self._request.game_server_public_port}"
+            )
         assert isinstance(cache.instant_key, str)
         assert isinstance(cache.server_id, UUID)
         request = ClientMessageRequest(

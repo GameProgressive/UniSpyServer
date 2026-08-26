@@ -1,11 +1,10 @@
 
 from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.tcp_handler import TcpConnection
-from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.protocols.game_status.aggregations.gscrypt import GSCrypt
-
 
 CHALLENGE_RESPONSE = "\\challenge\\00000000000000000000\\final\\"
 

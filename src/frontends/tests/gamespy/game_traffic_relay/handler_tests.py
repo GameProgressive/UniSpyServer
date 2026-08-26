@@ -1,6 +1,8 @@
 import unittest
 
-from frontends.gamespy.protocols.game_traffic_relay.applications.client import ConnectionListener
+from frontends.gamespy.protocols.game_traffic_relay.applications.client import (
+    ConnectionListener,
+)
 from frontends.gamespy.protocols.game_traffic_relay.applications.handlers import (
     PingHandler,
 )

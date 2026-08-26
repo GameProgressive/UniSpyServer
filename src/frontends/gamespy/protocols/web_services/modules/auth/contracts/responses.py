@@ -1,5 +1,9 @@
-from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import SoapEnvelop
-from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contracts import LoginResponseBase
+from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
+    SoapEnvelop,
+)
+from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contracts import (
+    LoginResponseBase,
+)
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
     LoginProfileRequest,
     LoginProfileWithGameIdRequest,

@@ -3,8 +3,12 @@ from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contract
     NAMESPACE,
     LoginRequestBase,
 )
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import CommandName
-from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import ParseException
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import (
+    CommandName,
+)
+from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions import (
+    ParseException,
+)
 
 
 class LoginProfileRequest(LoginRequestBase):
@@ -22,6 +26,7 @@ class LoginProfileRequest(LoginRequestBase):
         self.email = self._get_str("email")
         self.nick = self._get_str("profilenick")
         self.password = self._parse_password()
+        self.command_name = CommandName.LOGIN_PROFILE
 
 
 class LoginProfileWithGameIdRequest(LoginProfileRequest):

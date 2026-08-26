@@ -1,11 +1,17 @@
-from typing import TYPE_CHECKING, cast
 import unittest
+from typing import TYPE_CHECKING, cast
 
-from frontends.gamespy.protocols.presence_search_player.contracts.requests import CheckRequest
-from frontends.gamespy.protocols.presence_search_player.applications.switcher import Switcher
 import responses
 
-from frontends.gamespy.protocols.presence_search_player.contracts.responses import CheckResponse
+from frontends.gamespy.protocols.presence_search_player.applications.switcher import (
+    Switcher,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.requests import (
+    CheckRequest,
+)
+from frontends.gamespy.protocols.presence_search_player.contracts.responses import (
+    CheckResponse,
+)
 from frontends.tests.gamespy.presence_search_player.mock_objects import create_client
 
 

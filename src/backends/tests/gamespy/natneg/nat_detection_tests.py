@@ -1,5 +1,5 @@
-from datetime import datetime
 import unittest
+from datetime import datetime
 
 from backends.library.database.pg_orm import InitPacketCaches
 from backends.protocols.gamespy.natneg.helpers import NatProtocolHelper

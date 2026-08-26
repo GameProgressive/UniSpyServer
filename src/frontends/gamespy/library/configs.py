@@ -2,7 +2,7 @@ import os
 from typing import Literal, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, field_validator
 
 
 class PostgreSql(BaseModel):
@@ -96,10 +96,10 @@ if unispy_config is None:
     #     "Unispy server config not found, you should set the UNISPY_CONFIG in the system enviroment."
     # )
 if not os.path.exists(unispy_config):
-    raise Exception(
-        "Unispy server config file not exist, check UNISPY_CONFIG path.")
+    raise Exception("Unispy server config file not exist, check UNISPY_CONFIG path.")
 with open(unispy_config, "r") as f:
     import json
+
     config = json.load(f)
 CONFIG = UniSpyServerConfig.model_validate(config)
 pass

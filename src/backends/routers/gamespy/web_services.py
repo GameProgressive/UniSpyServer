@@ -1,10 +1,42 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-from backends.protocols.gamespy.web_services.handlers import CreateRecordHandler, CreateUserAccountHandler, DeleteRecordHandler, GetMyRecordsHandler, GetRecordCountHandler, LoginProfileHandler, LoginRemoteAuthHandler, LoginUniqueNickHandler, SearchForRecordsHandler, UpdateRecordHandler
-from backends.protocols.gamespy.web_services.responses import CreateRecordResponse, DeleteRecordResponse, GetMyRecordsResponse, GetRecordCountResponse, LoginProfileResponse, LoginRemoteAuthRepsonse, LoginUniqueNickResponse, SearchForRecordsResponse, UpdateRecordResponse
+from backends.protocols.gamespy.web_services.handlers import (
+    CreateRecordHandler,
+    CreateUserAccountHandler,
+    DeleteRecordHandler,
+    GetMyRecordsHandler,
+    GetRecordCountHandler,
+    LoginProfileHandler,
+    LoginRemoteAuthHandler,
+    LoginUniqueNickHandler,
+    SearchForRecordsHandler,
+    UpdateRecordHandler,
+)
+from backends.protocols.gamespy.web_services.requests import (
+    CreateRecordRequest,
+    CreateUserAccountRequest,
+    DeleteRecordRequest,
+    GetMyRecordsRequest,
+    GetRecordCountRequest,
+    LoginProfileRequest,
+    LoginRemoteAuthRequest,
+    LoginUniqueNickRequest,
+    SearchForRecordsRequest,
+    UpdateRecordRequest,
+)
+from backends.protocols.gamespy.web_services.responses import (
+    CreateRecordResponse,
+    DeleteRecordResponse,
+    GetMyRecordsResponse,
+    GetRecordCountResponse,
+    LoginProfileResponse,
+    LoginRemoteAuthRepsonse,
+    LoginUniqueNickResponse,
+    SearchForRecordsResponse,
+    UpdateRecordResponse,
+)
 from backends.urls import WEB_SERVICES
-from backends.protocols.gamespy.web_services.requests import CreateRecordRequest, CreateUserAccountRequest, DeleteRecordRequest, GetMyRecordsRequest, GetRecordCountRequest, LoginProfileRequest,  LoginRemoteAuthRequest,  LoginUniqueNickRequest,  SearchForRecordsRequest, UpdateRecordRequest
 
 router = APIRouter()
 
@@ -51,8 +83,12 @@ def login_remote_auth(request: LoginRemoteAuthRequest) -> LoginRemoteAuthRepsons
     return handler.response
 
 
-@router.post(f"{WEB_SERVICES}/LoginRemoteAuthWithGameIdHandler", responses=RESPONSES_DEF)
-def login_remote_auth_with_game_id(request: LoginRemoteAuthRequest) -> LoginRemoteAuthRepsonse:
+@router.post(
+    f"{WEB_SERVICES}/LoginRemoteAuthWithGameIdHandler", responses=RESPONSES_DEF
+)
+def login_remote_auth_with_game_id(
+    request: LoginRemoteAuthRequest,
+) -> LoginRemoteAuthRepsonse:
     return login_remote_auth(request)
 
 
@@ -63,8 +99,12 @@ def login_uniquenick(request: LoginUniqueNickRequest) -> LoginUniqueNickResponse
     return handler.response
 
 
-@router.post(f"{WEB_SERVICES}/LoginUniqueNickWithGameIdHandler", responses=RESPONSES_DEF)
-def login_uniquenick_with_game_id(request: LoginUniqueNickRequest) -> LoginUniqueNickResponse:
+@router.post(
+    f"{WEB_SERVICES}/LoginUniqueNickWithGameIdHandler", responses=RESPONSES_DEF
+)
+def login_uniquenick_with_game_id(
+    request: LoginUniqueNickRequest,
+) -> LoginUniqueNickResponse:
     return login_uniquenick(request)
 
 
@@ -73,6 +113,7 @@ def create_user_account(request: CreateUserAccountRequest):
     handler = CreateUserAccountHandler(request)
     handler.handle()
     return handler.response
+
 
 # region SAKE
 
@@ -137,6 +178,7 @@ def get_record_count(request: GetRecordCountRequest) -> GetRecordCountResponse:
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     uvicorn.run(app, host="0.0.0.0", port=8080)

@@ -1,11 +1,12 @@
 import socketserver
 
 import responses
+
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.abstractions.connections import ConnectionBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
-from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER, LogWriter
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER, LogWriter
 
 
 class ConnectionMock(ConnectionBase):

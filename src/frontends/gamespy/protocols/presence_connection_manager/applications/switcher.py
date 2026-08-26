@@ -1,27 +1,18 @@
+from typing import TYPE_CHECKING, cast
+
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.extentions.string_extentions import (
     get_kv_str_name,
     split_nested_kv_str,
 )
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
+    CmdHandlerBase,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     RequestType,
 )
-from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
-    AddBuddyRequest,
-    AuthAddBuddyRequest,
-    KeepAliveRequest,
-    LoginRequest,
-    LogoutRequest,
-    RemoveBlockRequest,
-    StatusInfoRequest,
-    StatusRequest,
-    AddBlockRequest,
-    GetProfileRequest,
-    NewProfileRequest,
-    RegisterCDKeyRequest,
-    NewUserRequest,
-    RegisterNickRequest,
-    UpdateProfileRequest,
+from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
+    Client,
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import (
     AddBlockHandler,
@@ -40,17 +31,25 @@ from frontends.gamespy.protocols.presence_connection_manager.applications.handle
     StatusInfoHandler,
     UpdateProfileHandler,
 )
+from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
+    AddBlockRequest,
+    AddBuddyRequest,
+    AuthAddBuddyRequest,
+    GetProfileRequest,
+    KeepAliveRequest,
+    LoginRequest,
+    LogoutRequest,
+    NewProfileRequest,
+    NewUserRequest,
+    RegisterCDKeyRequest,
+    RegisterNickRequest,
+    RemoveBlockRequest,
+    StatusInfoRequest,
+    StatusRequest,
+    UpdateProfileRequest,
+)
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
-)
-
-from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
-    CmdHandlerBase,
-)
-from typing import TYPE_CHECKING, Optional, cast
-
-from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
-    Client,
 )
 
 

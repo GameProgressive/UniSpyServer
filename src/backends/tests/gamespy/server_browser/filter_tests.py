@@ -2,7 +2,6 @@ from sqlalchemy import create_engine, text
 
 from backends.library.database.pg_orm import ENGINE
 
-
 if __name__ == "__main__":
     # Define the SQL query with the CTE
     query = text("""

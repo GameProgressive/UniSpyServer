@@ -1,7 +1,16 @@
 import unittest
+
 import responses
 
+from frontends.gamespy.protocols.game_status.aggregations.enums import (
+    PersistStorageType,
+)
 from frontends.gamespy.protocols.game_status.aggregations.gscrypt import GSCrypt
+from frontends.gamespy.protocols.game_status.applications.handlers import (
+    AuthPlayerHandler,
+    SetPlayerDataHandler,
+    UpdateGameHandler,
+)
 from frontends.gamespy.protocols.game_status.contracts.requests import (
     AuthGameRequest,
     AuthPlayerRequest,
@@ -10,14 +19,6 @@ from frontends.gamespy.protocols.game_status.contracts.requests import (
     NewGameRequest,
     SetPlayerDataRequest,
     UpdateGameRequest,
-)
-from frontends.gamespy.protocols.game_status.aggregations.enums import (
-    PersistStorageType,
-)
-from frontends.gamespy.protocols.game_status.applications.handlers import (
-    AuthPlayerHandler,
-    SetPlayerDataHandler,
-    UpdateGameHandler,
 )
 from frontends.tests.gamespy.game_status.mock_objects import create_client
 
@@ -31,8 +32,7 @@ class HandlerTests(unittest.TestCase):
         request = SetPlayerDataRequest(raw)
         request.parse()
         self.assertEqual(1, request.profile_id)
-        self.assertEqual(PersistStorageType.PRIVATE_READ_WRITE,
-                         request.storage_type)
+        self.assertEqual(PersistStorageType.PRIVATE_READ_WRITE, request.storage_type)
         self.assertEqual(0, request.data_index)
         self.assertEqual("", request.data)
         self.assertEqual(111, request.length)
@@ -94,8 +94,7 @@ class HandlerTests(unittest.TestCase):
         request = GetPlayerDataRequest(raw)
         request.parse()
         self.assertEqual(0, request.profile_id)
-        self.assertEqual(PersistStorageType.PRIVATE_READ_ONLY,
-                         request.storage_type)
+        self.assertEqual(PersistStorageType.PRIVATE_READ_ONLY, request.storage_type)
         self.assertEqual(1, request.data_index)
         self.assertEqual(2, len(request.keys))
         self.assertEqual("hello", request.keys[0])
@@ -147,7 +146,7 @@ class HandlerTests(unittest.TestCase):
 
     @responses.activate
     def test_auth_player_2025_11_06(self):
-        raw = '\\authp\\\\nick\\spyguy\\keyhash\\00000a308fd86a7eb92cbc8322b03a36\\resp\\a146083990caca4925e3144deb552817\\lid\\1\\final\\'
+        raw = "\\authp\\\\nick\\spyguy\\keyhash\\00000a308fd86a7eb92cbc8322b03a36\\resp\\a146083990caca4925e3144deb552817\\lid\\1\\final\\"
         request = AuthPlayerRequest(raw)
         client = create_client()
         handler = AuthPlayerHandler(client, request)

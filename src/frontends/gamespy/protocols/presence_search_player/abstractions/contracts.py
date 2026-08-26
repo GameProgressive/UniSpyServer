@@ -1,4 +1,3 @@
-from typing import Dict
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
@@ -22,7 +21,7 @@ class RequestBase(lib.RequestBase):
     def parse(self) -> None:
         self._request_dict = convert_to_key_value(self.raw_request)
         self.command_name = list(self._request_dict.keys())[0]
-        if "id" in self._request_dict.keys():
+        if "id" in self._request_dict:
             try:
                 self.operation_id = int(self._request_dict["id"])
             except ValueError:

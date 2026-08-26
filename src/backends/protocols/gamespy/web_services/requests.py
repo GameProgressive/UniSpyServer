@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel
+
 import backends.library.abstractions.contracts as lib
 import frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums as auth
 import frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums as sake
@@ -17,6 +17,7 @@ class WebRequestBase(lib.RequestBase):
     we combine path, headers, body to a raw request and send to backend
     """
     command_name: str
+
 
 # region Sake
 
@@ -55,7 +56,6 @@ class GetRecordLimitRequest(SakeRequestBase):
 
 
 class GetSpecificRecordsRequest(SakeRequestBase):
-
     record_ids: list
     fields: dict
 
@@ -83,6 +83,8 @@ class UpdateRecordRequest(SakeRequestBase):
 
 class GetRecordCountRequest(SakeRequestBase):
     cache_flag: str
+
+
 # region Auth
 
 

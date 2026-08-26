@@ -1,6 +1,10 @@
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import NESSESARY_KEYS
-from frontends.gamespy.protocols.query_report.v1.abstractions.contracts import RequestBase
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    NESSESARY_KEYS,
+)
+from frontends.gamespy.protocols.query_report.v1.abstractions.contracts import (
+    RequestBase,
+)
 from frontends.gamespy.protocols.query_report.v1.aggregates.enums import ServerStatus
 
 

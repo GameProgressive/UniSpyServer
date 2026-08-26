@@ -44,11 +44,11 @@ class InitHandler(HandlerBase):
                 public_port=self._request.client_port,
                 private_ip=self._request.private_ip,
                 private_port=self._request.private_port,
-                update_time=datetime.now(timezone.utc),
+                update_time=datetime.now(),
             )
             data.add_init_packet(info, self._session)
         else:
-            info.update_time = datetime.now(timezone.utc)  # type: ignore
+            info.update_time = datetime.now()  # type: ignore
             data.update_init_info(info, self._session)
 
 

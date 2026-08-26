@@ -1,6 +1,8 @@
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase as CHB
-from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.query_report.applications.client import Client
+from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import (
+    RequestBase,
+)
 
 
 class CmdHandlerBase(CHB):

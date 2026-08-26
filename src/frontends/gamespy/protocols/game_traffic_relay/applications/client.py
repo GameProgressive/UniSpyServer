@@ -1,9 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timezone
+
+import frontends.gamespy.protocols.natneg.applications.client as natneg
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.protocols.game_traffic_relay.applications.connection import ConnectStatus, ConnectionListener
-from frontends.gamespy.protocols.natneg.abstractions.contracts import MAGIC_DATA
-import frontends.gamespy.protocols.natneg.applications.client as natneg
+from frontends.gamespy.protocols.game_traffic_relay.applications.connection import (
+    ConnectionListener,
+    ConnectStatus,
+)
 
 
 class ClientInfo:

@@ -1,4 +1,5 @@
 from typing import final
+
 from frontends.gamespy.protocols.query_report.applications.client import Client
 from frontends.gamespy.protocols.query_report.v2.abstractions.handlers import (
     CmdHandlerBase,

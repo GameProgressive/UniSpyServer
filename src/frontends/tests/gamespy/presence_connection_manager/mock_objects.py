@@ -1,17 +1,18 @@
 from typing import cast
+
 from frontends.gamespy.library.configs import CONFIG
-from frontends.tests.gamespy.library.mock_objects import (
-    ConnectionMock,
-    LogMock,
-    RequestHandlerMock,
-    create_mock_url,
-)
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     Client,
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import (
     LoginHandler,
     NewUserHandler,
+)
+from frontends.tests.gamespy.library.mock_objects import (
+    ConnectionMock,
+    LogMock,
+    RequestHandlerMock,
+    create_mock_url,
 )
 
 

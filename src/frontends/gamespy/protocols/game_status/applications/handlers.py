@@ -1,8 +1,28 @@
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.game_status.applications.client import Client
-from frontends.gamespy.protocols.game_status.contracts.requests import AuthGameRequest, AuthPlayerRequest, GetPlayerDataRequest, GetProfileIdRequest, NewGameRequest, SetPlayerDataRequest, UpdateGameRequest
-from frontends.gamespy.protocols.game_status.contracts.responses import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse, SetPlayerDataResponse
-from frontends.gamespy.protocols.game_status.contracts.results import AuthGameResult, AuthPlayerResult, GetPlayerDataResult, GetProfileIdResult, SetPlayerDataResult
+from frontends.gamespy.protocols.game_status.contracts.requests import (
+    AuthGameRequest,
+    AuthPlayerRequest,
+    GetPlayerDataRequest,
+    GetProfileIdRequest,
+    NewGameRequest,
+    SetPlayerDataRequest,
+    UpdateGameRequest,
+)
+from frontends.gamespy.protocols.game_status.contracts.responses import (
+    AuthGameResponse,
+    AuthPlayerResponse,
+    GetPlayerDataResponse,
+    GetProfileIdResponse,
+    SetPlayerDataResponse,
+)
+from frontends.gamespy.protocols.game_status.contracts.results import (
+    AuthGameResult,
+    AuthPlayerResult,
+    GetPlayerDataResult,
+    GetProfileIdResult,
+    SetPlayerDataResult,
+)
 
 
 class AuthGameHandler(CmdHandlerBase):

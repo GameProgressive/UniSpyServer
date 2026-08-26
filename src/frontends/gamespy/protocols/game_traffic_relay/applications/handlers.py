@@ -1,10 +1,16 @@
-from datetime import datetime
+from datetime import datetime, timezone
+
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.contracts import RequestBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
-from frontends.gamespy.protocols.game_traffic_relay.applications.connection import ConnectStatus, ConnectionListener
-from frontends.gamespy.protocols.game_traffic_relay.contracts.general import MessageRelayRequest
+from frontends.gamespy.protocols.game_traffic_relay.applications.connection import (
+    ConnectionListener,
+    ConnectStatus,
+)
+from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
+    MessageRelayRequest,
+)
 from frontends.gamespy.protocols.natneg.contracts.requests import PingRequest
 
 
@@ -52,10 +58,10 @@ class PingHandler(CmdHandlerBase):
             self._client, MessageRelayRequest(self._request.raw_request))
         handler.handle()
         self._client.info.ping_recv_times += 1
-        
-        if ConnectionListener.is_both_client_ready(self._client.info.cookie):
-            if self._client.info.ping_recv_times >= 7:
-                self._client.info.status = ConnectStatus.FINISHED
+
+        if ConnectionListener.is_both_client_ready(self._client.info.cookie) \
+                and self._client.info.ping_recv_times >= 7:
+            self._client.info.status = ConnectStatus.FINISHED
 
 
 class MessageRelayHandler(CmdHandlerBase):
@@ -64,7 +70,7 @@ class MessageRelayHandler(CmdHandlerBase):
 
     def __init__(self, client: ClientBase, request: RequestBase) -> None:
         super().__init__(client, request)
-        
+
         self._is_uploading = False
 
     def _data_operate(self) -> None:

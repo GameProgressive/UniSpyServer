@@ -1,10 +1,10 @@
 import abc
 import socketserver
 import threading
-from frontends.gamespy.library.abstractions.client import ClientBase
 
-from frontends.gamespy.library.log.log_manager import LogWriter
+from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.configs import ServerConfig
+from frontends.gamespy.library.log.log_manager import LogWriter
 
 
 class ConnectionBase:

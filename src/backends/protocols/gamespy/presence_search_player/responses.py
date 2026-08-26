@@ -1,5 +1,15 @@
 from backends.library.abstractions.contracts import DataResponse
-from frontends.gamespy.protocols.presence_search_player.contracts.results import CheckResult, NewUserResult, NicksResult, OthersListResult, OthersResult, SearchResult, SearchUniqueResult, UniqueSearchResult, ValidResult
+from frontends.gamespy.protocols.presence_search_player.contracts.results import (
+    CheckResult,
+    NewUserResult,
+    NicksResult,
+    OthersListResult,
+    OthersResult,
+    SearchResult,
+    SearchUniqueResult,
+    UniqueSearchResult,
+    ValidResult,
+)
 
 
 class CheckResponse(DataResponse):
@@ -33,5 +43,6 @@ class SearchUniqueResponse(DataResponse):
 class ValidResponse(DataResponse):
     result: ValidResult
 
+
 class UniqueSearchResponse(DataResponse):
-    result:UniqueSearchResult
+    result: UniqueSearchResult

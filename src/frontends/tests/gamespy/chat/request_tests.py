@@ -1,7 +1,26 @@
 import unittest
 
-from frontends.gamespy.protocols.chat.aggregates.enums import GetKeyRequestType, MessageType, ModeName, ModeOperation
-from frontends.gamespy.protocols.chat.contracts.requests import AtmRequest, GetCKeyRequest, GetChannelKeyRequest, JoinRequest, KickRequest, ModeRequest, NoticeRequest, PartRequest, PrivateRequest, SetCKeyRequest, SetChannelKeyRequest, TopicRequest, UtmRequest
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    GetKeyRequestType,
+    MessageType,
+    ModeName,
+    ModeOperation,
+)
+from frontends.gamespy.protocols.chat.contracts.requests import (
+    AtmRequest,
+    GetChannelKeyRequest,
+    GetCKeyRequest,
+    JoinRequest,
+    KickRequest,
+    ModeRequest,
+    NoticeRequest,
+    PartRequest,
+    PrivateRequest,
+    SetChannelKeyRequest,
+    SetCKeyRequest,
+    TopicRequest,
+    UtmRequest,
+)
 
 # region General
 CD_KEY = "CDKEY XXXX-XXXX-XXXX-XXXX\r\n"

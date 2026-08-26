@@ -1,7 +1,9 @@
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import PacketType
-from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
 import frontends.gamespy.library.abstractions.contracts as lib
+from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
+    PacketType,
+    RequestType,
+)
 
 MAGIC_DATA = [0xFE, 0xFD]
 

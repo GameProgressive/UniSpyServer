@@ -1,20 +1,21 @@
 # the total requests tests
 import unittest
-from backends.tests.utils import add_headers
+
+import backends.protocols.gamespy.presence_search_player.handlers as bkh
+import backends.protocols.gamespy.presence_search_player.requests as bkr
 import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
+from backends.tests.utils import add_headers
 from frontends.tests.gamespy.presence_search_player.handler_tests import (
+    CHECK1,
+    NEWUSER,
     NICKS,
     SEARCH_1,
     SEARCH_2,
     SEARCH_3,
     SEARCH_4,
-    CHECK1,
-    NEWUSER,
     SEARCH_UNIQUENICK,
     VALID,
 )
-import backends.protocols.gamespy.presence_search_player.requests as bkr
-import backends.protocols.gamespy.presence_search_player.handlers as bkh
 
 
 class HandlerTest(unittest.TestCase):

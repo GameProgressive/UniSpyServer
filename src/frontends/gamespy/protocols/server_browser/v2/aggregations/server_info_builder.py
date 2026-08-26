@@ -1,9 +1,13 @@
 from socket import inet_aton
 
-from frontends.gamespy.protocols.query_report.aggregates.game_server_info import GameServerInfo
+from frontends.gamespy.protocols.query_report.aggregates.game_server_info import (
+    GameServerInfo,
+)
 
 # from backends.protocols.gamespy.query_report.data import get_all_groups
-from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
+    GameServerFlags,
+)
 
 # PEER_GROUP_LIST = get_all_groups()
 QUERY_REPORT_DEFAULT_PORT = 6500
@@ -53,10 +57,10 @@ def check_private_ip(header: bytearray, server_info: GameServerInfo):
     #!known game: Worm3d
     # todo
     # if server_info.game_name in PEER_GROUP_LIST:
-        if "localip0" in server_info.data:
-            header[0] ^= GameServerFlags.PRIVATE_IP_FLAG.value
-            bytes_address = inet_aton(server_info.data["localip0"])
-            header.extend(bytes_address)
+    if "localip0" in server_info.data:
+        header[0] ^= GameServerFlags.PRIVATE_IP_FLAG.value
+        bytes_address = inet_aton(server_info.data["localip0"])
+        header.extend(bytes_address)
 
 
 def check_non_standard_port(header: bytearray, server_info: GameServerInfo):

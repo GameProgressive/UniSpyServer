@@ -1,5 +1,8 @@
 from typing import final
-from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import ResultBase
+
+from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import (
+    ResultBase,
+)
 from frontends.gamespy.protocols.query_report.v2.aggregates.enums import PacketType
 
 

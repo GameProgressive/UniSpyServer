@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse, Response
 from backends.protocols.gamespy.game_status.handlers import (
     AuthGameHandler,
@@ -18,7 +19,13 @@ from backends.protocols.gamespy.game_status.requests import (
     SetPlayerDataRequest,
     UpdateGameRequest,
 )
-from backends.protocols.gamespy.game_status.response import AuthGameResponse, AuthPlayerResponse, GetPlayerDataResponse, GetProfileIdResponse, SetPlayerDataResponse
+from backends.protocols.gamespy.game_status.response import (
+    AuthGameResponse,
+    AuthPlayerResponse,
+    GetPlayerDataResponse,
+    GetProfileIdResponse,
+    SetPlayerDataResponse,
+)
 from backends.urls import GAMESTATUS
 
 router = APIRouter()

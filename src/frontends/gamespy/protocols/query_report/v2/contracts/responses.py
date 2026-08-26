@@ -1,11 +1,20 @@
+from frontends.gamespy.library.extentions.bytes_extentions import (
+    ip_to_4_bytes,
+    port_to_2_bytes,
+)
 from frontends.gamespy.library.extentions.encoding import get_bytes
-from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import ResponseBase
+from frontends.gamespy.protocols.query_report.v2.abstractions.contracts import (
+    ResponseBase,
+)
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import (
+    ServerAvailability,
+)
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
     ClientMessageRequest,
     HeartbeatRequest,
-    KeepAliveRequest
+    KeepAliveRequest,
 )
 from frontends.gamespy.protocols.query_report.v2.contracts.results import (
     AvailableResult,
@@ -13,8 +22,6 @@ from frontends.gamespy.protocols.query_report.v2.contracts.results import (
     ClientMessageResult,
     HeartbeatResult,
 )
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import ServerAvailability
-from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes, port_to_2_bytes
 
 RESPONSE_PREFIX = bytes([0xFE, 0xFD, 0x09, 0x00, 0x00, 0x00])
 

@@ -1,13 +1,17 @@
-from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
+import typing
 
+from frontends.gamespy.library.abstractions.client import ClientBase, ClientInfoBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
+from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.tcp_handler import TcpConnection
-from frontends.gamespy.library.configs import ServerConfig
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    LoginStatus,
+    SdkRevisionType,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_challenge import (
     SERVER_CHALLENGE,
 )
-from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import LoginStatus, SdkRevisionType
 
 LOGIN_TICKET = "0000000000000000000000__"
 SESSION_KEY = 1111
@@ -56,5 +60,7 @@ class Client(ClientBase):
         self.connection.send(buffer)
 
     def _create_switcher(self, buffer: bytes) -> SwitcherBase:
-        from frontends.gamespy.protocols.presence_connection_manager.applications.switcher import Switcher
+        from frontends.gamespy.protocols.presence_connection_manager.applications.switcher import (
+            Switcher,
+        )
         return Switcher(self, buffer.decode())

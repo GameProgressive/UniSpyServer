@@ -1,6 +1,8 @@
 from enum import IntEnum
 
-from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import ResultBase
+from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import (
+    ResultBase,
+)
 
 
 class GetPurchaseHistoryResult(ResultBase):

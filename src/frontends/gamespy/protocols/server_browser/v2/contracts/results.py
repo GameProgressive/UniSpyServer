@@ -11,7 +11,9 @@ from frontends.gamespy.protocols.server_browser.v2.abstractions.contracts import
     ResultBase,
     ServerListUpdateOptionResultBase,
 )
-from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import GameServerFlags
+from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
+    GameServerFlags,
+)
 
 
 class UpdateServerInfoResult(AdHocResultBase):
