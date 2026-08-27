@@ -23,7 +23,6 @@ services:
       - ./common/UniSpy_pg.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - unispy
-
 networks:
   unispy:
     external: true
