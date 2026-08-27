@@ -18,7 +18,7 @@ LOGIN_PROFILE = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmln
             <ns1:version>1</ns1:version>
             <ns1:gameid>0</ns1:gameid>
             <ns1:partnercode>0</ns1:partnercode>
-            <ns1:namespaceid>0</ns1:namespaceid>
+            <ns1:namespaceid>1</ns1:namespaceid>
             <ns1:email>spyguy@gamespy.com</ns1:email>
             <ns1:profilenick>spyguy</ns1:profilenick>
             <ns1:password>
@@ -38,7 +38,7 @@ LOGIN_PS3_CERT = """<?xml version="1.0" encoding="UTF-8"?>
                     <ns1:LoginPs3Cert>
                         <ns1:version>0</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
-                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:namespaceid>1</ns1:namespaceid>
                         <ns1:partnercode>0001</ns1:partnercode>
                         <ns1:ps3sert>0</ns1:ps3sert>
                         <ns1:npticket>0001</ns1:npticket>
@@ -57,7 +57,7 @@ LOGIN_REMOTE_AUTH = """<?xml version="1.0" encoding="UTF-8"?>
                         <ns1:version>1</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
                         <ns1:partnercode>0</ns1:partnercode>
-                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:namespaceid>1</ns1:namespaceid>
                         <ns1:authtoken>XXXXXXXXXXX</ns1:authtoken>
                         <ns1:challenge>XXXXXXXXXXX</ns1:challenge>
                     </ns1:LoginRemoteAuth>
@@ -74,7 +74,7 @@ LOGIN_UNIQUENICK = """<?xml version="1.0" encoding="UTF-8"?>
                     <ns1:LoginUniqueNick>
                         <ns1:version>1</ns1:version>
                         <ns1:partnercode>0</ns1:partnercode>
-                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:namespaceid>1</ns1:namespaceid>
                         <ns1:uniquenick>spyguy</ns1:uniquenick>
                         <ns1:password>
                             <ns1:Value>XXXXXXXXXXX</ns1:Value>
@@ -123,8 +123,7 @@ CREATE_USER_ACCOUNT = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelop
 class AuthTests(unittest.TestCase):
     @responses.activate
     def test_create_user_account(self):
-        request = CreateUserAccountRequest(
-            str(HttpData(body=CREATE_USER_ACCOUNT)))
+        request = CreateUserAccountRequest(str(HttpData(body=CREATE_USER_ACCOUNT)))
         request.parse()
         pass
 
@@ -137,16 +136,18 @@ class AuthTests(unittest.TestCase):
     @unittest.skip("old request password encryption problem")
     @responses.activate
     def test_login_profile(self):
-        request = LoginProfileWithGameIdRequest(
-            str(HttpData(body=LOGIN_PROFILE)))
+        request = LoginProfileWithGameIdRequest(str(HttpData(body=LOGIN_PROFILE)))
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(0, request.partner_code)
-        self.assertEqual(0, request.namespace_id)
+        self.assertEqual(1, request.namespace_id)
         self.assertEqual("spyguy@gamespy.com", request.email)
         self.assertEqual("spyguy", request.nick)
-        self.assertEqual("00026cfb61b75553fb113e8a158a1ce8c88dcb5415a405efeeb4ba605c315bb9204c09a53e23fb63081d208f44f813f5967c4da7d85f55ef66d4d39a4c89a9800771ee4f742bb808f35bced93fe7fa289eb4bdc94a44fa6f9121ef0eba4d3827d0cacaaeafdc85b64e4d9dc34814f6d4178363303f543a2fd8d8af0030303030", request.password)
+        self.assertEqual(
+            "00026cfb61b75553fb113e8a158a1ce8c88dcb5415a405efeeb4ba605c315bb9204c09a53e23fb63081d208f44f813f5967c4da7d85f55ef66d4d39a4c89a9800771ee4f742bb808f35bced93fe7fa289eb4bdc94a44fa6f9121ef0eba4d3827d0cacaaeafdc85b64e4d9dc34814f6d4178363303f543a2fd8d8af0030303030",
+            request.password,
+        )
 
         # handler = LoginProfileWithGameIdHandler(request)
         # handler.handle()
@@ -157,7 +158,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual(0, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(1, request.partner_code)
-        self.assertEqual(0, request.namespace_id)
+        self.assertEqual(1, request.namespace_id)
         self.assertEqual("0", request.ps3_cert)
         self.assertEqual("0001", request.npticket)
 
@@ -167,7 +168,7 @@ class AuthTests(unittest.TestCase):
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(0, request.partner_code)
-        self.assertEqual(0, request.namespace_id)
+        self.assertEqual(1, request.namespace_id)
         self.assertEqual("XXXXXXXXXXX", request.auth_token)
         self.assertEqual("XXXXXXXXXXX", request.challenge)
 
@@ -177,7 +178,7 @@ class AuthTests(unittest.TestCase):
         request.parse()
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.partner_code)
-        self.assertEqual(0, request.namespace_id)
+        self.assertEqual(1, request.namespace_id)
         self.assertEqual("spyguy", request.uniquenick)
         self.assertEqual("XXXXXXXXXXX", request.password)
 

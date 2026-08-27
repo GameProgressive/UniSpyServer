@@ -185,6 +185,7 @@ class SearchRequest(RequestBase):
         super().__init__(raw_request)
         self.skip_num = 0
         self.partner_id = 0
+        self.namespace_id = 1
 
     def parse(self) -> None:
         super().parse()

@@ -44,7 +44,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("spyguy", request.uniquenick)
         self.assertEqual(1, request.profile_id)
-        self.assertEqual(0, request.namespace_id)
+        self.assertEqual(1, request.namespace_id)
         self.assertEqual(0, request.skip_num)
         self.assertEqual("spy", request.firstname)
         self.assertEqual("guy", request.lastname)

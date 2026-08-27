@@ -5,6 +5,7 @@ from frontends.gamespy.protocols.presence_connection_manager.applications.client
     Client,
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.handlers import (
+    BuddyMessageFriendAddHandler,
     LoginHandler,
     NewUserHandler,
 )
@@ -31,8 +32,9 @@ def create_client() -> Client:
         logger=logger,
     )
     config = CONFIG.servers["PresenceConnectionManager"]
-    create_mock_url(config, NewUserHandler, {
-                    "user_id": 0, "profile_id": 0, "operation_id": 0})
+    create_mock_url(
+        config, NewUserHandler, {"user_id": 0, "profile_id": 0, "operation_id": 0}
+    )
     create_mock_url(
         config,
         LoginHandler,
@@ -54,8 +56,22 @@ def create_client() -> Client:
             "user_data": "",
             "type": 0,
             "partner_id": 0,
-            "user_challenge": "xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT"
+            "user_challenge": "xMsHUXuWNXL3KMwmhoQZJrP0RVsArCYT",
         },
     )
-
+    create_mock_url(
+        config,
+        BuddyMessageFriendAddHandler,
+        {
+            "operation_id": 0,
+            "data": [
+                {
+                    "message": "hello",
+                    "from_profile_id": 0,
+                    "date": "20260807",
+                    "signature": "",
+                }
+            ],
+        },
+    )
     return cast(Client, conn._client)

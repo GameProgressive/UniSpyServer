@@ -52,7 +52,7 @@ def create_client() -> Client:
                         "email": "spyguy@gamespy.com",
                         "firstname": "spy",
                         "lastname": "guy",
-                        "namespace_id": 0,
+                        "namespace_id": 1,
                     }
                 ]
             }

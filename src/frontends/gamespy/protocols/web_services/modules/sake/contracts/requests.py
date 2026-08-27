@@ -19,7 +19,7 @@ class CreateRecordRequest(RequestBase):
     def _get_dict(self, attr_name: str) -> dict:
         try:
             return super()._get_dict(attr_name)
-        except Exception as _:
+        except Exception:
             raise SakeException(f"{attr_name} is missing", self.command_name)
 
 
@@ -121,14 +121,19 @@ class SearchForRecordsRequest(RequestBase):
         self.sort = None
         self.owner_ids = None
         self.surrounding = None
+        self.cache_flag = None
 
     def parse(self) -> None:
         super().parse()
         filter = self._get_value_by_key("filter")
         if filter is not None:
             filter_str = self._get_str("filter")
-            self.filter = filter_str.replace(
-                " &gt; ", " > ").replace(" &lt; ", " < ").replace(" &ge ", " >= ").replace(" &le ", " <= ")
+            self.filter = (
+                filter_str.replace(" &gt; ", " > ")
+                .replace(" &lt; ", " < ")
+                .replace(" &ge ", " >= ")
+                .replace(" &le ", " <= ")
+            )
 
         sort = self._get_value_by_key("sort")
         if sort is not None:
@@ -144,6 +149,10 @@ class SearchForRecordsRequest(RequestBase):
         if owner_ids is not None:
             owner_dict = self._get_dict("ownerids")
             self.owner_ids = list(owner_dict.values())[0]
+
+        cache_flag = self._get_value_by_key("cacheFlag")
+        if cache_flag is not None:
+            self.cache_flag = str(cache_flag)
 
 
 class UpdateRecordRequest(RequestBase):

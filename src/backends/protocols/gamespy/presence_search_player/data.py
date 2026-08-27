@@ -357,10 +357,12 @@ def get_matched_info_by_uniquenick_and_namespaceids(
 ) -> list[SearchResultData]:
     result = (
         session.query(
+            Users.email,
             Profiles.profileid,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
+            Profiles.extra_info,
         )
         .join(Users, Profiles.userid == Users.userid)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -379,7 +381,7 @@ def get_matched_info_by_uniquenick_and_namespaceids(
         t = SearchResultData(
             profile_id=profile_id,
             nick=nick,
-            uniquenick=unique_nick,
+            uniquenick=uniquenick,
             email=email,
             namespace_id=namespace_id,
             firstname=firstname,
