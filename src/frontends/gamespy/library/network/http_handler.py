@@ -74,7 +74,6 @@ class HttpConnection(ConnectionBase):
         assert isinstance(data, bytes)
         http_data = HttpData.from_str(data.decode())
         self.handler.send_response(200)
-        self.handler.send_header("Content-type", "application/xml")
         if http_data.headers is not None:
             for key, value in http_data.headers.items():
                 self.handler.send_header(key, value)
@@ -83,10 +82,13 @@ class HttpConnection(ConnectionBase):
             raise UniSpyException("soap body should not be null")
         body_bytes = http_data.body.encode()
         self.handler.wfile.write(body_bytes)
+        self.handler.wfile.flush()
+        self.handler.close_connection = True
 
 
 class HttpHandler(BaseHTTPRequestHandler):
     conn: HttpConnection
+    protocol_version = "HTTP/1.0"
 
     def do_POST(self) -> None:
         content_length = int(self.headers["Content-Length"])
