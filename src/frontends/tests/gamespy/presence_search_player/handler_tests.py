@@ -12,8 +12,8 @@ from frontends.tests.gamespy.presence_search_player.mock_objects import create_c
 
 CHECK1 = "\\check\\\\nick\\spyguy\\email\\spyguy@gamespy.com\\pass\\0000\\final\\"
 
-SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\namespaceid\\1\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
-SEARCH_2 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\nick\\spyguy\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_1 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\namespaceid\\1\\partnerid\\0\\uniquenick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
+SEARCH_2 = "\\searchunique\\\\sesskey\\xxxx\\profileid\\1\\nick\\spyguy\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 SEARCH_3 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\nick\\spyguy\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 SEARCH_4 = "\\search\\\\sesskey\\xxxx\\profileid\\1\\email\\spyguy@gamespy.com\\firstname\\spy\\lastname\\guy\\icquin\\123\\skip\\0\\gamename\\gmtest\\final\\"
 
@@ -39,8 +39,7 @@ class HandlerTests(unittest.TestCase):
     @responses.activate
     def test_profile(self):
         client = create_client()
-        request = SearchRequest(SEARCH_1)
-        request.parse()
+        request = SearchRequest.gs_parse(SEARCH_1)
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("spyguy", request.uniquenick)
         self.assertEqual(1, request.profile_id)
@@ -50,17 +49,14 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual("guy", request.lastname)
         self.assertEqual("123", request.icquin)
 
-        request = SearchRequest(SEARCH_2)
-        request.parse()
+        request = SearchRequest.gs_parse(SEARCH_2)
         self.assertEqual("spyguy", request.nick)
         self.assertEqual("spyguy@gamespy.com", request.email)
 
-        request = SearchRequest(SEARCH_3)
-        request.parse()
+        request = SearchRequest.gs_parse(SEARCH_3)
         self.assertEqual("spyguy", request.nick)
 
-        request = SearchRequest(SEARCH_4)
-        request.parse()
+        request = SearchRequest.gs_parse(SEARCH_4)
         self.assertEqual("spyguy@gamespy.com", request.email)
 
         handler = SearchHandler(client, request)

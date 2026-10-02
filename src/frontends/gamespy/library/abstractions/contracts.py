@@ -1,36 +1,30 @@
 import abc
 
-from pydantic import BaseModel
+from pydantic import UUID4, BaseModel, ConfigDict
+
+from frontends.gamespy.library.network.http_data import HttpData
 
 
-class RequestBase:
+
+class ClientInfo(BaseModel):
+    server_id: UUID4
+    client_ip: str
+    client_port: int
+
+
+
+class RequestBase(BaseModel):
+    model_config = ConfigDict(
+        json_encoders={bytes: lambda value: value.decode("ascii", "backslashreplace")}
+    )
+
     command_name: object
-    raw_request:  bytes | str
+    raw_request: bytes | str | HttpData
 
-    def __init__(self, raw_request: bytes | str) -> None:
-        """
-        raw_request is for gamespy protocol\n
-        json_dict is for restapi deserialization
-        """
-        super().__init__()
-
-        if (not isinstance(raw_request, bytes)) \
-            and (not isinstance(raw_request, str)):
-            raise Exception("Unsupported raw_request type")
-        self.raw_request = raw_request
-
-    def parse(self) -> None:
-        pass
-
-    def to_dict(self) -> dict:
-        """
-        create a json serializable dict of this class
-        """
-        result = {}
-        for key, value in self.__dict__.items():
-            if key[0] != "_":
-                result[key] = value
-        return result
+    @staticmethod
+    def gs_parse(raw_request: bytes | str | HttpData) -> "RequestBase":
+        data = RequestBase(raw_request=raw_request, command_name=None)
+        return data
 
 
 class ResultBase(BaseModel):

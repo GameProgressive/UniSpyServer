@@ -17,38 +17,28 @@ from backends.tests.utils import add_headers
 class HandlerTests(unittest.TestCase):
     @unittest.skip("")
     def test_report(self):
-        req_dict = {
-            "raw_request": "\\xfd\\xfc\u001efj\\xb2\u0004\r\u0000\u0000\u0002\\x9a\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000gmtest\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
-            "version": 4,
-            "command_name": 13,
-            "cookie": 666,
-            "port_type": 0,
-            "client_index": 0,
-            "use_game_port": False,
-            "is_nat_success": False,
-            "nat_type": 0,
-            "mapping_scheme": 0,
-            "game_name": "gmtest",
-            "client_ip": "172.19.0.5",
-            "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
-            "client_port": 36229,
-        }
-        req = ReportRequest.model_validate(req_dict)
-        handler = ReportHandler(req)
+        raw=b"\\xfd\\xfc\x1efj\\xb2\x04\r\x00\x00\x02\\x9a\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00gmtest\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+        r = fnt.ReportRequest.gs_parse(raw)
+        data = fnt.ReportRequest.model_validate(r).model_dump(mode="json")
+        req_dict = add_headers(data)
+        request = ReportRequest.model_validate(req_dict)
+        handler = ReportHandler(request)
         handler.handle()
 
     def test_connect(self):
         raw = b"\xfd\xfc\x1efj\xb2\x03\x00\x00\x00\x03\t\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-        r = fnt.ConnectRequest(raw)
-        data = add_headers(r)
-        request = ConnectRequest(**data)
+        r = fnt.ConnectRequest.gs_parse(raw)
+        data = fnt.ConnectRequest.model_validate(r).model_dump(mode="json")
+        req_dict = add_headers(data)
+        request = ConnectRequest(**req_dict)
         handler = ConnectHandler(request)
         handler.handle()
 
     def test_init(self):
         raw = b"\xfd\xfc\x1efj\xb2\x03\x00\x00\x00\x03\t\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-        r = fnt.InitRequest(raw)
-        data = add_headers(r)
-        request = InitRequest(**data)
+        r = fnt.InitRequest.gs_parse(raw)
+        data = fnt.InitRequest.model_validate(r).model_dump(mode="json")
+        req_dict = add_headers(data)
+        request = InitRequest(**req_dict)
         handler = InitHandler(request)
         handler.handle()

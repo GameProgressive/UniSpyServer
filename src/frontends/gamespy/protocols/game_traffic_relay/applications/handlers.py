@@ -55,7 +55,7 @@ class PingHandler(CmdHandlerBase):
     def __connecting(self):
         assert self._client.info.cookie is not None
         handler = MessageRelayHandler(
-            self._client, MessageRelayRequest(self._request.raw_request))
+            self._client, MessageRelayRequest.gs_parse(self._request.raw_request))
         handler.handle()
         self._client.info.ping_recv_times += 1
 

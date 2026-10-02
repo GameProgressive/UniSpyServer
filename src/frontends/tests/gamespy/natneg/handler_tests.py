@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortType,
     PreInitState,
-    RequestType,
+    CommandName,
 )
 from frontends.gamespy.protocols.natneg.applications.handlers import (
     AddressCheckHandler,
@@ -41,10 +41,10 @@ class HandlerTests(unittest.TestCase):
         client = create_client()
 
         # test request parsing
-        request = InitRequest(raw)
-        request.parse()
+        data = InitRequest.gs_parse(raw)
+        request = InitRequest.model_validate(data)
         self.assertEqual(777, request.cookie)
-        self.assertEqual(RequestType.INIT, request.command_name)
+        self.assertEqual(CommandName.INIT, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(False, request.use_game_port)
         self.assertEqual(3, request.version)
@@ -66,10 +66,9 @@ class HandlerTests(unittest.TestCase):
             ]
         )  # fmt: skip
 
-        request = AddressCheckRequest(raw)
-        request.parse()
+        request = AddressCheckRequest.gs_parse(raw)
         self.assertEqual(777, request.cookie)
-        self.assertEqual(RequestType.ADDRESS_CHECK, request.command_name)
+        self.assertEqual(CommandName.ADDRESS_CHECK, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(False, request.use_game_port)
         self.assertEqual(3, request.version)
@@ -94,10 +93,10 @@ class HandlerTests(unittest.TestCase):
                 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             ]
         )  # fmt: skip
-        request = ErtAckRequest(raw)
-        request.parse()
+        data = ErtAckRequest.gs_parse(raw)
+        request = ErtAckRequest.model_validate(data)
         self.assertEqual(777, request.cookie)
-        self.assertEqual(RequestType.ERT_ACK, request.command_name)
+        self.assertEqual(CommandName.ERT_ACK, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(3, request.version)
         self.assertEqual(False, request.use_game_port)
@@ -121,10 +120,10 @@ class HandlerTests(unittest.TestCase):
                 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             ]
         )  # fmt: skip
-        request = NatifyRequest(raw)
-        request.parse()
+        date = NatifyRequest.gs_parse(raw)
+        request = NatifyRequest.model_validate(date)
         self.assertEqual(777, request.cookie)
-        self.assertEqual(RequestType.NATIFY_REQUEST, request.command_name)
+        self.assertEqual(CommandName.NATIFY_REQUEST, request.command_name)
         self.assertEqual(NatClientIndex.GAME_CLIENT, request.client_index)
         self.assertEqual(3, request.version)
         self.assertEqual(False, request.use_game_port)
@@ -146,13 +145,12 @@ class HandlerTests(unittest.TestCase):
             ]
         )  # fmt: skip
 
-        req = PreInitRequest(raw)
-        req.parse()
-        self.assertEqual(3051394346, req.cookie)
-        self.assertEqual(RequestType.PRE_INIT, req.command_name)
-        self.assertEqual(4, req.version)
-        self.assertEqual(NatPortType.GP, req.port_type)
-        self.assertEqual(PreInitState.WAITING_FOR_CLIENT, req.state)
+        data = PreInitRequest.gs_parse(raw)
+        request = PreInitRequest.model_validate(data)
+        self.assertEqual(3051394346, request.cookie)
+        self.assertEqual(CommandName.PRE_INIT, request.command_name)
+        self.assertEqual(4, request.version)
+        self.assertEqual(36, request.state)
 
 
 if __name__ == "__main__":

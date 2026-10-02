@@ -12,14 +12,16 @@ from backends.protocols.gamespy.natneg.handlers import (
     ReportHandler,
 )
 from backends.protocols.gamespy.natneg.requests import (
-    AddressCheckRequest,
     ConnectRequest,
-    ErtAckRequest,
     InitRequest,
     ReportRequest,
 )
 from backends.protocols.gamespy.natneg.responses import ConnectResponse
 from backends.urls import NATNEG
+from frontends.gamespy.protocols.natneg.contracts.requests import (
+    AddressCheckRequest,
+    ErtAckRequest,
+)
 
 router = APIRouter()
 

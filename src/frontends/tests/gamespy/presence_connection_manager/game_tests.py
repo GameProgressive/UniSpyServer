@@ -38,8 +38,7 @@ class GameTest(unittest.TestCase):
 
     def test_sbwfrontps2(self) -> None:
         raw = "\\status\\1\\sesskey\\1111\\statstring\\EN LIGNE\\locstring\\\\final\\"
-        request = StatusRequest(raw)
-        request.parse()
+        request = StatusRequest.gs_parse(raw)
         self.assertTrue(request.location_string == "")
         self.assertTrue(request.status_string == "EN LIGNE")
 

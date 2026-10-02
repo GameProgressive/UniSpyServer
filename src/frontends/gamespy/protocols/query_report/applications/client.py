@@ -14,7 +14,9 @@ class Client(ClientBase):
     v1 protocol request is send with different packet, the \\final\\ tells whether request is finished
     """
 
-    def __init__(self, connection: ConnectionBase, server_config: ServerConfig, logger: LogWriter):
+    def __init__(
+        self, connection: ConnectionBase, server_config: ServerConfig, logger: LogWriter
+    ):
         super().__init__(connection, server_config, logger)
         self.is_log_raw = True
 
@@ -25,8 +27,9 @@ class Client(ClientBase):
         from frontends.gamespy.protocols.query_report.v2.applications.switcher import (
             Switcher as V2Switcher,
         )
+
         assert isinstance(buffer, bytes)
-        # !! qr v1 doesn't actually need encryption because encryption isn't part of the main communication process. 
+        # !! qr v1 doesn't actually need encryption because encryption isn't part of the main communication process.
         if buffer[0] == ord("\\"):
             return V1Switcher(self, buffer.decode())
         else:
@@ -45,16 +48,20 @@ class Client(ClientBase):
         self.brocker.unsubscribe()
 
     def _process_brocker_message(self, message: str):
-        from frontends.gamespy.protocols.query_report.v2.contracts.requests import ClientMessageRequest
-        from frontends.gamespy.protocols.query_report.v2.applications.handlers import ClientMessageHandler
+        from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
+            ClientMessageRequest,
+        )
+        from frontends.gamespy.protocols.query_report.v2.applications.handlers import (
+            ClientMessageHandler,
+        )
 
         # responsible for receive message and send out
         # TODO: check whether exception here will cause brocker stop
         try:
             assert isinstance(message, str)
             # deserialize str to object
-            request = ClientMessageRequest()
-            handler = ClientMessageHandler(self,  request)
+            request = ClientMessageRequest.model_validate_strings(message)
+            handler = ClientMessageHandler(self, request)
             handler.handle()
         except Exception as e:
             # todo change to log and handle exception here

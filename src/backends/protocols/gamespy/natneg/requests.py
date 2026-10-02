@@ -4,63 +4,27 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatPortType,
     NatType,
     PreInitState,
-    RequestType,
+    CommandName,
 )
 from typing import Union
 
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.natneg.contracts.results import ConnectResult
+import frontends.gamespy.protocols.natneg.contracts.requests as fnt
 
 # region Requests
-class RequestBase(lib.RequestBase):
-    raw_request: str
-    version: int
-    cookie: int
-    port_type: NatPortType
-    command_name: RequestType
 
 
-class CommonRequestBase(RequestBase):
-    client_index: NatClientIndex
-    use_game_port: bool
-
-
-class AddressCheckRequest(CommonRequestBase):
-    pass
-
-
-class ConnectAckRequest(RequestBase):
-    client_index: NatClientIndex
-
-
-class ConnectRequest(CommonRequestBase):
+class ConnectRequest(lib.RequestBase):
     """
     Server will send this request to client to let them connect to each other
     """
 
-
-class ErtAckRequest(CommonRequestBase):
-    pass
+    data: fnt.ConnectRequest
 
 
-class InitRequest(CommonRequestBase):
-    game_name: str | None = None
-    private_ip: str
-    private_port: int
+class InitRequest(lib.RequestBase):
+    data: fnt.InitRequest
 
 
-class NatifyRequest(CommonRequestBase):
-    pass
-
-
-class PreInitRequest(RequestBase):
-    state: Union[PreInitState, int]
-    target_cookie: list
-
-
-class ReportRequest(CommonRequestBase):
-    is_nat_success: bool
-    game_name: str
-    nat_type: NatType
-    mapping_scheme: NatPortMappingScheme
-
+class ReportRequest(lib.RequestBase):
+    data: fnt.ReportRequest

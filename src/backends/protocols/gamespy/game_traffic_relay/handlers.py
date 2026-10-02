@@ -19,14 +19,14 @@ class GtrHeartBeatHandler(HandlerBase):
     def _data_operate(self) -> None:
         data.check_expired_server(self._session)
         info = data.search_relay_server(
-            self._request.server_id, self._request.public_ip_address, self._session
+            self._request.data.server_id, self._request.data.public_ip_address, self._session
         )
         if info is None:
             info = RelayServerCaches(
-                server_id=self._request.server_id,
-                public_ip=self._request.public_ip_address,
-                public_port=self._request.public_port,
-                client_count=self._request.client_count,
+                server_id=self._request.data.server_id,
+                public_ip=self._request.data.public_ip_address,
+                public_port=self._request.data.public_port,
+                client_count=self._request.data.client_count,
             )
             data.create_relay_server(info, self._session)
         else:

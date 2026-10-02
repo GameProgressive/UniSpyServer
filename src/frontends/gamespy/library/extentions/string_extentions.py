@@ -27,16 +27,9 @@ def convert_printable_bytes_to_string(buffer: bytes) -> str:
 
 def convert_kvstring_to_dictionary(kv_str: str):
     assert isinstance(kv_str, str)
-    dic = {}
-    key_value_list = kv_str.split("\\")
-
-    for i in range(0, len(key_value_list), 2):
-        if len(key_value_list) < i + 2:
-            dic[key_value_list[i]] = ""
-        else:
-            dic[key_value_list[i]] = key_value_list[i + 1].replace("\x00", "")
-
-    return dic
+    parts = kv_str.replace("\x00","").split("\\")
+    result = dict(zip(parts[::2], parts[1::2]))
+    return result
 
 
 def convert_keystr_to_list(key_str: str):
@@ -60,7 +53,7 @@ def from_hex_string_to_bytes(hex_str: str):
     use in webservice auth public key convertion
     """
     assert isinstance(hex_str, str)
-    data = [int(hex_str[i: i + 2], 16) for i in range(0, len(hex_str), 2)]
+    data = [int(hex_str[i : i + 2], 16) for i in range(0, len(hex_str), 2)]
     return bytes(data)
 
 
@@ -93,8 +86,7 @@ def format_network_message(
 ):
     assert type in ["recv", "send"]
     if is_log_raw:
-        tempLog = f"{convert_printable_bytes_to_string(
-            message)} [{convert_byte_to_hex_string(message)}]"
+        tempLog = f"{convert_printable_bytes_to_string(message)} [{convert_byte_to_hex_string(message)}]"
     else:
         tempLog = convert_nonprintable_bytes_to_hex_string(message)
 
@@ -111,5 +103,5 @@ def get_kv_str_name(kv_str: str) -> str:
 
 
 def split_nested_kv_str(kv_str: str) -> list[str]:
-    kv_list = [r+"\\final\\" for r in kv_str.split("\\final\\") if r]
+    kv_list = [r + "\\final\\" for r in kv_str.split("\\final\\") if r]
     return kv_list

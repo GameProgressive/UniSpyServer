@@ -1,220 +1,157 @@
 import backends.library.abstractions.contracts as lib
-from frontends.gamespy.protocols.chat.aggregates.enums import (
-    GetKeyRequestType,
-    LoginRequestType,
-    MessageType,
-    ModeName,
-    ModeOperation,
-    ModeRequestType,
-    TopicRequestType,
-    WhoRequestType,
-)
+import frontends.gamespy.protocols.chat.contracts.requests as fnt
 
 
 class RequestBase(lib.RequestBase):
-    raw_request: str
-    command_name: str
-    websocket_address: str
+    data: fnt.RequestBase
 
 
 # region General
-
-
 class CdkeyRequest(RequestBase):
-    cdkey: str
+    data: fnt.CdkeyRequest
 
 
 class CryptRequest(RequestBase):
-    version_id: str
-    gamename: str
+    data: fnt.CryptRequest
 
 
 class GetUdpRelayRequest(RequestBase):
-    pass
+    data: fnt.GetUdpRelayRequest
 
 
 class InviteRequest(RequestBase):
-    channel_name: str
-    nick_name: str
+    data: fnt.InviteRequest
 
 
 class ListLimitRequest(RequestBase):
-    max_number_of_channels: int
-    filter: str
+    data: fnt.ListLimitRequest
 
 
 class ListRequest(RequestBase):
-    is_searching_channel: bool
-    is_searching_user: bool
-    filter: str
+    data: fnt.ListRequest
 
 
 class LoginPreAuthRequest(RequestBase):
-    auth_token: str
-    partner_challenge: str
+    data: fnt.LoginPreAuthRequest
 
 
 class LoginRequest(RequestBase):
-    request_type: LoginRequestType
-    namespace_id: int
-    nick_name: str
-    email: str
-    unique_nick: str
-    password_hash: str
+    data: fnt.LoginRequest
 
 
 class NickRequest(RequestBase):
-    nick_name: str
+    data: fnt.NickRequest
 
 
 class PingRequest(RequestBase):
-    pass
+    data: fnt.PingRequest
 
 
 class PongRequest(RequestBase):
-    echo_message: str
+    data: fnt.PongRequest
 
 
 class QuitRequest(RequestBase):
-    reason: str
+    data: fnt.QuitRequest
 
 
 class RegisterNickRequest(RequestBase):
-    namespace_id: int
-    unique_nick: str
-    cdkey: str
+    data: fnt.RegisterNickRequest
 
 
 class SetKeyRequest(RequestBase):
-    key_values: dict[str, str]
+    data: fnt.SetKeyRequest
 
 
 class UserIPRequest(RequestBase):
-    remote_ip: str
+    data: fnt.UserIPRequest
 
 
 class UserRequest(RequestBase):
-    user_name: str
-    local_ip_address: str
-    server_name: str
-    name: str
+    data: fnt.UserRequest
 
 
 class WhoIsRequest(RequestBase):
-    nick_name: str
+    data: fnt.WhoIsRequest
 
 
 class WhoRequest(RequestBase):
-    request_type: WhoRequestType
-    channel_name: str
-    nick_name: str
+    data: fnt.WhoRequest
 
 
 class GetKeyRequest(RequestBase):
-    is_get_all_user: bool
-    nick_name: str
-    cookie: str
-    unknown_cmd_param: str
-    keys: list[str]
+    data: fnt.GetKeyRequest
 
+
+class ChannelRequestBase(RequestBase):
+    data: fnt.ChannelRequestBase
 
 # region Channel
 
 
-class ChannelRequestBase(RequestBase):
-    channel_name: str
-    broad_cast_raw: str | None = None
-
-
 class GetChannelKeyRequest(ChannelRequestBase):
-    cookie: str
-    keys: list
+    data: fnt.GetChannelKeyRequest
 
 
 class GetCKeyRequest(ChannelRequestBase):
-    nick_name: str
-    cookie: str
-    keys: list
-    request_type: GetKeyRequestType
+    data: fnt.GetCKeyRequest
 
 
 class JoinRequest(ChannelRequestBase):
-    password: str | None = None
+    data: fnt.JoinRequest
 
 
 class KickRequest(ChannelRequestBase):
-    kickee_nick_name: str
-    reason: str
+    data: fnt.KickRequest
 
 
 class ModeRequest(ChannelRequestBase):
-    request_type: ModeRequestType
-    mode_operations: dict[ModeName, ModeOperation]
-    limit_number: int | None = None
-    mode_flag: str | None = None
-    password: str | None = None
-    nick_name: str | None = None
-    user_name: str | None = None
+    data: fnt.ModeRequest
 
 
 class NamesRequest(ChannelRequestBase):
-    pass
+    data: fnt.NamesRequest
 
 
 class PartRequest(ChannelRequestBase):
-    reason: str
+    data: fnt.PartRequest
 
 
 class SetChannelKeyRequest(ChannelRequestBase):
-    key_value_string: str
-    key_values: dict[str, str]
-    is_broadcast: bool
+    data: fnt.SetChannelKeyRequest
 
 
 class SetCKeyRequest(ChannelRequestBase):
-    nick_name: str
-    cookie: str
-    is_broadcast: bool
-    key_value_string: str
-    key_values: dict[str, str]
+    data: fnt.SetCKeyRequest
 
 
 class SetGroupRequest(ChannelRequestBase):
-    group_name: str
+    data: fnt.SetGroupRequest
 
 
 class TopicRequest(ChannelRequestBase):
-    channel_topic: str
-    request_type: TopicRequestType
-
-
-class MessageRequestBase(ChannelRequestBase):
-    type: MessageType
-    target_name: str
-    message: str
+    data: fnt.TopicRequest
 
 
 # region Message
-
+class MessageRequestBase(ChannelRequestBase):
+    data:fnt.MessageRequestBase
 
 class AtmRequest(MessageRequestBase):
-    pass
+    data: fnt.AtmRequest
 
 
 class NoticeRequest(MessageRequestBase):
-    pass
+    data: fnt.NoticeRequest
 
 
 class PrivateRequest(MessageRequestBase):
-    pass
+    data: fnt.PrivateRequest
 
 
 class UtmRequest(MessageRequestBase):
-    pass
+    data: fnt.UtmRequest
 
 
-class PublishMessageRequest(lib.RequestBase):
-    channel_name: str
-    sender_ip_address: str
-    sender_port: int
-    message: str
+class PublishMessageRequest(ChannelRequestBase):
+    data: fnt.PublishMessageRequest

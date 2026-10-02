@@ -1,7 +1,7 @@
-from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.library.network.http_data import HttpData
 from frontends.gamespy.protocols.web_services.modules.auth.abstractions.contracts import (
     NAMESPACE,
-    LoginRequestBase,
+    RequestBase,
 )
 from frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums import (
     CommandName,
@@ -11,132 +11,106 @@ from frontends.gamespy.protocols.web_services.modules.auth.aggregates.exceptions
 )
 
 
-class LoginProfileRequest(LoginRequestBase):
+class LoginProfileRequest(RequestBase):
     email: str
     nick: str
-    cdkey: str
     password: str
+    cdkey: str | None
+    command_name: CommandName
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_PROFILE
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "LoginProfileRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["email"] = data.str_mapping["email"]
+        data_dict["nick"] = data.str_mapping["profilenick"]
+        data_dict["password"] = data._parse_password()
 
-    def parse(self) -> None:
-        super().parse()
-        self.email = self._get_str("email")
-        self.nick = self._get_str("profilenick")
-        self.password = self._parse_password()
-        self.command_name = CommandName.LOGIN_PROFILE
-
-
-class LoginProfileWithGameIdRequest(LoginProfileRequest):
-    game_id: int
-
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_PROFILE_WITH_GAME_ID
-
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
+        data_dict["cdkey"] = data.str_mapping.get("cdkey")
+        data = LoginProfileRequest(**data_dict)
+        return data
 
 
-class LoginPs3CertRequest(LoginRequestBase):
+class LoginPs3CertRequest(RequestBase):
     ps3_cert: str
-    game_id: int
     npticket: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_PS3_CERT
-
-    def parse(self) -> None:
-        super().parse()
-        self.ps3_cert = self._get_str("ps3sert")
-        self.game_id = self._get_int("gameid")
-        self.npticket = self._get_str("npticket")
-
-
-class LoginPs3CertWithGameIdRequest(LoginPs3CertRequest):
-    game_id: int
-
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_PS3_CERT_WITH_GAME_ID
-
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "LoginPs3CertRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["ps3_cert"] = data.str_mapping["ps3sert"]
+        data_dict["npticket"] = data.str_mapping["npticket"]
+        data = LoginPs3CertRequest(**data_dict)
+        return data
 
 
-class LoginRemoteAuthRequest(LoginRequestBase):
+class LoginRemoteAuthRequest(RequestBase):
     auth_token: str
     challenge: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_REMOTE_AUTH
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "LoginRemoteAuthRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["auth_token"] = data.str_mapping["authtoken"]
+        data_dict["challenge"] = data.str_mapping["challenge"]
 
-    def parse(self) -> None:
-        super().parse()
-        self.auth_token = self._get_str("authtoken")
-        self.challenge = self._get_str("challenge")
-        self.game_id = self._get_int("gameid")
-
-
-class LoginRemoteAuthWithGameIdRequest(LoginRemoteAuthRequest):
-    game_id: int
-
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_REMOTE_AUTH_WITH_GAME_ID
-
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
+        data = LoginRemoteAuthRequest(**data_dict)
+        return data
 
 
-class LoginUniqueNickRequest(LoginRequestBase):
+class LoginUniqueNickRequest(RequestBase):
     uniquenick: str
     password: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_UNIQUENICK
-
-    def parse(self) -> None:
-        super().parse()
-        self.uniquenick = self._get_str("uniquenick")
-        self.password = self._parse_password()
-
-
-class LoginUniqueNickWithGameIdRequest(LoginUniqueNickRequest):
-    game_id: int
-
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.LOGIN_UNIQUENICK_WITH_GAME_ID
-
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "LoginUniqueNickRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["uniquenick"] = data.str_mapping["uniquenick"]
+        data_dict["password"] = data._parse_password()
+        data = LoginUniqueNickRequest(**data_dict)
+        return data
 
 
-class CreateUserAccountRequest(LoginRequestBase):
+class CreateUserAccountRequest(RequestBase):
     email: str
     nick: str
     uniquenick: str
     password: str
-    game_id: int
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.command_name = CommandName.CREATE_USER_ACCOUNT
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "CreateUserAccountRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["email"] = data.str_mapping["email"]
+        data_dict["nick"] = data.str_mapping["profilenick"]
+        data_dict["uniquenick"] = data.str_mapping["uniquenick"]
+        data_dict["password"] = data._parse_password()
+        data = CreateUserAccountRequest(**data_dict)
+        return data
 
-    def parse(self) -> None:
-        super().parse()
-        self.email = self._get_str("email")
-        self.nick = self._get_str("profilenick")
-        self.uniquenick = self._get_str("uniquenick")
-        # self.game_id = self._parse_int("gameid")
-        self.password = self._parse_password()
+
+if __name__ == "__main__":
+    data = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://gamespy.net/AuthService/"><SOAP-ENV:Body>
+        <ns1:LoginProfileWithGameId>
+            <ns1:version>1</ns1:version>
+            <ns1:gameid>0</ns1:gameid>
+            <ns1:partnercode>0</ns1:partnercode>
+            <ns1:namespaceid>1</ns1:namespaceid>
+            <ns1:email>spyguy@gamespy.com</ns1:email>
+            <ns1:profilenick>spyguy</ns1:profilenick>
+            <ns1:password>
+                <ns1:Value>
+                    00026cfb61b75553fb113e8a158a1ce8c88dcb5415a405efeeb4ba605c315bb9204c09a53e23fb63081d208f44f813f5967c4da7d85f55ef66d4d39a4c89a9800771ee4f742bb808f35bced93fe7fa289eb4bdc94a44fa6f9121ef0eba4d3827d0cacaaeafdc85b64e4d9dc34814f6d4178363303f543a2fd8d8af0030303030
+                </ns1:Value>
+            </ns1:password>
+        </ns1:LoginProfileWithGameId>
+    </SOAP-ENV:Body>
+    </SOAP-ENV:Envelope>"""
+    h = HttpData(path=None, headers=None, body=data)
+
+    req = LoginProfileRequest.gs_parse(h)

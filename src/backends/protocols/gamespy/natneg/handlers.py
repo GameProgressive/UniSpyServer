@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.natneg.contracts.results import ConnectResult
 class InitHandler(HandlerBase):
     _request: InitRequest
     response: OKResponse
-
+    
     def __init__(self, request: InitRequest) -> None:
         assert isinstance(request, InitRequest)
         super().__init__(request)
@@ -26,24 +26,24 @@ class InitHandler(HandlerBase):
     def _data_operate(self) -> None:
         data.clean_expired_init_cache(self._session)
         info = data.get_init_cache(
-            self._request.cookie,
-            self._request.client_index,
-            self._request.port_type,
+            self._request.data.cookie,
+            self._request.data.client_index,
+            self._request.data.port_type,
             self._session,
         )
         if info is None:
             info = InitPacketCaches(
-                cookie=self._request.cookie,
-                server_id=self._request.server_id,
-                version=self._request.version,
-                port_type=self._request.port_type,
-                client_index=self._request.client_index,
-                game_name=self._request.game_name,
-                use_game_port=self._request.use_game_port,
-                public_ip=self._request.client_ip,
-                public_port=self._request.client_port,
-                private_ip=self._request.private_ip,
-                private_port=self._request.private_port,
+                server_id=self._request.info.server_id,
+                public_ip=self._request.info.client_ip,
+                public_port=self._request.info.client_port,
+                cookie=self._request.data.cookie,
+                version=self._request.data.version,
+                port_type=self._request.data.port_type,
+                client_index=self._request.data.client_index,
+                game_name=self._request.data.game_name,
+                use_game_port=self._request.data.use_game_port,
+                private_ip=self._request.data.private_ip,
+                private_port=self._request.data.private_port,
                 update_time=datetime.now(),
             )
             data.add_init_packet(info, self._session)
@@ -71,15 +71,15 @@ class ConnectHandler(HandlerBase):
     def _get_client_pair(self) -> None:
         # analysis NAT of both parties and find the proper ips
         init_infos_1 = data.get_init_caches(
-            self._request.cookie, self._request.client_index, self._session
+            self._request.data.cookie, self._request.data.client_index, self._session
         )
         # choose the other index of the currect client
-        if self._request.client_index == NatClientIndex.GAME_CLIENT:
+        if self._request.data.client_index == NatClientIndex.GAME_CLIENT:
             client_index_2 = NatClientIndex.GAME_SERVER
         else:
             client_index_2 = NatClientIndex.GAME_CLIENT
         init_infos_2 = data.get_init_caches(
-            self._request.cookie, client_index_2, self._session
+            self._request.data.cookie, client_index_2, self._session
         )
         if len(init_infos_1) == 0 or len(init_infos_2) == 0:
             self._is_valid = False
@@ -111,8 +111,8 @@ class ConnectHandler(HandlerBase):
                 ip=None,
                 port=None,
                 status=None,
-                version=self._request.version,
-                cookie=self._request.cookie,
+                version=self._request.data.version,
+                cookie=self._request.data.cookie,
             )
             return
 
@@ -122,8 +122,8 @@ class ConnectHandler(HandlerBase):
                 ip=self._helper2.private_ip,
                 port=self._helper2.private_port,
                 status=ConnectPacketStatus.NO_ERROR,
-                version=self._request.version,
-                cookie=self._request.cookie,
+                version=self._request.data.version,
+                cookie=self._request.data.cookie,
             )
         elif self._strategy == NatStrategy.USE_PUBLIC_IP:
             self._result = ConnectResult(
@@ -131,8 +131,8 @@ class ConnectHandler(HandlerBase):
                 ip=self._helper2.public_ip,
                 port=self._helper2.public_port,
                 status=ConnectPacketStatus.NO_ERROR,
-                version=self._request.version,
-                cookie=self._request.cookie,
+                version=self._request.data.version,
+                cookie=self._request.data.cookie,
             )
 
         elif self._strategy == NatStrategy.USE_GAME_TRAFFIC_RALEY:
@@ -151,8 +151,8 @@ class ConnectHandler(HandlerBase):
                 ip=rs.public_ip,
                 port=rs.public_port,
                 status=ConnectPacketStatus.NO_ERROR,
-                version=self._request.version,
-                cookie=self._request.cookie,
+                version=self._request.data.version,
+                cookie=self._request.data.cookie,
             )
 
 
@@ -162,23 +162,23 @@ class ReportHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         init_cache = data.get_init_cache(
-            self._request.cookie,
-            self._request.client_index,
-            self._request.port_type,
+            self._request.data.cookie,
+            self._request.data.client_index,
+            self._request.data.port_type,
             self._session
         )
         if init_cache is None:
             raise NatNegException(
-                f"No init package found for report pacakge cookie: {self._request.cookie} client_index: {self._request.client_index}")
+                f"No init package found for report pacakge cookie: {self._request.data.cookie} client_index: {self._request.data.client_index}")
         report_cache = NatResultCaches(
-            cookie=self._request.cookie,
+            cookie=self._request.data.cookie,
             public_ip=init_cache.public_ip,
             private_ip=init_cache.private_ip,
-            is_success=self._request.is_nat_success,
-            port_mapping_scheme=self._request.mapping_scheme,
-            nat_type=self._request.nat_type,
-            port_type=self._request.port_type,
-            client_index=self._request.client_index,
-            game_name=self._request.game_name,
+            is_success=self._request.data.is_nat_success,
+            port_mapping_scheme=self._request.data.mapping_scheme,
+            nat_type=self._request.data.nat_type,
+            port_type=self._request.data.port_type,
+            client_index=self._request.data.client_index,
+            game_name=self._request.data.game_name,
         )
         data.update_nat_result_info(report_cache, self._session)

@@ -1,10 +1,9 @@
-
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.bytes_extentions import ip_to_4_bytes
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatClientIndex,
     NatPortType,
-    RequestType,
+    CommandName,
     ResponseType,
 )
 
@@ -13,29 +12,22 @@ MAGIC_DATA = b"\xfd\xfc\x1e\x66\x6a\xb2"
 
 class RequestBase(lib.RequestBase):
     version: int
-    #! check bytes order
     cookie: int
     """
-    byteorder:
-        big
+    byteorder: big
     """
-    port_type: NatPortType
-    command_name: RequestType
+    command_name: CommandName
     raw_request: bytes
 
-    def __init__(self, raw_request: bytes | None = None):
-        assert isinstance(raw_request, bytes)
-        self.raw_request = raw_request
-
-    def parse(self) -> None:
-        if len(self.raw_request) < 12:
-            return
-
-        self.version = int(self.raw_request[6])
-        self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(
-            self.raw_request[8:12])
-        self.port_type = NatPortType(self.raw_request[12])
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "RequestBase":
+        data = lib.RequestBase.gs_parse(raw_request)
+        data.command_name = raw_request[7]
+        data_dict = data.model_dump()
+        data_dict["version"] = int(raw_request[6])
+        data_dict["cookie"] = int.from_bytes(raw_request[8:12])
+        data = RequestBase(**data_dict)
+        return data
 
 
 class ResultBase(lib.ResultBase):
@@ -65,11 +57,17 @@ class ResponseBase(lib.ResponseBase):
 class CommonRequestBase(RequestBase):
     client_index: NatClientIndex
     use_game_port: bool
+    port_type: NatPortType
 
-    def parse(self):
-        super().parse()
-        self.client_index = NatClientIndex(self.raw_request[13])
-        self.use_game_port = bool(self.raw_request[14])
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "CommonRequestBase":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["port_type"] = int(raw_request[12])
+        data_dict["client_index"] = int(raw_request[13])
+        data_dict["use_game_port"] = bool(raw_request[14])
+        data = CommonRequestBase(**data_dict)
+        return data
 
 
 class CommonResultBase(ResultBase):

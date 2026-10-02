@@ -34,6 +34,7 @@ class LoginResult(ResultBase):
     type: LoginType
     partner_id: int
     user_challenge: str
+    session_key: int
 
 
 class NewUserResult(ResultBase):

@@ -1,63 +1,73 @@
 from uuid import UUID
-
+from datetime import datetime
 from pydantic import BaseModel
 
 import frontends.gamespy.library.abstractions.contracts as lib
 
 
+class IrcParam(BaseModel):
+    prefix: str
+    command: str
+    params: list[str] = []
+    trailing: str
+
+
 class RequestBase(lib.RequestBase):
     raw_request: str
-    command_name: str
-    _prefix: str | None
-    _cmd_params: list[str]
-    _long_param: str | None
-    websocket_address: str
+    command_name: str | None
+    irc: IrcParam
+    websocket_address: str | None = None
 
-    def __init__(self, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
-        super().__init__(raw_request)
-        self._prefix = None
-        self._cmd_params = []
-        self._long_param = None
-
-    def parse(self) -> None:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RequestBase":
         # at most 2 colon character
         # we do not sure about all command
         # so i block this code here
-        self.raw_request = self.raw_request.replace("\r", "").replace("\n", "")
-        dataFrag = []
+        data = lib.RequestBase.gs_parse(raw_request)
+        raw = raw_request.replace("\r", "").replace("\n", "").strip()
 
-        if self.raw_request.count(":") > 2:
-            raise Exception(f"IRC request is invalid {self.raw_request}")
-        if ":" not in self.raw_request:
-            index_of_colon = -1
+        if not raw:
+            raise ValueError("IRC request cannot be empty")
+
+        prefix = ""
+        message = ""
+
+        # IRC format：
+        # [:prefix] COMMAND [params] [:message]
+        if raw.startswith(":"):
+            prefix_end = raw.find(" ")
+
+            if prefix_end == -1:
+                raise ValueError(f"IRC request is invalid: {raw}")
+
+            prefix = raw[1:prefix_end]
+            raw = raw[prefix_end:].lstrip()
+
+        # trailing message only get the first :
+        if " :" in raw:
+            command_part, message = raw.split(" :", 1)
+        elif raw.startswith(":"):
+            command_part = ""
+            message = raw[1:]
         else:
-            index_of_colon = self.raw_request.index(":")
+            command_part = raw
 
-        raw = self.raw_request
-        if index_of_colon == 0 and index_of_colon != -1:
-            if " " not in raw:
-                prefixIndex = -1
-            else:
-                prefixIndex = raw.index(" ")
-            self._prefix = raw[index_of_colon:prefixIndex]
-            raw = raw[prefixIndex:]
+        rest_data = command_part.split()
 
-        if ":" not in raw:
-            index_of_colon = 0
-        else:
-            index_of_colon = raw.index(":")
-        if index_of_colon != 0 and index_of_colon != -1:
-            self._long_param = raw[index_of_colon + 1 :]
-            # reset the request string
-            raw = raw[:index_of_colon]
+        if not data:
+            raise ValueError(f"IRC request is invalid: {raw_request}")
 
-        dataFrag = raw.strip(" ").split(" ")
-
-        self.command_name = dataFrag[0]
-
-        if len(dataFrag) > 1:
-            self._cmd_params = dataFrag[1:]
+        command = rest_data[0]
+        params = rest_data[1:]
+        irc = IrcParam(
+            prefix=prefix,
+            command=command,
+            params=params,
+            trailing=message,
+        )
+        data.command_name = irc.command
+        data = RequestBase(**data.model_dump(), irc=irc)
+        return data
 
 
 class ResultBase(lib.ResultBase):
@@ -92,9 +102,18 @@ class BrockerMessage(BaseModel):
     message: str
 
 
-if __name__ == "__main__":
-    # Example usage:
-    request = RequestBase("")
-    request.raw_request = "your_raw_request_here"
-    request.parse()
-    print(request.command_name)
+class ChatChannelCaches(BaseModel):
+    channel_name: str
+    server_id: UUID
+    creator: str
+    game_name: str
+    room_name: str
+    topic: str | None
+    password: str | None
+    group_id: int
+    max_num_user: int
+    key_values: dict
+    invited_nicks: list[str]
+    modes: list[str]
+    banned_nicks: list[str]
+    update_time: datetime

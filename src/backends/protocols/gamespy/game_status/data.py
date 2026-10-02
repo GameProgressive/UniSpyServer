@@ -1,7 +1,4 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, cast
-
-from sqlalchemy import Column
 from backends.library.database.pg_orm import ENGINE, PStorage, Profiles, SubProfiles, Users
 from frontends.gamespy.protocols.game_status.aggregations.enums import PersistStorageType
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
@@ -58,15 +55,6 @@ def get_profile_id_by_profile_id(profile_id: int, session: Session) -> int:
 
 
 def get_profile_id_by_cdkey(cdkey: str, nick_name: str, session: Session) -> int:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.profileid, Column)
-        assert isinstance(SubProfiles.cdkeyenc, Column)
-
     result = (session.query(Profiles.profileid)
               .join(SubProfiles)
               .where(SubProfiles.cdkeyenc == cdkey,

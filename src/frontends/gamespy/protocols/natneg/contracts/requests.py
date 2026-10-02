@@ -14,37 +14,48 @@ from frontends.gamespy.protocols.natneg.aggregations.enums import (
     NatPortType,
     NatType,
     PreInitState,
-    RequestType,
+    CommandName,
 )
 
 
 class AddressCheckRequest(CommonRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "AddressCheckRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data = AddressCheckRequest(**data.model_dump())
+        return data
 
 
 class PingRequest(RequestBase):
-    def parse(self) -> None:
-        self.version = int(self.raw_request[6])
-        self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(self.raw_request[8:12])
-        self.ip = socket.inet_ntoa(self.raw_request[12:16])
-        self.port = int.from_bytes(self.raw_request[16:18])
-        # port here is not in little endian
-        self.got_your_data = bool(self.raw_request[18])
-        self.is_finished = bool(self.raw_request[19])
+    ip: str
+    port: int
+    got_your_data: bool
+    is_finished: bool
+
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "PingRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["ip"] = socket.inet_ntoa(raw_request[12:16])
+        data_dict["port"] = int.from_bytes(raw_request[16:18])
+        data_dict["got_your_data"] = bool(raw_request[18])
+        data_dict["is_finished"] = bool(raw_request[19])
+
+        data = PingRequest(**data_dict)
+
+        return data
 
 
 class ConnectAckRequest(RequestBase):
     client_index: NatClientIndex
 
-    def parse(self) -> None:
-        if len(self.raw_request) < 12:
-            return
-
-        self.version = int(self.raw_request[6])
-        self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(self.raw_request[8:12])
-        self.client_index = NatClientIndex(self.raw_request[13])
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "ConnectAckRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["client_index"] = raw_request[13]
+        data = ConnectAckRequest(**data_dict)
+        return data
 
 
 class ConnectRequest(CommonRequestBase):
@@ -52,30 +63,19 @@ class ConnectRequest(CommonRequestBase):
     Server will send this request to client to let them connect to each other
     """
 
-    client_index: NatClientIndex
-
     @staticmethod
-    def build(
-        version: int,
-        command_name: RequestType,
-        cookie: int,
-        port_type: NatPortType,
-        client_index: NatClientIndex,
-        use_game_port: bool,
-    ) -> bytes:
-        data = bytes()
-        data += MAGIC_DATA
-        data += version.to_bytes(1)
-        data += command_name.value.to_bytes(1)
-        data += cookie.to_bytes(4)
-        data += port_type.value.to_bytes(1)
-        data += client_index.value.to_bytes(1)
-        data += use_game_port.to_bytes(1)
+    def gs_parse(raw_request: bytes) -> "ConnectRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data = ConnectRequest(**data.model_dump())
         return data
 
 
 class ErtAckRequest(CommonRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "ErtAckRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data = ErtAckRequest(**data.model_dump())
+        return data
 
 
 class InitRequest(CommonRequestBase):
@@ -83,38 +83,54 @@ class InitRequest(CommonRequestBase):
     private_ip: str
     private_port: int
 
-    def __init__(self, raw_request: bytes | None = None):
-        super().__init__(raw_request)
-        self.game_name = "unknown"
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "InitRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        ip_bytes = raw_request[15:19]
+        port_bytes = raw_request[19:21][::-1]
+        data_dict["private_port"] = struct.unpack("H", port_bytes)[0]
+        data_dict["private_ip"] = inet_ntoa(ip_bytes)
+        data_dict.update(game_name=None)
+        if len(raw_request) > 21 and raw_request[-1] == 0:
+            game_name_bytes = raw_request[21:-1]
+            decoded_game_name = game_name_bytes.decode("ascii").replace("\x00", "")
 
-    def parse(self) -> None:
-        super().parse()
-        ip_bytes = self.raw_request[15:19]
-        port_bytes = self.raw_request[19:21][::-1]
-        port = struct.unpack("H", port_bytes)[0]
-        ip_address_str = inet_ntoa(ip_bytes)
-        self.private_ip = ip_address_str
-        self.private_port = port
+            if len(decoded_game_name) != 0:
+                data_dict["game_name"] = decoded_game_name
 
-        if len(self.raw_request) > 21 and self.raw_request[-1] == 0:
-            game_name_bytes = self.raw_request[21:-1]
-            game_name = game_name_bytes.decode("ascii").replace("\x00", "")
-            if len(game_name) != 0:
-                self.game_name = game_name
+        data = InitRequest(**data_dict)
+
+        return data
 
 
 class NatifyRequest(CommonRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "NatifyRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data = NatifyRequest(**data.model_dump())
+        return data
 
 
 class PreInitRequest(RequestBase):
-    state: PreInitState
+    state: int
+    """
+    todo check the type of state
+    """
     target_cookie: int
+    client_index: NatClientIndex
 
-    def parse(self) -> None:
-        super().parse()
-        self.state = PreInitState(self.raw_request[12])
-        self.target_cookie = int.from_bytes(self.raw_request[13:17])
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "PreInitRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["client_index"] = raw_request[12]
+        data_dict["state"] = int(raw_request[13])
+        data_dict["target_cookie"] = int.from_bytes(raw_request[14:18])
+
+        data = PreInitRequest(**data_dict)
+
+        return data
 
 
 class ReportRequest(CommonRequestBase):
@@ -123,18 +139,17 @@ class ReportRequest(CommonRequestBase):
     nat_type: NatType
     mapping_scheme: NatPortMappingScheme
 
-    def parse(self):
-        super().parse()
-        if len(self.raw_request) < 12:
-            return
-        self.version = self.raw_request[6]
-        self.command_name = RequestType(self.raw_request[7])
-        self.cookie = int.from_bytes(self.raw_request[8:12], byteorder="big")
-        self.port_type = NatPortType(self.raw_request[12])
-        self.client_index = NatClientIndex(self.raw_request[13])
-        self.is_nat_success = False if self.raw_request[14] == 0 else True
-        self.nat_type = NatType(self.raw_request[15])
-        self.mapping_scheme = NatPortMappingScheme(self.raw_request[17])
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "ReportRequest":
+        data = CommonRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["is_nat_success"] = False if raw_request[14] == 0 else True
+        data_dict["nat_type"] = raw_request[15]
+        data_dict["mapping_scheme"] = raw_request[17]
 
-        end_index = self.raw_request[23:].index(0)
-        self.game_name = self.raw_request[23 : 23 + end_index].decode("ascii")
+        end_index = raw_request[23:].index(0)
+        data_dict["game_name"] = raw_request[23 : 23 + end_index].decode("ascii")
+
+        data = ReportRequest(**data_dict)
+
+        return data

@@ -24,7 +24,7 @@ from frontends.gamespy.protocols.query_report.aggregates.game_server_info import
 from frontends.gamespy.protocols.query_report.aggregates.peer_room_info import (
     PeerRoomInfo,
 )
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import CommndName
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     GameServerFlags,
 )
@@ -52,9 +52,11 @@ class P2PGroupRoomListHandler(HandlerBase):
         super().__init__(request)
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(
+            self._request.data.game_name, self._session
+        )
         self._caches = data.get_peer_group_channel(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
 
     def _result_construct(self) -> None:
@@ -63,11 +65,11 @@ class P2PGroupRoomListHandler(HandlerBase):
         )
 
         self._result = P2PGroupRoomListResult(
-            client_remote_ip=self._request.client_ip,
+            client_remote_ip=self._request.info.client_ip,
             flag=GameServerFlags.HAS_KEYS_FLAG,
             game_secret_key=self._secret_key,
             peer_room_info=self._caches,
-            keys=self._request.keys,
+            keys=self._request.data.keys,
         )
 
 
@@ -78,14 +80,16 @@ class ServerMainListHandler(HandlerBase):
     response: ServerMainListResponse
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(
+            self._request.data.game_name, self._session
+        )
         self._caches = data.get_server_info_list_with_game_name(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
         # we just need server data
         for cache in self._caches:
             filtered_data = {}
-            for key in self._request.keys:
+            for key in self._request.data.keys:
                 if key in cache.data:
                     filtered_data[key] = cache.data[key]
             cache.data = filtered_data
@@ -98,10 +102,10 @@ class ServerMainListHandler(HandlerBase):
         if TYPE_CHECKING:
             self._caches = cast(list[GameServerInfo], self._caches)
         self._result = ServerMainListResult(
-            client_remote_ip=self._request.client_ip,
+            client_remote_ip=self._request.info.client_ip,
             game_secret_key=self._secret_key,
             servers_info=self._caches,
-            keys=self._request.keys,
+            keys=self._request.data.keys,
         )
 
 
@@ -111,9 +115,11 @@ class ServerFullInfoListHandler(HandlerBase):
     response: ServerFullInfoListResponse
 
     def _data_operate(self):
-        self._secret_key = data.get_secret_key(self._request.game_name, self._session)
+        self._secret_key = data.get_secret_key(
+            self._request.data.game_name, self._session
+        )
         self._caches = data.get_server_info_list_with_game_name(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
 
     def _result_construct(self):
@@ -124,7 +130,7 @@ class ServerFullInfoListHandler(HandlerBase):
             self._caches = cast(list[GameServerInfo], self._caches)
         all_keys = list(self._caches[0].data.keys())
         self._result = ServerFullInfoListResult(
-            client_remote_ip=self._request.client_ip,
+            client_remote_ip=self._request.info.client_ip,
             game_secret_key=self._secret_key,
             servers_info=self._caches,
             keys=all_keys,
@@ -152,27 +158,23 @@ class SendMessageHandler(HandlerBase):
     def _data_operate(self):
         # construct client message and invoke frontends qr server client message
         cache = data.get_game_server_cache_by_ip_port(
-            self._request.game_server_public_ip,
-            self._request.game_server_public_port,
+            self._request.data.game_server_public_ip,
+            self._request.data.game_server_public_port,
             self._session,
         )
         if cache is None:
             raise SBException(
-                f"could not find game server: {self._request.game_server_public_ip}:{self._request.game_server_public_port}"
+                f"could not find game server: {self._request.data.game_server_public_ip}:{self._request.data.game_server_public_port}"
             )
         assert isinstance(cache.instant_key, str)
         assert isinstance(cache.server_id, UUID)
+        import frontends.gamespy.protocols.query_report.v2.contracts.requests as v2fnt
+
         request = ClientMessageRequest(
-            server_id=self._request.server_id,
-            server_browser_sender_id=self._request.server_id,
-            target_query_report_id=cache.server_id,
-            raw_request=self._request.raw_request,
-            client_ip=self._request.client_ip,
-            client_port=self._request.client_port,
-            target_ip_address=self._request.game_server_public_ip,
-            target_port=self._request.game_server_public_port,
-            natneg_message=self._request.client_message,
-            instant_key=cache.instant_key,
+            info=self._request.info,
+            data=v2fnt.ClientMessageRequest.model_validate(
+                self._request.data.model_dump()
+            ),
         )
         BROCKER.publish_message(request.model_dump_json())
 
@@ -187,8 +189,8 @@ class ServerInfoHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.get_server_info_with_ip_and_port(
-            self._request.game_server_public_ip,
-            self._request.game_server_public_port,
+            self._request.data.game_server_public_ip,
+            self._request.data.game_server_public_port,
             self._session,
         )
 

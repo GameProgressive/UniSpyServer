@@ -2,8 +2,8 @@ from typing import final
 from backends.library.abstractions.contracts import (
     DataResponse,
     OKResponse,
-    RequestBase,
     Response,
+    RequestBase as RequestBase,
 )
 from backends.library.database.pg_orm import ENGINE
 from frontends.gamespy.library.abstractions.contracts import ResultBase
@@ -12,6 +12,7 @@ import logging
 from sqlalchemy.orm import Session
 
 from frontends.gamespy.library.exceptions.general import UniSpyException
+import frontends.gamespy.library.abstractions.contracts as fnt
 
 
 class HandlerBase:
@@ -70,10 +71,12 @@ class HandlerBase:
             return
         if "response" not in self.__class__.__annotations__:
             raise UniSpyException(
-                "write response type annotation in child class to create response instance.")
-        response_cls = self.__class__.__annotations__['response']
+                "write response type annotation in child class to create response instance."
+            )
+        response_cls = self.__class__.__annotations__["response"]
         if not issubclass(response_cls, DataResponse):
             raise UniSpyException(
-                "response type annotation must be a subclass of DataResponse")
+                "response type annotation must be a subclass of DataResponse"
+            )
         self.response = response_cls(result=self._result)
         # self.response = DataResponse(result=self._result)

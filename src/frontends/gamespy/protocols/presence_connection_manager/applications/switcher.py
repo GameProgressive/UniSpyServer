@@ -8,8 +8,11 @@ from frontends.gamespy.library.extentions.string_extentions import (
 from frontends.gamespy.protocols.presence_connection_manager.abstractions.handlers import (
     CmdHandlerBase,
 )
+from frontends.gamespy.protocols.presence_connection_manager.abstractions.contracts import (
+    RequestBase,
+)
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
-    RequestType,
+    CommandName,
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     Client,
@@ -51,8 +54,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
 )
-
-
+import frontends.gamespy.protocols.presence_search_player.applications.switcher as psp
 class Switcher(SwitcherBase):
     _raw_request: str
 
@@ -66,57 +68,78 @@ class Switcher(SwitcherBase):
             raise GPParseException("Request format is invalid")
         raw_requests = split_nested_kv_str(self._raw_request)
         for raw_request in raw_requests:
-            name = get_kv_str_name(raw_request)
-            if name not in RequestType:
-                self._client.log_debug(
-                    f"Request: {name} is not a valid request.")
-                continue
-            self._requests.append((RequestType(name), raw_request))
+            name = RequestBase.gs_parse(raw_request).command_name
+            self._requests.append((name, raw_request))
 
     def _create_cmd_handlers(
-        self, name: RequestType, raw_request: str
+        self, name: CommandName, raw_request: str
     ) -> CmdHandlerBase | None:
-        assert isinstance(name, RequestType)
+        assert isinstance(name, CommandName)
         assert isinstance(raw_request, str)
         if TYPE_CHECKING:
             self._client = cast(Client, self._client)
         match name:
-            case RequestType.KA:
-                return KeepAliveHandler(self._client, KeepAliveRequest(raw_request))
-            case RequestType.LOGIN:
-                return LoginHandler(self._client, LoginRequest(raw_request))
-            case RequestType.LOGOUT:
-                return LogoutHandler(self._client, LogoutRequest(raw_request))
-            case RequestType.NEWUSER:
-                return NewUserHandler(self._client, NewUserRequest(raw_request))
-            case RequestType.ADDBLOCK:
-                return AddBlockHandler(self._client, AddBlockRequest(raw_request))
-            case RequestType.GETPROFILE:
-                return GetProfileHandler(self._client, GetProfileRequest(raw_request))
-            case RequestType.NEWPROFILE:
-                return NewProfileHandler(self._client, NewProfileRequest(raw_request))
-            case RequestType.REGISTERCDKEY:
-                return RegisterCDKeyHandler(self._client, RegisterCDKeyRequest(raw_request))
-            case RequestType.REGISTERNICK:
-                return RegisterNickHandler(self._client, RegisterNickRequest(raw_request))
-            case RequestType.UPDATEPRO:
-                return UpdateProfileHandler(self._client, UpdateProfileRequest(raw_request))
-            case RequestType.STATUS:
-                return StatusHandler(self._client, StatusRequest(raw_request))
-            case RequestType.STATUSINFO:
-                return StatusInfoHandler(self._client, StatusInfoRequest(raw_request))
-            case RequestType.INVITETO:
-                raise NotImplementedError(
-                    "InviteToHandler is not implemented.")
-            case RequestType.PEER_AUTH:
+            case CommandName.KA:
+                return KeepAliveHandler(
+                    self._client, KeepAliveRequest.gs_parse(raw_request)
+                )
+            case CommandName.LOGIN:
+                return LoginHandler(self._client, LoginRequest.gs_parse(raw_request))
+            case CommandName.LOGOUT:
+                return LogoutHandler(self._client, LogoutRequest.gs_parse(raw_request))
+            case CommandName.NEWUSER:
+                return NewUserHandler(
+                    self._client, NewUserRequest.gs_parse(raw_request)
+                )
+            case CommandName.ADDBLOCK:
+                return AddBlockHandler(
+                    self._client, AddBlockRequest.gs_parse(raw_request)
+                )
+            case CommandName.GETPROFILE:
+                return GetProfileHandler(
+                    self._client, GetProfileRequest.gs_parse(raw_request)
+                )
+            case CommandName.NEWPROFILE:
+                return NewProfileHandler(
+                    self._client, NewProfileRequest.gs_parse(raw_request)
+                )
+            case CommandName.REGISTERCDKEY:
+                return RegisterCDKeyHandler(
+                    self._client, RegisterCDKeyRequest.gs_parse(raw_request)
+                )
+            case CommandName.REGISTERNICK:
+                return RegisterNickHandler(
+                    self._client, RegisterNickRequest.gs_parse(raw_request)
+                )
+            case CommandName.UPDATEPRO:
+                return UpdateProfileHandler(
+                    self._client, UpdateProfileRequest.gs_parse(raw_request)
+                )
+            case CommandName.STATUS:
+                return StatusHandler(self._client, StatusRequest.gs_parse(raw_request))
+            case CommandName.STATUSINFO:
+                return StatusInfoHandler(
+                    self._client, StatusInfoRequest.gs_parse(raw_request)
+                )
+            case CommandName.INVITETO:
+                raise NotImplementedError("InviteToHandler is not implemented.")
+            case CommandName.PEER_AUTH:
                 raise NotImplementedError("peer auth is not implemented")
-            case RequestType.ADDBUDDY:
-                return AddBuddyHandler(self._client, AddBuddyRequest(raw_request))
-            case RequestType.ADDBLOCK:
-                return AddBlockHandler(self._client, AddBlockRequest(raw_request))
-            case RequestType.AUTHADD:
-                return AuthAddBuddyHandler(self._client, AuthAddBuddyRequest(raw_request))
-            case RequestType.REMOVEBLOCK:
-                return RemoveBlockHandler(self._client, RemoveBlockRequest(raw_request))
+            case CommandName.ADDBUDDY:
+                return AddBuddyHandler(
+                    self._client, AddBuddyRequest.gs_parse(raw_request)
+                )
+            case CommandName.ADDBLOCK:
+                return AddBlockHandler(
+                    self._client, AddBlockRequest.gs_parse(raw_request)
+                )
+            case CommandName.AUTHADD:
+                return AuthAddBuddyHandler(
+                    self._client, AuthAddBuddyRequest.gs_parse(raw_request)
+                )
+            case CommandName.REMOVEBLOCK:
+                return RemoveBlockHandler(
+                    self._client, RemoveBlockRequest.gs_parse(raw_request)
+                )
             case _:
                 return None

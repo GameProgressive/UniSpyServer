@@ -4,7 +4,7 @@ from frontends.gamespy.library.exceptions.general import (
     UniSpyExceptionValidator,
     get_exceptions_dict,
 )
-from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.library.network.http_data import HttpData
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
     WebException,
 )
@@ -39,12 +39,10 @@ class SakeException(WebException):
         self.command_name = command_name
 
     def build(self) -> None:
-        content = SoapEnvelop(f"{self.command_name.value}Response")
-        content.add(
-            f"{self.command_name.value}Result", SakeCode.DATABASE_UNAVAILABLE.value
-        )
-        self.sending_buffer = str(
-            HttpData(body=str(content), headers={"Error": self.message})
+        content = SoapEnvelop(f"{self.command_name}Response")
+        content.add(f"{self.command_name}Result", SakeCode.DATABASE_UNAVAILABLE.value)
+        self.sending_buffer = HttpData(
+            path=None, body=str(content), headers={"Error": self.message}
         )
 
 

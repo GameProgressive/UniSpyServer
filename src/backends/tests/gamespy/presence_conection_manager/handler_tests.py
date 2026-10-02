@@ -17,7 +17,7 @@ class HandlerTest(unittest.TestCase):
     # region General
     @responses.activate
     def test_login_authtoken(self):
-        r = pcm.LoginRequest(LOGIN_AUTH_TOKEN)
+        r = pcm.LoginRequest.gs_parse(LOGIN_AUTH_TOKEN)
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -26,7 +26,7 @@ class HandlerTest(unittest.TestCase):
 
     @responses.activate
     def test_login_uniquenick(self):
-        r = pcm.LoginRequest(LOGIN_UNIQUE_NICK)
+        r = pcm.LoginRequest.gs_parse(LOGIN_UNIQUE_NICK)
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -35,7 +35,7 @@ class HandlerTest(unittest.TestCase):
 
     @responses.activate
     def test_login_user(self):
-        r = pcm.LoginRequest(LOGIN_USER)
+        r = pcm.LoginRequest.gs_parse(LOGIN_USER)
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -57,7 +57,14 @@ class HandlerTest(unittest.TestCase):
     @unittest.skip("not implemented")
     @responses.activate
     def test_buddy_list(self):
-        r = pcm.BuddyListRetriveRequest(profile_id=1, namespace_id=0, operation_id=1)
+        r = pcm.BuddyListRetriveRequest(
+            command_name="",
+            raw_request="",
+            request_dict={},
+            profile_id=1,
+            namespace_id=0,
+            operation_id=1,
+        )
         data = add_headers(r)
         request = bkr.BuddyListRetriveRequest(**data)
         handler = bkh.BuddyListRetriveHandler(request)

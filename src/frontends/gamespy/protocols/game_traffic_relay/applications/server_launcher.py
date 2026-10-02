@@ -12,7 +12,7 @@ from frontends.gamespy.protocols.game_traffic_relay.applications.connection impo
     ConnectionListener,
 )
 from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
-    GtrHeartbeat,
+    GtrHeartbeatRequest,
 )
 
 
@@ -32,7 +32,7 @@ class Service(ServiceBase):
 
     def __gtr_heartbeat(self):
         assert self.config
-        req = GtrHeartbeat(
+        req = GtrHeartbeatRequest(
             server_id=self.config.server_id,
             public_ip_address=self.config.listening_address,
             public_port=self.config.listening_port,

@@ -2,7 +2,7 @@
 
 # region auth
 
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from sqlalchemy import ColumnExpressionArgument, Integer, and_
 from sqlalchemy.orm import Session
@@ -21,9 +21,6 @@ from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums impo
 )
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.exceptions import (
     SakeException,
-)
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import (
-    RecordConverter,
 )
 
 
@@ -247,7 +244,7 @@ def _get_filtered_record(
     filtered_key_value = {}
     for f in fields:
         if f not in filtered_record:
-            raise SakeException(f"{f} not in record", command_name)
+            raise SakeException(f"{f} not in record", command_name.value)
         filtered_key_value[f] = filtered_record[f]
     return filtered_key_value
 
@@ -309,7 +306,7 @@ def create_records(
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
 
     if result != 0:
-        raise SakeException("Records already existed", command_name)
+        raise SakeException("Records already existed", command_name.value)
 
     sake = SakeStorage(tableid=table_id, record=records)
     session.add(sake)
@@ -328,7 +325,7 @@ def update_record(
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
-        raise SakeException("Records do not existed", command_name)
+        raise SakeException("Records do not existed", command_name.value)
 
     result.record = records  # type: ignore
     session.commit()
@@ -340,7 +337,7 @@ def delete_record(table_id: str, command_name: CommandName, session: Session) ->
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
-        raise SakeException("Records not existed", command_name)
+        raise SakeException("Records not existed", command_name.value)
 
     session.delete(result)
     session.commit()

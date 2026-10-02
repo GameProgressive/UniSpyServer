@@ -50,9 +50,19 @@ def get_peer_staging_channels(
     return data
 
 
-def get_peer_group_channel(
-    game_name: str, session: Session
-) -> list[PeerRoomInfo]:
+def status_update(session: Session, instant_key: str):
+    cache = (
+        session.query(GameServerCaches)
+        .where(GameServerCaches.instant_key == instant_key)
+        .first()
+    )
+    if cache is None:
+        raise QRException("No server found, please make sure there is a server.")
+    cache.avaliable = True  # type: ignore
+    session.commit()
+
+
+def get_peer_group_channel(game_name: str, session: Session) -> list[PeerRoomInfo]:
     # Query the database for channels matching the constructed group names
     group_data = (
         session.query(GroupList)
@@ -71,46 +81,60 @@ def get_peer_group_channel(
         # Query the database for channels matching the constructed group names
         result = (
             session.query(ChatChannelCaches)
-            .where(ChatChannelCaches.channel_name == group_room_channel_name
-                   ).first())
+            .where(ChatChannelCaches.channel_name == group_room_channel_name)
+            .first()
+        )
         assert isinstance(gd.groupid, int)
         assert isinstance(gd.roomname, str)
 
         if result is None:
-            info = PeerRoomInfo(groupid=gd.groupid,
-                                game_name=game_name,
-                                hostname=gd.roomname)
+            info = PeerRoomInfo(
+                groupid=gd.groupid, game_name=game_name, hostname=gd.roomname
+            )
         else:
             assert isinstance(result.channel_name, str)
 
             assert isinstance(result.max_num_user, int)
             # todo get the peer room extra info
-            waiting_player_count = session.query(ChatChannelUserCaches).where(
-                ChatChannelUserCaches.channel_name == result.channel_name).count()
-            playing_player_count = session.query(ChatChannelUserCaches).where(
-                ChatChannelUserCaches.channel_name.like(channel_name_prefix_regex)).count()
+            waiting_player_count = (
+                session.query(ChatChannelUserCaches)
+                .where(ChatChannelUserCaches.channel_name == result.channel_name)
+                .count()
+            )
+            playing_player_count = (
+                session.query(ChatChannelUserCaches)
+                .where(
+                    ChatChannelUserCaches.channel_name.like(channel_name_prefix_regex)
+                )
+                .count()
+            )
             password = result.password if result.password is not None else ""
             assert isinstance(password, str)
-            info = PeerRoomInfo(groupid=gd.groupid,
-                                game_name=game_name,
-                                hostname=result.channel_name,
-                                password=password,
-                                maxplayers=result.max_num_user,
-                                numplayers=waiting_player_count+playing_player_count,
-                                numwaiting=waiting_player_count,
-                                numplaying=playing_player_count
-                                )
+            info = PeerRoomInfo(
+                groupid=gd.groupid,
+                game_name=game_name,
+                hostname=result.channel_name,
+                password=password,
+                maxplayers=result.max_num_user,
+                numplayers=waiting_player_count + playing_player_count,
+                numwaiting=waiting_player_count,
+                numplaying=playing_player_count,
+            )
 
         group_info.append(info)
     return group_info
 
 
-def get_game_server_cache_by_ip_port(ip: str, port: int, session: Session) -> GameServerCaches | None:
+def get_game_server_cache_by_ip_port(
+    ip: str, port: int, session: Session
+) -> GameServerCaches | None:
     result = (
         session.query(GameServerCaches)
-        .where(GameServerCaches.host_ip_address == ip,
-               GameServerCaches.query_report_port == port,
-               GameServerCaches.update_time >= __expire_time())
+        .where(
+            GameServerCaches.host_ip_address == ip,
+            GameServerCaches.query_report_port == port,
+            GameServerCaches.update_time >= __expire_time(),
+        )
         .first()
     )
     return result
@@ -122,8 +146,10 @@ def get_game_server_cache_with_instant_key(
     assert isinstance(instant_key, str)
     result = (
         session.query(GameServerCaches)
-        .where(GameServerCaches.instant_key == instant_key,
-               GameServerCaches.update_time >= __expire_time())
+        .where(
+            GameServerCaches.instant_key == instant_key,
+            GameServerCaches.update_time >= __expire_time(),
+        )
         .first()
     )
     return result
@@ -142,8 +168,7 @@ def get_server_info_with_game_name(
 
 
 def get_secret_key(game_name: str, session: Session) -> str:
-    result = session.query(Games.secretkey).where(
-        Games.gamename == game_name).first()
+    result = session.query(Games.secretkey).where(Games.gamename == game_name).first()
     if result is None:
         raise SBException(f"{game_name} secret key not found in database")
     return result[0]
@@ -154,9 +179,11 @@ def get_server_info_list_with_game_name(
 ) -> list[GameServerInfo]:
     result = (
         session.query(GameServerCaches)
-        .where(GameServerCaches.game_name == game_name,
-               GameServerCaches.update_time >= __expire_time(),
-               GameServerCaches.avaliable == True)
+        .where(
+            GameServerCaches.game_name == game_name,
+            GameServerCaches.update_time >= __expire_time(),
+            GameServerCaches.avaliable == True,
+        )
         .all()
     )
     data = []
@@ -170,28 +197,33 @@ def get_server_info_list_with_game_name(
         assert isinstance(info.status, GameServerStatus)
         assert isinstance(info.data, dict)
 
-        data.append(GameServerInfo(
-            server_id=info.server_id,
-            host_ip_address=info.host_ip_address,
-            instant_key=info.instant_key,
-            game_name=info.game_name,
-            query_report_port=info.query_report_port,
-            update_time=info.update_time,
-            status=info.status,
-            data=info.data
-        ))
+        data.append(
+            GameServerInfo(
+                server_id=info.server_id,
+                host_ip_address=info.host_ip_address,
+                instant_key=info.instant_key,
+                game_name=info.game_name,
+                query_report_port=info.query_report_port,
+                update_time=info.update_time,
+                status=info.status,
+                data=info.data,
+            )
+        )
     return data
 
 
-def check_game_server_cache_conflict(ip: str, port: int, instant_key: str, session: Session):
-    cache = get_server_info_with_ip_and_port(
-        ip, port, session)
+def check_game_server_cache_conflict(
+    ip: str, port: int, instant_key: str, session: Session
+):
+    cache = get_server_info_with_ip_and_port(ip, port, session)
     if cache is not None and cache.instant_key != instant_key:
         session.delete(cache)
         session.commit()
 
 
-def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> GameServerInfo | None:
+def get_server_info_with_ip_and_port(
+    ip: str, port: int, session: Session
+) -> GameServerInfo | None:
     assert isinstance(ip, str)
     assert isinstance(port, int)
     result = (
@@ -199,7 +231,8 @@ def get_server_info_with_ip_and_port(ip: str, port: int, session: Session) -> Ga
         .where(
             GameServerCaches.host_ip_address == ip,
             GameServerCaches.query_report_port == port,
-            GameServerCaches.update_time >= __expire_time())
+            GameServerCaches.update_time >= __expire_time(),
+        )
         .first()
     )
     if result is None:
@@ -246,8 +279,7 @@ def update_game_server_cache(
 def refresh_game_server_cache(client_ip: str, client_port: int, session: Session):
     cache = get_game_server_cache_by_ip_port(client_ip, client_port, session)
     if cache is None:
-        raise QRException(
-            "no game server cache found, please check the database")
+        raise QRException("no game server cache found, please check the database")
     cache.update_time = datetime.now()  # type: ignore
     session.commit()
 
@@ -264,22 +296,20 @@ def clean_expired_game_server_cache(session: Session):
 
 def _get_specific_condition(con: str):
     if ">=" in con:
-        name,  value = con.split(" >= ")
-        return GameServerCaches.data[name]['value'].cast(
-            Integer) >= int(value)
+        name, value = con.split(" >= ")
+        return GameServerCaches.data[name]["value"].cast(Integer) >= int(value)
     if "<=" in con:
-        name,  value = con.split(" <= ")
-        return GameServerCaches.data[name]['value'].cast(
-            Integer) <= int(value)
+        name, value = con.split(" <= ")
+        return GameServerCaches.data[name]["value"].cast(Integer) <= int(value)
     if ">" in con:
-        name,  value = con.split(" > ")
-        return GameServerCaches.data[name]['value'].cast(Integer) > int(value)
+        name, value = con.split(" > ")
+        return GameServerCaches.data[name]["value"].cast(Integer) > int(value)
     if "<" in con:
-        name,  value = con.split(" < ")
-        return GameServerCaches.data[name]['value'].cast(Integer) < int(value)
+        name, value = con.split(" < ")
+        return GameServerCaches.data[name]["value"].cast(Integer) < int(value)
     if "=" in con:
-        name,  value = con.split(" = ")
-        return GameServerCaches.data[name]['value'] == value
+        name, value = con.split(" = ")
+        return GameServerCaches.data[name]["value"] == value
 
 
 def _filter_to_sql_con(filter: str) -> ColumnExpressionArgument[bool]:

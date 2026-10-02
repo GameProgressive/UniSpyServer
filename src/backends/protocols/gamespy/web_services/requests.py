@@ -1,149 +1,101 @@
-from pydantic import BaseModel
-
 import backends.library.abstractions.contracts as lib
-import frontends.gamespy.protocols.web_services.modules.auth.aggregates.enums as auth
-import frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums as sake
+import frontends.gamespy.protocols.web_services.modules.auth.contracts.requests as fnt_auth
+import frontends.gamespy.protocols.web_services.modules.sake.contracts.requests as fnt_sake
+import frontends.gamespy.protocols.web_services.modules.direct2game.contracts.requests as fnt_d2g
 
-
-class HttpData(BaseModel):
-    path: str
-    headers: dict
-    body: str
+import frontends.gamespy.protocols.web_services.abstractions.contracts as fnt
 
 
 class WebRequestBase(lib.RequestBase):
-    raw_request: str
-    """
-    we combine path, headers, body to a raw request and send to backend
-    """
-    command_name: str
+    data:fnt.RequestBase
 
 
 # region Sake
 
 
 class SakeRequestBase(WebRequestBase):
-    game_id: int
-    secret_key: str | None
-    login_ticket: str
-    """
-    in c sdk called login_ticket \n
-    in c# sdk called session_token
-    """
-    table_id: str
-    command_name: sake.CommandName
+    data:fnt_sake.RequestBase
 
 
 class CreateRecordRequest(SakeRequestBase):
-    records: dict
-
+    data:fnt_sake.CreateRecordRequest
 
 class DeleteRecordRequest(SakeRequestBase):
-    record_id: int
+    data:fnt_sake.DeleteRecordRequest
 
 
 class GetMyRecordsRequest(SakeRequestBase):
-    fields: list[str]
+    data:fnt_sake.GetMyRecordsRequest
 
 
 class GetRandomRecordsRequest(SakeRequestBase):
-    max: int
-    fields: list[str]
+    data:fnt_sake.GetRandomRecordsRequest
 
 
 class GetRecordLimitRequest(SakeRequestBase):
-    pass
+    data:fnt_sake.GetRecordLimitRequest
 
 
 class GetSpecificRecordsRequest(SakeRequestBase):
-    record_ids: list
-    fields: dict
+    data:fnt_sake.GetSpecificRecordsRequest
 
 
 class RateRecordRequest(SakeRequestBase):
-    record_id: str
-    rating: str
+    data:fnt_sake.RateRecordRequest
 
 
 class SearchForRecordsRequest(SakeRequestBase):
-    filter: str | None
-    sort: str
-    offset: str
-    max: int
-    surrounding: str
-    owner_ids: str | None
-    cache_flag: str
-    fields: list[str]
+    data:fnt_sake.SearchForRecordsRequest
+
 
 
 class UpdateRecordRequest(SakeRequestBase):
-    record_id: str
-    records: dict
+    data:fnt_sake.UpdateRecordRequest
 
 
 class GetRecordCountRequest(SakeRequestBase):
-    cache_flag: str
+    data:fnt_sake.GetRecordCountRequest
 
 
 # region Auth
 
 
 class AuthRequestBase(WebRequestBase):
-    version: int
-    partner_code: int
-    namespace_id: int
-    game_id: int
-    command_name: auth.CommandName
+    data:fnt.RequestBase
 
 
 class LoginProfileRequest(AuthRequestBase):
-    email: str
-    uniquenick: str
-    cdkey: str
-    password: str
+    data:fnt_auth.LoginProfileRequest
 
 
-class LoginPS3CertRequest(AuthRequestBase):
-    ps3_cert: str
-    npticket: str
+class LoginPs3CertRequest(AuthRequestBase):
+    data:fnt_auth.LoginPs3CertRequest
 
 
 class LoginRemoteAuthRequest(AuthRequestBase):
-    auth_token: str
-    challenge: str
+    data:fnt_auth.LoginRemoteAuthRequest
 
 
 class LoginUniqueNickRequest(AuthRequestBase):
-    uniquenick: str
-    password: str
+    data:fnt_auth.LoginUniqueNickRequest
 
 
 class CreateUserAccountRequest(AuthRequestBase):
-    email: str
-    nick: str
-    uniquenick: str
-    password: str
-    operation_id: int = 0
-    product_id: int = 1
-    game_id: int | None = None
+    data:fnt_auth.CreateUserAccountRequest
+
 
 
 # region D2G
 
 
 class Direct2GameRequestBase(WebRequestBase):
-    pass
+    data:fnt.RequestBase
 
 
 class GetPurchaseHistoryRequest(Direct2GameRequestBase):
-    game_id: int
-    access_token: str
-    proof: str
-    certificate: str
+    data:fnt_d2g.GetPurchaseHistoryRequest
 
 
 class GetStoreAvailabilityRequest(Direct2GameRequestBase):
-    game_id: int
-    version: int
-    region: str
-    access_token: str
+    data:fnt_d2g.GetStoreAvailabilityRequest
+

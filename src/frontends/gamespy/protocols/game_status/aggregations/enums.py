@@ -22,7 +22,7 @@ class GSErrorCode(IntEnum):
     NOERROR = 3
 
 
-class RequestType(Enum):
+class CommandName(Enum):
     AUTH = "auth"
     AUTHP = "authp"
     NEWGAME = "newgame"

@@ -1,18 +1,21 @@
+from pydantic import Field
 import xmltodict
 
 import frontends.gamespy.library.abstractions.contracts as lib
-from frontends.gamespy.library.network.http_handler import HttpData
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
     WebException,
 )
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
     SoapEnvelop,
 )
+from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName
 
 
-def remove_namespace(data):
+def remove_namespace(data) -> list | dict:
     if isinstance(data, dict):
-        return {key.split(':')[-1]: remove_namespace(value) for key, value in data.items()}
+        return {
+            key.split(":")[-1]: remove_namespace(value) for key, value in data.items()
+        }
     elif isinstance(data, list):
         return [remove_namespace(item) for item in data]
     else:
@@ -27,8 +30,9 @@ def find_key_in_nested_dict(nested_dict, target_key):
         for key, value in nested_dict.items():
             if key == target_key:
                 found_values.append(value)  # Add the value if the key is found
-            found_values.extend(find_key_in_nested_dict(
-                value, target_key))  # Search recursively
+            found_values.extend(
+                find_key_in_nested_dict(value, target_key)
+            )  # Search recursively
 
     # If the input is a list, iterate through elements
     elif isinstance(nested_dict, list):
@@ -60,55 +64,55 @@ def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
 
 
 class RequestBase(lib.RequestBase):
-    raw_request: str
-    _request_dict: dict
-    _http_data: HttpData
-    def __init__(self, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
-        super().__init__(raw_request)
+    raw_request: lib.HttpData = Field(repr=False)
+    request_dict: dict[str, object] = Field(repr=False)
+    command_name: CommandName
 
-    def parse(self) -> None:
-        self._http_data = HttpData.from_str(self.raw_request)
-        assert self._http_data.body is not None
-        parsed_data = xmltodict.parse(self._http_data.body)
+    @property
+    def str_mapping(self) -> dict[str, str]:
+        """
+        type checking trick
+        """
+        return self.request_dict  # type: ignore
+
+    @property
+    def int_mapping(self) -> dict[str, int]:
+        """
+        type checking trick
+        """
+        return self.request_dict  # type: ignore
+
+    @property
+    def list_mapping(self) -> dict[str, list]:
+        """
+        type checking trick
+        """
+        return self.request_dict  # type: ignore
+
+    @property
+    def dict_mapping(self) -> dict[str, dict]:
+        """
+        type checking trick
+        """
+        return self.request_dict  # type: ignore
+
+    @staticmethod
+    def gs_parse(raw_request: lib.HttpData) -> "RequestBase":
+        data = lib.RequestBase.gs_parse(raw_request)
+        parsed_data = xmltodict.parse(raw_request.body)
         processed_data = remove_namespace(parsed_data)
         assert isinstance(processed_data, dict)
-        self._request_dict = processed_data["Envelope"]["Body"] # type: ignore
-        self.command_name = list(self._request_dict.keys())[0]
-
-    def _get_int(self, attr_name: str) -> int:
-        result_str = RequestBase._get_str(self, attr_name)
-        result = int(result_str)
-        return result
-
-    def _get_str(self, attr_name: str) -> str:
-        assert isinstance(attr_name, str)
-        value = self._get_value_by_key(attr_name)
-        if value is None:
-            raise WebException(f"{attr_name} is missing")
-        assert isinstance(value, str)
-        return value
-
-    def _get_value_by_key(self, key: str) -> object | None:
-        value = find_first_key_in_nested_dict(self._request_dict, key)
-        return value
-
-    def _get_value(self, attr_name: str) -> object:
-        value = self._get_value_by_key(attr_name)
-        if value is None:
-            raise WebException(f"{attr_name} is missing")
-        return value
-
-    def _get_dict(self, attr_name: str) -> dict:
-        value = self._get_value_by_key(attr_name)
-        if value is None:
-            raise WebException(f"{attr_name} is missing")
-        if not isinstance(value, dict):
-            raise WebException(f"{attr_name} is not a dict")
-        return value
+        body = processed_data["Envelope"]["Body"]
+        data.command_name = next(iter(body))
+        request_dict = body[data.command_name]
+        data = RequestBase(**data.model_dump(), request_dict=request_dict)
+        return data
 
 
 class ResultBase(lib.ResultBase):
+    headers: dict[str, str]
+    command_name: CommandName
+
     pass
 
 
@@ -118,11 +122,13 @@ class ResponseBase(lib.ResponseBase):
     Soap envelope content, should be initialized in response sub class
     """
     _result: ResultBase
-    sending_buffer: str
+    sending_buffer: lib.HttpData
 
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         super().__init__(result)
 
     def build(self) -> None:
-        self.sending_buffer = str(HttpData(body=str(self._content)))
+        self.sending_buffer = lib.HttpData(
+            path=None, headers=self._result.headers, body=str(self._content)
+        )

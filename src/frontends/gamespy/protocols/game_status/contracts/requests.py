@@ -1,4 +1,6 @@
-from typing import final
+from typing import Any, final
+
+from pydantic import BaseModel
 
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
 from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase
@@ -12,57 +14,60 @@ from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSEx
 @final
 class AuthGameRequest(RequestBase):
     game_name: str
+    response: str | None
+    port: int | None
+    local_id: int
 
-    def parse(self) -> None:
-        super().parse()
-        if "lid" not in self._request_dict and "id" not in self._request_dict:
-            raise GSException("localid is missing")
-
-        if "gamename" not in self._request_dict:
-            raise GSException("gamename is missing")
-        self.game_name = self._request_dict["gamename"]
-
-        if "response" not in self._request_dict:
-            raise GSException("response is missing")
-        self.response = self._request_dict["response"]
-
-        if "port" in self._request_dict:
-            try:
-                self.port = int(self._request_dict["port"])
-            except ValueError:
-                raise GSException("port format is incorrect")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AuthGameRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict.update(port=None)
+        data_dict["game_name"] = data.request_dict["gamename"]
+        data_dict["response"] = data.request_dict.get("response")
+        data_dict["port"] = data.request_dict.get("port")
+        data = AuthGameRequest(**data_dict)
+        return data
 
 
-@final
 class AuthPlayerRequest(RequestBase):
     auth_type: AuthMethod
-    profile_id: int
+    profile_id: int | None
+    auth_token: str | None
+    response: str | None
+    cdkey_hash: str | None
+    nick: str | None
+    local_id: int
 
-    auth_token: str
-    response: str
-    cdkey_hash: str
-    nick: str
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AuthPlayerRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict.update(
+            profile_id=None,
+            auth_token=None,
+            cdkey_hash=None,
+            nick=None,
+        )
+        if "pid" in data.request_dict and "resp" in data.request_dict:
+            data_dict["profile_id"] = data.request_dict["pid"]
+            data_dict["response"] = data.request_dict["resp"]
+            data_dict["auth_type"] = AuthMethod.PROFILE_ID_AUTH
 
-    def parse(self) -> None:
-        super().parse()
-        if "lid" not in self._request_dict and "id" not in self._request_dict:
-            raise GSException("localid is missing from auth game request")
-        if "pid" in self._request_dict and "resp" in self._request_dict:
-            try:
-                self.profile_id = int(self._request_dict["pid"])
-            except ValueError:
-                raise GSException("profile id format is incorrect")
-            self.auth_type = AuthMethod.PROFILE_ID_AUTH
-        elif "authtoken" in self._request_dict and "response" in self._request_dict:
-            self.auth_token = self._request_dict["authtoken"]
-            self.response = self._request_dict["response"]
-            self.auth_type = AuthMethod.PARTNER_ID_AUTH
-        elif "keyhash" in self._request_dict and "nick" in self._request_dict:
-            self.cdkey_hash = self._request_dict["keyhash"]
-            self.nick = self._request_dict["nick"]
-            self.auth_type = AuthMethod.CDKEY_AUTH
+        elif "authtoken" in data.request_dict and "response" in data.request_dict:
+            data_dict["auth_token"] = data.request_dict["authtoken"]
+            data_dict["response"] = data.request_dict["response"]
+            data_dict["auth_type"] = AuthMethod.PARTNER_ID_AUTH
+
+        elif "keyhash" in data.request_dict and "nick" in data.request_dict:
+            data_dict["cdkey_hash"] = data.request_dict["keyhash"]
+            data_dict["nick"] = data.request_dict["nick"]
+            data_dict["response"] = data.request_dict["keyhash"]
+            data_dict["auth_type"] = AuthMethod.CDKEY_AUTH
         else:
             raise GSException("unknown authp request type")
+        data = AuthPlayerRequest(**data_dict)
+        return data
 
 
 @final
@@ -70,100 +75,73 @@ class GetPlayerDataRequest(RequestBase):
     profile_id: int
     storage_type: PersistStorageType
     data_index: int
-    is_get_all_data: bool = False
+    is_get_all_data: bool
     keys: list[str]
+    local_id: int
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.keys = []
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetPlayerDataRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
 
-    def parse(self) -> None:
-        super().parse()
-
-        if "lid" not in self._request_dict and "id" not in self._request_dict:
-            raise GSException("localid is missing from auth game request")
-
-        if "pid" in self._request_dict:
-            try:
-                self.profile_id = int(self._request_dict["pid"])
-            except ValueError:
-                raise GSException("pid format is incorrect")
-
-        if "ptype" in self._request_dict:
-            try:
-                self.storage_type = PersistStorageType(
-                    int(self._request_dict["ptype"]))
-            except ValueError:
-                raise GSException("ptype format is incorrect")
-
-        if "dindex" in self._request_dict:
-            try:
-                self.data_index = int(self._request_dict["dindex"])
-            except ValueError:
-                raise GSException("dindex format is incorrect")
-
-        if "keys" not in self._request_dict:
-            raise GSException("keys is missing")
-
-        keys = self._request_dict["keys"]
-        if not keys:
-            self.is_get_all_data = True
+        data_dict["profile_id"] = data.request_dict["pid"]
+        data_dict["storage_type"] = data.request_dict["ptype"]
+        data_dict["data_index"] = data.request_dict["dindex"]
+        key_str = data.request_dict.get("keys")
+        data_dict.update(keys=[])
+        if not key_str:
+            data_dict["is_get_all_data"] = True
         else:
-            key_list = keys.split("\x01")
-            for key in key_list:
-                self.keys.append(key)
-            self.is_get_all_data = False
+            data_dict["keys"] = key_str.split("\x01")
+            data_dict["is_get_all_data"] = False
+        data = GetPlayerDataRequest(**data_dict)
+        return data
 
 
 @final
 class GetProfileIdRequest(RequestBase):
     nick: str
     key_hash: str
+    local_id: int
 
-    def parse(self) -> None:
-        super().parse()
-        if "lid" not in self._request_dict and "id" not in self._request_dict:
-            raise GSException("localid is missing from auth game request")
-
-        if "nick" not in self._request_dict or "keyhash" not in self._request_dict:
-            raise GSException("nick or keyhash is missing")
-
-        if "nick" in self._request_dict:
-            self.nick = self._request_dict["nick"]
-        if "keyhash" in self._request_dict:
-            self.key_hash = self._request_dict["keyhash"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetProfileIdRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["nick"] = data.request_dict["nick"]
+        data_dict["key_hash"] = data.request_dict["keyhash"]
+        data = GetProfileIdRequest(**data_dict)
+        return data
 
 
 @final
 class NewGameRequest(RequestBase):
     is_client_local_storage_available: bool
-    challenge: str
+    challenge: str | None
     connection_id: int
     """
     client session key
     """
-    session_key: str
+    session_key: str | None
     """
     game session key
     """
 
-    def parse(self) -> None:
-        super().parse()
-        self.is_client_local_storage_available = True
-        if "sesskey" not in self._request_dict:
-            raise GSException("sesskey is missing")
+    def model_post_init(self, context: Any) -> None:
+        super().model_post_init(context)
+        if self.challenge is None and self.session_key is None:
+            raise GSException("Authentication info missing")
 
-        self.session_key = self._request_dict["sesskey"]
-
-        if "connid" not in self._request_dict:
-            raise GSException("connid is missing")
-        try:
-            self.connection_id = int(self._request_dict["connid"])
-        except ValueError:
-            raise GSException("connid format is incorrect")
-
-        if "challenge" in self._request_dict:
-            self.challenge = self._request_dict["challenge"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "NewGameRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict.update(is_client_local_storage_available=True)
+        data_dict["session_key"] = data.request_dict.get("sesskey")
+        data_dict["challenge"] = data.request_dict.get("challenge")
+        data_dict["connection_id"] = int(data.request_dict["connid"])
+        data = NewGameRequest(**data_dict)
+        return data
 
 
 @final
@@ -173,106 +151,45 @@ class SetPlayerDataRequest(RequestBase):
     SetPersistData() data type is bytes
     SetPersistDataValues() data type is \\key\\value
     """
+
     profile_id: int
-    storage_type: PersistStorageType
     data_index: int
     length: int
-    report: str
-    data: str
+    local_id: int
+    game_data: str
     is_key_value: bool
+    storage_type: PersistStorageType
 
-    def parse(self) -> None:
-        super().parse()
-        if "pid" not in self._request_dict:
-            raise GSException("pid is missing")
-
-        if "ptype" not in self._request_dict:
-            raise GSException("ptype is missing")
-
-        if "dindex" not in self._request_dict:
-            raise GSException("dindex is missing")
-
-        if "length" not in self._request_dict:
-            raise GSException("length is missing")
-        if "kv" not in self._request_dict:
-            raise GSException("key value type is missing")
-
-        try:
-            self.is_key_value = bool(int(self._request_dict['kv']))
-        except ValueError:
-            raise GSException("kv format is incorrect")
-
-        try:
-            self.profile_id = int(self._request_dict["pid"])
-        except ValueError:
-            raise GSException("pid format is incorrect")
-
-        try:
-            self.storage_type = PersistStorageType(
-                int(self._request_dict["ptype"]))
-        except ValueError:
-            raise GSException("ptype format is incorrect")
-
-        try:
-            self.data_index = int(self._request_dict["dindex"])
-        except ValueError:
-            raise GSException("dindex format is incorrect")
-
-        try:
-            self.length = int(self._request_dict["length"])
-        except ValueError:
-            raise GSException("length format is incorrect")
-
-        if "report" in self._request_dict:
-            self.report = self._request_dict["report"]
-
-        if "data" in self._request_dict:
-            self.data = self._request_dict["data"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "SetPlayerDataRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["is_key_value"] = data.request_dict["kv"]
+        data_dict["profile_id"] = data.request_dict["pid"]
+        data_dict["storage_type"] = data.request_dict["ptype"]
+        data_dict["data_index"] = data.request_dict["dindex"]
+        data_dict["length"] = int(data.request_dict["length"])
+        data_dict["game_data"] = data.request_dict["data"]
+        data = SetPlayerDataRequest(**data_dict)
+        return data
 
 
 @final
 class UpdateGameRequest(RequestBase):
+    session_key: str
     connection_id: int | None
     is_done: bool
-    is_client_local_storage_available: bool
+    is_local_storage: bool = False
     game_data: str
-    game_data_dict: dict[str, str]
-    session_key: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.connection_id = None
-
-    def parse(self) -> None:
-        super().parse()
-        if "gamedata" not in self._request_dict:
-            raise GSException("gamedata is missing")
-        self.game_data = self._request_dict["gamedata"]
-
-        self.game_data_dict = convert_to_key_value(self.game_data)
-
-        if "dl" in self._request_dict:
-            self.is_client_local_storage_available = True
-
-        if "done" not in self._request_dict:
-            raise GSException("done is missing")
-
-        done = self._request_dict["done"]
-        if done == "1":
-            self.is_done = True
-
-        elif done == "0":
-            self.is_done = False
-        else:
-            raise GSException("done format is incorrect")
-
-        if "sesskey" not in self._request_dict:
-            raise GSException("sesskey is missing")
-
-        self.session_key = self._request_dict["sesskey"]
-
-        if "connid" in self._request_dict:
-            try:
-                self.connection_id = int(self._request_dict["connid"])
-            except ValueError:
-                raise GSException("connid format is incorrect")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "UpdateGameRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["game_data"] = data.request_dict["gamedata"]
+        data_dict["is_done"] = data.request_dict["done"]
+        data_dict["session_key"] = data.request_dict["sesskey"]
+        data_dict["connection_id"] = data.request_dict.get("connid")
+        data_dict["is_local_straoge"] = data.request_dict.get("dl")
+        data = UpdateGameRequest(**data_dict)
+        return data

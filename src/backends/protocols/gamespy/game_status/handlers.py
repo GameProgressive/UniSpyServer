@@ -42,8 +42,8 @@ class AuthGameHandler(HandlerBase):
     def _result_construct(self) -> None:
         self._result = AuthGameResult(
             session_key=self.session_key,
-            local_id=self._request.local_id,
-            game_name=self._request.game_name)
+            local_id=self._request.data.local_id,
+            game_name=self._request.data.game_name)
 
 
 class AuthPlayerHandler(HandlerBase):
@@ -51,28 +51,28 @@ class AuthPlayerHandler(HandlerBase):
     response: AuthPlayerResponse
 
     def _data_operate(self):
-        match self._request.auth_type:
+        match self._request.data.auth_type:
             case AuthMethod.PARTNER_ID_AUTH:
-                if self._request.auth_token is None:
+                if self._request.data.auth_token is None:
                     raise GSException("auth tocken is missing")
                 self.data = data.get_profile_id_by_token(
-                    token=self._request.auth_token,
+                    token=self._request.data.auth_token,
                     session=self._session)
             case AuthMethod.PROFILE_ID_AUTH:
-                if self._request.profile_id is None:
+                if self._request.data.profile_id is None:
                     raise GSException("profileid is missing")
                 self.data = data.get_profile_id_by_profile_id(
-                    profile_id=self._request.profile_id,
+                    profile_id=self._request.data.profile_id,
                     session=self._session
                 )
             case AuthMethod.CDKEY_AUTH:
-                if self._request.cdkey_hash is None:
+                if self._request.data.cdkey_hash is None:
                     raise GSException("cdkey hash is required")
-                if self._request.nick is None:
+                if self._request.data.nick is None:
                     raise GSException("nick is missing")
                 self.data = data.get_profile_id_by_cdkey(
-                    cdkey=self._request.cdkey_hash,
-                    nick_name=self._request.nick,
+                    cdkey=self._request.data.cdkey_hash,
+                    nick_name=self._request.data.nick,
                     session=self._session
                 )
             case _:
@@ -80,7 +80,7 @@ class AuthPlayerHandler(HandlerBase):
 
     def _result_construct(self):
         self._result = AuthPlayerResult(
-            profile_id=self.data, local_id=self._request.local_id)
+            profile_id=self.data, local_id=self._request.data.local_id)
 
 
 class GetPlayerDataHandler(HandlerBase):
@@ -89,9 +89,9 @@ class GetPlayerDataHandler(HandlerBase):
 
     def _data_operate(self):
         self.pd = data.get_player_data(
-            self._request.profile_id,
-            self._request.storage_type,
-            self._request.data_index,
+            self._request.data.profile_id,
+            self._request.data.storage_type,
+            self._request.data.data_index,
             self._session
         )
         if self.pd is None:
@@ -108,8 +108,8 @@ class GetPlayerDataHandler(HandlerBase):
             data_formated = self.pd.data
 
         self._result = GetPlayerDataResult(
-            local_id=self._request.local_id,
-            profile_id=self._request.profile_id,
+            local_id=self._request.data.local_id,
+            profile_id=self._request.data.profile_id,
             data=data_formated,
             modified=self.pd.update_time)
 
@@ -120,15 +120,15 @@ class GetProfileIdHandler(HandlerBase):
 
     def _data_operate(self):
         self.data = data.get_profile_id_by_cdkey(
-            cdkey=self._request.key_hash,
-            nick_name=self._request.nick,
+            cdkey=self._request.data.key_hash,
+            nick_name=self._request.data.nick,
             session=self._session
         )
 
     def _result_construct(self):
         self._result = GetProfileIdResult(
             profile_id=self.data,
-            local_id=self._request.local_id)
+            local_id=self._request.data.local_id)
 
 
 class NewGameHandler(HandlerBase):
@@ -148,15 +148,15 @@ class SetPlayerDataHandler(HandlerBase):
     response: SetPlayerDataResponse
 
     def _data_operate(self):
-        if not self._request.is_key_value:
+        if not self._request.data.is_key_value:
             data_formated = base64.b64encode(
-                self._request.data.encode()).decode()
+                self._request.data.game_data.encode()).decode()
         else:
-            data_formated = self._request.data
+            data_formated = self._request.data.game_data
 
-        pd = data.get_player_data(self._request.profile_id,
-                                  self._request.storage_type,
-                                  self._request.data_index,
+        pd = data.get_player_data(self._request.data.profile_id,
+                                  self._request.data.storage_type,
+                                  self._request.data.data_index,
                                   self._session)
         if pd is not None:
             data.update_player_data(pd,
@@ -164,17 +164,17 @@ class SetPlayerDataHandler(HandlerBase):
                                     self._session)
         else:
             data.create_player_data(
-                self._request.profile_id,
-                self._request.storage_type,
-                self._request.data_index,
-                self._request.data,
+                self._request.data.profile_id,
+                self._request.data.storage_type,
+                self._request.data.data_index,
+                self._request.data.game_data,
                 self._session
             )
 
     def _result_construct(self) -> None:
         self._result = SetPlayerDataResult(
-            local_id=self._request.local_id,
-            profile_id=self._request.profile_id,
+            local_id=self._request.data.local_id,
+            profile_id=self._request.data.profile_id,
             modified=datetime.now()
         )
 

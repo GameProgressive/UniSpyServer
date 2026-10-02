@@ -1,7 +1,7 @@
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
 from frontends.gamespy.protocols.natneg.aggregations.enums import (
     ConnectPacketStatus,
-    RequestType,
+    CommandName,
 )
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.contracts.requests import (
@@ -53,7 +53,7 @@ class AddressCheckHandler(CmdHandlerBase):
             cookie=self._request.cookie,
             client_index=self._request.client_index,
             use_game_port=self._request.use_game_port,
-            port_type=self._request.port_type
+            port_type=self._request.port_type,
         )
         self._result.public_ip_addr = self._client.connection.remote_ip
         self._result.public_port = self._client.connection.remote_port
@@ -70,7 +70,8 @@ class ConnectAckHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._client.log_info(
-            f"client: {self._client.connection.remote_ip} index:{self._request.client_index} is received the connect packet.")
+            f"client: {self._client.connection.remote_ip} index:{self._request.client_index} is received the connect packet."
+        )
 
 
 class ConnectHandler(CmdHandlerBase):
@@ -85,7 +86,8 @@ class ConnectHandler(CmdHandlerBase):
     def _response_construct(self) -> None:
         if not self._result.is_both_client_ready:
             self._client.log_warn(
-                f"init cache is not enough for cookie: {self._request.cookie}")
+                f"init cache is not enough for cookie: {self._request.cookie}"
+            )
             return
         super()._response_construct()
 
@@ -109,7 +111,7 @@ class ErtAckHandler(CmdHandlerBase):
             cookie=self._request.cookie,
             client_index=self._request.client_index,
             use_game_port=self._request.use_game_port,
-            port_type=self._request.port_type
+            port_type=self._request.port_type,
         )
 
 
@@ -138,7 +140,7 @@ class InitHandler(CmdHandlerBase):
             cookie=self._request.cookie,
             client_index=self._request.client_index,
             use_game_port=self._request.use_game_port,
-            port_type=self._request.port_type
+            port_type=self._request.port_type,
         )
 
         self._response = InitResponse(self._result)
@@ -161,15 +163,15 @@ class InitHandler(CmdHandlerBase):
             self._handle_exception(ex)
 
     def _invoke_connect(self) -> None:
-        connect_raw = ConnectRequest.build(
+        request = ConnectRequest(
             version=self._request.version,
-            command_name=RequestType.CONNECT,
+            command_name=CommandName.CONNECT,
             cookie=self._request.cookie,
             port_type=self._request.port_type,
             client_index=self._request.client_index,
-            use_game_port=self._request.use_game_port
+            use_game_port=self._request.use_game_port,
+            raw_request=self._request.raw_request,
         )
-        request = ConnectRequest(connect_raw)
         handler = ConnectHandler(self._client, request)
         handler.handle()
 
@@ -193,7 +195,7 @@ class NatifyHandler(CmdHandlerBase):
             cookie=self._request.cookie,
             client_index=self._request.client_index,
             use_game_port=self._request.use_game_port,
-            port_type=self._request.port_type
+            port_type=self._request.port_type,
         )
         self._response = NatifyResponse(self._result)
 

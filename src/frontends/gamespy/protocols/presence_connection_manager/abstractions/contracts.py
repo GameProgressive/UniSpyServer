@@ -1,5 +1,8 @@
 import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.gamespy_utils import convert_to_key_value
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    CommandName,
+)
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
 )
@@ -15,32 +18,24 @@ def normalize_request(message: str):
 
 
 class RequestBase(lib.RequestBase):
-    command_name: str
+    command_name: CommandName
     operation_id: int
     """
     todo some request do not have operation id we just set it to 0 as default
     todo check this in future
     """
     raw_request: str
-    _request_dict: dict[str, str]
+    request_dict: dict[str, str]
 
-    def __init__(self, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
-        super().__init__(raw_request)
-
-    def parse(self):
-        super().parse()
-        self._request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = list(self._request_dict.keys())[0]
-
-        if "id" in self._request_dict:
-            try:
-                self.operation_id = int(self._request_dict["id"])
-            except Exception:
-                raise GPParseException("operation is invalid")
-        else:
-            self.operation_id = 0
-            # raise GPParseException("operation id is missing")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RequestBase":
+        data = lib.RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["request_dict"] = convert_to_key_value(raw_request)
+        data_dict["command_name"] = next(iter(data_dict["request_dict"]))
+        data_dict["operation_id"] = data_dict["request_dict"].get("id", 0)
+        data = RequestBase(**data_dict)
+        return data
 
 
 class ResultBase(lib.ResultBase):

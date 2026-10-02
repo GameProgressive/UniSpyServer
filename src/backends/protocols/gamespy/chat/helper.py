@@ -84,7 +84,7 @@ class ChannelHelper:
 
         data.check_channel_user_trash_data(channel, user, session)
 
-        if channel.creator == user.nick_name:  
+        if channel.creator == user.nick_name:
             is_creator = True
             is_operator = True
         else:
@@ -116,7 +116,7 @@ class ChannelHelper:
         assert isinstance(quiter.channel_name, str)
         assert isinstance(channel.channel_name, str)
 
-        if quiter.channel_name != channel.channel_name:  
+        if quiter.channel_name != channel.channel_name:
             print("user is not in channel, so can not quit")
             return
         session.delete(quiter)
@@ -135,17 +135,17 @@ class ChannelHelper:
         assert isinstance(kicker.channel_name, str)
         assert isinstance(channel.channel_name, str)
         assert isinstance(kickee.channel_name, str)
-        if kicker.channel_name != channel.channel_name:  
+        if kicker.channel_name != channel.channel_name:
             raise BadChannelKeyException(
                 f"kicker is not in channel: {channel.channel_name}",
                 channel.channel_name,
             )
-        if kickee.channel_name != channel.channel_name:  
+        if kickee.channel_name != channel.channel_name:
             raise BadChannelKeyException(
                 f"kickee is not in channel: {channel.channel_name}",
                 channel.channel_name,
             )
-        if not kicker.is_channel_operator:  
+        if not kicker.is_channel_operator:
             raise BadChannelKeyException(
                 "kick failed, kicker is not channel operator", channel.channel_name
             )
@@ -221,88 +221,83 @@ class ChannelHelper:
         assert isinstance(changer, ChatChannelUserCaches)
         assert isinstance(channel.channel_name, str)
         channel_modes = cast(list, channel.modes)
-        for flag, operation in request.mode_operations.items():
+        for flag, operation in request.data.mode_flags:
             match flag:
-                case ModeName.USER_QUIET_FLAG:
-                    if operation == ModeOperation.SET:
-                        if (
-                            changer.is_channel_operator
-                            and flag.value not in channel_modes
-                        ):
-                            channel_modes.append(flag.value)
-                    else:
-                        if changer.is_channel_operator and flag.value in channel_modes:
-                            channel_modes.remove(flag.value)
-                case ModeName.CHANNEL_PASSWORD:
-                    if operation == ModeOperation.SET:
-                        assert isinstance(request.password, str)
-                        if changer.is_channel_operator:  
-                            channel.password = request.password  
-                    else:
-                        if changer.is_channel_operator:  
-                            channel.password = None  
-                case ModeName.CHANNEL_USER_LIMITS:
-                    if operation == ModeOperation.SET:
-                        channel.max_num_user = request.limit_number  # type: ignore
-                    else:
-                        channel.max_num_user = 200  # type: ignore
-                case ModeName.BAN_ON_USER:
+                case ModeName.ADD_USER_QUIET_FLAG:
+                    if changer.is_channel_operator and flag.value not in channel_modes:
+                        channel_modes.append(flag.value)
+                case ModeName.DEL_USER_QUIET_FLAG:
+                    if changer.is_channel_operator and flag.value in channel_modes:
+                        channel_modes.remove(flag.value)
+                case ModeName.ADD_CHANNEL_PASSWORD:
+                    assert isinstance(request.data.password, str)
+                    if changer.is_channel_operator:
+                        channel.password = request.data.password
+                case ModeName.DEL_CHANNEL_PASSWORD:
+                    if changer.is_channel_operator:
+                        channel.password = None
+                case ModeName.ADD_CHANNEL_USER_LIMITS:
+                    assert request.data.limit_number
+                    channel.max_num_user = request.data.limit_number
+                case ModeName.DEL_CHANNEL_USER_LIMITS:
+                    channel.max_num_user = 200
+                case ModeName.ADD_BAN_ON_USER:
                     assert isinstance(channel.banned_nicks, list)
-                    if operation == ModeOperation.SET:
-                        # type: ignore
-                        if request.nick_name not in list(channel.banned_nicks):
-                            assert request.nick_name
-                            channel.banned_nicks.append(request.nick_name)
-                    else:
-                        if request.nick_name in list(channel.banned_nicks):
-                            channel.banned_nicks.remove(request.nick_name)
-                case ModeName.CHANNEL_OPERATOR:
-                    if operation == ModeOperation.SET:
-                        if request.nick_name is None:
-                            raise BadChannelKeyException(
-                                "ADD_CHANNEL_OPERATOR require nick name",
-                                channel.channel_name,
-                            )
-                        u = data.get_channel_user_cache_by_nick_name(
-                            request.channel_name, request.nick_name, session
+                    if request.data.nick_name not in list(channel.banned_nicks):
+                        assert request.data.nick_name
+                        channel.banned_nicks.append(request.data.nick_name)
+                case ModeName.DEL_BAN_ON_USER:
+                    if request.data.nick_name in list(channel.banned_nicks):
+                        channel.banned_nicks.remove(request.data.nick_name)
+                case ModeName.ADD_CHANNEL_OPERATOR:
+                    if request.data.nick_name is None:
+                        raise BadChannelKeyException(
+                            "ADD_CHANNEL_OPERATOR require nick name",
+                            channel.channel_name,
                         )
-                        if u is None:
-                            raise BadChannelKeyException(
-                                f"no user found with nick name:{request.nick_name}",
-                                channel.channel_name,
-                            )
-                        u.is_channel_operator = True  # type: ignore
-                    else:
-                        if request.nick_name is None:
-                            raise BadChannelKeyException(
-                                "REMOVE_CHANNEL_OPERATOR require nick name",
-                                channel.channel_name,
-                            )
-                        u = data.get_channel_user_cache_by_nick_name(
-                            request.channel_name, request.nick_name, session
+                    u = data.get_channel_user_cache_by_nick_name(
+                        request.data.channel_name, request.data.nick_name, session
+                    )
+                    if u is None:
+                        raise BadChannelKeyException(
+                            f"no user found with nick name:{request.data.nick_name}",
+                            channel.channel_name,
                         )
-                        u.is_channel_operator = False  # type: ignore
-                case ModeName.USER_VOICE_PERMISSION:
+                    u.is_channel_operator = True  # type: ignore
+                case ModeName.DEL_CHANNEL_OPERATOR:
+                    if request.data.nick_name is None:
+                        raise BadChannelKeyException(
+                            "REMOVE_CHANNEL_OPERATOR require nick name",
+                            channel.channel_name,
+                        )
+                    u = data.get_channel_user_cache_by_nick_name(
+                        request.data.channel_name, request.data.nick_name, session
+                    )
+                    assert u
+                    u.is_channel_operator = False
+                case ModeName.ADD_USER_VOICE_PERMISSION:
                     if operation == ModeOperation.SET:
-                        if request.nick_name is None:
+                        if request.data.nick_name is None:
                             raise BadChannelKeyException(
                                 "ENABLE_USER_VOICE_PERMISSION require nick name",
                                 channel.channel_name,
                             )
                         u = data.get_channel_user_cache_by_nick_name(
-                            request.channel_name, request.nick_name, session
+                            request.data.channel_name, request.data.nick_name, session
                         )
-                        u.is_voiceable = True  # type: ignore
-                    else:
-                        if request.nick_name is None:
-                            raise BadChannelKeyException(
-                                "DISABLE_USER_VOICE_PERMISSION require nick name",
-                                channel.channel_name,
-                            )
-                        u = data.get_channel_user_cache_by_nick_name(
-                            request.channel_name, request.nick_name, session
+                        assert u
+                        u.is_voiceable = True
+                case ModeName.DEL_USER_VOICE_PERMISSION:
+                    if request.data.nick_name is None:
+                        raise BadChannelKeyException(
+                            "DISABLE_USER_VOICE_PERMISSION require nick name",
+                            channel.channel_name,
                         )
-                        u.is_voiceable = False  # type: ignore
+                    u = data.get_channel_user_cache_by_nick_name(
+                        request.data.channel_name, request.data.nick_name, session
+                    )
+                    assert u
+                    u.is_voiceable = False
         session.commit()
 
     @staticmethod
@@ -336,5 +331,5 @@ class ChannelHelper:
     def update_channel_key_values(
         kv: dict, channel: ChatChannelCaches, session: Session
     ):
-        channel.key_values = kv  
+        channel.key_values = kv
         session.commit()

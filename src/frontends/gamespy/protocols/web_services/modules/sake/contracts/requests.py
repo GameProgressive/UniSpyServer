@@ -1,3 +1,5 @@
+from frontends.gamespy.library.abstractions.contracts import HttpData
+from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.modules.sake.abstractions.contracts import (
     RequestBase,
 )
@@ -12,46 +14,51 @@ class CreateRecordRequest(RequestBase):
     (name,type,value)
     """
 
-    def parse(self) -> None:
-        super().parse()
-        self.records = self._get_record_field()
-
-    def _get_dict(self, attr_name: str) -> dict:
-        try:
-            return super()._get_dict(attr_name)
-        except Exception:
-            raise SakeException(f"{attr_name} is missing", self.command_name)
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "CreateRecordRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["records"] = RequestBase._get_record_field(data)
+        data = CreateRecordRequest(**data_dict)
+        return data
 
 
 class DeleteRecordRequest(RequestBase):
     record_id: int
 
-    def parse(self) -> None:
-        super().parse()
-        self.record_id = self._get_int("recordid")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "DeleteRecordRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["record_id"] = data.int_mapping["recordid"]
+        data = DeleteRecordRequest(**data_dict)
+        return data
 
 
 class GetMyRecordsRequest(RequestBase):
     fields: list
 
-    def parse(self) -> None:
-        super().parse()
-        fields = self._get_dict("fields")["string"]
-        if isinstance(fields, str):
-            fields = [fields]
-        if not isinstance(fields, list):
-            raise SakeException("fields is not list type", self.command_name)
-        self.fields = fields
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "GetMyRecordsRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["fields"] = data.dict_mapping["fields"]["string"]
+        data = GetMyRecordsRequest(**data_dict)
+        return data
 
 
 class GetRandomRecordsRequest(RequestBase):
-    max: int
+    max_value: int
     fields: list
 
-    def parse(self) -> None:
-        super().parse()
-        self.max = self._get_int("max")
-        self.fields = self._get_dict("fields")["string"]
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "GetRandomRecordsRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["max_value"] = data.int_mapping["max"]
+        data_dict["fields"] = data.dict_mapping["fields"]["string"]
+        data = GetRandomRecordsRequest(**data_dict)
+        return data
 
 
 class GetRecordLimitRequest(RequestBase):
@@ -80,79 +87,87 @@ class GetSpecificRecordsRequest(RequestBase):
     ]
     """
 
-    def parse(self) -> None:
-        super().parse()
-        self.record_ids = self._get_dict("recordids")
-        self.fields = self._get_dict("fields")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "GetSpecificRecordsRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["record_ids"] = data.dict_mapping["recordids"]
+        data_dict["fields"] = data.dict_mapping["fields"]
+        data = GetSpecificRecordsRequest(**data_dict)
+        return data
 
 
 class RateRecordRequest(RequestBase):
     record_id: str
     rating: str
 
-    def parse(self) -> None:
-        super().parse()
-        self.record_id = self._get_str("recordid")
-        self.rating = self._get_str("rating")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "RateRecordRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["record_id"] = data.str_mapping["recordid"]
+        data_dict["rating"] = data.str_mapping["rating"]
+
+        data = RateRecordRequest(**data_dict)
+        return data
 
 
 class SearchForRecordsRequest(RequestBase):
     offset: str
-    max: int
+    max_value: int
     surrounding: str | None
     cache_flag: str | None
-    fields: dict
+    fields: dict[str,list]
     """
     [
-    (field_name,field_type),
-    (field_name,field_type),
-    (field_name,field_type),
+    (field_name, field_type),
+    (field_name, field_type),
+    (field_name, field_type),
     ...
-    (field_name,field_type)
+    (field_name, field_type)
     ]
     """
-    owner_ids: str | None
+    owner_ids: list | None
     sort: str | None
     filter: str | None
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.filter = None
-        self.sort = None
-        self.owner_ids = None
-        self.surrounding = None
-        self.cache_flag = None
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "SearchForRecordsRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["offset"] = data.str_mapping["offset"]
+        data_dict["max_value"] = data.int_mapping["max"]
+        data_dict["fields"] = data.dict_mapping["fields"]
 
-    def parse(self) -> None:
-        super().parse()
-        filter = self._get_value_by_key("filter")
-        if filter is not None:
-            filter_str = self._get_str("filter")
-            self.filter = (
-                filter_str.replace(" &gt; ", " > ")
-                .replace(" &lt; ", " < ")
-                .replace(" &ge ", " >= ")
-                .replace(" &le ", " <= ")
+        data_dict["surrounding"] = data.str_mapping.get("surrounding")
+        data_dict["sort"] = data.str_mapping.get("sort")
+
+        data_dict["owner_ids"] = (
+            list(data.dict_mapping["ownerids"].values())
+            if data.dict_mapping.get("ownerids") is not None
+            else None
+        )
+
+        data_dict["cache_flag"] = data.str_mapping.get("cacheFlag")
+
+        temp_filter = data.str_mapping.get("filter")
+        data_dict["filter"] = (
+            temp_filter.translate(
+                str.maketrans(
+                    {
+                        " &gt; ": " > ",
+                        " &lt; ": " < ",
+                        " &ge; ": " >= ",
+                        " &le; ": " <= ",
+                    }
+                )
             )
+            if temp_filter is not None
+            else None
+        )
 
-        sort = self._get_value_by_key("sort")
-        if sort is not None:
-            self.sort = self._get_str("sort")
-        self.offset = self._get_str("offset")
-        self.max = self._get_int("max")
-
-        surrounding = self._get_value_by_key("surrounding")
-        if surrounding is not None:
-            self.surrounding = self._get_str("surrounding")
-
-        owner_ids = self._get_value_by_key("ownerids")
-        if owner_ids is not None:
-            owner_dict = self._get_dict("ownerids")
-            self.owner_ids = list(owner_dict.values())[0]
-
-        cache_flag = self._get_value_by_key("cacheFlag")
-        if cache_flag is not None:
-            self.cache_flag = str(cache_flag)
+        data = SearchForRecordsRequest(**data_dict)
+        return data
 
 
 class UpdateRecordRequest(RequestBase):
@@ -168,10 +183,14 @@ class UpdateRecordRequest(RequestBase):
     ]
     """
 
-    def parse(self) -> None:
-        super().parse()
-        self.record_id = self._get_str("recordid")
-        self.records = self._get_record_field()
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "UpdateRecordRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["record_id"] = data.str_mapping["recordid"]
+        data_dict["records"] = RequestBase._get_record_field(data)
+        data = UpdateRecordRequest(**data_dict)
+        return data
 
 
 class GetRecordCountRequest(RequestBase):

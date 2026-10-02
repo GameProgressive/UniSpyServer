@@ -31,8 +31,8 @@ class GameTest(unittest.TestCase):
             "\\newgame\\\\connid\\123\\sesskey\\123456\\challenge\\123456789\\lid\\1\\final\\",
             "\\newgame\\\\connid\\123\\sesskey\\2020\\challenge\\123456789\\lid\\1\\final\\",
             "\\setpd\\\\pid\\123\\ptype\\0\\dindex\\1\\kv\\1\\lid\\1\\length\\5\\data\\11\\lid\\1\\final\\",
-            "\\updgame\\\\sesskey\\0\\done\\1\\gamedata\\hello\\lid\\1\\final\\",
-            "\\updgame\\\\sesskey\\2020\\done\\1\\gamedata\\hello\\lid\\1\\final\\",
+            "\\updgame\\\\sesskey\\0\\connid\\1\\done\\1\\gamedata\\hello\\lid\\1\\final\\",
+            "\\updgame\\\\sesskey\\2020\\connid\\1\\done\\1\\gamedata\\hello\\lid\\1\\final\\",
             "\\updgame\\\\sesskey\\2020\\connid\\1\\done\\1\\gamedata\\hello\\lid\\1\\final\\",
             "\\updgame\\\\sesskey\\0\\connid\\1\\done\\1\\gamedata\\hello\\lid\\1\\final\\"]
         client = create_client()

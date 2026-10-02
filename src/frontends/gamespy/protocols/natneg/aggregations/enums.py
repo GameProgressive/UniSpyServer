@@ -1,7 +1,7 @@
 from enum import Enum, IntEnum
 
 
-class RequestType(Enum):
+class CommandName(Enum):
     INIT = 0
     ERT_ACK = 3
     CONNECT = 5

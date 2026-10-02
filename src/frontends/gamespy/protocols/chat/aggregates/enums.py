@@ -150,7 +150,12 @@ class PeerRoomType(IntEnum):
     Normal = 3
 
 
-class RequestType(Enum):
+class SearchOption(Enum):
+    Channel = 0
+    User = 1
+
+
+class CommandName(Enum):
     CRYPT = "CRYPT"
     CDKEY = "CDKEY"
     GETKEY = "GETKEY"

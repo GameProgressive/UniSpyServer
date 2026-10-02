@@ -20,7 +20,7 @@ class DataKeyType(IntEnum):
     SHORT = 2
 
 
-class RequestType(IntEnum):
+class CommandName(IntEnum):
     SERVER_LIST_REQUEST = 0x00
     SERVER_INFO_REQUEST = 0x01
     SEND_MESSAGE_REQUEST = 0x02

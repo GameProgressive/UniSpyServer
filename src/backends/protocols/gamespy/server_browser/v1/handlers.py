@@ -23,7 +23,7 @@ class ServerInfoHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._caches = data.get_server_info_list_with_game_name(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
 
     def _result_construct(self) -> None:
@@ -37,7 +37,7 @@ class ServerListCompressHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._caches = data.get_server_info_list_with_game_name(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
 
     def _result_construct(self) -> None:
@@ -51,7 +51,7 @@ class GroupListHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._caches = data.get_peer_group_channel(
-            self._request.game_name, self._session
+            self._request.data.game_name, self._session
         )
 
     def _result_construct(self) -> None:

@@ -75,7 +75,6 @@ if TYPE_CHECKING:
 @final
 class KeepAliveHandler(CmdHandlerBase):
     _request: KeepAliveRequest
-
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
@@ -98,8 +97,10 @@ class LoginHandler(CmdHandlerBase):
         super()._response_send()
         self._client.info.profile_id = self._result.data.profile_id
         self._client.info.namespace_id = self._result.data.namespace_id
-        self._client.info.sdk_revision = self._request.sdk_revision_type
+        self._client.info.sdk_revision = self._request.sdk_revision
         self._client.info.user_id = self._result.data.user_id
+        # * currently we make session key as subprofile id
+        self._client.info.sub_profile_id = self._result.session_key
         self._client.info.login_status = LoginStatus.COMPLETED
         handler = SdkRevisionHandler(self._client, self._request)
         handler.handle()
@@ -112,10 +113,6 @@ class LogoutHandler(LoginedHandlerBase):
     def __init__(self, client: Client, request: LogoutRequest) -> None:
         assert isinstance(request, LogoutRequest)
         super().__init__(client, request)
-
-    def _request_check(self) -> None:
-        super()._request_check()
-        self._request.user_id = self._client.info.user_id
 
 
 @final
@@ -142,33 +139,49 @@ class SdkRevisionHandler(CmdHandlerBase):
         self._is_uploading = False
 
     def _response_construct(self) -> None:
-        self._client.info.sdk_revision = self._request.sdk_revision_type
+        self._client.info.sdk_revision = self._request.sdk_revision
         # todo check whether need to send friend add requests
-        bmh = BuddyMessageFriendAddHandler(self._client, BuddyMessageFriendAddRequest(
-            self._client.info.profile_id,
-            self._client.info.namespace_id,
-            self._request.operation_id
-        ))
+        bmh = BuddyMessageFriendAddHandler(
+            self._client,
+            BuddyMessageFriendAddRequest(
+                **self._request.model_dump(),
+            ),
+        )
         bmh.handle()
 
-        if SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN in self._client.info.sdk_revision:
-            bdy = BuddyListRetriveHandler(self._client, BuddyListRetriveRequest(
-                self._client.info.profile_id,
-                self._client.info.namespace_id,
-                self._request.operation_id))
+        if (
+            SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN
+            in self._client.info.sdk_revision
+        ):
+            bdy = BuddyListRetriveHandler(
+                self._client,
+                BuddyListRetriveRequest(
+                    **self._request.model_dump(),
+                ),
+            )
             bdy.handle()
-            bl = BlockListRetriveHandler(self._client, BlockListRetriveRequest(
-                self._client.info.profile_id,
-                self._client.info.namespace_id,
-                self._request.operation_id))
+            bl = BlockListRetriveHandler(
+                self._client,
+                BlockListRetriveRequest(
+                    **self._request.model_dump(),
+                ),
+            )
             bl.handle()
-        elif SdkRevisionType.GPINEW_REVOKE_NOTIFICATION in self._client.info.sdk_revision or SdkRevisionType.GPINEW_AUTH_NOTIFICATION in self._client.info.sdk_revision:
+        elif (
+            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION in self._client.info.sdk_revision
+            or SdkRevisionType.GPINEW_AUTH_NOTIFICATION
+            in self._client.info.sdk_revision
+        ):
             pass
-        elif SdkRevisionType.GPINEW_STATUS_NOTIFICATION in self._client.info.sdk_revision:
-            bs = BuddyStatusRetrieveHandler(self._client, BuddyStatusRetrieveRequest(
-                profile_id=self._client.info.profile_id,
-                namespace_id=self._client.info.namespace_id
-            ))
+        elif (
+            SdkRevisionType.GPINEW_STATUS_NOTIFICATION in self._client.info.sdk_revision
+        ):
+            bs = BuddyStatusRetrieveHandler(
+                self._client,
+                BuddyStatusRetrieveRequest(
+                    **self._request.model_dump(),
+                ),
+            )
             bs.handle()
         else:
             pass
@@ -189,10 +202,9 @@ class AddBuddyHandler(CmdHandlerBase):
         self._is_fetching = False
 
     def _data_operate(self) -> None:
-        self._request.sender_profile_id = self._client.info.profile_id
-        self._request.namespace_id = self._client.info.namespace_id
         self._client.connection.send(
-            b"\\bm\\2\\f\\3\\date\\1777530486\\msg\\|signed|11111111111111111111111111111111\\final\\")
+            b"\\bm\\2\\f\\3\\date\\1777530486\\msg\\|signed|11111111111111111111111111111111\\final\\"
+        )
         super()._data_operate()
 
 
@@ -206,8 +218,6 @@ class AuthAddBuddyHandler(CmdHandlerBase):
         self._is_fetching = False
 
     def _data_operate(self) -> None:
-        self._request.sender_profile_id = self._client.info.profile_id
-        self._request.namespace_id = self._client.info.namespace_id
         super()._data_operate()
 
 
@@ -224,6 +234,7 @@ class BuddyListRetriveHandler(LoginedHandlerBase):
     _result: BuddyListResult
     _response: BuddyListResponse
 
+
 # region Buddy Message
 
 
@@ -232,6 +243,7 @@ class BuddyMessageFriendAddHandler(LoginedHandlerBase):
     """
     retrive the friend add request from server
     """
+
     _request: BuddyMessageFriendAddRequest
     _result: BuddyMessageFriendAddResult
     _response: BuddyMessageFriendAddResponse
@@ -265,11 +277,6 @@ class DelBuddyHandler(LoginedHandlerBase):
         assert isinstance(request, DelBuddyRequest)
         super().__init__(client, request)
         self._is_uploading = False
-
-    def _data_operate(self) -> None:
-        self._request.sender_profile_id = self._client.info.profile_id
-        self._request.namespace_id = self._client.info.namespace_id
-        super()._data_operate()
 
 
 @final
@@ -325,10 +332,6 @@ class AddBlockHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._is_fetching = False
 
-    def _data_operate(self) -> None:
-        self._request.sender_profile_id = self._client.info.profile_id
-        self._request.namespace_id = self._client.info.namespace_id
-        super()._data_operate()
 
 
 class RemoveBlockHandler(CmdHandlerBase):
@@ -339,10 +342,6 @@ class RemoveBlockHandler(CmdHandlerBase):
         super().__init__(client, request)
         self._is_fetching = False
 
-    def _data_operate(self) -> None:
-        self._request.sender_profile_id = self._client.info.profile_id
-        self._request.namespace_id = self._client.info.namespace_id
-        super()._data_operate()
 
 
 @final

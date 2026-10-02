@@ -31,8 +31,7 @@ class NatNegChannel:
         self.pool = MappingProxyType(Client.pool)
 
     def recieve_message(self, request: bytes):
-        message = ClientMessageRequest(request)
-        message.parse()
+        message = ClientMessageRequest.gs_parse(request)
         client = None
         if message.target_ip_endpoint in self.pool:
             client = self.pool[message.target_ip_endpoint]

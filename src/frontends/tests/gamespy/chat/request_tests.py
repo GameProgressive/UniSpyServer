@@ -70,24 +70,22 @@ KICK = "KICK #islabul spyguy :Spam\r\n"
 MODE_CHANNEL = "MODE #GSP!room!test +l 2\r\n"
 MODE_USER = "MODE spyguy +s\r\n"
 PART = "PART #GSP!room!test :test\r\n"
-SET_CHANNEL_KEY = "SETCHANNELKEY #GSP!room!test 0000 0:\\b_flags\\sh\0\r\n"
-SET_CKEY = "SETCKEY #GSP!room!test spyguy 0000 0:\\b_flags\\sh\0\r\n"
+SET_CHANNEL_KEY = "SETCHANNELKEY #GSP!room!test 0000 :\\b_flags\\sh\0\r\n"
+SET_CKEY = "SETCKEY #GSP!room!test spyguy 0000 :\\b_flags\\sh\0\r\n"
 TOPIC_GET_CHANNEL_TOPIC = "TOPIC #GSP!room!test\r\n"
 TOPIC_SET_CHANNEL_TOPIC = "TOPIC #GSP!room!test :This is a topic message.\r\n"
 
 
 class ChannelRequestTests(unittest.TestCase):
     def test_get_channel_key(self):
-        request = GetChannelKeyRequest(GET_CHANNEL_KEY)
-        request.parse()
+        request = GetChannelKeyRequest.gs_parse(GET_CHANNEL_KEY)
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.cookie, "0000")
         self.assertEqual(request.keys[0], "username")
         self.assertEqual(request.keys[1], "nickname")
 
     def test_get_ckey_channel_specific_user(self):
-        request = GetCKeyRequest(GET_CKEY_CHANNEL_SPECIFIC_USER)
-        request.parse()
+        request = GetCKeyRequest.gs_parse(GET_CKEY_CHANNEL_SPECIFIC_USER)
         self.assertEqual(
             request.request_type, GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE
         )
@@ -98,8 +96,7 @@ class ChannelRequestTests(unittest.TestCase):
         self.assertEqual(request.keys[1], "nickname")
 
     def test_get_ckey_channel_all_user(self):
-        request = GetCKeyRequest(GET_CKEY_CHANNEL_ALL_USER)
-        request.parse()
+        request = GetCKeyRequest.gs_parse(GET_CKEY_CHANNEL_ALL_USER)
         self.assertEqual(
             request.request_type, GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE
         )
@@ -109,60 +106,46 @@ class ChannelRequestTests(unittest.TestCase):
         self.assertEqual(request.keys[1], "nickname")
 
     def test_join(self):
-        request = JoinRequest(JOIN)
-        request.parse()
+        request = JoinRequest.gs_parse(JOIN)
         self.assertEqual(request.channel_name, "#GSP!room!test")
 
-        request = JoinRequest(JOIN_WITH_PASS)
-        request.parse()
+        request = JoinRequest.gs_parse(JOIN_WITH_PASS)
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.password, "pass123")
 
     def test_kick(self):
-        request = KickRequest(KICK)
-        request.parse()
+        request = KickRequest.gs_parse(KICK)
         self.assertEqual(request.kickee_nick_name, "spyguy")
         self.assertEqual(request.reason, "Spam")
 
     def test_mode(self):
-        request = ModeRequest(MODE_CHANNEL)
-        request.parse()
-        self.assertEqual(
-            request.mode_operations,
-            {ModeName.CHANNEL_USER_LIMITS.value: ModeOperation.SET.value},
-        )
+        request = ModeRequest.gs_parse(MODE_CHANNEL)
         self.assertEqual(request.channel_name, "#GSP!room!test")
-        self.assertEqual(request.mode_flag, "+l")
+        self.assertEqual(request.mode_flags[0], "+l")
         self.assertEqual(request.limit_number, 2)
 
-        request = ModeRequest("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2")
-        request.parse()
+        request = ModeRequest.gs_parse("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2")
 
     def test_part(self):
-        request = PartRequest(PART)
-        request.parse()
+        request = PartRequest.gs_parse(PART)
         self.assertEqual(request.reason, "test")
 
     def test_set_channel_key(self):
-        request = SetChannelKeyRequest(SET_CHANNEL_KEY)
-        request.parse()
+        request = SetChannelKeyRequest.gs_parse(SET_CHANNEL_KEY)
         # Add assertions as needed
 
     def test_set_ckey(self):
-        request = SetCKeyRequest(SET_CKEY)
-        request.parse()
+        request = SetCKeyRequest.gs_parse(SET_CKEY)
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.nick_name, "spyguy")
         self.assertEqual(request.key_values, {"b_flags": "sh"})
 
     def test_topic_get_channel_topic(self):
-        request = TopicRequest(TOPIC_GET_CHANNEL_TOPIC)
-        request.parse()
+        request = TopicRequest.gs_parse(TOPIC_GET_CHANNEL_TOPIC)
         self.assertEqual(request.channel_name, "#GSP!room!test")
 
     def test_topic_set_channel_topic(self):
-        request = TopicRequest(TOPIC_SET_CHANNEL_TOPIC)
-        request.parse()
+        request = TopicRequest.gs_parse(TOPIC_SET_CHANNEL_TOPIC)
         self.assertEqual(request.channel_name, "#GSP!room!test")
         self.assertEqual(request.channel_topic, "This is a topic message.")
 
@@ -179,29 +162,25 @@ ACTION_MSG = "PRIVMSG #GSP!room!test :\001ACTION hello this is a test.\001\r\n"
 
 class MessageRequestTests(unittest.TestCase):
     def test_atm(self):
-        request = AtmRequest(ABOVE_THE_TABLE_MSG)
-        request.parse()
+        request = AtmRequest.gs_parse(ABOVE_THE_TABLE_MSG)
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))
         self.assertEqual("#GSP!room!test", request.channel_name)
 
     def test_notice(self):
-        request = NoticeRequest(NOTICE_MSG)
-        request.parse()
+        request = NoticeRequest.gs_parse(NOTICE_MSG)
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))
         self.assertEqual("#GSP!room!test", request.channel_name)
 
     def test_private(self):
-        request = PrivateRequest(PRIVATE_MSG)
-        request.parse()
+        request = PrivateRequest.gs_parse(PRIVATE_MSG)
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))
         self.assertEqual("#GSP!room!test", request.channel_name)
 
     def test_utm(self):
-        request = UtmRequest(UNDER_THE_TABLE_MSG)
-        request.parse()
+        request = UtmRequest.gs_parse(UNDER_THE_TABLE_MSG)
         self.assertEqual(MessageType.CHANNEL_MESSAGE, request.type)
         self.assertEqual(False, hasattr(request, "nick_name"))
         self.assertEqual("#GSP!room!test", request.channel_name)

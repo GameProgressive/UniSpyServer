@@ -2,43 +2,35 @@ import xml.etree.ElementTree as ET
 
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
-from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.library.network.http_data import HttpData
+from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
     WebException,
 )
 from frontends.gamespy.protocols.web_services.applications.client import Client
 
-
 class Switcher(SwitcherBase):
     """
     abstract class of web switcher
     """
-    _raw_request: str
+
+    _raw_request: HttpData
     _client: Client
 
-    def __init__(self, client: Client, raw_request: str) -> None:
-        assert isinstance(raw_request, str)
+    def __init__(self, client: Client, raw_request: HttpData) -> None:
+        assert isinstance(raw_request, HttpData)
         super().__init__(client, raw_request)
 
     def _process_raw_request(self) -> None:
-        try:
-            data = HttpData.from_str(self._raw_request)
-            assert data.body is not None
-            name_node = ET.fromstring(data.body)[0][0]
-        except Exception as e:
-            raise WebException(f"xml serialization failed: {str(e)}")
-        if name_node is None:
-            raise WebException("name node is missing from soap request")
-        if name_node.tag is None:
-            raise WebException(
-                "name node text field is missing from soap request")
-        name = name_node.tag.split("}")[1]
-
+        request = RequestBase.gs_parse(self._raw_request)
+        name = request.command_name
         if len(name) < 4:
             raise WebException("request name invalid")
         self._requests.append((name, self._raw_request))
 
-    def _create_cmd_handlers(self, name: str, raw_request: str) -> CmdHandlerBase | None:
+    def _create_cmd_handlers(
+        self, name: str, raw_request: HttpData
+    ) -> CmdHandlerBase | None:
         match name:
             # InGameAd services
             case "ReportAdUsage":

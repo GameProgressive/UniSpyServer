@@ -14,7 +14,6 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPException,
 )
 
-
 class CmdHandlerBase(lib.CmdHandlerBase):
     _client: Client
     _request: RequestBase
@@ -31,6 +30,7 @@ class CmdHandlerBase(lib.CmdHandlerBase):
         if ex is GPException:
             self._client.send(ex)
         super()._handle_exception(ex)
+
 
 
 class LoginedHandlerBase(CmdHandlerBase):

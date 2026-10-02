@@ -33,14 +33,48 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
 )
 
 
+def generate_session_key(subprofile_id: int, session: Session) -> int:
+    """
+    ! FIX gamespy session key is 4 bytes int, not secure so we just replace it with subprofileid for convience
+    TODO in future we authenticate user with JWT token
+    """
+    import secrets
+
+    session_key = secrets.randbits(32)
+    num_sess = (
+        session.query(SubProfiles.session_key)
+        .where(SubProfiles.session_key == session_key)
+        .count()
+    )
+    if num_sess == 0:
+        result = (
+            session.query(SubProfiles)
+            .where(SubProfiles.subprofileid == subprofile_id)
+            .first()
+        )
+        if result is None:
+            raise GPDatabaseException("subprofile not exists")
+        result.session_key = str(session_key)
+        session.commit()
+        return session_key
+
+    raise GPDatabaseException("Session key duplicated")
+
+
+def get_sub_profile_by_session_key(session_key: str, session: Session) -> SubProfiles:
+    result = (
+        session.query(SubProfiles).where(SubProfiles.session_key == session_key).first()
+    )
+    if not result:
+        raise GPDatabaseException("subprofile not found by session key")
+    return result
+
+
 def is_email_exist(email: str, session: Session):
     return psp.is_email_exist(email, session)
 
 
 def update_online_time(ip: str, port: int, session: Session):
-    if TYPE_CHECKING:
-        assert isinstance(Users.lastip, Column)
-
     result = session.query(Users).where(Users.lastip == ip).first()
     if result is None:
         return False
@@ -97,6 +131,12 @@ def get_friend_profile_id_list(
 # region Profile
 
 
+def get_subprofile_by_id(subprofile_id:int,session:Session)->SubProfiles:
+    result = session.query(SubProfiles).where(SubProfiles.subprofileid == subprofile_id).first()
+    if not result:
+        raise GPDatabaseException("Subprofile not found by subprofile id")
+    return result
+
 def get_profile_infos(
     profile_id: int, session_key: str, session: Session
 ) -> GetProfileData:
@@ -110,12 +150,6 @@ def get_profile_infos(
     Returns:
         tuple: A tuple containing the profile information, sub-profile information, and user information.
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(SubProfiles.session_key, Column)
-
     result = (
         session.query(Users, Profiles, SubProfiles)
         .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
@@ -127,18 +161,10 @@ def get_profile_infos(
         raise GPException("no profile found")
 
     if TYPE_CHECKING:
-        result = cast(tuple, result)
+        result = cast(tuple[Users, Profiles, SubProfiles], result)
+    user, profile, subprofile = result
 
-    user: Users = result[0]
-    profile: Profiles = result[1]
-    subprofile: SubProfiles = result[2]
-    if TYPE_CHECKING:
-        assert isinstance(profile.nick, str)
-        assert isinstance(profile.profileid, int)
-        assert isinstance(subprofile.uniquenick, str)
-        assert isinstance(user.email, str)
-        assert isinstance(profile.extra_info, dict)
-
+    assert subprofile.uniquenick is not None
     data = GetProfileData(
         nick=profile.nick,
         profile_id=profile.profileid,
@@ -164,13 +190,6 @@ def get_user_info_list(
         List[Tuple[int, int, int]]: A list of tuples containing the userid, profileid, and subprofileid
         of users that match the provided email and nickname in the database.
     """
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-
     result = (
         session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
@@ -186,15 +205,6 @@ def get_user_info_list(
 def get_user_info(
     unique_nick: str, namespace_id: int, session: Session
 ) -> tuple[int, int, int]:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-
     result = (
         session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
         .join(Users, Profiles.userid == Users.userid)
@@ -227,18 +237,6 @@ _login_infos = [
 def get_user_infos_by_uniquenick_namespace_id(
     unique_nick: str, namespace_id: int, session: Session
 ) -> LoginData | None:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(Users.emailverified, Column)
-        assert isinstance(Users.banned, Column)
-
     result = (
         session.query(*_login_infos)
         .join(Users, Profiles.userid == Users.userid)
@@ -271,18 +269,6 @@ def get_user_infos_by_uniquenick_namespace_id(
 def get_user_infos_by_nick_email(
     nick: str, email: str, session: Session
 ) -> LoginData | None:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(Users.emailverified, Column)
-        assert isinstance(Users.banned, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-
     result = (
         session.query(*_login_infos)
         .join(Users, Profiles.userid == Users.userid)
@@ -309,8 +295,6 @@ def get_user_infos_by_nick_email(
 
 
 def update_online_status(user_id: int, status: LoginStatus, session: Session):
-    if TYPE_CHECKING:
-        assert isinstance(Users.userid, Column)
     result = session.query(Users).where(Users.userid == user_id).first()
     assert result
     result.lastonline = datetime.now()
@@ -318,18 +302,6 @@ def update_online_status(user_id: int, status: LoginStatus, session: Session):
 
 
 def get_user_infos_by_authtoken(auth_token: str, session: Session) -> LoginData | None:
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Users.password, Column)
-        assert isinstance(Users.emailverified, Column)
-        assert isinstance(Users.banned, Column)
-        assert isinstance(Profiles.nick, Column)
-        assert isinstance(SubProfiles.uniquenick, Column)
-        assert isinstance(SubProfiles.namespaceid, Column)
-        assert isinstance(SubProfiles.authtoken, Column)
 
     result = (
         session.query(*_login_infos)
@@ -391,9 +363,6 @@ def get_buddy_list(profile_id: int, namespace_id: int, session: Session) -> list
 def add_block(
     profile_id: int, target_id: int, namespace_id: int, session: Session
 ) -> None:
-    if TYPE_CHECKING:
-        assert isinstance(SubProfiles.session_key, Column)
-
     result = (
         session.query(Blacklist)
         .join(SubProfiles, SubProfiles.namespaceid == Blacklist.namespaceid)
@@ -578,12 +547,6 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str, session: Sessio
     assert isinstance(profile_id, int)
     assert isinstance(old_nick, str)
     assert isinstance(new_nick, str)
-    if TYPE_CHECKING:
-        assert isinstance(Profiles.profileid, Column)
-        assert isinstance(Profiles.userid, Column)
-        assert isinstance(Users.userid, Column)
-        assert isinstance(Users.email, Column)
-        assert isinstance(Profiles.nick, Column)
 
     result = (
         session.query(Profiles)
@@ -621,9 +584,6 @@ def update_subprofile_info(subprofile: SubProfiles, session: Session):
 
 
 def get_status(session_key: str, session: Session) -> dict:
-    if TYPE_CHECKING:
-        assert isinstance(SubProfiles.session_key, Column)
-
     result = (
         session.query(Profiles)
         .join(SubProfiles)
@@ -653,8 +613,6 @@ def update_status(
     status_string: str,
     session: Session,
 ):
-    if TYPE_CHECKING:
-        assert isinstance(SubProfiles.session_key, Column)
 
     result = (
         session.query(Profiles)

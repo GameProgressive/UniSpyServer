@@ -1,12 +1,11 @@
-import json
 from typing import final
 
 import requests
-
 from frontends.gamespy.library.abstractions.client import ClientBase
 
 # if TYPE_CHECKING:
 from frontends.gamespy.library.abstractions.contracts import (
+    ClientInfo,
     RequestBase,
     ResponseBase,
     ResultBase,
@@ -71,21 +70,20 @@ class CmdHandlerBase:
     def _get_exception_mappings(self):
         if "_exceptions_mapping" in self.__class__.__annotations__:
             if len(self._exceptions_mapping) == 0:
-                raise UniSpyException(
-                    "init _exceptions_mapping in child class")
+                raise UniSpyException("init _exceptions_mapping in child class")
 
     def _get_property_types(self):
         """
         get result and response type by annotations
         """
         if "_result" in self.__class__.__annotations__:
-            self._result_cls = self.__class__.__annotations__['_result']
+            self._result_cls = self.__class__.__annotations__["_result"]
             if self._result_cls == ResultBase:
                 self._result_cls = None
         else:
             self._result_cls = None
         if "_response" in self.__class__.__annotations__:
-            self._response_cls = self.__class__.__annotations__['_response']
+            self._response_cls = self.__class__.__annotations__["_response"]
             if self._response_cls == ResponseBase:
                 self._response_cls = None
         else:
@@ -112,7 +110,8 @@ class CmdHandlerBase:
         raw request is nessesary param
         """
         # if there is gamespy raw request we convert it to unispy request
-        self._request.parse()
+        # self._request.parse()
+        pass
 
     def _data_operate(self) -> None:
         """
@@ -125,22 +124,18 @@ class CmdHandlerBase:
                 self._fetch_data()
 
     def _prepare_data(self):
-        self._temp_data = self._request.to_dict()
-        if "server_id" in self._temp_data:
-            raise UniSpyException("server_id name collision in dict")
-        if "client_ip" in self._temp_data:
-            raise UniSpyException("client_ip name collision in dict")
-        if "client_port" in self._temp_data:
-            raise UniSpyException("client_port name collision in dict")
-        # add the server info to json request dict
-        self._temp_data["client_ip"] = self._client.connection.remote_ip
-        self._temp_data["server_id"] = self._client.server_config.server_id
-        self._temp_data["client_port"] = self._client.connection.remote_port
+        info = ClientInfo(
+            client_ip=self._client.connection.remote_ip,
+            server_id=self._client.server_config.server_id,
+            client_port=self._client.connection.remote_port,
+        ).model_dump(mode="json")
+        data = self._request.model_dump(mode="json")
+        if "request_dict" in data:
+            del data["request_dict"]
+        self._temp_data = {"info": info, "data": data}
 
     def _get_url(self) -> str:
-        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{
-            self.__class__.__name__
-        }"
+        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}"
         return url
 
     @final
@@ -150,14 +145,10 @@ class CmdHandlerBase:
         if child class do not require fetch, overide this function to do nothing
         """
         self._url = self._get_url()
-        json_str = json.dumps(
-            self._temp_data, cls=UniSpyJsonEncoder, ensure_ascii=False
-        )
-        self._client.log_network_upload(f"[{self._url}] {json_str}")
+        self._client.log_network_upload(f"[{self._url}] {self._temp_data}")
         try:
             response = requests.post(
-                self._url, data=json_str, headers={
-                    "Content-Type": "application/json"}
+                self._url, json=self._temp_data, headers={"Content-Type": "application/json"}
             )
         except requests.exceptions.ConnectionError:
             if CONFIG.unittest.is_raise_except:
@@ -170,8 +161,7 @@ class CmdHandlerBase:
         if response.status_code in [200, 450, 500]:
             self._http_result = response.json()
             # immidiatly show the http response
-            self._client.log_network_fetch(
-                f"[{self._url}] {self._http_result}")
+            self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
 
         else:
             raise UniSpyException(
@@ -199,12 +189,14 @@ class CmdHandlerBase:
         if exp_name in self._exceptions_mapping:
             exp_cls = self._exceptions_mapping[exp_name]
             init_params = exp_cls.get_init_params(
-                exp_cls, self._http_result["exception_data"])
+                exp_cls, self._http_result["exception_data"]
+            )
             exp_instance = exp_cls(**init_params)
             raise exp_instance
         else:
             self._client.log_warn(
-                "no exception class found, use default unispy exception")
+                "no exception class found, use default unispy exception"
+            )
             raise UniSpyException(self._http_result["message"])
 
     def _handle_general_error(self):
@@ -217,8 +209,7 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         if self._result_cls is None:
-            raise UniSpyException(
-                "_result_cls can not be null when feach data.")
+            raise UniSpyException("_result_cls can not be null when feach data.")
 
         assert issubclass(self._result_cls, ResultBase)
         if "result" not in self._http_result:
@@ -230,7 +221,8 @@ class CmdHandlerBase:
         if self._response_cls is not None:
             if self._result is None:
                 raise UniSpyException(
-                    "result instance is required for response construction")
+                    "result instance is required for response construction"
+                )
             self._response = self._response_cls(result=self._result)
 
     def _response_send(self) -> None:

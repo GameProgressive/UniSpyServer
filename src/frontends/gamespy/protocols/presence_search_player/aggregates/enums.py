@@ -126,7 +126,7 @@ class GPErrorCode(IntEnum):
 
 
 
-class RequestType(Enum):
+class CommandName(Enum):
     CHECK = "check"
     NEWUSER = "newuser"
     NICKS = "nicks"

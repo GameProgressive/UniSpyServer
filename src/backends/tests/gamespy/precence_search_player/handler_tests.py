@@ -28,24 +28,24 @@ class HandlerTest(unittest.TestCase):
 
     def test_search(self):
         for raw in [SEARCH_1, SEARCH_2, SEARCH_3, SEARCH_4]:
-            r = psp.SearchRequest(raw)
-            data = add_headers(r)
+            r = psp.SearchRequest.gs_parse(raw)
+            data = add_headers(r.model_dump())
             request = bkr.SearchRequest(**data)
             handler = bkh.SearchHandler(request)
             handler.handle()
             pass
 
     def test_chenck(self):
-        r = psp.CheckRequest(CHECK1)
-        data = add_headers(r)
+        r = psp.CheckRequest.gs_parse(CHECK1)
+        data = add_headers(r.model_dump())
         request = bkr.CheckRequest(**data)
         handler = bkh.CheckHandler(request)
         handler.handle()
         pass
 
     def test_new_user(self):
-        r = psp.NewUserRequest(NEWUSER)
-        data = add_headers(r)
+        r = psp.NewUserRequest.gs_parse(NEWUSER)
+        data = add_headers(r.model_dump())
         data["email"] = "xiaojiuwo1@gamespy.com"
         data["nick"] = "xiaojiuwo1"
         request = bkr.NewUserRequest(**data)
@@ -54,8 +54,8 @@ class HandlerTest(unittest.TestCase):
         pass
 
     def test_nick(self):
-        r = psp.NicksRequest(NICKS)
-        data = add_headers(r)
+        r = psp.NicksRequest.gs_parse(NICKS)
+        data = add_headers(r.model_dump())
         request = bkr.NicksRequest(**data)
         handler = bkh.NicksHandler(request)
         handler.handle()
@@ -69,16 +69,16 @@ class HandlerTest(unittest.TestCase):
         pass
 
     def test_search_unique(self):
-        r = psp.SearchUniqueRequest(SEARCH_UNIQUENICK)
-        data = add_headers(r)
+        r = psp.SearchUniqueRequest.gs_parse(SEARCH_UNIQUENICK)
+        data = add_headers(r.model_dump())
         request = bkr.SearchUniqueRequest(**data)
         handler = bkh.SearchUniqueHandler(request)
         handler.handle()
         pass
 
     def test_valid(self):
-        r = psp.ValidRequest(VALID)
-        data = add_headers(r)
+        r = psp.ValidRequest.gs_parse(VALID)
+        data = add_headers(r.model_dump())
         request = bkr.ValidRequest(**data)
         handler = bkh.ValidHandler(request)
         handler.handle()

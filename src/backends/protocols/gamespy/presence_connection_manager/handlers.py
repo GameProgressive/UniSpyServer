@@ -56,7 +56,7 @@ class KeepAliveHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.update_online_time(
-            self._request.client_ip, self._request.client_port, self._session
+            self._request.info.client_ip, self._request.info.client_port, self._session
         )
 
 
@@ -65,35 +65,39 @@ class LoginHandler(HandlerBase):
     response: LoginResponse
 
     def _data_operate(self) -> None:
-        if self._request.type == LoginType.NICK_EMAIL:
+        if self._request.data.type == LoginType.NICK_EMAIL:
             self._nick_email_login()
-        elif self._request.type == LoginType.UNIQUENICK_NAMESPACE_ID:
+        elif self._request.data.type == LoginType.UNIQUENICK_NAMESPACE_ID:
             self._unique_nick_login()
-        elif self._request.type == LoginType.AUTH_TOKEN:
+        elif self._request.data.type == LoginType.AUTH_TOKEN:
             self._auth_token_login()
         else:
             raise ValueError("Request type not valid")
 
     def _nick_email_login(self) -> None:
-        assert self._request.email is not None
-        assert self._request.nick is not None
+        assert self._request.data.email is not None
+        assert self._request.data.nick is not None
         self._data = data.get_user_infos_by_nick_email(
-            self._request.nick, self._request.email, self._session
+            self._request.data.nick, self._request.data.email, self._session
         )
         if not self._data:
-            raise GPLoginBadEmailException(f"email: {self._request.email} is invalid.")
+            raise GPLoginBadEmailException(
+                f"email: {self._request.data.email} is invalid."
+            )
 
     def _unique_nick_login(self) -> None:
-        assert self._request.unique_nick is not None
-        assert self._request.namespace_id is not None
+        assert self._request.data.unique_nick is not None
+        assert self._request.data.namespace_id is not None
         self._data = data.get_user_infos_by_uniquenick_namespace_id(
-            self._request.unique_nick, self._request.namespace_id, self._session
+            self._request.data.unique_nick,
+            self._request.data.namespace_id,
+            self._session,
         )
 
     def _auth_token_login(self) -> None:
-        assert self._request.auth_token is not None
+        assert self._request.data.auth_token is not None
         self._data = data.get_user_infos_by_authtoken(
-            self._request.auth_token, self._session
+            self._request.data.auth_token, self._session
         )
 
     def _result_construct(self) -> None:
@@ -101,12 +105,15 @@ class LoginHandler(HandlerBase):
             raise GPLoginException("login information is incorrect.")
 
         self._result = LoginResult(
-            operation_id=self._request.operation_id,
+            operation_id=self._request.data.operation_id,
             data=self._data,
-            user_data=self._request.user_data,
-            type=self._request.type,
-            partner_id=self._request.partner_id,
-            user_challenge=self._request.user_challenge,
+            user_data=self._request.data.user_data,
+            type=self._request.data.type,
+            partner_id=self._request.data.partner_id,
+            user_challenge=self._request.data.user_challenge,
+            # !FIX ME: gamespy session key is 4 bytes int, not secure enough, so we just replace it with subprofileid for convience
+            # TODO in future we authenticate user with JWT token
+            session_key=self._data.sub_profile_id,
         )
 
 
@@ -116,7 +123,7 @@ class LogoutHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.update_online_status(
-            user_id=self._request.user_id,
+            user_id=self._request.data.user_id,
             status=LoginStatus.DISCONNECTED,
             session=self._session,
         )
@@ -139,12 +146,14 @@ class BuddyListRetriveHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_buddy_list(
-            self._request.profile_id, self._request.namespace_id, self._session
+            self._request.data.profile_id,
+            self._request.data.namespace_id,
+            self._session,
         )
 
     def _result_construct(self) -> None:
         self._result = BuddyListResult(
-            profile_ids=self.data, operation_id=self._request.operation_id
+            profile_ids=self.data, operation_id=self._request.data.operation_id
         )
 
 
@@ -154,12 +163,14 @@ class BlockListRetriveHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_block_list(
-            self._request.profile_id, self._request.namespace_id, self._session
+            self._request.data.profile_id,
+            self._request.data.namespace_id,
+            self._session,
         )
 
     def _result_construct(self) -> None:
         self._result = BlockListResult(
-            profile_ids=self.data, operation_id=self._request.operation_id
+            profile_ids=self.data, operation_id=self._request.data.operation_id
         )
 
 
@@ -183,7 +194,9 @@ class DelBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.del_buddy(
-            self._request.target_profile_id, self._request.session_key, self._session
+            self._request.data.target_profile_id,
+            self._request.data.session_key,
+            self._session,
         )
 
 
@@ -193,10 +206,10 @@ class AddBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.add_buddy(
-            self._request.sender_profile_id,
-            self._request.target_profile_id,
-            self._request.namespace_id,
-            self._request.reason,
+            self._request.data.sender_profile_id,
+            self._request.data.target_profile_id,
+            self._request.data.namespace_id,
+            self._request.data.reason,
             self._session,
         )
 
@@ -207,12 +220,14 @@ class BuddyMessageFriendAddHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.get_friend_add_info(
-            self._request.profile_id, self._request.namespace_id, self._session
+            self._request.data.profile_id,
+            self._request.data.namespace_id,
+            self._session,
         )
 
     def _result_construct(self) -> None:
         self._result = BuddyMessageFriendAddResult(
-            operation_id=self._request.operation_id, data=self._data
+            operation_id=self._request.data.operation_id, data=self._data
         )
 
 
@@ -225,9 +240,9 @@ class AuthAddBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.set_friendship_bidirectional(
-            self._request.sender_profile_id,
-            self._request.receiver_profile_id,
-            self._request.namespace_id,
+            self._request.data.sender_profile_id,
+            self._request.data.receiver_profile_id,
+            self._request.data.namespace_id,
             self._session,
         )
 
@@ -237,10 +252,13 @@ class AddBlockHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
+        # TODO make session key functional!!
+        assert self._request.data.sender_profile_id
+        assert self._request.data.namespace_id
         data.add_block(
-            self._request.sender_profile_id,
-            self._request.taget_profile_id,
-            self._request.namespace_id,
+            self._request.data.sender_profile_id,
+            self._request.data.target_profile_id,
+            self._request.data.namespace_id,
             self._session,
         )
 
@@ -269,10 +287,10 @@ class StatusHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.update_status(
-            self._request.session_key,
-            self._request.current_status,
-            self._request.location_string,
-            self._request.status_string,
+            self._request.data.session_key,
+            self._request.data.current_status,
+            self._request.data.location_string,
+            self._request.data.status_string,
             self._session,
         )
 
@@ -294,14 +312,14 @@ class GetProfileHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_profile_infos(
-            profile_id=self._request.profile_id,
-            session_key=self._request.session_key,
+            profile_id=self._request.data.profile_id,
+            session_key=self._request.data.sub_profile_id,
             session=self._session,
         )
 
     def _result_construct(self) -> None:
         self._result = GetProfileResult(
-            user_profile=self.data, operation_id=self._request.operation_id
+            user_profile=self.data, operation_id=self._request.data.operation_id
         )
 
 
@@ -314,10 +332,13 @@ class NewProfileHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
+        # TODO finish old nick is none, create a nick function
+        assert self._request.data.old_nick
+
         data.update_new_nick(
-            self._request.session_key,
-            self._request.old_nick,
-            self._request.new_nick,
+            self._request.data.session_key,
+            self._request.data.old_nick,
+            self._request.data.new_nick,
             self._session,
         )
 
@@ -328,7 +349,7 @@ class RegisterCDKeyHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_cdkey(
-            self._request.session_key, self._request.cdkey_enc, self._session
+            self._request.data.session_key, self._request.data.cdkey_enc, self._session
         )
 
 
@@ -342,7 +363,9 @@ class RegisterNickHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_uniquenick(
-            self._request.session_key, self._request.unique_nick, self._session
+            self._request.data.session_key,
+            self._request.data.unique_nick,
+            self._session,
         )
 
 
@@ -350,10 +373,12 @@ class RemoveBlockHandler(HandlerBase):
     _request: RemoveBlockRequest
 
     def _data_operate(self) -> None:
+        assert self._request.data.sender_profile_id
+        assert self._request.data.namespace_id
         data.remove_block(
-            self._request.sender_profile_id,
-            self._request.target_profile_id,
-            self._request.namespace_id,
+            self._request.data.sender_profile_id,
+            self._request.data.target_profile_id,
+            self._request.data.namespace_id,
             self._session,
         )
 
@@ -364,7 +389,9 @@ class UpdateProfileHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_profiles(
-            self._request.session_key, self._request.extra_infos, self._session
+            self._request.data.session_key,
+            self._request.data.extra_infos,
+            self._session,
         )
 
 
@@ -373,6 +400,10 @@ class UpdateUserInfoHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self):
+
         data.update_profiles(
-            self._request.session_key, self._request.extra_infos, self._session
+            self._request.data.session_key,
+            # TODO confirm param type ExtraInfo?
+            self._request.data.extra_infos.model_dump(),
+            self._session,
         )

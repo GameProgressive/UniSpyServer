@@ -1,9 +1,10 @@
 from typing import cast
 
+from frontends.gamespy.protocols.game_status.abstractions.contracts import RequestBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.extentions.string_extentions import get_kv_str_name
 from frontends.gamespy.protocols.game_status.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.game_status.aggregations.enums import RequestType
+from frontends.gamespy.protocols.game_status.aggregations.enums import CommandName
 from frontends.gamespy.protocols.game_status.applications.client import Client
 from frontends.gamespy.protocols.game_status.applications.handlers import (
     AuthGameHandler,
@@ -40,30 +41,30 @@ class Switcher(SwitcherBase):
         raw_requests = [
             r+"\\final\\" for r in self._raw_request.split("\\final\\") if r]
         for raw_request in raw_requests:
-            name = get_kv_str_name(raw_request)
-            if name not in RequestType:
+            name = RequestBase.gs_parse(raw_request).command_name
+            if name not in CommandName:
                 self._client.log_debug(
                     f"Request: {name} is not a valid request.")
                 return
-            self._requests.append((RequestType(name), raw_request))
+            self._requests.append((CommandName(name), raw_request))
 
-    def _create_cmd_handlers(self, name: RequestType, raw_request: str) -> CmdHandlerBase | None:
-        assert isinstance(name, RequestType)
+    def _create_cmd_handlers(self, name: CommandName, raw_request: str) -> CmdHandlerBase | None:
+        assert isinstance(name, CommandName)
         self._client = cast(Client, self._client)
         match name:
-            case RequestType.AUTH:
-                return AuthGameHandler(self._client, AuthGameRequest(raw_request))
-            case RequestType.AUTHP:
-                return AuthPlayerHandler(self._client, AuthPlayerRequest(raw_request))
-            case RequestType.NEWGAME:
-                return NewGameHandler(self._client, NewGameRequest(raw_request))
-            case RequestType.GETPD:
-                return GetPlayerDataHandler(self._client, GetPlayerDataRequest(raw_request))
-            case RequestType.SETPD:
-                return SetPlayerDataHandler(self._client, SetPlayerDataRequest(raw_request))
-            case RequestType.UPDGAME:
-                return UpdateGameHandler(self._client, UpdateGameRequest(raw_request))
-            case RequestType.GETPID:
-                return GetProfileIdHandler(self._client, GetProfileIdRequest(raw_request))
+            case CommandName.AUTH:
+                return AuthGameHandler(self._client, AuthGameRequest.gs_parse(raw_request))
+            case CommandName.AUTHP:
+                return AuthPlayerHandler(self._client, AuthPlayerRequest.gs_parse(raw_request))
+            case CommandName.NEWGAME:
+                return NewGameHandler(self._client, NewGameRequest.gs_parse(raw_request))
+            case CommandName.GETPD:
+                return GetPlayerDataHandler(self._client, GetPlayerDataRequest.gs_parse(raw_request))
+            case CommandName.SETPD:
+                return SetPlayerDataHandler(self._client, SetPlayerDataRequest.gs_parse(raw_request))
+            case CommandName.UPDGAME:
+                return UpdateGameHandler(self._client, UpdateGameRequest.gs_parse(raw_request))
+            case CommandName.GETPID:
+                return GetProfileIdHandler(self._client, GetProfileIdRequest.gs_parse(raw_request))
             case _:
                 return None

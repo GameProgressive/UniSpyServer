@@ -19,7 +19,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     UpdateProfileRequest,
 )
 
-ADD_BLOCK = "\\addblock\\\\profileid\\0\\final\\"
+ADD_BLOCK = "\\addblock\\\\sesskey\\1234\\profileid\\0\\final\\"
 GET_PROFILE = "\\getprofile\\\\sesskey\\xxxx\\profileid\\0\\final\\"
 NEW_PROFILE = "\\newprofile\\\\sesskey\\xxxx\\nick\\spyguy\\id\\1\\final\\"
 NEW_PROFILE_REPLACE = "\\newprofile\\\\sesskey\\xxxx\\nick\\spyguy2\\replace\\1\\oldnick\\spyguy\\id\\1\\final\\"
@@ -45,8 +45,7 @@ STATUS = [
 class RequestTests(unittest.TestCase):
     # region General
     def test_login_auth_token(self) -> None:
-        request = LoginRequest(LOGIN_AUTH_TOKEN)
-        request.parse()
+        request = LoginRequest.gs_parse(LOGIN_AUTH_TOKEN)
         self.assertEqual(LoginType.AUTH_TOKEN, request.type)
         self.assertEqual("xxxx", request.user_challenge)
         self.assertEqual("example_auth", request.auth_token)
@@ -59,13 +58,12 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(request.product_id, 0)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision_type[0]
+            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_unique_nick(self) -> None:
-        request = LoginRequest(LOGIN_UNIQUE_NICK)
-        request.parse()
+        request = LoginRequest.gs_parse(LOGIN_UNIQUE_NICK)
         self.assertEqual(LoginType.UNIQUENICK_NAMESPACE_ID, request.type)
         self.assertEqual("xxxx", request.user_challenge)
         self.assertEqual("spyguy", request.unique_nick)
@@ -79,13 +77,12 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision_type[0]
+            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
     def test_login_user(self) -> None:
-        request = LoginRequest(LOGIN_USER)
-        request.parse()
+        request = LoginRequest.gs_parse(LOGIN_USER)
         self.assertEqual(LoginType.NICK_EMAIL, request.type)
         self.assertEqual("xxxx", request.user_challenge)
         self.assertEqual("spyguy", request.nick)
@@ -100,75 +97,63 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision_type[0]
+            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
         # region Profile
 
     def test_add_block(self) -> None:
-        request = AddBlockRequest(ADD_BLOCK)
-        request.parse()
-        self.assertEqual(0, request.taget_profile_id)
+        request = AddBlockRequest.gs_parse(ADD_BLOCK)
+        self.assertEqual(0, request.target_profile_id)
 
     def test_get_profile(self) -> None:
-        request = GetProfileRequest(GET_PROFILE)
-        request.parse()
-        self.assertEqual("xxxx", request.session_key)
+        request = GetProfileRequest.gs_parse(GET_PROFILE)
+        self.assertEqual("xxxx", request.sub_profile_id)
         self.assertEqual(0, request.profile_id)
 
     def test_new_profile(self) -> None:
-        request = NewProfileRequest(NEW_PROFILE)
-        request.parse()
+        request = NewProfileRequest.gs_parse(NEW_PROFILE)
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("spyguy", request.new_nick)
 
     def test_new_profile_replace(self) -> None:
-        request = NewProfileRequest(NEW_PROFILE_REPLACE)
-        request.parse()
+        request = NewProfileRequest.gs_parse(NEW_PROFILE_REPLACE)
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("spyguy2", request.new_nick)
         self.assertEqual("spyguy", request.old_nick)
 
     def test_register_cd_key(self) -> None:
-        request = RegisterCDKeyRequest(REGISTER_CD_KEY)
-        request.parse()
+        request = RegisterCDKeyRequest.gs_parse(REGISTER_CD_KEY)
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("xxxx", request.cdkey_enc)
 
     def test_register_nick(self) -> None:
-        request = RegisterNickRequest(REGISTER_NICK)
-        request.parse()
+        request = RegisterNickRequest.gs_parse(REGISTER_NICK)
         self.assertEqual("xxxx", request.session_key)
         self.assertEqual("spyguy", request.unique_nick)
         self.assertEqual(0, request.partner_id)
 
     def test_update_profile(self) -> None:
-        crysisWarsRaw = "\\updatepro\\\\sesskey\\1111\\countrycode\\DE\\birthday\\168232912\\partnerid\\0\\final\\"
-        request = UpdateProfileRequest(crysisWarsRaw)
-        request.parse()
+        crysisWarsRaw = "\\updatepro\\\\sesskey\\111111\\countrycode\\DE\\birthday\\168232912\\partnerid\\0\\final\\"
+        request = UpdateProfileRequest.gs_parse(crysisWarsRaw)
 
     # region Buddy
     def test_add_buddy(self) -> None:
-        request = AddBuddyRequest(ADD_BUDDY)
-        request.parse()
+        request = AddBuddyRequest.gs_parse(ADD_BUDDY)
         self.assertEqual(0, request.target_profile_id)
         self.assertEqual("test", request.reason)
 
     def test_del_buddy(self) -> None:
-        request = DelBuddyRequest(DEL_BUDDY)
-        request.parse()
+        request = DelBuddyRequest.gs_parse(DEL_BUDDY)
         self.assertEqual(0, request.target_profile_id)
 
     def test_invite_to(self) -> None:
-        request = InviteToRequest(INVITE_TO)
-        request.parse()
+        request = InviteToRequest.gs_parse(INVITE_TO)
         self.assertEqual(0, request.product_id)
         self.assertEqual(0, request.profile_id)
 
     def test_status_test(self) -> None:
-        request = StatusRequest(STATUS[0])
-        request.parse()
+        request = StatusRequest.gs_parse(STATUS[0])
         self.assertEqual("test", request.status_string)
         self.assertEqual("test", request.location_string)
-        request = StatusRequest(STATUS[1])
-        request.parse()
+        request = StatusRequest.gs_parse(STATUS[1])

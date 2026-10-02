@@ -15,8 +15,8 @@ from backends.tests.utils import add_headers
 class HandlerTests(unittest.TestCase):
     def test_server_main_list(self):
         raw = b"\x00\x9a\x00\x01\x03\x8fU\x00\x00anno1701\x00anno1701\x00D:@o)Okhgroupid is null\x00\\hostname\\gamemode\\gamever\\gametype\\password\\mapname\\numplayers\\numaiplayers\\openslots\\gamevariant\x00\x00\x00\x00\x04"
-        r = fnt.ServerListRequest(raw)
-        data = add_headers(r)
+        r = fnt.ServerListRequest.gs_parse(raw)
+        data = add_headers(r.model_dump())
         request = ServerListRequest(**data)
         handler = ServerMainListHandler(request)
         handler.handle()
@@ -32,8 +32,8 @@ class HandlerTests(unittest.TestCase):
 
     def test_server_info(self):
         raw = b"\x00\t\x01\xc0\xa8z\xe2+g"
-        r = fnt.ServerInfoRequest(raw)
-        data = add_headers(r)
+        r = fnt.ServerInfoRequest.gs_parse(raw)
+        data = add_headers(r.model_dump())
         request = ServerInfoRequest(**data)
         handler = ServerInfoHandler(request)
         handler.handle()

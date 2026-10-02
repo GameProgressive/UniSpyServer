@@ -233,14 +233,9 @@ class UserIPHandler(CmdHandlerBase):
         assert isinstance(request, UserIPRequest)
         super().__init__(client, request)
 
-    def _request_check(self) -> None:
-        super()._request_check()
-        self._request.remote_ip = self._client.connection.remote_ip
-
     def _data_operate(self) -> None:
         super()._data_operate()
-        self._result = UserIPResult(
-            remote_ip=self._client.connection.remote_ip)
+        self._result = UserIPResult(remote_ip=self._client.connection.remote_ip)
 
 
 class WhoHandler(CmdHandlerBase):
@@ -305,13 +300,12 @@ class JoinHandler(ChannelHandlerBase):
     def _response_send(self) -> None:
         super()._response_send()
         # gamespy sdk join require ciNameReplyHandler
-        names_raw = NamesRequest.build(self._request.channel_name)
-        names_req = NamesRequest(names_raw)
+
+        names_req = NamesRequest.model_validate(self._request.model_dump())
         names_handler = NamesHandler(self._client, names_req)
         names_handler.handle()
 
-        mode_raw = ModeRequest.build(self._request.channel_name)
-        mode_req = ModeRequest(mode_raw)
+        mode_req = ModeRequest.model_validate(self._request.model_dump())
         mode_handler = ModeHandler(self._client, mode_req)
         mode_handler.handle()
 

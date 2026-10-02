@@ -1,6 +1,6 @@
 import unittest
 
-from frontends.gamespy.protocols.query_report.v2.aggregates.enums import RequestType
+from frontends.gamespy.protocols.query_report.v2.aggregates.enums import CommndName
 from frontends.gamespy.protocols.query_report.v2.contracts.requests import (
     AvaliableRequest,
     ChallengeRequest,
@@ -34,30 +34,25 @@ HEARTBEAT_REQUEST = bytes([
 
 class RequestTest(unittest.TestCase):
     def test_available(self):
-        request = AvaliableRequest(AVALIABLE_REQUEST)
-        request.parse()
-        self.assertEqual(RequestType.AVALIABLE_CHECK, request.command_name)
+        request = AvaliableRequest.gs_parse(AVALIABLE_REQUEST)
+        self.assertEqual(CommndName.AVALIABLE_CHECK, request.command_name)
         self.assertEqual("0", request.instant_key)
 
     def test_challenge(self):
-
-        request = ChallengeRequest(CHALLENGE_REQUEST)
-        request.parse()
-        self.assertEqual(RequestType.CHALLENGE, request.command_name)
+        request = ChallengeRequest.gs_parse(CHALLENGE_REQUEST)
+        self.assertEqual(CommndName.CHALLENGE, request.command_name)
         self.assertEqual("0", request.instant_key)
 
     def test_echo_request(self):
 
-        request = EchoRequest(ECHO_REQUEST)
-        request.parse()
-        self.assertEqual(RequestType.ECHO, request.command_name)
+        request = EchoRequest.gs_parse(ECHO_REQUEST)
+        self.assertEqual(CommndName.ECHO, request.command_name)
         self.assertEqual("0", request.instant_key)
 
     def test_heartbeat(self):
 
-        request = HeartbeatRequest(HEARTBEAT_REQUEST)
-        request.parse()
+        request = HeartbeatRequest.gs_parse(HEARTBEAT_REQUEST)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual("2921297764", request.instant_key)
-        assert request.data is not None
-        self.assertEqual(61, len(request.data))
+        assert request.request_dict is not None
+        self.assertEqual(61, len(request.request_dict))

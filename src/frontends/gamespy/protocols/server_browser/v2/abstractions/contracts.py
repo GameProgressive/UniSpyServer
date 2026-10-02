@@ -12,7 +12,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.encryption impor
 from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
     DataKeyType,
     GameServerFlags,
-    RequestType,
+    CommandName,
     ServerListUpdateOption,
 )
 from frontends.gamespy.protocols.server_browser.v2.aggregations.string_flags import (
@@ -25,15 +25,19 @@ QUERY_REPORT_DEFAULT_PORT: int = 6500
 class RequestBase(lib.RequestBase):
     request_length: int
     raw_request: bytes
-    command_name: RequestType
+    command_name: CommandName
 
-    def __init__(self, raw_request: bytes) -> None:
-        assert isinstance(raw_request, bytes)
-        super().__init__(raw_request)
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "RequestBase":
+        data = lib.RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["request_length"] = int.from_bytes(
+            raw_request[:2], byteorder="little"
+        )
+        data_dict["command_name"] = int(raw_request[2])
 
-    def parse(self) -> None:
-        self.request_length = int.from_bytes(self.raw_request[:2], byteorder="little")
-        self.command_name = RequestType(self.raw_request[2])
+        data = RequestBase(**data_dict)
+        return data
 
 
 class ResultBase(lib.ResultBase):
@@ -54,20 +58,15 @@ class ServerListUpdateOptionRequestBase(RequestBase):
     protocol_version: int
     encoding_version: int
     game_version: int
-    query_options: int
+    query_options: int | None = None
     dev_game_name: str
     game_name: str
     client_challenge: str
     update_option: ServerListUpdateOption
     keys: list[str]
     filter: str | None
-    source_ip: str
-    max_servers: int
-
-    def __init__(self, raw_request: bytes):
-        assert isinstance(raw_request, bytes)
-        super().__init__(raw_request)
-        self.filter = None
+    source_ip: str | None
+    max_servers: int | None
 
 
 class ServerListUpdateOptionResultBase(ResultBase):
@@ -127,12 +126,17 @@ class AdHocRequestBase(RequestBase):
     game_server_public_ip: str
     game_server_public_port: int
 
-    def parse(self) -> None:
-        super().parse()
-        self.game_server_public_ip = inet_ntoa(self.raw_request[3:7])
-        self.game_server_public_port = int.from_bytes(
-            self.raw_request[7:9], byteorder="big"
+    @staticmethod
+    def gs_parse(raw_request: bytes) -> "AdHocRequestBase":
+        data = RequestBase.gs_parse(raw_request)
+        game_server_public_ip = inet_ntoa(raw_request[3:7])
+        game_server_public_port = int.from_bytes(raw_request[7:9], byteorder="big")
+        data = AdHocRequestBase(
+            **data.model_dump(),
+            game_server_public_ip=game_server_public_ip,
+            game_server_public_port=game_server_public_port
         )
+        return data
 
 
 class AdHocResponseBase(ResponseBase):

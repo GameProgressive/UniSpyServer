@@ -17,7 +17,6 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_ch
 )
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     LOGIN_TICKET,
-    SESSION_KEY,
 )
 from frontends.gamespy.protocols.presence_connection_manager.contracts.requests import (
     GetProfileRequest,
@@ -92,8 +91,7 @@ class NewUserResponse(ResponseBase):
         assert isinstance(result, NewUserResult)
 
     def build(self):
-        # fmt: on
-        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._result.operation_id}\\final\\"  # fmt: off
+        self.sending_buffer = f"\\nur\\userid\\{self._result.user_id}\\profileid\\{self._result.profile_id}\\id\\{self._result.operation_id}\\final\\"
 
 
 # region Buddy

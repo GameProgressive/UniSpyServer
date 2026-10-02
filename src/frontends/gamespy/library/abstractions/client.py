@@ -87,6 +87,7 @@ class ClientBase:
 
     def send(self, response: "ResponseBase") -> None:
         from frontends.gamespy.library.abstractions.contracts import ResponseBase
+
         assert response is not None
         assert issubclass(type(response), ResponseBase)
         response.build()
@@ -132,8 +133,7 @@ class ClientBase:
         self.logger.info(f"{self._log_prefix} [fetch]: {data}")
 
     def log_current_class(self, object: "CmdHandlerBase") -> None:
-        self.logger.debug(
-            f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
+        self.logger.debug(f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
 
 
 class EasyTimer:

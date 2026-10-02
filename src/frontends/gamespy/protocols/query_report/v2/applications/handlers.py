@@ -34,12 +34,12 @@ class AvailableHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: AvaliableRequest) -> None:
         assert isinstance(request, AvaliableRequest)
         super().__init__(client, request)
-        
 
     def _response_construct(self):
         self._result = AvailableResult(
             command_name=self._request.command_name,
-            instant_key=self._request.instant_key)
+            instant_key=self._request.instant_key,
+        )
         self._response = AvailableResponse(self._result)
 
 
@@ -60,7 +60,6 @@ class ClientMessageAckHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: ClientMessageAckRequest) -> None:
         assert isinstance(request, ClientMessageAckRequest)
         super().__init__(client, request)
-        
 
     def _response_construct(self):
         self._client.log_info("Get client message ack")
@@ -68,12 +67,13 @@ class ClientMessageAckHandler(CmdHandlerBase):
 
 @final
 class ClientMessageHandler(CmdHandlerBase):
+    _request: ClientMessageRequest
+    _result: ClientMessageResult
+    _response: ClientMessageResponse
 
     def __init__(self, client: Client, request: ClientMessageRequest) -> None:
         assert isinstance(request, ClientMessageRequest)
         super().__init__(client, request)
-        self._result_cls = ClientMessageResult
-        self._response_cls = ClientMessageResponse
 
 
 @final
@@ -90,14 +90,13 @@ class HeartbeatHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: HeartbeatRequest) -> None:
         assert isinstance(request, HeartbeatRequest)
         super().__init__(client, request)
-        
 
     def _response_construct(self) -> None:
         self._result = HeartbeatResult(
             remote_ip=self._client.connection.remote_ip,
             remote_port=self._client.connection.remote_port,
             instant_key=self._request.instant_key,
-            command_name=self._request.command_name
+            command_name=self._request.command_name,
         )
         self._response = HeartbeatResponse(self._result)
 
@@ -108,4 +107,3 @@ class KeepAliveHandler(CmdHandlerBase):
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
-        

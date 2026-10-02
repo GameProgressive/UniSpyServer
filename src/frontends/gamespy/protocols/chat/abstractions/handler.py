@@ -1,10 +1,9 @@
 from typing import cast
 
-import frontends.gamespy.library.abstractions.handler as lib
-from backends.library.database.pg_orm import ChatChannelCaches
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import (
     BrockerMessage,
+    ChatChannelCaches,
     RequestBase,
     ResponseBase,
     ResultBase,
@@ -17,6 +16,7 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     NoSuchNickException,
 )
 from frontends.gamespy.protocols.chat.applications.client import Client
+import frontends.gamespy.library.abstractions.handler as lib
 
 
 class CmdHandlerBase(lib.CmdHandlerBase):
@@ -55,14 +55,14 @@ class PostLoginHandlerBase(CmdHandlerBase):
 class ChannelRequestBase(RequestBase):
     channel_name: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-
-    def parse(self) -> None:
-        super().parse()
-        if self._cmd_params is None or len(self._cmd_params) < 1:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ChannelRequestBase":
+        data = RequestBase.gs_parse(raw_request)
+        if len(data.irc.params) < 1:
             raise ChatException("Channel name is missing.")
-        self.channel_name = self._cmd_params[0]
+        channel_name = data.irc.params[0]
+        data = ChannelRequestBase(**data.model_dump(), channel_name=channel_name)
+        return data
 
 
 class ChannelResponseBase(ResponseBase):
@@ -127,26 +127,26 @@ class ChannelHandlerBase(PostLoginHandlerBase):
 # region Message
 class MessageRequestBase(ChannelRequestBase):
     type: MessageType
-    nick_name: str
     message: str
     target_name: str
 
-    def parse(self):
-        super().parse()
-        if self.channel_name is None:
-            raise NoSuchNickException("the channel name is missing from the request")
-        if "#" in self.channel_name:
-            self.type = MessageType.CHANNEL_MESSAGE
-            self.target_name = self.channel_name
+    @staticmethod
+    def gs_parse(raw_request: str) -> "MessageRequestBase":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        message = data.irc.trailing
+        if "#" in data.channel_name:
+            target_name = data.channel_name
+            msg_type = MessageType.CHANNEL_MESSAGE
         else:
-            if self._cmd_params is None or len(self._cmd_params) < 1:
+            if len(data.irc.params) < 1:
                 raise ChatException("cmd params is invalid")
-            self.type = MessageType.USER_MESSAGE
-            self.nick_name = self._cmd_params[0]
-            self.target_name = self.nick_name
-        if self._long_param is None:
-            raise ChatException("long param is invalid")
-        self.message = self._long_param
+
+            msg_type = MessageType.USER_MESSAGE
+            target_name = data.irc.params[0]
+        data = MessageRequestBase(
+            **data.model_dump(), type=msg_type, target_name=target_name, message=message
+        )
+        return data
 
 
 class MessageResultBase(ResultBase):

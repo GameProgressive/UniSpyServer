@@ -109,10 +109,7 @@ def uniquenick_login(
 
 
 def is_cdkey_valid(cdkey: str, session: Session) -> bool:
-    if TYPE_CHECKING:
-        assert isinstance(SubProfiles.cdkeyenc, Column)
-
-        result = session.query(SubProfiles).where(SubProfiles.cdkeyenc == cdkey).count()
+    result = session.query(SubProfiles).where(SubProfiles.cdkeyenc == cdkey).count()
     return result != 0
 
 

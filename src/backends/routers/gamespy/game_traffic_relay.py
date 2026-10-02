@@ -17,7 +17,7 @@ router = APIRouter()
 @router.post(f"{GAME_TRAFFIC_RELAY}/Heartbeat", responses=RESPONSES_DEF)
 def heartbeat(request: Request, heartbeat: GtrHeartBeatRequest) -> Response:
     assert request.client is not None
-    check_public_ip(request.client.host, heartbeat.public_ip_address)
+    check_public_ip(request.client.host, heartbeat.data.public_ip_address)
 
     handler = GtrHeartBeatHandler(heartbeat)
     handler.handle()

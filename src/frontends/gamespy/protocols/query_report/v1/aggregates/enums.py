@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class RequestType(Enum):
+class CommandName(Enum):
     HEARTBEAT = "heartbeat"
     HEARTBEAT_ACK = "gamename"
 

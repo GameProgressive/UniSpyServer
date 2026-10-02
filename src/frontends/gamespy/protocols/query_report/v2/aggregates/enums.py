@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class RequestType(Enum):
+class CommndName(Enum):
     CHALLENGE = 0x01
     HEARTBEAT = 0x03
     CLIENT_MESSAGE = 0x06

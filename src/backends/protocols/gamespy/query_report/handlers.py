@@ -25,18 +25,7 @@ class ChallengeHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        with Session(ENGINE) as session:
-            cache = (
-                session.query(GameServerCaches)
-                .where(GameServerCaches.instant_key == self._request.instant_key)
-                .first()
-            )
-            if cache is None:
-                raise QRException(
-                    "No server found, please make sure there is a server."
-                )
-            cache.avaliable = True  # type: ignore
-            session.commit()
+        data.status_update(self._session, self._request.data.instant_key)
 
 
 class HeartbeatHandler(HandlerBase):
@@ -53,35 +42,35 @@ class HeartbeatHandler(HandlerBase):
         data.clean_expired_game_server_cache(self._session)
 
         cache = data.get_game_server_cache_by_ip_port(
-            self._request.client_ip, self._request.client_port, self._session
+            self._request.info.client_ip, self._request.info.client_port, self._session
         )
 
         if cache is None:
             # todo check whether these data can be null at first heartbeat
-            if len(self._request.data) == 0:
+            if len(self._request.data.request_dict) == 0:
                 raise QRException("data in first heartbeat can not be null")
             # team data can be none in peertest sdk
             cache = GameServerCaches(
-                instant_key=self._request.instant_key,
-                server_id=self._request.server_id,
-                host_ip_address=self._request.client_ip,
-                game_name=self._request.game_name,
-                query_report_port=self._request.client_port,
-                status=self._request.status,
-                data=self._request.data,
+                instant_key=self._request.data.instant_key,
+                server_id=self._request.info.server_id,
+                host_ip_address=self._request.info.client_ip,
+                game_name=self._request.data.game_name,
+                query_report_port=self._request.info.client_port,
+                status=self._request.data.status,
+                data=self._request.data.request_dict,
                 avaliable=True,
             )
             data.create_game_server_cache(cache, self._session)
         else:
             data.update_game_server_cache(
                 cache=cache,
-                instant_key=self._request.instant_key,
-                server_id=self._request.server_id,
-                host_ip_address=self._request.client_ip,
-                game_name=self._request.game_name,
-                query_report_port=self._request.client_port,
-                server_status=self._request.status,
-                data=self._request.data,
+                instant_key=self._request.data.instant_key,
+                server_id=self._request.info.server_id,
+                host_ip_address=self._request.info.client_ip,
+                game_name=self._request.data.game_name,
+                query_report_port=self._request.info.client_port,
+                server_status=self._request.data.status,
+                data=self._request.data.request_dict,
                 session=self._session,
             )
 
@@ -100,18 +89,18 @@ class HeartbeatHandlerV1(HandlerBase):
         data.clean_expired_game_server_cache(self._session)
 
         cache = data.get_game_server_cache_by_ip_port(
-            self._request.client_ip, self._request.client_port, self._session
+            self._request.info.client_ip, self._request.info.client_port, self._session
         )
 
         if cache is None:
             cache = GameServerCaches(
                 instant_key=None,
-                server_id=self._request.server_id,
-                host_ip_address=self._request.client_ip,
-                game_name=self._request.game_name,
-                query_report_port=self._request.client_port,
+                server_id=self._request.info.server_id,
+                host_ip_address=self._request.info.client_ip,
+                game_name=self._request.data.game_name,
+                query_report_port=self._request.info.client_port,
                 status=GameServerStatus.NORMAL,
-                data=self._request.data,
+                data=self._request.data.request_dict,
                 avaliable=True,
             )
             data.create_game_server_cache(cache, self._session)
@@ -119,12 +108,12 @@ class HeartbeatHandlerV1(HandlerBase):
             data.update_game_server_cache(
                 cache=cache,
                 instant_key=None,
-                server_id=self._request.server_id,
-                host_ip_address=self._request.client_ip,
-                game_name=self._request.game_name,
-                query_report_port=self._request.client_port,
+                server_id=self._request.info.server_id,
+                host_ip_address=self._request.info.client_ip,
+                game_name=self._request.data.game_name,
+                query_report_port=self._request.info.client_port,
                 server_status=GameServerStatus.NORMAL,
-                data=self._request.data,
+                data=self._request.data.request_dict,
                 session=self._session,
             )
 
@@ -134,9 +123,9 @@ class KeepAliveHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        assert isinstance(self._request.instant_key, str)
+        assert isinstance(self._request.data.instant_key, str)
         data.refresh_game_server_cache(
-            self._request.client_ip, self._request.client_port, self._session
+            self._request.info.client_ip, self._request.info.client_port, self._session
         )
 
 
@@ -149,4 +138,4 @@ class ClientMessageHandler(HandlerBase):
         # currently we just use broadcast message to all qr frontends
         from backends.protocols.gamespy.query_report.broker import MANAGER
 
-        MANAGER.broadcast(self._request.model_dump_json())
+        MANAGER.broadcast(self._request.data.model_dump_json())

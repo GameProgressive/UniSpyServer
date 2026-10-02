@@ -1,5 +1,6 @@
-from typing import final
+from typing import Any, final
 
+from frontends.gamespy.library.abstractions.contracts import RequestBase
 from frontends.gamespy.library.extentions.gamespy_utils import (
     convert_to_key_value,
     is_email_format_correct,
@@ -19,89 +20,85 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPParseException,
 )
 
-# region General
-EXTRA_INFO_DICT: dict[str, type] = {
-    "location": str,
-    "firstname": str,
-    "lastname": str,
-    "publicmask": int,
-    "latitude": float,
-    "longitude": float,
-    "aim": str,
-    "picture": int,
-    "occupationid": int,
-    "incomeid": int,
-    "industryid": int,
-    "marriedid": int,
-    "childcount": int,
-    "interests1": int,
-    "ownership1": int,
-    "connectiontype": int,
-    "sex": int,
-    "zipcode": str,
-    "countrycode": str,
-    "homepage": str,
-    "birthday": int,
-    "birthmonth": int,
-    "birthyear": int,
-    "icquin": int,
-    "quietflags": int,
-    "streetaddr": str,
-    "streeaddr": str,
-    "city": str,
-    "cpubrandid": int,
-    "cpuspeed": int,
-    "memory": int,
-    "videocard1string": str,
-    "videocard1ram": int,
-    "videocard2string": str,
-    "videocard2ram": int,
-    "subscription": int,
-    "adminrights": int,
-}
+from pydantic import BaseModel, ConfigDict
+import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
 
 
-def validate_extra_infos(info_dict: dict) -> dict:
-    """
-    validate and create a dict of extra info
-    """
-    assert isinstance(info_dict, dict)
-    extra_infos = {}
-    for key, value in info_dict.items():
-        if key in EXTRA_INFO_DICT and key not in extra_infos:
-            if not isinstance(value, EXTRA_INFO_DICT[key]):
-                converted_value = value
-            else:
-                try:
-                    value_type = EXTRA_INFO_DICT[key]
-                    converted_value = value_type(value)
-                except Exception as e:
-                    raise GPException(f"value conversion failed: {e}")
-            extra_infos[key] = converted_value
-    return extra_infos
+class ExtraInfo(BaseModel):
+    location: str | None = None
+    firstname: str | None = None
+    lastname: str | None = None
+    publicmask: int | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+    aim: str | None = None
+    picture: int | None = None
+    occupationid: int | None = None
+    incomeid: int | None = None
+    industryid: int | None = None
+    marriedid: int | None = None
+    childcount: int | None = None
+    interests1: int | None = None
+    ownership1: int | None = None
+    connectiontype: int | None = None
+    sex: int | None = None
+    zipcode: str | None = None
+    countrycode: str | None = None
+    homepage: str | None = None
+    birthday: int | None = None
+    birthmonth: int | None = None
+    birthyear: int | None = None
+    icquin: int | None = None
+    quietflags: int | None = None
+    streetaddr: str | None = None
+    streeaddr: str | None = None
+    city: str | None = None
+    cpubrandid: int | None = None
+    cpushpeed: int | None = None
+    memory: int | None = None
+    videocard1string: str | None = None
+    videocard1ram: int | None = None
+    videocard2string: str | None = None
+    videocard2ram: int | None = None
+    subscription: int | None = None
+    adminrights: int | None = None
+
+    model_config = ConfigDict(extra="allow")
 
 
 @final
 class KeepAliveRequest(RequestBase):
-    client_ip: str
-    client_port: int
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "KeepAliveRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data = KeepAliveRequest(**data_dict)
+        return data
+
+
+SDK_MAPPING: list[SdkRevisionType] = [
+    SdkRevisionType.GPINEW_AUTH_NOTIFICATION,
+    SdkRevisionType.GPINEW_REVOKE_NOTIFICATION,
+    SdkRevisionType.GPINEW_STATUS_NOTIFICATION,
+    SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN,
+    SdkRevisionType.GPIREMOTE_AUTH_IDS_NOTIFICATION,
+    SdkRevisionType.GPINEW_CD_KEY_REGISTRATION,
+]
 
 
 @final
 class LoginRequest(RequestBase):
-    sdk_mapping: list[SdkRevisionType]
     user_challenge: str
     response: str
-    unique_nick: str
     user_data: str
-    namespace_id: int
-    auth_token: str
-    nick: str
-    email: str
+    unique_nick: str | None = None
+    namespace_id: int | None = None
+    auth_token: str | None = None
+    nick: str | None = None
+    email: str | None = None
     product_id: int
     type: LoginType
-    sdk_revision_type: list[SdkRevisionType]
+    sdk_revision: list[SdkRevisionType]
     game_port: int
     user_id: int
     profile_id: int
@@ -113,199 +110,141 @@ class LoginRequest(RequestBase):
     quiet_mode_flags: int
     firewall: bool
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-        self.sdk_revision_type = []
-        self.sdk_mapping = [
-            SdkRevisionType.GPINEW_AUTH_NOTIFICATION,
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION,
-            SdkRevisionType.GPINEW_STATUS_NOTIFICATION,
-            SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN,
-            SdkRevisionType.GPIREMOTE_AUTH_IDS_NOTIFICATION,
-            SdkRevisionType.GPINEW_CD_KEY_REGISTRATION,
-        ]
-        self.firewall = True
+    def model_post_init(self, context: Any) -> None:
+        super().model_post_init(context)
+        if self.type == LoginType.AUTH_TOKEN:
+            if self.auth_token is None:
+                raise ValueError("auth token is missing")
+        if self.type == LoginType.NICK_EMAIL:
+            if self.nick is None or self.email is None:
+                raise ValueError("nick or email is missing")
+        if self.type == LoginType.UNIQUENICK_NAMESPACE_ID:
+            if self.unique_nick is None or self.namespace_id is None:
+                raise ValueError("uniquenick or namespace is missing")
 
-    def parse(self):
-        super().parse()
-
-        if "challenge" not in self._request_dict:
-            raise GPParseException("challenge is missing")
-
-        if "response" not in self._request_dict:
-            raise GPParseException("response is missing")
-
-        self.user_challenge = self._request_dict["challenge"]
-        self.response = self._request_dict["response"]
-
-        if "uniquenick" in self._request_dict and "namespaceid" in self._request_dict:
-            namespace_id = int(self._request_dict["namespaceid"])
-            self.type = LoginType.UNIQUENICK_NAMESPACE_ID
-            self.unique_nick = self._request_dict["uniquenick"]
-            self.user_data = self.unique_nick
-            self.namespace_id = namespace_id
-        elif "authtoken" in self._request_dict:
-            self.type = LoginType.AUTH_TOKEN
-            self.auth_token = self._request_dict["authtoken"]
-            self.user_data = self.auth_token
-        elif "user" in self._request_dict:
-            self.type = LoginType.NICK_EMAIL
-            self.user_data = self._request_dict["user"]
-            pos = self.user_data.index("@")
-            if pos == -1 or pos < 1 or (pos + 1) >= len(self.user_data):
-                raise GPParseException("user format is incorrect")
-            self.nick = self.user_data[:pos]
-            self.email = self.user_data[pos + 1:]
-            if "namespaceid" in self._request_dict:
-                namespace_id = int(self._request_dict["namespaceid"])
-                self.namespace_id = namespace_id
+    @staticmethod
+    def gs_parse(raw_request: str) -> "LoginRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        other_data = LoginRequest.parse_other_data(data)
+        data_dict["user_challenge"] = data.request_dict["challenge"]
+        data_dict["response"] = data.request_dict["response"]
+        if "uniquenick" in data.request_dict and "namespaceid" in data.request_dict:
+            data_dict["namespace_id"] = data.request_dict["namespaceid"]
+            data_dict["type"] = LoginType.UNIQUENICK_NAMESPACE_ID
+            data_dict["unique_nick"] = data.request_dict["uniquenick"]
+            data_dict["user_data"] = data_dict["unique_nick"]
+            data = LoginRequest(**other_data, **data_dict)
+            return data
+        elif "authtoken" in data.request_dict:
+            data_dict["type"] = LoginType.AUTH_TOKEN
+            data_dict["auth_token"] = data.request_dict["authtoken"]
+            data_dict["user_data"] = data_dict["auth_token"]
+            data = LoginRequest(**other_data, **data_dict)
+            return data
+        elif "user" in data.request_dict:
+            data_dict["type"] = LoginType.NICK_EMAIL
+            data_dict["nick"], data_dict["email"] = LoginRequest.gs_process_nick_email(
+                data.request_dict
+            )
+            data_dict["user_data"] = data.request_dict["user"]
+            data_dict["namespace_id"] = data.request_dict["namespaceid"]
+            data = LoginRequest(**other_data, **data_dict)
+            return data
         else:
             raise GPParseException("Unknown login method detected.")
 
-        self.parse_other_data()
+    @staticmethod
+    def gs_process_nick_email(request_dict: dict) -> tuple[str, str]:
+        user_data: str = request_dict["user"]
+        pos = user_data.index("@")
+        if pos == -1 or pos < 1 or (pos + 1) >= len(user_data):
+            raise GPParseException("user format is incorrect")
+        nick = user_data[:pos]
+        email = user_data[pos + 1 :]
+        return nick, email
 
-    def parse_other_data(self):
-        if "userid" in self._request_dict:
-            user_id = int(self._request_dict["userid"])
-            self.user_id = user_id
+    @staticmethod
+    def parse_other_data(data: RequestBase):
+        request_dict = data.request_dict
+        other_data = {}
 
-        if "profileid" in self._request_dict:
-            profile_id = int(self._request_dict["profileid"])
-            self.profile_id = profile_id
+        userid = request_dict.get("userid")
+        if userid is not None:
+            other_data["user_id"] = userid
 
-        if "partnerid" in self._request_dict:
-            partner_id = int(self._request_dict["partnerid"])
-            self.partner_id = partner_id
-        else:
-            self.partner_id = 0
+        profileid = request_dict.get("profileid")
+        if profileid is not None:
+            other_data["profile_id"] = profileid
 
-        if "sdkrevision" in self._request_dict:
-            sdk_revision_type = int(self._request_dict["sdkrevision"])
-            for item in self.sdk_mapping:
+        partnerid = request_dict.get("partnerid", 0)
+        other_data["partner_id"] = partnerid
+
+        sdkrevision = request_dict.get("sdkrevision")
+        if sdkrevision is not None:
+            sdk_revision_type = int(sdkrevision)
+            sdk_revision_list = []
+
+            for item in SDK_MAPPING:
                 if item & sdk_revision_type:
-                    self.sdk_revision_type.append(item)
+                    sdk_revision_list.append(item)
 
-        if "gamename" in self._request_dict:
-            self.game_name = self._request_dict["gamename"]
+            other_data["sdk_revision"] = sdk_revision_list
 
-        if "port" in self._request_dict:
-            game_port = int(self._request_dict["port"])
-            self.game_port = game_port
+        gamename = request_dict.get("gamename")
+        if gamename is not None:
+            other_data["game_name"] = gamename
 
-        if "productid" in self._request_dict:
-            product_id = int(self._request_dict["productid"])
-            self.product_id = product_id
+        port = request_dict.get("port")
+        if port is not None:
+            other_data["game_port"] = int(port)
 
-        if "firewall" in self._request_dict:
-            self.firewall = bool(self._request_dict["firewall"])
+        productid = request_dict.get("productid")
+        if productid is not None:
+            other_data["product_id"] = int(productid)
 
-        if "quiet" in self._request_dict:
-            quiet = int(self._request_dict["quiet"])
-            self.quiet_mode_flags = QuietModeType(quiet)
+        firewall = request_dict.get("firewall")
+        if firewall is not None:
+            other_data["firewall"] = bool(firewall)
+
+        quiet = request_dict.get("quiet")
+        if quiet is not None:
+            other_data["quiet_mode_flags"] = QuietModeType(int(quiet))
+
+        return other_data
 
 
 @final
 class LogoutRequest(RequestBase):
-    session_key: str
+    sub_profile_id: int
     user_id: int
 
-    def parse(self):
-        self._request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = list(self._request_dict.keys())[0]
-        if "sesskey" not in self._request_dict:
-            raise GPException("session key is missing")
-        self.session_key = self._request_dict['sesskey']
+    @staticmethod
+    def gs_parse(raw_request: str) -> "LogoutRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["user_id"] = data.request_dict["user_id"]
+        data = LogoutRequest(**data_dict)
+        return data
 
 
 @final
-class NewUserRequest(RequestBase):
-    product_id: int
-    game_port: int
-    cd_key: str
-    has_game_name: bool
-    has_product_id: bool
-    has_cdkey: bool
-    has_partner_id: bool
-    has_game_port: bool
-    nick: str
-    email: str
-    password: str
-    partner_id: int
-    game_name: str
-    uniquenick: str
-
-    def parse(self):
-        super().parse()
-        self.password = process_password(self._request_dict)
-
-        if "nick" not in self._request_dict:
-            raise GPParseException("nickname is missing.")
-        if "email" not in self._request_dict:
-            raise GPParseException("email is missing.")
-        if not is_email_format_correct(self._request_dict["email"]):
-            raise GPParseException("email format is incorrect.")
-        self.nick = self._request_dict["nick"]
-        self.email = self._request_dict["email"]
-
-        if "uniquenick" in self._request_dict and "namespaceid" in self._request_dict:
-            if "namespaceid" in self._request_dict:
-                try:
-                    self.namespace_id = int(self._request_dict["namespaceid"])
-                except ValueError:
-                    raise GPParseException("namespaceid is incorrect.")
-
-            self.uniquenick = self._request_dict["uniquenick"]
-        self.parse_other_info()
-
-    def parse_other_info(self):
-        if "partnerid" in self._request_dict:
-            try:
-                self.partner_id = int(self._request_dict["partnerid"])
-                self.has_partner_id_flag = True
-            except ValueError:
-                raise GPParseException("partnerid is incorrect.")
-        else:
-            self.partner_id = 0  # set default partner id to 0 means gamespy
-
-        if "productid" in self._request_dict:
-            try:
-                self.product_id = int(self._request_dict["productid"])
-                self.has_product_id_flag = True
-            except ValueError:
-                raise GPParseException("productid is incorrect.")
-
-        if "gamename" in self._request_dict:
-            self.has_game_name_flag = True
-            self.game_name = self._request_dict["gamename"]
-
-        if "port" in self._request_dict:
-            try:
-                self.game_port = int(self._request_dict["port"])
-                self.has_game_port_flag = True
-            except ValueError:
-                raise GPParseException("port is incorrect.")
-
-        if "cdkey" in self._request_dict:
-            self.has_cd_key_enc_flag = True
-            self.cd_key = self._request_dict["cdkey"]
+class NewUserRequest(psp.NewUserRequest, RequestBase):
+    @staticmethod
+    def gs_parse(raw_request: str) -> "NewUserRequest":
+        data = psp.NewUserRequest.gs_parse(raw_request)
+        data = NewUserRequest(**data.model_dump())
+        return data
 
 
 # region Buddy
+
 
 class BuddyRequestBase(RequestBase):
     profile_id: int
     namespace_id: int
     operation_id: int
-
-    def __init__(self, profile_id: int, namespace_id: int, operation_id: int) -> None:
-        assert isinstance(profile_id, int)
-        assert isinstance(namespace_id, int)
-        self.profile_id = profile_id
-        self.namespace_id = namespace_id
-        self.operation_id = operation_id
-
-    def parse(self):
-        pass
 
 
 @final
@@ -323,6 +262,7 @@ class BuddyMessageFriendAddRequest(BuddyRequestBase):
     """
     retrive add buddy request message
     """
+
     pass
 
 
@@ -331,6 +271,7 @@ class BuddyMessageRequest(BuddyRequestBase):
     """
     retrive friend message
     """
+
     pass
 
 
@@ -339,104 +280,77 @@ class AuthAddBuddyRequest(RequestBase):
     """
     verify the friend add request after the client accept the friend invitation
     """
-    session_key: str
-    namespace_id: int
-    sender_profile_id: int
+
+    sub_profile_id: int
     receiver_profile_id: int
     sig: str
     auto_sync: bool
 
-    def parse(self):
-        super().parse()
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("session key is missing.")
-        self.session_key = self._request_dict['sesskey']
-
-        if "fromprofileid" not in self._request_dict:
-            raise GPParseException("fromprofileid is missing.")
-        try:
-            self.receiver_profile_id = int(self._request_dict["fromprofileid"])
-        except Exception:
-            raise GPParseException("fromprofileid format is incorrect.")
-
-        if "sig" not in self._request_dict:
-            raise GPParseException("sig is missing.")
-        self.sig = self._request_dict['sig']
-
-        try:
-            self.auto_sync = bool(self._request_dict.get("autoSync"))
-        except Exception:
-            raise GPParseException("autoSync format is incorrect.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AuthAddBuddyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["receiver_profile_id"] = int(data.request_dict["fromprofileid"])
+        data_dict["sig"] = data.request_dict["sig"]
+        data_dict["auto_sync"] = bool(data.request_dict.get("autoSync"))
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = AuthAddBuddyRequest(**data_dict)
+        return data
 
 
 @final
 class AddBuddyRequest(RequestBase):
-    sender_profile_id: int
     target_profile_id: int
-    namespace_id: int
-    reason: str | None
+    sub_profile_id: int
+    reason: str
     signature: str | None
+    """
+    Added a sync requested value that tells the backend to automatically add me and my friend
+    """
 
-    def parse(self):
-        super().parse()
-        if (
-            ("sesskey" not in self._request_dict)
-            or ("newprofileid" not in self._request_dict)
-            or ("reason" not in self._request_dict)
-        ):
-            raise GPParseException("addbuddy request is invalid.")
-        try:
-            self.target_profile_id = int(self._request_dict["newprofileid"])
-        except Exception:
-            raise GPParseException("newprofileid format is incorrect.")
-
-        self.reason = self._request_dict.get("reason")
-        self.signature = self._request_dict.get("syncrequested")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AddBuddyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["target_profile_id"] = data.request_dict["newprofileid"]
+        data_dict["reason"] = data.request_dict["reason"]
+        data_dict["signature"] = data.request_dict.get("syncrequested")
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = AddBuddyRequest(**data_dict)
+        return data
 
 
 @final
 class DelBuddyRequest(RequestBase):
     target_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
+    sub_profile_id: int
 
-    def parse(self):
-        super().parse()
-        if "delprofileid" not in self._request_dict:
-            raise GPParseException("delprofileid is missing.")
-
-        try:
-            self.target_profile_id = int(self._request_dict["delprofileid"])
-        except Exception:
-            raise GPParseException("delprofileid format is incorrect.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "DelBuddyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["target_profile_id"] = data.request_dict["delprofileid"]
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = DelBuddyRequest(**data_dict)
+        return data
 
 
 @final
 class InviteToRequest(RequestBase):
     product_id: int
     profile_id: int
-    session_key: str
+    sub_profile_id: int
     """the invite target profile id"""
 
-    def parse(self):
-        super().parse()
-        if "productid" not in self._request_dict:
-            raise GPParseException("productid is missing.")
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing.")
-
-        try:
-            self.product_id = int(self._request_dict["productid"])
-        except ValueError:
-            raise GPParseException("productid format is incorrect.")
-
-        try:
-            self.profile_id = int(self._request_dict["profileid"])
-        except ValueError:
-            raise GPParseException("profileid format is incorrect.")
-
-        self.session_key = self._request_dict["sesskey"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "InviteToRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["product_id"] = data.request_dict["productid"]
+        data_dict["profile_id"] = data.request_dict["profileid"]
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = InviteToRequest(**data_dict)
+        return data
 
 
 @final
@@ -457,47 +371,25 @@ class StatusInfoRequest(RequestBase):
     quiet_mode_flags: str
     raw_request: str | None
 
-    def __init__(self, raw_request: str | None = None) -> None:
-        self.raw_request = raw_request
+    @staticmethod
+    def gs_parse(raw_request: str) -> "StatusInfoRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["status_state"] = data.request_dict["state"]
+        data_dict["host_ip"] = data.request_dict["hostip"]
+        data_dict["host_private_ip"] = data.request_dict["hprivip"]
+        data_dict["query_report_port"] = data.request_dict["qport"]
+        data_dict["host_port"] = data.request_dict["hport"]
+        data_dict["session_flags"] = data.request_dict["sessflags"]
 
-    def parse(self):
-        super().parse()
+        data_dict["namespace_id"] = data.request_dict.get("namespaceid", 0)
+        data_dict["rich_status"] = data.request_dict["rechstatus"]
+        data_dict["game_type"] = data.request_dict["gametype"]
+        data_dict["game_variant"] = data.request_dict["gamevariant"]
+        data_dict["game_map_name"] = data.request_dict["gamemapname"]
 
-        if (
-            "state" not in self._request_dict
-            or "hostip" not in self._request_dict
-            or "hprivip" not in self._request_dict
-            or "qport" not in self._request_dict
-            or "hport" not in self._request_dict
-            or "sessflags" not in self._request_dict
-            or "rechstatus" not in self._request_dict
-            or "gametype" not in self._request_dict
-            or "gamevariant" not in self._request_dict
-            or "gamemapname" not in self._request_dict
-        ):
-            raise GPParseException("StatusInfo request is invalid.")
-
-        self.status_state = self._request_dict["state"]
-        self.host_ip = self._request_dict["hostip"]
-        self.host_private_ip = self._request_dict["hprivip"]
-
-        try:
-            self.query_report_port = int(self._request_dict["qport"])
-            self.host_port = int(self._request_dict["hport"])
-            self.session_flags = self._request_dict["sessflags"]
-        except ValueError:
-            raise GPParseException(
-                "qport, hport, or sessflags format is incorrect.")
-
-        if "namespace_id" in self._request_dict:
-            self.namespace_id = int(self._request_dict["namespaceid"])
-        else:
-            self.namespace_id = 0
-
-        self.rich_status = self._request_dict["rechstatus"]
-        self.game_type = self._request_dict["gametype"]
-        self.game_variant = self._request_dict["gamevariant"]
-        self.game_map_name = self._request_dict["gamemapname"]
+        data = StatusInfoRequest(**data_dict)
+        return data
 
 
 @final
@@ -505,43 +397,25 @@ class BuddyStatusRetrieveRequest(RequestBase):
     profile_id: int
     namespace_id: int
 
-    def __init__(self, profile_id: int, namespace_id: int) -> None:
-        self.profile_id = profile_id
-        self.namespace_id = namespace_id
-
-    def parse(self):
-        pass
-
 
 @final
 class StatusRequest(RequestBase):
     current_status: GPStatusCode
     location_string: str
     status_string: str
-    session_key: str
+    sub_profile_id: int
+    operation_id: int | None = None
 
-    def parse(self):
-        self._request_dict = convert_to_key_value(self.raw_request)
-        self.command_name = list(self._request_dict.keys())[0]
-
-        if "status" not in self._request_dict:
-            raise GPParseException("status is missing.")
-
-        if "statstring" not in self._request_dict:
-            raise GPParseException("statstring is missing.")
-
-        if "locstring" not in self._request_dict:
-            raise GPParseException("locstring is missing.")
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("session key is missing.")
-        self.session_key = self._request_dict["sesskey"]
-        self.location_string = self._request_dict["locstring"]
-        self.status_string = self._request_dict["statstring"]
-        try:
-            status_code = int(self._request_dict["status"])
-            self.current_status = GPStatusCode(status_code)
-        except ValueError:
-            raise GPParseException("status format is incorrect.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "StatusRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["location_string"] = data.request_dict["locstring"]
+        data_dict["status_string"] = data.request_dict["statstring"]
+        data_dict["current_status"] = data.request_dict["status"]
+        data = StatusRequest(**data_dict)
+        return data
 
 
 # region Profile
@@ -549,172 +423,139 @@ class StatusRequest(RequestBase):
 
 @final
 class AddBlockRequest(RequestBase):
-    taget_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
+    target_profile_id: int
+    sub_profile_id: int
 
-    def parse(self):
-        super().parse()
-
-        if "profileid" not in self._request_dict:
-            raise GPParseException("profileid is missing")
-
-        try:
-            self.taget_profile_id = int(self._request_dict["profileid"])
-        except ValueError:
-            raise GPParseException("profileid format is incorrect")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AddBlockRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["target_profile_id"] = data.request_dict["profileid"]
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = AddBlockRequest(**data_dict)
+        return data
 
 
+@final
 class RemoveBlockRequest(RequestBase):
-    session_key: str
-    taget_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
+    sub_profile_id: int
+    target_profile_id: int
 
-    def parse(self):
-        super().parse()
-        if "profileid" not in self._request_dict:
-            raise GPParseException("profileid is missing")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RemoveBlockRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["target_profile_id"] = data.request_dict["profileid"]
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
 
-        try:
-            self.taget_profile_id = int(self._request_dict["profileid"])
-        except ValueError:
-            raise GPParseException("profileid format is incorrect")
+        data = RemoveBlockRequest(**data_dict)
+        return data
 
 
 @final
 class GetProfileRequest(RequestBase):
     profile_id: int
-    session_key: str
+    sub_profile_id: int
 
-    def parse(self):
-        super().parse()
-
-        if "profileid" not in self._request_dict:
-            raise GPParseException("profileid is missing")
-
-        try:
-            self.profile_id = int(self._request_dict["profileid"])
-        except ValueError:
-            raise GPParseException("profileid format is incorrect")
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing")
-
-        self.session_key = self._request_dict["sesskey"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetProfileRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["profile_id"] = data.request_dict["profileid"]
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data = GetProfileRequest(**data_dict)
+        return data
 
 
 @final
 class NewProfileRequest(RequestBase):
-    is_replace_nick_name: bool
-    session_key: str
+    is_replace: bool
+    sub_profile_id: int
     new_nick: str
-    old_nick: str
+    old_nick: str | None
 
-    def parse(self):
-        super().parse()
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing")
-
-        self.session_key = self._request_dict["sesskey"]
-
-        if "replace" in self._request_dict:
-            if "oldnick" not in self._request_dict and "nick" not in self._request_dict:
-                raise GPParseException("oldnick or nick is missing.")
-
-            if "oldnick" in self._request_dict:
-                self.old_nick = self._request_dict["oldnick"]
-            if "nick" in self._request_dict:
-                self.new_nick = self._request_dict["nick"]
-
-            self.is_replace_nick_name = True
-        else:
-            if "nick" not in self._request_dict:
-                raise GPParseException("nick is missing.")
-
-            self.new_nick = self._request_dict["nick"]
-            self.is_replace_nick_name = False
+    @staticmethod
+    def gs_parse(raw_request: str) -> "NewProfileRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["old_nick"] = data.request_dict.get("oldnick")
+        is_replace = False
+        if data_dict["old_nick"] is not None:
+            is_replace = True
+        data_dict["new_nick"] = data.request_dict["nick"]
+        data = NewProfileRequest(
+            **data_dict,
+            is_replace=is_replace,
+        )
+        return data
 
 
 @final
 class RegisterCDKeyRequest(RequestBase):
-    session_key: str
+    sub_profile_id: int
     cdkey_enc: str
 
-    def parse(self):
-        super().parse()
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing")
-        self.session_key = self._request_dict["sesskey"]
-
-        if "cdkeyenc" not in self._request_dict:
-            raise GPParseException("cdkeyenc is missing")
-        self.cdkey_enc = self._request_dict["cdkeyenc"]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RegisterCDKeyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["cdkey_enc"] = data.request_dict["cdkeyenc"]
+        data = RegisterCDKeyRequest(**data_dict)
+        return data
 
 
 @final
 class RegisterNickRequest(RequestBase):
     unique_nick: str
-    session_key: str
+    sub_profile_id: int
     partner_id: int
 
-    def parse(self):
-        super().parse()
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing")
-        self.session_key = self._request_dict["sesskey"]
-
-        if "uniquenick" not in self._request_dict:
-            raise GPParseException("uniquenick is missing")
-        self.unique_nick = self._request_dict["uniquenick"]
-
-        if "partnerid" in self._request_dict:
-            try:
-                self.partner_id = int(self._request_dict["partnerid"])
-            except ValueError:
-                raise GPParseException("partnerid is missing")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RegisterNickRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["unique_nick"] = data.request_dict["uniquenick"]
+        data_dict["partner_id"] = data.request_dict["partnerid"]
+        data = RegisterNickRequest(**data_dict)
+        return data
 
 
 @final
 class UpdateProfileRequest(RequestBase):
-    session_key: str
+    sub_profile_id: int
     partner_id: int
-    nick: str
-    uniquenick: str
-    extra_infos: dict
+    extra_infos: ExtraInfo
 
-    def parse(self):
-        super().parse()
-
-        if "sesskey" not in self._request_dict:
-            raise GPParseException("sesskey is missing")
-        self.session_key = self._request_dict["sesskey"]
-
-        if "partnerid" in self._request_dict:
-            try:
-                self.partner_id = int(self._request_dict["partnerid"])
-            except ValueError:
-                raise GPParseException("partnerid is incorrect")
-
-        if "nick" in self._request_dict:
-            self.nick = self._request_dict["nick"]
-
-        if "uniquenick" in self._request_dict:
-            self.uniquenick = self._request_dict["uniquenick"]
-
-        self.extra_info = validate_extra_infos(self._request_dict)
+    @staticmethod
+    def gs_parse(raw_request: str) -> "UpdateProfileRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["partner_id"] = data.request_dict["partnerid"]
+        extra_info = ExtraInfo.model_validate(data.request_dict)
+        data = UpdateProfileRequest(
+            **data_dict,
+            extra_infos=extra_info,
+        )
+        return data
 
 
 @final
 class UpdateUserInfoRequest(RequestBase):
-    extra_infos: dict[str, str]
+    extra_infos: ExtraInfo
+    sub_profile_id: int
 
-    def parse(self):
-        super().parse()
-        self.extra_infos = validate_extra_infos(self._request_dict)
+    @staticmethod
+    def gs_parse(raw_request: str) -> RequestBase:
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        extra_info = ExtraInfo.model_validate(data.request_dict)
+        data = UpdateUserInfoRequest(**data_dict, extra_infos=extra_info)
+        return data
 
 
 # region Peer
@@ -723,7 +564,11 @@ class AuthRequest(RequestBase):
     nick: str
     sig: str
 
-    def parse(self):
-        super().parse()
-        self.nick = self._request_dict['nick']
-        self.sig = self._request_dict['sig']
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AuthRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["nick"] = data.request_dict["nick"]
+        data_dict["sig"] = data.request_dict["sig"]
+        data = AuthRequest(**data_dict)
+        return data

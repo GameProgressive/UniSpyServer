@@ -9,7 +9,10 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 )
 
 from backends.library.abstractions.contracts import RequestBase
-from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import GPException
+from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
+    GPException,
+)
+import frontends.gamespy.protocols.presence_connection_manager.contracts.requests as fnt
 
 
 class ErrorOnParse(RequestBase):
@@ -20,198 +23,118 @@ class ErrorOnParse(RequestBase):
 
 
 class AddBlockRequest(RequestBase):
-    taget_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
+    data: fnt.AddBlockRequest
 
 
 class RemoveBlockRequest(RequestBase):
-    target_profile_id: int
-    namespace_id: int
-    sender_profile_id: int
+    data: fnt.RemoveBlockRequest
 
 
 class BuddyListRetriveRequest(RequestBase):
-    profile_id: int
-    namespace_id: int
-    raw_request: str | None = None
-    operation_id: int
+    data: fnt.BuddyListRetriveRequest
 
 
 class BlockListRetriveRequest(RequestBase):
-    profile_id: int
-    namespace_id: int
-    operation_id: int
-    raw_request: str | None = None
+    data: fnt.BlockListRetriveRequest
 
 
 class AddBuddyRequest(RequestBase):
-    target_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
-    reason: str
+    data: fnt.AddBuddyRequest
 
 
 class BuddyMessageFriendAddRequest(RequestBase):
-    profile_id: int
-    namespace_id: int
-    operation_id: int
-    raw_request: str | None = None
+    data: fnt.BuddyMessageFriendAddRequest
 
 
 class DelBuddyRequest(RequestBase):
-    target_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
-    session_key: str
+    data: fnt.DelBuddyRequest
 
 
 class AuthAddBuddyRequest(RequestBase):
-    session_key: str
-    receiver_profile_id: int
-    sender_profile_id: int
-    namespace_id: int
-    sig: str
-    auto_sync: bool
+    data: fnt.AuthAddBuddyRequest
 
 
 class InviteToRequest(RequestBase):
-    product_id: int
-    profile_id: int
-    session_key: str
-    """the invite target profile id"""
+    data: fnt.InviteToRequest
 
 
 class StatusInfoRequest(RequestBase):
-    is_get: bool
-    profile_id: int
-    namespace_id: int
-    status_state: str
-    buddy_ip: str
-    host_ip: str
-    host_private_ip: str
-    query_report_port: int
-    host_port: int
-    session_flags: str
-    rich_status: str
-    game_type: str
-    game_variant: str
-    game_map_name: str
-    quiet_mode_flags: str
+    data: fnt.StatusInfoRequest
 
 
 class StatusRequest(RequestBase):
-    session_key: str
-    status_string: str
-    location_string: str
-    current_status: GPStatusCode
+    data: fnt.StatusRequest
 
 
 # region general
 
 
 class KeepAliveRequest(RequestBase):
-    client_ip: str
-    client_port: int
-    pass
+    data: fnt.KeepAliveRequest
 
 
 class NewUserRequest(RequestBase):
-    product_id: int
-    game_port: int
-    cd_key: str
-    has_game_name: bool
-    has_product_id: bool
-    has_cdkey: bool
-    has_partner_id: bool
-    has_game_port: bool
-    nick: str
-    email: str
-    password: str
-    partner_id: int
-    game_name: str
-    uniquenick: str
+    data: fnt.NewUserRequest
 
 
 class LoginRequest(RequestBase):
-    user_challenge: str
-    response: str
-    user_data: str
-    unique_nick: str | None = None
-    namespace_id: int | None = None
-    auth_token: str | None = None
-    nick: str | None = None
-    email: str | None = None
-    product_id: int
-    type: LoginType
-    sdk_revision_type: list[SdkRevisionType]
-    game_port: int
-    partner_id: int
-    game_name: str | None = None
-    quiet_mode_flags: int
-    firewall: bool
-    operation_id: int
+    data: fnt.LoginRequest
 
     def model_post_init(self, __context: Any) -> None:
         super().model_post_init(__context)
-        if self.type == LoginType.AUTH_TOKEN:
-            if self.auth_token is None:
+        if self.data.type == LoginType.AUTH_TOKEN:
+            if self.data.auth_token is None:
                 raise GPException("authtoken is missing.")
-        elif self.type == LoginType.UNIQUENICK_NAMESPACE_ID:
-            if self.unique_nick is None:
+        elif self.data.type == LoginType.UNIQUENICK_NAMESPACE_ID:
+            if self.data.unique_nick is None:
                 raise GPException("unique nick is missing.")
-            if self.namespace_id is None:
+            if self.data.namespace_id is None:
                 raise GPException("namespace is missing.")
-        elif self.type == LoginType.NICK_EMAIL:
-            if self.nick is None:
+        elif self.data.type == LoginType.NICK_EMAIL:
+            if self.data.nick is None:
                 raise GPException("nick name is missing.")
-            if self.email is None:
+            if self.data.email is None:
                 raise GPException("email is missing.")
         else:
-            raise GPException(f"request type {self.type} not found.")
+            raise GPException(f"request type {self.data.type} not found.")
 
 
 class LogoutRequest(RequestBase):
-    session_key: str
-    user_id: int
-    pass
+    data: fnt.LogoutRequest
+
 
 
 # region profile
 
 
 class GetProfileRequest(RequestBase):
-    profile_id: int
-    session_key: str
-    operation_id: int
+    data: fnt.GetProfileRequest
+
 
 
 class NewProfileRequest(RequestBase):
-    is_replace_nick_name: bool
-    session_key: str
-    new_nick: str
-    old_nick: str
+    data: fnt.NewProfileRequest
+
 
 
 class RegisterCDKeyRequest(RequestBase):
-    session_key: str
-    cdkey_enc: str
+    data: fnt.RegisterCDKeyRequest
+
 
 
 class RegisterNickRequest(RequestBase):
-    unique_nick: str
-    session_key: str
-    partner_id: int
+    data: fnt.RegisterNickRequest
+
 
 
 class UpdateProfileRequest(RequestBase):
-    session_key: str
-    extra_infos: dict
+    data: fnt.UpdateProfileRequest
+
 
 
 class UpdateUserInfoRequest(RequestBase):
-    session_key: str
-    extra_infos: dict
+    data: fnt.UpdateUserInfoRequest
+
 
 
 if __name__ == "__main__":

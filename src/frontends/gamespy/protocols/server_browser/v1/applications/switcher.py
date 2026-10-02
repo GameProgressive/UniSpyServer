@@ -8,7 +8,7 @@ from frontends.gamespy.library.extentions.string_extentions import (
 )
 from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import (
     Modifier,
-    RequestType,
+    CommandName,
 )
 from frontends.gamespy.protocols.server_browser.v1.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v1.applications.handlers import (
@@ -39,17 +39,17 @@ class Switcher(SwitcherBase):
         raw_requests = split_nested_kv_str(self._raw_request)
         for raw_request in raw_requests:
             name = get_kv_str_name(raw_request)
-            if name not in RequestType:
+            if name not in CommandName:
                 self._client.log_debug(f"Request: {name} is not a valid request.")
                 continue
-            self._requests.append((RequestType(name), raw_request))
+            self._requests.append((CommandName(name), raw_request))
 
     def _create_cmd_handlers(
-        self, name: RequestType, raw_request: str
+        self, name: CommandName, raw_request: str
     ) -> CmdHandlerBase | None:
 
         match name:
-            case RequestType.SERVER_LIST:
+            case CommandName.SERVER_LIST:
                 return self.__create_server_list_handler(raw_request)
             case _:
                 raise SBException(f"unkown request:{name}")
@@ -65,15 +65,15 @@ class Switcher(SwitcherBase):
         match modifier:
             case Modifier.COMPRESS:
                 return ServerListCompressHandler(
-                    self._client, ServerListRequest(self._raw_request)
+                    self._client, ServerListRequest.gs_parse(self._raw_request)
                 )
             case Modifier.INFO:
                 return ServerInfoHandler(
-                    self._client, ServerListRequest(self._raw_request)
+                    self._client, ServerListRequest.gs_parse(self._raw_request)
                 )
             case Modifier.GROUPS:
                 return GroupListHandler(
-                    self._client, ServerListRequest(self._raw_request)
+                    self._client, ServerListRequest.gs_parse(self._raw_request)
                 )
             case _:
                 raise SBException(f"unknown modifier {modifier}")

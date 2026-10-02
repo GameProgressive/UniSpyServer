@@ -1,8 +1,9 @@
+from frontends.gamespy.library.network.http_data import HttpData
+from frontends.gamespy.protocols.web_services.abstractions.contracts import RequestBase
 from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
     WebException,
 )
 from frontends.gamespy.protocols.web_services.modules.direct2game.abstractions.contracts import (
-    NAMESPACE,
     RequestBase,
 )
 
@@ -13,12 +14,17 @@ class GetPurchaseHistoryRequest(RequestBase):
     proof: str
     certificate: str
 
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
-        self.proof = self._get_str("proof")
-        self.access_token = self._get_str("access_token")
-        self.certificate = self._get_str("certificate")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "GetPurchaseHistoryRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["game_id"] = data.int_mapping["gameid"]
+        data_dict["proof"] = data.str_mapping["proof"]
+        data_dict["access_token"] = data.str_mapping["access_token"]
+        data_dict["certificate"] = data.str_mapping["certificate"]
+
+        data = GetPurchaseHistoryRequest(**data_dict)
+        return data
 
 
 class GetStoreAvailabilityRequest(RequestBase):
@@ -27,9 +33,13 @@ class GetStoreAvailabilityRequest(RequestBase):
     region: str
     access_token: str
 
-    def parse(self) -> None:
-        super().parse()
-        self.game_id = self._get_int("gameid")
-        self.version = self._get_int("version")
-        self.region = self._get_str("region")
-        self.access_token = self._get_str("accesstoken")
+    @staticmethod
+    def gs_parse(raw_request: HttpData) -> "GetStoreAvailabilityRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["game_id"] = data.int_mapping["gameid"]
+        data_dict["version"] = data.int_mapping["version"]
+        data_dict["region"] = data.str_mapping["region"]
+        data_dict["access_token"] = data.str_mapping["accesstoken"]
+        data = GetStoreAvailabilityRequest(**data_dict)
+        return data

@@ -153,7 +153,7 @@ def quit(request: QuitRequest) -> Response:
 @router.post(f"{CHAT}/SetKeyHandler", responses=RESPONSES_DEF)
 def set_key(request: SetKeyRequest) -> OKResponse:
     handler = SetKeyHandler(request)
-    handler.handle
+    handler.handle()
     return handler.response
 
 

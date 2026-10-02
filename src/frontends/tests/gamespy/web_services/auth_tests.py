@@ -2,10 +2,10 @@ import unittest
 
 import responses
 
-from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.library.network.http_data import HttpData
 from frontends.gamespy.protocols.web_services.modules.auth.contracts.requests import (
     CreateUserAccountRequest,
-    LoginProfileWithGameIdRequest,
+    LoginProfileRequest,
     LoginPs3CertRequest,
     LoginRemoteAuthRequest,
     LoginUniqueNickRequest,
@@ -123,21 +123,24 @@ CREATE_USER_ACCOUNT = """<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelop
 class AuthTests(unittest.TestCase):
     @responses.activate
     def test_create_user_account(self):
-        request = CreateUserAccountRequest(str(HttpData(body=CREATE_USER_ACCOUNT)))
-        request.parse()
+        request = CreateUserAccountRequest.gs_parse(
+            HttpData(path=None, headers=None, body=CREATE_USER_ACCOUNT)
+        )
         pass
 
     @unittest.skip("old request password encryption problem")
     @responses.activate
     def test_crysis_auth(self):
-        request = LoginUniqueNickRequest(str(HttpData(body=CRYSIS)))
-        request.parse()
+        request = LoginUniqueNickRequest.gs_parse(
+            HttpData(path=None, headers=None, body=CRYSIS)
+        )
 
     @unittest.skip("old request password encryption problem")
     @responses.activate
     def test_login_profile(self):
-        request = LoginProfileWithGameIdRequest(str(HttpData(body=LOGIN_PROFILE)))
-        request.parse()
+        request = LoginProfileRequest.gs_parse(
+            HttpData(path=None, headers=None, body=LOGIN_PROFILE)
+        )
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(0, request.partner_code)
@@ -153,8 +156,9 @@ class AuthTests(unittest.TestCase):
         # handler.handle()
 
     def test_login_ps3_cert(self):
-        request = LoginPs3CertRequest(str(HttpData(body=LOGIN_PS3_CERT)))
-        request.parse()
+        request = LoginPs3CertRequest.gs_parse(
+            HttpData(body=LOGIN_PS3_CERT, headers=None, path=None)
+        )
         self.assertEqual(0, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(1, request.partner_code)
@@ -163,8 +167,9 @@ class AuthTests(unittest.TestCase):
         self.assertEqual("0001", request.npticket)
 
     def test_remote_auth(self):
-        request = LoginRemoteAuthRequest(str(HttpData(body=LOGIN_REMOTE_AUTH)))
-        request.parse()
+        request = LoginRemoteAuthRequest.gs_parse(
+            HttpData(path=None, headers=None, body=LOGIN_REMOTE_AUTH)
+        )
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.game_id)
         self.assertEqual(0, request.partner_code)
@@ -174,8 +179,9 @@ class AuthTests(unittest.TestCase):
 
     @unittest.skip("old request password encryption problem")
     def test_login_uniquenick(self):
-        request = LoginUniqueNickRequest(str(HttpData(body=LOGIN_UNIQUENICK)))
-        request.parse()
+        request = LoginUniqueNickRequest.gs_parse(
+            HttpData(path=None, headers=None, body=LOGIN_UNIQUENICK)
+        )
         self.assertEqual(1, request.version)
         self.assertEqual(0, request.partner_code)
         self.assertEqual(1, request.namespace_id)

@@ -1,7 +1,7 @@
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.protocols.natneg.abstractions.handlers import CmdHandlerBase
-from frontends.gamespy.protocols.natneg.aggregations.enums import RequestType
+from frontends.gamespy.protocols.natneg.aggregations.enums import CommandName
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.applications.handlers import (
     AddressCheckHandler,
@@ -37,35 +37,35 @@ class Switcher(SwitcherBase):
             self._client.log_debug("incoming buffer length is not valid")
             return
         name = self._raw_request[7]
-        if name not in RequestType:
+        if name not in CommandName:
             self._client.log_debug(f"Request: {name} is not a valid request.")
             return
-        self._requests.append((RequestType(name), self._raw_request))
+        self._requests.append((CommandName(name), self._raw_request))
 
     def _create_cmd_handlers(
-        self, name: RequestType, raw_request: bytes
+        self, name: CommandName, raw_request: bytes
     ) -> CmdHandlerBase | None:
-        assert isinstance(name, RequestType)
+        assert isinstance(name, CommandName)
         assert isinstance(raw_request, bytes)
         match name:
-            case RequestType.NATIFY_REQUEST:
-                return NatifyHandler(self._client, NatifyRequest(raw_request))
-            case RequestType.INIT:
-                return InitHandler(self._client, InitRequest(raw_request))
+            case CommandName.NATIFY_REQUEST:
+                return NatifyHandler(self._client, NatifyRequest.gs_parse(raw_request))
+            case CommandName.INIT:
+                return InitHandler(self._client, InitRequest.gs_parse(raw_request))
             # case RequestType.
-            case RequestType.ERT_ACK:
-                return ErtAckHandler(self._client, ErtAckRequest(raw_request))
-            case RequestType.CONNECT:
-                return ConnectHandler(self._client, ConnectRequest(raw_request))
-            case RequestType.CONNECT_ACK:
-                return ConnectAckHandler(self._client, ConnectAckRequest(raw_request))
-            case RequestType.ADDRESS_CHECK:
+            case CommandName.ERT_ACK:
+                return ErtAckHandler(self._client, ErtAckRequest.gs_parse(raw_request))
+            case CommandName.CONNECT:
+                return ConnectHandler(self._client, ConnectRequest.gs_parse(raw_request))
+            case CommandName.CONNECT_ACK:
+                return ConnectAckHandler(self._client, ConnectAckRequest.gs_parse(raw_request))
+            case CommandName.ADDRESS_CHECK:
                 return AddressCheckHandler(
-                    self._client, AddressCheckRequest(raw_request)
+                    self._client, AddressCheckRequest.gs_parse(raw_request)
                 )
-            case RequestType.REPORT:
-                return ReportHandler(self._client, ReportRequest(raw_request))
-            case RequestType.PRE_INIT:
+            case CommandName.REPORT:
+                return ReportHandler(self._client, ReportRequest.gs_parse(raw_request))
+            case CommandName.PRE_INIT:
                 return None
             case _:
                 return None

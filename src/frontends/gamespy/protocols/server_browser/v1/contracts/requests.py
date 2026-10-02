@@ -11,32 +11,19 @@ class ValidateRequest(RequestBase):
     validate: str
     enctype: str
     query_id: str
+    version: str
 
-    def parse(self) -> None:
-        super().parse()
-        game_name = self._request_dict.get("gamename")
-        if game_name is None:
-            raise QRException("gamename is missing")
-        self.game_name = game_name
-
-        version = self._request_dict.get("gamever")
-        if version is None:
-            raise QRException("version is missing")
-        self.game_version = version
-        validate = self._request_dict.get("gamever")
-        if validate is None:
-            raise QRException("validate is missing")
-        self.validate = validate
-
-        enctype = self._request_dict.get("gamever")
-        if enctype is None:
-            raise QRException("enctype is missing")
-        self.enctype = enctype
-
-        query_id = self._request_dict.get("queryid")
-        if query_id is None:
-            raise QRException("query_id is missing")
-        self.query_id = query_id
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ValidateRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["game_name"] = data.request_dict["gamename"]
+        data_dict["version"] = data.request_dict["gamever"]
+        data_dict["validate"] = data.request_dict["validate"]
+        data_dict["enctype"] = data.request_dict["enctype"]
+        data_dict["query_id"] = data.request_dict["queryid"]
+        data = ValidateRequest(**data_dict)
+        return data
 
 
 class ServerListRequest(RequestBase):
@@ -44,16 +31,12 @@ class ServerListRequest(RequestBase):
     filter: str | None
     game_name: str
 
-    def parse(self) -> None:
-        super().parse()
-        modifier = self._request_dict.get("list")
-        if modifier is None:
-            raise QRException("modifier is missing")
-        self.modifier = Modifier(modifier)
-        
-        self.filter = self._request_dict.get("where")
-
-        game_name = self._request_dict.get("gamename")
-        if game_name is None:
-            raise QRException("gamename is missing")
-        self.game_name = game_name
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ServerListRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["modifier"] = Modifier(data.request_dict["list"])
+        data_dict["filter"] = data.request_dict.get("where")
+        data_dict["game_name"] = data.request_dict["gamename"]
+        data = ServerListRequest(**data_dict)
+        return data

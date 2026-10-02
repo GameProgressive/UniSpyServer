@@ -240,7 +240,7 @@ class PublicMasks(IntEnum):
     ALL = 0xFFFFFFFF
 
 
-class RequestType(Enum):
+class CommandName(Enum):
     KA = "ka"
     LOGIN = "login"
     LOGOUT = "logout"
@@ -249,6 +249,7 @@ class RequestType(Enum):
     REMOVEBLOCK = "removeblock"
     ADDBUDDY = "addbuddy"
     AUTHADD = "authadd"
+    DELBUDDY = "delbuddy"
     GETPROFILE = "getprofile"
     NEWPROFILE = "newprofile"
     REGISTERCDKEY = "registercdkey"

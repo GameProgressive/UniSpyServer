@@ -2,7 +2,7 @@ import unittest
 
 import responses
 
-from frontends.gamespy.library.network.http_handler import HttpData
+from frontends.gamespy.library.network.http_data import HttpData
 from frontends.gamespy.protocols.web_services.modules.sake.aggregates.utils import (
     RecordConverter,
 )
@@ -73,9 +73,9 @@ SAMUZOMBIE2_SEARCH_FOR_RECORD = """<?xml version="1.0" encoding="UTF-8"?><SOAP-E
 class SakeTests(unittest.TestCase):
     @responses.activate
     def test_get_record_limit(self):
-        request = GetRecordLimitRequest(
-            str(HttpData.from_dict(GET_RECORD_LIMIT)))
-        request.parse()
+        request = GetRecordLimitRequest.gs_parse(
+            HttpData(path=None, headers=None, **GET_RECORD_LIMIT)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
@@ -83,8 +83,9 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_rate_record(self):
-        request = RateRecordRequest(str(HttpData.from_dict(RATE_RECORD)))
-        request.parse()
+        request = RateRecordRequest.gs_parse(
+            HttpData(path=None, headers=None, **RATE_RECORD)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
@@ -94,23 +95,22 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_random_records(self):
-        request = GetRandomRecordsRequest(
-            str(HttpData.from_dict(GET_RANDOM_RECORDS)))
-        request.parse()
+        request = GetRandomRecordsRequest.gs_parse(
+            HttpData(path=None, headers=None, **GET_RANDOM_RECORDS)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("levels", request.table_id)
-        self.assertEqual(1, request.max)
+        self.assertEqual(1, request.max_value)
         self.assertEqual("recordid", request.fields[0])
         self.assertEqual("score", request.fields[1])
 
     @responses.activate
     def test_get_specific_record(self):
-        request = GetSpecificRecordsRequest(
-            str(HttpData.from_dict(GET_SPECIFIC_RECORDS))
+        request = GetSpecificRecordsRequest.gs_parse(
+            HttpData(path=None, headers=None, **GET_SPECIFIC_RECORDS)
         )
-        request.parse()
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
@@ -125,8 +125,9 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_get_my_record(self):
-        request = GetMyRecordsRequest(str(HttpData.from_dict(GET_MY_RECORDS)))
-        request.parse()
+        request = GetMyRecordsRequest.gs_parse(
+            HttpData(path=None, headers=None, **GET_MY_RECORDS)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
@@ -149,9 +150,9 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_search_for_records(self):
-        request = SearchForRecordsRequest(
-            str(HttpData.from_dict(SEARCH_FOR_RECORDS)))
-        request.parse()
+        request = SearchForRecordsRequest.gs_parse(
+            HttpData(path=None, headers=None, **SEARCH_FOR_RECORDS)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
@@ -165,8 +166,9 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_delete_record(self):
-        request = DeleteRecordRequest(str(HttpData.from_dict(DELETE_RECORD)))
-        request.parse()
+        request = DeleteRecordRequest.gs_parse(
+            HttpData(path=None, headers=None, **DELETE_RECORD)
+        )
 
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -176,8 +178,9 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_update_record(self):
-        request = UpdateRecordRequest(str(HttpData.from_dict(UPDATE_RECORD)))
-        request.parse()
+        request = UpdateRecordRequest.gs_parse(
+            HttpData(path=None, headers=None, **UPDATE_RECORD)
+        )
 
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
@@ -187,54 +190,51 @@ class SakeTests(unittest.TestCase):
 
         # TODO: Deserialization of RecordFields
         self.assertEqual("MyByte", list(request.records)[0])
-        self.assertEqual(
-            "123", request.records['MyByte']["value"])
+        self.assertEqual("123", request.records["MyByte"]["value"])
 
     @responses.activate
     def test_create_record(self):
-        request = CreateRecordRequest(str(HttpData.from_dict(CREATE_RECORD)))
-        request.parse()
+        request = CreateRecordRequest.gs_parse(
+            HttpData(path=None, headers=None, **CREATE_RECORD)
+        )
         self.assertEqual(0, request.game_id)
         self.assertEqual("XXXXXX", request.secret_key)
         self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
         self.assertEqual("test", request.table_id)
 
         self.assertEqual("MyAsciiString", list(request.records)[0])
-        self.assertEqual("asciiStringValue",
-                         request.records['MyAsciiString']['type'])
-        self.assertEqual(
-            "this is a record",
-            request.records['MyAsciiString']['value'])
+        self.assertEqual("asciiStringValue", request.records["MyAsciiString"]["type"])
+        self.assertEqual("this is a record", request.records["MyAsciiString"]["value"])
 
     @responses.activate
     def test_samuzombie2_get_my_records(self):
-        request = GetMyRecordsRequest(
-            str(
-                HttpData(
-                    body=SAMUZOMBIE2_GET_MY_RECORD,
-                    headers={"SessionToken": "example_token"},
-                )
+        request = GetMyRecordsRequest.gs_parse(
+            HttpData(
+                path=None,
+                body=SAMUZOMBIE2_GET_MY_RECORD,
+                headers={"SessionToken": "example_token"},
             )
         )
-        request.parse()
         self.assertEqual(0, request.game_id)
 
     @responses.activate
     def test_samuzombie2_search_for_records(self):
-        request = SearchForRecordsRequest(
-            str(
-                HttpData(
-                    headers={"SessionToken": "example_token"},
-                    body=SAMUZOMBIE2_SEARCH_FOR_RECORD,
-                )
+        request = SearchForRecordsRequest.gs_parse(
+            HttpData(
+                path=None,
+                headers={"SessionToken": "example_token"},
+                body=SAMUZOMBIE2_SEARCH_FOR_RECORD,
             )
         )
-        request.parse()
         self.assertEqual(5989, request.game_id)
 
     def test_records_format_convert(self):
-        records = [{"name": "MyAsciiString", "value": {
-            "asciiStringValue": {"value": "this is a record"}}}]
+        records = [
+            {
+                "name": "MyAsciiString",
+                "value": {"asciiStringValue": {"value": "this is a record"}},
+            }
+        ]
         values = RecordConverter.to_searchable_format(records)
         records2 = RecordConverter.to_gamespy_format(values)
         self.assertEqual(records, records2)

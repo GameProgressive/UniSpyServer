@@ -1,4 +1,7 @@
 import re
+from typing import final
+
+from pydantic import field_validator
 
 from frontends.gamespy.library.extentions.string_extentions import (
     convert_keystr_to_list,
@@ -15,6 +18,7 @@ from frontends.gamespy.protocols.chat.aggregates.enums import (
     ModeName,
     ModeOperation,
     ModeRequestType,
+    SearchOption,
     TopicRequestType,
     WhoRequestType,
 )
@@ -26,250 +30,298 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
 # General
 
 
+@final
 class CdkeyRequest(RequestBase):
     cdkey: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) < 1:
-            raise ChatException("The number of IRC cmdParams are incorrect.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "CdkeyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["cdkey"] = data.irc.params[0]
+        data = CdkeyRequest(**data_dict)
+        return data
 
-        self.cdkey = self._cmd_params[0]
 
-
+@final
 class CryptRequest(RequestBase):
     version_id: str
     gamename: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) < 3:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "CryptRequest":
+        data = RequestBase.gs_parse(raw_request)
+        if len(data.irc.params) < 3:
             raise ChatException(
                 "The number of IRC params in CRYPT request is incorrect."
             )
-        self.version_id = self._cmd_params[1]
-        self.gamename = self._cmd_params[2]
+        data_dict = data.model_dump()
+        data_dict["version_id"] = data.irc.params[1]
+        data_dict["gamename"] = data.irc.params[2]
+
+        data = CryptRequest(**data_dict)
+        return data
 
 
+@final
 class InviteRequest(RequestBase):
     channel_name: str
     nick_name: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) > 2:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "InviteRequest":
+        data = RequestBase.gs_parse(raw_request)
+        if len(data.irc.params) > 2:
             raise ChatException(
                 "The number of IRC cmd params in Invite request is incorrect."
             )
-        self.channel_name = self._cmd_params[0]
-        self.nick_name = self._cmd_params[1]
+        data_dict = data.model_dump()
+        data_dict["channel_name"] = data.irc.params[0]
+        data_dict["nick_name"] = data.irc.params[1]
+
+        data = InviteRequest(**data_dict)
+        return data
 
 
+@final
 class ListLimitRequest(RequestBase):
     max_number_of_channels: int
     filter: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) != 2:
-            raise ChatException(
-                "The number of IRC cmd params in ListLimit request is incorrect."
-            )
-        try:
-            self.max_number_of_channels = int(self._cmd_params[0])
-        except Exception:
-            raise ChatException("The max number format is incorrect.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ListLimitRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["max_number_of_channels"] = data.irc.params[0]
+        data_dict["filter"] = data.irc.params[1]
 
-        self.filter = self._cmd_params[1]
+        data = ListLimitRequest(**data_dict)
+        return data
 
 
+@final
 class ListRequest(RequestBase):
-    is_searching_channel: bool = False
-    is_searching_user: bool = False
+    option: SearchOption
     filter: str
 
-    def parse(self):
-        super().parse()
-        if self._cmd_params is None or len(self._cmd_params) == 0:
-            raise ChatException("The Search filter is missing.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ListRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["filter"] = data.irc.params[0]
+        if "#" in data_dict["filter"]:
+            data_dict["option"] = SearchOption.Channel
+        else:
+            data_dict["option"] = SearchOption.User
+        data = ListRequest(**data_dict)
+        return data
 
-        self.is_searching_channel = True
-        self.filter = self._cmd_params[0]
 
-
-class LoginPreAuth(RequestBase):
+@final
+class LoginPreAuthRequest(RequestBase):
     auth_token: str
     partner_challenge: str
 
-    def parse(self):
-        super().parse()
-        self.auth_token = self._cmd_params[0]
-        self.partner_challenge = self._cmd_params[1]
+    @staticmethod
+    def gs_parse(raw_request: str) -> RequestBase:
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["auth_token"] = data.irc.params[0]
+        data_dict["partner_challenge"] = data.irc.params[1]
+        data = LoginPreAuthRequest(**data_dict)
+        return data
 
 
+@final
 class LoginRequest(RequestBase):
     request_type: LoginRequestType
     namespace_id: int
-    nick_name: str
-    email: str
-    unique_nick: str
+    nick_name: str | None = None
+    email: str | None = None
+    unique_nick: str | None = None
     password_hash: str
 
-    def parse(self):
-        super().parse()
-        try:
-            self.namespace_id = int(self._cmd_params[0])
-        except Exception:
-            raise ChatException("The namespaceid format is incorrect.")
-
-        if self._cmd_params[1] == "*":
-            self.request_type = LoginRequestType.NICK_AND_EMAIL_LOGIN
-            self.password_hash = self._cmd_params[2]
-            assert isinstance(self._long_param, str)
-            if self._long_param.count("@") != 2:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "LoginRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["namespace_id"] = int(data.irc.params[0])
+        if data.irc.params[1] == "*":
+            if data.irc.trailing.count("@") != 2:
                 raise ChatException("The profile nick format is incorrect.")
+            profile_nick_index = data.irc.trailing.index("@")
+            data_dict["request_type"] = LoginRequestType.NICK_AND_EMAIL_LOGIN
+            data_dict["password_hash"] = data.irc.params[2]
+            data_dict["nick_name"] = data.irc.trailing[0:profile_nick_index]
+            data_dict["email"] = data.irc.trailing[profile_nick_index + 1 :]
+            data = LoginRequest(**data_dict)
+            return data
+        else:
+            data_dict["request_type"] = LoginRequestType.UNIQUE_NICK_LOGIN
+            data_dict["unique_nick"] = data.irc.params[1]
+            data_dict["password_hash"] = data.irc.params[2]
+            data = LoginRequest(**data_dict)
+            return data
 
-            profile_nick_index = self._long_param.index("@")
-            self.nick_name = self._long_param[0:profile_nick_index]
-            self.email = self._long_param[profile_nick_index + 1:]
-            return
 
-        self.request_type = LoginRequestType.UNIQUE_NICK_LOGIN
-        self.unique_nick = self._cmd_params[1]
-        self.password_hash = self._cmd_params[2]
+INVALID_CHARS = "#@$%^&()~"
 
 
+@final
 class NickRequest(RequestBase):
-    _invalid_chars = "#@$%^&()~"
     nick_name: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) == 1:
-            self.nick_name = self._cmd_params[0]
-        elif self._long_param is None:
-            assert isinstance(self._long_param, str)
-            self.nick_name = self._long_param
+    @field_validator("nick_name")
+    def validate_nick_name(cls, value: str) -> str:
+        invalid = set(value) & set(INVALID_CHARS)
+        if invalid:
+            raise ValueError(f"Invalid characters: {', '.join(sorted(invalid))}")
+        return value
+
+    @staticmethod
+    def gs_parse(raw_request: str) -> "NickRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        if len(data.irc.params) == 1:
+            data_dict["nick_name"] = data.irc.params[0]
+        elif data.irc.trailing is not None:
+            assert isinstance(data.irc.trailing, str)
+            data_dict["nick_name"] = data.irc.trailing
         else:
             raise ChatException("NICK request is invalid.")
-
-        for c in self._invalid_chars:
-            if c in self.nick_name:
-                raise NickNameInUseException(
-                    self.nick_name,
-                    self.nick_name,
-                    f"The nick name: {self.nick_name} contains invalid character.",
-                )
+        return NickRequest(**data_dict)
 
 
+@final
 class PingRequest(RequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "PingRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data = PingRequest(**data.model_dump())
+        return data
 
 
+@final
 class PongRequest(RequestBase):
     echo_message: str
 
-    def parse(self):
-        super().parse()
-        if self._long_param is None:
-            raise ChatException("Echo message is missing.")
-        self.echo_message = self._long_param
+    @staticmethod
+    def gs_parse(raw_request: str) -> "PongRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["echo_msg"] = data.irc.trailing
+        data = PongRequest(**data_dict)
+        return data
 
 
+@final
 class QuitRequest(RequestBase):
     reason: str
 
-    def parse(self):
-        super().parse()
-        if self._long_param is None:
-            raise ChatException("Quit reason is missing.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "QuitRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["reason"] = data.irc.trailing
+        data = QuitRequest(**data_dict)
+        return data
 
-        self.reason = self._long_param
 
-
+@final
 class RegisterNickRequest(RequestBase):
     namespace_id: int
     unique_nick: str
     cdkey: str
 
-    def parse(self):
-        super().parse()
-        assert isinstance(self._cmd_params, list)
-        self.namespace_id = int(self._cmd_params[0])
-        self.unique_nick = self._cmd_params[1]
-        self.cdkey = self._cmd_params[2]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "RegisterNickRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["namespace_id"] = int(data.irc.params[0])
+        data_dict["unique_nick"] = data.irc.params[1]
+        data_dict["cdkey"] = data.irc.params[2]
+
+        data = RegisterNickRequest(**data_dict)
+        return data
 
 
+@final
 class SetKeyRequest(RequestBase):
     key_values: dict[str, str]
 
-    def parse(self):
-        super().parse()
-        if self._long_param is None:
-            raise ChatException("The keys and values are missing.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "SetKeyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        kvs = convert_kvstring_to_dictionary(data.irc.trailing)
+        data_dict = data.model_dump()
+        data_dict["key_values"] = kvs
+        data = SetKeyRequest(**data_dict)
+        return data
 
-        self.key_values = convert_kvstring_to_dictionary(self._long_param)
 
-
+@final
 class UserIPRequest(RequestBase):
-    remote_ip: str
+    @staticmethod
+    def gs_parse(raw_request: str) -> "UserIPRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data = UserIPRequest(**data.model_dump())
+        return data
 
 
 class UserRequest(RequestBase):
-    user_name: str
+    user_name: str | None
     local_ip_address: str
     server_name: str
     name: str
 
-    def __init__(self, raw_request: str) -> None:
-        super().__init__(raw_request)
-
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) == 3:
-            self.user_name = self._cmd_params[0]
-            self.local_ip_address = self._cmd_params[1]
-            self.server_name = self._cmd_params[2]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "UserRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["name"] = data.irc.trailing
+        if len(data.irc.params) == 3:
+            data_dict["user_name"] = data.irc.params[0]
+            data_dict["local_ip_address"] = data.irc.params[1]
+            data_dict["server_name"] = data.irc.params[2]
+            data = UserRequest(**data_dict)
         else:
-            self.local_ip_address = self._cmd_params[0]
-            self.server_name = self._cmd_params[1]
-
-        assert isinstance(self._long_param, str)
-        self.name = self._long_param
+            data_dict["local_ip_address"] = data.irc.params[0]
+            data_dict["server_name"] = data.irc.params[1]
+            data = UserRequest(**data_dict)
+        return data
 
 
 class WhoIsRequest(RequestBase):
     nick_name: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) != 1:
-            raise ChatException(
-                "The number of IRC cmd params in WHOIS request is incorrect."
-            )
-
-        self.nick_name = self._cmd_params[0]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "WhoIsRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["nick_name"] = data.irc.params[0]
+        data = WhoIsRequest(**data_dict)
+        return data
 
 
 class WhoRequest(RequestBase):
     request_type: WhoRequestType
-    channel_name: str
-    nick_name: str
+    channel_name: str | None
+    nick_name: str | None
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) != 1:
-            raise ChatException(
-                "The number of IRC cmd params in WHO request is incorrect."
-            )
-
-        if "#" in self._cmd_params[0]:
-            self.request_type = WhoRequestType.GET_CHANNEL_USER_INFO
-            self.channel_name = self._cmd_params[0]
-            return
-
-        self.request_type = WhoRequestType.GET_USER_INFO
-        self.nick_name = self._cmd_params[0]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "WhoRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        if "#" in data.irc.params[0]:
+            data_dict["request_type"] = WhoRequestType.GET_CHANNEL_USER_INFO
+            data_dict["channel_name"] = data.irc.params[0]
+            data_dict["nick_name"] = None
+            data = WhoRequest(**data_dict)
+        else:
+            data_dict["request_type"] = WhoRequestType.GET_USER_INFO
+            data_dict["nick_name"] = data.irc.params[0]
+            data = WhoRequest(**data_dict)
+        return data
 
 
 class GetKeyRequest(RequestBase):
@@ -279,27 +331,17 @@ class GetKeyRequest(RequestBase):
     unknown_cmd_param: str
     keys: list[str]
 
-    def parse(self) -> None:
-        super().parse()
-        if len(self._cmd_params) < 2:
-            raise ChatException(
-                "The number of IRC cmd params in GETKEY request is incorrect."
-            )
-
-        if self._long_param is None:
-            raise ChatException(
-                "The number of IRC cmd params in GETKEY request is incorrect."
-            )
-
-        self.nick_name = self._cmd_params[0]
-        self.cookie = self._cmd_params[1]
-        self.unknown_cmd_param = self._cmd_params[2]
-
-        self._long_param = self._long_param[: len(self._long_param)]
-        if self.nick_name == "*":
-            self.is_get_all_user = True
-
-        self.keys = convert_keystr_to_list(self._long_param)
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetKeyRequest":
+        data = RequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["nick_name"] = data.irc.params[0]
+        data_dict["cookie"] = data.irc.params[1]
+        data_dict["unknown_cmd_param"] = data.irc.params[2]
+        data_dict["is_get_all_user"] = data_dict["nick_name"] == "*"
+        data_dict["keys"] = convert_keystr_to_list(data.irc.trailing)
+        data = GetKeyRequest(**data_dict)
+        return data
 
 
 # region Channel
@@ -313,16 +355,14 @@ class GetChannelKeyRequest(ChannelRequestBase):
     cookie: str
     keys: list
 
-    def parse(self):
-        super().parse()
-
-        if len(self._cmd_params) != 3:
-            raise ChatException("The cmdParams number is invalid.")
-
-        if self._long_param is None or self._long_param[-1] != "\0":
-            raise ChatException("The longParam number is invalid.")
-        self.cookie = self._cmd_params[1]
-        self.keys = self._long_param.strip("\\").rstrip("\0").split("\\")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetChannelKeyRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["cookie"] = data.irc.params[1]
+        data_dict["keys"] = data.irc.trailing.strip("\\").rstrip("\0").split("\\")
+        data = GetChannelKeyRequest(**data_dict)
+        return data
 
 
 class GetCKeyRequest(ChannelRequestBase):
@@ -335,25 +375,23 @@ class GetCKeyRequest(ChannelRequestBase):
     keys: list
     request_type: GetKeyRequestType
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) != 4:
-            raise ChatException("The number of IRC parameters are incorrect.")
-        if self._long_param is None:
-            raise ChatException("The IRC long parameter is incorrect.")
-
-        self.nick_name = self._cmd_params[1]
-        if self.nick_name == "*":
-            self.request_type = GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE
+    @staticmethod
+    def gs_parse(raw_request: str) -> "GetCKeyRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["nick_name"] = data.irc.params[1]
+        if data_dict["nick_name"] == "*":
+            data_dict["request_type"] = GetKeyRequestType.GET_CHANNEL_ALL_USER_KEY_VALUE
         else:
-            self.request_type = GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE
+            data_dict["request_type"] = (
+                GetKeyRequestType.GET_CHANNEL_SPECIFIC_USER_KEY_VALUE
+            )
 
-        self.cookie = self._cmd_params[2]
+        data_dict["cookie"] = data.irc.params[2]
+        data_dict["keys"] = data.irc.trailing.strip("\\").rstrip("\0").split("\\")
 
-        if "\0" not in self._long_param and "\\" not in self._long_param:
-            raise ChatException("The key provide is incorrect.")
-
-        self.keys = self._long_param.strip("\\").rstrip("\0").split("\\")
+        data = GetCKeyRequest(**data_dict)
+        return data
 
 
 class GetUdpRelayRequest(ChannelRequestBase):
@@ -363,33 +401,35 @@ class GetUdpRelayRequest(ChannelRequestBase):
 class JoinRequest(ChannelRequestBase):
     password: str | None
 
-    def __init__(self, raw_request):
-        super().__init__(raw_request)
-        self.password = None
-
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) > 2:
-            raise ChatException("The number of IRC parameters are incorrect.")
-
-        if len(self._cmd_params) == 2:
-            self.password = self._cmd_params[1]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "JoinRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["password"] = None
+        if len(data.irc.params) >= 2:
+            data_dict["password"] = data.irc.params[1]
+        data = JoinRequest(**data_dict)
+        return data
 
 
 class KickRequest(ChannelRequestBase):
     kickee_nick_name: str
     reason: str
 
-    def parse(self):
-        super().parse()
-        if len(self._cmd_params) != 2:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "KickRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        if len(data.irc.params) != 2:
             raise ChatException("The number of IRC parameters are incorrect.")
-        self.kickee_nick_name = self._cmd_params[1]
+        data_dict = data.model_dump()
+        data_dict["kickee_nick_name"] = data.irc.params[1]
 
-        if self._long_param is None:
+        if data.irc.trailing is None:
             raise ChatException("The IRC long parameters is missing.")
 
-        self.reason = self._long_param
+        data_dict["reason"] = data.irc.trailing
+        data = KickRequest(**data_dict)
+        return data
 
 
 class ModeRequest(ChannelRequestBase):
@@ -410,103 +450,73 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_operations: dict[str, str]
+    mode_flags: list[tuple[ModeRequestType, ModeName]]
     """
     <mode_name>,<operation>
     o,+
     i,+
     """
-    nick_name: str
-    user_name: str
-    limit_number: int
-    mode_flag: str
+    nick_name: str | None
+    user_name: str | None
+    limit_number: int | None
     password: str | None
 
-    def parse(self):
-        super().parse()
-        self.mode_operations = {}
-        if len(self._cmd_params) == 1:
-            self.request_type = ModeRequestType.GET_CHANNEL_MODES
-        elif len(self._cmd_params) == 2 or len(self._cmd_params) == 3:
-            self.request_type = ModeRequestType.SET_CHANNEL_MODES
-            self.mode_flag = self._cmd_params[1]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "ModeRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        if len(data.irc.params) == 1:
+            data_dict["request_type"] = ModeRequestType.GET_CHANNEL_MODES
+            data = ModeRequest(**data_dict)
+        elif len(data.irc.params) == 2 or len(data.irc.params) == 3:
+            params = data.irc.params
+            mode_flag_str = params[1]
+            data_dict.update(
+                request_type=ModeRequestType.SET_CHANNEL_MODES,
+                limit_number=None,
+                nick_name=None,
+                user_name=None,
+                password=None,
+            )
             mode_flags = [
-                s for s in re.split(r"(?=\+|\-)", self.mode_flag) if s.strip()
+                (flag[0], flag[1:])
+                for flag in re.split(r"(?=[+-])", mode_flag_str)
+                if flag.strip()
             ]
-            mode_flags = list(filter(None, mode_flags))
-            self.process_mode_flags(mode_flags)
+
+            for operation, flag_name in mode_flags:
+                match flag_name:
+                    case ModeName.CHANNEL_USER_LIMITS if operation == ModeOperation.SET:
+                        data_dict["limit_number"] = params[2]
+                    case ModeName.BAN_ON_USER if len(params) == 3:
+                        data_dict["nick_name"] = params[2]
+                    case ModeName.CHANNEL_OPERATOR | ModeName.USER_VOICE_PERMISSION:
+                        data_dict["user_name"] = params[2]
+            data_dict["mode_flags"] = mode_flags
+            data = ModeRequest(**data_dict)
         else:
             raise ChatException("The number of IRC parameters are incorrect.")
-
-    def process_mode_flags(self, mode_flags: list[str]):
-        for flag in mode_flags:
-            try:
-                operation = ModeOperation(flag[0])
-                flag_name = ModeName(flag[1:])
-            except Exception:
-                continue
-            match flag_name:
-                case (
-                    ModeName.OPERATOR_ABEY_CHANNEL_LIMITS
-                    | ModeName.TOPIC_CHANGE_BY_OPERATOR_FLAG
-                    | ModeName.EXTERNAL_MESSAGES_FLAG
-                    | ModeName.MODERATED_CHANNEL_FLAG
-                    | ModeName.SECRET_CHANNEL_FLAG
-                    | ModeName.INVITED_ONLY
-                    | ModeName.PRIVATE_CHANNEL_FLAG
-                    | ModeName.USER_QUIET_FLAG
-                    | ModeName.CHANNEL_PASSWORD
-                ):
-                    self.mode_operations[flag_name.value] = operation.value
-                case ModeName.CHANNEL_USER_LIMITS:
-                    if operation == ModeOperation.SET:
-                        self.channel_name = self._cmd_params[0]
-                        self.limit_number = int(self._cmd_params[2])
-                    else:
-                        self.channel_name = self._cmd_params[0]
-                    self.mode_operations[flag_name.value] = operation.value
-                case ModeName.BAN_ON_USER:
-                    self.channel_name = self._cmd_params[0]
-                    if len(self._cmd_params) == 3:
-                        self.nick_name = self._cmd_params[2]
-                    self.mode_operations[flag_name.value] = operation.value
-                case ModeName.CHANNEL_OPERATOR | ModeName.USER_VOICE_PERMISSION:
-                    self.channel_name = self._cmd_params[0]
-                    self.user_name = self._cmd_params[2]
-                    self.mode_operations[flag_name.value] = operation.value
-
-    @staticmethod
-    def build(channel_name: str):
-        """
-        build the irc request for get the channel modes
-        """
-        raw = f"MODE {channel_name}"
-        return raw
+        return data
 
 
 class NamesRequest(ChannelRequestBase):
     @staticmethod
-    def build(channel_name: str):
-        """
-        build raw request to get channel mode
-        """
-        raw = f"NAMES {channel_name}"
-        return raw
+    def gs_parse(raw_request: str) -> "NamesRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data = NamesRequest(**data.model_dump())
+        return data
 
 
 class PartRequest(ChannelRequestBase):
-    reason: str = "Unknown reason"
+    reason: str
 
-    def __init__(self, raw_request: str | None = None) -> None:
-        if raw_request is not None:
-            super().__init__(raw_request)
-
-    def parse(self):
-        super().parse()
-
-        if self._long_param is None:
-            raise ChatException("The reason of living channel is missing.")
-        self.reason = self._long_param
+    @staticmethod
+    def gs_parse(raw_request: str) -> "PartRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["reason"] = data.irc.trailing
+        data = PartRequest(**data_dict)
+        return data
 
 
 class SetChannelKeyRequest(ChannelRequestBase):
@@ -515,25 +525,28 @@ class SetChannelKeyRequest(ChannelRequestBase):
     BCAST is broadcast flag
     """
 
-    key_value_string: str
     key_values: dict[str, str]
     is_broadcast: bool
+    cookie: str | None
 
-    def parse(self):
-        super().parse()
-        if self._long_param is None:
+    @staticmethod
+    def gs_parse(raw_request: str) -> "SetChannelKeyRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        if data.irc.trailing is None:
             raise ChatException("Channel keys and values are missing.")
-        self._long_param = self._long_param[1:]
-        self.key_value_string = self._long_param
-        self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
-        is_broadcast = False
-        for key in self.key_values:
+        data_dict = data.model_dump()
+        # skip first char \\
+        data_dict["key_values"] = convert_kvstring_to_dictionary(data.irc.trailing[1:])
+        data_dict.update(is_broadcast=False, cookie=None)
+        for key in data_dict["key_values"]:
             if "b_" in key:
-                is_broadcast = True
+                data_dict["is_broadcast"] = True
+                data_dict["cookie"] = "BCAST"
                 break
-        if is_broadcast:
-            self.cookie = "BCAST"
-            self.is_broadcast = True
+
+        data = SetChannelKeyRequest(**data_dict)
+        return data
+
 
 class SetCKeyRequest(ChannelRequestBase):
     """
@@ -542,89 +555,102 @@ class SetCKeyRequest(ChannelRequestBase):
     """
 
     nick_name: str
-    cookie: str
+    cookie: str | None
     is_broadcast: bool
-    key_value_string: str
     key_values: dict[str, str]
 
-    def parse(self) -> None:
-        super().parse()
-        if self._cmd_params is None:
-            raise ChatException(
-                "The cmdParams from SETCKEY request are missing.")
+    @staticmethod
+    def gs_parse(raw_request: str) -> "SetCKeyRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        if data.irc.params is None:
+            raise ChatException("The cmdParams from SETCKEY request are missing.")
 
-        if self._long_param is None:
-            raise ChatException(
-                "The longParam from SETCKEY request is missing.")
+        if data.irc.trailing is None:
+            raise ChatException("The longParam from SETCKEY request is missing.")
+        data_dict = data.model_dump()
 
-        self.channel_name = self._cmd_params[0]
-        self.nick_name = self._cmd_params[1]
-        self.key_value_string = self._long_param[1:]
-        self.key_values = convert_kvstring_to_dictionary(self.key_value_string)
-        is_broadcast = False
-        for key in self.key_values:
+        data_dict["nick_name"] = data.irc.params[1]
+        data_dict["key_values"] = convert_kvstring_to_dictionary(data.irc.trailing[1:])
+        data_dict.update(is_broadcast=False, cookie=None)
+
+        for key in data_dict["key_values"]:
             if "b_" in key:
-                is_broadcast = True
+                data_dict["is_broadcast"] = True
+                data_dict["cookie"] = "BCAST"
                 break
-        if is_broadcast:
-            self.cookie = "BCAST"
-            self.is_broadcast = True
+        data = SetCKeyRequest(**data_dict)
+        return data
 
 
 class SetGroupRequest(ChannelRequestBase):
     group_name: str
 
-    def parse(self) -> None:
-        super().parse()
-        if len(self._cmd_params) != 1:
-            raise ChatException(
-                "the number of IRC cmd params in GETKEY request is incorrect."
-            )
-        self.group_name = self._cmd_params[0]
+    @staticmethod
+    def gs_parse(raw_request: str) -> "SetGroupRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        data_dict["group_name"] = data.irc.params[0]
+        data = SetGroupRequest(**data_dict)
+        return data
 
 
 class TopicRequest(ChannelRequestBase):
-    channel_topic: str
+    channel_topic: str | None
     request_type: TopicRequestType
 
-    def parse(self) -> None:
-        super().parse()
-        if self._long_param is None:
-            self.request_type = TopicRequestType.GET_CHANNEL_TOPIC
+    @staticmethod
+    def gs_parse(raw_request: str) -> "TopicRequest":
+        data = ChannelRequestBase.gs_parse(raw_request)
+        data_dict = data.model_dump()
+        if data.irc.trailing is None:
+            data_dict["request_type"] = TopicRequestType.GET_CHANNEL_TOPIC
+            data_dict["channel_topic"] = None
         else:
-            self.request_type = TopicRequestType.SET_CHANNEL_TOPIC
-            self.channel_topic = self._long_param
+            data_dict["request_type"] = TopicRequestType.SET_CHANNEL_TOPIC
+            data_dict["channel_topic"] = data.irc.trailing
+        data = TopicRequest(**data_dict)
+        return data
 
 
 #  region Message
 
 
 class AtmRequest(MessageRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "AtmRequest":
+        data = MessageRequestBase.gs_parse(raw_request)
+        data = AtmRequest(**data.model_dump())
+        return data
 
 
 class NoticeRequest(MessageRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "NoticeRequest":
+        data = MessageRequestBase.gs_parse(raw_request)
+        data = NoticeRequest(**data.model_dump())
+        return data
 
 
 class PrivateRequest(MessageRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "PrivateRequest":
+        data = MessageRequestBase.gs_parse(raw_request)
+        data = PrivateRequest(**data.model_dump())
+        return data
 
 
 class UtmRequest(MessageRequestBase):
-    pass
+    @staticmethod
+    def gs_parse(raw_request: str) -> "UtmRequest":
+        data = MessageRequestBase.gs_parse(raw_request)
+        data = UtmRequest(**data.model_dump())
+        return data
 
 
 # region publish message
 
-class PublishMessageRequest(RequestBase):
+
+class PublishMessageRequest(MessageRequestBase):
     """
     this class is use to send broadcast message to backends
     """
-
-    def parse(self) -> None:
-        """
-        we do not need to parse any irc request, we just send it to backend
-        """
-        pass
-        # return super().parse()

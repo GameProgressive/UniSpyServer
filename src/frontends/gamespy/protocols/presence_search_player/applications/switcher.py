@@ -7,7 +7,7 @@ from frontends.gamespy.protocols.presence_search_player.abstractions.handler imp
     CmdHandlerBase,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
-    RequestType,
+    CommandName,
 )
 from frontends.gamespy.protocols.presence_search_player.applications.client import (
     Client,
@@ -52,41 +52,41 @@ class Switcher(SwitcherBase):
         raw_requests = split_nested_kv_str(self._raw_request)
         for raw_request in raw_requests:
             name = get_kv_str_name(raw_request)
-            if name not in RequestType:
+            if name not in CommandName:
                 self._client.log_debug(f"Request: {name} is not a valid request.")
                 continue
-            self._requests.append((RequestType(name), raw_request))
+            self._requests.append((CommandName(name), raw_request))
 
     def _create_cmd_handlers(
-        self, name: RequestType, raw_request: str
+        self, name: CommandName, raw_request: str
     ) -> CmdHandlerBase | None:
-        assert isinstance(name, RequestType)
+        assert isinstance(name, CommandName)
         match name:
-            case RequestType.CHECK:
-                return CheckHandler(self._client, CheckRequest(raw_request))
-            case RequestType.NEWUSER:
-                return NewUserHandler(self._client, NewUserRequest(raw_request))
-            case RequestType.NICKS:
-                return NicksHandler(self._client, NicksRequest(raw_request))
-            case RequestType.OTHERS:
-                return OthersHandler(self._client, OthersRequest(raw_request))
-            case RequestType.OTHERSLIST:
-                return OthersListHandler(self._client, OthersListRequest(raw_request))
-            case RequestType.PMATCH:
+            case CommandName.CHECK:
+                return CheckHandler(self._client, CheckRequest.gs_parse(raw_request))
+            case CommandName.NEWUSER:
+                return NewUserHandler(self._client, NewUserRequest.gs_parse(raw_request))
+            case CommandName.NICKS:
+                return NicksHandler(self._client, NicksRequest.gs_parse(raw_request))
+            case CommandName.OTHERS:
+                return OthersHandler(self._client, OthersRequest.gs_parse(raw_request))
+            case CommandName.OTHERSLIST:
+                return OthersListHandler(self._client, OthersListRequest.gs_parse(raw_request))
+            case CommandName.PMATCH:
                 # Uncomment the line below when PMatchHandler is implemented
-                # return PMatchHandler(self._client, PMatchRequest(raw_request))
+                # return PMatchHandler(self._client, PMatchRequest.gs_parse(raw_request))
                 raise NotImplementedError("PMatchHandler is not implemented.")
-            case RequestType.SEARCH:
-                return SearchHandler(self._client, SearchRequest(raw_request))
-            case RequestType.SEARCHUNIQUE:
+            case CommandName.SEARCH:
+                return SearchHandler(self._client, SearchRequest.gs_parse(raw_request))
+            case CommandName.SEARCHUNIQUE:
                 return SearchUniqueHandler(
-                    self._client, SearchUniqueRequest(raw_request)
+                    self._client, SearchUniqueRequest.gs_parse(raw_request)
                 )
-            case RequestType.UNIQUESearch:
+            case CommandName.UNIQUESearch:
                 return UniqueSearchHandler(
-                    self._client, UniqueSearchRequest(raw_request)
+                    self._client, UniqueSearchRequest.gs_parse(raw_request)
                 )
-            case RequestType.VALID:
-                return ValidHandler(self._client, ValidRequest(raw_request))
+            case CommandName.VALID:
+                return ValidHandler(self._client, ValidRequest.gs_parse(raw_request))
             case _:
                 return None

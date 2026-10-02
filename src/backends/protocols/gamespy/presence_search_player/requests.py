@@ -1,11 +1,12 @@
-from backends.library.abstractions.contracts import RequestBase as RB
+import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.presence_search_player.aggregates.enums import (
     SearchType,
 )
+import frontends.gamespy.protocols.presence_search_player.contracts.requests as fnt
 
 
-class RequestBase(RB):
-    operation_id: int
+class RequestBase(lib.RequestBase):
+    data: fnt.RequestBase
 
 
 # general
@@ -14,69 +15,45 @@ class RequestBase(RB):
 
 
 class CheckRequest(RequestBase):
-    nick: str
-    password: str
-    email: str
-    partner_id: int
+    data: fnt.CheckRequest
+
 
 
 class NewUserRequest(RequestBase):
-    nick: str
-    email: str
-    password: str
-    uniquenick: str
-    namespace_id: int
-    product_id: int
-    game_port: int | None = None
-    cd_key: str | None = None
-    partner_id: int | None = None
-    game_name: str | None = None
+    data: fnt.NewUserRequest
+
 
 
 class NicksRequest(RequestBase):
-    password: str
-    email: str
-    namespace_id: int
-    is_require_uniquenicks: bool
+    data: fnt.NicksRequest
+
 
 
 class OthersListRequest(RequestBase):
-    profile_ids: list[int]
-    namespace_id: int
+    data: fnt.OthersListRequest
+
 
 
 class OthersRequest(RequestBase):
-    profile_id: int
-    game_name: str
-    namespace_id: int
+    data: fnt.OthersRequest
+
 
 
 class SearchRequest(RequestBase):
-    skip_num: int
-    request_type: SearchType
-    game_name: str
-    profile_id: int | None = None
-    partner_id: int
-    email: str | None = None
-    nick: str | None = None
-    uniquenick: str | None = None
-    session_key: str | None = None
-    firstname: str | None = None
-    lastname: str | None = None
-    icquin: str | None = None
-    namespace_id: int
+    data: fnt.SearchRequest
+
 
 
 class SearchUniqueRequest(RequestBase):
-    uniquenick: str
-    namespace_ids: list[int]
+    data: fnt.SearchUniqueRequest
+
 
 
 class UniqueSearchRequest(RequestBase):
-    preferred_nick: str
-    game_name: str
-    namespace_id: int
+    data: fnt.UniqueSearchRequest
+
 
 
 class ValidRequest(RequestBase):
-    email: str
+    data: fnt.ValidRequest
+

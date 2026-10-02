@@ -12,7 +12,7 @@ from backends.protocols.gamespy.web_services.requests import (
     GetRecordCountRequest,
     GetStoreAvailabilityRequest,
     LoginProfileRequest,
-    LoginPS3CertRequest,
+    LoginPs3CertRequest,
     LoginRemoteAuthRequest,
     LoginUniqueNickRequest,
     SearchForRecordsRequest,
@@ -62,37 +62,41 @@ class LoginProfileHandler(HandlerBase):
     response: LoginProfileResponse
 
     def _data_operate(self) -> None:
+        assert self._request.data.cdkey
         self.data = data.get_info_by_cdkey_email(
-            uniquenick=self._request.uniquenick,
-            namespace_id=self._request.namespace_id,
-            cdkey=self._request.cdkey,
-            email=self._request.email,
+            uniquenick=self._request.data.nick,
+            namespace_id=self._request.data.namespace_id,
+            cdkey=self._request.data.cdkey,
+            email=self._request.data.email,
             session=self._session,
         )
 
         if self.data is None:
             raise UserNotFoundException(
                 "No account exists with the provided uniquenick and namespace id.",
-                self._request.command_name,
+                self._request.data.command_name,
             )
 
     def _result_construct(self) -> None:
         assert self.data is not None
+        assert self._request.data.raw_request.headers
         self._result = LoginProfileResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
             session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
-            version=self._request.version,
-            namespace_id=self._request.namespace_id,
-            partner_code=self._request.partner_code,
+            version=self._request.data.version,
+            namespace_id=self._request.data.namespace_id,
+            partner_code=self._request.data.partner_code,
         )
 
 
 class LoginPS3CertHandler(HandlerBase):
-    _request: LoginPS3CertRequest
+    _request: LoginPs3CertRequest
 
     def _data_operate(self) -> None:
         raise NotImplementedError()
@@ -104,27 +108,30 @@ class LoginRemoteAuthHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_authtoken(
-            auth_token=self._request.auth_token, session=self._session
+            auth_token=self._request.data.auth_token, session=self._session
         )
 
         if self.data is None:
             raise UserNotFoundException(
                 "No account exists with the provided authtoken.",
-                self._request.command_name,
+                self._request.data.command_name,
             )
 
     def _result_construct(self) -> None:
         assert self.data is not None
+        assert self._request.data.raw_request.headers
         self._result = LoginRemoteAuthResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
             session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
-            version=self._request.version,
-            namespace_id=self._request.namespace_id,
-            partner_code=self._request.partner_code,
+            version=self._request.data.version,
+            namespace_id=self._request.data.namespace_id,
+            partner_code=self._request.data.partner_code,
         )
 
 
@@ -134,28 +141,31 @@ class LoginUniqueNickHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self.data = data.get_info_by_uniquenick(
-            uniquenick=self._request.uniquenick,
-            namespace_id=self._request.namespace_id,
+            uniquenick=self._request.data.uniquenick,
+            namespace_id=self._request.data.namespace_id,
             session=self._session,
         )
         if self.data is None:
             raise UserNotFoundException(
                 "No account exists with the provided uniquenick and namespace id.",
-                self._request.command_name,
+                self._request.data.command_name,
             )
 
     def _result_construct(self) -> None:
         assert self.data is not None
+        assert self._request.data.raw_request.headers
         self._result = LoginUniqueNickResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
             session_token="example_token",
             user_id=self.data[0],
             profile_id=self.data[1],
             profile_nick=self.data[2],
             unique_nick=self.data[3],
             cdkey_hash=self.data[4],
-            version=self._request.version,
-            namespace_id=self._request.namespace_id,
-            partner_code=self._request.partner_code,
+            version=self._request.data.version,
+            namespace_id=self._request.data.namespace_id,
+            partner_code=self._request.data.partner_code,
         )
 
 
@@ -164,22 +174,25 @@ class CreateUserAccountHandler(HandlerBase):
     response: CreateUserAccountResponse
 
     def _data_operate(self) -> None:
-        dump = self._request.model_dump()
+        dump = self._request.data.model_dump()
         req = NewUserRequest.model_validate(dump)
         h = NewUserHandler(req)
         h.handle()
         self.data = h._result
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = CreateUserAccountResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
             session_token="example_token",
             user_id=self.data.user_id,
             profile_id=self.data.profile_id,
-            profile_nick=self._request.nick,
-            unique_nick=self._request.uniquenick,
+            profile_nick=self._request.data.nick,
+            unique_nick=self._request.data.uniquenick,
             version=3,
-            namespace_id=self._request.namespace_id,
-            partner_code=self._request.partner_code,
+            namespace_id=self._request.data.namespace_id,
+            partner_code=self._request.data.partner_code,
         )
 
 
@@ -190,14 +203,22 @@ class GetPurchaceHistoryHandler(HandlerBase):
     _request: GetPurchaseHistoryRequest
 
     def _result_construct(self) -> None:
-        self._result = GetPurchaseHistoryResult()
+        assert self._request.data.raw_request.headers
+        self._result = GetPurchaseHistoryResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
+        )
 
 
 class GetStoreAvailabilityHandler(HandlerBase):
     _request: GetStoreAvailabilityRequest
 
     def _result_construct(self) -> None:
-        self._result = GetStoreAvailabilityResult()
+        assert self._request.data.raw_request.headers
+        self._result = GetStoreAvailabilityResult(
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
+        )
 
 
 # region ingamead
@@ -229,17 +250,19 @@ class CreateRecordHandler(HandlerBase):
     def _data_operate(self) -> None:
 
         self._record_id: int = data.create_records(
-            table_id=self._request.table_id,
-            records=self._request.records,
-            command_name=self._request.command_name,
+            table_id=self._request.data.table_id,
+            records=self._request.data.records,
+            command_name=self._request.data.command_name,
             session=self._session,
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = CreateRecordResult(
-            command_name=self._request.command_name,
-            login_ticket=self._request.login_ticket,
-            table_id=self._request.table_id,
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
+            login_ticket=self._request.data.login_ticket,
+            table_id=self._request.data.table_id,
             record_id=self._record_id,
         )
 
@@ -250,17 +273,19 @@ class UpdateRecordHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._record_id = data.update_record(
-            self._request.table_id,
-            self._request.records,
-            self._request.command_name,
+            self._request.data.table_id,
+            self._request.data.records,
+            self._request.data.command_name,
             self._session,
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = UpdateRecordResult(
-            command_name=self._request.command_name,
-            login_ticket=self._request.login_ticket,
-            table_id=self._request.table_id,
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
+            login_ticket=self._request.data.login_ticket,
+            table_id=self._request.data.table_id,
             record_id=self._record_id,
         )
 
@@ -271,13 +296,15 @@ class DeleteRecordHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.delete_record(
-            self._request.table_id, self._request.command_name, self._session
+            self._request.data.table_id, self._request.data.command_name, self._session
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = DeleteRecordResult(
-            login_ticket=self._request.login_ticket,
-            command_name=self._request.command_name,
+            headers=self._request.data.raw_request.headers,
+            login_ticket=self._request.data.login_ticket,
+            command_name=self._request.data.command_name,
         )
 
 
@@ -292,18 +319,20 @@ class GetMyRecordsHandler(HandlerBase):
 
     def _data_operate(self):
         self._data = data.get_my_records(
-            self._request.table_id,
-            self._request.fields,
-            self._request.command_name,
+            self._request.data.table_id,
+            self._request.data.fields,
+            self._request.data.command_name,
             self._session,
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = GetMyRecordsResult(
-            command_name=self._request.command_name,
-            login_ticket=self._request.login_ticket,
+            headers=self._request.data.raw_request.headers,
+            command_name=self._request.data.command_name,
+            login_ticket=self._request.data.login_ticket,
             records=self._data,
-            fields=self._request.fields,
+            fields=self._request.data.fields,
         )
 
 
@@ -313,20 +342,22 @@ class SearchForRecordsHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.search_for_record(
-            self._request.table_id,
-            self._request.max,
-            self._request.filter,
-            self._request.fields,
-            self._request.command_name,
+            self._request.data.table_id,
+            self._request.data.max,
+            self._request.data.filter,
+            self._request.data.fields,
+            self._request.data.command_name,
             self._session,
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = SearchForRecordsResult(
-            login_ticket=self._request.login_ticket,
-            command_name=self._request.command_name,
+            headers=self._request.data.raw_request.headers,
+            login_ticket=self._request.data.login_ticket,
+            command_name=self._request.data.command_name,
             records_list=self._data,
-            fields=self._request.fields,
+            fields=self._request.data.fields,
         )
 
 
@@ -336,12 +367,14 @@ class GetRecordCountHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._count = data.count_for_record(
-            self._request.table_id, self._request.command_name, self._session
+            self._request.data.table_id, self._request.data.command_name, self._session
         )
 
     def _result_construct(self) -> None:
+        assert self._request.data.raw_request.headers
         self._result = GetRecordCountResult(
-            login_ticket=self._request.login_ticket,
-            command_name=self._request.command_name,
+            headers=self._request.data.raw_request.headers,
+            login_ticket=self._request.data.login_ticket,
+            command_name=self._request.data.command_name,
             count=self._count,
         )

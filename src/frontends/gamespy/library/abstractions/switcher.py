@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.handler import CmdHandlerBase
+from frontends.gamespy.library.network.http_data import HttpData
 
 
 class SwitcherBase:
@@ -11,12 +12,12 @@ class SwitcherBase:
 
     _handlers: list[CmdHandlerBase]
     _requests: list[tuple[object, object]]
-    _raw_request: bytes | str
+    _raw_request: bytes | str | HttpData
     _client: ClientBase
 
-    def __init__(self, client: ClientBase, raw_request: bytes | str) -> None:
+    def __init__(self, client: ClientBase, raw_request: bytes | str | HttpData) -> None:
         assert isinstance(client, ClientBase)
-        assert isinstance(raw_request, (str, bytes))
+        assert isinstance(raw_request, (str, bytes, HttpData))
         self._client = client
         self._raw_request = raw_request
         self._handlers = []
@@ -61,3 +62,4 @@ class SwitcherBase:
         self, name: object, raw_request: object
     ) -> CmdHandlerBase | None:
         pass
+

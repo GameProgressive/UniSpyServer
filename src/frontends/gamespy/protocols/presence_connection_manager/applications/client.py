@@ -14,7 +14,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.login_ch
 )
 
 LOGIN_TICKET = "0000000000000000000000__"
-SESSION_KEY = 1111
+
 
 
 class ClientInfo(ClientInfoBase):

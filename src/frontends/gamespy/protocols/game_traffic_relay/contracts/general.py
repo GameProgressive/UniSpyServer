@@ -21,7 +21,7 @@ class InitPacketInfo(BaseModel):
     private_port: int
 
 
-class GtrHeartbeat(BaseModel):
+class GtrHeartbeatRequest(BaseModel):
     server_id: UUID4
     public_ip_address: str
     public_port: int
