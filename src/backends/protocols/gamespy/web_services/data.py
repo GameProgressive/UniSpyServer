@@ -90,15 +90,15 @@ def get_info_by_cdkey_email(
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
-    assert isinstance(user.userid, int)
-    assert isinstance(profile.profileid, int)
+    assert isinstance(user.id, int)
+    assert isinstance(profile.id, int)
     assert isinstance(profile.nick, str)
     assert isinstance(subprofile.uniquenick, str)
     assert isinstance(subprofile.cdkeyenc, str)
 
     return (
-        user.userid,
-        profile.profileid,
+        user.id,
+        profile.id,
         profile.nick,
         subprofile.uniquenick,
         subprofile.cdkeyenc,
@@ -114,14 +114,14 @@ def get_info_by_authtoken(
 
     result = (
         session.query(
-            Users.userid,
-            Profiles.profileid,
+            Users.id,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.cdkeyenc,
         )
-        .join(Profiles, Profiles.userid == Users.userid)
-        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .join(Profiles, Profiles.userid == Users.id)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.id)
         .where(SubProfiles.authtoken == auth_token)
         .first()
     )
@@ -146,8 +146,8 @@ def get_info_by_uniquenick(
 
     result = (
         session.query(Users, Profiles, SubProfiles)
-        .join(Users, Users.userid == Profiles.userid)
-        .join(SubProfiles, SubProfiles.profileid == Profiles.profileid)
+        .join(Users, Users.id == Profiles.userid)
+        .join(SubProfiles, SubProfiles.profileid == Profiles.id)
         .where(
             SubProfiles.uniquenick == uniquenick,
             SubProfiles.namespaceid == namespace_id,
@@ -160,14 +160,14 @@ def get_info_by_uniquenick(
     user: Users = result[0]
     profile: Profiles = result[1]
     subprofile: SubProfiles = result[2]
-    assert isinstance(user.userid, int)
-    assert isinstance(profile.profileid, int)
+    assert isinstance(user.id, int)
+    assert isinstance(profile.id, int)
     assert isinstance(profile.nick, str)
     assert isinstance(subprofile.uniquenick, str)
     assert isinstance(subprofile.cdkeyenc, str) or subprofile.cdkeyenc is None
     return (
-        user.userid,
-        profile.profileid,
+        user.id,
+        profile.id,
         profile.nick,
         subprofile.uniquenick,
         subprofile.cdkeyenc,

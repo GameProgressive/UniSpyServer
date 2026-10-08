@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
-from backends.library.database.pg_orm import ENGINE, GameServerCaches
+from backends.library.database.pg_orm import _engine, GameServerCaches
 from backends.protocols.gamespy.query_report import data
 from backends.protocols.gamespy.query_report.requests import (
     AvaliableRequest,

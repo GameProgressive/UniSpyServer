@@ -10,6 +10,7 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.enums import 
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPParseException,
 )
+from pydantic import BaseModel
 
 
 @final
@@ -34,15 +35,15 @@ class CheckRequest(RequestBase):
 
 
 class NewUserRequest(RequestBase):
-    product_id: int
-    game_port: int | None
-    cd_key: str | None
     nick: str
     email: str
     password: str
-    partner_id: int
-    game_name: str
     uniquenick: str | None
+    product_id: int
+    game_name: str
+    partner_id: int
+    cd_key: str | None
+    game_port: int | None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "NewUserRequest":
@@ -52,17 +53,15 @@ class NewUserRequest(RequestBase):
         data_dict["nick"] = data.request_dict["nick"]
         data_dict["email"] = data.request_dict["email"]
         data_dict["uniquenick"] = data.request_dict.get("uniquenick")
-        data_dict["other_data"] = NewUserRequest.parse_other_info(data)
-        # ! fixme
         other_data = NewUserRequest.parse_other_info(data)
-        data = NewUserRequest(**data_dict)
+        data = NewUserRequest(**data_dict, **other_data)
         return data
 
     @staticmethod
     def parse_other_info(data: RequestBase) -> dict:
         other_data = {}
-        other_data["partner_id"] = int(data.request_dict.get("partnerid", 0))
-        other_data["product_id"] = int(data.request_dict.get("productid", 0))
+        other_data["partner_id"] = data.request_dict.get("partnerid", 0)
+        other_data["product_id"] = data.request_dict.get("productid", 0)
         other_data["game_name"] = data.request_dict.get("gamename")
         other_data["game_port"] = data.request_dict.get("port")
         other_data["cd_key"] = data.request_dict.get("cdkey")
@@ -200,7 +199,7 @@ class UniqueSearchRequest(RequestBase):
         return data
 
 
-from pydantic import EmailStr
+from pydantic import BaseModel, EmailStr
 
 
 @final

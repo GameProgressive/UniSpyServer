@@ -1,6 +1,7 @@
 # the total requests tests
 import unittest
 
+from backends.library.database.pg_orm import get_engine
 import backends.protocols.gamespy.presence_search_player.handlers as bkh
 import backends.protocols.gamespy.presence_search_player.requests as bkr
 import frontends.gamespy.protocols.presence_search_player.contracts.requests as psp
@@ -46,11 +47,23 @@ class HandlerTest(unittest.TestCase):
     def test_new_user(self):
         r = psp.NewUserRequest.gs_parse(NEWUSER)
         data = add_headers(r.model_dump())
-        data["email"] = "xiaojiuwo1@gamespy.com"
-        data["nick"] = "xiaojiuwo1"
         request = bkr.NewUserRequest(**data)
         handler = bkh.NewUserHandler(request)
         handler.handle()
+        engine = get_engine()
+        from sqlalchemy.orm.session import Session
+        from backends.library.database.pg_orm import Users,Profiles,SubProfiles
+        with Session(engine) as session:
+            user = session.query(Users).where(Users.email == "xiaojiuwo@gamespy.com")
+            profile = session.query(Profiles).where(Profiles.nick == "xiaojiuwo")
+            subprofile = session.query(SubProfiles).where(SubProfiles.uniquenick == "xiaojiuwo")
+            self.assertIsNotNone(user)
+            self.assertIsNotNone(profile)
+            self.assertIsNotNone(subprofile)
+            subprofile.delete()
+            profile.delete()
+            user.delete()
+            session.commit()
         pass
 
     def test_nick(self):

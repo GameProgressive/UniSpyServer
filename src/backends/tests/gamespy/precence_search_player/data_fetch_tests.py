@@ -3,20 +3,21 @@ from unittest import TestCase
 
 from sqlalchemy.orm import Session
 
-from backends.library.database.pg_orm import ENGINE, Profiles, Users
+from backends.library.database.pg_orm import Profiles, Users,get_engine
 from backends.protocols.gamespy.presence_search_player import data
 
 
 class DataFetchTests(TestCase):
     def test_verify_email(self) -> None:
-        with Session(ENGINE) as session:
+
+        with Session(get_engine()) as session:
             result1 = data.verify_email("spyguy@unispy.net", session)
             self.assertFalse(result1)
             result2 = data.verify_email("spyguy@gamespy.com", session)
             self.assertTrue(result2)
 
     def test_verify_email_and_password(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.verify_email_and_password(
                 "spyguy@gamespy.com", "4a7d1ed414474e4033ac29ccb8653d91", session
             )
@@ -27,7 +28,7 @@ class DataFetchTests(TestCase):
             self.assertTrue(result2)
 
     def test_get_profile_id(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.get_profile_id(
                 "spyguy@gamespy.com",
                 "4a7d1ed414474e4033ac29ccb8653d9b",
@@ -47,7 +48,7 @@ class DataFetchTests(TestCase):
             self.assertEqual(result2, 1)
 
     def test_get_users(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.get_user("spyguy@gamespy.com", session)
             self.assertIsNotNone(result1)
             self.assertEqual(type(result1), Users)
@@ -55,7 +56,7 @@ class DataFetchTests(TestCase):
             self.assertIsNone(result2)
 
     def test_get_profile(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.get_profile(1, "spyguy", session)
             self.assertEqual(type(result1), Profiles)
 
@@ -66,7 +67,7 @@ class DataFetchTests(TestCase):
         pass
 
     def test_get_nick_and_unique_nick_list(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result = data.get_nick_and_unique_nick_list(
                 "spyguy@gamespy.com", "4a7d1ed414474e4033ac29ccb8653d9b", 1, session
             )
@@ -75,25 +76,25 @@ class DataFetchTests(TestCase):
             self.assertIsInstance(result[0], tuple)
 
     def test_get_matched_profile_info_list(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result = data.get_matched_profile_info_list([1], 1, session)
             self.assertIsInstance(result, list)
             self.assertNotEqual(len(result), 0)
 
     def test_get_matched_info_by_nick(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result = data.get_matched_info_by_nick("spyguy", session)
             self.assertIsNotNone(result)
             self.assertNotEqual(len(result), 0)
 
     def test_get_matched_info_by_email(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result = data.get_matched_info_by_email("spyguy@gamespy.com", session)
             self.assertEqual(result[0]["nick"], "spyguy")
             self.assertEqual(result[0]["profile_id"], 1)
 
     def test_is_uniquenick_exist(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.is_uniquenick_exist("spyguy", 1, "gmtests", session)
             self.assertTrue(result1)
 
@@ -103,7 +104,7 @@ class DataFetchTests(TestCase):
             self.assertFalse(result2)
 
     def test_is_email_exist(self):
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             result1 = data.is_email_exist("spyguy@gamespy.com", session)
             self.assertTrue(result1)
             result2 = data.is_email_exist("spyguy@gamespy.net", session)

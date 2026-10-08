@@ -310,7 +310,7 @@ CREATE TABLE unispy.init_packet_caches (
     version integer NOT NULL,
     port_type smallint NOT NULL,
     client_index smallint NOT NULL,
-    game_name character varying NOT NULL,
+    game_name character varying,
     use_game_port boolean NOT NULL,
     public_ip character varying NOT NULL,
     public_port integer NOT NULL,
@@ -450,7 +450,7 @@ COMMENT ON TABLE unispy.partner IS 'Partner information, these information are u
 --
 
 CREATE TABLE unispy.profiles (
-    profileid SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     userid integer NOT NULL,
     nick character varying NOT NULL UNIQUE,
     serverflag integer NOT NULL,
@@ -476,13 +476,13 @@ ALTER TABLE unispy.profiles OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.profiles_profileid_seq OWNER TO unispy;
+ALTER TABLE unispy.profiles_id_seq OWNER TO unispy;
 
 --
 -- Name: profiles_profileid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.profiles_profileid_seq OWNED BY unispy.profiles.profileid;
+ALTER SEQUENCE unispy.profiles_id_seq OWNED BY unispy.profiles.id;
 
 
 --
@@ -586,7 +586,7 @@ ALTER SEQUENCE unispy.sakestorage_id_seq OWNED BY unispy.sakestorage.id;
 --
 
 CREATE TABLE unispy.subprofiles (
-    subprofileid SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     profileid integer NOT NULL,
     uniquenick character varying,
     namespaceid integer NOT NULL,
@@ -604,10 +604,10 @@ CREATE TABLE unispy.subprofiles (
 ALTER TABLE unispy.subprofiles OWNER TO unispy;
 
 --
--- Name: subprofiles_subprofileid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: subprofiles_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.subprofiles_subprofileid_seq
+-- CREATE SEQUENCE unispy.subprofiles_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -616,13 +616,13 @@ ALTER TABLE unispy.subprofiles OWNER TO unispy;
 --     CACHE 1;
 
 
-ALTER TABLE unispy.subprofiles_subprofileid_seq OWNER TO unispy;
+ALTER TABLE unispy.subprofiles_id_seq OWNER TO unispy;
 
 --
--- Name: subprofiles_subprofileid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
+-- Name: subprofiles_id_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.subprofiles_subprofileid_seq OWNED BY unispy.subprofiles.subprofileid;
+ALTER SEQUENCE unispy.subprofiles_id_seq OWNED BY unispy.subprofiles.id;
 
 
 --
@@ -630,7 +630,7 @@ ALTER SEQUENCE unispy.subprofiles_subprofileid_seq OWNED BY unispy.subprofiles.s
 --
 
 CREATE TABLE unispy.users (
-    userid serial primary key,
+    id serial primary key,
     email character varying NOT NULL UNIQUE,
     password character varying NOT NULL,
     emailverified boolean DEFAULT true NOT NULL,
@@ -652,10 +652,10 @@ COMMENT ON TABLE unispy.users IS 'User account information.';
 
 
 --
--- Name: users_userid_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
+-- Name: users_id_seq; Type: SEQUENCE; Schema: unispy; Owner: unispy
 --
 
--- CREATE SEQUENCE unispy.users_userid_seq
+-- CREATE SEQUENCE unispy.users_id_seq
 --     AS integer
 --     START WITH 1
 --     INCREMENT BY 1
@@ -664,13 +664,13 @@ COMMENT ON TABLE unispy.users IS 'User account information.';
 --     CACHE 1;
 
 
-ALTER TABLE unispy.users_userid_seq OWNER TO unispy;
+ALTER TABLE unispy.users_id_seq OWNER TO unispy;
 
 --
 -- Name: users_userid_seq; Type: SEQUENCE OWNED BY; Schema: unispy; Owner: unispy
 --
 
-ALTER SEQUENCE unispy.users_userid_seq OWNED BY unispy.users.userid;
+ALTER SEQUENCE unispy.users_id_seq OWNED BY unispy.users.id;
 
 
 --
@@ -723,10 +723,10 @@ ALTER TABLE ONLY unispy.nat_result_caches ALTER COLUMN id SET DEFAULT nextval('u
 
 
 --
--- Name: profiles profileid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: profiles id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.profiles ALTER COLUMN profileid SET DEFAULT nextval('unispy.profiles_profileid_seq'::regclass);
+ALTER TABLE ONLY unispy.profiles ALTER COLUMN id SET DEFAULT nextval('unispy.profiles_id_seq'::regclass);
 
 
 --
@@ -744,17 +744,17 @@ ALTER TABLE ONLY unispy.sakestorage ALTER COLUMN id SET DEFAULT nextval('unispy.
 
 
 --
--- Name: subprofiles subprofileid; Type: DEFAULT; Schema: unispy; Owner: unispy
+-- Name: subprofiles id; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.subprofiles ALTER COLUMN subprofileid SET DEFAULT nextval('unispy.subprofiles_subprofileid_seq'::regclass);
+ALTER TABLE ONLY unispy.subprofiles ALTER COLUMN id SET DEFAULT nextval('unispy.subprofiles_id_seq'::regclass);
 
 
 --
 -- Name: users userid; Type: DEFAULT; Schema: unispy; Owner: unispy
 --
 
-ALTER TABLE ONLY unispy.users ALTER COLUMN userid SET DEFAULT nextval('unispy.users_userid_seq'::regclass);
+ALTER TABLE ONLY unispy.users ALTER COLUMN id SET DEFAULT nextval('unispy.users_id_seq'::regclass);
 
 
 --
@@ -5357,7 +5357,7 @@ COPY unispy.partner (partnerid, partnername) FROM stdin;
 -- Data for Name: profiles; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.profiles (profileid, userid, nick, serverflag, status, statstring, extra_info) FROM stdin;
+COPY unispy.profiles (id, userid, nick, serverflag, status, statstring, extra_info) FROM stdin;
 1	1	spyguy	0	0	I love UniSpy	{}
 2	2	gptestc1	0	0	I love UniSpy	{}
 3	3	gptestc2	0	0	I love UniSpy	{}
@@ -5393,7 +5393,7 @@ COPY unispy.sakestorage (id, tableid, record) FROM stdin;
 -- Data for Name: subprofiles; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
+COPY unispy.subprofiles (id, profileid, uniquenick, namespaceid, partnerid, productid, gamename, cdkeyenc, firewall, port, authtoken, session_key) FROM stdin;
 1	1	spyguy	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
 2	2	gptestc1	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
 3	3	gptestc2	1	1	1	gmtests	00000a308fd86a7eb92cbc8322b03a36	0	8080	example_auth	1111
@@ -5405,7 +5405,7 @@ COPY unispy.subprofiles (subprofileid, profileid, uniquenick, namespaceid, partn
 -- Data for Name: users; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.users (userid, email, password, emailverified, lastip, lastonline, createddate, banned, deleted) FROM stdin;
+COPY unispy.users (id, email, password, emailverified, lastip, lastonline, createddate, banned, deleted) FROM stdin;
 1	spyguy@gamespy.com	4a7d1ed414474e4033ac29ccb8653d9b	t	\N	2022-01-19 20:01:49.828006	2022-01-19 20:01:49.828006	f	f
 2	gptestc1@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.754069	2022-01-19 20:03:44.754069	f	f
 3	gptestc2@gptestc.com	c6d525669e64438c9aa156a0cc80cd14	t	\N	2022-01-19 20:03:44.761986	2022-01-19 20:03:44.761986	f	f
@@ -5462,10 +5462,10 @@ SELECT pg_catalog.setval('unispy.nat_result_caches_id_seq', 1, false);
 
 
 --
--- Name: profiles_profileid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: profiles_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.profiles_profileid_seq', 2, true);
+SELECT pg_catalog.setval('unispy.profiles_id_seq', 2, true);
 
 
 --
@@ -5483,17 +5483,17 @@ SELECT pg_catalog.setval('unispy.sakestorage_id_seq', 1, false);
 
 
 --
--- Name: subprofiles_subprofileid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: subprofiles_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.subprofiles_subprofileid_seq', 1, false);
+SELECT pg_catalog.setval('unispy.subprofiles_id_seq', 1, false);
 
 
 --
--- Name: users_userid_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: unispy; Owner: unispy
 --
 
-SELECT pg_catalog.setval('unispy.users_userid_seq', 5, true);
+SELECT pg_catalog.setval('unispy.users_id_seq', 5, true);
 
 
 --
@@ -5509,7 +5509,7 @@ ALTER TABLE ONLY unispy.grouplist
 --
 
 ALTER TABLE ONLY unispy.profiles
-    ADD CONSTRAINT profiles_userid_fkey FOREIGN KEY (userid) REFERENCES unispy.users(userid);
+    ADD CONSTRAINT profiles_id_fkey FOREIGN KEY (userid) REFERENCES unispy.users(id);
 
 
 --
@@ -5522,3 +5522,7 @@ ALTER TABLE ONLY unispy.chat_channel_user_caches
     ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name);
 
 -- PostgreSQL database dump complete
+SELECT setval(  pg_get_serial_sequence('unispy.users', 'id'),  COALESCE((SELECT MAX(id) FROM unispy.users), 1),  (SELECT MAX(id) IS NOT NULL FROM unispy.users));
+SELECT setval(  pg_get_serial_sequence('unispy.profiles', 'id'),  COALESCE((SELECT MAX(id) FROM unispy.profiles), 1),  (SELECT MAX(id) IS NOT NULL FROM unispy.profiles));
+SELECT setval(  pg_get_serial_sequence('unispy.subprofiles', 'id'),  COALESCE((SELECT MAX(id) FROM unispy.subprofiles), 1),  (SELECT MAX(id) IS NOT NULL FROM unispy.subprofiles));
+SELECT setval(  pg_get_serial_sequence('unispy.partner', 'partnerid'),  COALESCE((SELECT MAX(partnerid) FROM unispy.partner), 1),  (SELECT MAX(partnerid) IS NOT NULL FROM unispy.partner));

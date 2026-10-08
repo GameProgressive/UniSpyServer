@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 
-from backends.library.database.pg_orm import ENGINE
+from backends.library.database.pg_orm import get_engine
 
 if __name__ == "__main__":
     # Define the SQL query with the CTE
@@ -30,7 +30,8 @@ if __name__ == "__main__":
     """)
 
     # Execute the query
-    with ENGINE.connect() as connection:
+    engine = get_engine()
+    with engine.connect() as connection:
         result = connection.execute(query)
         for row in result:
             print(row)

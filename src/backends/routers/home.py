@@ -26,7 +26,16 @@ from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager
 
-app = FastAPI()
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Runs before FastAPI starts accepting requests
+    init_database()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(chat.router)
 app.include_router(game_stats.router)
@@ -94,15 +103,6 @@ class RegisterRequest(BaseModel):
 def get_auth_token(request: RegisterRequest):
     pass
 
-
-from contextlib import contextmanager
-
-
-@contextmanager
-def lifespan(app: FastAPI):
-    # Runs before FastAPI starts accepting requests
-    init_database()
-    yield
 
 
 if __name__ == "__main__":

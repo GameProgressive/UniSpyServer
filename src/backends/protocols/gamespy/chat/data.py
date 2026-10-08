@@ -5,7 +5,7 @@ from sqlalchemy import Column, func
 from sqlalchemy.orm import Session
 
 from backends.library.database.pg_orm import (
-    ENGINE,
+    _engine,
     ChatChannelCaches,
     ChatChannelUserCaches,
     ChatUserCaches,
@@ -54,9 +54,9 @@ def nick_and_email_login(
 
     result = (
         session.query(
-            Users.userid, Profiles.profileid, Users.emailverified, Users.banned
+            Users.id, Profiles.id, Users.emailverified, Users.banned
         )
-        .join(Profiles, (Users.userid == Profiles.userid))
+        .join(Profiles, (Users.id == Profiles.userid))
         .where(
             Users.email == email,
             Profiles.nick == nick_name,
@@ -86,10 +86,10 @@ def uniquenick_login(
 
     result = (
         session.query(
-            Users.userid, Profiles.profileid, Users.emailverified, Users.banned
+            Users.id, Profiles.id, Users.emailverified, Users.banned
         )
-        .join(Profiles, (Users.userid == Profiles.userid))
-        .join(Profiles, (Profiles.profileid == SubProfiles.profileid))
+        .join(Profiles, (Users.id == Profiles.userid))
+        .join(Profiles, (Profiles.id == SubProfiles.profileid))
         .where(
             SubProfiles.namespaceid == namespace_id,
             SubProfiles.uniquenick == uniquenick,
@@ -574,7 +574,7 @@ def _flush_chat_database():
     be caution with this function
     this function will remove all datatable for chat
     """
-    with Session(ENGINE) as session:
+    with Session(_engine) as session:
         session.query(ChatChannelUserCaches).delete()
         session.query(ChatUserCaches).delete()
         session.query(ChatChannelCaches).delete()

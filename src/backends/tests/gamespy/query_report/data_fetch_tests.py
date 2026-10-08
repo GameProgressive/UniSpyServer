@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-from backends.library.database.pg_orm import ENGINE, ChatChannelCaches
+from backends.library.database.pg_orm import get_engine, ChatChannelCaches
 from backends.protocols.gamespy.query_report import data
 
 
@@ -19,7 +19,7 @@ class DataFetchTests(unittest.TestCase):
             max_num_user=100,
             update_time=datetime.now(),
         )
-        with Session(ENGINE) as session:
+        with Session(get_engine()) as session:
             session.add(cache)
             session.commit()
             self.assertRaises(

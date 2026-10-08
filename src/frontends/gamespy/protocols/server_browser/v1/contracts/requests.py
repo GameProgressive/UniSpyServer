@@ -8,7 +8,7 @@ from frontends.gamespy.protocols.server_browser.v1.aggregations.enums import Mod
 class ValidateRequest(RequestBase):
     game_name: str
     game_version: str
-    validate: str
+    validate_data: str
     enctype: str
     query_id: str
     version: str
@@ -19,7 +19,7 @@ class ValidateRequest(RequestBase):
         data_dict = data.model_dump()
         data_dict["game_name"] = data.request_dict["gamename"]
         data_dict["version"] = data.request_dict["gamever"]
-        data_dict["validate"] = data.request_dict["validate"]
+        data_dict["validate_data"] = data.request_dict["validate"]
         data_dict["enctype"] = data.request_dict["enctype"]
         data_dict["query_id"] = data.request_dict["queryid"]
         data = ValidateRequest(**data_dict)

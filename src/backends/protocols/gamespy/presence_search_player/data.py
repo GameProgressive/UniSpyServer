@@ -41,9 +41,9 @@ def get_profile_id(
     email: str, password: str, nick_name: str, partner_id: int, session: Session
 ) -> int | None:
     result = (
-        session.query(Profiles.profileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        session.query(Profiles.id)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             Users.email == email,
             Users.password == password,
@@ -135,8 +135,8 @@ def get_nick_and_unique_nick_list(
 
     result = (
         session.query(Profiles.nick, SubProfiles.uniquenick)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             Users.email == email,
             Users.password == password,
@@ -161,15 +161,15 @@ def get_friend_info_list(
 
     result = (
         session.query(
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
-            Users.userid,
+            Users.id,
             Users.email,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
-        .join(Friendlist, Profiles.profileid == Friendlist.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
+        .join(Friendlist, Profiles.id == Friendlist.profileid)
         # todo check whether friends table join is correct
         .where(
             Friendlist.profileid == profile_id,
@@ -211,14 +211,14 @@ def get_matched_info_by_nick(nick_name: str, session: Session) -> list[dict]:
     result = (
         session.query(
             Users.email,
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
             Profiles.extra_info,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(Profiles.nick == nick_name)
         .all()
     )
@@ -246,14 +246,14 @@ def get_matched_info_by_email(email: str, session: Session) -> list[dict]:
     result = (
         session.query(
             Users.email,
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
             Profiles.extra_info,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(Users.email == email)
         .all()
     )
@@ -282,14 +282,14 @@ def get_matched_info_by_nick_and_email(
     result = (
         session.query(
             Users.email,
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
             Profiles.extra_info,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
@@ -318,14 +318,14 @@ def get_matched_info_by_uniquenick_and_namespaceid(
     result = (
         session.query(
             Users.email,
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
             Profiles.extra_info,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
@@ -358,14 +358,14 @@ def get_matched_info_by_uniquenick_and_namespaceids(
     result = (
         session.query(
             Users.email,
-            Profiles.profileid,
+            Profiles.id,
             Profiles.nick,
             SubProfiles.uniquenick,
             SubProfiles.namespaceid,
             Profiles.extra_info,
         )
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid.in_(namespace_ids),
@@ -398,7 +398,7 @@ def is_uniquenick_exist(
 ) -> bool:
     result = (
         session.query(Profiles)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.gamename == game_name,
@@ -412,9 +412,9 @@ def is_uniquenick_exist(
 
 def is_email_exist(email: str, session: Session) -> bool:
     if TYPE_CHECKING:
-        Users.userid = cast(Column, Users.userid)
+        Users.id = cast(Column, Users.id)
         Users.email = cast(Column, Users.email)
 
-    result = session.query(Users.userid).where(Users.email == email).count()
+    result = session.query(Users.id).where(Users.email == email).count()
     # According to game <FSW> partnerid is not nessesary
     return result != 0

@@ -92,17 +92,17 @@ class NewUserHandler(HandlerBase):
             self._create_user()
 
         assert self.user
-        assert isinstance(self.user.userid, int)
+        assert isinstance(self.user.id, int)
 
         self.profile = data.get_profile(
-            self.user.userid, self._request.data.nick, self._session
+            self.user.id, self._request.data.nick, self._session
         )
         if self.profile is None:
             self._create_profile()
         assert self.profile is not None
-        assert isinstance(self.profile.profileid, int)
+        assert isinstance(self.profile.id, int)
         self.subprofile = data.get_sub_profile(
-            profile_id=self.profile.profileid,
+            profile_id=self.profile.id,
             namespace_id=self._request.data.namespace_id,
             product_id=self._request.data.product_id,
             session=self._session,
@@ -112,11 +112,11 @@ class NewUserHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         assert self.user is not None
-        assert isinstance(self.user.userid, int)
+        assert isinstance(self.user.id, int)
         assert self.profile is not None
-        assert isinstance(self.profile.profileid, int)
+        assert isinstance(self.profile.id, int)
         self._result = NewUserResult(
-            user_id=self.user.userid, profile_id=self.profile.profileid
+            user_id=self.user.id, profile_id=self.profile.id
         )
 
     def _create_user(self) -> None:
@@ -137,18 +137,19 @@ class NewUserHandler(HandlerBase):
                 profile_dict[key] = value
 
         assert self.user is not None
-        assert isinstance(self.user.userid, int)
-        profile_dict["userid"] = self.user.userid
+        assert isinstance(self.user.id, int)
+        profile_dict["userid"] = self.user.id
         self.profile = Profiles(
-            userid=self.user.userid,
+            userid=self.user.id,
             nick=self._request.data.nick,
         )
         self._session.add(self.profile)
         self._session.commit()
 
     def _create_subprofile(self) -> None:
+        assert self.profile
         self.subprofile = SubProfiles(
-            profileid=self.profile.profileid,  # type: ignore
+            profileid=self.profile.id,
             uniquenick=self._request.data.uniquenick,
             namespaceid=self._request.data.namespace_id,
             partnerid=self._request.data.partner_id,

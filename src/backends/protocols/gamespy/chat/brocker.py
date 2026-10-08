@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import APIRouter, WebSocket
-from backends.library.database.pg_orm import ENGINE
+from backends.library.database.pg_orm import _engine
 from backends.library.networks.redis_brocker import RedisBrocker
 from frontends.gamespy.library.configs import CONFIG
 
@@ -30,7 +30,7 @@ class WebsocketManager(WsManager):
     """
 
     def _get_wss_in_channel(self, channel_name: str) -> list[WebSocket]:
-        with Session(ENGINE) as session:
+        with Session(_engine) as session:
             ws_addrss = data.get_websocket_addr_by_channel_name(
                 channel_name, session)
             wss = []

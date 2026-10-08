@@ -42,3 +42,7 @@ class HandlerTests(unittest.TestCase):
         request = InitRequest(**req_dict)
         handler = InitHandler(request)
         handler.handle()
+        from backends.library.database.pg_orm import get_engine,InitPacketCaches,Session,NatClientIndex
+        with Session(get_engine()) as session:
+            session.query(InitPacketCaches).where(InitPacketCaches.version == 3,InitPacketCaches.cookie == 777,InitPacketCaches.client_index == NatClientIndex.GAME_CLIENT).delete()
+            session.commit()

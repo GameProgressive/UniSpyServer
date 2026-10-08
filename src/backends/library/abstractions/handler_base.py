@@ -5,7 +5,7 @@ from backends.library.abstractions.contracts import (
     Response,
     RequestBase as RequestBase,
 )
-from backends.library.database.pg_orm import ENGINE
+from backends.library.database.pg_orm import get_engine
 from frontends.gamespy.library.abstractions.contracts import ResultBase
 
 import logging
@@ -41,7 +41,8 @@ class HandlerBase:
         self.response = OKResponse()
 
     def handle(self) -> None:
-        with Session(ENGINE) as session:
+        engine = get_engine()
+        with Session(engine) as session:
             self._session = session
             self._request_check()
             self._data_operate()

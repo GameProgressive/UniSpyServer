@@ -55,7 +55,7 @@ class Base(DeclarativeBase):
 class Users(Base):
     __tablename__ = "users"
 
-    userid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     emailverified: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -73,8 +73,8 @@ class Users(Base):
 class Profiles(Base):
     __tablename__ = "profiles"
 
-    profileid: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    userid: Mapped[int] = mapped_column(ForeignKey("users.userid"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     nick: Mapped[str] = mapped_column(nullable=False)
     serverflag: Mapped[int] = mapped_column(nullable=False, default=0)
     status: Mapped[GPStatusCode] = mapped_column(
@@ -86,10 +86,8 @@ class Profiles(Base):
 
 class SubProfiles(Base):
     __tablename__ = "subprofiles"
-    subprofileid: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
-    )
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
     uniquenick: Mapped[str | None] = mapped_column()
     namespaceid: Mapped[int] = mapped_column(nullable=False, default=0)
     partnerid: Mapped[int] = mapped_column(nullable=False, default=0)
@@ -105,9 +103,7 @@ class SubProfiles(Base):
 class Blacklist(Base):
     __tablename__ = "black_list"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
-    )
+    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
     targetid: Mapped[int] = mapped_column(nullable=False)
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
@@ -120,10 +116,10 @@ class FriendRequest(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     sender_profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
+        ForeignKey("profiles.id"), nullable=False
     )
     receiver_profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
+        ForeignKey("profiles.id"), nullable=False
     )
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
@@ -138,12 +134,8 @@ class Friendlist(Base):
     __tablename__ = "friend_list"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
-    )
-    targetid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
-    )
+    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
+    targetid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
     )
@@ -193,9 +185,7 @@ class PStorage(Base):
     __tablename__ = "pstorage"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(
-        ForeignKey("profiles.profileid"), nullable=False
-    )
+    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
     ptype: Mapped[int] = mapped_column(nullable=False)
     dindex: Mapped[int] = mapped_column(nullable=False)
     data: Mapped[str] = mapped_column(nullable=False)
@@ -238,7 +228,7 @@ class InitPacketCaches(Base):
     client_index: Mapped[NatClientIndex] = mapped_column(
         IntEnum(NatClientIndex), nullable=False
     )
-    game_name: Mapped[str | None] = mapped_column()
+    game_name: Mapped[str | None] = mapped_column(nullable=True)
     use_game_port: Mapped[bool] = mapped_column(nullable=False)
     public_ip: Mapped[str] = mapped_column(nullable=False)
     public_port: Mapped[int] = mapped_column(nullable=False)
@@ -380,20 +370,26 @@ class FrontendInfo(Base):
     )
 
 
-ENGINE: Engine
+_engine: Engine | None = None
 
 
-def init_database()->Engine:
-    ENGINE = create_engine(CONFIG.postgresql.url)
-    with ENGINE.connect() as conn:
+def get_engine() -> Engine:
+    global _engine
+    if _engine is None:
+        _engine = create_engine(CONFIG.postgresql.url)
+    return _engine
+
+
+def init_database():
+    engine = get_engine()
+    with engine.connect() as conn:
         conn.execute(text("SELECT 1")).first()
-    return ENGINE
 
 
 if __name__ == "__main__":
-    ENGINE = init_database()
-    with Session(ENGINE) as session:
-        session.query(Users.userid == 0).all()
+    _engine = init_database()
+    with Session(_engine) as session:
+        session.query(Users.id == 0).all()
     # profile = Profiles(userid=1, nick="spyguy",
     #                    extra_info={}, status=GPStatusCode.OFFLINE)
     # PG_SESSION.add(profile)

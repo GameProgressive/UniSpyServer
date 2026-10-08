@@ -17,7 +17,7 @@ class ConnectionMock(ConnectionBase):
 class RequestHandlerMock(socketserver.BaseRequestHandler):
     client_address: tuple
 
-    def __init__(self, client_address: tuple = ("192.168.0.1", 0)) -> None:
+    def __init__(self, client_address: tuple = ("192.168.0.1", 1)) -> None:
         self.client_address = client_address
 
     pass

@@ -1,5 +1,5 @@
 from datetime import datetime
-from backends.library.database.pg_orm import ENGINE, PStorage, Profiles, SubProfiles, Users
+from backends.library.database.pg_orm import _engine, PStorage, Profiles, SubProfiles, Users
 from frontends.gamespy.protocols.game_status.aggregations.enums import PersistStorageType
 from frontends.gamespy.protocols.game_status.aggregations.exceptions import GSException
 from sqlalchemy.orm import Session
@@ -55,7 +55,7 @@ def get_profile_id_by_profile_id(profile_id: int, session: Session) -> int:
 
 
 def get_profile_id_by_cdkey(cdkey: str, nick_name: str, session: Session) -> int:
-    result = (session.query(Profiles.profileid)
+    result = (session.query(Profiles.id)
               .join(SubProfiles)
               .where(SubProfiles.cdkeyenc == cdkey,
                      Profiles.nick == nick_name)

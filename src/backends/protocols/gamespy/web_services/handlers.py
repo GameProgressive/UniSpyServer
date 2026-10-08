@@ -79,7 +79,7 @@ class LoginProfileHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         assert self.data is not None
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = LoginProfileResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -119,7 +119,7 @@ class LoginRemoteAuthHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         assert self.data is not None
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = LoginRemoteAuthResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -153,7 +153,7 @@ class LoginUniqueNickHandler(HandlerBase):
 
     def _result_construct(self) -> None:
         assert self.data is not None
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = LoginUniqueNickResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -214,7 +214,7 @@ class GetStoreAvailabilityHandler(HandlerBase):
     _request: GetStoreAvailabilityRequest
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = GetStoreAvailabilityResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -257,7 +257,7 @@ class CreateRecordHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = CreateRecordResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -280,7 +280,7 @@ class UpdateRecordHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = UpdateRecordResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -300,7 +300,7 @@ class DeleteRecordHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = DeleteRecordResult(
             headers=self._request.data.raw_request.headers,
             login_ticket=self._request.data.login_ticket,
@@ -326,7 +326,7 @@ class GetMyRecordsHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = GetMyRecordsResult(
             headers=self._request.data.raw_request.headers,
             command_name=self._request.data.command_name,
@@ -351,7 +351,7 @@ class SearchForRecordsHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = SearchForRecordsResult(
             headers=self._request.data.raw_request.headers,
             login_ticket=self._request.data.login_ticket,
@@ -371,7 +371,7 @@ class GetRecordCountHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        assert self._request.data.raw_request.headers
+        assert self._request.data.raw_request.headers is not None
         self._result = GetRecordCountResult(
             headers=self._request.data.raw_request.headers,
             login_ticket=self._request.data.login_ticket,

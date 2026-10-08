@@ -130,8 +130,8 @@ class CmdHandlerBase:
             client_port=self._client.connection.remote_port,
         ).model_dump(mode="json")
         data = self._request.model_dump(mode="json")
-        if "request_dict" in data:
-            del data["request_dict"]
+        # if "request_dict" in data:
+        #     del data["request_dict"]
         self._temp_data = {"info": info, "data": data}
 
     def _get_url(self) -> str:

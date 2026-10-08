@@ -53,7 +53,7 @@ def del_buddy(target_profile_id: int, subprofile_id: int, session: Session):
         session.query(Friendlist)
         .where(
             Friendlist.targetid == target_profile_id,
-            SubProfiles.subprofileid == subprofile_id,
+            SubProfiles.id == subprofile_id,
         )
         .first()
     )
@@ -100,7 +100,7 @@ def get_friend_profile_id_list(
 def get_subprofile_by_id(subprofile_id: int, session: Session) -> SubProfiles:
     result = (
         session.query(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if not result:
@@ -125,7 +125,7 @@ def get_profile_infos(
         session.query(Users, Profiles, SubProfiles)
         .join(SubProfiles)
         .join(Users)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if result is None:
@@ -138,7 +138,7 @@ def get_profile_infos(
     assert subprofile.uniquenick is not None
     data = GetProfileData(
         nick=profile.nick,
-        profile_id=profile.profileid,
+        profile_id=profile.id,
         unique_nick=subprofile.uniquenick,
         email=user.email,
         extra_infos=profile.extra_info,
@@ -162,9 +162,9 @@ def get_user_info_list(
         of users that match the provided email and nickname in the database.
     """
     result = (
-        session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        session.query(Users.id, Profiles.id, SubProfiles.id)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(Users.email == email, Profiles.nick == nick_name)
         .all()
     )
@@ -177,9 +177,9 @@ def get_user_info(
     unique_nick: str, namespace_id: int, session: Session
 ) -> tuple[int, int, int]:
     result = (
-        session.query(Users.userid, Profiles.profileid, SubProfiles.subprofileid)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        session.query(Users.id, Profiles.id, SubProfiles.id)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
@@ -192,9 +192,9 @@ def get_user_info(
 
 
 _login_infos = [
-    Users.userid,
-    Profiles.profileid,
-    SubProfiles.subprofileid,
+    Users.id,
+    Profiles.id,
+    SubProfiles.id,
     Profiles.nick,
     Users.email,
     SubProfiles.uniquenick,
@@ -210,8 +210,8 @@ def get_user_infos_by_uniquenick_namespace_id(
 ) -> LoginData | None:
     result = (
         session.query(*_login_infos)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(
             SubProfiles.uniquenick == unique_nick,
             SubProfiles.namespaceid == namespace_id,
@@ -242,8 +242,8 @@ def get_user_infos_by_nick_email(
 ) -> LoginData | None:
     result = (
         session.query(*_login_infos)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users)
+        .join(SubProfiles)
         .where(Users.email == email, Profiles.nick == nick)
         .first()
     )
@@ -266,7 +266,7 @@ def get_user_infos_by_nick_email(
 
 
 def update_online_status(user_id: int, status: LoginStatus, session: Session):
-    result = session.query(Users).where(Users.userid == user_id).first()
+    result = session.query(Users).where(Users.id == user_id).first()
     assert result
     result.lastonline = datetime.now()
     session.commit()
@@ -276,8 +276,8 @@ def get_user_infos_by_authtoken(auth_token: str, session: Session) -> LoginData 
 
     result = (
         session.query(*_login_infos)
-        .join(Users, Profiles.userid == Users.userid)
-        .join(SubProfiles, Profiles.profileid == SubProfiles.profileid)
+        .join(Users, Profiles.userid == Users.id)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(SubProfiles.authtoken == auth_token)
         .first()
     )
@@ -524,7 +524,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str, session: Sessio
 
     result = (
         session.query(Profiles)
-        .where(Profiles.profileid == profile_id, Profiles.nick == old_nick)
+        .where(Profiles.id == profile_id, Profiles.nick == old_nick)
         .first()
     )
 
@@ -543,7 +543,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str, session: Sessio
 def update_unique_nick(subprofile_id: int, unique_nick: str, session: Session):
     result = (
         session.query(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if result is None:
@@ -561,7 +561,7 @@ def get_status(subprofile_id: int, session: Session) -> dict:
     result = (
         session.query(Profiles)
         .join(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if result is None:
@@ -591,7 +591,7 @@ def update_status(
     result = (
         session.query(Profiles)
         .join(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if result is None:
@@ -609,7 +609,7 @@ def update_new_nick(subprofile_id: int, old_nick: str, new_nick: str, session: S
     result = (
         session.query(Profiles)
         .join(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if result is None:
@@ -640,7 +640,7 @@ def update_profiles(subprofile_id: int, extra_info: ExtraInfo, session: Session)
     profile = (
         session.query(Profiles)
         .join(SubProfiles)
-        .where(SubProfiles.subprofileid == subprofile_id)
+        .where(SubProfiles.id == subprofile_id)
         .first()
     )
     if profile is None:

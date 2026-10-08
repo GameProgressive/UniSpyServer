@@ -449,7 +449,7 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_flags: list[tuple[ModeOperation, ModeName]]
+    mode_flags: list[tuple[ModeName, ModeOperation]]
     """
     <mode_name>,<operation>
     o,+

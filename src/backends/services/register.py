@@ -4,14 +4,14 @@ from datetime import datetime, timedelta, timezone
 
 from sqlalchemy.orm import Session
 
-from backends.library.database.pg_orm import ENGINE, FrontendInfo
+from backends.library.database.pg_orm import _engine, FrontendInfo
 from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 
 
 def register_services(config: ServerConfig, external_ip: str) -> dict:
     expire_time = datetime.now() - timedelta(minutes=5)
-    with Session(ENGINE) as session:
+    with Session(_engine) as session:
         result = session.query(
             FrontendInfo.server_id == config.server_id,
             FrontendInfo.update_time >= expire_time).first()
