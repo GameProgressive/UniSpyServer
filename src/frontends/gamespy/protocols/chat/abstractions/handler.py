@@ -29,14 +29,6 @@ class CmdHandlerBase(lib.CmdHandlerBase):
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
 
-    def _request_check(self) -> None:
-        super()._request_check()
-        assert self._client.brocker
-        try:
-            self._request.websocket_address = self._client.brocker.ip_port
-        except Exception:
-            raise ChatException("websocket is disconnected")
-
     def _handle_exception(self, ex: Exception) -> None:
         t_ex = type(ex)
         if t_ex is IRCException:

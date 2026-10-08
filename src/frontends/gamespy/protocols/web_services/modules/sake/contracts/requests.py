@@ -117,7 +117,7 @@ class SearchForRecordsRequest(RequestBase):
     max_value: int
     surrounding: str | None
     cache_flag: str | None
-    fields: dict[str,list]
+    fields: list[str]
     """
     [
     (field_name, field_type),

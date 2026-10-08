@@ -15,6 +15,7 @@ NAMESPACE = "http://gamespy.net/sake"
 
 
 class RequestBase(lib.RequestBase):
+    command_name: CommandName
     game_id: int
     table_id: str
     secret_key: str | None
@@ -24,12 +25,12 @@ class RequestBase(lib.RequestBase):
     c sdk require gp to get login_ticket
     dotnet sdk require auth service to get session token
     """
-    command_name: CommandName
 
     @staticmethod
     def gs_parse(raw_request: HttpData) -> "RequestBase":
         data = lib.RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
+        data_dict["command_name"] = CommandName(data.command_name)
         data_dict["platform"] = SakePlatform.Windows
         data_dict["game_id"] = data.int_mapping["gameid"]
         data_dict["secret_key"] = data.str_mapping.get("secretKey")
@@ -39,7 +40,8 @@ class RequestBase(lib.RequestBase):
         if data_dict["login_ticket"] is None:
             if data.raw_request.headers is None:
                 raise SakeException(
-                    "headers is missing in c# version gamespy", data.command_name
+                    "headers is missing in c# version gamespy",
+                    data_dict["command_name"],
                 )
             data_dict["login_ticket"] = data.raw_request.headers["SessionToken"]
         data = RequestBase(**data_dict)
@@ -47,9 +49,10 @@ class RequestBase(lib.RequestBase):
 
     @staticmethod
     def _get_record_field(request: lib.RequestBase) -> dict:
+        command_name = CommandName(request.command_name)
         rf = request.dict_mapping["values"]
         if "RecordField" not in rf:
-            raise SakeException("No record field tag found", request.command_name)
+            raise SakeException("No record field tag found", command_name)
         values = rf["RecordField"]
         if (
             isinstance(values, dict)
@@ -59,7 +62,7 @@ class RequestBase(lib.RequestBase):
         ):
             values = [values]
         if not isinstance(values, list):
-            raise SakeException("record field value is not dict", request.command_name)
+            raise SakeException("record field value is not dict", command_name)
         s_value = RecordConverter.to_searchable_format(values)
         return s_value
 

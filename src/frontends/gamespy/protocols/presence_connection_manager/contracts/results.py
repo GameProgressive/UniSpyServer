@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums im
 class LoginData(BaseModel):
     user_id: int
     profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
     nick: str
     email: str
     unique_nick: str
@@ -34,7 +34,7 @@ class LoginResult(ResultBase):
     type: LoginType
     partner_id: int
     user_challenge: str
-    session_key: int
+    subprofile_id: int
 
 
 class NewUserResult(ResultBase):

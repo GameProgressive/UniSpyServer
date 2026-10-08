@@ -5,6 +5,7 @@ from sqlalchemy import (
     UUID,
     Boolean,
     DateTime,
+    Engine,
     ForeignKey,
     Integer,
     SmallInteger,
@@ -111,9 +112,7 @@ class Blacklist(Base):
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
     )
-    update_time: Mapped[datetime | None] = mapped_column(
-        default=datetime.now()
-    )
+    update_time: Mapped[datetime | None] = mapped_column(default=datetime.now())
 
 
 class FriendRequest(Base):
@@ -148,9 +147,7 @@ class Friendlist(Base):
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
     )
-    update_time: Mapped[datetime | None] = mapped_column(
-        default=datetime.now()
-    )
+    update_time: Mapped[datetime | None] = mapped_column(default=datetime.now())
 
 
 class Games(Base):
@@ -181,9 +178,7 @@ class Messages(Base):
 
     from_user: Mapped[int] = mapped_column(nullable=False)
     to_user: Mapped[int] = mapped_column(nullable=False)
-    date: Mapped[datetime] = mapped_column(
-        nullable=False, default=datetime.now()
-    )
+    date: Mapped[datetime] = mapped_column(nullable=False, default=datetime.now())
     message: Mapped[str] = mapped_column(Text, nullable=False)
 
 
@@ -385,11 +380,18 @@ class FrontendInfo(Base):
     )
 
 
-ENGINE = create_engine(CONFIG.postgresql.url)
-with ENGINE.connect() as conn:
-    conn.execute(text("SELECT 1")).first()
+ENGINE: Engine
+
+
+def init_database()->Engine:
+    ENGINE = create_engine(CONFIG.postgresql.url)
+    with ENGINE.connect() as conn:
+        conn.execute(text("SELECT 1")).first()
+    return ENGINE
+
 
 if __name__ == "__main__":
+    ENGINE = init_database()
     with Session(ENGINE) as session:
         session.query(Users.userid == 0).all()
     # profile = Profiles(userid=1, nick="spyguy",

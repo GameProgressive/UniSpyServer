@@ -50,7 +50,6 @@ class Client(ClientBase):
         return switcher
 
     def on_connected(self) -> None:
-        self.start_brocker()
         super().on_connected()
 
     def on_disconnected(self) -> None:

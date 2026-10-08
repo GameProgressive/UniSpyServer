@@ -216,14 +216,14 @@ class LoginRequest(RequestBase):
 
 @final
 class LogoutRequest(RequestBase):
-    sub_profile_id: int
+    subprofile_id: int
     user_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "LogoutRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["user_id"] = data.request_dict["user_id"]
         data = LogoutRequest(**data_dict)
         return data
@@ -281,7 +281,7 @@ class AuthAddBuddyRequest(RequestBase):
     verify the friend add request after the client accept the friend invitation
     """
 
-    sub_profile_id: int
+    subprofile_id: int
     receiver_profile_id: int
     sig: str
     auto_sync: bool
@@ -293,7 +293,7 @@ class AuthAddBuddyRequest(RequestBase):
         data_dict["receiver_profile_id"] = int(data.request_dict["fromprofileid"])
         data_dict["sig"] = data.request_dict["sig"]
         data_dict["auto_sync"] = bool(data.request_dict.get("autoSync"))
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = AuthAddBuddyRequest(**data_dict)
         return data
 
@@ -301,7 +301,7 @@ class AuthAddBuddyRequest(RequestBase):
 @final
 class AddBuddyRequest(RequestBase):
     target_profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
     reason: str
     signature: str | None
     """
@@ -315,7 +315,7 @@ class AddBuddyRequest(RequestBase):
         data_dict["target_profile_id"] = data.request_dict["newprofileid"]
         data_dict["reason"] = data.request_dict["reason"]
         data_dict["signature"] = data.request_dict.get("syncrequested")
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = AddBuddyRequest(**data_dict)
         return data
 
@@ -323,14 +323,14 @@ class AddBuddyRequest(RequestBase):
 @final
 class DelBuddyRequest(RequestBase):
     target_profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "DelBuddyRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["target_profile_id"] = data.request_dict["delprofileid"]
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = DelBuddyRequest(**data_dict)
         return data
 
@@ -339,7 +339,7 @@ class DelBuddyRequest(RequestBase):
 class InviteToRequest(RequestBase):
     product_id: int
     profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
     """the invite target profile id"""
 
     @staticmethod
@@ -348,7 +348,7 @@ class InviteToRequest(RequestBase):
         data_dict = data.model_dump()
         data_dict["product_id"] = data.request_dict["productid"]
         data_dict["profile_id"] = data.request_dict["profileid"]
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = InviteToRequest(**data_dict)
         return data
 
@@ -403,14 +403,14 @@ class StatusRequest(RequestBase):
     current_status: GPStatusCode
     location_string: str
     status_string: str
-    sub_profile_id: int
+    subprofile_id: int
     operation_id: int | None = None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "StatusRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["location_string"] = data.request_dict["locstring"]
         data_dict["status_string"] = data.request_dict["statstring"]
         data_dict["current_status"] = data.request_dict["status"]
@@ -424,21 +424,21 @@ class StatusRequest(RequestBase):
 @final
 class AddBlockRequest(RequestBase):
     target_profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "AddBlockRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["target_profile_id"] = data.request_dict["profileid"]
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = AddBlockRequest(**data_dict)
         return data
 
 
 @final
 class RemoveBlockRequest(RequestBase):
-    sub_profile_id: int
+    subprofile_id: int
     target_profile_id: int
 
     @staticmethod
@@ -446,7 +446,7 @@ class RemoveBlockRequest(RequestBase):
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["target_profile_id"] = data.request_dict["profileid"]
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
 
         data = RemoveBlockRequest(**data_dict)
         return data
@@ -455,14 +455,14 @@ class RemoveBlockRequest(RequestBase):
 @final
 class GetProfileRequest(RequestBase):
     profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "GetProfileRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["profile_id"] = data.request_dict["profileid"]
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = GetProfileRequest(**data_dict)
         return data
 
@@ -470,7 +470,7 @@ class GetProfileRequest(RequestBase):
 @final
 class NewProfileRequest(RequestBase):
     is_replace: bool
-    sub_profile_id: int
+    subprofile_id: int
     new_nick: str
     old_nick: str | None
 
@@ -478,7 +478,7 @@ class NewProfileRequest(RequestBase):
     def gs_parse(raw_request: str) -> "NewProfileRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["old_nick"] = data.request_dict.get("oldnick")
         is_replace = False
         if data_dict["old_nick"] is not None:
@@ -493,14 +493,14 @@ class NewProfileRequest(RequestBase):
 
 @final
 class RegisterCDKeyRequest(RequestBase):
-    sub_profile_id: int
+    subprofile_id: int
     cdkey_enc: str
 
     @staticmethod
     def gs_parse(raw_request: str) -> "RegisterCDKeyRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["cdkey_enc"] = data.request_dict["cdkeyenc"]
         data = RegisterCDKeyRequest(**data_dict)
         return data
@@ -509,14 +509,14 @@ class RegisterCDKeyRequest(RequestBase):
 @final
 class RegisterNickRequest(RequestBase):
     unique_nick: str
-    sub_profile_id: int
+    subprofile_id: int
     partner_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "RegisterNickRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["unique_nick"] = data.request_dict["uniquenick"]
         data_dict["partner_id"] = data.request_dict["partnerid"]
         data = RegisterNickRequest(**data_dict)
@@ -525,7 +525,7 @@ class RegisterNickRequest(RequestBase):
 
 @final
 class UpdateProfileRequest(RequestBase):
-    sub_profile_id: int
+    subprofile_id: int
     partner_id: int
     extra_infos: ExtraInfo
 
@@ -533,7 +533,7 @@ class UpdateProfileRequest(RequestBase):
     def gs_parse(raw_request: str) -> "UpdateProfileRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["partner_id"] = data.request_dict["partnerid"]
         extra_info = ExtraInfo.model_validate(data.request_dict)
         data = UpdateProfileRequest(
@@ -546,13 +546,13 @@ class UpdateProfileRequest(RequestBase):
 @final
 class UpdateUserInfoRequest(RequestBase):
     extra_infos: ExtraInfo
-    sub_profile_id: int
+    subprofile_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> RequestBase:
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["sub_profile_id"] = data.request_dict["sesskey"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         extra_info = ExtraInfo.model_validate(data.request_dict)
         data = UpdateUserInfoRequest(**data_dict, extra_infos=extra_info)
         return data

@@ -1,16 +1,5 @@
-from frontends.gamespy.protocols.natneg.aggregations.enums import (
-    NatClientIndex,
-    NatPortMappingScheme,
-    NatPortType,
-    NatType,
-    PreInitState,
-    CommandName,
-)
-from typing import Union
-
 import backends.library.abstractions.contracts as lib
 import frontends.gamespy.protocols.natneg.contracts.requests as fnt
-
 # region Requests
 
 

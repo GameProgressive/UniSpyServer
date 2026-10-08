@@ -244,7 +244,7 @@ def _get_filtered_record(
     filtered_key_value = {}
     for f in fields:
         if f not in filtered_record:
-            raise SakeException(f"{f} not in record", command_name.value)
+            raise SakeException(f"{f} not in record", command_name)
         filtered_key_value[f] = filtered_record[f]
     return filtered_key_value
 
@@ -306,7 +306,7 @@ def create_records(
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).count()
 
     if result != 0:
-        raise SakeException("Records already existed", command_name.value)
+        raise SakeException("Records already existed", command_name)
 
     sake = SakeStorage(tableid=table_id, record=records)
     session.add(sake)
@@ -325,7 +325,7 @@ def update_record(
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
-        raise SakeException("Records do not existed", command_name.value)
+        raise SakeException("Records do not existed", command_name)
 
     result.record = records  # type: ignore
     session.commit()
@@ -337,7 +337,7 @@ def delete_record(table_id: str, command_name: CommandName, session: Session) ->
     result = session.query(SakeStorage).where(SakeStorage.tableid == table_id).first()
 
     if result is None:
-        raise SakeException("Records not existed", command_name.value)
+        raise SakeException("Records not existed", command_name)
 
     session.delete(result)
     session.commit()

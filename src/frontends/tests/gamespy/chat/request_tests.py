@@ -121,7 +121,9 @@ class ChannelRequestTests(unittest.TestCase):
     def test_mode(self):
         request = ModeRequest.gs_parse(MODE_CHANNEL)
         self.assertEqual(request.channel_name, "#GSP!room!test")
-        self.assertEqual(request.mode_flags[0], "+l")
+        self.assertEqual(
+            request.mode_flags[0], (ModeOperation.SET, ModeName.CHANNEL_USER_LIMITS)
+        )
         self.assertEqual(request.limit_number, 2)
 
         request = ModeRequest.gs_parse("MODE #GSP!gmtest!MlNK4q4l1M -i-p-s+m-n+t+l+e 2")

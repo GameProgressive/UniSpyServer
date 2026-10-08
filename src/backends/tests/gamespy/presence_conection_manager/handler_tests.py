@@ -4,6 +4,9 @@ import responses
 
 import backends.protocols.gamespy.presence_connection_manager.handlers as bkh
 import backends.protocols.gamespy.presence_connection_manager.requests as bkr
+from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    CommandName,
+)
 import frontends.gamespy.protocols.presence_connection_manager.contracts.requests as pcm
 from backends.tests.utils import add_headers
 from frontends.tests.gamespy.presence_connection_manager.request_tests import (
@@ -17,7 +20,7 @@ class HandlerTest(unittest.TestCase):
     # region General
     @responses.activate
     def test_login_authtoken(self):
-        r = pcm.LoginRequest.gs_parse(LOGIN_AUTH_TOKEN)
+        r = pcm.LoginRequest.gs_parse(LOGIN_AUTH_TOKEN).model_dump()
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -26,7 +29,7 @@ class HandlerTest(unittest.TestCase):
 
     @responses.activate
     def test_login_uniquenick(self):
-        r = pcm.LoginRequest.gs_parse(LOGIN_UNIQUE_NICK)
+        r = pcm.LoginRequest.gs_parse(LOGIN_UNIQUE_NICK).model_dump()
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -35,7 +38,7 @@ class HandlerTest(unittest.TestCase):
 
     @responses.activate
     def test_login_user(self):
-        r = pcm.LoginRequest.gs_parse(LOGIN_USER)
+        r = pcm.LoginRequest.gs_parse(LOGIN_USER).model_dump()
         data = add_headers(r)
         request = bkr.LoginRequest(**data)
         handler = bkh.LoginHandler(request)
@@ -58,13 +61,13 @@ class HandlerTest(unittest.TestCase):
     @responses.activate
     def test_buddy_list(self):
         r = pcm.BuddyListRetriveRequest(
-            command_name="",
+            command_name=CommandName.STATUS,
             raw_request="",
             request_dict={},
             profile_id=1,
             namespace_id=0,
             operation_id=1,
-        )
+        ).model_dump()
         data = add_headers(r)
         request = bkr.BuddyListRetriveRequest(**data)
         handler = bkh.BuddyListRetriveHandler(request)
@@ -74,7 +77,14 @@ class HandlerTest(unittest.TestCase):
     @unittest.skip("not implemented")
     @responses.activate
     def test_block_list(self):
-        r = pcm.BlockListRetriveRequest(profile_id=1, namespace_id=0, operation_id=1)
+        r = pcm.BlockListRetriveRequest(
+            command_name=CommandName.STATUS,
+            profile_id=1,
+            namespace_id=0,
+            operation_id=1,
+            request_dict={},
+            raw_request="",
+        ).model_dump()
         data = add_headers(r)
         request = bkr.BlockListRetriveRequest(**data)
         handler = bkh.BlockListRetriveHandler(request)

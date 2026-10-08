@@ -22,47 +22,6 @@ def remove_namespace(data) -> list | dict:
         return data
 
 
-def find_key_in_nested_dict(nested_dict, target_key):
-    found_values = []
-
-    # Base case: If the input is a dictionary
-    if isinstance(nested_dict, dict):
-        for key, value in nested_dict.items():
-            if key == target_key:
-                found_values.append(value)  # Add the value if the key is found
-            found_values.extend(
-                find_key_in_nested_dict(value, target_key)
-            )  # Search recursively
-
-    # If the input is a list, iterate through elements
-    elif isinstance(nested_dict, list):
-        for item in nested_dict:
-            found_values.extend(find_key_in_nested_dict(item, target_key))
-
-    return found_values
-
-
-def find_first_key_in_nested_dict(nested_dict, target_key) -> object | None:
-    # Base case: If the input is a dictionary
-    if isinstance(nested_dict, dict):
-        for key, value in nested_dict.items():
-            if key == target_key:
-                return value  # Return the value if the key is found
-            # Recursively search in the value
-            found_value = find_first_key_in_nested_dict(value, target_key)
-            if found_value is not None:
-                return found_value  # Return the found value if any
-
-    # If the input is a list, iterate through elements
-    elif isinstance(nested_dict, list):
-        for item in nested_dict:
-            found_value = find_first_key_in_nested_dict(item, target_key)
-            if found_value is not None:
-                return found_value  # Return found value if any
-
-    return None  # Return None if the key is not found
-
-
 class RequestBase(lib.RequestBase):
     raw_request: lib.HttpData = Field(repr=False)
     request_dict: dict[str, object] = Field(repr=False)

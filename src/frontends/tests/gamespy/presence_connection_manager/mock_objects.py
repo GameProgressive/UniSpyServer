@@ -49,7 +49,7 @@ def create_client() -> Client:
                 "password_hash": "password",
                 "email_verified_flag": True,
                 "namespace_id": 0,
-                "sub_profile_id": 0,
+                "subprofile_id": 0,
                 "banned_flag": False,
             },
             "operation_id": 0,

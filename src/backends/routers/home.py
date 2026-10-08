@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from backends.library.abstractions.contracts import ErrorResponse
-from backends.library.database.pg_orm import ENGINE
+from backends.library.database.pg_orm import init_database
 from backends.library.utils.misc import check_public_ip
 from backends.routers.gamespy import (
     chat,
@@ -93,6 +93,16 @@ class RegisterRequest(BaseModel):
 @app.post("/token")
 def get_auth_token(request: RegisterRequest):
     pass
+
+
+from contextlib import contextmanager
+
+
+@contextmanager
+def lifespan(app: FastAPI):
+    # Runs before FastAPI starts accepting requests
+    init_database()
+    yield
 
 
 if __name__ == "__main__":

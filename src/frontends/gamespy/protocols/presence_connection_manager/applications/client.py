@@ -20,7 +20,7 @@ LOGIN_TICKET = "0000000000000000000000__"
 class ClientInfo(ClientInfoBase):
     user_id: int
     profile_id: int
-    sub_profile_id: int
+    subprofile_id: int
     login_status: LoginStatus
     namespace_id: int
     sdk_revision: list[SdkRevisionType]

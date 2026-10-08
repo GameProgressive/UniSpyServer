@@ -24,8 +24,6 @@ class Switcher(SwitcherBase):
     def _process_raw_request(self) -> None:
         request = RequestBase.gs_parse(self._raw_request)
         name = request.command_name
-        if len(name) < 4:
-            raise WebException("request name invalid")
         self._requests.append((name, self._raw_request))
 
     def _create_cmd_handlers(

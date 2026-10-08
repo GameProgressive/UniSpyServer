@@ -1,16 +1,14 @@
 import abc
 
-from pydantic import UUID4, BaseModel, ConfigDict
+from pydantic import UUID4, BaseModel, ConfigDict, Field, IPvAnyAddress
 
 from frontends.gamespy.library.network.http_data import HttpData
-
 
 
 class ClientInfo(BaseModel):
     server_id: UUID4
     client_ip: str
-    client_port: int
-
+    client_port: int = Field(ge=1, le=65535)
 
 
 class RequestBase(BaseModel):

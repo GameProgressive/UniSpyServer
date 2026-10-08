@@ -113,7 +113,7 @@ class LoginHandler(HandlerBase):
             user_challenge=self._request.data.user_challenge,
             # !FIX ME: gamespy session key is 4 bytes int, not secure enough, so we just replace it with subprofileid for convience
             # TODO in future we authenticate user with JWT token
-            session_key=self._data.sub_profile_id,
+            subprofile_id=self._data.subprofile_id,
         )
 
 
@@ -195,7 +195,7 @@ class DelBuddyHandler(HandlerBase):
     def _data_operate(self) -> None:
         self.data = data.del_buddy(
             self._request.data.target_profile_id,
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             self._session,
         )
 
@@ -206,9 +206,8 @@ class AddBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.add_buddy(
-            self._request.data.sender_profile_id,
+            self._request.data.subprofile_id,
             self._request.data.target_profile_id,
-            self._request.data.namespace_id,
             self._request.data.reason,
             self._session,
         )
@@ -240,9 +239,8 @@ class AuthAddBuddyHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         self._data = data.set_friendship_bidirectional(
-            self._request.data.sender_profile_id,
+            self._request.data.subprofile_id,
             self._request.data.receiver_profile_id,
-            self._request.data.namespace_id,
             self._session,
         )
 
@@ -253,12 +251,9 @@ class AddBlockHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         # TODO make session key functional!!
-        assert self._request.data.sender_profile_id
-        assert self._request.data.namespace_id
         data.add_block(
-            self._request.data.sender_profile_id,
+            self._request.data.subprofile_id,
             self._request.data.target_profile_id,
-            self._request.data.namespace_id,
             self._session,
         )
 
@@ -287,7 +282,7 @@ class StatusHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.update_status(
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             self._request.data.current_status,
             self._request.data.location_string,
             self._request.data.status_string,
@@ -313,7 +308,7 @@ class GetProfileHandler(HandlerBase):
     def _data_operate(self) -> None:
         self.data = data.get_profile_infos(
             profile_id=self._request.data.profile_id,
-            session_key=self._request.data.sub_profile_id,
+            subprofile_id=self._request.data.subprofile_id,
             session=self._session,
         )
 
@@ -336,7 +331,7 @@ class NewProfileHandler(HandlerBase):
         assert self._request.data.old_nick
 
         data.update_new_nick(
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             self._request.data.old_nick,
             self._request.data.new_nick,
             self._session,
@@ -349,7 +344,7 @@ class RegisterCDKeyHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_cdkey(
-            self._request.data.session_key, self._request.data.cdkey_enc, self._session
+            self._request.data.subprofile_id, self._request.data.cdkey_enc, self._session
         )
 
 
@@ -363,7 +358,7 @@ class RegisterNickHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_uniquenick(
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             self._request.data.unique_nick,
             self._session,
         )
@@ -373,12 +368,9 @@ class RemoveBlockHandler(HandlerBase):
     _request: RemoveBlockRequest
 
     def _data_operate(self) -> None:
-        assert self._request.data.sender_profile_id
-        assert self._request.data.namespace_id
         data.remove_block(
-            self._request.data.sender_profile_id,
+            self._request.data.subprofile_id,
             self._request.data.target_profile_id,
-            self._request.data.namespace_id,
             self._session,
         )
 
@@ -389,7 +381,7 @@ class UpdateProfileHandler(HandlerBase):
 
     def _data_operate(self):
         data.update_profiles(
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             self._request.data.extra_infos,
             self._session,
         )
@@ -402,8 +394,8 @@ class UpdateUserInfoHandler(HandlerBase):
     def _data_operate(self):
 
         data.update_profiles(
-            self._request.data.session_key,
+            self._request.data.subprofile_id,
             # TODO confirm param type ExtraInfo?
-            self._request.data.extra_infos.model_dump(),
+            self._request.data.extra_infos,
             self._session,
         )

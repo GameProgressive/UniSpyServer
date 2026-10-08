@@ -100,7 +100,7 @@ class LoginHandler(CmdHandlerBase):
         self._client.info.sdk_revision = self._request.sdk_revision
         self._client.info.user_id = self._result.data.user_id
         # * currently we make session key as subprofile id
-        self._client.info.sub_profile_id = self._result.session_key
+        self._client.info.subprofile_id = self._result.subprofile_id
         self._client.info.login_status = LoginStatus.COMPLETED
         handler = SdkRevisionHandler(self._client, self._request)
         handler.handle()

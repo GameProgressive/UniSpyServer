@@ -399,13 +399,12 @@ class GetUdpRelayRequest(ChannelRequestBase):
 
 
 class JoinRequest(ChannelRequestBase):
-    password: str | None
+    password: str | None = None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "JoinRequest":
         data = ChannelRequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["password"] = None
         if len(data.irc.params) >= 2:
             data_dict["password"] = data.irc.params[1]
         data = JoinRequest(**data_dict)
@@ -450,7 +449,7 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_flags: list[tuple[ModeRequestType, ModeName]]
+    mode_flags: list[tuple[ModeOperation, ModeName]]
     """
     <mode_name>,<operation>
     o,+
@@ -478,11 +477,15 @@ class ModeRequest(ChannelRequestBase):
                 user_name=None,
                 password=None,
             )
-            mode_flags = [
+            mode_flags_raw = [
                 (flag[0], flag[1:])
                 for flag in re.split(r"(?=[+-])", mode_flag_str)
                 if flag.strip()
             ]
+
+            mode_flags = []
+            for operation, flag_name in mode_flags_raw:
+                mode_flags.append((ModeOperation(operation), ModeName(flag_name)))
 
             for operation, flag_name in mode_flags:
                 match flag_name:

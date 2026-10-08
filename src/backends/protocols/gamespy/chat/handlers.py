@@ -67,6 +67,7 @@ from backends.protocols.gamespy.chat.response import (
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     ModeRequestType,
+    SearchOption,
     TopicRequestType,
     WhoRequestType,
 )
@@ -307,23 +308,14 @@ class InviteHandler(HandlerBase):
 class ListHandler(HandlerBase):
     _request: ListRequest
 
-    def _request_check(self) -> None:
-        if (
-            self._request.data.is_searching_channel
-            or self._request.data.is_searching_user
-        ):
-            pass
-        else:
-            raise ChatException("request is invalid")
-
     def _data_operate(self) -> None:
-        if self._request.data.is_searching_channel:
+        if self._request.data.option == SearchOption.Channel:
             # get the channel names with the substring
             self._data = data.find_channel_by_substring(
                 self._request.data.filter, self._session
             )
             return
-        if self._request.data.is_searching_user:
+        if self._request.data.option == SearchOption.User:
             # get the user names with the substring
             self._data = data.find_user_by_substring(
                 self._request.data.filter, self._session

@@ -299,8 +299,8 @@ class JoinHandler(ChannelHandlerBase):
 
     def _response_send(self) -> None:
         super()._response_send()
+        self._client.start_brocker()
         # gamespy sdk join require ciNameReplyHandler
-
         names_req = NamesRequest.model_validate(self._request.model_dump())
         names_handler = NamesHandler(self._client, names_req)
         names_handler.handle()

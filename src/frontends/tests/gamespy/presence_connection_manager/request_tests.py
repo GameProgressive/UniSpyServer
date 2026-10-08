@@ -108,28 +108,28 @@ class RequestTests(unittest.TestCase):
 
     def test_get_profile(self) -> None:
         request = GetProfileRequest.gs_parse(GET_PROFILE)
-        self.assertEqual("xxxx", request.sub_profile_id)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual(0, request.profile_id)
 
     def test_new_profile(self) -> None:
         request = NewProfileRequest.gs_parse(NEW_PROFILE)
-        self.assertEqual("xxxx", request.session_key)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual("spyguy", request.new_nick)
 
     def test_new_profile_replace(self) -> None:
         request = NewProfileRequest.gs_parse(NEW_PROFILE_REPLACE)
-        self.assertEqual("xxxx", request.session_key)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual("spyguy2", request.new_nick)
         self.assertEqual("spyguy", request.old_nick)
 
     def test_register_cd_key(self) -> None:
         request = RegisterCDKeyRequest.gs_parse(REGISTER_CD_KEY)
-        self.assertEqual("xxxx", request.session_key)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual("xxxx", request.cdkey_enc)
 
     def test_register_nick(self) -> None:
         request = RegisterNickRequest.gs_parse(REGISTER_NICK)
-        self.assertEqual("xxxx", request.session_key)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual("spyguy", request.unique_nick)
         self.assertEqual(0, request.partner_id)
 

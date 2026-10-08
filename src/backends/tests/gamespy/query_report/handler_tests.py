@@ -10,15 +10,13 @@ from backends.protocols.gamespy.query_report.requests import (
     HeartBeatRequest,
     KeepAliveRequest,
 )
+from backends.tests.utils import add_headers
 
 
 class HandlerTests(unittest.IsolatedAsyncioTestCase):
     def test_heartbeat(self):
         request = {
-            "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
             "raw_request": "\\u0003\\\\xe5\\\\xcfaZlocalip0\\u0000172.19.0.5\\u0000localport\\u000011111\\u0000natneg\\u00001\\u0000statechanged\\u00003\\u0000gamename\\u0000gmtest\\u0000hostname\\u0000GameSpy QR2 Sample\\u0000gamever\\u00002.00\\u0000hostport\\u000025000\\u0000mapname\\u0000gmtmap1\\u0000gametype\\u0000arena\\u0000numplayers\\u00005\\u0000numteams\\u00002\\u0000maxplayers\\u000032\\u0000gamemode\\u0000openplaying\\u0000teamplay\\u00001\\u0000fraglimit\\u00000\\u0000timelimit\\u000040\\u0000gravity\\u0000800\\u0000rankingon\\u00001\\u0000\\u0000\\u0000\\u0005player_\\u0000score_\\u0000deaths_\\u0000ping_\\u0000team_\\u0000time_\\u0000\\u0000Joe Player\\u000030\\u000012\\u0000411\\u00000\\u000010\\u0000L33t 0n3\\u00000\\u00006\\u0000233\\u00001\\u0000325\\u0000Raptor\\u000015\\u000025\\u000063\\u00001\\u0000462\\u0000Gr81\\u00000\\u000016\\u0000294\\u00000\\u0000870\\u0000Flubber\\u000017\\u000012\\u0000232\\u00001\\u0000384\\u0000\\u0000\\u0002team_t\\u0000score_t\\u0000avgping_t\\u0000\\u0000Red\\u0000294\\u0000357\\u0000Blue\\u0000498\\u0000454\\u0000",
-            "client_ip": "172.19.0.5",
-            "client_port": 11111,
             "instant_key": "3855573338",
             "command_name": 3,
             "data": {
@@ -82,7 +80,9 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
             "group_id": None,
             "game_name": "gmtest",
         }
-        req = HeartBeatRequest(**request)
+        req = add_headers(request)
+
+        req = HeartBeatRequest(**req)
         handler = HeartbeatHandler(req)
         handler.handle()
         handler.response
@@ -92,11 +92,9 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
             "raw_request": "\\t\\u0000\\u0000\\u0000\\u0000\\t\\u0000\\u0000\\u0000\\u0000gamespy\\u0000",
             "command_name": 9,
             "instant_key": "0",
-            "client_ip": "127.0.0.1",
-            "server_id": "a8893d8a-664e-4302-bb55-41b3a9229bd1",
-            "client_port": "1234",
         }
-        new_req = AvaliableRequest(**request)
+        req = add_headers(request)
+        new_req = AvaliableRequest(**req)
         handler = AvaliableHandler(new_req)
         handler.handle()
         pass
@@ -107,11 +105,10 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
             "raw_request": "\bg\\xd4\\xcbl",
             "command_name": 8,
             "instant_key": "1741998956",
-            "client_ip": "172.19.0.4",
-            "server_id": "950b7638-a90d-469b-ac1f-861e63c8c613",
-            "client_port": 11111,
         }
-        new_req = KeepAliveRequest(**request)
+        req = add_headers(request)
+
+        new_req = KeepAliveRequest(**req)
         handler = KeepAliveHandler(new_req)
         handler.handle()
-        self.assertIsNotNone(new_req.instant_key)
+        self.assertIsNotNone(new_req.data.instant_key)

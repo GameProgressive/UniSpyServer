@@ -72,7 +72,7 @@ class LoginResponse(ResponseBase):
             self._result.user_challenge,
             self._result.data.password_hash,
         )
-        self.sending_buffer = f"\\lc\\2\\sesskey\\{SESSION_KEY}\\proof\\{response_proof}\\userid\\{self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
+        self.sending_buffer = f"\\lc\\2\\sesskey\\{self._result.subprofile_id}\\proof\\{response_proof}\\userid\\{self._result.data.user_id}\\profileid\\{self._result.data.profile_id}"
 
         if self._result.data.unique_nick is not None:
             self.sending_buffer += "\\uniquenick\\" + self._result.data.unique_nick

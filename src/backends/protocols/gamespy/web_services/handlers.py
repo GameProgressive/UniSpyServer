@@ -343,7 +343,7 @@ class SearchForRecordsHandler(HandlerBase):
     def _data_operate(self) -> None:
         self._data = data.search_for_record(
             self._request.data.table_id,
-            self._request.data.max,
+            self._request.data.max_value,
             self._request.data.filter,
             self._request.data.fields,
             self._request.data.command_name,
