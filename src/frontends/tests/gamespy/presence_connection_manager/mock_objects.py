@@ -52,6 +52,7 @@ def create_client() -> Client:
                 "subprofile_id": 0,
                 "banned_flag": False,
             },
+            "subprofile_id": 1,
             "operation_id": 0,
             "user_data": "",
             "type": 0,

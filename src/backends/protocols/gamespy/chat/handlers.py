@@ -499,7 +499,6 @@ class JoinHandler(ChannelHandlerBase):
     def _request_check(self) -> None:
         self._get_user()
         self._check_user()
-
         self._get_channel()
 
     def _data_operate(self) -> None:
@@ -514,7 +513,7 @@ class JoinHandler(ChannelHandlerBase):
                 room_name="",
                 topic="",
                 key_values={},
-                modes=[],
+                modes=["n","t"],
                 creator=self._user.nick_name,  # type: ignore
                 group_id=0,
                 max_num_user=100,

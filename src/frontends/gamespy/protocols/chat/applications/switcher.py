@@ -84,9 +84,7 @@ class Switcher(SwitcherBase):
             self._requests.append((CommandName(name), raw_request))
 
     def _create_cmd_handlers(self, name: CommandName, raw_request: str) -> CmdHandlerBase | None:
-        assert isinstance(name, CommandName)
-        r_type = CommandName(name)
-        match r_type:
+        match name:
             # region General
             case CommandName.CRYPT:
                 return CryptHandler(self._client, CryptRequest.gs_parse(raw_request))

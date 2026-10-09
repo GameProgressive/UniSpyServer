@@ -55,8 +55,11 @@ from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions im
     GPParseException,
 )
 import frontends.gamespy.protocols.presence_search_player.applications.switcher as psp
+
+
 class Switcher(SwitcherBase):
     _raw_request: str
+    _client: Client
 
     def __init__(self, client: Client, raw_request: str) -> None:
         assert isinstance(client, Client)
@@ -76,8 +79,6 @@ class Switcher(SwitcherBase):
     ) -> CmdHandlerBase | None:
         assert isinstance(name, CommandName)
         assert isinstance(raw_request, str)
-        if TYPE_CHECKING:
-            self._client = cast(Client, self._client)
         match name:
             case CommandName.KA:
                 return KeepAliveHandler(

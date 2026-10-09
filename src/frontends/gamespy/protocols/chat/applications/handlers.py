@@ -1,12 +1,15 @@
 from frontends.gamespy.library.encryption.gs_encryption import ChatCrypt
-from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
+from frontends.gamespy.protocols.chat.abstractions.contract import IrcParam, RequestBase
 from frontends.gamespy.protocols.chat.abstractions.handler import (
     ChannelHandlerBase,
     CmdHandlerBase,
     MessageHandlerBase,
     PostLoginHandlerBase,
 )
-from frontends.gamespy.protocols.chat.aggregates.enums import ModeRequestType
+from frontends.gamespy.protocols.chat.aggregates.enums import (
+    CommandName,
+    ModeRequestType,
+)
 from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.protocols.chat.contracts.requests import (
     AtmRequest,
@@ -301,11 +304,27 @@ class JoinHandler(ChannelHandlerBase):
         super()._response_send()
         self._client.start_brocker()
         # gamespy sdk join require ciNameReplyHandler
-        names_req = NamesRequest.model_validate(self._request.model_dump())
+        names_req = NamesRequest(
+            command_name=CommandName.NAMES,
+            raw_request="",
+            irc=IrcParam(prefix="", command="", params=[], trailing=""),
+            channel_name=self._result.channel_name,
+        )
         names_handler = NamesHandler(self._client, names_req)
         names_handler.handle()
 
-        mode_req = ModeRequest.model_validate(self._request.model_dump())
+        mode_req = ModeRequest(
+            command_name=None,
+            raw_request="",
+            irc=IrcParam(prefix="", command="", params=[], trailing=""),
+            request_type=ModeRequestType.GET_CHANNEL_MODES,
+            nick_name=None,
+            user_name=None,
+            limit_number=None,
+            password=None,
+            channel_name=self._result.channel_name,
+            mode_flags=[],
+        )
         mode_handler = ModeHandler(self._client, mode_req)
         mode_handler.handle()
 

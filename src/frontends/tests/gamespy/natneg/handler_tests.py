@@ -55,7 +55,7 @@ class HandlerTests(unittest.TestCase):
         # test response constructing
         self.assertTrue(
             handler._response.sending_buffer
-            == b"\xfd\xfc\x1efj\xb2\x03\x01\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
+            == b"\xfd\xfc\x1efj\xb2\x03\x01\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x01"
         )
 
     @responses.activate
@@ -80,7 +80,7 @@ class HandlerTests(unittest.TestCase):
 
         self.assertTrue(
             handler._response.sending_buffer
-            == b"\xfd\xfc\x1efj\xb2\x03\x0b\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
+            == b"\xfd\xfc\x1efj\xb2\x03\x0b\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x01"
         )
 
     @responses.activate
@@ -107,7 +107,7 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
         self.assertTrue(
             handler._response.sending_buffer
-            == b"\xfd\xfc\x1efj\xb2\x03\x03\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
+            == b"\xfd\xfc\x1efj\xb2\x03\x03\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x01"
         )
 
     @responses.activate
@@ -134,7 +134,7 @@ class HandlerTests(unittest.TestCase):
         handler.handle()
         self.assertTrue(
             handler._response.sending_buffer
-            == b"\xfd\xfc\x1efj\xb2\x03\x02\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x00"
+            == b"\xfd\xfc\x1efj\xb2\x03\x02\x00\x00\x03\t\x01\x00\x00\xc0\xa8\x00\x01\x00\x01"
         )
 
     @responses.activate

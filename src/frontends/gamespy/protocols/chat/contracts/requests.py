@@ -319,6 +319,7 @@ class WhoRequest(RequestBase):
             data = WhoRequest(**data_dict)
         else:
             data_dict["request_type"] = WhoRequestType.GET_USER_INFO
+            data_dict["channel_name"] = None
             data_dict["nick_name"] = data.irc.params[0]
             data = WhoRequest(**data_dict)
         return data
@@ -449,33 +450,30 @@ class ModeRequest(ChannelRequestBase):
     # "MODE <channel name> <mode flags>"
     # "MODE <channel name> <mode flags> <limit number>"
     request_type: ModeRequestType
-    mode_flags: list[tuple[ModeName, ModeOperation]]
+    mode_flags: list[tuple[ModeOperation, ModeName]]
     """
     <mode_name>,<operation>
     o,+
     i,+
     """
-    nick_name: str | None
-    user_name: str | None
-    limit_number: int | None
-    password: str | None
+    nick_name: str | None = None
+    user_name: str | None = None
+    limit_number: int | None = None
+    password: str | None = None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "ModeRequest":
         data = ChannelRequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
+        mode_flags = []
         if len(data.irc.params) == 1:
             data_dict["request_type"] = ModeRequestType.GET_CHANNEL_MODES
-            data = ModeRequest(**data_dict)
+            data = ModeRequest(**data_dict, mode_flags=[])
         elif len(data.irc.params) == 2 or len(data.irc.params) == 3:
             params = data.irc.params
             mode_flag_str = params[1]
             data_dict.update(
                 request_type=ModeRequestType.SET_CHANNEL_MODES,
-                limit_number=None,
-                nick_name=None,
-                user_name=None,
-                password=None,
             )
             mode_flags_raw = [
                 (flag[0], flag[1:])
@@ -483,7 +481,6 @@ class ModeRequest(ChannelRequestBase):
                 if flag.strip()
             ]
 
-            mode_flags = []
             for operation, flag_name in mode_flags_raw:
                 mode_flags.append((ModeOperation(operation), ModeName(flag_name)))
 

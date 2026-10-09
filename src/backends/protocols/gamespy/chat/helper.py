@@ -217,11 +217,11 @@ class ChannelHelper:
         request: ModeRequest,
         session: Session,
     ):
-        for flag, operation in request.data.mode_flags:
+        for operation, name in request.data.mode_flags:
             if operation == ModeOperation.SET:
-                ChannelHelper.mode_set(flag,channel,changer,request,session)
+                ChannelHelper.mode_set(name, channel, changer, request, session)
             else:
-                ChannelHelper.mode_unset(flag,channel,changer,request,session)
+                ChannelHelper.mode_unset(name, channel, changer, request, session)
         session.commit()
 
     @staticmethod
@@ -278,29 +278,31 @@ class ChannelHelper:
                 u.is_voiceable = True
 
     @staticmethod
-    def mode_unset(flag: ModeName,
+    def mode_unset(
+        flag: ModeName,
         channel: ChatChannelCaches,
         changer: ChatChannelUserCaches,
         request: ModeRequest,
-        session: Session,): 
+        session: Session,
+    ):
         channel_modes = cast(list, channel.modes)
-        
+
         match flag:
             case ModeName.USER_QUIET_FLAG:
-                    if changer.is_channel_operator and flag.value in channel_modes:
-                        channel_modes.remove(flag.value)
+                if changer.is_channel_operator and flag.value in channel_modes:
+                    channel_modes.remove(flag.value)
             case ModeName.CHANNEL_PASSWORD:
-                
-                    if changer.is_channel_operator:
-                        channel.password = None
-            
+
+                if changer.is_channel_operator:
+                    channel.password = None
+
             case ModeName.CHANNEL_USER_LIMITS:
                 channel.max_num_user = 200
-           
+
             case ModeName.BAN_ON_USER:
                 if request.data.nick_name in list(channel.banned_nicks):
                     channel.banned_nicks.remove(request.data.nick_name)
-            
+
             case ModeName.CHANNEL_OPERATOR:
                 if request.data.nick_name is None:
                     raise BadChannelKeyException(

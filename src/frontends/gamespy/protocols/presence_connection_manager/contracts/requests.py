@@ -107,7 +107,7 @@ class LoginRequest(RequestBase):
     partner id default is 0
     """
     game_name: str
-    quiet_mode_flags: int
+    quiet_mode_flags: int = 0
     firewall: bool
 
     def model_post_init(self, context: Any) -> None:
@@ -207,9 +207,9 @@ class LoginRequest(RequestBase):
         if firewall is not None:
             other_data["firewall"] = bool(firewall)
 
-        quiet = request_dict.get("quiet")
+        quiet = request_dict.get("quiet",0)
         if quiet is not None:
-            other_data["quiet_mode_flags"] = QuietModeType(int(quiet))
+            other_data["quiet_mode_flags"] = int(quiet)
 
         return other_data
 

@@ -8,7 +8,6 @@ from frontends.gamespy.protocols.web_services.aggregations.exceptions import (
 from frontends.gamespy.protocols.web_services.aggregations.soap_envelop import (
     SoapEnvelop,
 )
-from frontends.gamespy.protocols.web_services.modules.sake.aggregates.enums import CommandName
 
 
 def remove_namespace(data) -> list | dict:
@@ -25,7 +24,7 @@ def remove_namespace(data) -> list | dict:
 class RequestBase(lib.RequestBase):
     raw_request: lib.HttpData = Field(repr=False)
     request_dict: dict[str, object] = Field(repr=False)
-    command_name: CommandName
+    command_name: str
 
     @property
     def str_mapping(self) -> dict[str, str]:
@@ -70,7 +69,7 @@ class RequestBase(lib.RequestBase):
 
 class ResultBase(lib.ResultBase):
     headers: dict[str, str]
-    command_name: CommandName
+    command_name: str
 
     pass
 

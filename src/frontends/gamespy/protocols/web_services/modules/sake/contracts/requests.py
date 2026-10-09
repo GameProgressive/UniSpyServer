@@ -137,8 +137,8 @@ class SearchForRecordsRequest(RequestBase):
         data_dict = data.model_dump()
         data_dict["offset"] = data.str_mapping["offset"]
         data_dict["max_value"] = data.int_mapping["max"]
-        data_dict["fields"] = data.dict_mapping["fields"]
-
+        fields = data.dict_mapping["fields"]
+        data_dict["fields"] = [item for group in fields.values() for item in group]
         data_dict["surrounding"] = data.str_mapping.get("surrounding")
         data_dict["sort"] = data.str_mapping.get("sort")
 

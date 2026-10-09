@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 import frontends.gamespy.library.abstractions.contracts as lib
+from frontends.gamespy.protocols.chat.aggregates.enums import CommandName
 
 
 class IrcParam(BaseModel):
@@ -14,7 +15,7 @@ class IrcParam(BaseModel):
 
 class RequestBase(lib.RequestBase):
     raw_request: str
-    command_name: str | None
+    command_name: CommandName | None
     irc: IrcParam
     websocket_address: str | None = None
 

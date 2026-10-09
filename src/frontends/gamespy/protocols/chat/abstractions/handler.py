@@ -103,7 +103,6 @@ class ChannelHandlerBase(PostLoginHandlerBase):
 
     def broadcast(self):
         self._response.build()
-        assert self._request.channel_name
         msg = BrockerMessage(
             server_id=self._client.server_config.server_id,
             channel_name=self._request.channel_name,
@@ -111,9 +110,11 @@ class ChannelHandlerBase(PostLoginHandlerBase):
             sender_port=self._client.connection.remote_port,
             message=self._response.sending_buffer,
         )
-        assert self._client.brocker
-        self._client.brocker.publish_message(msg.model_dump_json())
-        self._client.log_network_broadcast(msg)
+        if self._client.brocker:
+            self._client.brocker.publish_message(msg.model_dump_json())
+            self._client.log_network_broadcast(msg)
+        else:
+            self._client.log_warn("broker not exist, no broadcasting.")
 
 
 # region Message
