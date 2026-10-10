@@ -272,13 +272,13 @@ class UserRequest(RequestBase):
     user_name: str | None
     local_ip_address: str
     server_name: str
-    name: str
+    nick_name: str
 
     @staticmethod
     def gs_parse(raw_request: str) -> "UserRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["name"] = data.irc.trailing
+        data_dict["nick_name"] = data.irc.trailing
         if len(data.irc.params) == 3:
             data_dict["user_name"] = data.irc.params[0]
             data_dict["local_ip_address"] = data.irc.params[1]

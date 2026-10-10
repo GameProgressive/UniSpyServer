@@ -8,6 +8,7 @@ from frontends.gamespy.protocols.presence_connection_manager.abstractions.handle
     LoginedHandlerBase,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
+    CommandName,
     LoginStatus,
     SdkRevisionType,
 )
@@ -33,6 +34,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     RegisterCDKeyRequest,
     RegisterNickRequest,
     RemoveBlockRequest,
+    SdkRevisionRequest,
     StatusInfoRequest,
     StatusRequest,
     UpdateProfileRequest,
@@ -75,6 +77,7 @@ if TYPE_CHECKING:
 @final
 class KeepAliveHandler(CmdHandlerBase):
     _request: KeepAliveRequest
+
     def __init__(self, client: Client, request: KeepAliveRequest) -> None:
         assert isinstance(request, KeepAliveRequest)
         super().__init__(client, request)
@@ -102,7 +105,18 @@ class LoginHandler(CmdHandlerBase):
         # * currently we make session key as subprofile id
         self._client.info.subprofile_id = self._result.subprofile_id
         self._client.info.login_status = LoginStatus.COMPLETED
-        handler = SdkRevisionHandler(self._client, self._request)
+        sdk_req = SdkRevisionRequest(
+            command_name=CommandName.LOGIN,
+            raw_request="",
+            operation_id=self._request.operation_id,
+            request_dict={},
+            user_id=self._result.data.user_id,
+            profile_id=self._result.data.profile_id,
+            subprofile_id=self._result.data.subprofile_id,
+            namespace_id=self._result.data.namespace_id,
+            sdk_revision=self._request.sdk_revision,
+        )
+        handler = SdkRevisionHandler(self._client, sdk_req)
         handler.handle()
 
 
@@ -130,10 +144,10 @@ class NewUserHandler(CmdHandlerBase):
 
 @final
 class SdkRevisionHandler(CmdHandlerBase):
-    _request: LoginRequest
+    _request: SdkRevisionRequest
 
-    def __init__(self, client: Client, request: LoginRequest) -> None:
-        assert isinstance(request, LoginRequest)
+    def __init__(self, client: Client, request: SdkRevisionRequest) -> None:
+        assert isinstance(request, SdkRevisionRequest)
         super().__init__(client, request)
         self._is_fetching = False
         self._is_uploading = False
@@ -143,9 +157,7 @@ class SdkRevisionHandler(CmdHandlerBase):
         # todo check whether need to send friend add requests
         bmh = BuddyMessageFriendAddHandler(
             self._client,
-            BuddyMessageFriendAddRequest(
-                **self._request.model_dump(),
-            ),
+            BuddyMessageFriendAddRequest(**self._request.model_dump()),
         )
         bmh.handle()
 
@@ -333,7 +345,6 @@ class AddBlockHandler(CmdHandlerBase):
         self._is_fetching = False
 
 
-
 class RemoveBlockHandler(CmdHandlerBase):
     _request: RemoveBlockRequest
 
@@ -341,7 +352,6 @@ class RemoveBlockHandler(CmdHandlerBase):
         assert isinstance(request, RemoveBlockRequest)
         super().__init__(client, request)
         self._is_fetching = False
-
 
 
 @final

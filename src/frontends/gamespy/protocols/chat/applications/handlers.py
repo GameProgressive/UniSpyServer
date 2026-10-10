@@ -302,7 +302,6 @@ class JoinHandler(ChannelHandlerBase):
 
     def _response_send(self) -> None:
         super()._response_send()
-        self._client.start_brocker()
         # gamespy sdk join require ciNameReplyHandler
         names_req = NamesRequest(
             command_name=CommandName.NAMES,

@@ -17,7 +17,6 @@ class RequestBase(lib.RequestBase):
     raw_request: str
     command_name: CommandName | None
     irc: IrcParam
-    websocket_address: str | None = None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "RequestBase":

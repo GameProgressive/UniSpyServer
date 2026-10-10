@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import Field
 import xmltodict
 
@@ -24,7 +25,7 @@ def remove_namespace(data) -> list | dict:
 class RequestBase(lib.RequestBase):
     raw_request: lib.HttpData = Field(repr=False)
     request_dict: dict[str, object] = Field(repr=False)
-    command_name: str
+    command_name: Enum
 
     @property
     def str_mapping(self) -> dict[str, str]:
@@ -69,7 +70,7 @@ class RequestBase(lib.RequestBase):
 
 class ResultBase(lib.ResultBase):
     headers: dict[str, str]
-    command_name: str
+    command_name: Enum
 
     pass
 
@@ -85,6 +86,8 @@ class ResponseBase(lib.ResponseBase):
     def __init__(self, result: ResultBase) -> None:
         assert issubclass(type(result), ResultBase)
         super().__init__(result)
+        self._content = SoapEnvelop(f"{self._result.command_name.value}Result")
+
 
     def build(self) -> None:
         self.sending_buffer = lib.HttpData(

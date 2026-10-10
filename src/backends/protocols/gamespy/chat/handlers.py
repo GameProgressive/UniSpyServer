@@ -238,7 +238,7 @@ class CryptHandler(HandlerBase):
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
                 nick_name=f"{self._request.info.client_ip}:{self._request.info.client_port}",
-                websocket_address=self._request.data.websocket_address,
+                websocket_address=f"{self._request.info.client_ip}:{self._request.info.client_port}",
                 game_name=self._request.data.gamename,
             )
         self._secret_key = data.get_secret_key_by_game_name(
@@ -366,7 +366,7 @@ class NickHandler(HandlerBase):
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
                 nick_name=f"{self._request.info.client_ip}:{self._request.info.client_port}",
-                websocket_address=self._request.data.websocket_address,
+                websocket_address=f"{self._request.info.client_ip}:{self._request.info.client_port}",
                 game_name="",
             )
         else:
@@ -436,7 +436,11 @@ class UserHandler(HandlerBase):
     #     super()._request_check()
 
     def _data_operate(self) -> None:
-        self._user.user_name = self._request.user_name  # type: ignore
+        assert self._user
+        if self._request.data.user_name:
+            self._user.user_name = self._request.data.user_name 
+        if self._request.data.nick_name:
+            self._user.nick_name = self._request.data.nick_name
         self._session.commit()
 
 
@@ -513,7 +517,7 @@ class JoinHandler(ChannelHandlerBase):
                 room_name="",
                 topic="",
                 key_values={},
-                modes=["n","t"],
+                modes=["n", "t"],
                 creator=self._user.nick_name,  # type: ignore
                 group_id=0,
                 max_num_user=100,

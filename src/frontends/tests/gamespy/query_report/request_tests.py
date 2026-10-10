@@ -54,5 +54,5 @@ class RequestTest(unittest.TestCase):
         request = HeartbeatRequest.gs_parse(HEARTBEAT_REQUEST)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual("2921297764", request.instant_key)
-        assert request.request_dict is not None
-        self.assertEqual(61, len(request.request_dict))
+        assert request.game_data is not None
+        self.assertEqual(61, len(request.game_data))

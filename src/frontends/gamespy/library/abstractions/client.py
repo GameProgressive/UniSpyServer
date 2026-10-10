@@ -5,6 +5,7 @@ from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.encryption.encoding import Encoding
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
+from frontends.gamespy.library.network.http_data import HttpData
 
 if TYPE_CHECKING:
     from frontends.gamespy.library.abstractions.client import ClientInfoBase
@@ -96,14 +97,16 @@ class ClientBase:
             buffer = Encoding.get_bytes(sending_buffer)
         elif isinstance(sending_buffer, bytes):
             buffer = sending_buffer
+        elif isinstance(sending_buffer, HttpData):
+            buffer = sending_buffer
         else:
             raise UniSpyException("not supported buffer type")
-
+        
+        self.log_network_sending(buffer)
         if self.crypto is not None and isinstance(buffer, bytes):
             buffer = self.crypto.encrypt(buffer)
 
         self.connection.send(buffer)
-        self.log_network_sending(buffer)
 
     def log_debug(self, message: str) -> None:
         self.logger.debug(f"{self._log_prefix}: {message}")
@@ -117,7 +120,7 @@ class ClientBase:
     def log_error(self, message: str) -> None:
         self.logger.error(f"{self._log_prefix}: {message}")
 
-    def log_network_sending(self, data: str | bytes) -> None:
+    def log_network_sending(self, data: str | bytes | HttpData) -> None:
         self.logger.info(f"{self._log_prefix} [send]: {data}")
 
     def log_network_broadcast(self, data: object) -> None:

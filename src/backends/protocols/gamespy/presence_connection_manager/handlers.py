@@ -123,7 +123,7 @@ class LogoutHandler(HandlerBase):
 
     def _data_operate(self) -> None:
         data.update_online_status(
-            user_id=self._request.data.user_id,
+            subprofile_id=self._request.data.subprofile_id,
             status=LoginStatus.DISCONNECTED,
             session=self._session,
         )

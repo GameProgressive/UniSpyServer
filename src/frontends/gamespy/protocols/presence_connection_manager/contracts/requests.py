@@ -86,6 +86,13 @@ SDK_MAPPING: list[SdkRevisionType] = [
 ]
 
 
+class SdkRevisionRequest(RequestBase):
+    user_id: int
+    profile_id: int
+    subprofile_id: int
+    namespace_id: int
+    sdk_revision:list[SdkRevisionType]
+
 @final
 class LoginRequest(RequestBase):
     user_challenge: str
@@ -96,12 +103,13 @@ class LoginRequest(RequestBase):
     auth_token: str | None = None
     nick: str | None = None
     email: str | None = None
+    user_id: int | None = None
+    profile_id: int | None = None
     product_id: int
     type: LoginType
     sdk_revision: list[SdkRevisionType]
     game_port: int
-    user_id: int
-    profile_id: int
+
     partner_id: int
     """
     partner id default is 0
@@ -113,10 +121,14 @@ class LoginRequest(RequestBase):
     def model_post_init(self, context: Any) -> None:
         super().model_post_init(context)
         if self.type == LoginType.AUTH_TOKEN:
-            if self.auth_token is None:
+            if (
+                self.auth_token is None
+                or self.user_id is None
+                or self.profile_id is None
+            ):
                 raise ValueError("auth token is missing")
         if self.type == LoginType.NICK_EMAIL:
-            if self.nick is None or self.email is None:
+            if self.nick is None or self.email is None or self.namespace_id is None:
                 raise ValueError("nick or email is missing")
         if self.type == LoginType.UNIQUENICK_NAMESPACE_ID:
             if self.unique_nick is None or self.namespace_id is None:
@@ -207,7 +219,7 @@ class LoginRequest(RequestBase):
         if firewall is not None:
             other_data["firewall"] = bool(firewall)
 
-        quiet = request_dict.get("quiet",0)
+        quiet = request_dict.get("quiet", 0)
         if quiet is not None:
             other_data["quiet_mode_flags"] = int(quiet)
 
@@ -217,14 +229,12 @@ class LoginRequest(RequestBase):
 @final
 class LogoutRequest(RequestBase):
     subprofile_id: int
-    user_id: int
 
     @staticmethod
     def gs_parse(raw_request: str) -> "LogoutRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["subprofile_id"] = data.request_dict["sesskey"]
-        data_dict["user_id"] = data.request_dict["user_id"]
         data = LogoutRequest(**data_dict)
         return data
 

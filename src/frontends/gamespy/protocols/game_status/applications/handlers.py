@@ -79,6 +79,8 @@ class NewGameHandler(CmdHandlerBase):
 
 class SetPlayerDataHandler(CmdHandlerBase):
     _request: SetPlayerDataRequest
+    _result: SetPlayerDataResult
+    _response: SetPlayerDataResponse
 
     def __init__(self, client: Client, request: SetPlayerDataRequest) -> None:
         assert isinstance(request, SetPlayerDataRequest)
@@ -87,10 +89,11 @@ class SetPlayerDataHandler(CmdHandlerBase):
 
 class UpdateGameHandler(CmdHandlerBase):
     """
-        old request "\\updgame\\\\sesskey\\%d\\done\\%d\\gamedata\\%s"
+    old request "\\updgame\\\\sesskey\\%d\\done\\%d\\gamedata\\%s"
 
-        new request "\\updgame\\\\sesskey\\%d\\connid\\%d\\done\\%d\\gamedata\\%s"
+    new request "\\updgame\\\\sesskey\\%d\\connid\\%d\\done\\%d\\gamedata\\%s"
     """
+
     _request: UpdateGameRequest
 
     def __init__(self, client: Client, request: UpdateGameRequest) -> None:

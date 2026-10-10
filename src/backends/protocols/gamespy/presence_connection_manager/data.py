@@ -98,11 +98,7 @@ def get_friend_profile_id_list(
 
 
 def get_subprofile_by_id(subprofile_id: int, session: Session) -> SubProfiles:
-    result = (
-        session.query(SubProfiles)
-        .where(SubProfiles.id == subprofile_id)
-        .first()
-    )
+    result = session.query(SubProfiles).where(SubProfiles.id == subprofile_id).first()
     if not result:
         raise GPDatabaseException("Subprofile not found by subprofile id")
     return result
@@ -265,10 +261,19 @@ def get_user_infos_by_nick_email(
     return login
 
 
-def update_online_status(user_id: int, status: LoginStatus, session: Session):
-    result = session.query(Users).where(Users.id == user_id).first()
-    assert result
-    result.lastonline = datetime.now()
+def update_online_status(subprofile_id: int, status: LoginStatus, session: Session):
+    result = (
+        session.query(Users, Profiles, SubProfiles)
+        .join(Profiles)
+        .join(SubProfiles)
+        .where(SubProfiles.id == subprofile_id)
+        .first()
+    )
+
+    if result is None:
+        return
+    user, profile, subprofile = result.tuple()
+    user.lastonline = datetime.now()
     session.commit()
 
 
@@ -541,11 +546,7 @@ def add_nick_name(profile_id: int, old_nick: str, new_nick: str, session: Sessio
 
 
 def update_unique_nick(subprofile_id: int, unique_nick: str, session: Session):
-    result = (
-        session.query(SubProfiles)
-        .where(SubProfiles.id == subprofile_id)
-        .first()
-    )
+    result = session.query(SubProfiles).where(SubProfiles.id == subprofile_id).first()
     if result is None:
         raise GPDatabaseException("user not existed")
     result.uniquenick = unique_nick
@@ -621,7 +622,7 @@ def update_new_nick(subprofile_id: int, old_nick: str, new_nick: str, session: S
 
 
 def update_cdkey(subprofile_id: int, cdkey: str, session: Session):
-    subprofile =get_subprofile_by_id(subprofile_id,session)
+    subprofile = get_subprofile_by_id(subprofile_id, session)
     if subprofile is None:
         raise GPDatabaseException(f"no subprofile found with subprofile id")
 

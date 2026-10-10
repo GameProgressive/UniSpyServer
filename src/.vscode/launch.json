@@ -28,7 +28,7 @@
                 "8080",
                 "--reload", // Optional: enables auto-reload on code changes
                 "--reload-dir",
-                "${workspaceFolder}/backends"
+                "${workspaceFolder}"
             ],
             "console": "integratedTerminal",
             "env": {

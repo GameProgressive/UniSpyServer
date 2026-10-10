@@ -40,7 +40,7 @@ class HandlerTests(unittest.TestCase):
     def test_profile(self):
         client = create_client()
         request = SearchRequest.gs_parse(SEARCH_1)
-        self.assertEqual("xxxx", request.session_key)
+        self.assertEqual("xxxx", request.subprofile_id)
         self.assertEqual("spyguy", request.uniquenick)
         self.assertEqual(1, request.profile_id)
         self.assertEqual(1, request.namespace_id)

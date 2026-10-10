@@ -121,34 +121,35 @@ class OthersRequest(RequestBase):
 
 @final
 class SearchRequest(RequestBase):
+    subprofile_id: str
     skip_num: int
     request_type: SearchType
     game_name: str
     profile_id: int
     partner_id: int
-    email: str | None
-    nick: str | None
-    uniquenick: str | None
-    session_key: str
-    firstname: str
-    lastname: str
-    icquin: str
+    email: str | None = None
+    nick: str | None = None
+    uniquenick: str | None = None
+    firstname: str | None = None
+    lastname: str | None = None
+    icquin: str|None = None
 
     @staticmethod
     def gs_parse(raw_request: str) -> "SearchRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["skip_num"] = 0
-        data_dict["session_key"] = data.request_dict["sesskey"]
-        data_dict["firstname"] = data.request_dict["firstname"]
-        data_dict["lastname"] = data.request_dict["lastname"]
-        data_dict["icquin"] = data.request_dict["icquin"]
+        data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data_dict["game_name"] = data.request_dict["gamename"]
         data_dict["profile_id"] = int(data.request_dict["profileid"])
-        data_dict["partner_id"] = data.request_dict.get("partnerid", 0)
-        data_dict["skip_num"] = int(data.request_dict["skip"])
-        data_dict["uniquenick"] = data.request_dict.get("uniquenick")
 
+        data_dict["partner_id"] = data.request_dict.get("partnerid", 0)
+        data_dict["skip_num"] = data.request_dict.get("skip",0)
+        data_dict["uniquenick"] = data.request_dict.get("uniquenick")
+        
+        data_dict["firstname"] = data.request_dict.get("firstname")
+        data_dict["lastname"] = data.request_dict.get("lastname")
+        data_dict["icquin"] = data.request_dict.get("icquin")
         data_dict["nick"] = data.request_dict.get("nick")
         data_dict["email"] = data.request_dict.get("email")
 

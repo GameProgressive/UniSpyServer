@@ -40,6 +40,10 @@ class Client(ClientBase):
         self.info = ClientInfo()
 
     def on_connected(self) -> None:
+        super().on_connected()
+        self.__send_chanllenge()
+
+    def __send_chanllenge(self):
         self.crypto = GSCrypt()
         self.log_network_sending(CHALLENGE_RESPONSE)
         enc_buffer = self.crypto.encrypt(CHALLENGE_RESPONSE.encode("ascii"))

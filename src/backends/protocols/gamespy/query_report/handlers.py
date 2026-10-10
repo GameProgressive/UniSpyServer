@@ -47,7 +47,7 @@ class HeartbeatHandler(HandlerBase):
 
         if cache is None:
             # todo check whether these data can be null at first heartbeat
-            if len(self._request.data.request_dict) == 0:
+            if len(self._request.data.game_data) == 0:
                 raise QRException("data in first heartbeat can not be null")
             # team data can be none in peertest sdk
             cache = GameServerCaches(
@@ -57,7 +57,7 @@ class HeartbeatHandler(HandlerBase):
                 game_name=self._request.data.game_name,
                 query_report_port=self._request.info.client_port,
                 status=self._request.data.status,
-                data=self._request.data.request_dict,
+                data=self._request.data.game_data,
                 avaliable=True,
             )
             data.create_game_server_cache(cache, self._session)
@@ -70,7 +70,7 @@ class HeartbeatHandler(HandlerBase):
                 game_name=self._request.data.game_name,
                 query_report_port=self._request.info.client_port,
                 server_status=self._request.data.status,
-                data=self._request.data.request_dict,
+                data=self._request.data.game_data,
                 session=self._session,
             )
 

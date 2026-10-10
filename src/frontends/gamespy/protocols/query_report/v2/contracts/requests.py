@@ -67,7 +67,7 @@ class ClientMessageRequest(RequestBase):
 
 
 class HeartbeatRequest(RequestBase):
-    request_dict: dict[str, str]
+    game_data: dict[str, str]
     status: GameServerStatus
     group_id: int | None
     game_name: str
@@ -75,7 +75,7 @@ class HeartbeatRequest(RequestBase):
     @staticmethod
     def gs_parse(raw_request: bytes) -> "HeartbeatRequest":
         data = RequestBase.gs_parse(raw_request)
-        request_dict = {}
+        game_data = {}
         player_pos, team_pos = 0, 0
         player_length, team_length = 0, 0
         data_partition = get_string(raw_request[5:])
@@ -99,35 +99,35 @@ class HeartbeatRequest(RequestBase):
             team_length = len(data_partition) - team_pos
 
             server_data_str = data_partition[: player_pos - 4]
-            HeartbeatRequest.parse_server_data(request_dict, server_data_str)
+            HeartbeatRequest.parse_server_data(game_data, server_data_str)
 
             player_data_str = data_partition[
                 player_pos - 1 : player_pos - 1 + player_length - 2
             ]
-            HeartbeatRequest.parse_player_data(request_dict, player_data_str)
+            HeartbeatRequest.parse_player_data(game_data, player_data_str)
 
             team_data_str = data_partition[team_pos - 1 : team_pos - 1 + team_length]
-            HeartbeatRequest.parse_team_data(request_dict, team_data_str)
+            HeartbeatRequest.parse_team_data(game_data, team_data_str)
 
         elif player_pos != -1:
             player_length = len(data_partition) - player_pos
 
             server_data_str = data_partition[: player_pos - 4]
-            HeartbeatRequest.parse_server_data(request_dict, server_data_str)
+            HeartbeatRequest.parse_server_data(game_data, server_data_str)
 
             player_data_str = data_partition[player_pos - 1 :]
-            HeartbeatRequest.parse_player_data(request_dict, player_data_str)
+            HeartbeatRequest.parse_player_data(game_data, player_data_str)
 
         elif player_pos == -1 and team_pos == -1:
             server_data_str = data_partition
-            HeartbeatRequest.parse_server_data(request_dict, server_data_str)
+            HeartbeatRequest.parse_server_data(game_data, server_data_str)
 
         else:
             raise QRException("HeartBeat request is invalid.")
 
-        data_dict["request_dict"] = request_dict
-        data_dict["status"] = int(request_dict.get("statechanged", 0))
-        data_dict["group_id"] = request_dict.get("group_id", 0)
+        data_dict["game_data"] = game_data
+        data_dict["status"] = int(game_data.get("statechanged", 0))
+        data_dict["group_id"] = game_data.get("group_id", 0)
         data = HeartbeatRequest(**data_dict)
         return data
 

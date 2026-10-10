@@ -148,7 +148,8 @@ class CmdHandlerBase:
         self._client.log_network_upload(f"[{self._url}] {self._temp_data}")
         try:
             response = requests.post(
-                self._url, json=self._temp_data, headers={"Content-Type": "application/json"}
+                self._url,
+                json=self._temp_data,
             )
         except requests.exceptions.ConnectionError:
             if CONFIG.unittest.is_raise_except:

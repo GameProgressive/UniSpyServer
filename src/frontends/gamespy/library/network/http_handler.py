@@ -16,17 +16,14 @@ from frontends.gamespy.library.network.http_data import HttpData
 class HttpConnection(ConnectionBase):
     handler: BaseHTTPRequestHandler
 
-    def send(self, data: bytes) -> None:
-        assert isinstance(data, bytes)
-        http_data = HttpData.model_validate_strings(data.decode())
+    def send(self, data: HttpData) -> None:
+        assert isinstance(data, HttpData)
         self.handler.send_response(200)
-        if http_data.headers is not None:
-            for key, value in http_data.headers.items():
+        if data.headers is not None:
+            for key, value in data.headers.items():
                 self.handler.send_header(key, value)
         self.handler.end_headers()
-        if http_data.body is None:
-            raise UniSpyException("soap body should not be null")
-        body_bytes = http_data.body.encode()
+        body_bytes = data.body.encode()
         self.handler.wfile.write(body_bytes)
         self.handler.wfile.flush()
         self.handler.close_connection = True

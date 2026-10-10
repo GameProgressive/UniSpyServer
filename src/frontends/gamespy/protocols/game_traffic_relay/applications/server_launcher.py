@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
+from frontends.gamespy.library.abstractions.contracts import ClientInfo
 from frontends.gamespy.library.abstractions.server_launcher import (
     ServiceBase,
     ServicesFactory,
@@ -12,7 +13,7 @@ from frontends.gamespy.protocols.game_traffic_relay.applications.connection impo
     ConnectionListener,
 )
 from frontends.gamespy.protocols.game_traffic_relay.contracts.general import (
-    GtrHeartbeatRequest,
+    GtrHeartbeatData,
 )
 
 
@@ -32,15 +33,20 @@ class Service(ServiceBase):
 
     def __gtr_heartbeat(self):
         assert self.config
-        req = GtrHeartbeatRequest(
+        req = GtrHeartbeatData(
             server_id=self.config.server_id,
             public_ip_address=self.config.listening_address,
             public_port=self.config.listening_port,
             client_count=len(ConnectionListener.client_pool),
         )
-        req_str = req.model_dump_json()
+
+        req_str = req.model_dump(mode="json")
+        data_to_send = {"data": req_str}
+        import json
+
+        data_to_send_str = json.dumps(data_to_send)
         self._heartbeat_to_backend(
-            f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/Heartbeat", req_str
+            f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/Heartbeat", data_to_send_str
         )
 
     def __check_expired_connection(self):
@@ -58,6 +64,7 @@ class Service(ServiceBase):
 
 if __name__ == "__main__":
     from frontends.gamespy.library.extentions.debug_helper import DebugHelper
+
     gtr = Service()
     helper = DebugHelper("./frontends/", ServicesFactory([gtr]))
     helper.start()

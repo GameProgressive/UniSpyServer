@@ -9,6 +9,7 @@ class ClientInfo(BaseModel):
     server_id: UUID4
     client_ip: str
     client_port: int = Field(ge=1, le=65535)
+    websocket_address: str | None = None
 
 
 class RequestBase(BaseModel):
@@ -30,7 +31,7 @@ class ResultBase(BaseModel):
 
 
 class ResponseBase:
-    sending_buffer: object
+    sending_buffer: bytes | str | HttpData
     _result: ResultBase
 
     def __init__(self, result: ResultBase) -> None:

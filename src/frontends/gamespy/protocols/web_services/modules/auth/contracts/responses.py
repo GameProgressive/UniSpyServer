@@ -16,17 +16,13 @@ from frontends.gamespy.protocols.web_services.modules.auth.contracts.results imp
 class LoginProfileResponse(LoginResponseBase):
     _request: LoginProfileRequest
     _result: LoginProfileResult
-
-    def build(self) -> None:
-        self._content = SoapEnvelop(f"{self._result.command_name}Result")
-        super().build()
+    pass
 
 
 class LoginPs3CertResponse(LoginResponseBase):
     _result: LoginPs3CertResult
 
     def build(self) -> None:
-        self._content = SoapEnvelop(f"{self._result.command_name}Result")
         self._content.add("responseCode", self._result.response_code)
         self._content.add("authToken", self._result.auth_token)
         self._content.add("partnerChallenge", self._result.partner_challenge)
@@ -34,18 +30,12 @@ class LoginPs3CertResponse(LoginResponseBase):
 
 
 class LoginRemoteAuthResponse(LoginResponseBase):
-    def build(self) -> None:
-        self._content = SoapEnvelop(f"{self._result.command_name}Result")
-        super().build()
+    pass
 
 
 class LoginUniqueNickResponse(LoginResponseBase):
-    def build(self) -> None:
-        self._content = SoapEnvelop(f"{self._result.command_name}Result")
-        super().build()
+    pass
 
 
 class CreateUserAccountResponse(LoginResponseBase):
-    def build(self) -> None:
-        self._content = SoapEnvelop(f"{self._result.command_name}Result")
-        super().build()
+    pass
