@@ -37,9 +37,9 @@ class ChannelUserHelper:
         pass
 
     @staticmethod
-    def disconnect(websocket_address: str):
+    def disconnect(ip: str, port: int):
         with Session(_engine) as session:
-            user = data.get_user_cache_by_ws(websocket_address, session)
+            user = data.get_user_cache_by_ip_addr(ip, port, session)
             if user is None:
                 return
             session.delete(user)

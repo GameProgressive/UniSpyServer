@@ -41,7 +41,15 @@ def create_client() -> Client:
         logger=logger,
     )
     config = CONFIG.servers["GameStatus"]
-    create_mock_url(config, SetPlayerDataHandler, {"message": "ok"})
+    create_mock_url(
+        config,
+        SetPlayerDataHandler,
+        {
+            "local_id": 2,
+            "profile_id": 1,
+            "modified": "2026-10-13T03:18:28.862968",
+        },
+    )
     create_mock_url(
         config,
         GetPlayerDataHandler,
@@ -49,27 +57,31 @@ def create_client() -> Client:
             data="\\key1\\value1\\key2\\value2\\key3\\value3",
             local_id=0,
             profile_id=0,
-            modified=datetime.now()
+            modified=datetime.now(),
         ).model_dump(mode="json"),
     )
     create_mock_url(
         config,
         GetProfileIdHandler,
         GetProfileIdResult.model_validate(
-            {"profile_id": 1, "local_id": 0}).model_dump(),
+            {"profile_id": 1, "local_id": 0}
+        ).model_dump(),
     )
     create_mock_url(config, UpdateGameHandler, {"message": "ok"})
     create_mock_url(
-        config, AuthPlayerHandler, AuthPlayerResult.model_validate(
-            {"profile_id": 1, "local_id": 0}).model_dump(mode="json")
+        config,
+        AuthPlayerHandler,
+        AuthPlayerResult.model_validate({"profile_id": 1, "local_id": 0}).model_dump(
+            mode="json"
+        ),
     )
     create_mock_url(config, NewGameHandler, {"message": "ok"})
     create_mock_url(
         config,
         AuthGameHandler,
-        AuthGameResult(session_key="123456",
-                       local_id=0,
-                       game_name="gmtest").model_dump(),
+        AuthGameResult(
+            session_key="123456", local_id=0, game_name="gmtest"
+        ).model_dump(),
     )
 
     return cast(Client, conn._client)

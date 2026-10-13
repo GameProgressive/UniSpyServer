@@ -53,9 +53,7 @@ def nick_and_email_login(
     assert isinstance(password_hash, str)
 
     result = (
-        session.query(
-            Users.id, Profiles.id, Users.emailverified, Users.banned
-        )
+        session.query(Users.id, Profiles.id, Users.emailverified, Users.banned)
         .join(Profiles, (Users.id == Profiles.userid))
         .where(
             Users.email == email,
@@ -85,9 +83,7 @@ def uniquenick_login(
     assert isinstance(namespace_id, int)
 
     result = (
-        session.query(
-            Users.id, Profiles.id, Users.emailverified, Users.banned
-        )
+        session.query(Users.id, Profiles.id, Users.emailverified, Users.banned)
         .join(Profiles, (Users.id == Profiles.userid))
         .join(Profiles, (Profiles.id == SubProfiles.profileid))
         .where(
@@ -273,7 +269,7 @@ def get_channel_user_caches_by_name(
         session.query(ChatChannelUserCaches)
         .where(ChatChannelUserCaches.channel_name == channel_name)
         .all()
-    )  
+    )
     return result
 
 
@@ -292,12 +288,10 @@ def get_user_cache_by_nick_name(
     return result
 
 
-def get_user_cache_by_ws(
-    websocket_address: str, session: Session
-) -> ChatUserCaches | None:
+def get_user_cache_by_ip_addr(ip: str, port: int, session: Session) -> ChatUserCaches | None:
     user = (
         session.query(ChatUserCaches)
-        .where(ChatUserCaches.websocket_address == websocket_address)
+        .where(ChatUserCaches.remote_ip == ip, ChatUserCaches.remote_port == port)
         .first()
     )
     return user
@@ -342,28 +336,28 @@ def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     if info.user_name is None:
         raise ChatException("user name is missing")
 
-    assert isinstance(info.nick_name,str)
-    assert isinstance(info.user_name,str)
-    assert isinstance(info.remote_ip,str)
-    assert isinstance(channels,list)
+    assert isinstance(info.nick_name, str)
+    assert isinstance(info.user_name, str)
+    assert isinstance(info.remote_ip, str)
+    assert isinstance(channels, list)
     re = WhoIsResult(
         nick_name=info.nick_name,
         user_name=info.user_name,
         public_ip_address=info.remote_ip,
-        joined_channels=list(channels[0])
+        joined_channels=list(channels[0]),
     )
 
     return re
 
 
-def get_websocket_addr_by_channel_name(
+def get_user_ip_port_by_channel_name(
     channel_name: str, session: Session
-) -> list[str]:
+) -> list[tuple[str, str]]:
     """
     find the client websocket address in database which updated within 1 min
     """
     users = (
-        session.query(ChatUserCaches.websocket_address)
+        session.query(ChatUserCaches.remote_ip, ChatUserCaches.remote_port)
         .join(
             ChatChannelUserCaches,
             ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,

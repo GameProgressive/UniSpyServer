@@ -237,8 +237,7 @@ class CryptHandler(HandlerBase):
                 server_id=self._request.info.server_id,
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
-                nick_name=f"{self._request.info.client_ip}:{self._request.info.client_port}",
-                websocket_address=f"{self._request.info.client_ip}:{self._request.info.client_port}",
+                nick_name=self._request.info.ip_addr(),
                 game_name=self._request.data.gamename,
             )
         self._secret_key = data.get_secret_key_by_game_name(
@@ -365,8 +364,7 @@ class NickHandler(HandlerBase):
                 server_id=self._request.info.server_id,
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
-                nick_name=f"{self._request.info.client_ip}:{self._request.info.client_port}",
-                websocket_address=f"{self._request.info.client_ip}:{self._request.info.client_port}",
+                nick_name=self._request.data.nick_name,
                 game_name="",
             )
         else:

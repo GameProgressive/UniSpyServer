@@ -48,8 +48,16 @@ GET_MY_RECORDS = {
 }
 
 SEARCH_FOR_RECORDS = {
-    "body": """<?xml version="1.0" encoding="UTF-8"?> <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://gamespy.net/sake"><SOAP-ENV:Body><ns1:SearchForRecords><ns1:gameid>0</ns1:gameid><ns1:secretKey>XXXXXX</ns1:secretKey><ns1:loginTicket>xxxxxxxx_YYYYYYYYYY__</ns1:loginTicket><ns1:tableid>scores</ns1:tableid><ns1:filter/><ns1:sort/><ns1:offset>0</ns1:offset><ns1:max>3</ns1:max><ns1:surrounding>0</ns1:surrounding><ns1:ownerids/><ns1:cacheFlag>0</ns1:cacheFlag><ns1:fields><ns1:string>score</ns1:string><ns1:string>recordid</ns1:string></ns1:fields></ns1:SearchForRecords></SOAP-ENV:Body></SOAP-ENV:Envelope>
-"""
+    "path": "/SakeStorageServer/StorageServer.asmx",
+    "headers": {
+        "Host": "unispy_server_dev",
+        "User-Agent": "GameSpyHTTP/1.0",
+        "Connection": "close",
+        "Content-Length": "872",
+        "Content-Type": "text/xml",
+        "SOAPAction": '"http://gamespy.net/sake/SearchForRecords"',
+    },
+    "body": '<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://gamespy.net/sake"><SOAP-ENV:Body><ns1:SearchForRecords><ns1:gameid>0</ns1:gameid><ns1:secretKey>HA6zkS</ns1:secretKey><ns1:loginTicket>0000000000000000000000__</ns1:loginTicket><ns1:tableid>test</ns1:tableid><ns1:filter>MyInt&#x20;&gt;&#x20;50</ns1:filter><ns1:sort>score&#x20;desc</ns1:sort><ns1:offset>0</ns1:offset><ns1:max>3</ns1:max><ns1:surrounding>0</ns1:surrounding><ns1:ownerids></ns1:ownerids><ns1:cacheFlag>0</ns1:cacheFlag><ns1:fields><ns1:string>MyByte</ns1:string><ns1:string>MyInt</ns1:string></ns1:fields></ns1:SearchForRecords></SOAP-ENV:Body></SOAP-ENV:Envelope>',
 }
 
 DELETE_RECORD = {
@@ -150,15 +158,14 @@ class SakeTests(unittest.TestCase):
 
     @responses.activate
     def test_search_for_records(self):
-        request = SearchForRecordsRequest.gs_parse(
-            HttpData(path=None, headers=None, **SEARCH_FOR_RECORDS)
-        )
+        raw = HttpData(**SEARCH_FOR_RECORDS)
+        request = SearchForRecordsRequest.gs_parse(raw)
         self.assertEqual(0, request.game_id)
-        self.assertEqual("XXXXXX", request.secret_key)
-        self.assertEqual("xxxxxxxx_YYYYYYYYYY__", request.login_ticket)
-        self.assertEqual("scores", request.table_id)
-        self.assertEqual(None, request.filter)
-        self.assertEqual(None, request.sort)
+        self.assertEqual("HA6zkS", request.secret_key)
+        self.assertEqual("0000000000000000000000__", request.login_ticket)
+        self.assertEqual("test", request.table_id)
+        self.assertEqual("MyInt > 50", request.filter)
+        self.assertEqual("score desc", request.sort)
         self.assertEqual("0", request.offset)
         self.assertEqual("0", request.surrounding)
         self.assertEqual(None, request.owner_ids)

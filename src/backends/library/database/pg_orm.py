@@ -308,7 +308,6 @@ class ChatUserCaches(Base):
     game_name: Mapped[str | None] = mapped_column()
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
-    websocket_address: Mapped[str] = mapped_column(nullable=False)
     key_value: Mapped[dict] = mapped_column(JSONB, default={})
     update_time: Mapped[datetime] = mapped_column(
         nullable=False, default=datetime.now()

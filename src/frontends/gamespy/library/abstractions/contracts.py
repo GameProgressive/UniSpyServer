@@ -11,6 +11,9 @@ class ClientInfo(BaseModel):
     client_port: int = Field(ge=1, le=65535)
     websocket_address: str | None = None
 
+    def ip_addr(self) -> str:
+        return f"{self.client_ip}:{self.client_port}"
+
 
 class RequestBase(BaseModel):
     model_config = ConfigDict(

@@ -25,7 +25,7 @@ def remove_namespace(data) -> list | dict:
 class RequestBase(lib.RequestBase):
     raw_request: lib.HttpData = Field(repr=False)
     request_dict: dict[str, object] = Field(repr=False)
-    command_name: Enum
+    command_name: str
 
     @property
     def str_mapping(self) -> dict[str, str]:
@@ -69,7 +69,7 @@ class RequestBase(lib.RequestBase):
 
 
 class ResultBase(lib.ResultBase):
-    headers: dict[str, str]
+    headers: dict[str, object]
     command_name: Enum
 
     pass

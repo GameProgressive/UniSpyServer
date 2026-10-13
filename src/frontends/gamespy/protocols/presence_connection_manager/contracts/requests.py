@@ -91,7 +91,8 @@ class SdkRevisionRequest(RequestBase):
     profile_id: int
     subprofile_id: int
     namespace_id: int
-    sdk_revision:list[SdkRevisionType]
+    sdk_revision: list[SdkRevisionType]
+
 
 @final
 class LoginRequest(RequestBase):
@@ -116,7 +117,7 @@ class LoginRequest(RequestBase):
     """
     game_name: str
     quiet_mode_flags: int = 0
-    firewall: bool
+    firewall: bool | None = None
 
     def model_post_init(self, context: Any) -> None:
         super().model_post_init(context)

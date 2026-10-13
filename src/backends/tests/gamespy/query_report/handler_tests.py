@@ -19,7 +19,7 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
             "raw_request": "\\u0003\\\\xe5\\\\xcfaZlocalip0\\u0000172.19.0.5\\u0000localport\\u000011111\\u0000natneg\\u00001\\u0000statechanged\\u00003\\u0000gamename\\u0000gmtest\\u0000hostname\\u0000GameSpy QR2 Sample\\u0000gamever\\u00002.00\\u0000hostport\\u000025000\\u0000mapname\\u0000gmtmap1\\u0000gametype\\u0000arena\\u0000numplayers\\u00005\\u0000numteams\\u00002\\u0000maxplayers\\u000032\\u0000gamemode\\u0000openplaying\\u0000teamplay\\u00001\\u0000fraglimit\\u00000\\u0000timelimit\\u000040\\u0000gravity\\u0000800\\u0000rankingon\\u00001\\u0000\\u0000\\u0000\\u0005player_\\u0000score_\\u0000deaths_\\u0000ping_\\u0000team_\\u0000time_\\u0000\\u0000Joe Player\\u000030\\u000012\\u0000411\\u00000\\u000010\\u0000L33t 0n3\\u00000\\u00006\\u0000233\\u00001\\u0000325\\u0000Raptor\\u000015\\u000025\\u000063\\u00001\\u0000462\\u0000Gr81\\u00000\\u000016\\u0000294\\u00000\\u0000870\\u0000Flubber\\u000017\\u000012\\u0000232\\u00001\\u0000384\\u0000\\u0000\\u0002team_t\\u0000score_t\\u0000avgping_t\\u0000\\u0000Red\\u0000294\\u0000357\\u0000Blue\\u0000498\\u0000454\\u0000",
             "instant_key": "3855573338",
             "command_name": 3,
-            "request_dict": {
+            "game_data": {
                 "localip0": "172.19.0.5",
                 "localport": "11111",
                 "natneg": "1",

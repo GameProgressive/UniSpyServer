@@ -150,21 +150,7 @@ class SearchForRecordsRequest(RequestBase):
 
         data_dict["cache_flag"] = data.str_mapping.get("cacheFlag")
 
-        temp_filter = data.str_mapping.get("filter")
-        data_dict["filter"] = (
-            temp_filter.translate(
-                str.maketrans(
-                    {
-                        " &gt; ": " > ",
-                        " &lt; ": " < ",
-                        " &ge; ": " >= ",
-                        " &le; ": " <= ",
-                    }
-                )
-            )
-            if temp_filter is not None
-            else None
-        )
+        data_dict["filter"] = data.str_mapping.get("filter")
 
         data = SearchForRecordsRequest(**data_dict)
         return data

@@ -58,3 +58,5 @@ class HandlerTests(unittest.TestCase):
 
     def test_sdk_login_uniquenick(self):
         raw = {}
+
+ 

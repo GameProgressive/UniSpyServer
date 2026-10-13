@@ -21,7 +21,7 @@ class HttpConnection(ConnectionBase):
         self.handler.send_response(200)
         if data.headers is not None:
             for key, value in data.headers.items():
-                self.handler.send_header(key, value)
+                self.handler.send_header(key, str(value))
         self.handler.end_headers()
         body_bytes = data.body.encode()
         self.handler.wfile.write(body_bytes)

@@ -31,10 +31,10 @@ class WebsocketManager(WsManager):
 
     def _get_wss_in_channel(self, channel_name: str) -> list[WebSocket]:
         with Session(_engine) as session:
-            ws_addrss = data.get_websocket_addr_by_channel_name(
+            ip_addrs = data.get_user_ip_port_by_channel_name(
                 channel_name, session)
             wss = []
-            for addr in ws_addrss:
+            for addr in ip_addrs:
                 if addr in self.client_pool:
                     wss.append(self.client_pool[addr])
             return wss

@@ -164,7 +164,7 @@ class LoginResponseBase(lib.ResponseBase):
         body = str(self._content)
         headers = {
             "SessionToken": self._result.session_token,
-            "Content-Length": str(len(body)),
+            "Content-Length": len(body),
         }
         self.sending_buffer = HttpData(path=None, headers=headers, body=body)
 

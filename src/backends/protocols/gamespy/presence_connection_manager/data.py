@@ -264,8 +264,8 @@ def get_user_infos_by_nick_email(
 def update_online_status(subprofile_id: int, status: LoginStatus, session: Session):
     result = (
         session.query(Users, Profiles, SubProfiles)
-        .join(Profiles)
-        .join(SubProfiles)
+        .join(Profiles, Users.id == Profiles.userid)
+        .join(SubProfiles, Profiles.id == SubProfiles.profileid)
         .where(SubProfiles.id == subprofile_id)
         .first()
     )
