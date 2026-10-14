@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, cast
 
+from frontends.gamespy.library.abstractions.connections import ServerParams
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
 from frontends.gamespy.protocols.chat.aggregates.enums import WhoRequestType
@@ -78,9 +79,8 @@ def create_client() -> Client:
     handler = RequestHandlerMock()
     logger = LogMock()
     config = CONFIG.servers["Chat"]
-    conn = ConnectionMock(
-        handler=handler, config=config, t_client=ClientMock, logger=logger
-    )
+    param = ServerParams(config=config, client_cls=ClientMock, logger=logger)
+    conn = ConnectionMock(handler=handler, param=param)
     create_mock_url(config, CryptHandler, CryptResult(secret_key="test").model_dump())
     create_mock_url(
         config, LoginHandler, LoginResult(profile_id=1, user_id=1).model_dump()

@@ -318,13 +318,14 @@ class ChatChannelUserCaches(Base):
     __tablename__ = "chat_channel_user_caches"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     nick_name: Mapped[str] = mapped_column(
-        ForeignKey("chat_user_caches.nick_name"), nullable=False
+        ForeignKey("chat_user_caches.nick_name", ondelete="CASCADE"), nullable=False
     )
     user_name: Mapped[str] = mapped_column(
         ForeignKey("chat_user_caches.user_name"), nullable=False
     )
     channel_name: Mapped[str] = mapped_column(
-        ForeignKey("chat_channel_caches.channel_name"), nullable=False
+        ForeignKey("chat_channel_caches.channel_name", ondelete="CASCADE"),
+        nullable=False,
     )
     server_id: Mapped[str] = mapped_column(UUID, nullable=False)
     update_time: Mapped[datetime] = mapped_column(

@@ -22,6 +22,7 @@ from backends.protocols.gamespy.chat.handlers import (
     SetKeyHandler,
     TopicHandler,
     UserHandler,
+    WhoHandler,
     WhoIsHandler,
 )
 from backends.protocols.gamespy.chat.requests import (
@@ -171,7 +172,9 @@ def user_ip(request: UserIPRequest) -> OKResponse:
 
 @router.post(f"{CHAT}/WhoHandler", responses=RESPONSES_DEF)
 def who(request: WhoRequest) -> WhoResponse:
-    raise NotImplementedError()
+    handler = WhoHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/WhoIsHandler", responses=RESPONSES_DEF)

@@ -5,12 +5,12 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
     NetworkServerBase,
+    ServerParams,
 )
 from frontends.gamespy.library.configs import ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.http_data import HttpData
-
 
 
 class HttpConnection(ConnectionBase):
@@ -47,17 +47,11 @@ class HttpHandler(BaseHTTPRequestHandler):
 
 
 class HttpServer(NetworkServerBase):
-    def __init__(
-        self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter
-    ) -> None:
-        super().__init__(config, t_client, logger)
+    def __init__(self, param: ServerParams) -> None:
+        super().__init__(param)
         self._server = ThreadingHTTPServer(
-            (self._config.listening_address, self._config.listening_port), HttpHandler
-        )
-        self._server.unispy_params = (  # type: ignore
-            self._config,
-            self._client_cls,
-            self._logger,
+            (self._param.config.listening_address, self._param.config.listening_port),
+            HttpHandler,
         )
 
 

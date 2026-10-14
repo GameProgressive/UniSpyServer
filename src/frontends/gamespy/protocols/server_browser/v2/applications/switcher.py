@@ -54,9 +54,13 @@ class Switcher(SwitcherBase):
                 handler = self.__check_update_option(req)
                 return handler
             case CommandName.SERVER_INFO_REQUEST:
-                return UpdateServerInfoHandler(self._client, ServerInfoRequest.gs_parse(req))
+                return UpdateServerInfoHandler(
+                    self._client, ServerInfoRequest.gs_parse(req)
+                )
             case CommandName.SEND_MESSAGE_REQUEST:
-                return SendMessageHandler(self._client, SendMessageRequest.gs_parse(req))
+                return SendMessageHandler(
+                    self._client, SendMessageRequest.gs_parse(req)
+                )
             case _:
                 return None
 
@@ -64,16 +68,20 @@ class Switcher(SwitcherBase):
         """
         check update option and create handler
         """
-        update_option = self.get_update_option(request)
-        match update_option:
+        req = ServerListRequest.gs_parse(request)
+        match req.update_option:
             case (
                 ServerListUpdateOption.SERVER_MAIN_LIST
                 | ServerListUpdateOption.P2P_SERVER_MAIN_LIST
                 | ServerListUpdateOption.LIMIT_RESULT_COUNT
             ):
-                return ServerMainListHandler(self._client, ServerListRequest.gs_parse(request))
+                return ServerMainListHandler(
+                    self._client, ServerListRequest.gs_parse(request)
+                )
             case ServerListUpdateOption.P2P_GROUP_ROOM_LIST:
-                return P2PGroupRoomListHandler(self._client, ServerListRequest.gs_parse(request))
+                return P2PGroupRoomListHandler(
+                    self._client, ServerListRequest.gs_parse(request)
+                )
             case ServerListUpdateOption.SERVER_FULL_INFO_LIST:
                 return ServerFullInfoListHandler(
                     self._client, ServerListRequest.gs_parse(request)
@@ -84,9 +92,5 @@ class Switcher(SwitcherBase):
     @staticmethod
     def get_update_option(raw_request: bytes) -> ServerListUpdateOption:
         # todo check if all game follow this pattern, +2 is calc by sdk server info request
-        update_option_index = raw_request.find(b"\x00\x00\x00\x00", 6) + 2
-        update_option_bytes = raw_request[update_option_index : update_option_index + 4]
-        update_option = ServerListUpdateOption(
-            int.from_bytes(update_option_bytes, byteorder="big")
-        )
-        return update_option
+        req = ServerListRequest.gs_parse(raw_request)
+        return req.update_option

@@ -1,5 +1,6 @@
 from typing import cast
 
+from frontends.gamespy.library.abstractions.connections import ServerParams
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
@@ -25,12 +26,12 @@ class ClientMock(Client):
 def create_v2_client() -> Client:
     handler = RequestHandlerMock()
     logger = LogMock()
-    conn = ConnectionMock(
-        handler=handler,
+    param = ServerParams(
         config=CONFIG.servers["ServerBrowserV2"],
-        t_client=ClientMock,
+        client_cls=ClientMock,
         logger=logger,
     )
+    conn = ConnectionMock(handler=handler, param=param)
     config = CONFIG.servers["ServerBrowserV2"]
 
     create_mock_url(
@@ -42,7 +43,7 @@ def create_v2_client() -> Client:
                 "flag": 64,
                 "game_secret_key": "123567",
                 "servers_info": [],
-                "keys": []
+                "keys": [],
             }
         ).model_dump(mode="json"),
     )
@@ -75,12 +76,12 @@ def create_v2_client() -> Client:
 def create_v1_client() -> Client:
     handler = RequestHandlerMock()
     logger = LogMock()
-    conn = ConnectionMock(
-        handler=handler,
+    param = ServerParams(
         config=CONFIG.servers["ServerBrowserV1"],
-        t_client=ClientMock,
+        client_cls=ClientMock,
         logger=logger,
     )
+    conn = ConnectionMock(handler=handler, param=param)
     config = CONFIG.servers["ServerBrowserV1"]
     create_mock_url(
         config,

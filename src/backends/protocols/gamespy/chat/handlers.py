@@ -63,6 +63,7 @@ from backends.protocols.gamespy.chat.response import (
     TopicResponse,
     UtmResponse,
     WhoIsResponse,
+    WhoResponse,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
@@ -436,7 +437,7 @@ class UserHandler(HandlerBase):
     def _data_operate(self) -> None:
         assert self._user
         if self._request.data.user_name:
-            self._user.user_name = self._request.data.user_name 
+            self._user.user_name = self._request.data.user_name
         if self._request.data.nick_name:
             self._user.nick_name = self._request.data.nick_name
         self._session.commit()
@@ -444,6 +445,7 @@ class UserHandler(HandlerBase):
 
 class WhoHandler(HandlerBase):
     _request: WhoRequest
+    response: WhoResponse
 
     def _data_operate(self) -> None:
         if self._request.data.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:

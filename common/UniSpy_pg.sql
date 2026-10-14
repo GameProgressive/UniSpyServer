@@ -5515,10 +5515,10 @@ ALTER TABLE ONLY unispy.profiles
 -- Name: chat_user_caches chat_user_caches_channel_name_fkey; Type: FK CONSTRAINT; Schema: unispy; Owner: unispy
 --
 ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREIGN KEY(channel_name) REFERENCES unispy.chat_channel_caches(channel_name);
+    ADD CONSTRAINT chat_channel_user_caches_channel_name_fkey FOREIGN KEY(channel_name) REFERENCES unispy.chat_channel_caches(channel_name) ON DELETE CASCADE;
 
 ALTER TABLE ONLY unispy.chat_channel_user_caches
-    ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name);
+    ADD CONSTRAINT chat_channel_user_caches_nick_name_fkey FOREIGN KEY(nick_name) REFERENCES unispy.chat_user_caches(nick_name) ON DELETE CASCADE;
 
 -- PostgreSQL database dump complete
 SELECT setval(  pg_get_serial_sequence('unispy.users', 'id'),  COALESCE((SELECT MAX(id) FROM unispy.users), 1),  (SELECT MAX(id) IS NOT NULL FROM unispy.users));

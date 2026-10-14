@@ -1,5 +1,6 @@
 from typing import cast
 
+from frontends.gamespy.library.abstractions.connections import ServerParams
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     Client,
@@ -25,12 +26,12 @@ def create_client() -> Client:
     CONFIG.unittest.is_raise_except = True
     handler = RequestHandlerMock()
     logger = LogMock()
-    conn = ConnectionMock(
-        handler=handler,
+    param = ServerParams(
         config=CONFIG.servers["PresenceConnectionManager"],
-        t_client=ClientMock,
+        client_cls=ClientMock,
         logger=logger,
     )
+    conn = ConnectionMock(handler=handler, param=param)
     config = CONFIG.servers["PresenceConnectionManager"]
     create_mock_url(
         config, NewUserHandler, {"user_id": 0, "profile_id": 0, "operation_id": 0}

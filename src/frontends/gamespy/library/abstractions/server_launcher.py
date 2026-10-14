@@ -7,7 +7,10 @@ import schedule
 from prettytable import PrettyTable
 
 from frontends.gamespy.library.abstractions.client import ClientBase
-from frontends.gamespy.library.abstractions.connections import NetworkServerBase
+from frontends.gamespy.library.abstractions.connections import (
+    NetworkServerBase,
+    ServerParams,
+)
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager, LogWriter
@@ -66,8 +69,8 @@ class ServiceBase:
         assert self._logger is not None
         assert self._network_server_cls is not None
         assert self._client_cls is not None
-        self._network_server = self._network_server_cls(
-            self.config, self._client_cls, self._logger)
+        s_param = ServerParams(self.config, self._client_cls, self._logger)
+        self._network_server = self._network_server_cls(s_param)
 
     @final
     def start(self):
@@ -108,8 +111,7 @@ class ServiceBase:
         assert self.config is not None
         if CONFIG.unittest.is_collect_request:
             return
-        self._heartbeat_to_backend(
-            CONFIG.backend.url, self.config.model_dump_json())
+        self._heartbeat_to_backend(CONFIG.backend.url, self.config.model_dump_json())
 
     @final
     def start_post_tasks(self):
@@ -131,10 +133,7 @@ class ServiceBase:
 class ServicesFactory:
     _lauchers: list[ServiceBase]
 
-    def __init__(
-        self,
-        launchers: list[ServiceBase]
-    ):
+    def __init__(self, launchers: list[ServiceBase]):
         self._lauchers = launchers
 
     def start(self):
@@ -187,6 +186,7 @@ class ServicesFactory:
     @final
     def _keep_running(self):
         from time import sleep
+
         try:
             while True:
                 sleep(1)

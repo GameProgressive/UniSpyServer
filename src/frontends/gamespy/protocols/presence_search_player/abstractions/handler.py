@@ -19,6 +19,6 @@ class CmdHandlerBase(CHB):
         super().__init__(client, request)
 
     def _handle_exception(self, ex) -> None:
-        if ex is GPException:
+        if isinstance(ex, GPException):
             self._client.send(ex)
         super()._handle_exception(ex)

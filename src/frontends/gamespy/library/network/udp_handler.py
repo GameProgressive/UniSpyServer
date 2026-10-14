@@ -5,6 +5,7 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
     NetworkServerBase,
+    ServerParams,
 )
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
@@ -32,18 +33,13 @@ class UdpHandler(socketserver.BaseRequestHandler):
 
 
 class UdpServer(NetworkServerBase):
-    def __init__(
-        self, config: ServerConfig, t_client: type[ClientBase], logger: LogWriter
-    ) -> None:
-        super().__init__(config, t_client, logger)
+    def __init__(self, param: ServerParams) -> None:
+        super().__init__(param)
         self._server = socketserver.ThreadingUDPServer(
-            (self._config.listening_address, self._config.listening_port),
+            (self._param.config.listening_address, self._param.config.listening_port),
             UdpHandler,
         )
         self._server.allow_reuse_address = True
-        # inject the handler params to ThreadingUDPServer
-        self._server.unispy_params = (  # type: ignore
-            self._config, self._client_cls, self._logger)
 
     def __exit__(self, *args):
         self._server.__exit__(*args)
@@ -65,6 +61,7 @@ if __name__ == "__main__":
     # create_udp_server(list(CONFIG.servers.values())[0], ClientBase)
     from frontends.tests.gamespy.library.mock_objects import LogMock
 
-    s = UdpServer(list(CONFIG.servers.values())[0], TestClient, LogMock())
+    s_param = ServerParams(list(CONFIG.servers.values())[0], TestClient, LogMock())
+    s = UdpServer(s_param)
     s.start()
     pass

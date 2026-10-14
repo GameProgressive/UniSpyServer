@@ -1,5 +1,6 @@
 from typing import cast
 
+from frontends.gamespy.library.abstractions.connections import ServerParams
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.natneg.applications.client import Client
 from frontends.gamespy.protocols.natneg.applications.handlers import (
@@ -30,12 +31,12 @@ def create_client() -> Client:
     CONFIG.unittest.is_raise_except = True
     handler = RequestHandlerMock()
     logger = LogMock()
-    conn = ConnectionMock(
-        handler=handler,
+    param = ServerParams(
         config=CONFIG.servers["NatNegotiation"],
-        t_client=ClientMock,
+        client_cls=ClientMock,
         logger=logger,
     )
+    conn = ConnectionMock(handler=handler, param=param)
 
     config = CONFIG.servers["NatNegotiation"]
     create_mock_url(
