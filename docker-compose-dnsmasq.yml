@@ -7,10 +7,9 @@ services:
       DNS2: "1.1.1.1"
     ports:
     # change the <ip> to public ip of this machine if 127.0.0.1:53 is not bindable
-      - <ip>:53:53/udp
-      - <ip>:53:53/tcp
+      - 127.0.0.1:53:53
     cap_add:
       - NET_ADMIN
     volumes:
-      - ./common/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./common/dns/dnsmasq.conf:/etc/dnsmasq.conf
     restart: always
