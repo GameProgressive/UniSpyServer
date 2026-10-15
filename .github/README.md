@@ -25,10 +25,15 @@ Technical papers and documentation about the GameSpy protocol and the games that
 This project is licensed under the [GNU Affero General Public License v3.0](../LICENSE).
 
 
-## Why rewrite C# to python
+## Why rewrite to python
 * The vscode extensions for C# development is become more and more hard to use, and microsoft abandoned the open-source OmniSharp project and replacing it with it's own closed source language server.
 * The c# project seems hard to run by users, it require a lot of deploy knowledge and hard for collaborations, for the future of the gamespy emulator, I choose to rewrite this into a opensource and easy high level language - python.
 
+## RSA key replacement
+* Replace the rsa key in auth service ```BF05D63E93751AD4A59A4A7389CF0BE8A22CCDEEA1E7F12C062D6E194472EFDA5184CCECEB4FBADF5EB1D7ABFE91181453972AA971F624AF9BA8F0F82E2869FB7D44BDE8D56EE50977898F3FEE75869622C4981F07506248BD3D092E8EA05C12B2FA37881176084C8F8B8756C4722CDC57D2AD28ACD3AD85934FB48D6B2D2027```
+
+  to
+   ``D4536886309F2BDCFCC54F1B41B90D9C4934540F895DD312A22D9AD53E013B12F8F6658364679F7EBAAD8D8F088C4908E0D2392AB072085AFE48B7B7D1F10105D0BBA0662D17ECCAF52E6AEAFB0BA70728A3E8716306B3D2E6DBE9447EF7B6187388DE70CE0A83941D55BF2F686EC4521BAB419A615E3F06DF83AEF72BB3EAD1``
 
 ## How to run
 * Run ```docker network create unispy``` to setup a network for unispy
