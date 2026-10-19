@@ -33,23 +33,24 @@ class TcpHandler(socketserver.BaseRequestHandler):
     conn: TcpConnection
 
     def handle(self) -> None:
-        self.conn = TcpConnection(self, *self.server.unispy_params)  # type: ignore
+        self.conn = TcpConnection(
+            self, self.server.unispy_param)  # type: ignore
         self.conn.on_connected()
         try:
             while True:
                 data = self.request.recv(DATA_SIZE)
                 # ignore disconnect data
                 if not data:
-                    self.conn.on_disconnected()
                     break
                 self.conn.on_received(data)
         except ConnectionResetError:
             pass
         except Exception as e:
             if str(e):
-                self.server.unispy_params[2].error(e)  # type: ignore
+                self.conn.unispy_param.logger.error(e)  # type: ignore
             else:
-                self.server.unispy_params[2].error(type(e).__name__)  # type: ignore
+                self.conn.unispy_param.logger.error(
+                    type(e).__name__)  # type: ignore
         finally:
             self.conn.on_disconnected()
 
@@ -59,10 +60,12 @@ class TcpServer(NetworkServerBase):
     def __init__(self, param: ServerParams) -> None:
         super().__init__(param)
         self._server = socketserver.ThreadingTCPServer(
-            (self._param.config.listening_address, self._param.config.listening_port),
+            (self.unispy_param.config.listening_address,
+             self.unispy_param.config.listening_port),
             TcpHandler,
             bind_and_activate=False,
         )
+        self._server.unispy_param = self.unispy_param  # type: ignore
         self._server.allow_reuse_address = True
         self._server.server_bind()
         self._server.server_activate()
@@ -83,7 +86,8 @@ class TestClient(ClientBase):
 if __name__ == "__main__":
     from frontends.tests.gamespy.library.mock_objects import LogMock
 
-    s_param = ServerParams(list(CONFIG.servers.values())[0], TestClient, LogMock())
+    s_param = ServerParams(list(CONFIG.servers.values())
+                           [0], TestClient, LogMock())
     s = TcpServer(s_param)
     s.start()
     pass

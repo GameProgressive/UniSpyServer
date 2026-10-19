@@ -94,10 +94,20 @@ class GetPlayerDataHandler(HandlerBase):
             self._request.data.data_index,
             self._session
         )
-        if self.pd is None:
-            raise GSException("No records found in database")
 
     def _result_construct(self):
+
+        if self.pd is None:
+            # we return empty data
+            # todo create one in database
+
+            self._result = GetPlayerDataResult(
+                local_id=self._request.data.local_id,
+                profile_id=self._request.data.profile_id,
+                data="",
+                modified=datetime.now())
+            return
+
         assert self.pd is not None
         assert isinstance(self.pd.data, str)
         assert isinstance(self.pd.update_time, datetime)

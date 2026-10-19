@@ -1,5 +1,5 @@
 from backends.library.abstractions.contracts import DataResponse
-from frontends.gamespy.protocols.chat.contracts.results import AtmResult, CryptResult, GetCKeyResult, GetChannelKeyResult, GetKeyResult, JoinResult, KickResult, ListResult, ModeResult, NamesResult, NickResult, NoticeResult, PartResult, PingResult, PrivateResult, SetCKeyResult, SetChannelKeyResult, TopicResult, UtmResult, WhoIsResult, WhoResult
+from frontends.gamespy.protocols.chat.contracts.results import AtmResult, CryptResult, GetCKeyResult, GetChannelKeyResult, GetKeyResult, JoinResult, KickResult, ListResult, LoginResult, ModeResult, NamesResult, NickResult, NoticeResult, PartResult, PingResult, PrivateResult, SetCKeyResult, SetChannelKeyResult, TopicResult, UtmResult, WhoIsResult, WhoResult
 
 
 class PingResponse(DataResponse):
@@ -21,6 +21,8 @@ class ListResponse(DataResponse):
 class NicksResponse(DataResponse):
     result: NickResult
 
+class LoginResponse(DataResponse):
+    result: LoginResult
 
 class WhoResponse(DataResponse):
     result: WhoResult

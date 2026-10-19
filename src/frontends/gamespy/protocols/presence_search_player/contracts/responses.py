@@ -105,16 +105,19 @@ class SearchResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = "\\bsr\\"
-        for info in self._result.data:
-            self.sending_buffer += str(info.profile_id)
-            self.sending_buffer += f"\\nick\\{info.nick}"
-            self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
-            self.sending_buffer += f"\\namespaceid\\{info.namespace_id}"
-            self.sending_buffer += f"\\firstname\\{info.firstname}"
-            self.sending_buffer += f"\\lastname\\{info.lastname}"
-            self.sending_buffer += f"\\email\\{info.email}"
-        self.sending_buffer += "\\bsrdone\\\\more\\0\\final\\"
+        self.sending_buffer = ""
+
+        if len(self._result.data) > 0:
+            self.sending_buffer = "\\bsr\\"
+            for info in self._result.data:
+                self.sending_buffer += str(info.profile_id)
+                self.sending_buffer += f"\\nick\\{info.nick}"
+                self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
+                self.sending_buffer += f"\\namespaceid\\{info.namespace_id}"
+                self.sending_buffer += f"\\firstname\\{info.firstname}"
+                self.sending_buffer += f"\\lastname\\{info.lastname}"
+                self.sending_buffer += f"\\email\\{info.email}"
+        self.sending_buffer += f"\\bsrdone\\\\more\\0\\final\\"
 
 
 class SearchUniqueResponse(ResponseBase):

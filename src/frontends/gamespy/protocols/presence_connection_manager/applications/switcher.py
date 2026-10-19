@@ -22,6 +22,7 @@ from frontends.gamespy.protocols.presence_connection_manager.applications.handle
     AddBuddyHandler,
     AuthAddBuddyHandler,
     GetProfileHandler,
+    InviteToHandler,
     KeepAliveHandler,
     LoginHandler,
     LogoutHandler,
@@ -39,6 +40,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     AddBuddyRequest,
     AuthAddBuddyRequest,
     GetProfileRequest,
+    InviteToRequest,
     KeepAliveRequest,
     LoginRequest,
     LogoutRequest,
@@ -123,7 +125,7 @@ class Switcher(SwitcherBase):
                     self._client, StatusInfoRequest.gs_parse(raw_request)
                 )
             case CommandName.INVITETO:
-                raise NotImplementedError("InviteToHandler is not implemented.")
+                return InviteToHandler(self._client, InviteToRequest.gs_parse(raw_request))
             case CommandName.PEER_AUTH:
                 raise NotImplementedError("peer auth is not implemented")
             case CommandName.ADDBUDDY:

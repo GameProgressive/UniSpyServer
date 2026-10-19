@@ -11,6 +11,7 @@ from backends.protocols.gamespy.chat.handlers import (
     GetUdpRelayHandler,
     InviteHandler,
     JoinHandler,
+    LoginHandler,
     ModeHandler,
     NamesHandler,
     NickHandler,
@@ -64,6 +65,7 @@ from backends.protocols.gamespy.chat.response import (
     GetKeyResponse,
     JoinResponse,
     ListResponse,
+    LoginResponse,
     ModeResponse,
     NamesResponse,
     NicksResponse,
@@ -133,8 +135,10 @@ def list_data(request: ListRequest) -> ListResponse:
 
 
 @router.post(f"{CHAT}/LoginHandler", responses=RESPONSES_DEF)
-def login(request: LoginRequest) -> Response:
-    raise NotImplementedError()
+def login(request: LoginRequest) -> LoginResponse:
+    handler = LoginHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{CHAT}/NickHandler", responses=RESPONSES_DEF)

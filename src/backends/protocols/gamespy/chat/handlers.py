@@ -27,6 +27,7 @@ from backends.protocols.gamespy.chat.requests import (
     KickRequest,
     ListRequest,
     LoginPreAuthRequest,
+    LoginRequest,
     ModeRequest,
     NamesRequest,
     NickRequest,
@@ -64,9 +65,12 @@ from backends.protocols.gamespy.chat.response import (
     UtmResponse,
     WhoIsResponse,
     WhoResponse,
+    LoginResponse,
+    NoticeResponse
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
+    LoginRequestType,
     ModeRequestType,
     SearchOption,
     TopicRequestType,
@@ -80,7 +84,6 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     NoSuchChannelException,
     NoSuchNickException,
 )
-from frontends.gamespy.protocols.chat.contracts.responses import NoticeResponse
 from frontends.gamespy.protocols.chat.contracts.results import (
     AtmResult,
     CryptResult,
@@ -90,6 +93,7 @@ from frontends.gamespy.protocols.chat.contracts.results import (
     JoinResult,
     KickResult,
     ListResult,
+    LoginResult,
     ModeResult,
     NamesResult,
     NamesResultData,
@@ -345,8 +349,26 @@ class LoginPreAuthHandler(HandlerBase):
 
 
 class LoginHandler(HandlerBase):
+    _request: LoginRequest
+    _result: LoginResult
+    response: LoginResponse
+
     def _data_operate(self) -> None:
-        raise NotImplementedError("should this access to PCM's api?")
+        if self._request.data.request_type == LoginRequestType.UNIQUE_NICK_LOGIN:
+            self._login_by_uniquenick_and_namespaceid()
+        else:
+            self._login_by_nick_and_email()
+
+    def _login_by_uniquenick_and_namespaceid(self):
+        assert self._request.data.unique_nick
+        assert self._request.data.namespace_id
+        user_id, profile_id = data.get_user_by_unique_and_namespaceid(
+            self._request.data.unique_nick,
+            self._request.data.namespace_id, self._session)
+        self._result = LoginResult(profile_id=profile_id, user_id=user_id)
+
+    def _login_by_nick_and_email(self):
+        raise NotImplementedError()
 
 
 class NickHandler(HandlerBase):
@@ -409,7 +431,8 @@ class QuitHandler(HandlerBase):
 
 class RegisterNickHandler(HandlerBase):
     def _data_operate(self) -> None:
-        raise NotImplementedError("we do not know which unique nick should be updated")
+        raise NotImplementedError(
+            "we do not know which unique nick should be updated")
 
 
 class SetKeyHandler(HandlerBase):
@@ -421,7 +444,8 @@ class SetKeyHandler(HandlerBase):
             self._request.info.client_ip, self._request.info.client_port, self._session
         )
         if user is None:
-            raise NoSuchNickException("The ip and port is not find in database")
+            raise NoSuchNickException(
+                "The ip and port is not find in database")
 
         user.key_value = self._request.data.key_values
         self._session.commit()
@@ -860,6 +884,7 @@ class UtmHandler(MessageHandlerBase):
 
 class NoticeHandler(MessageHandlerBase):
     _request: NoticeRequest
+    _result: NoticeResult
     response: NoticeResponse
 
     def _result_construct(self) -> None:

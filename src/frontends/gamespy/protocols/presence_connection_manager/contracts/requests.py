@@ -108,7 +108,7 @@ class LoginRequest(RequestBase):
     profile_id: int | None = None
     product_id: int
     type: LoginType
-    sdk_revision: list[SdkRevisionType]
+    sdk_revision: list[SdkRevisionType] = [SdkRevisionType.UNKNOWN]
     game_port: int
 
     partner_id: int
@@ -349,7 +349,6 @@ class DelBuddyRequest(RequestBase):
 @final
 class InviteToRequest(RequestBase):
     product_id: int
-    profile_id: int
     subprofile_id: int
     """the invite target profile id"""
 
@@ -357,8 +356,7 @@ class InviteToRequest(RequestBase):
     def gs_parse(raw_request: str) -> "InviteToRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["product_id"] = data.request_dict["productid"]
-        data_dict["profile_id"] = data.request_dict["profileid"]
+        data_dict["product_id"] = data.request_dict["products"]
         data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = InviteToRequest(**data_dict)
         return data

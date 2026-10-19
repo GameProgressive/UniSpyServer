@@ -32,22 +32,22 @@ class ConnectionBase:
     handler: socketserver.BaseRequestHandler
     _client: ClientBase
     ip_endpoint: str
-    _param: ServerParams
     """
     <ip>:<port> string
     """
+    unispy_param: ServerParams
 
     def __init__(
         self, handler: socketserver.BaseRequestHandler, param: ServerParams
     ) -> None:
         super().__init__()
-        self._param = param
+        self.unispy_param = param
         self.handler = handler
         self.remote_ip = handler.client_address[0]
         self.remote_port = int(handler.client_address[1])
         self.ip_endpoint = f"{self.remote_ip}:{self.remote_port}"
-        self._client = self._param.client_cls(
-            self, self._param.config, self._param.logger
+        self._client = self.unispy_param.client_cls(
+            self, self.unispy_param.config, self.unispy_param.logger
         )
         self._is_started = False
 
@@ -86,10 +86,10 @@ class HttpConnectionBase(TcpConnectionBase):
 
 class NetworkServerBase:
     _server: socketserver.BaseServer
-    _param: ServerParams
+    unispy_param: ServerParams
 
     def __init__(self, param: ServerParams) -> None:
-        self._param = param
+        self.unispy_param = param
 
     def start(self):
         """

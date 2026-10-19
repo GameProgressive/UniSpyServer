@@ -26,6 +26,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.requests 
     BuddyStatusRetrieveRequest,
     DelBuddyRequest,
     GetProfileRequest,
+    InviteToRequest,
     KeepAliveRequest,
     LoginRequest,
     LogoutRequest,
@@ -293,11 +294,13 @@ class DelBuddyHandler(LoginedHandlerBase):
 
 @final
 class InviteToHandler(LoginedHandlerBase):
-    def __init__(self, client: Client, request: RequestBase) -> None:
-        raise NotImplementedError()
-        super().__init__(client, request)
+    _request: InviteToRequest
 
-    pass
+    def __init__(self, client: Client, request: RequestBase) -> None:
+        assert isinstance(request, InviteToRequest)
+        super().__init__(client, request)
+        self._is_fetching = False
+
 
 
 @final

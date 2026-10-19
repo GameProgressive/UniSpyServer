@@ -784,7 +784,7 @@ COPY unispy.chat_channel_caches (channel_name, server_id, game_name, room_name, 
 -- Data for Name: chat_nick_caches; Type: TABLE DATA; Schema: unispy; Owner: unispy
 --
 
-COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote_ip, remote_port,websocket_address, key_value, update_time) FROM stdin;
+COPY unispy.chat_user_caches (server_id, nick_name, game_name, user_name, remote_ip, remote_port, key_value, update_time) FROM stdin;
 \.
 
 

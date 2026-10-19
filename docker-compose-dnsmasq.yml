@@ -7,7 +7,8 @@ services:
       DNS2: "1.1.1.1"
     ports:
     # change the <ip> to public ip of this machine if 127.0.0.1:53 is not bindable
-      - 127.0.0.1:53:53
+      - 127.0.0.1:53:53/udp
+      - 127.0.0.1:53:53/tcp
     cap_add:
       - NET_ADMIN
     volumes:

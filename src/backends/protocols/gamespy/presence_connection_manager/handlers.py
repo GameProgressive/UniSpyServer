@@ -262,6 +262,11 @@ class InviteToHandler(HandlerBase):
     _request: InviteToRequest
 
     def _data_operate(self) -> None:
+        """
+        todo
+        tell service which product IDs the current session can invite other players to
+        """
+        print("invite to handler is not implemented yet")
         # user is offline
         # if (client is null)
         # {
@@ -273,7 +278,7 @@ class InviteToHandler(HandlerBase):
         # }
         # TODO
         # parse user to buddy message system
-        raise NotImplementedError("whether need chat server to interact?")
+        # raise NotImplementedError("whether need chat server to interact?")
 
 
 class StatusHandler(HandlerBase):

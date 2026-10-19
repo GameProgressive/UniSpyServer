@@ -21,6 +21,24 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
 from frontends.gamespy.protocols.chat.contracts.results import WhoIsResult
 
 
+def get_user_by_unique_and_namespaceid(unique_nick: str, namespace_id: int, session: Session) -> tuple[int, int]:
+    """
+    return: userid, profileid
+    """
+    result = (session.query(Users.id, Profiles.id)
+              .join(Profiles, (Users.id == Profiles.userid))
+              .join(SubProfiles, (Profiles.id == SubProfiles.profileid))
+              .where(SubProfiles.namespaceid == namespace_id,
+                     SubProfiles.uniquenick == unique_nick
+                     )
+              .first())
+    if result is None:
+        raise ChatException(
+            f"Can not find user with uniquenick:{unique_nick} in database.")
+    userid, profileid = result
+    return userid, profileid
+
+
 def is_nick_exist(nick_name: str, session: Session) -> bool:
     c = session.query(ChatUserCaches.nick_name).count()
     return c == 1

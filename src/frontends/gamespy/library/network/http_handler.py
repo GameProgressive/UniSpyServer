@@ -36,7 +36,7 @@ class HttpHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         content_length = int(self.headers["Content-Length"])
         data = self.rfile.read(content_length).decode()
-        self.conn = HttpConnection(self, *self.server.unispy_params)  # type: ignore
+        self.conn = HttpConnection(self, self.conn.unispy_param)
         self.conn.on_received(data.encode())
 
     def log_message(self, format, *args):
@@ -50,7 +50,7 @@ class HttpServer(NetworkServerBase):
     def __init__(self, param: ServerParams) -> None:
         super().__init__(param)
         self._server = ThreadingHTTPServer(
-            (self._param.config.listening_address, self._param.config.listening_port),
+            (self.unispy_param.config.listening_address, self.unispy_param.config.listening_port),
             HttpHandler,
         )
 
