@@ -102,9 +102,9 @@ class SearchHandler(CmdHandlerBase):
     SearchWithEmail(client,dict );
     \\search\\\\sesskey\\0\\profileid\\0\\namespaceid\\1\\partnerid\\0\\nick\\mycrysis\\uniquenick\\xiaojiuwo\\email\\koujiangheng@live.cn\\gamename\\gmtest\\final\\
     \\bsrdone\\more\\<more>\\final\\
-    string sendingbuffer = 
+    string sending_buffer = 
     "\\\\bsr\\\\1\\\\nick\\\\mycrysis\\\\uniquenick\\\\1\\\\namespaceid\\\\0\\\\firstname\\\\jiangheng\\\\lastname\\\\kou\\\\email\\\\koujiangheng@live.cn\\\\bsrdone\\\\0\\\\final\\\\";
-    client.Stream.SendAsync(sendingbuffer);
+    client.Stream.SendAsync(sending_buffer);
     \\more\\<number of items>\\final\\
     \\search\\sesskey\\0\\profileid\\0\\namespaceid\\1\\nick\\gbr359_jordips\\gamename\\gbrome\\final\\
     """
