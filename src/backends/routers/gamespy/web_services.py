@@ -38,7 +38,7 @@ from backends.protocols.gamespy.web_services.responses import (
 )
 from backends.urls import WEB_SERVICES
 
-router = APIRouter()
+router = APIRouter(tags=["Soap services"])
 
 # region Altas
 

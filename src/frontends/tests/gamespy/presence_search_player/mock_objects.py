@@ -7,10 +7,12 @@ from frontends.gamespy.protocols.presence_search_player.applications.client impo
 )
 from frontends.gamespy.protocols.presence_search_player.applications.handlers import (
     CheckHandler,
+    NicksHandler,
     SearchHandler,
 )
 from frontends.gamespy.protocols.presence_search_player.contracts.results import (
     CheckResult,
+    NicksResult,
     SearchResult,
 )
 from frontends.tests.gamespy.library.mock_objects import (
@@ -38,6 +40,14 @@ def create_client() -> Client:
     config = CONFIG.servers["PresenceSearchPlayer"]
     create_mock_url(
         config, CheckHandler, CheckResult.model_validate({"profile_id": 0}).model_dump()
+    )
+
+    create_mock_url(
+        config,
+        NicksHandler,
+        NicksResult.model_validate(
+            {"data": [{"nick": "spyguy", "uniquenick": "spyguy"}]}
+        ).model_dump(),
     )
 
     create_mock_url(

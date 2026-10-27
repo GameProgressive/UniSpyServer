@@ -23,7 +23,7 @@ from frontends.gamespy.protocols.natneg.contracts.requests import (
     ErtAckRequest,
 )
 
-router = APIRouter()
+router = APIRouter(tags=["NatNeg"])
 
 
 @router.post(f"{NATNEG}/AddressCheckHandler", responses=RESPONSES_DEF)

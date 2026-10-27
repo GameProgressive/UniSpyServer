@@ -6,7 +6,7 @@ from frontends.gamespy.protocols.presence_search_player.abstractions.contracts i
 
 
 class CheckResult(ResultBase):
-    profile_id: int
+    profile_id: int|None
 
 
 class NewUserResult(ResultBase):

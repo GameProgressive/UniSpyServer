@@ -39,6 +39,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     LoginResult,
     NewProfileResult,
     NewUserResult,
+    RegisterCDKeyResult,
     RegisterNickResult,
     StatusInfoResult,
 )
@@ -127,7 +128,7 @@ class BlockListResponse(ResponseBase):
         # \blk\< num in list >\list\< profileid list - comma delimited >\final\
         self.sending_buffer = f"\\blk\\{len(self._result.profile_ids)}\\list\\"
         self.sending_buffer += ",".join(str(pid) for pid in self._result.profile_ids)
-        self.sending_buffer += "\\final\\"
+        self.sending_buffer += f"\\final\\"
 
 
 class BuddyListResponse(ResponseBase):
@@ -140,10 +141,10 @@ class BuddyListResponse(ResponseBase):
         # \bdy\< num in list >\list\< profileid list - comma delimited >\final\
         self.sending_buffer = f"\\bdy\\{len(self._result.profile_ids)}\\list\\"
         self.sending_buffer += ",".join(str(pid) for pid in self._result.profile_ids)
-        self.sending_buffer += "\\final\\"
+        self.sending_buffer += f"\\final\\"
 
 
-# region Buddy Message
+# region Buddy Message (no operation id needed)
 class BuddyMessageResponseBase(ResponseBase):
     _result: BuddyMessageResultBase
     _type: BuddyMessageType
@@ -273,23 +274,18 @@ class NewProfileResponse(ResponseBase):
         super().__init__(result)
 
     def build(self):
-        # fmt: off
         self.sending_buffer = f"\\npr\\\\profileid\\{self.sending_buffer}\\id\\{self._result.operation_id}\\final\\"
-        # fmt: on
 
 
 class RegisterCDKeyResposne(ResponseBase):
-    def __init__(self) -> None:
-        pass
+    _result: RegisterCDKeyResult
 
     def build(self):
-        self.sending_buffer = "\\rc\\\\final\\"
+        self.sending_buffer = f"\\rc\\\\id\\{self._result.operation_id}\\final\\"
 
 
 class RegisterNickResponse(ResponseBase):
     _result: RegisterNickResult
 
     def build(self) -> None:
-        # fmt: off
-        self.sending_buffer = f"\\rn\\\\id\\{self._result.operation_id}\\final\\" 
-        # fmt: on
+        self.sending_buffer = f"\\rn\\\\id\\{self._result.operation_id}\\final\\"

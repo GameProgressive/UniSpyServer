@@ -159,3 +159,8 @@ class NewProfileResult(ResultBase):
 @final
 class RegisterNickResult(ResultBase):
     pass
+
+
+@final
+class RegisterCDKeyResult(ResultBase):
+    pass

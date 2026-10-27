@@ -36,7 +36,7 @@ from backends.protocols.gamespy.presence_search_player.responses import (
 )
 from backends.urls import PRESENCE_SEARCH_PLAYER
 
-router = APIRouter()
+router = APIRouter(tags=["Presence search player"])
 
 
 @router.post(f"{PRESENCE_SEARCH_PLAYER}/CheckHandler", responses=RESPONSES_DEF)

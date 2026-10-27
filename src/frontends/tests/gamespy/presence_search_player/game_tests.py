@@ -8,9 +8,11 @@ from frontends.gamespy.protocols.presence_search_player.applications.switcher im
 )
 from frontends.gamespy.protocols.presence_search_player.contracts.requests import (
     CheckRequest,
+    NicksRequest,
 )
 from frontends.gamespy.protocols.presence_search_player.contracts.responses import (
     CheckResponse,
+    NicksResponse,
 )
 from frontends.tests.gamespy.presence_search_player.mock_objects import create_client
 
@@ -33,6 +35,23 @@ class GameTest(unittest.TestCase):
         self.assertEqual("spyguy@gamespy.com", request.email)
         self.assertEqual("4a7d1ed414474e4033ac29ccb8653d9b", request.password)
         self.assertEqual("\\cur\\0\\pid\\0\\final\\", response.sending_buffer)
+
+    @responses.activate
+    def test_gamespy_arcade_2026_10_21(self):
+        raw = "\\nicks\\\\email\\spyguy@gamespy.com\\passenc\\JsLEwg__\\namespaceid\\1\\partnerid\\0\\gamename\\gslive\\final\\"
+        client = create_client()
+        switcher = Switcher(client, raw)
+        switcher.handle()
+        request = switcher._handlers[0]._request
+        if TYPE_CHECKING:
+            request = cast(NicksRequest, request)
+        response = switcher._handlers[0]._response
+        if TYPE_CHECKING:
+            response = cast(NicksResponse, response)
+        self.assertEqual("4a7d1ed414474e4033ac29ccb8653d9b", request.password)
+        self.assertEqual("\\nr\\1\\nick\\spyguy\\ndone\\final\\", response.sending_buffer)
+        
+        
 
 
 if __name__ == "__main__":

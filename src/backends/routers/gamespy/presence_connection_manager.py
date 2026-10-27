@@ -45,10 +45,11 @@ from backends.protocols.gamespy.presence_connection_manager.responses import (
     BuddyMessageFriendAddResponse,
     GetProfileResponse,
     LoginResponse,
+    RegisterCDKeyResponse,
 )
 from backends.urls import PRESENCE_CONNECTION_MANAGER
 
-router = APIRouter()
+router = APIRouter(tags=["Presence connection manager"])
 
 
 @router.post(f"{PRESENCE_CONNECTION_MANAGER}/LoginHandler", responses=RESPONSES_DEF)
@@ -93,49 +94,66 @@ def add_buddy(request: AddBuddyRequest) -> OKResponse:
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler", responses=RESPONSES_DEF)
-def buddy_message_friend_add(request: BuddyMessageFriendAddRequest) -> BuddyMessageFriendAddResponse:
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler",
+    responses=RESPONSES_DEF,
+)
+def buddy_message_friend_add(
+    request: BuddyMessageFriendAddRequest,
+) -> BuddyMessageFriendAddResponse:
     handler = BuddyMessageFriendAddHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/AuthAddBuddyHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/AuthAddBuddyHandler", responses=RESPONSES_DEF
+)
 def auth_add_buddy_handler(request: AuthAddBuddyRequest) -> OKResponse:
     handler = AuthAddBuddyHandler(request)
     handler.handle()
     return OKResponse()
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/GetProfileHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/GetProfileHandler", responses=RESPONSES_DEF
+)
 def get_profile(request: GetProfileRequest) -> GetProfileResponse:
     handler = GetProfileHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/NewProfileHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/NewProfileHandler", responses=RESPONSES_DEF
+)
 def new_proflie(request: NewProfileRequest) -> OKResponse:
     handler = NewProfileHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/RegisterCDKeyHandler", responses=RESPONSES_DEF)
-def register_cdkey(request: RegisterCDKeyRequest) -> OKResponse:
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/RegisterCDKeyHandler", responses=RESPONSES_DEF
+)
+def register_cdkey(request: RegisterCDKeyRequest) -> RegisterCDKeyResponse:
     handler = RegisterCDKeyHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/RegisterNickHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/RegisterNickHandler", responses=RESPONSES_DEF
+)
 def register_nick(request: RegisterNickRequest) -> OKResponse:
     handler = RegisterNickHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/UpdateProfileHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/UpdateProfileHandler", responses=RESPONSES_DEF
+)
 def update_profile(request: UpdateProfileRequest) -> OKResponse:
     handler = UpdateProfileHandler(request)
     handler.handle()
@@ -149,35 +167,47 @@ def status(request: StatusRequest) -> OKResponse:
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/StatusInfoHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/StatusInfoHandler", responses=RESPONSES_DEF
+)
 def status_info(request: StatusInfoRequest) -> OKResponse:
     handler = StatusInfoHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyListRetriveHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/BuddyListRetriveHandler", responses=RESPONSES_DEF
+)
 def buddy_list(request: BuddyListRetriveRequest) -> BuddyListRetriveResponse:
     handler = BuddyListRetriveHandler(request)
     handler.handle()
     return handler.response
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BlockListRetriveHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/BlockListRetriveHandler", responses=RESPONSES_DEF
+)
 def block_list(request: BlockListRetriveRequest) -> BlockListRetriveResponse:
     handler = BlockListRetriveHandler(request)
     handler.handle()
     return handler.response
 
+
 # region Buddy Message
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageFriendAddHandler",
+    responses=RESPONSES_DEF,
+)
 def buddy_add_request_message(request) -> None:
     raise NotImplementedError()
 
 
-@router.post(f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageHandler", responses=RESPONSES_DEF)
+@router.post(
+    f"{PRESENCE_CONNECTION_MANAGER}/BuddyMessageHandler", responses=RESPONSES_DEF
+)
 def buddy_message(request):
     raise NotImplementedError()
 
@@ -185,6 +215,7 @@ def buddy_message(request):
 if __name__ == "__main__":
     import uvicorn
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     uvicorn.run(app, host="0.0.0.0", port=8080)

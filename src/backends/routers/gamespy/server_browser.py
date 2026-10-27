@@ -5,7 +5,7 @@ import backends.protocols.gamespy.server_browser.v2.handlers as v2
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.urls import SERVER_BROWSER_V1, SERVER_BROWSER_V2
 
-router = APIRouter()
+router = APIRouter(tags=["Server browser"])
 # todo maybe implement this in websocket way
 
 client_pool: dict[str, WebSocket] = {}

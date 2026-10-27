@@ -50,6 +50,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.responses
     LoginResponse,
     NewProfileResponse,
     NewUserResponse,
+    RegisterCDKeyResposne,
     RegisterNickResponse,
     StatusInfoResponse,
 )
@@ -62,6 +63,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     LoginResult,
     NewProfileResult,
     NewUserResult,
+    RegisterCDKeyResult,
     RegisterNickResult,
     StatusInfoResult,
     StatusResult,
@@ -155,13 +157,6 @@ class SdkRevisionHandler(CmdHandlerBase):
 
     def _response_construct(self) -> None:
         self._client.info.sdk_revision = self._request.sdk_revision
-        # todo check whether need to send friend add requests
-        bmh = BuddyMessageFriendAddHandler(
-            self._client,
-            BuddyMessageFriendAddRequest(**self._request.model_dump()),
-        )
-        bmh.handle()
-
         if (
             SdkRevisionType.GPINEW_LIST_RETRIEVAL_ON_LOGIN
             in self._client.info.sdk_revision
@@ -185,7 +180,12 @@ class SdkRevisionHandler(CmdHandlerBase):
             or SdkRevisionType.GPINEW_AUTH_NOTIFICATION
             in self._client.info.sdk_revision
         ):
-            pass
+            # todo fix buddy message functions
+            bmh = BuddyMessageFriendAddHandler(
+                self._client,
+                BuddyMessageFriendAddRequest(**self._request.model_dump()),
+            )
+            bmh.handle()
         elif (
             SdkRevisionType.GPINEW_STATUS_NOTIFICATION in self._client.info.sdk_revision
         ):
@@ -302,7 +302,6 @@ class InviteToHandler(LoginedHandlerBase):
         self._is_fetching = False
 
 
-
 @final
 class StatusHandler(CmdHandlerBase):
     _request: StatusRequest
@@ -382,6 +381,8 @@ class NewProfileHandler(CmdHandlerBase):
 @final
 class RegisterCDKeyHandler(CmdHandlerBase):
     _request: RegisterCDKeyRequest
+    _result: RegisterCDKeyResult
+    _response: RegisterCDKeyResposne
 
     def __init__(self, client: Client, request: RegisterCDKeyRequest) -> None:
         assert isinstance(request, RegisterCDKeyRequest)

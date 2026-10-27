@@ -34,3 +34,4 @@ class ResultBase(lib.ResultBase):
 
 class ResponseBase(lib.ResponseBase):
     _result: ResultBase
+    sending_buffer: str

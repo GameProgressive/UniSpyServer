@@ -30,6 +30,7 @@ from backends.protocols.gamespy.presence_connection_manager.responses import (
     BuddyMessageFriendAddResponse,
     GetProfileResponse,
     LoginResponse,
+    RegisterCDKeyResponse,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
@@ -41,6 +42,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     BuddyMessageFriendAddResult,
     GetProfileResult,
     LoginResult,
+    RegisterCDKeyResult,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPLoginBadEmailException,
@@ -345,12 +347,17 @@ class NewProfileHandler(HandlerBase):
 
 class RegisterCDKeyHandler(HandlerBase):
     _request: RegisterCDKeyRequest
-    response: OKResponse
+    response: RegisterCDKeyResponse
 
     def _data_operate(self):
         data.update_cdkey(
-            self._request.data.subprofile_id, self._request.data.cdkey_enc, self._session
+            self._request.data.subprofile_id,
+            self._request.data.cdkey_enc,
+            self._session,
         )
+
+    def _result_construct(self) -> None:
+        self._result = RegisterCDKeyResult(operation_id=self._request.data.operation_id)
 
 
 class RegisterNickHandler(HandlerBase):

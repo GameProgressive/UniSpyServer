@@ -10,7 +10,7 @@ from backends.protocols.gamespy.game_traffic_relay.requests import (
 )
 from backends.urls import GAME_TRAFFIC_RELAY
 
-router = APIRouter()
+router = APIRouter(tags=["Game traffic relay"])
 
 
 @router.post(f"{GAME_TRAFFIC_RELAY}/Heartbeat", responses=RESPONSES_DEF)

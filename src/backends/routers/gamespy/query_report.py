@@ -19,7 +19,7 @@ from backends.protocols.gamespy.query_report.requests import (
 )
 from backends.urls import QUERY_REPORT
 
-router = APIRouter(lifespan=launch_brocker)
+router = APIRouter(lifespan=launch_brocker,tags=["Query report"])
 
 
 @router.websocket(f"{QUERY_REPORT}/ws")

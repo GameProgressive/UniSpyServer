@@ -55,11 +55,10 @@ class NicksResponse(ResponseBase):
         super().__init__(result)
 
     def build(self):
-        self.sending_buffer = "\\nr\\"
+        self.sending_buffer = f"\\nr\\"
         for info in self._result.data:
             self.sending_buffer += f"\\nick\\{info.nick}"
-            if self._result.is_require_uniquenicks:
-                self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
+            self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
         self.sending_buffer += "\\ndone\\final\\"
 
 
@@ -71,11 +70,11 @@ class OthersListResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = "\\otherslist\\"
+        self.sending_buffer = f"\\otherslist\\"
         for info in self._result.data:
             self.sending_buffer += f"\\o\\{info.profile_id}"
             self.sending_buffer += f"\\uniquenick\\{info.unique_nick}"
-        self.sending_buffer += "oldone"
+        self.sending_buffer += "\\oldone\\final\\"
 
 
 class OthersResponse(ResponseBase):
@@ -86,7 +85,7 @@ class OthersResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = "\\others\\"
+        self.sending_buffer = f"\\others\\"
         for info in self._result.data:
             self.sending_buffer += f"\\o\\{info.profile_id}"
             self.sending_buffer += f"\\nick\\{info.nick}"
@@ -105,18 +104,15 @@ class SearchResponse(ResponseBase):
         self._result = result
 
     def build(self):
-        self.sending_buffer = ""
-
-        if len(self._result.data) > 0:
-            self.sending_buffer = "\\bsr\\"
-            for info in self._result.data:
-                self.sending_buffer += str(info.profile_id)
-                self.sending_buffer += f"\\nick\\{info.nick}"
-                self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
-                self.sending_buffer += f"\\namespaceid\\{info.namespace_id}"
-                self.sending_buffer += f"\\firstname\\{info.firstname}"
-                self.sending_buffer += f"\\lastname\\{info.lastname}"
-                self.sending_buffer += f"\\email\\{info.email}"
+        self.sending_buffer = "\\bsr\\"
+        for info in self._result.data:
+            self.sending_buffer += str(info.profile_id)
+            self.sending_buffer += f"\\nick\\{info.nick}"
+            self.sending_buffer += f"\\uniquenick\\{info.uniquenick}"
+            self.sending_buffer += f"\\namespaceid\\{info.namespace_id}"
+            self.sending_buffer += f"\\firstname\\{info.firstname}"
+            self.sending_buffer += f"\\lastname\\{info.lastname}"
+            self.sending_buffer += f"\\email\\{info.email}"
         self.sending_buffer += f"\\bsrdone\\\\more\\0\\final\\"
 
 
@@ -159,9 +155,7 @@ class UniqueSearchResponse(ResponseBase):
 
     _result: UniqueSearchResult
 
-    def __init__(
-        self, result: UniqueSearchResult
-    ) -> None:
+    def __init__(self, result: UniqueSearchResult) -> None:
         assert isinstance(result, UniqueSearchResult)
         super().__init__(result)
 

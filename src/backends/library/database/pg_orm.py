@@ -168,8 +168,8 @@ class Messages(Base):
 
     type: Mapped[int | None] = mapped_column()
 
-    from_user: Mapped[int] = mapped_column(nullable=False)
-    to_user: Mapped[int] = mapped_column(nullable=False)
+    from_subprofile_id: Mapped[int] = mapped_column(nullable=False)
+    to_subprofile_id: Mapped[int] = mapped_column(nullable=False)
     date: Mapped[datetime] = mapped_column(nullable=False, default=datetime.now())
     message: Mapped[str] = mapped_column(Text, nullable=False)
 

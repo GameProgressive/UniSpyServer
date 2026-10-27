@@ -1,5 +1,5 @@
 from typing import final
-
+import json
 import requests
 from frontends.gamespy.library.abstractions.client import ClientBase
 
@@ -145,7 +145,7 @@ class CmdHandlerBase:
         if child class do not require fetch, overide this function to do nothing
         """
         self._url = self._get_url()
-        self._client.log_network_upload(f"[{self._url}] {self._temp_data}")
+        self._client.log_network_upload(f"[{self._url}] {json.dumps(self._temp_data)}")
         try:
             response = requests.post(
                 self._url,

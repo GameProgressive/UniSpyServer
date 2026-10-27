@@ -28,7 +28,7 @@ from backends.protocols.gamespy.game_status.response import (
 )
 from backends.urls import GAMESTATUS
 
-router = APIRouter()
+router = APIRouter(tags=["Game status"])
 
 
 @router.post(f"{GAMESTATUS}/AuthGameHandler", responses=RESPONSES_DEF)

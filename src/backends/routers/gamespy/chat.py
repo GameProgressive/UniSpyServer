@@ -81,7 +81,7 @@ from backends.protocols.gamespy.chat.response import (
 )
 from backends.urls import CHAT
 
-router = APIRouter(lifespan=launch_brocker)
+router = APIRouter(lifespan=launch_brocker,tags=["Chat"])
 client_pool = {}
 
 
