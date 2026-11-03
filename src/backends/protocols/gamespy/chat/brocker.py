@@ -8,18 +8,12 @@ import backends.protocols.gamespy.chat.data as data
 from sqlalchemy.orm import Session
 from backends.library.networks.ws_manager import WebsocketManager as WsManager
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
+from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
 
 
 class WebsocketManager(WsManager):
     """
-    current: single server mode
-    client1 -> frontend1 -> backend1 (rest api)
-    client2 <-  |        <-
-    client3 <-  |
-    """
-
-    """
-    future: distributed mode
+    ! only send message to client, do not receive any message from frontend client
     client1 -> frontend1 -> backend1 (rest api)
     client2 <- |         <-
     client3 <- |          
@@ -29,24 +23,28 @@ class WebsocketManager(WsManager):
     client4 -> frontend4 <- backend4    <-   |
     """
 
-    def _get_wss_in_channel(self, channel_name: str) -> list[WebSocket]:
+    def _get_wss_in_channel(self, channel_name: str) -> dict[str, WebSocket]:
         with Session(_engine) as session:
             ip_addrs = data.get_user_ip_port_by_channel_name(
                 channel_name, session)
-            wss = []
+            wss = {}
             for addr in ip_addrs:
                 if addr in self.client_pool:
-                    wss.append(self.client_pool[addr])
+                    wss[addr] = self.client_pool[addr]
             return wss
 
-    def broadcast_channel_message(self, channel_name: str, message: str, ws_client: WebSocket):
+    def broadcast_channel_message(self, channel_name: str, message: WebsocketMessage, ws_client: WebSocket | None):
         """
             create redis pubsub to share message cross all backends
             currently we simply implement without redis pubsub
         """
-        exclude_addr = self.get_address_str(ws_client)
+
         wss = self._get_wss_in_channel(channel_name)
-        self.broadcast_except(message, wss, [exclude_addr])
+        if ws_client:
+            exclude_addr = self.get_address_str(ws_client)
+        if exclude_addr in wss:
+            del wss[exclude_addr]
+        self.broadcast_selected(message, list(wss.values()))
 
 
 def handle_client_message(message: str):
@@ -54,7 +52,7 @@ def handle_client_message(message: str):
     from backends.protocols.gamespy.chat.handlers import PublishMessageHandler
     try:
         request = PublishMessageRequest.model_validate(message)
-        PublishMessageHandler.broad_cast_loacl(request)
+        PublishMessageHandler.broadcast_local(request)
     except Exception as e:
         GLOBAL_LOGGER.error(str(e))
 

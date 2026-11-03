@@ -1,6 +1,7 @@
 import threading
 from uuid import UUID
 
+from pydantic import BaseModel
 from websockets import ConnectionClosed
 from websockets.sync.client import ClientConnection, connect
 
@@ -8,7 +9,16 @@ from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 
-class WebSocketBrocker(BrockerBase):
+class WebsocketMessage(BaseModel):
+    """
+    The websocket message from backends
+    """
+    server_id: UUID
+    sender_ip_address: str
+    message: str
+
+
+class WebSocketListener(BrockerBase):
     _subscriber: ClientConnection
     _publisher: ClientConnection
 
@@ -32,8 +42,7 @@ class WebSocketBrocker(BrockerBase):
                 message = self._subscriber.recv()
                 self._call_back_func(message)
         except ConnectionClosed:
-            GLOBAL_LOGGER.warn("backend websocket server is not avaliable")
-            # raise UniSpyException("websocket connection is not established")
+            GLOBAL_LOGGER.warn("websocket disconnected")
 
     def unsubscribe(self):
         self._subscriber.close()
@@ -56,19 +65,16 @@ def call_back(str):
 
 
 if __name__ == "__main__":
-    ws = WebSocketBrocker(
+    ws = WebSocketListener(
         name="test_channel",
         url="ws://127.0.0.1:8080/GameSpy/Chat/ws",
         call_back_func=call_back,
     )
     ws.subscribe()
-    from frontends.gamespy.protocols.chat.abstractions.contract import BrockerMessage
 
-    msg = BrockerMessage(
+    msg = WebsocketMessage(
         server_id=UUID("08ed7859-1d9e-448b-8fda-dabb845d85f9"),
-        channel_name="gmtest",
-        sender_ip_address="192.168.0.1",
-        sender_port=80,
+        sender_ip_address="192.168.0.1:6000",
         message="hello",
     )
     # while True:

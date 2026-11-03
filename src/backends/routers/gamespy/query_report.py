@@ -24,7 +24,7 @@ router = APIRouter(lifespan=launch_brocker,tags=["Query report"])
 
 @router.websocket(f"{QUERY_REPORT}/ws")
 async def websocket_endpoint(ws: WebSocket):
-    await MANAGER.process_websocket(ws)
+    await MANAGER.accept_websocket(ws)
 
 
 @router.post(f"{QUERY_REPORT}/HeartbeatHandler", responses=RESPONSES_DEF)

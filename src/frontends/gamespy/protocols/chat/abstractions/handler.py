@@ -2,7 +2,6 @@ from typing import cast
 
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.protocols.chat.abstractions.contract import (
-    BrockerMessage,
     ChatChannelCaches,
     RequestBase,
     ResponseBase,
@@ -53,7 +52,8 @@ class ChannelRequestBase(RequestBase):
         if len(data.irc.params) < 1:
             raise ChatException("Channel name is missing.")
         channel_name = data.irc.params[0]
-        data = ChannelRequestBase(**data.model_dump(), channel_name=channel_name)
+        data = ChannelRequestBase(
+            **data.model_dump(), channel_name=channel_name)
         return data
 
 
@@ -84,47 +84,23 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _response: ResponseBase
     _result: ResultBase
     _channel: ChatChannelCaches
-    _is_broadcast: bool
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
         """
         we handle message broadcasting in backend api
-        frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive
+        client -> frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive -> clients
         """
-        self._is_broadcast = False
-
-    def _response_send(self) -> None:
-        if self._is_broadcast:
-            # send message to backend websocket
-            self.broadcast()
-        else:
-            super()._response_send()
-
-    def broadcast(self):
-        self._response.build()
-        msg = BrockerMessage(
-            server_id=self._client.server_config.server_id,
-            channel_name=self._request.channel_name,
-            sender_ip_address=self._client.connection.remote_ip,
-            sender_port=self._client.connection.remote_port,
-            message=self._response.sending_buffer,
-        )
-        if self._client.brocker:
-            self._client.brocker.publish_message(msg.model_dump_json())
-            self._client.log_network_broadcast(msg)
-        else:
-            self._client.log_warn("broker not exist, no broadcasting.")
 
 
 # region Message
-class MessageRequestBase(ChannelRequestBase):
+class ChannelMessageRequestBase(ChannelRequestBase):
     type: MessageType
     message: str
     target_name: str
 
     @staticmethod
-    def gs_parse(raw_request: str) -> "MessageRequestBase":
+    def gs_parse(raw_request: str) -> "ChannelMessageRequestBase":
         data = ChannelRequestBase.gs_parse(raw_request)
         message = data.irc.trailing
         if "#" in data.channel_name:
@@ -136,24 +112,23 @@ class MessageRequestBase(ChannelRequestBase):
 
             msg_type = MessageType.USER_MESSAGE
             target_name = data.irc.params[0]
-        data = MessageRequestBase(
+        data = ChannelMessageRequestBase(
             **data.model_dump(), type=msg_type, target_name=target_name, message=message
         )
         return data
 
 
-class MessageResultBase(ResultBase):
+class ChannelMessageResultBase(ResultBase):
     sender_nick_name: str
     sender_user_name: str
     target_name: str
     message: str
 
 
-class MessageHandlerBase(ChannelHandlerBase):
-    _request: MessageRequestBase
-    _result: MessageResultBase
+class ChannelMessageHandlerBase(ChannelHandlerBase):
+    _request: ChannelMessageRequestBase
+    _result: ChannelMessageResultBase
 
-    def __init__(self, client: ClientBase, request: MessageRequestBase):
-        assert isinstance(request, MessageRequestBase)
+    def __init__(self, client: Client, request: ChannelMessageRequestBase):
+        assert isinstance(request, ChannelMessageRequestBase)
         super().__init__(client, request)
-        self._is_broadcast = True

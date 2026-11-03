@@ -1,5 +1,5 @@
-from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 
 
-class Broker(WebSocketBrocker):
+class Broker(WebSocketListener):
     pass

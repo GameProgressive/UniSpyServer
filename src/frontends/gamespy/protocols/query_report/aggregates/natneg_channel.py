@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 from frontends.gamespy.protocols.query_report.v2.applications.handlers import (
     ClientMessageHandler,
 )
@@ -24,7 +24,7 @@ class NatNegChannel:
     broker: BrockerBase
     pool: MappingProxyType[str, "Client"]
 
-    def __init__(self, broker_cls: type[BrockerBase] = WebSocketBrocker) -> None:
+    def __init__(self, broker_cls: type[BrockerBase] = WebSocketListener) -> None:
         self.broker = broker_cls(
             "natneg", f"{CONFIG.backend.url}/QueryReport/Channel", self.recieve_message
         )

@@ -2,7 +2,7 @@ from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import ConnectionBase
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
-from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 
 # import servers.query_report.v1
 
@@ -36,7 +36,7 @@ class Client(ClientBase):
             return V2Switcher(self, buffer)
 
     def start_brocker(self):
-        self.brocker = WebSocketBrocker(
+        self.brocker = WebSocketListener(
             name=self.server_config.server_name,
             url=f"{CONFIG.backend.url.replace('http', 'ws')}/GameSpy/Chat/ws",
             call_back_func=self._process_brocker_message,

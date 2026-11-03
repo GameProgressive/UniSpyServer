@@ -45,7 +45,6 @@ from backends.protocols.gamespy.chat.requests import (
     NoticeRequest,
     PartRequest,
     PrivateRequest,
-    PublishMessageRequest,
     QuitRequest,
     SetChannelKeyRequest,
     SetCKeyRequest,
@@ -81,20 +80,27 @@ from backends.protocols.gamespy.chat.response import (
 )
 from backends.urls import CHAT
 
-router = APIRouter(lifespan=launch_brocker,tags=["Chat"])
+router = APIRouter(lifespan=launch_brocker, tags=["Chat"])
 client_pool = {}
 
 
-@router.post(f"{CHAT}/PublishMessageHandler", responses=RESPONSES_DEF)
-def publish_message(request: PublishMessageRequest) -> OKResponse:
-    handler = PublishMessageHandler(request)
-    handler.handle()
-    return handler.response
+# @router.post(f"{CHAT}/PublishMessageHandler", responses=RESPONSES_DEF)
+# def publish_message(request: PublishMessageRequest) -> OKResponse:
+#     """
+#     client send broadcast message to this route, it will broadcast to redis and websocket clients which should be receive message
+#     """
+#     handler = PublishMessageHandler(request)
+#     handler.handle()
+#     return handler.response
 
 
 @router.websocket(f"{CHAT}/ws")
 async def websocket_endpoint(ws: WebSocket):
-    await MANAGER.process_websocket(ws)
+    """
+    websocket is only for sennd message to frontend client, 
+    it will not receive any message from frontend
+    """
+    await MANAGER.accept_websocket(ws)
 
 
 # region General

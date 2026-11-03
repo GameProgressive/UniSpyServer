@@ -94,12 +94,6 @@ class ResponseBase(lib.ResponseBase):
 # region Brocker
 
 
-class BrockerMessage(BaseModel):
-    server_id: UUID
-    channel_name: str
-    sender_ip_address: str
-    sender_port: int
-    message: str
 
 
 class ChatChannelCaches(BaseModel):

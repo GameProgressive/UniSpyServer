@@ -35,6 +35,7 @@ from backends.protocols.gamespy.chat.requests import (
     PartRequest,
     PrivateRequest,
     PublishMessageRequest,
+    PublishMessageType,
     QuitRequest,
     RequestBase,
     SetChannelKeyRequest,
@@ -68,6 +69,7 @@ from backends.protocols.gamespy.chat.response import (
     LoginResponse,
     NoticeResponse
 )
+from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
     LoginRequestType,
@@ -135,7 +137,7 @@ class HandlerBase(hb.HandlerBase):
     def _check_user(self):
         if self._user is None:
             raise NoSuchNickException(
-                f"Can not find user with ip address: {self._request.info.client_ip}:{self._request.info.client_port}"
+                f"Can not find user with ip address: {self._request.info.ip_addr}"
             )
         self._user.update_time = datetime.now()  # type: ignore
 
@@ -188,7 +190,7 @@ class ChannelHandlerBase(HandlerBase):
     def _check_channel_user(self):
         if self._channel_user is None:
             raise NoSuchNickException(
-                f"Can not find channel user with channel name: {self._request.data.channel_name}, ip address: {self._request.info.client_ip}:{self._request.info.client_port}"
+                f"Can not find channel user with channel name: {self._request.data.channel_name}, ip address: {self._request.info.ip_addr}"
             )
         self._channel_user.update_time = datetime.now()
 
@@ -225,33 +227,14 @@ class CdKeyHandler(HandlerBase):
 class CryptHandler(HandlerBase):
     _request: CryptRequest
     response: CryptResponse
-
-    def _request_check(self) -> None:
-        # we just clean the garbage data
-        data.clean_expired_channel_user_cache(self._session)
-        data.clean_expired_channel_cache(self._session)
-        data.clean_expired_user_cache(self._session)
-        self._get_user()
-        if self._user is not None:
-            raise ChatException("user cache is trash in database")
+    _secret_key: str | None
 
     def _data_operate(self) -> None:
-        assert self._user is None
-        if self._user is None:
-            self._user = ChatUserCaches(
-                server_id=self._request.info.server_id,
-                remote_ip=self._request.info.client_ip,
-                remote_port=self._request.info.client_port,
-                nick_name=self._request.info.ip_addr(),
-                game_name=self._request.data.gamename,
-            )
         self._secret_key = data.get_secret_key_by_game_name(
             self._request.data.gamename, self._session
         )
         if self._secret_key is None:
             raise ChatException("game secret key not found in database.")
-        self._session.add(self._user)
-        self._session.commit()
 
     def _result_construct(self) -> None:
         assert isinstance(self._secret_key, str)
@@ -365,6 +348,15 @@ class LoginHandler(HandlerBase):
         user_id, profile_id = data.get_user_by_unique_and_namespaceid(
             self._request.data.unique_nick,
             self._request.data.namespace_id, self._session)
+
+        # self._user = ChatUserCaches(
+        #         server_id=self._request.info.server_id,
+        #         remote_ip=self._request.info.client_ip,
+        #         remote_port=self._request.info.client_port,
+        #         user_name = None,
+        #         nick_name = self._request.data.unique_nick,
+        #         game_name="",
+        #     )
         self._result = LoginResult(profile_id=profile_id, user_id=user_id)
 
     def _login_by_nick_and_email(self):
@@ -375,44 +367,43 @@ class NickHandler(HandlerBase):
     _request: NickRequest
     response: NicksResponse
 
-    def _request_check(self) -> None:
-        self._get_user()
+    # def _request_check(self) -> None:
+    #     self._get_user()
 
     def _data_operate(self) -> None:
         # some game do not use CRYPT
-        # todo check game with no encryption send nick or user request first
         if self._user is None:
-            # assign nick_name to current user
-            self._user = ChatUserCaches(
-                server_id=self._request.info.server_id,
-                remote_ip=self._request.info.client_ip,
-                remote_port=self._request.info.client_port,
-                nick_name=self._request.data.nick_name,
-                game_name="",
-            )
+            raise NoSuchNickException(
+                "user cache not found")
+
+        assert isinstance(self._user.update_time, datetime)
+
+        # if (
+        #     self._user.remote_ip != self._request.info.client_ip
+        #     and self._user.remote_port != self._request.info.client_port
+        #     and (datetime.now() - self._user.update_time).seconds > 120
+        # ):
+        #     data.remove_user_cache(self._user, self._session)
+        # else:
+        #     raise NickNameInUseException(
+        #         old_nick=self._request.data.nick_name,
+        #         new_nick="",
+        #         message="nick name in use",
+        #     )
+        # self.__update_user_cache()
+
+    def __update_user_cache(self) -> None:
+        # update user cache
+        assert self._user
+        if self._request.data.nick_name == "*":
+            self._user.nick_name = self._user.user_name
         else:
-            assert isinstance(self._user.update_time, datetime)
-            if (datetime.now() - self._user.update_time).seconds > 120:
-                # old profile delete it
-                self._session.delete(self._user)
-                # data.remove_user_cache(cache)
-                self._user.nick_name = self._request.data.nick_name
-                return
-            if (
-                self._user.remote_ip != self._request.info.client_ip
-                and self._user.remote_port != self._request.info.client_port
-            ):
-                raise NickNameInUseException(
-                    old_nick=self._request.data.nick_name,
-                    new_nick="",
-                    message="nick name in use",
-                )
-            else:
-                # update user cache
-                self._user.nick_name = self._request.data.nick_name
-        self._session.commit()
+            self._user.nick_name = self._request.data.nick_name
+        self._user.update_time = datetime.now()
+        data.db_commit(self._session)
 
     def _result_construct(self) -> None:
+        self._request.data.nick_name = "spyguy"
         self._result = NickResult(nick_name=self._request.data.nick_name)
 
 
@@ -454,17 +445,44 @@ class SetKeyHandler(HandlerBase):
 class UserHandler(HandlerBase):
     _request: UserRequest
 
-    # def _request_check(self) -> None:
-    #     data.clean_expired_user_cache(self._session)
-    #     super()._request_check()
+    def _request_check(self) -> None:
+        data.clean_expired_channel_user_cache(self._session)
+        data.clean_expired_channel_cache(self._session)
+        data.clean_expired_user_cache(self._session)
+        self._validate_user_name()
+        self._get_user()
+
+    def _validate_user_name(self) -> None:
+        user = data.get_user_cache_by_user_name(
+            self._request.data.user_name, self._session)
+        if user is not None:
+            if (user.remote_ip != self._request.info.client_ip
+                    and user.remote_port != self._request.info.client_port
+                    and (datetime.now() - user.update_time).seconds > 120
+                ):
+                data.remove_user_cache(user, self._session)
+            else:
+                raise NickNameInUseException(
+                    old_nick=self._request.data.user_name,
+                    new_nick="*",
+                    message="user name in use",
+                )
 
     def _data_operate(self) -> None:
-        assert self._user
-        if self._request.data.user_name:
-            self._user.user_name = self._request.data.user_name
-        if self._request.data.nick_name:
-            self._user.nick_name = self._request.data.nick_name
-        self._session.commit()
+        if self._user is None:
+            self._user = ChatUserCaches(
+                server_id=self._request.info.server_id,
+                remote_ip=self._request.info.client_ip,
+                remote_port=self._request.info.client_port,
+                user_name=self._request.data.user_name,
+                nick_name=self._request.data.user_name,
+                game_name="",
+            )
+            data.create_user_cache(self._user, self._session)
+        else:
+            if self._request.data.user_name:
+                self._user.user_name = self._request.data.user_name
+            data.db_commit(self._session)
 
 
 class WhoHandler(HandlerBase):
@@ -919,22 +937,40 @@ class PrivateHandler(MessageHandlerBase):
 
 class PublishMessageHandler(hb.HandlerBase):
     _request: PublishMessageRequest
-    response: OKResponse
 
     def _data_operate(self) -> None:
         # todo add checking on request validation, like broadcast key
-        PublishMessageHandler.broad_cast_loacl(self._request)
+        PublishMessageHandler.broadcast_local(self._request)
         PublishMessageHandler.broadcast_global(self._request)
 
     @staticmethod
-    def broad_cast_loacl(request: PublishMessageRequest):
-        ws = MANAGER.get_websocket(request.info.client_ip)
-        if ws is not None:
-            # if websocket is not none means the frontend that gamespy client connect to is connecting to this backend
-            # then we just broad cast on this channel
-            MANAGER.broadcast_channel_message(
-                request.data.channel_name, request.model_dump_json(), ws
+    def broadcast_local(request: PublishMessageRequest):
+        if request.message_type == PublishMessageType.CHANNEL:
+            # get all user ipaddr in channel and broadcast to them
+            if request.is_exclude_sender:
+                ws = MANAGER.get_websocket(request.sender_client_ip_addr)
+            msg = WebsocketMessage(
+                server_id=request.sender_server_id,
+                sender_ip_address=request.sender_client_ip_addr,
+                message=request.message
             )
+            MANAGER.broadcast_channel_message(request.receiver, msg, ws)
+            pass
+        else:
+            # get user with the name in database and send to it
+            request.receiver
+            with Session(data._engine) as session:
+                ip = data.get_user_ip_by_user_name(request.receiver, session)
+                if ip is None:
+                    return
+            ws = MANAGER.get_websocket(ip)
+            if ws is not None:
+                msg = WebsocketMessage(
+                    server_id=request.sender_server_id,
+                    sender_ip_address=request.sender_client_ip_addr,
+                    message=request.message
+                )
+                MANAGER.broadcast_selected(msg, [ws])
 
     @staticmethod
     def broadcast_global(request: PublishMessageRequest):

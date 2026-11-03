@@ -10,7 +10,7 @@ from frontends.gamespy.library.extentions.string_extentions import (
 from frontends.gamespy.protocols.chat.abstractions.contract import RequestBase
 from frontends.gamespy.protocols.chat.abstractions.handler import (
     ChannelRequestBase,
-    MessageRequestBase,
+    ChannelMessageRequestBase,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     GetKeyRequestType,
@@ -153,7 +153,7 @@ class LoginRequest(RequestBase):
             data_dict["request_type"] = LoginRequestType.NICK_AND_EMAIL_LOGIN
             data_dict["password_hash"] = data.irc.params[2]
             data_dict["nick_name"] = data.irc.trailing[0:profile_nick_index]
-            data_dict["email"] = data.irc.trailing[profile_nick_index + 1 :]
+            data_dict["email"] = data.irc.trailing[profile_nick_index + 1:]
             data = LoginRequest(**data_dict)
             return data
         else:
@@ -175,7 +175,8 @@ class NickRequest(RequestBase):
     def validate_nick_name(cls, value: str) -> str:
         invalid = set(value) & set(INVALID_CHARS)
         if invalid:
-            raise ValueError(f"Invalid characters: {', '.join(sorted(invalid))}")
+            raise ValueError(
+                f"Invalid characters: {', '.join(sorted(invalid))}")
         return value
 
     @staticmethod
@@ -269,16 +270,14 @@ class UserIPRequest(RequestBase):
 
 
 class UserRequest(RequestBase):
-    user_name: str | None
+    user_name: str
     local_ip_address: str
     server_name: str
-    nick_name: str
 
     @staticmethod
     def gs_parse(raw_request: str) -> "UserRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["nick_name"] = data.irc.trailing
         if len(data.irc.params) == 3:
             data_dict["user_name"] = data.irc.params[0]
             data_dict["local_ip_address"] = data.irc.params[1]
@@ -361,7 +360,8 @@ class GetChannelKeyRequest(ChannelRequestBase):
         data = ChannelRequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["cookie"] = data.irc.params[1]
-        data_dict["keys"] = data.irc.trailing.strip("\\").rstrip("\0").split("\\")
+        data_dict["keys"] = data.irc.trailing.strip(
+            "\\").rstrip("\0").split("\\")
         data = GetChannelKeyRequest(**data_dict)
         return data
 
@@ -389,7 +389,8 @@ class GetCKeyRequest(ChannelRequestBase):
             )
 
         data_dict["cookie"] = data.irc.params[2]
-        data_dict["keys"] = data.irc.trailing.strip("\\").rstrip("\0").split("\\")
+        data_dict["keys"] = data.irc.trailing.strip(
+            "\\").rstrip("\0").split("\\")
 
         data = GetCKeyRequest(**data_dict)
         return data
@@ -482,7 +483,8 @@ class ModeRequest(ChannelRequestBase):
             ]
 
             for operation, flag_name in mode_flags_raw:
-                mode_flags.append((ModeOperation(operation), ModeName(flag_name)))
+                mode_flags.append(
+                    (ModeOperation(operation), ModeName(flag_name)))
 
             for operation, flag_name in mode_flags:
                 match flag_name:
@@ -536,7 +538,8 @@ class SetChannelKeyRequest(ChannelRequestBase):
             raise ChatException("Channel keys and values are missing.")
         data_dict = data.model_dump()
         # skip first char \\
-        data_dict["key_values"] = convert_kvstring_to_dictionary(data.irc.trailing[1:])
+        data_dict["key_values"] = convert_kvstring_to_dictionary(
+            data.irc.trailing[1:])
         data_dict.update(is_broadcast=False, cookie=None)
         for key in data_dict["key_values"]:
             if "b_" in key:
@@ -563,14 +566,17 @@ class SetCKeyRequest(ChannelRequestBase):
     def gs_parse(raw_request: str) -> "SetCKeyRequest":
         data = ChannelRequestBase.gs_parse(raw_request)
         if data.irc.params is None:
-            raise ChatException("The cmdParams from SETCKEY request are missing.")
+            raise ChatException(
+                "The cmdParams from SETCKEY request are missing.")
 
         if data.irc.trailing is None:
-            raise ChatException("The longParam from SETCKEY request is missing.")
+            raise ChatException(
+                "The longParam from SETCKEY request is missing.")
         data_dict = data.model_dump()
 
         data_dict["nick_name"] = data.irc.params[1]
-        data_dict["key_values"] = convert_kvstring_to_dictionary(data.irc.trailing[1:])
+        data_dict["key_values"] = convert_kvstring_to_dictionary(
+            data.irc.trailing[1:])
         data_dict.update(is_broadcast=False, cookie=None)
 
         for key in data_dict["key_values"]:
@@ -615,34 +621,34 @@ class TopicRequest(ChannelRequestBase):
 #  region Message
 
 
-class AtmRequest(MessageRequestBase):
+class AtmRequest(ChannelMessageRequestBase):
     @staticmethod
     def gs_parse(raw_request: str) -> "AtmRequest":
-        data = MessageRequestBase.gs_parse(raw_request)
+        data = ChannelMessageRequestBase.gs_parse(raw_request)
         data = AtmRequest(**data.model_dump())
         return data
 
 
-class NoticeRequest(MessageRequestBase):
+class NoticeRequest(ChannelMessageRequestBase):
     @staticmethod
     def gs_parse(raw_request: str) -> "NoticeRequest":
-        data = MessageRequestBase.gs_parse(raw_request)
+        data = ChannelMessageRequestBase.gs_parse(raw_request)
         data = NoticeRequest(**data.model_dump())
         return data
 
 
-class PrivateRequest(MessageRequestBase):
+class PrivateRequest(ChannelMessageRequestBase):
     @staticmethod
     def gs_parse(raw_request: str) -> "PrivateRequest":
-        data = MessageRequestBase.gs_parse(raw_request)
+        data = ChannelMessageRequestBase.gs_parse(raw_request)
         data = PrivateRequest(**data.model_dump())
         return data
 
 
-class UtmRequest(MessageRequestBase):
+class UtmRequest(ChannelMessageRequestBase):
     @staticmethod
     def gs_parse(raw_request: str) -> "UtmRequest":
-        data = MessageRequestBase.gs_parse(raw_request)
+        data = ChannelMessageRequestBase.gs_parse(raw_request)
         data = UtmRequest(**data.model_dump())
         return data
 
@@ -650,7 +656,7 @@ class UtmRequest(MessageRequestBase):
 # region publish message
 
 
-class PublishMessageRequest(MessageRequestBase):
+class PublishMessageRequest(ChannelMessageRequestBase):
     """
-    this class is use to send broadcast message to backends
+    this class is use to send broadcast message to all subscribers
     """

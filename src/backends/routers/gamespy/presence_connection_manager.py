@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
-from backends.protocols.gamespy.chat.requests import RegisterNickRequest
 from backends.protocols.gamespy.presence_connection_manager.handlers import (
     AddBlockHandler,
     AddBuddyHandler,
@@ -38,6 +37,7 @@ from backends.protocols.gamespy.presence_connection_manager.requests import (
     StatusInfoRequest,
     StatusRequest,
     UpdateProfileRequest,
+    RegisterNickRequest
 )
 from backends.protocols.gamespy.presence_connection_manager.responses import (
     BlockListRetriveResponse,
@@ -46,6 +46,7 @@ from backends.protocols.gamespy.presence_connection_manager.responses import (
     GetProfileResponse,
     LoginResponse,
     RegisterCDKeyResponse,
+    RegisterNickResponse,
 )
 from backends.urls import PRESENCE_CONNECTION_MANAGER
 
@@ -145,7 +146,7 @@ def register_cdkey(request: RegisterCDKeyRequest) -> RegisterCDKeyResponse:
 @router.post(
     f"{PRESENCE_CONNECTION_MANAGER}/RegisterNickHandler", responses=RESPONSES_DEF
 )
-def register_nick(request: RegisterNickRequest) -> OKResponse:
+def register_nick(request: RegisterNickRequest) -> RegisterNickResponse:
     handler = RegisterNickHandler(request)
     handler.handle()
     return handler.response

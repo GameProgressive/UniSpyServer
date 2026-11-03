@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, cast
 
 from frontends.gamespy.library.abstractions.connections import ServerParams
 from frontends.gamespy.library.configs import CONFIG
-from frontends.gamespy.library.network.websocket_brocker import WebSocketBrocker
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 from frontends.gamespy.protocols.chat.aggregates.enums import WhoRequestType
 from frontends.gamespy.protocols.chat.applications.client import Client
 from frontends.gamespy.protocols.chat.applications.handlers import (
@@ -50,7 +50,7 @@ from frontends.tests.gamespy.library.mock_objects import (
 )
 
 
-class WebSocketBrockerMock(WebSocketBrocker):
+class WebSocketBrockerMock(WebSocketListener):
     def __init__(self) -> None:
         super().__init__("test", "ws://test.com", print)
 

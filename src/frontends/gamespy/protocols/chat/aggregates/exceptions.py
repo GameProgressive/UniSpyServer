@@ -24,7 +24,7 @@ class IRCException(ChatException, ResponseBase):
 
     @abc.abstractmethod
     def build(self):
-        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code.value}"
+        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code.value}\r\n"
 
 
 class IrcChannelExceptionValidator(UniSpyExceptionValidator):
@@ -87,7 +87,7 @@ class NickNameInUseException(IRCException):
         self.new_nick = new_nick
 
     def build(self):
-        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code} {self.old_nick} {self.new_nick} *\r\n"  # noqa: E501
+        self.sending_buffer = f":{SERVER_DOMAIN} {self.error_code.value} {self.old_nick} {self.new_nick}\r\n"
 
 
 class NoSuchNickException(IRCException):

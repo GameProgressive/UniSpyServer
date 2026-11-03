@@ -53,7 +53,7 @@ def get_secret_key_by_game_name(game_name: str, session: Session) -> str | None:
         return result.secretkey
 
 
-def add_user_cache(cache: ChatUserCaches, session: Session) -> Session:
+def create_user_cache(cache: ChatUserCaches, session: Session) -> Session:
     session.add(cache)
     session.commit()
     return session
@@ -305,6 +305,15 @@ def get_user_cache_by_nick_name(
     )
     return result
 
+def get_user_cache_by_user_name(
+    user_name: str, session: Session
+) -> ChatUserCaches | None:
+    result = (
+        session.query(ChatUserCaches)
+        .where(ChatUserCaches.user_name == user_name)
+        .first()
+    )
+    return result
 
 def get_user_cache_by_ip_addr(ip: str, port: int, session: Session) -> ChatUserCaches | None:
     user = (
@@ -366,7 +375,11 @@ def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     )
 
     return re
-
+def get_user_ip_by_user_name(name:str,session:Session)->str|None:
+    result = session.query(ChatUserCaches).where(ChatUserCaches.user_name==name).first()
+    if result is None:
+        return None
+    return f"{result.remote_ip}:{result.remote_port}"
 
 def get_user_ip_port_by_channel_name(
     channel_name: str, session: Session

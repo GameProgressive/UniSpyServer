@@ -1,3 +1,7 @@
+from enum import Enum
+from typing import Any
+import uuid
+from pydantic import BaseModel
 import backends.library.abstractions.contracts as lib
 import frontends.gamespy.protocols.chat.contracts.requests as fnt
 
@@ -135,7 +139,8 @@ class TopicRequest(ChannelRequestBase):
 
 # region Message
 class MessageRequestBase(ChannelRequestBase):
-    data:fnt.MessageRequestBase
+    data: fnt.ChannelMessageRequestBase
+
 
 class AtmRequest(MessageRequestBase):
     data: fnt.AtmRequest
@@ -153,5 +158,19 @@ class UtmRequest(MessageRequestBase):
     data: fnt.UtmRequest
 
 
-class PublishMessageRequest(ChannelRequestBase):
-    data: fnt.PublishMessageRequest
+class PublishMessageType(Enum):
+    CHANNEL = 0
+    USER = 1
+
+
+class PublishMessageRequest(BaseModel):
+    sender_server_id: uuid.UUID
+    sender_backend_id: uuid.UUID
+    sender_client_ip_addr: str
+    is_exclude_sender: bool
+    message_type: PublishMessageType
+    receiver: str
+    message: str
+
+# class PublishMessageRequest(ChannelRequestBase):
+#     data: fnt.PublishMessageRequest

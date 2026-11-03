@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from frontends.gamespy.protocols.chat.abstractions.contract import ResultBase
-from frontends.gamespy.protocols.chat.abstractions.handler import MessageResultBase
+from frontends.gamespy.protocols.chat.abstractions.handler import ChannelMessageResultBase
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     WhoRequestType,
 )
@@ -182,19 +182,19 @@ if __name__ == "__main__":
 # region Message
 
 
-class AtmResult(MessageResultBase):
+class AtmResult(ChannelMessageResultBase):
     pass
 
 
-class NoticeResult(MessageResultBase):
+class NoticeResult(ChannelMessageResultBase):
     pass
 
 
-class PrivateResult(MessageResultBase):
+class PrivateResult(ChannelMessageResultBase):
     pass
 
 
-class UtmResult(MessageResultBase):
+class UtmResult(ChannelMessageResultBase):
     pass
 
 

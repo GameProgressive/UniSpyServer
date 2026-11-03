@@ -11,6 +11,7 @@ from backends.protocols.gamespy.query_report.requests import (
     HeartbeatRequestV1,
     KeepAliveRequest,
 )
+from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 from frontends.gamespy.protocols.query_report.aggregates.exceptions import QRException
 
@@ -137,5 +138,9 @@ class ClientMessageHandler(HandlerBase):
         # todo use websocket to send the message to qr client, but how to determine which qr router should be received
         # currently we just use broadcast message to all qr frontends
         from backends.protocols.gamespy.query_report.broker import MANAGER
-
-        MANAGER.broadcast(self._request.data.model_dump_json())
+        msg = WebsocketMessage(
+            server_id=self._request.info.server_id,
+            sender_ip_address=self._request.info.client_ip,
+            message=self._request.data.model_dump_json()
+        )
+        MANAGER.broadcast_all(msg)

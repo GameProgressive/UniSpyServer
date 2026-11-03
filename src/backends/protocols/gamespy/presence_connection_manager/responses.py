@@ -6,6 +6,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     GetProfileResult,
     LoginResult,
     RegisterCDKeyResult,
+    RegisterNickResult,
 )
 
 
@@ -31,3 +32,7 @@ class BuddyMessageFriendAddResponse(DataResponse):
 
 class RegisterCDKeyResponse(DataResponse):
     result: RegisterCDKeyResult
+
+
+class RegisterNickResponse(DataResponse):
+    result: RegisterNickResult

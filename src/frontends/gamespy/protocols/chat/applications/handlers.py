@@ -3,7 +3,7 @@ from frontends.gamespy.protocols.chat.abstractions.contract import IrcParam, Req
 from frontends.gamespy.protocols.chat.abstractions.handler import (
     ChannelHandlerBase,
     CmdHandlerBase,
-    MessageHandlerBase,
+    ChannelMessageHandlerBase,
     PostLoginHandlerBase,
 )
 from frontends.gamespy.protocols.chat.aggregates.enums import (
@@ -298,7 +298,6 @@ class JoinHandler(ChannelHandlerBase):
     def __init__(self, client: Client, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
-        self._is_broadcast = True
 
     def _response_send(self) -> None:
         super()._response_send()
@@ -417,7 +416,7 @@ class TopicHandler(ChannelHandlerBase):
 # region Message
 
 
-class ATMHandler(MessageHandlerBase):
+class ATMHandler(ChannelMessageHandlerBase):
     _request: AtmRequest
     _result: AtmResult
     _response: AtmResponse
@@ -427,7 +426,7 @@ class ATMHandler(MessageHandlerBase):
         super().__init__(client, request)
 
 
-class UTMHandler(MessageHandlerBase):
+class UTMHandler(ChannelMessageHandlerBase):
     _request: UtmRequest
     _result: UtmResult
     _response: UtmResponse
@@ -437,7 +436,7 @@ class UTMHandler(MessageHandlerBase):
         super().__init__(client, request)
 
 
-class NoticeHandler(MessageHandlerBase):
+class NoticeHandler(ChannelMessageHandlerBase):
     _request: NoticeRequest
     _result: NoticeResult
     _response: NoticeResponse
@@ -447,7 +446,7 @@ class NoticeHandler(MessageHandlerBase):
         super().__init__(client, request)
 
 
-class PrivateHandler(MessageHandlerBase):
+class PrivateHandler(ChannelMessageHandlerBase):
     _request: PrivateRequest
     _result: PrivateResult
     _response: PrivateResponse

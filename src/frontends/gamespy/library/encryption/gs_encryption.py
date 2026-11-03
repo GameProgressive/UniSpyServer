@@ -53,11 +53,11 @@ def init(ctx: PeerChatCtx, challenge_key: str, secret_key: str):
 
 
 class ChatCrypt(EncryptBase):
-    def __init__(self, game_secret_key):
+    def __init__(self, game_secret_key,key1=CLIENT_KEY,key2=SERVER_KEY):
         self.client_ctx = PeerChatCtx()
         self.server_ctx = PeerChatCtx()
-        init(self.client_ctx, CLIENT_KEY, game_secret_key)
-        init(self.server_ctx, SERVER_KEY, game_secret_key)
+        init(self.client_ctx, key1, game_secret_key)
+        init(self.server_ctx, key2, game_secret_key)
 
     @staticmethod
     def handle(ctx: PeerChatCtx, data):

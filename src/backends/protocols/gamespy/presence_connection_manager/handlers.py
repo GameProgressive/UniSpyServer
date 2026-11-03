@@ -31,6 +31,7 @@ from backends.protocols.gamespy.presence_connection_manager.responses import (
     GetProfileResponse,
     LoginResponse,
     RegisterCDKeyResponse,
+    RegisterNickResponse,
 )
 from frontends.gamespy.protocols.presence_connection_manager.aggregates.enums import (
     LoginStatus,
@@ -43,6 +44,7 @@ from frontends.gamespy.protocols.presence_connection_manager.contracts.results i
     GetProfileResult,
     LoginResult,
     RegisterCDKeyResult,
+    RegisterNickResult,
 )
 from frontends.gamespy.protocols.presence_search_player.aggregates.exceptions import (
     GPLoginBadEmailException,
@@ -357,7 +359,8 @@ class RegisterCDKeyHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        self._result = RegisterCDKeyResult(operation_id=self._request.data.operation_id)
+        self._result = RegisterCDKeyResult(
+            operation_id=self._request.data.operation_id)
 
 
 class RegisterNickHandler(HandlerBase):
@@ -366,7 +369,7 @@ class RegisterNickHandler(HandlerBase):
     """
 
     _request: RegisterNickRequest
-    response: OKResponse
+    response: RegisterNickResponse
 
     def _data_operate(self):
         data.update_uniquenick(
@@ -374,6 +377,10 @@ class RegisterNickHandler(HandlerBase):
             self._request.data.unique_nick,
             self._session,
         )
+
+    def _result_construct(self) -> None:
+        self._result = RegisterNickResult(
+            operation_id=self._request.data.operation_id)
 
 
 class RemoveBlockHandler(HandlerBase):
