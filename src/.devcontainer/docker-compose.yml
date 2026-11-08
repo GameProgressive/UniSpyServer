@@ -1,0 +1,29 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/python:1-3.12-bullseye
+    container_name: unispy_server_dev
+    command: sleep infinity
+    working_dir: /workspaces/UniSpyServer/src
+    volumes:
+      - ../..:/workspaces/UniSpyServer
+    extra_hosts:
+      - "unispy_backends:127.0.0.1"
+    ports:
+      - "29910:29910/tcp"
+      - "6667:6667/tcp"
+      - "29920:29920/tcp"
+      - "10086:10086/udp"
+      - "27901:27901/udp"
+      - "29900:29900/tcp"
+      - "29901:29901/tcp"
+      - "27900:27900/udp"
+      - "28910:28910/tcp"
+      - "28900:28900/tcp"
+      - "80:80/tcp"
+    networks:
+      - unispy
+
+networks:
+  unispy:
+    external: true
+    name: unispy
