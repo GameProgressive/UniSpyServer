@@ -56,7 +56,7 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(request.product_id, 0)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
+            SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
@@ -73,7 +73,7 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
+            SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
 
@@ -91,7 +91,7 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(0, request.product_id)
         self.assertEqual("gmtest", request.game_name)
         self.assertEqual(
-            SdkRevisionType.GPINEW_REVOKE_NOTIFICATION, request.sdk_revision[0]
+            SdkRevisionType.GPINEW_STATUS_NOTIFICATION, request.sdk_revision[0]
         )
         self.assertEqual(QuietModeType.SILENCE_NONE, request.quiet_mode_flags)
         # region Profile

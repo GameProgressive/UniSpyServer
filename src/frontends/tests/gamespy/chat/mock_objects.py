@@ -25,6 +25,7 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     UTMHandler,
     WhoHandler,
 )
+from frontends.gamespy.protocols.chat.applications.messages import MessageBroadcastHandler
 from frontends.gamespy.protocols.chat.contracts.results import (
     CryptResult,
     GetCKeyResult,
@@ -53,6 +54,7 @@ from frontends.tests.gamespy.library.mock_objects import (
 class WebSocketBrockerMock(WebSocketListener):
     def __init__(self) -> None:
         super().__init__("test", "ws://test.com", print)
+        self.token = "test-token"
 
     def subscribe(self):
         pass
@@ -96,6 +98,7 @@ def create_client() -> Client:
     )
     create_mock_url(config, QuitHandler, {"message": "ok"})
     create_mock_url(config, UserIPHandler, {"message": "ok"})
+    create_mock_url(config, MessageBroadcastHandler, {"message": "ok"})
     create_mock_url(
         config,
         JoinHandler,

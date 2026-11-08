@@ -4,7 +4,7 @@ from uuid import UUID
 from backends.library.abstractions.contracts import OKResponse
 import backends.protocols.gamespy.query_report.data as data
 from backends.library.abstractions.handler_base import HandlerBase
-from backends.protocols.gamespy.query_report.broker import BROCKER, MANAGER
+from backends.protocols.gamespy.query_report.broker import get_broker
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.protocols.gamespy.server_browser.v2.requests import (
     AdHocRequestBase,
@@ -177,7 +177,7 @@ class ClientMessageHandler(HandlerBase):
             ),
         )
 
-        BROCKER.publish_message(qr_request.model_dump_json())
+        get_broker().publish_message(qr_request.model_dump_json())
 
 
 class ServerInfoHandler(HandlerBase):

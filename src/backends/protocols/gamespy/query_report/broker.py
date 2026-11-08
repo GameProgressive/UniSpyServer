@@ -25,11 +25,25 @@ def handle_natneg_message(message: str):
         logger.error(str(e))
 
 
-MANAGER = WebsocketManager()
-BROCKER = RedisBrocker("master", CONFIG.redis.url, handle_natneg_message)
+_manager: WebsocketManager | None = None
+_broker: RedisBrocker | None = None
+
+
+def get_manager() -> WebsocketManager:
+    assert _manager
+    return _manager
+
+
+def get_broker() -> RedisBrocker:
+    assert _broker
+    return _broker
 
 
 @asynccontextmanager
 async def launch_brocker(_: APIRouter):
-    BROCKER.subscribe()
+    global _manager, _broker
+    _manager = WebsocketManager()
+    _broker = RedisBrocker(
+        "master", CONFIG.redis.url, handle_natneg_message)
+    _broker.subscribe()
     yield

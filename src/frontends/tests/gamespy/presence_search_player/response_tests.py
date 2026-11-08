@@ -44,7 +44,7 @@ class ResponseTests(unittest.TestCase):
         resp1.build()
         self.assertEqual(
             resp1.sending_buffer,
-            "\\nr\\nick\\nick1\\uniquenick\\uniquenick1\\ndone\\final\\",
+            "\\nr\\\\nick\\nick1\\uniquenick\\uniquenick1\\ndone\\final\\",
         )
 
         result2 = NicksResult(
@@ -53,7 +53,7 @@ class ResponseTests(unittest.TestCase):
         )
         resp2 = NicksResponse(result2)
         resp2.build()
-        self.assertEqual(resp2.sending_buffer, "\\nr\\ndone\\final\\")
+        self.assertEqual(resp2.sending_buffer, "\\nr\\\\ndone\\final\\")
 
     def test_otherslist(self):
         result1 = OthersListResult(data=[])

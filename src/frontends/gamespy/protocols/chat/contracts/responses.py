@@ -85,12 +85,8 @@ class ListResponse(ResponseBase):
             self._result.invoker_nick_name, self._result.invoker_user_name
         )
         self.sending_buffer = ""
-        for (
-            channel_name,
-            total_channel_user,
-            channel_topic,
-        ) in self._result.channel_info_list:
-            self.sending_buffer += f":{involer_irc_prefix} {ResponseCode.LISTSTART.value} * {channel_name} {total_channel_user} {channel_topic}\r\n"  # noqa
+        for info in self._result.channel_info_list:
+            self.sending_buffer += f":{involer_irc_prefix} {ResponseCode.LISTSTART.value} * {info.channel_name} {info.total_channel_user} {info.channel_topic}\r\n"
         self.sending_buffer += f":{involer_irc_prefix} {ResponseCode.LISTEND.value}\r\n"  # noqa
 
 
@@ -175,14 +171,8 @@ class WhoResponse(ResponseBase):
 
     def build(self):
         self.sending_buffer = ""
-        for (
-            channel_name,
-            user_name,
-            public_ip_address,
-            nick_name,
-            modes,
-        ) in self._result.infos:
-            self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.WHOREPLY.value} * {channel_name} {user_name} {public_ip_address} * {nick_name} {modes} *\r\n"  # noqa
+        for info in self._result.infos:
+            self.sending_buffer += f":{SERVER_DOMAIN} {ResponseCode.WHOREPLY.value} * {info.channel_name} {info.user_name} {info.public_ip_addr} * {info.nick_name} {info.modes} *\r\n"  # noqa
 
         if self._result.request_type == WhoRequestType.GET_CHANNEL_USER_INFO:
             # if len(self._result.infos) > 0:

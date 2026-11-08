@@ -269,12 +269,11 @@ class NewProfileResponse(ResponseBase):
     _result: NewProfileResult
 
     def __init__(self, result: NewProfileResult):
-
         assert isinstance(result, NewProfileResult)
         super().__init__(result)
 
     def build(self):
-        self.sending_buffer = f"\\npr\\\\profileid\\{self.sending_buffer}\\id\\{self._result.operation_id}\\final\\"
+        self.sending_buffer = f"\\npr\\\\profileid\\{self._result.profile_id}\\id\\{self._result.operation_id}\\final\\"
 
 
 class RegisterCDKeyResposne(ResponseBase):

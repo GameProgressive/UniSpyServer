@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from backends.library.abstractions.contracts import OKResponse
 from backends.library.abstractions.handler_base import HandlerBase
-from backends.library.database.pg_orm import _engine, GameServerCaches
+from backends.library.database.pg_orm import GameServerCaches
 from backends.protocols.gamespy.query_report import data
 from backends.protocols.gamespy.query_report.requests import (
     AvaliableRequest,
@@ -137,10 +137,10 @@ class ClientMessageHandler(HandlerBase):
     def _response_construct(self) -> None:
         # todo use websocket to send the message to qr client, but how to determine which qr router should be received
         # currently we just use broadcast message to all qr frontends
-        from backends.protocols.gamespy.query_report.broker import MANAGER
+        from backends.protocols.gamespy.query_report.broker import get_manager
         msg = WebsocketMessage(
             server_id=self._request.info.server_id,
             sender_ip_address=self._request.info.client_ip,
             message=self._request.data.model_dump_json()
         )
-        MANAGER.broadcast_all(msg)
+        get_manager().broadcast_all(msg)

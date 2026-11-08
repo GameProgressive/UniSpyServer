@@ -23,6 +23,7 @@ class ClientInfo:
         self.gamename = None
         self.user_name = None
         self.previously_joined_channel = None
+        self.uniquenick = None
 
     @property
     def irc_prefix(self) -> str:

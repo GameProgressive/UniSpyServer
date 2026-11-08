@@ -11,7 +11,7 @@ from backends.library.database.pg_orm import (
     ChatUserCaches,
 )
 from backends.protocols.gamespy.chat import data
-from backends.protocols.gamespy.chat.brocker import BROCKER, MANAGER
+from backends.protocols.gamespy.chat.brocker import get_brocker, get_manager
 from backends.protocols.gamespy.chat.helper import ChannelHelper
 from backends.protocols.gamespy.chat.requests import (
     AtmRequest,
@@ -348,15 +348,6 @@ class LoginHandler(HandlerBase):
         user_id, profile_id = data.get_user_by_unique_and_namespaceid(
             self._request.data.unique_nick,
             self._request.data.namespace_id, self._session)
-
-        # self._user = ChatUserCaches(
-        #         server_id=self._request.info.server_id,
-        #         remote_ip=self._request.info.client_ip,
-        #         remote_port=self._request.info.client_port,
-        #         user_name = None,
-        #         nick_name = self._request.data.unique_nick,
-        #         game_name="",
-        #     )
         self._result = LoginResult(profile_id=profile_id, user_id=user_id)
 
     def _login_by_nick_and_email(self):
@@ -367,30 +358,12 @@ class NickHandler(HandlerBase):
     _request: NickRequest
     response: NicksResponse
 
-    # def _request_check(self) -> None:
-    #     self._get_user()
-
     def _data_operate(self) -> None:
         # some game do not use CRYPT
         if self._user is None:
             raise NoSuchNickException(
-                "user cache not found")
-
-        assert isinstance(self._user.update_time, datetime)
-
-        # if (
-        #     self._user.remote_ip != self._request.info.client_ip
-        #     and self._user.remote_port != self._request.info.client_port
-        #     and (datetime.now() - self._user.update_time).seconds > 120
-        # ):
-        #     data.remove_user_cache(self._user, self._session)
-        # else:
-        #     raise NickNameInUseException(
-        #         old_nick=self._request.data.nick_name,
-        #         new_nick="",
-        #         message="nick name in use",
-        #     )
-        # self.__update_user_cache()
+                "user not found")
+        self.__update_user_cache()
 
     def __update_user_cache(self) -> None:
         # update user cache
@@ -461,8 +434,8 @@ class UserHandler(HandlerBase):
             self._request.data.user_name, self._session)
         if user is not None:
             if (user.remote_ip != self._request.info.client_ip
-                    and user.remote_port != self._request.info.client_port
-                    and (datetime.now() - user.update_time).seconds > 120
+                        and user.remote_port != self._request.info.client_port
+                        and (datetime.now() - user.update_time).seconds > 120
                     ):
                 data.remove_user_cache(user, self._session)
             else:
@@ -962,7 +935,7 @@ class MessageBroadcastHandler(hb.HandlerBase):
             sender_ip_address=self._request.info.ip_addr,
             message=self._request.data.message
         )
-        MANAGER.broadcast_channel_message(
+        get_manager().broadcast_channel_message(
             self._request.data.target_name, msg)
 
     def broadcast_local_user(self):
@@ -970,14 +943,14 @@ class MessageBroadcastHandler(hb.HandlerBase):
             self._request.data.target_name)
         if ip is None:
             return
-        ws = MANAGER.get_websocket(ip)
+        ws = get_manager().get_websocket(ip)
         if ws is not None:
             msg = WebsocketMessage(
                 server_id=self._request.info.server_id,
                 sender_ip_address=self._request.info.ip_addr,
                 message=self._request.data.message
             )
-            MANAGER.broadcast_selected(msg, [ws])
+            get_manager().broadcast_selected(msg, [ws])
 
     def broadcast_global(self):
-        BROCKER.publish_message(self._request.model_dump_json())
+        get_brocker().publish_message(self._request.model_dump_json())

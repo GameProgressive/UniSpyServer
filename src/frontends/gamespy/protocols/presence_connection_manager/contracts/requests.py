@@ -356,7 +356,7 @@ class InviteToRequest(RequestBase):
     def gs_parse(raw_request: str) -> "InviteToRequest":
         data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["product_id"] = data.request_dict["products"]
+        data_dict["product_id"] = data.request_dict["productid"]
         data_dict["subprofile_id"] = data.request_dict["sesskey"]
         data = InviteToRequest(**data_dict)
         return data

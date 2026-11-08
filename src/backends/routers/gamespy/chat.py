@@ -1,7 +1,7 @@
 from fastapi import APIRouter, FastAPI, WebSocket
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse, Response
-from backends.protocols.gamespy.chat.brocker import MANAGER, launch_brocker
+from backends.protocols.gamespy.chat.brocker import get_manager, launch_brocker
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,
@@ -102,15 +102,15 @@ async def websocket_endpoint(ws: WebSocket):
     websocket is only for sennd message to frontend client, 
     it will not receive any message from frontend
     """
-    await MANAGER.accept_websocket(ws)
+    await get_manager().accept_websocket(ws)
 
 
 @router.post(f"{CHAT}/WebsocketIpBind", responses=RESPONSES_DEF)
 def client_ip_bind(request: WebsocketIpBindRequest):
-    if request.client_ws_address in MANAGER.client_pool:
-        client = MANAGER.client_pool[request.client_ws_address]
-        del MANAGER.client_pool[request.client_ws_address]
-        MANAGER.client_pool[request.client_ip_address] = client
+    if request.client_ws_address in get_manager().client_pool:
+        client = get_manager().client_pool[request.client_ws_address]
+        del get_manager().client_pool[request.client_ws_address]
+        get_manager().client_pool[request.client_ip_address] = client
 
 # region General
 

@@ -49,7 +49,7 @@ class GameTest(unittest.TestCase):
         if TYPE_CHECKING:
             response = cast(NicksResponse, response)
         self.assertEqual("4a7d1ed414474e4033ac29ccb8653d9b", request.password)
-        self.assertEqual("\\nr\\1\\nick\\spyguy\\ndone\\final\\", response.sending_buffer)
+        self.assertEqual("\\nr\\\\nick\\spyguy\\uniquenick\\spyguy\\ndone\\final\\", response.sending_buffer)
         
         
 

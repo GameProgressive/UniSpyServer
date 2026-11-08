@@ -71,11 +71,25 @@ def handle_client_message(message: str):
         GLOBAL_LOGGER.error(str(e))
 
 
-MANAGER = WebsocketManager()
-BROCKER = RedisBrocker("chat", CONFIG.redis.url, handle_client_message)
+_manager: WebsocketManager | None = None
+_brocker: RedisBrocker | None = None
+
+
+def get_manager() -> WebsocketManager:
+    assert _manager
+    return _manager
+
+
+def get_brocker() -> RedisBrocker:
+    assert _brocker
+    return _brocker
 
 
 @asynccontextmanager
 async def launch_brocker(_: APIRouter):
-    BROCKER.subscribe()
+    global _manager
+    _manager = WebsocketManager()
+    global _brocker
+    _brocker = RedisBrocker("chat", CONFIG.redis.url, handle_client_message)
+    _brocker.subscribe()
     yield
