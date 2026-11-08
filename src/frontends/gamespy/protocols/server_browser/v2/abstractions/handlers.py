@@ -39,3 +39,7 @@ class ServerListUpdateOptionHandlerBase(CmdHandlerBase):
         self._client.crypto = EnctypeX(
             self._client.info.game_secret_key, self._client.info.client_challenge
         )
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        self._client.crypto = None

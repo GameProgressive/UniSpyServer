@@ -33,11 +33,11 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         dev_game_name_index = remain_data.index(0)
         data_dict["dev_game_name"] = remain_data[:dev_game_name_index].decode()
 
-        remain_data = remain_data[dev_game_name_index + 1 :]
+        remain_data = remain_data[dev_game_name_index + 1:]
         game_name_index = remain_data.index(0)
         data_dict["game_name"] = remain_data[:game_name_index].decode()
 
-        remain_data = remain_data[game_name_index + 1 :]
+        remain_data = remain_data[game_name_index + 1:]
         data_dict["client_challenge"] = remain_data[:8].decode()
 
         remain_data = remain_data[8:]
@@ -45,11 +45,11 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         data_dict["filter"] = None
         if filter_index > 0:
             data_dict["filter"] = remain_data[:filter_index].decode()
-        remain_data = remain_data[filter_index + 1 :]
+        remain_data = remain_data[filter_index + 1:]
 
         keys_index = remain_data.index(0)
         data_dict["keys"] = remain_data[1:keys_index].decode().split("\\")
-        remain_data = remain_data[keys_index + 1 :]
+        remain_data = remain_data[keys_index + 1:]
 
         byte_update_options = remain_data[:4]
         data_dict["update_option"] = ServerListUpdateOption(
@@ -69,19 +69,20 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         return data
 
 
-class SendMessageRequest(AdHocRequestBase):
+class ClientAdHocMessageRequest(AdHocRequestBase):
     prefix_message: bytes
     client_message: bytes
     natneg_cookie: int
 
     @staticmethod
-    def gs_parse(raw_request: bytes) -> "SendMessageRequest":
+    def gs_parse(raw_request: bytes) -> "ClientAdHocMessageRequest":
         data = AdHocRequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
         data_dict["client_message"] = raw_request[9:]
-        data_dict["natneg_cookie"] = int.from_bytes(data_dict["client_message"][6:10])
+        data_dict["natneg_cookie"] = int.from_bytes(
+            data_dict["client_message"][6:10])
         data_dict["prefix_message"] = data_dict["client_message"][0:5]
-        data = SendMessageRequest(**data_dict)
+        data = ClientAdHocMessageRequest(**data_dict)
         return data
 
 

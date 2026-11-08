@@ -1,6 +1,7 @@
 from typing import cast
 
 from frontends.gamespy.library.abstractions.client import ClientBase
+from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.chat.abstractions.contract import (
     ChatChannelCaches,
     RequestBase,
@@ -27,6 +28,13 @@ class CmdHandlerBase(lib.CmdHandlerBase):
         self._exceptions_mapping = EXCEPTIONS
         super().__init__(client, request)
         assert issubclass(type(request), RequestBase)
+
+    def _prepare_data(self):
+        from frontends.gamespy.protocols.chat.contracts.requests import ClientInfo
+        super()._prepare_data()
+        info = ClientInfo(**self._temp_data["info"],
+                          token=self._client.brocker.token)
+        self._temp_data["info"] = info.model_dump(mode="json")
 
     def _handle_exception(self, ex: Exception) -> None:
         t_ex = type(ex)
@@ -92,6 +100,18 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         client -> frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive -> clients
         """
 
+    def _broadcast(self) -> None:
+        from frontends.gamespy.protocols.chat.applications.messages import MessageBroadcastRequest, MessageBroadcastHandler
+        MessageType.CHANNEL_MESSAGE
+        req = MessageBroadcastRequest(
+            command_name=self._request.command_name,
+            raw_request=self._request.raw_request,
+            message=self._response.sending_buffer,
+            target_name=self._request.channel_name)
+        handler = MessageBroadcastHandler(client=self._client, request=req)
+        # send message to backend
+        handler.handle()
+
 
 # region Message
 class ChannelMessageRequestBase(ChannelRequestBase):
@@ -132,3 +152,7 @@ class ChannelMessageHandlerBase(ChannelHandlerBase):
     def __init__(self, client: Client, request: ChannelMessageRequestBase):
         assert isinstance(request, ChannelMessageRequestBase)
         super().__init__(client, request)
+
+    def _response_send(self) -> None:
+        super()._response_send()
+        self._broadcast()

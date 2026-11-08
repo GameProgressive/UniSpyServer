@@ -33,14 +33,13 @@ class ClientInfo:
 
 class Client(ClientBase):
     info: ClientInfo
-    brocker: WebSocketListener | None
+    brocker: WebSocketListener
 
     def __init__(
         self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter
     ):
         super().__init__(connection, server_config, logger)
         self.info = ClientInfo()
-        self.brocker = None
 
     def _create_switcher(self, buffer: bytes) -> SwitcherBase:
         from frontends.gamespy.protocols.chat.applications.switcher import Switcher
@@ -73,8 +72,8 @@ class Client(ClientBase):
         # TODO: check whether exception here will cause brocker stop
         try:
             assert isinstance(message, str)
-            r = WebsocketMessage.model_validate_strings(message)
-            self.log_network_broadcast(r.model_dump_json())
+            r = WebsocketMessage.model_validate_json(message)
+            self.log_network_broadcast(r.message.encode())
             self.connection.send(r.message.encode())
         except Exception as e:
             # todo change to log and handle exception here

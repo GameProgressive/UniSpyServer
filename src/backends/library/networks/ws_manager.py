@@ -4,6 +4,7 @@ from fastapi import WebSocket, WebSocketDisconnect
 
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
+import secrets
 
 
 class WebsocketManager:
@@ -19,26 +20,30 @@ class WebsocketManager:
     """
     client_pool: dict[str, WebSocket]
     logger: logging.Logger
+    token_pool: dict[int, str]
+    loop: asyncio.AbstractEventLoop
 
     def __init__(self) -> None:
         self.client_pool = {}
         self.logger = logging.getLogger("backend")
-
-    def get_address_str(self, ws: WebSocket) -> str:
-        assert ws.client is not None
-        ws_address = f"{ws.client.host}:{ws.client.port}"
-        return ws_address
+        self.token_pool = {}
+        self.loop = asyncio.get_running_loop()
 
     def connect(self, ws: WebSocket):
         assert ws.client is not None
-        ws_address = self.get_address_str(ws)
-        self.client_pool[ws_address] = ws
+        token = secrets.token_urlsafe(32)
+        self.token_pool[id(ws)] = token
+        self.client_pool[token] = ws
+        return token
 
     def disconnect(self, ws: WebSocket):
         assert ws.client is not None
-        ws_address = self.get_address_str(ws)
-        if ws_address in self.client_pool:
-            del self.client_pool[ws_address]
+        ws_id = id(ws)
+        token = self.token_pool.get(ws_id)
+        if token in self.client_pool:
+            del self.client_pool[token]
+            del self.token_pool[ws_id]
+        return token
 
     def get_websocket(self, ip_address: str) -> WebSocket | None:
         if ip_address in self.client_pool:
@@ -48,10 +53,11 @@ class WebsocketManager:
         self._broadcast(message, list(self.client_pool.values()))
 
     def _broadcast(self, message: WebsocketMessage, wss: list[WebSocket]):
-        loop = asyncio.get_event_loop()
         self.logger.info(f"[cast] [send] {message}")
         for ws in wss:
-            loop.create_task(ws.send_json(message.model_dump(mode="json")))
+            asyncio.run_coroutine_threadsafe(
+                ws.send_json(message.model_dump(mode="json")), self.loop)
+            # loop.create_task(ws.send_json(message.model_dump(mode="json")))
 
     def broadcast_selected(self, message: WebsocketMessage, wss: list[WebSocket]):
         self._broadcast(message, wss)

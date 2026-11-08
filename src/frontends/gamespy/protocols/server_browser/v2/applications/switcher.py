@@ -17,13 +17,13 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions impor
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     P2PGroupRoomListHandler,
-    SendMessageHandler,
+    ClientMessageHandler,
     ServerFullInfoListHandler,
     ServerMainListHandler,
-    UpdateServerInfoHandler,
+    ServerInfoHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
-    SendMessageRequest,
+    ClientAdHocMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
@@ -54,12 +54,12 @@ class Switcher(SwitcherBase):
                 handler = self.__check_update_option(req)
                 return handler
             case CommandName.SERVER_INFO_REQUEST:
-                return UpdateServerInfoHandler(
+                return ServerInfoHandler(
                     self._client, ServerInfoRequest.gs_parse(req)
                 )
             case CommandName.SEND_MESSAGE_REQUEST:
-                return SendMessageHandler(
-                    self._client, SendMessageRequest.gs_parse(req)
+                return ClientMessageHandler(
+                    self._client, ClientAdHocMessageRequest.gs_parse(req)
                 )
             case _:
                 return None

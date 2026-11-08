@@ -5,11 +5,11 @@ from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.applications.handlers import (
     ServerMainListHandler,
-    UpdateServerInfoHandler,
+    ServerInfoHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     ServerMainListResult,
-    UpdateServerInfoResult,
+    ServerInfoResult,
 )
 from frontends.tests.gamespy.library.mock_objects import (
     ConnectionMock,
@@ -49,8 +49,8 @@ def create_v2_client() -> Client:
     )
     create_mock_url(
         config,
-        UpdateServerInfoHandler,
-        UpdateServerInfoResult.model_validate(
+        ServerInfoHandler,
+        ServerInfoResult.model_validate(
             {
                 "game_server_info": {
                     "server_id": "550e8400-e29b-41d4-a716-446655440000",

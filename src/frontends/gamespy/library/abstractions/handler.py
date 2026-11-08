@@ -1,5 +1,5 @@
-from typing import final
 import json
+from typing import final
 import requests
 from frontends.gamespy.library.abstractions.client import ClientBase
 
@@ -12,7 +12,6 @@ from frontends.gamespy.library.abstractions.contracts import (
 )
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.exceptions.general import UniSpyException
-from frontends.gamespy.library.extentions.encoding import UniSpyJsonEncoder
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 
 
@@ -45,6 +44,7 @@ class CmdHandlerBase:
     this is auto assigned variable
     """
     _exceptions_mapping: dict[str, type[UniSpyException]]
+    _temp_data: dict
 
     def __init__(self, client: "ClientBase", request: "RequestBase") -> None:
         assert issubclass(type(client), ClientBase)
@@ -70,7 +70,8 @@ class CmdHandlerBase:
     def _get_exception_mappings(self):
         if "_exceptions_mapping" in self.__class__.__annotations__:
             if len(self._exceptions_mapping) == 0:
-                raise UniSpyException("init _exceptions_mapping in child class")
+                raise UniSpyException(
+                    "init _exceptions_mapping in child class")
 
     def _get_property_types(self):
         """
@@ -128,11 +129,13 @@ class CmdHandlerBase:
             client_ip=self._client.connection.remote_ip,
             server_id=self._client.server_config.server_id,
             client_port=self._client.connection.remote_port,
-        ).model_dump(mode="json")
-        data = self._request.model_dump(mode="json")
+        )
         # if "request_dict" in data:
         #     del data["request_dict"]
-        self._temp_data = {"info": info, "data": data}
+        self._temp_data = {
+            "info": info.model_dump(mode="json"),
+            "data": self._request.model_dump(mode="json")
+        }
 
     def _get_url(self) -> str:
         url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}"
@@ -145,7 +148,8 @@ class CmdHandlerBase:
         if child class do not require fetch, overide this function to do nothing
         """
         self._url = self._get_url()
-        self._client.log_network_upload(f"[{self._url}] {json.dumps(self._temp_data)}")
+        self._client.log_network_upload(
+            f"[{self._url}] {json.dumps(self._temp_data)}")
         try:
             response = requests.post(
                 self._url,
@@ -162,7 +166,8 @@ class CmdHandlerBase:
         if response.status_code in [200, 450, 500]:
             self._http_result = response.json()
             # immidiatly show the http response
-            self._client.log_network_fetch(f"[{self._url}] {self._http_result}")
+            self._client.log_network_fetch(
+                f"[{self._url}] {self._http_result}")
 
         else:
             raise UniSpyException(
@@ -210,7 +215,8 @@ class CmdHandlerBase:
         if child class do not require feach, overide this function to do nothing
         """
         if self._result_cls is None:
-            raise UniSpyException("_result_cls can not be null when feach data.")
+            raise UniSpyException(
+                "_result_cls can not be null when feach data.")
 
         assert issubclass(self._result_cls, ResultBase)
         if "result" not in self._http_result:

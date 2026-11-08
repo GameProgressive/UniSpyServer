@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 )
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
-    SendMessageRequest,
+    ClientAdHocMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
@@ -27,13 +27,13 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.responses import (
     P2PGroupRoomListResponse,
     ServerFullInfoListResponse,
     ServerMainListResponse,
-    UpdateServerInfoResponse,
+    ServerInfoResponse,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     ServerFullInfoListResult,
     ServerMainListResult,
-    UpdateServerInfoResult,
+    ServerInfoResult,
 )
 
 
@@ -52,21 +52,21 @@ def get_clients(game_name: str):
 class AdHocHandler(CmdHandlerBase):
     _message: GameServerInfo
     # !fix this
-    _result: UpdateServerInfoResult
+    _result: ServerInfoResult
 
     def __init__(self, message: GameServerInfo) -> None:
         self._log_current_class()
         self._message = message
 
     def handle(self) -> None:
-        result = UpdateServerInfoResult(game_server_info=self._message)
+        result = ServerInfoResult(game_server_info=self._message)
         match self._message.status:
             case status if (
                 status == GameServerStatus.NORMAL
                 or status == GameServerStatus.UPDATE
                 or status == GameServerStatus.PLAYING
             ):
-                self.response = UpdateServerInfoResponse(result)
+                self.response = ServerInfoResponse(result)
             case GameServerStatus.SHUTDOWN:
                 self.response = DeleteServerInfoResponse(result)
             case _:
@@ -87,23 +87,28 @@ class AdHocHandler(CmdHandlerBase):
                 == ServerListUpdateOption.P2P_SERVER_MAIN_LIST
             )
         ):
-            client.log_info(f"Sending AdHoc message {self._message.status} to client")
+            client.log_info(
+                f"Sending AdHoc message {self._message.status} to client")
             client.send(self.response)
 
 
-class SendMessageHandler(CmdHandlerBase):
-    _request: SendMessageRequest
+class ClientMessageHandler(CmdHandlerBase):
+    """
+    receive client natneg request send to backend to broadcast to qr services
+    client(natneg request) -> backend -> broker -> backend_x -> frontend_x -> game server
+    """
+    _request: ClientAdHocMessageRequest
 
-    def __init__(self, client: Client, request: SendMessageRequest) -> None:
-        assert isinstance(request, SendMessageRequest)
+    def __init__(self, client: Client, request: ClientAdHocMessageRequest) -> None:
+        assert isinstance(request, ClientAdHocMessageRequest)
         super().__init__(client, request)
         # we just need send the message to backend, then backend will send to queryreport frontend, query report frontend will handle for us
 
 
-class UpdateServerInfoHandler(CmdHandlerBase):
+class ServerInfoHandler(CmdHandlerBase):
     _request: ServerInfoRequest
-    _result: UpdateServerInfoResult
-    _response: UpdateServerInfoResponse
+    _result: ServerInfoResult
+    _response: ServerInfoResponse
 
     def __init__(self, client: Client, request: ServerInfoRequest) -> None:
         assert isinstance(request, ServerInfoRequest)

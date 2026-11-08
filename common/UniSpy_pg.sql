@@ -123,6 +123,7 @@ CREATE TABLE unispy.chat_user_caches (
     user_name character varying,
     remote_ip inet NOT NULL,
     remote_port INTEGER NOT NULL,
+    token character varying not NULL UNIQUE,
     key_value jsonb,
     update_time timestamp without time zone NOT NULL
 );

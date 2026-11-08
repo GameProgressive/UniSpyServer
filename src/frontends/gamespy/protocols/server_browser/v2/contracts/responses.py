@@ -32,15 +32,15 @@ from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
     ServerFullInfoListResult,
     ServerMainListResult,
-    UpdateServerInfoResult,
+    ServerInfoResult,
 )
 
 
 class DeleteServerInfoResponse(AdHocResponseBase):
-    _result: UpdateServerInfoResult
+    _result: ServerInfoResult
 
-    def __init__(self, result: UpdateServerInfoResult) -> None:
-        assert isinstance(result, UpdateServerInfoResult)
+    def __init__(self, result: ServerInfoResult) -> None:
+        assert isinstance(result, ServerInfoResult)
         self._result = result
 
     def build(self):
@@ -50,9 +50,9 @@ class DeleteServerInfoResponse(AdHocResponseBase):
         self.sending_buffer = bytes(buffer)
 
 
-class UpdateServerInfoResponse(AdHocResponseBase):
-    def __init__(self, result: UpdateServerInfoResult) -> None:
-        assert isinstance(result, UpdateServerInfoResult)
+class ServerInfoResponse(AdHocResponseBase):
+    def __init__(self, result: ServerInfoResult) -> None:
+        assert isinstance(result, ServerInfoResult)
         self._result = result
         self._buffer = bytearray()
 
@@ -70,7 +70,7 @@ class UpdateServerInfoResponse(AdHocResponseBase):
         )
         self._buffer.extend(header)
         if self._result.game_server_info.data is not None:
-            data_str = UpdateServerInfoResponse._build_kv(
+            data_str = ServerInfoResponse._build_kv(
                 self._result.game_server_info.data)
             self._buffer.extend(data_str)
 
@@ -172,8 +172,8 @@ class ServerFullInfoListResponse(ServerListUpdateOptionResponseBase):
         super().build()
         push_buffer = bytearray()
         for info in self._result.servers_info:
-            result = UpdateServerInfoResult(game_server_info=info)
-            response = UpdateServerInfoResponse(result)
+            result = ServerInfoResult(game_server_info=info)
+            response = ServerInfoResponse(result)
             response.build()
             push_buffer.extend(response.sending_buffer)
         # we append the push server full info response (Adhoc response) to the crypt header

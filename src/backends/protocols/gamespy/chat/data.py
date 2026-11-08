@@ -5,7 +5,6 @@ from sqlalchemy import Column, func
 from sqlalchemy.orm import Session
 
 from backends.library.database.pg_orm import (
-    _engine,
     ChatChannelCaches,
     ChatChannelUserCaches,
     ChatUserCaches,
@@ -13,6 +12,7 @@ from backends.library.database.pg_orm import (
     Profiles,
     SubProfiles,
     Users,
+    get_engine,
 )
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     ChatException,
@@ -172,37 +172,16 @@ def get_channel_by_name(
     return channel
 
 
-def get_channel_user_list_by_ip_port(
-    ip: str, port: int, session: Session
+def get_channel_user_list_by_token(
+    token:str, session: Session
 ) -> list[ChatChannelUserCaches]:
-    assert isinstance(ip, str)
-    assert isinstance(port, int)
-    result = (
-        session.query(ChatChannelUserCaches)
-        .where(
-            ChatChannelUserCaches.remote_ip == ip,
-            ChatChannelUserCaches.remote_port == port,
-        )
-        .all()
+    result = (session.query(ChatChannelUserCaches)
+    .join(
+        ChatUserCaches,
+        ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name
     )
+    .where(ChatUserCaches.token == token).all())
     return result
-
-
-# def get_channel_cache_list_by_ip_port(
-#     ip: str, port: int, session: Session
-# ) -> list[ChatChannelCaches]:
-#     assert isinstance(ip, str)
-#     assert isinstance(port, int)
-#     result = (
-#         session.query(ChatChannelCaches)
-#         .join(ChatChannelUserCaches)
-#         .where(
-#             ChatChannelUserCaches.remote_ip == ip,
-#             ChatChannelUserCaches.remote_port == port,
-#         )
-#         .all()
-#     )
-#     return result
 
 
 def get_channel_by_name_and_ip_port(
@@ -305,9 +284,7 @@ def get_user_cache_by_nick_name(
     )
     return result
 
-def get_user_cache_by_user_name(
-    user_name: str, session: Session
-) -> ChatUserCaches | None:
+def get_user_cache_by_user_name(user_name: str, session: Session) -> ChatUserCaches | None:
     result = (
         session.query(ChatUserCaches)
         .where(ChatUserCaches.user_name == user_name)
@@ -315,24 +292,10 @@ def get_user_cache_by_user_name(
     )
     return result
 
-def get_user_cache_by_ip_addr(ip: str, port: int, session: Session) -> ChatUserCaches | None:
-    user = (
-        session.query(ChatUserCaches)
-        .where(ChatUserCaches.remote_ip == ip, ChatUserCaches.remote_port == port)
-        .first()
-    )
-    return user
-
-
-def get_user_cache_by_ip_port(
-    ip: str, port: int, session: Session
-) -> ChatUserCaches | None:
+def get_user_cache_by_token(token: str, session: Session) -> ChatUserCaches | None:
     result = (
         session.query(ChatUserCaches)
-        .where(
-            ChatUserCaches.remote_ip == ip,
-            ChatUserCaches.remote_port == port,
-        )
+        .where(ChatUserCaches.token == token)
         .first()
     )
     assert isinstance(result, ChatUserCaches | None)
@@ -375,52 +338,48 @@ def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     )
 
     return re
-def get_user_ip_by_user_name(name:str,session:Session)->str|None:
-    result = session.query(ChatUserCaches).where(ChatUserCaches.user_name==name).first()
+
+def get_user_token_by_user_name(name:str)->str|None:
+    with Session(get_engine()) as session:
+        result = session.query(ChatUserCaches).where(ChatUserCaches.user_name==name).first()
     if result is None:
         return None
-    return f"{result.remote_ip}:{result.remote_port}"
-
-def get_user_ip_port_by_channel_name(
-    channel_name: str, session: Session
-) -> list[tuple[str, str]]:
-    """
-    find the client websocket address in database which updated within 1 min
-    """
-    users = (
-        session.query(ChatUserCaches.remote_ip, ChatUserCaches.remote_port)
-        .join(
-            ChatChannelUserCaches,
-            ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,
-        )
-        .where(
-            ChatChannelUserCaches.channel_name == channel_name,
-            ChatChannelUserCaches.update_time >= datetime.now() - timedelta(minutes=1),
-        )
-        .all()
-    )  # type: ignore
-    users = [user[0] for user in users]
-    assert isinstance(users, list)
-    return users
+    return result.token
 
 
-def remove_channel_user_caches_by_ip_port(ip: str, port: int, session: Session):
-    assert isinstance(ip, str)
-    assert isinstance(port, int)
+def get_user_tokens_by_channel(channel_name:str)-> list[str]:
+    with Session(get_engine()) as session:
+        results = (
+            session.query(ChatUserCaches.token)
+            .join(
+                ChatChannelUserCaches,
+                ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,
+            )
+            .where(
+                ChatChannelUserCaches.channel_name == channel_name,
+                ChatChannelUserCaches.update_time >= datetime.now() - timedelta(minutes=1),
+            )
+            .all()
+        ) 
+    tokens = [result[0] for result in results]
+    assert isinstance(results, list)
+    return tokens
 
-    session.query(ChatChannelUserCaches).where(
-        ChatChannelUserCaches.remote_ip == ip,
-        ChatChannelUserCaches.remote_port == port,
-    ).delete()
+
+def remove_channel_user_caches_by_token(token:str,session:Session):
+    (session.query(ChatChannelUserCaches)
+    .join(
+        ChatUserCaches,
+        ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name
+    )
+    .where(ChatUserCaches.token == token)).delete()
+    session.commit()
 
 
-def remove_user_cache_by_ip_port(ip: str, port: int, session: Session):
-    assert isinstance(ip, str)
-    assert isinstance(port, int)
-    session.query(ChatUserCaches).where(
-        ChatUserCaches.remote_ip == ip,
-        ChatUserCaches.remote_port == port,
-    ).delete()
+
+def remove_user_cache_by_token(token:str,session:Session):
+    session.query(ChatUserCaches).where(ChatUserCaches.token == token).delete()
+    session.commit()
 
 
 def remove_user_cache(cache: ChatUserCaches, session: Session):
@@ -599,7 +558,7 @@ def _flush_chat_database():
     be caution with this function
     this function will remove all datatable for chat
     """
-    with Session(_engine) as session:
+    with Session(get_engine()) as session:
         session.query(ChatChannelUserCaches).delete()
         session.query(ChatUserCaches).delete()
         session.query(ChatChannelCaches).delete()

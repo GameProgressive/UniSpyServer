@@ -31,7 +31,6 @@ from frontends.gamespy.protocols.chat.contracts.requests import (
     PartRequest,
     PingRequest,
     PrivateRequest,
-    PublishMessageRequest,
     QuitRequest,
     SetChannelKeyRequest,
     SetCKeyRequest,
@@ -238,7 +237,8 @@ class UserIPHandler(CmdHandlerBase):
 
     def _data_operate(self) -> None:
         super()._data_operate()
-        self._result = UserIPResult(remote_ip=self._client.connection.remote_ip)
+        self._result = UserIPResult(
+            remote_ip=self._client.connection.remote_ip)
 
 
 class WhoHandler(CmdHandlerBase):
@@ -301,6 +301,7 @@ class JoinHandler(ChannelHandlerBase):
 
     def _response_send(self) -> None:
         super()._response_send()
+        self._broadcast()
         # gamespy sdk join require ciNameReplyHandler
         names_req = NamesRequest(
             command_name=CommandName.NAMES,
@@ -310,21 +311,21 @@ class JoinHandler(ChannelHandlerBase):
         )
         names_handler = NamesHandler(self._client, names_req)
         names_handler.handle()
-
-        mode_req = ModeRequest(
-            command_name=None,
-            raw_request="",
-            irc=IrcParam(prefix="", command="", params=[], trailing=""),
-            request_type=ModeRequestType.GET_CHANNEL_MODES,
-            nick_name=None,
-            user_name=None,
-            limit_number=None,
-            password=None,
-            channel_name=self._result.channel_name,
-            mode_flags=[],
-        )
-        mode_handler = ModeHandler(self._client, mode_req)
-        mode_handler.handle()
+        # irc do not force send MODE
+        # mode_req = ModeRequest(
+        #     command_name=None,
+        #     raw_request="",
+        #     irc=IrcParam(prefix="", command="", params=[], trailing=""),
+        #     request_type=ModeRequestType.GET_CHANNEL_MODES,
+        #     nick_name=None,
+        #     user_name=None,
+        #     limit_number=None,
+        #     password=None,
+        #     channel_name=self._result.channel_name,
+        #     mode_flags=[],
+        # )
+        # mode_handler = ModeHandler(self._client, mode_req)
+        # mode_handler.handle()
 
 
 class KickHandler(ChannelHandlerBase):
@@ -453,13 +454,4 @@ class PrivateHandler(ChannelMessageHandlerBase):
 
     def __init__(self, client: Client, request: PrivateRequest):
         assert isinstance(request, PrivateRequest)
-        super().__init__(client, request)
-
-
-# region publish message handler
-class PublishMessageHandler(CmdHandlerBase):
-    _request: PublishMessageRequest
-
-    def __init__(self, client: Client, request: PublishMessageRequest):
-        assert isinstance(request, PublishMessageRequest)
         super().__init__(client, request)

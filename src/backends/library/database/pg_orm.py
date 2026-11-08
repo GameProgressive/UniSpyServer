@@ -35,11 +35,11 @@ from frontends.gamespy.protocols.query_report.aggregates.enums import GameServer
 
 class IntEnum(TypeDecorator):
     impl = Integer
+    cache_ok = True
 
     def __init__(self, enumtype, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._enumtype = enumtype
-        self.cache_ok = True
 
     def process_bind_param(self, value: enum.Enum, dialect):
         return value.value
@@ -55,10 +55,12 @@ class Base(DeclarativeBase):
 class Users(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
-    emailverified: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    emailverified: Mapped[bool] = mapped_column(
+        Boolean, default=True, nullable=False)
     lastip: Mapped[str | None] = mapped_column(INET)
     lastonline: Mapped[datetime | None] = mapped_column(
         DateTime, default=datetime.now()
@@ -66,8 +68,10 @@ class Users(Base):
     createddate: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.now(), nullable=False
     )
-    banned: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    deleted: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    banned: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False)
+    deleted: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False)
 
 
 class Profiles(Base):
@@ -87,7 +91,8 @@ class Profiles(Base):
 class SubProfiles(Base):
     __tablename__ = "subprofiles"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
+    profileid: Mapped[int] = mapped_column(
+        ForeignKey("profiles.id"), nullable=False)
     uniquenick: Mapped[str | None] = mapped_column()
     namespaceid: Mapped[int] = mapped_column(nullable=False, default=0)
     partnerid: Mapped[int] = mapped_column(nullable=False, default=0)
@@ -103,12 +108,14 @@ class SubProfiles(Base):
 class Blacklist(Base):
     __tablename__ = "black_list"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
+    profileid: Mapped[int] = mapped_column(
+        ForeignKey("profiles.id"), nullable=False)
     targetid: Mapped[int] = mapped_column(nullable=False)
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
     )
-    update_time: Mapped[datetime | None] = mapped_column(default=datetime.now())
+    update_time: Mapped[datetime | None] = mapped_column(
+        default=datetime.now())
 
 
 class FriendRequest(Base):
@@ -134,12 +141,15 @@ class Friendlist(Base):
     __tablename__ = "friend_list"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
-    targetid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
+    profileid: Mapped[int] = mapped_column(
+        ForeignKey("profiles.id"), nullable=False)
+    targetid: Mapped[int] = mapped_column(
+        ForeignKey("profiles.id"), nullable=False)
     namespaceid: Mapped[int] = mapped_column(
         ForeignKey("subprofiles.namespaceid"), nullable=False
     )
-    update_time: Mapped[datetime | None] = mapped_column(default=datetime.now())
+    update_time: Mapped[datetime | None] = mapped_column(
+        default=datetime.now())
 
 
 class Games(Base):
@@ -156,7 +166,8 @@ class GroupList(Base):
     __tablename__ = "grouplist"
 
     groupid: Mapped[int] = mapped_column(primary_key=True)
-    gameid: Mapped[int] = mapped_column(ForeignKey("games.gameid"), nullable=False)
+    gameid: Mapped[int] = mapped_column(
+        ForeignKey("games.gameid"), nullable=False)
     roomname: Mapped[str] = mapped_column(Text, nullable=False)
 
 
@@ -170,7 +181,8 @@ class Messages(Base):
 
     from_subprofile_id: Mapped[int] = mapped_column(nullable=False)
     to_subprofile_id: Mapped[int] = mapped_column(nullable=False)
-    date: Mapped[datetime] = mapped_column(nullable=False, default=datetime.now())
+    date: Mapped[datetime] = mapped_column(
+        nullable=False, default=datetime.now())
     message: Mapped[str] = mapped_column(Text, nullable=False)
 
 
@@ -185,7 +197,8 @@ class PStorage(Base):
     __tablename__ = "pstorage"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profileid: Mapped[int] = mapped_column(ForeignKey("profiles.id"), nullable=False)
+    profileid: Mapped[int] = mapped_column(
+        ForeignKey("profiles.id"), nullable=False)
     ptype: Mapped[int] = mapped_column(nullable=False)
     dindex: Mapped[int] = mapped_column(nullable=False)
     data: Mapped[str] = mapped_column(nullable=False)
@@ -224,7 +237,8 @@ class InitPacketCaches(Base):
     cookie: Mapped[int] = mapped_column(SmallInteger, nullable=False)
     server_id: Mapped[str] = mapped_column(UUID, nullable=False)
     version: Mapped[int] = mapped_column(nullable=False)
-    port_type: Mapped[NatPortType] = mapped_column(IntEnum(NatPortType), nullable=False)
+    port_type: Mapped[NatPortType] = mapped_column(
+        IntEnum(NatPortType), nullable=False)
     client_index: Mapped[NatClientIndex] = mapped_column(
         IntEnum(NatClientIndex), nullable=False
     )
@@ -251,7 +265,8 @@ class NatResultCaches(Base):
         IntEnum(NatPortMappingScheme), nullable=False
     )
     nat_type: Mapped[NatType] = mapped_column(IntEnum(NatType), nullable=False)
-    port_type: Mapped[NatPortType] = mapped_column(IntEnum(NatPortType), nullable=False)
+    port_type: Mapped[NatPortType] = mapped_column(
+        IntEnum(NatPortType), nullable=False)
     client_index: Mapped[NatClientIndex] = mapped_column(
         IntEnum(NatClientIndex), nullable=False
     )
@@ -265,7 +280,8 @@ class RelayServerCaches(Base):
     __tablename__ = "relay_server_caches"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    server_id: Mapped[str] = mapped_column(UUID, primary_key=True, nullable=False)
+    server_id: Mapped[str] = mapped_column(
+        UUID, primary_key=True, nullable=False)
     public_ip: Mapped[str] = mapped_column(nullable=False)
     public_port: Mapped[int] = mapped_column(nullable=False)
     client_count: Mapped[int] = mapped_column(nullable=False)
@@ -302,13 +318,15 @@ class ChatUserCaches(Base):
 
     __tablename__ = "chat_user_caches"
 
-    nick_name: Mapped[str | None] = mapped_column(primary_key=True, nullable=False)
+    nick_name: Mapped[str | None] = mapped_column(
+        primary_key=True, nullable=False)
     server_id: Mapped[str] = mapped_column(UUID, nullable=False)
     user_name: Mapped[str | None] = mapped_column()
     game_name: Mapped[str | None] = mapped_column()
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
     key_value: Mapped[dict] = mapped_column(JSONB, default={})
+    token: Mapped[str | None] = mapped_column()
     update_time: Mapped[datetime] = mapped_column(
         nullable=False, default=datetime.now()
     )
@@ -334,6 +352,9 @@ class ChatChannelUserCaches(Base):
     is_voiceable: Mapped[bool] = mapped_column(nullable=False)
     is_channel_operator: Mapped[bool] = mapped_column(nullable=False)
     is_channel_creator: Mapped[bool] = mapped_column(nullable=False)
+    """
+    use to identify a user
+    """
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
     key_values: Mapped[dict] = mapped_column(JSONB, default={})

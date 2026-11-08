@@ -17,7 +17,7 @@ from backends.protocols.gamespy.chat.handlers import (
     NickHandler,
     PartHandler,
     PrivateHandler,
-    PublishMessageHandler,
+    MessageBroadcastHandler,
     QuitHandler,
     SetCKeyHandler,
     SetKeyHandler,
@@ -45,6 +45,7 @@ from backends.protocols.gamespy.chat.requests import (
     NoticeRequest,
     PartRequest,
     PrivateRequest,
+    MessageBroadcastRequest,
     QuitRequest,
     SetChannelKeyRequest,
     SetCKeyRequest,
@@ -54,6 +55,7 @@ from backends.protocols.gamespy.chat.requests import (
     UserIPRequest,
     UserRequest,
     UtmRequest,
+    WebsocketIpBindRequest,
     WhoIsRequest,
     WhoRequest,
 )
@@ -84,14 +86,14 @@ router = APIRouter(lifespan=launch_brocker, tags=["Chat"])
 client_pool = {}
 
 
-# @router.post(f"{CHAT}/PublishMessageHandler", responses=RESPONSES_DEF)
-# def publish_message(request: PublishMessageRequest) -> OKResponse:
-#     """
-#     client send broadcast message to this route, it will broadcast to redis and websocket clients which should be receive message
-#     """
-#     handler = PublishMessageHandler(request)
-#     handler.handle()
-#     return handler.response
+@router.post(f"{CHAT}/MessageBroadcastHandler", responses=RESPONSES_DEF)
+def publish_message(request: MessageBroadcastRequest) -> OKResponse:
+    """
+    client send broadcast message to this route, it will broadcast to redis and websocket clients which should be receive message
+    """
+    handler = MessageBroadcastHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.websocket(f"{CHAT}/ws")
@@ -102,6 +104,13 @@ async def websocket_endpoint(ws: WebSocket):
     """
     await MANAGER.accept_websocket(ws)
 
+
+@router.post(f"{CHAT}/WebsocketIpBind", responses=RESPONSES_DEF)
+def client_ip_bind(request: WebsocketIpBindRequest):
+    if request.client_ws_address in MANAGER.client_pool:
+        client = MANAGER.client_pool[request.client_ws_address]
+        del MANAGER.client_pool[request.client_ws_address]
+        MANAGER.client_pool[request.client_ip_address] = client
 
 # region General
 

@@ -3,6 +3,7 @@ from typing import final
 
 from pydantic import field_validator
 
+import frontends.gamespy.library.abstractions.contracts as lib
 from frontends.gamespy.library.extentions.string_extentions import (
     convert_keystr_to_list,
     convert_kvstring_to_dictionary,
@@ -26,6 +27,10 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     ChatException,
     NickNameInUseException,
 )
+
+
+class ClientInfo(lib.ClientInfo):
+    token: str
 
 # General
 
@@ -651,12 +656,3 @@ class UtmRequest(ChannelMessageRequestBase):
         data = ChannelMessageRequestBase.gs_parse(raw_request)
         data = UtmRequest(**data.model_dump())
         return data
-
-
-# region publish message
-
-
-class PublishMessageRequest(ChannelMessageRequestBase):
-    """
-    this class is use to send broadcast message to all subscribers
-    """

@@ -1,5 +1,4 @@
-from typing import Dict
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel
 import frontends.gamespy.library.abstractions.contracts as fnt
 
 
@@ -41,7 +40,7 @@ class ErrorResponse(Response):
     pass
 
 
-RESPONSES_DEF: Dict = {
+RESPONSES_DEF: dict = {
     400: {"model": ErrorResponse},
     422: {"model": ErrorResponse},
     500: {"model": ErrorResponse},

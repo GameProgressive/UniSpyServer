@@ -14,8 +14,8 @@ class AdHocRequestBase(RequestBase):
     data: fnt.AdHocRequestBase
 
 
-class SendMessageRequest(AdHocRequestBase):
-    data: fnt.SendMessageRequest
+class ClientMessageRequest(AdHocRequestBase):
+    data: fnt.ClientAdHocMessageRequest
 
 
 class ServerInfoRequest(AdHocRequestBase):

@@ -16,7 +16,7 @@ class WebsocketManager(WsManager):
     pass
 
 
-def handle_client_message(message: str):
+def handle_natneg_message(message: str):
     try:
         request = ClientMessageRequest.model_validate(message)
         handler = ClientMessageHandler(request)
@@ -26,7 +26,7 @@ def handle_client_message(message: str):
 
 
 MANAGER = WebsocketManager()
-BROCKER = RedisBrocker("master", CONFIG.redis.url, handle_client_message)
+BROCKER = RedisBrocker("master", CONFIG.redis.url, handle_natneg_message)
 
 
 @asynccontextmanager

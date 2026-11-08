@@ -4,7 +4,7 @@ import backends.library.abstractions.contracts as lib
 from frontends.gamespy.protocols.query_report.aggregates.enums import GameServerStatus
 
 import frontends.gamespy.protocols.query_report.v1.contracts.requests as v1fnt
-import frontends.gamespy.protocols.query_report.v2.contracts.requests as v2fnt
+import frontends.gamespy.protocols.query_report.v2.contracts.requests as qr_v2_fnt
 
 
 class RequestBase(lib.RequestBase):
@@ -15,31 +15,31 @@ class RequestBase(lib.RequestBase):
 
 
 class AvaliableRequest(RequestBase):
-    data: v2fnt.AvaliableRequest
+    data: qr_v2_fnt.AvaliableRequest
 
 
 class ChallengeRequest(RequestBase):
-    data: v2fnt.ChallengeRequest
+    data: qr_v2_fnt.ChallengeRequest
 
 
 class ClientMessageAckRequest(RequestBase):
-    data: v2fnt.ClientMessageAckRequest
+    data: qr_v2_fnt.ClientMessageAckRequest
 
 
 class ClientMessageRequest(RequestBase):
-    data: v2fnt.ClientMessageRequest
+    data: qr_v2_fnt.ClientMessageRequest
 
 
 class HeartBeatRequest(RequestBase):
-    data: v2fnt.HeartbeatRequest
+    data: qr_v2_fnt.HeartbeatRequest
 
 
 class EchoRequest(RequestBase):
-    data: v2fnt.EchoRequest
+    data: qr_v2_fnt.EchoRequest
 
 
 class KeepAliveRequest(RequestBase):
-    data: v2fnt.KeepAliveRequest
+    data: qr_v2_fnt.KeepAliveRequest
 
 
 # region v1

@@ -16,7 +16,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 )
 
 
-class UpdateServerInfoResult(AdHocResultBase):
+class ServerInfoResult(AdHocResultBase):
     pass
 
 
@@ -34,7 +34,7 @@ class ServerFullInfoListResult(ServerListUpdateOptionResultBase):
     flag: GameServerFlags = GameServerFlags.HAS_FULL_RULES_FLAG
 
 
-class SendMessageResult(ResultBase):
+class ClientMessage(ResultBase):
     sb_sender_id: UUID
     natneg_message: str
     server_info: GameServerInfo

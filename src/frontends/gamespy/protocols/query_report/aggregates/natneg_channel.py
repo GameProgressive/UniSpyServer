@@ -38,18 +38,10 @@ class NatNegChannel:
 
         if client is None:
             GLOBAL_LOGGER.warn(
-                f"Client:{message.target_ip_address}:{
-                    message.target_port
-                } not found, we ignore natneg message from SB: {
-                    message.server_browser_sender_id
-                }"
-            )
+                f"Client:{message.target_ip_address}:{message.target_port} not found, we ignore natneg message from SB: {message.server_browser_sender_id}"            )
             return
 
         GLOBAL_LOGGER.info(
-            f"Get client message from server browser: {
-                message.server_browser_sender_id
-            } [{message.natneg_message}]"
-        )
+            f"Get client message from server browser: {message.server_browser_sender_id} [{message.natneg_message}]")
         handler = ClientMessageHandler(client, message)
         handler.handle()

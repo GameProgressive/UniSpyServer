@@ -37,15 +37,14 @@ class ChannelUserHelper:
         pass
 
     @staticmethod
-    def disconnect(ip: str, port: int):
+    def disconnect(token: str):
         with Session(_engine) as session:
-            user = data.get_user_cache_by_ip_addr(ip, port, session)
+            user = data.get_user_cache_by_token(token, session)
             if user is None:
                 return
             session.delete(user)
-            channel_users = data.get_channel_user_list_by_ip_port(
-                user.remote_ip,  # type: ignore
-                user.remote_port,  # type: ignore
+            channel_users = data.get_channel_user_list_by_token(
+                token,
                 session,
             )
             for user in channel_users:
@@ -219,9 +218,11 @@ class ChannelHelper:
     ):
         for operation, name in request.data.mode_flags:
             if operation == ModeOperation.SET:
-                ChannelHelper.mode_set(name, channel, changer, request, session)
+                ChannelHelper.mode_set(
+                    name, channel, changer, request, session)
             else:
-                ChannelHelper.mode_unset(name, channel, changer, request, session)
+                ChannelHelper.mode_unset(
+                    name, channel, changer, request, session)
         session.commit()
 
     @staticmethod
@@ -330,7 +331,8 @@ class ChannelHelper:
     def get_all_user_nick_string(channel: ChatChannelCaches, session: Session) -> str:
         assert isinstance(channel, ChatChannelCaches)
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(
+            channel.channel_name, session)
         nicks = ""
         for user in users:
             assert isinstance(user.is_channel_creator, bool)
@@ -350,7 +352,8 @@ class ChannelHelper:
     ) -> list[ChatChannelUserCaches]:
         assert channel is not None
         assert isinstance(channel.channel_name, str)
-        users = data.get_channel_user_caches_by_name(channel.channel_name, session)
+        users = data.get_channel_user_caches_by_name(
+            channel.channel_name, session)
         return users
 
     @staticmethod

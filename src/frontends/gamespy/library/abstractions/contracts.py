@@ -9,11 +9,11 @@ class ClientInfo(BaseModel):
     server_id: UUID4
     client_ip: str
     client_port: int = Field(ge=1, le=65535)
-    websocket_address: str | None = None
 
     @property
     def ip_addr(self) -> str:
         return f"{self.client_ip}:{self.client_port}"
+
 
 
 class RequestBase(BaseModel):

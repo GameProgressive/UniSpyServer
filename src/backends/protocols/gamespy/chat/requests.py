@@ -1,12 +1,14 @@
 from enum import Enum
 from typing import Any
 import uuid
-from pydantic import BaseModel
+from pydantic import UUID4, BaseModel
 import backends.library.abstractions.contracts as lib
 import frontends.gamespy.protocols.chat.contracts.requests as fnt
+import frontends.gamespy.protocols.chat.applications.messages as fnt_msg
 
 
 class RequestBase(lib.RequestBase):
+    info: fnt.ClientInfo
     data: fnt.RequestBase
 
 
@@ -163,14 +165,11 @@ class PublishMessageType(Enum):
     USER = 1
 
 
-class PublishMessageRequest(BaseModel):
-    sender_server_id: uuid.UUID
-    sender_backend_id: uuid.UUID
-    sender_client_ip_addr: str
-    is_exclude_sender: bool
-    message_type: PublishMessageType
-    receiver: str
-    message: str
+class MessageBroadcastRequest(RequestBase):
+    data: fnt_msg.MessageBroadcastRequest
 
-# class PublishMessageRequest(ChannelRequestBase):
-#     data: fnt.PublishMessageRequest
+
+class WebsocketIpBindRequest(BaseModel):
+    server_id: UUID4
+    client_ip_address: str
+    client_ws_address: str

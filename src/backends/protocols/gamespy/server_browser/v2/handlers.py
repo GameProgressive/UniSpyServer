@@ -1,19 +1,19 @@
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
 
+from backends.library.abstractions.contracts import OKResponse
 import backends.protocols.gamespy.query_report.data as data
 from backends.library.abstractions.handler_base import HandlerBase
 from backends.protocols.gamespy.query_report.broker import BROCKER, MANAGER
 from backends.protocols.gamespy.query_report.requests import ClientMessageRequest
 from backends.protocols.gamespy.server_browser.v2.requests import (
     AdHocRequestBase,
-    SendMessageRequest,
+    ClientMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
 from backends.protocols.gamespy.server_browser.v2.responses import (
     P2PGroupRoomListResponse,
-    SendMessageResponse,
     ServerFullInfoListResponse,
     ServerInfoResponse,
     ServerMainListResponse,
@@ -33,10 +33,10 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.exceptions impor
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.results import (
     P2PGroupRoomListResult,
-    SendMessageResult,
+    ClientMessage,
     ServerFullInfoListResult,
     ServerMainListResult,
-    UpdateServerInfoResult,
+    ServerInfoResult,
 )
 
 # region Server list
@@ -147,13 +147,13 @@ class AdHocHandler(HandlerBase):
         raise NotImplementedError()
 
 
-class SendMessageHandler(HandlerBase):
+class ClientMessageHandler(HandlerBase):
     """
     client -> server browser -> backend -> sb-SendMessageHandler -> qr-ClientMessageHandler -> websocket -> query report -> client
     """
 
-    _request: SendMessageRequest
-    response: SendMessageResponse
+    _request: ClientMessageRequest
+    response: OKResponse
 
     def _data_operate(self):
         # construct client message and invoke frontends qr server client message
@@ -168,15 +168,16 @@ class SendMessageHandler(HandlerBase):
             )
         assert isinstance(cache.instant_key, str)
         assert isinstance(cache.server_id, UUID)
-        import frontends.gamespy.protocols.query_report.v2.contracts.requests as v2fnt
-
-        request = ClientMessageRequest(
+        import frontends.gamespy.protocols.query_report.v2.contracts.requests as qr_v2_fnt
+        import backends.protocols.gamespy.query_report.requests as qr_v2
+        qr_request = qr_v2.ClientMessageRequest(
             info=self._request.info,
-            data=v2fnt.ClientMessageRequest.model_validate(
+            data=qr_v2_fnt.ClientMessageRequest.model_validate(
                 self._request.data.model_dump()
             ),
         )
-        BROCKER.publish_message(request.model_dump_json())
+
+        BROCKER.publish_message(qr_request.model_dump_json())
 
 
 class ServerInfoHandler(HandlerBase):
@@ -195,7 +196,7 @@ class ServerInfoHandler(HandlerBase):
         )
 
     def _result_construct(self) -> None:
-        # TODO: check whether we need respond when gameserver not exist
+        # TODO: check whether we need response when gameserver not exist
         if self._data is None:
             return
-        self._result = UpdateServerInfoResult(game_server_info=self._data)
+        self._result = ServerInfoResult(game_server_info=self._data)

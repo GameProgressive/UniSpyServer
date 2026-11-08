@@ -1,4 +1,5 @@
 import threading
+from typing import Callable
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -7,6 +8,7 @@ from websockets.sync.client import ClientConnection, connect
 
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
+from time import sleep
 
 
 class WebsocketMessage(BaseModel):
@@ -21,9 +23,11 @@ class WebsocketMessage(BaseModel):
 class WebSocketListener(BrockerBase):
     _subscriber: ClientConnection
     _publisher: ClientConnection
+    token: str
 
     def subscribe(self):
         self._publisher = self._subscriber = connect(self.url)
+        self.get_ws_token()
         th = threading.Thread(target=self._listen)
         th.start()
 
@@ -33,16 +37,23 @@ class WebSocketListener(BrockerBase):
         return f"{name[0]}:{name[1]}"
 
     def _listen(self):
-        # we do not listen to channel, if the call back is none
         if self._call_back_func is None:
             return
-
-        try:
-            while True:
+        while True:
+            try:
                 message = self._subscriber.recv()
                 self._call_back_func(message)
-        except ConnectionClosed:
-            GLOBAL_LOGGER.warn("websocket disconnected")
+            except ConnectionClosed:
+                GLOBAL_LOGGER.warn("websocket disconnected")
+                break
+
+    def get_ws_token(self):
+        try:
+            token = self._subscriber.recv()
+            assert isinstance(token, str)
+            self.token = token
+        except:
+            GLOBAL_LOGGER.error("can not get the remote ip")
 
     def unsubscribe(self):
         self._subscriber.close()

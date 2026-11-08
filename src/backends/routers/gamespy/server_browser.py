@@ -53,9 +53,14 @@ def group_list_v1(request: v1.ServerListRequest):
 # region V2
 
 
-@router.post(f"{SERVER_BROWSER_V2}/SendMessageHandler", responses=RESPONSES_DEF)
-def send_message_v2(request: v2.SendMessageRequest) -> OKResponse:
-    raise NotImplementedError()
+@router.post(f"{SERVER_BROWSER_V2}/ClientMessageHandler", responses=RESPONSES_DEF)
+def send_message_v2(request: v2.ClientMessageRequest) -> OKResponse:
+    """
+    receive natneg initial message broadcast to brocker
+    """
+    handler = v2.ClientMessageHandler(request)
+    handler.handle()
+    return handler.response
 
 
 @router.post(f"{SERVER_BROWSER_V2}/P2PGroupRoomListHandler", responses=RESPONSES_DEF)

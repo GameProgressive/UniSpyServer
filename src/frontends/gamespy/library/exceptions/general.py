@@ -50,7 +50,7 @@ class UniSpyException(Exception):
                 ex: UniSpyException = e
                 client.log_error(ex.message)
             elif issubclass(ex_type, BrokenPipeError):
-                client.log_warn("client disconnect before message send")
+                client.log_warn("client disconnect")
 
             else:
                 client.log_error(traceback.format_exc())
