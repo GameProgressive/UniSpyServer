@@ -92,6 +92,7 @@ class ChannelHandlerBase(PostLoginHandlerBase):
     _response: ResponseBase
     _result: ResultBase
     _channel: ChatChannelCaches
+    _is_broadcast: bool
 
     def __init__(self, client: ClientBase, request: RequestBase):
         super().__init__(client, request)
@@ -99,8 +100,17 @@ class ChannelHandlerBase(PostLoginHandlerBase):
         we handle message broadcasting in backend api
         client -> frontends -> backends -> backends_api -> websocket broadcast. -> frontends.client.brocker.receive -> clients
         """
+        self._is_broadcast = False
+        self._is_except_sender = False
+
+    def _response_send(self) -> None:
+        if self._is_broadcast:
+            self._broadcast()
+        else:
+            super()._response_send()
 
     def _broadcast(self) -> None:
+        self._response.build()
         from frontends.gamespy.protocols.chat.applications.messages import MessageBroadcastRequest, MessageBroadcastHandler
         MessageType.CHANNEL_MESSAGE
         req = MessageBroadcastRequest(
@@ -152,7 +162,5 @@ class ChannelMessageHandlerBase(ChannelHandlerBase):
     def __init__(self, client: Client, request: ChannelMessageRequestBase):
         assert isinstance(request, ChannelMessageRequestBase)
         super().__init__(client, request)
-
-    def _response_send(self) -> None:
-        super()._response_send()
-        self._broadcast()
+        self._is_broadcast = True
+        self._is_except_sender = True

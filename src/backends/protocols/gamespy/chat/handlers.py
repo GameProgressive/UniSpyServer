@@ -71,6 +71,7 @@ from backends.protocols.gamespy.chat.response import (
 )
 from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
 from frontends.gamespy.protocols.chat.aggregates.enums import (
+    CommandName,
     GetKeyRequestType,
     LoginRequestType,
     ModeRequestType,
@@ -229,6 +230,9 @@ class CryptHandler(HandlerBase):
     response: CryptResponse
     _secret_key: str | None
 
+    def _request_check(self) -> None:
+        pass
+
     def _data_operate(self) -> None:
         self._secret_key = data.get_secret_key_by_game_name(
             self._request.data.gamename, self._session
@@ -369,19 +373,19 @@ class NickHandler(HandlerBase):
         # update user cache
         assert self._user
         if self._request.data.nick_name == "*":
-            self._user.nick_name = self._user.user_name
+            self._user.nick_name = self._request.info.token
         else:
             self._user.nick_name = self._request.data.nick_name
         self._user.update_time = datetime.now()
         data.db_commit(self._session)
 
     def _result_construct(self) -> None:
-        self._request.data.nick_name = "spyguy"
         self._result = NickResult(nick_name=self._request.data.nick_name)
 
 
 class QuitHandler(HandlerBase):
     _request: QuitRequest
+    response: OKResponse
 
     def _data_operate(self) -> None:
         if self._user is None:
@@ -390,11 +394,7 @@ class QuitHandler(HandlerBase):
             self._request.info.token,
             self._session
         )
-        data.remove_channel_user_caches_by_token(
-            self._request.info.token,
-            self._session
-        )
-        self._session.commit()
+        data.db_commit(self._session)
 
 
 class RegisterNickHandler(HandlerBase):
@@ -434,9 +434,9 @@ class UserHandler(HandlerBase):
             self._request.data.user_name, self._session)
         if user is not None:
             if (user.remote_ip != self._request.info.client_ip
-                        and user.remote_port != self._request.info.client_port
-                        and (datetime.now() - user.update_time).seconds > 120
-                    ):
+                    and user.remote_port != self._request.info.client_port
+                    and (datetime.now() - user.update_time).seconds > 120
+                ):
                 data.remove_user_cache(user, self._session)
             else:
                 raise NickNameInUseException(
@@ -452,7 +452,7 @@ class UserHandler(HandlerBase):
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
                 user_name=self._request.data.user_name,
-                nick_name=self._request.data.user_name,
+                nick_name=self._request.info.token,
                 token=self._request.info.token,
                 game_name="",
             )
@@ -936,7 +936,9 @@ class MessageBroadcastHandler(hb.HandlerBase):
             message=self._request.data.message
         )
         get_manager().broadcast_channel_message(
-            self._request.data.target_name, msg)
+            self._request.data.target_name,
+            msg,
+            self._request.info.token)
 
     def broadcast_local_user(self):
         ip = data.get_user_token_by_user_name(

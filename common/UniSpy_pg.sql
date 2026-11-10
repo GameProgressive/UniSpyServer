@@ -172,6 +172,7 @@ CREATE TABLE unispy.chat_channel_user_caches (
     is_channel_creator boolean NOT NULL,
     remote_ip inet NOT NULL,
     remote_port integer NOT NULL,
+    token character varying not NULL UNIQUE,
     key_values jsonb
 );
 

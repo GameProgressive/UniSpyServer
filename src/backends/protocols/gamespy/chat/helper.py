@@ -100,6 +100,7 @@ class ChannelHelper:
             is_channel_creator=is_creator,
             remote_ip=user.remote_ip,
             remote_port=user.remote_port,
+            token=user.token,
         )
         session.add(chan_user)
 

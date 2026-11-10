@@ -1,14 +1,11 @@
 from contextlib import asynccontextmanager
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from backends.library.database.pg_orm import get_engine
 from backends.library.networks.redis_brocker import RedisBrocker
 from frontends.gamespy.library.configs import CONFIG
-
 import backends.protocols.gamespy.chat.data as data
 from backends.library.networks.ws_manager import WebsocketManager as WsManager
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
-import secrets
 
 
 class WebsocketManager(WsManager):
@@ -23,17 +20,14 @@ class WebsocketManager(WsManager):
     client4 -> frontend4 <- backend4    <-   |      \n
     """
 
-    def broadcast_channel_message(self, channel_name: str, message: WebsocketMessage):
+    def broadcast_channel_message(self, channel_name: str, message: WebsocketMessage,exclude_token: str):
         """
             create redis pubsub to share message cross all backends
             currently we simply implement without redis pubsub
         """
         tokens = data.get_user_tokens_by_channel(channel_name)
-        # wss = {
-        #     token: self.client_pool[token]
-        #     for token in tokens
-        #     if token in self.client_pool
-        # }
+        if exclude_token:
+            tokens = [token for token in tokens if token != exclude_token]
         wss = []
         for token in tokens:
             ws = self.client_pool.get(token)

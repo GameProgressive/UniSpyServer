@@ -21,8 +21,10 @@ class ListResponse(DataResponse):
 class NicksResponse(DataResponse):
     result: NickResult
 
+
 class LoginResponse(DataResponse):
     result: LoginResult
+
 
 class WhoResponse(DataResponse):
     result: WhoResult
@@ -86,4 +88,3 @@ class NoticeResponse(DataResponse):
 
 class PrivateResponse(DataResponse):
     result: PrivateResult
-

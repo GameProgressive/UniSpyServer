@@ -146,7 +146,6 @@ def add_channel(channel: ChatChannelCaches, session: Session):
     session.add(channel)
     session.commit()
 
-
 def get_channel_by_name_and_game(
     channel_name: str, game_name: str, session: Session
 ) -> ChatChannelCaches | None:
@@ -349,18 +348,7 @@ def get_user_token_by_user_name(name:str)->str|None:
 
 def get_user_tokens_by_channel(channel_name:str)-> list[str]:
     with Session(get_engine()) as session:
-        results = (
-            session.query(ChatUserCaches.token)
-            .join(
-                ChatChannelUserCaches,
-                ChatUserCaches.nick_name == ChatChannelUserCaches.nick_name,
-            )
-            .where(
-                ChatChannelUserCaches.channel_name == channel_name,
-                ChatChannelUserCaches.update_time >= datetime.now() - timedelta(minutes=1),
-            )
-            .all()
-        ) 
+        results = session.query(ChatChannelUserCaches.token).where(ChatChannelUserCaches.channel_name==channel_name).all()
     tokens = [result[0] for result in results]
     assert isinstance(results, list)
     return tokens

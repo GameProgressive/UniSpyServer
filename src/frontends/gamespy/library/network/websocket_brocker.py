@@ -1,5 +1,4 @@
 import threading
-from typing import Callable
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -8,7 +7,6 @@ from websockets.sync.client import ClientConnection, connect
 
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from time import sleep
 
 
 class WebsocketMessage(BaseModel):

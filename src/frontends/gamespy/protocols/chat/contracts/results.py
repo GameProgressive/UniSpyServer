@@ -46,20 +46,6 @@ class PingResult(ResultBase):
     user_name: str
 
 
-class QuitResult(ResultBase):
-    class QuitInfo(BaseModel):
-        channel_name: str
-        is_peer_server: bool
-        is_channel_operator: bool
-        leave_reply_sending_buffer: str
-        kick_replay_sending_buffer: str
-
-    quiter_prefix: str
-    channel_infos: list[QuitInfo]
-    # (channel_name: str, is_peer_server: bool, is_channel_operator: bool,leave_reply_sending_buffer: str,kick_replay_sending_buffer: str)
-    message: str
-
-
 class UserIPResult(ResultBase):
     remote_ip: str
 

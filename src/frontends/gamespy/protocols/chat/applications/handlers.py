@@ -206,6 +206,13 @@ class QuitHandler(CmdHandlerBase):
         assert isinstance(request, QuitRequest)
         super().__init__(client, request)
 
+    def _response_send(self) -> None:
+        for channel in self._client.info.joined_channels:
+            req = PartRequest(command_name=CommandName.PART, raw_request="", irc=IrcParam(
+                prefix="", command="", params=[], trailing=""), channel_name=channel, reason=self._request.reason)
+            handler = PartHandler(self._client, req)
+            handler.handle()
+
 
 class SetKeyHandler(PostLoginHandlerBase):
     _request: SetKeyRequest
@@ -272,12 +279,7 @@ class GetChannelKeyHandler(ChannelHandlerBase):
     def __init__(self, client: Client, request: GetChannelKeyRequest):
         assert isinstance(request, GetChannelKeyRequest)
         super().__init__(client, request)
-
-    def _publish_message(self):
-        pass
-
-    def _update_channel_cache(self):
-        pass
+        self._is_broadcast = True
 
 
 class GetCKeyHandler(ChannelHandlerBase):
@@ -298,11 +300,14 @@ class JoinHandler(ChannelHandlerBase):
     def __init__(self, client: Client, request: JoinRequest):
         assert isinstance(request, JoinRequest)
         super().__init__(client, request)
+        self._is_broadcast = True
 
     def _response_send(self) -> None:
+        self._client.info.joined_channels.append(self._result.channel_name)
         super()._response_send()
-        self._broadcast()
-        # gamespy sdk join require ciNameReplyHandler
+        # join request need send back to joiner
+        self._client.send(self._response)
+        # irc protocol join require ciNameReplyHandler
         names_req = NamesRequest(
             command_name=CommandName.NAMES,
             raw_request="",
@@ -311,21 +316,6 @@ class JoinHandler(ChannelHandlerBase):
         )
         names_handler = NamesHandler(self._client, names_req)
         names_handler.handle()
-        # irc do not force send MODE
-        # mode_req = ModeRequest(
-        #     command_name=None,
-        #     raw_request="",
-        #     irc=IrcParam(prefix="", command="", params=[], trailing=""),
-        #     request_type=ModeRequestType.GET_CHANNEL_MODES,
-        #     nick_name=None,
-        #     user_name=None,
-        #     limit_number=None,
-        #     password=None,
-        #     channel_name=self._result.channel_name,
-        #     mode_flags=[],
-        # )
-        # mode_handler = ModeHandler(self._client, mode_req)
-        # mode_handler.handle()
 
 
 class KickHandler(ChannelHandlerBase):
@@ -380,6 +370,7 @@ class PartHandler(ChannelHandlerBase):
     def __init__(self, client: Client, request: PartRequest):
         assert isinstance(request, PartRequest)
         super().__init__(client, request)
+        self._is_broadcast = True
 
 
 class SetChannelKeyHandler(ChannelHandlerBase):

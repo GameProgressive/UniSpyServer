@@ -11,7 +11,6 @@ from frontends.gamespy.protocols.chat.abstractions.contract import (
 
 
 class ClientInfo:
-    previously_joined_channel: str | None
     joined_channels: list[str]
     nick_name: str | None
     gamename: str | None
@@ -22,7 +21,6 @@ class ClientInfo:
         self.nick_name = None
         self.gamename = None
         self.user_name = None
-        self.previously_joined_channel = None
         self.uniquenick = None
 
     @property
@@ -53,6 +51,11 @@ class Client(ClientBase):
         super().on_connected()
 
     def on_disconnected(self) -> None:
+        from frontends.gamespy.protocols.chat.contracts.requests import QuitRequest
+        from frontends.gamespy.protocols.chat.applications.handlers import QuitHandler
+        req = QuitRequest.gs_parse("QUIT :disconnected\r\n")
+        h = QuitHandler(self, req)
+        h.handle()
         self.stop_brocker()
         super().on_disconnected()
 

@@ -358,6 +358,7 @@ class ChatChannelUserCaches(Base):
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
     key_values: Mapped[dict] = mapped_column(JSONB, default={})
+    token: Mapped[str | None] = mapped_column()
 
 
 class GameServerCaches(Base):
