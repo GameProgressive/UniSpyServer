@@ -6,7 +6,7 @@ from frontends.gamespy.library.abstractions.server_launcher import (
 )
 from frontends.gamespy.library.configs import CONFIG
 from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
-from frontends.gamespy.library.network.udp_handler import UdpServer
+from frontends.gamespy.library.network.udp_handler import UdpService
 from frontends.gamespy.protocols.game_traffic_relay.applications.client import Client
 from frontends.gamespy.protocols.game_traffic_relay.applications.connection import (
     ConnectionListener,
@@ -22,7 +22,7 @@ class Service(ServiceBase):
         super().__init__(
             config_name="GameTrafficRelay",
             client_cls=Client,
-            network_server_cls=UdpServer,
+            network_server_cls=UdpService,
         )
 
     def _post_task(self):
@@ -45,7 +45,7 @@ class Service(ServiceBase):
 
         data_to_send_str = json.dumps(data_to_send)
         self._heartbeat_to_backend(
-            f"{CONFIG.backend.url}/GameSpy/GameTrafficRelay/Heartbeat", data_to_send_str
+            f"{CONFIG.backend.http_url}/GameSpy/GameTrafficRelay/Heartbeat", data_to_send_str
         )
 
     def __check_expired_connection(self):

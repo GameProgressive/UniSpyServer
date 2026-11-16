@@ -1,13 +1,14 @@
-from frontends.gamespy.library.abstractions.brocker import BrockerBase
+import threading
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.switcher import SwitcherBase
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.tcp_handler import TcpConnection
-from frontends.gamespy.library.network.websocket_brocker import WebSocketListener, WebsocketMessage
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 from frontends.gamespy.protocols.chat.abstractions.contract import (
     SERVER_DOMAIN,
 )
+from frontends.gamespy.protocols.chat.applications.messages import WebsocketMessage
 
 
 class ClientInfo:
@@ -15,6 +16,7 @@ class ClientInfo:
     nick_name: str | None
     gamename: str | None
     user_name: str | None
+    websocket_token: str
 
     def __init__(self) -> None:
         self.joined_channels = []
@@ -33,6 +35,8 @@ class ClientInfo:
 class Client(ClientBase):
     info: ClientInfo
     brocker: WebSocketListener
+    pool: dict[str, "Client"] = {}
+    channel_pool: dict[str, dict[str, "Client"]] = {}
 
     def __init__(
         self, connection: TcpConnection, server_config: ServerConfig, logger: LogWriter
@@ -46,39 +50,47 @@ class Client(ClientBase):
         switcher = Switcher(self, buffer.decode())
         return switcher
 
-    def on_connected(self) -> None:
-        self.start_brocker()
-        super().on_connected()
-
     def on_disconnected(self) -> None:
+        with self._lock:
+            Client.pool.pop(self.connection.ip_endpoint, None)
         from frontends.gamespy.protocols.chat.contracts.requests import QuitRequest
         from frontends.gamespy.protocols.chat.applications.handlers import QuitHandler
         req = QuitRequest.gs_parse("QUIT :disconnected\r\n")
         h = QuitHandler(self, req)
         h.handle()
-        self.stop_brocker()
-        super().on_disconnected()
 
-    def start_brocker(self):
-        self.brocker = WebSocketListener(
-            name=self.server_config.server_name,
-            url=f"{CONFIG.backend.url.replace('http', 'ws')}/GameSpy/Chat/ws",
-            call_back_func=self._process_brocker_message,
-        )
-        self.brocker.subscribe()
-
-    def stop_brocker(self):
-        assert self.brocker is not None
-        self.brocker.unsubscribe()
-
-    def _process_brocker_message(self, message: str):
-        # responsible for receive message and send out
-        # TODO: check whether exception here will cause brocker stop
+    @staticmethod
+    def websocket_message_callback(message) -> None:
         try:
             assert isinstance(message, str)
             r = WebsocketMessage.model_validate_json(message)
-            self.log_network_broadcast(r.message.encode())
-            self.connection.send(r.message.encode())
+            clients = Client.channel_pool.get(r.message.target_name)
+            if clients is None:
+                return
+            # todo process channel message
+            for client in clients.values():
+                client.log_network_broadcast(r.message.message)
+                client.connection.send(r.message.message.encode())
         except Exception as e:
             # todo change to log and handle exception here
             print(e)
+
+    def join_channel(self, channel_name: str) -> None:
+        clients = self.channel_pool.setdefault(channel_name, {})
+        clients[self.connection.ip_endpoint] = self
+
+        if channel_name not in self.info.joined_channels:
+            self.info.joined_channels.append(channel_name)
+
+    def leave_channel(self, channel_name: str):
+        if channel_name in self.info.joined_channels:
+            self.info.joined_channels.remove(channel_name)
+
+        clients = self.channel_pool.get(channel_name)
+        if clients is None:
+            return
+
+        clients.pop(self.connection.ip_endpoint, None)
+
+        if not clients:
+            self.channel_pool.pop(channel_name, None)

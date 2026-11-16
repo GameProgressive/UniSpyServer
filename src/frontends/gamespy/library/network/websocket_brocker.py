@@ -13,19 +13,16 @@ class WebsocketMessage(BaseModel):
     """
     The websocket message from backends
     """
-    server_id: UUID
-    sender_ip_address: str
+    sender_server_id: UUID
     message: str
 
 
 class WebSocketListener(BrockerBase):
     _subscriber: ClientConnection
     _publisher: ClientConnection
-    token: str
 
     def subscribe(self):
         self._publisher = self._subscriber = connect(self.url)
-        self.get_ws_token()
         th = threading.Thread(target=self._listen)
         th.start()
 
@@ -42,16 +39,8 @@ class WebSocketListener(BrockerBase):
                 message = self._subscriber.recv()
                 self._call_back_func(message)
             except ConnectionClosed:
-                GLOBAL_LOGGER.warn("websocket disconnected")
+                self._logger.warn("websocket disconnected")
                 break
-
-    def get_ws_token(self):
-        try:
-            token = self._subscriber.recv()
-            assert isinstance(token, str)
-            self.token = token
-        except:
-            GLOBAL_LOGGER.error("can not get the remote ip")
 
     def unsubscribe(self):
         self._subscriber.close()
@@ -77,13 +66,13 @@ if __name__ == "__main__":
     ws = WebSocketListener(
         name="test_channel",
         url="ws://127.0.0.1:8080/GameSpy/Chat/ws",
+        logger=GLOBAL_LOGGER,
         call_back_func=call_back,
     )
     ws.subscribe()
 
     msg = WebsocketMessage(
-        server_id=UUID("08ed7859-1d9e-448b-8fda-dabb845d85f9"),
-        sender_ip_address="192.168.0.1:6000",
+        sender_server_id=UUID("08ed7859-1d9e-448b-8fda-dabb845d85f9"),
         message="hello",
     )
     # while True:

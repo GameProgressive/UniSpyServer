@@ -25,12 +25,7 @@ from frontends.gamespy.protocols.chat.aggregates.enums import (
 )
 from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     ChatException,
-    NickNameInUseException,
 )
-
-
-class ClientInfo(lib.ClientInfo):
-    token: str
 
 # General
 

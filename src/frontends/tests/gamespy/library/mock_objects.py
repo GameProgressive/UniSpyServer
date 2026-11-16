@@ -61,6 +61,12 @@ class BrokerMock(BrockerBase):
 def create_mock_url(
     config: ServerConfig, handler: type[CmdHandlerBase], data: dict
 ) -> None:
-    url = f"{CONFIG.backend.url}/GameSpy/{config.server_name}/{handler.__name__}"
+    url = f"{CONFIG.backend.http_url}/GameSpy/{config.server_name}/{handler.__name__}"
+    resp = {"result": data}
+    responses.add(responses.POST, url, json=resp, status=200)
+
+
+def create_mock_from_name(config: ServerConfig, name: str, data: dict):
+    url = f"{CONFIG.backend.http_url}/GameSpy/{config.server_name}/{name}"
     resp = {"result": data}
     responses.add(responses.POST, url, json=resp, status=200)

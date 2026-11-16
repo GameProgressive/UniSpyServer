@@ -139,8 +139,7 @@ class ClientMessageHandler(HandlerBase):
         # currently we just use broadcast message to all qr frontends
         from backends.protocols.gamespy.query_report.broker import get_manager
         msg = WebsocketMessage(
-            server_id=self._request.info.server_id,
-            sender_ip_address=self._request.info.client_ip,
+            sender_server_id=self._request.info.server_id,
             message=self._request.data.model_dump_json()
         )
-        get_manager().broadcast_all(msg)
+        get_manager().broadcast(msg)

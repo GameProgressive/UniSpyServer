@@ -326,7 +326,6 @@ class ChatUserCaches(Base):
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
     key_value: Mapped[dict] = mapped_column(JSONB, default={})
-    token: Mapped[str | None] = mapped_column()
     update_time: Mapped[datetime] = mapped_column(
         nullable=False, default=datetime.now()
     )
@@ -345,7 +344,7 @@ class ChatChannelUserCaches(Base):
         ForeignKey("chat_channel_caches.channel_name", ondelete="CASCADE"),
         nullable=False,
     )
-    server_id: Mapped[str] = mapped_column(UUID, nullable=False)
+    server_id: Mapped[UUID] = mapped_column(UUID, nullable=False)
     update_time: Mapped[datetime] = mapped_column(
         nullable=False, default=datetime.now()
     )
@@ -358,7 +357,6 @@ class ChatChannelUserCaches(Base):
     remote_ip: Mapped[str] = mapped_column(INET, nullable=False)
     remote_port: Mapped[int] = mapped_column(nullable=False)
     key_values: Mapped[dict] = mapped_column(JSONB, default={})
-    token: Mapped[str | None] = mapped_column()
 
 
 class GameServerCaches(Base):

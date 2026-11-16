@@ -138,7 +138,7 @@ class CmdHandlerBase:
         }
 
     def _get_url(self) -> str:
-        url = f"{CONFIG.backend.url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}"
+        url = f"{CONFIG.backend.http_url}/GameSpy/{self._client.server_config.server_name}/{self.__class__.__name__}"
         return url
 
     @final

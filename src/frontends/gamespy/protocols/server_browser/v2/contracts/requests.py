@@ -69,20 +69,20 @@ class ServerListRequest(ServerListUpdateOptionRequestBase):
         return data
 
 
-class ClientAdHocMessageRequest(AdHocRequestBase):
-    prefix_message: bytes
-    client_message: bytes
-    natneg_cookie: int
+class ClientMessageRequest(RequestBase):
+    game_server_ip: str
+    game_server_port: int
+    message: bytes
 
     @staticmethod
-    def gs_parse(raw_request: bytes) -> "ClientAdHocMessageRequest":
-        data = AdHocRequestBase.gs_parse(raw_request)
+    def gs_parse(raw_request: bytes) -> "ClientMessageRequest":
+        data = RequestBase.gs_parse(raw_request)
         data_dict = data.model_dump()
-        data_dict["client_message"] = raw_request[9:]
-        data_dict["natneg_cookie"] = int.from_bytes(
-            data_dict["client_message"][6:10])
-        data_dict["prefix_message"] = data_dict["client_message"][0:5]
-        data = ClientAdHocMessageRequest(**data_dict)
+        data_dict["game_server_ip"] = inet_ntoa(raw_request[3:7])
+        data_dict["game_server_port"] = int.from_bytes(
+            raw_request[7:9], byteorder="big")
+        data_dict["message"] = raw_request[9:]
+        data = ClientMessageRequest(**data_dict)
         return data
 
 

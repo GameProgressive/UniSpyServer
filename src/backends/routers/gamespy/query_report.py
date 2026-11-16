@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, Query, WebSocket
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse
 from backends.protocols.gamespy.query_report.broker import get_manager, launch_brocker
@@ -19,12 +19,12 @@ from backends.protocols.gamespy.query_report.requests import (
 )
 from backends.urls import QUERY_REPORT
 
-router = APIRouter(lifespan=launch_brocker,tags=["Query report"])
+router = APIRouter(lifespan=launch_brocker, tags=["Query report"])
 
 
 @router.websocket(f"{QUERY_REPORT}/ws")
-async def websocket_endpoint(ws: WebSocket):
-    await get_manager().accept_websocket(ws)
+async def websocket_endpoint(ws: WebSocket, server_id: str = Query(...)):
+    await get_manager().accept_websocket(ws, server_id)
 
 
 @router.post(f"{QUERY_REPORT}/HeartbeatHandler", responses=RESPONSES_DEF)

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, cast
+from uuid import UUID
 
 from sqlalchemy import Column, func
 from sqlalchemy.orm import Session
@@ -171,17 +172,11 @@ def get_channel_by_name(
     return channel
 
 
-def get_channel_user_list_by_token(
-    token:str, session: Session
-) -> list[ChatChannelUserCaches]:
-    result = (session.query(ChatChannelUserCaches)
-    .join(
-        ChatUserCaches,
-        ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name
-    )
-    .where(ChatUserCaches.token == token).all())
-    return result
 
+def get_channel_user_list_by_channel_name(channel_name:str)->list[ChatChannelUserCaches]:
+    with Session(get_engine()) as session:
+        chan_users = (session.query(ChatChannelUserCaches).where(ChatChannelUserCaches.channel_name == channel_name).all())
+    return chan_users
 
 def get_channel_by_name_and_ip_port(
     channel_name: str, ip: str, port: int, session: Session
@@ -291,15 +286,15 @@ def get_user_cache_by_user_name(user_name: str, session: Session) -> ChatUserCac
     )
     return result
 
-def get_user_cache_by_token(token: str, session: Session) -> ChatUserCaches | None:
+def get_user_cache_by_ip(server_id:UUID,ip:str,port:int,session:Session)-> ChatUserCaches | None:
     result = (
         session.query(ChatUserCaches)
-        .where(ChatUserCaches.token == token)
+        .where(ChatUserCaches.server_id == server_id,
+               ChatUserCaches.remote_ip == ip,
+               ChatUserCaches.remote_port == port)
         .first()
     )
-    assert isinstance(result, ChatUserCaches | None)
     return result
-
 
 def get_whois_result(nick: str, session: Session) -> WhoIsResult:
     """
@@ -338,35 +333,24 @@ def get_whois_result(nick: str, session: Session) -> WhoIsResult:
 
     return re
 
-def get_user_token_by_user_name(name:str)->str|None:
-    with Session(get_engine()) as session:
-        result = session.query(ChatUserCaches).where(ChatUserCaches.user_name==name).first()
-    if result is None:
-        return None
-    return result.token
 
 
-def get_user_tokens_by_channel(channel_name:str)-> list[str]:
-    with Session(get_engine()) as session:
-        results = session.query(ChatChannelUserCaches.token).where(ChatChannelUserCaches.channel_name==channel_name).all()
-    tokens = [result[0] for result in results]
-    assert isinstance(results, list)
-    return tokens
-
-
-def remove_channel_user_caches_by_token(token:str,session:Session):
+def remove_channel_user_cache_by_ip(server_id:UUID,ip:str,port:int,session:Session):
     (session.query(ChatChannelUserCaches)
     .join(
         ChatUserCaches,
-        ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name
+        ChatChannelUserCaches.nick_name == ChatUserCaches.nick_name)
+    .where(ChatUserCaches.server_id == server_id,
+           ChatUserCaches.remote_ip == ip,
+           ChatUserCaches.remote_port == port)
+    .delete()
     )
-    .where(ChatUserCaches.token == token)).delete()
     session.commit()
 
-
-
-def remove_user_cache_by_token(token:str,session:Session):
-    session.query(ChatUserCaches).where(ChatUserCaches.token == token).delete()
+def remove_user_cache_by_ip(server_id:UUID,ip:str,port:int,session:Session):
+    session.query(ChatUserCaches).where(ChatUserCaches.server_id == server_id,
+                                        ChatUserCaches.remote_ip == ip,
+                                        ChatUserCaches.remote_port == port).delete()
     session.commit()
 
 

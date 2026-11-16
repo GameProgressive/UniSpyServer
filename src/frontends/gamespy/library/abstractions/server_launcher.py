@@ -8,12 +8,13 @@ from prettytable import PrettyTable
 
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
-    NetworkServerBase,
+    NetworkServiceBase,
     ServerParams,
 )
 from frontends.gamespy.library.configs import CONFIG, ServerConfig
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogManager, LogWriter
+from frontends.gamespy.library.network.websocket_brocker import WebSocketListener
 
 VERSION = 0.46
 _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
@@ -36,20 +37,21 @@ _SERVER_FULL_SHORT_NAME_MAPPING = MappingProxyType(
 class ServiceBase:
     config: ServerConfig
     _config_name: str
-    _network_server_cls: type[NetworkServerBase]
+    _network_server_cls: type[NetworkServiceBase]
     _client_cls: type[ClientBase]
     _logger: LogWriter
-    _network_server: NetworkServerBase
+    _network_server: NetworkServiceBase
     _available_checker: object
+    _broker: WebSocketListener
 
     def __init__(
         self,
         config_name: str,
         client_cls: type[ClientBase],
-        network_server_cls: type[NetworkServerBase],
+        network_server_cls: type[NetworkServiceBase],
     ):
         assert issubclass(client_cls, ClientBase)
-        assert issubclass(network_server_cls, NetworkServerBase)
+        assert issubclass(network_server_cls, NetworkServiceBase)
         assert isinstance(config_name, str)
         assert config_name in CONFIG.servers
         self.config = CONFIG.servers[config_name]
@@ -111,7 +113,21 @@ class ServiceBase:
         assert self.config is not None
         if CONFIG.unittest.is_collect_request:
             return
-        self._heartbeat_to_backend(CONFIG.backend.url, self.config.model_dump_json())
+        self._heartbeat_to_backend(
+            CONFIG.backend.http_url, self.config.model_dump_json())
+
+    def _start_websocket(self):
+        from urllib.parse import urlencode
+        payload = {"server_id": self.config.server_id}
+        query = urlencode(payload)
+        url = f"{CONFIG.backend.ws_url}/GameSpy/{self.config.server_name}/ws?{query}"
+        self._broker = WebSocketListener(
+            name=self.config.server_name,
+            url=url,
+            logger=self._logger,
+            call_back_func=self._client_cls.websocket_message_callback,
+        )
+        self._broker.subscribe()
 
     @final
     def start_post_tasks(self):

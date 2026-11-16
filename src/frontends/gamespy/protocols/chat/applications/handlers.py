@@ -207,9 +207,10 @@ class QuitHandler(CmdHandlerBase):
         super().__init__(client, request)
 
     def _response_send(self) -> None:
-        for channel in self._client.info.joined_channels:
+        for channel_name in self._client.info.joined_channels:
+            self._client.leave_channel(channel_name)
             req = PartRequest(command_name=CommandName.PART, raw_request="", irc=IrcParam(
-                prefix="", command="", params=[], trailing=""), channel_name=channel, reason=self._request.reason)
+                prefix="", command="", params=[], trailing=""), channel_name=channel_name, reason=self._request.reason)
             handler = PartHandler(self._client, req)
             handler.handle()
 
@@ -308,6 +309,7 @@ class JoinHandler(ChannelHandlerBase):
         # join request need send back to joiner
         self._client.send(self._response)
         # irc protocol join require ciNameReplyHandler
+        self._client.join_channel(self._result.channel_name)
         names_req = NamesRequest(
             command_name=CommandName.NAMES,
             raw_request="",

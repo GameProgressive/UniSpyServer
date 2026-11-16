@@ -3,12 +3,12 @@ from typing import Any
 import uuid
 from pydantic import UUID4, BaseModel
 import backends.library.abstractions.contracts as lib
+from frontends.gamespy.library.abstractions.contracts import ClientInfo
 import frontends.gamespy.protocols.chat.contracts.requests as fnt
-import frontends.gamespy.protocols.chat.applications.messages as fnt_msg
 
 
 class RequestBase(lib.RequestBase):
-    info: fnt.ClientInfo
+    info: ClientInfo
     data: fnt.RequestBase
 
 
@@ -163,10 +163,6 @@ class UtmRequest(MessageRequestBase):
 class PublishMessageType(Enum):
     CHANNEL = 0
     USER = 1
-
-
-class MessageBroadcastRequest(RequestBase):
-    data: fnt_msg.MessageBroadcastRequest
 
 
 class WebsocketIpBindRequest(BaseModel):

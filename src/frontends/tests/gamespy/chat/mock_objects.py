@@ -25,7 +25,6 @@ from frontends.gamespy.protocols.chat.applications.handlers import (
     UTMHandler,
     WhoHandler,
 )
-from frontends.gamespy.protocols.chat.applications.messages import MessageBroadcastHandler
 from frontends.gamespy.protocols.chat.contracts.results import (
     CryptResult,
     GetCKeyResult,
@@ -47,13 +46,14 @@ from frontends.tests.gamespy.library.mock_objects import (
     ConnectionMock,
     LogMock,
     RequestHandlerMock,
+    create_mock_from_name,
     create_mock_url,
 )
 
 
 class WebSocketBrockerMock(WebSocketListener):
     def __init__(self) -> None:
-        super().__init__("test", "ws://test.com", print)
+        super().__init__("test", "ws://test.com", LogMock(), print)
         self.token = "test-token"
 
     def subscribe(self):
@@ -83,10 +83,12 @@ def create_client() -> Client:
     config = CONFIG.servers["Chat"]
     param = ServerParams(config=config, client_cls=ClientMock, logger=logger)
     conn = ConnectionMock(handler=handler, param=param)
-    create_mock_url(config, CryptHandler, CryptResult(secret_key="test").model_dump())
+    create_mock_url(config, CryptHandler, CryptResult(
+        secret_key="test").model_dump())
     create_mock_url(
         config, LoginHandler, LoginResult(profile_id=1, user_id=1).model_dump()
     )
+    create_mock_from_name(config, "MessageBroadcast", {"message": "ok"})
     create_mock_url(
         config,
         NamesHandler,
@@ -98,7 +100,6 @@ def create_client() -> Client:
     )
     create_mock_url(config, QuitHandler, {"message": "ok"})
     create_mock_url(config, UserIPHandler, {"message": "ok"})
-    create_mock_url(config, MessageBroadcastHandler, {"message": "ok"})
     create_mock_url(
         config,
         JoinHandler,
@@ -151,7 +152,8 @@ def create_client() -> Client:
     create_mock_url(
         config,
         TopicHandler,
-        TopicResult(channel_name="test_chan", channel_topic="test").model_dump(),
+        TopicResult(channel_name="test_chan",
+                    channel_topic="test").model_dump(),
     )
     create_mock_url(
         config,
@@ -164,7 +166,8 @@ def create_client() -> Client:
             reason="part",
         ).model_dump(),
     )
-    create_mock_url(config, NickHandler, NickResult(nick_name="test").model_dump())
+    create_mock_url(config, NickHandler, NickResult(
+        nick_name="test").model_dump())
     create_mock_url(
         config,
         WhoHandler,

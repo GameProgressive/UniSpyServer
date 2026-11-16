@@ -130,11 +130,12 @@ class AdHocRequestBase(RequestBase):
     def gs_parse(raw_request: bytes) -> "AdHocRequestBase":
         data = RequestBase.gs_parse(raw_request)
         game_server_public_ip = inet_ntoa(raw_request[3:7])
-        game_server_public_port = int.from_bytes(raw_request[7:9], byteorder="big")
+        game_server_public_port = int.from_bytes(
+            raw_request[7:9], byteorder="big")
         data = AdHocRequestBase(
             **data.model_dump(),
             game_server_public_ip=game_server_public_ip,
-            game_server_public_port=game_server_public_port
+            game_server_public_port=game_server_public_port,
         )
         return data
 

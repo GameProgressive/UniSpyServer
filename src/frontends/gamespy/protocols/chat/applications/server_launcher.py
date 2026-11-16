@@ -1,8 +1,9 @@
+from urllib.parse import urlencode
 from frontends.gamespy.library.abstractions.server_launcher import (
     ServiceBase,
     ServicesFactory,
 )
-from frontends.gamespy.library.network.tcp_handler import TcpServer
+from frontends.gamespy.library.network.tcp_handler import TcpService
 from frontends.gamespy.protocols.chat.applications.client import Client
 
 
@@ -12,8 +13,12 @@ class Service(ServiceBase):
         super().__init__(
             config_name="Chat",
             client_cls=Client,
-            network_server_cls=TcpServer,
+            network_server_cls=TcpService,
         )
+
+    def start(self):
+        super().start()
+        self._start_websocket()
 
 
 if __name__ == "__main__":

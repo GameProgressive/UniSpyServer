@@ -2,7 +2,7 @@ from frontends.gamespy.library.abstractions.server_launcher import (
     ServiceBase,
     ServicesFactory,
 )
-from frontends.gamespy.library.network.tcp_handler import TcpServer
+from frontends.gamespy.library.network.tcp_handler import TcpService
 from frontends.gamespy.protocols.server_browser.v1.applications.client import (
     Client as ClientV1,
 )
@@ -14,14 +14,14 @@ from frontends.gamespy.protocols.server_browser.v2.applications.client import (
 class ServiceV2(ServiceBase):
     def __init__(self) -> None:
         super().__init__(
-            config_name="ServerBrowserV2", client_cls=ClientV2, network_server_cls=TcpServer
+            config_name="ServerBrowserV2", client_cls=ClientV2, network_server_cls=TcpService
         )
 
 
 class ServiceV1(ServiceBase):
     def __init__(self) -> None:
         super().__init__(
-            config_name="ServerBrowserV1", client_cls=ClientV1, network_server_cls=TcpServer
+            config_name="ServerBrowserV1", client_cls=ClientV1, network_server_cls=TcpService
         )
 
 

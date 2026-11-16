@@ -6,6 +6,7 @@ from frontends.gamespy.library.encryption.encoding import Encoding
 from frontends.gamespy.library.exceptions.general import UniSpyException
 from frontends.gamespy.library.log.log_manager import LogWriter
 from frontends.gamespy.library.network.http_data import HttpData
+from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
 
 if TYPE_CHECKING:
     from frontends.gamespy.library.abstractions.client import ClientInfoBase
@@ -28,7 +29,8 @@ class ClientBase:
     info: "ClientInfoBase"
     is_log_raw: bool
     # class static property
-    pool: dict[str, "ClientBase"] = {}
+    pool: dict[str, "ClientBase"]
+    _lock = threading.Lock()
 
     """
     Note: initialize in child class as class static member 
@@ -53,15 +55,15 @@ class ClientBase:
         self._log_prefix = f"[{self.connection.ip_endpoint}]"
 
     def on_connected(self) -> None:
-        lock = threading.Lock()
-        with lock:
-            ClientBase.pool[self.connection.ip_endpoint] = self
+        if self.__class__.pool is not None:
+            with self._lock:
+                self.__class__.pool[self.connection.ip_endpoint] = self
         self.log_debug("client connected")
 
     def on_disconnected(self) -> None:
-        lock = threading.Lock()
-        with lock:
-            del ClientBase.pool[self.connection.ip_endpoint]
+        if self.__class__.pool is not None:
+            with self._lock:
+                del self.__class__.pool[self.connection.ip_endpoint]
         self.log_debug("client disconnected")
 
     def _create_switcher(self, buffer: bytes) -> "SwitcherBase":  # type: ignore
@@ -101,7 +103,7 @@ class ClientBase:
             buffer = sending_buffer
         else:
             raise UniSpyException("not supported buffer type")
-        
+
         self.log_network_sending(buffer)
         if self.crypto is not None and isinstance(buffer, bytes):
             buffer = self.crypto.encrypt(buffer)
@@ -136,7 +138,12 @@ class ClientBase:
         self.logger.info(f"{self._log_prefix} [fetch]: {data}")
 
     def log_current_class(self, object: "CmdHandlerBase") -> None:
-        self.logger.debug(f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
+        self.logger.debug(
+            f"{self._log_prefix} [=>] <{object.__class__.__name__}>")
+
+    @staticmethod
+    def websocket_message_callback(message: str) -> None:
+        ...
 
 
 class EasyTimer:

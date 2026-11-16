@@ -38,18 +38,7 @@ class ChannelUserHelper:
 
     @staticmethod
     def disconnect(token: str):
-        with Session(_engine) as session:
-            user = data.get_user_cache_by_token(token, session)
-            if user is None:
-                return
-            session.delete(user)
-            channel_users = data.get_channel_user_list_by_token(
-                token,
-                session,
-            )
-            for user in channel_users:
-                session.delete(user)
-            session.commit()
+        pass
 
 
 class ChannelHelper:
@@ -100,7 +89,6 @@ class ChannelHelper:
             is_channel_creator=is_creator,
             remote_ip=user.remote_ip,
             remote_port=user.remote_port,
-            token=user.token,
         )
         session.add(chan_user)
 

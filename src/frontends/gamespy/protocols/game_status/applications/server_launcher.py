@@ -2,18 +2,18 @@ from frontends.gamespy.library.abstractions.server_launcher import (
     ServiceBase,
     ServicesFactory,
 )
-from frontends.gamespy.library.network.tcp_handler import TcpServer
+from frontends.gamespy.library.network.tcp_handler import TcpService
 from frontends.gamespy.protocols.game_status.applications.client import Client
 
 
 class Service(ServiceBase):
-    server: "TcpServer"
+    server: "TcpService"
 
     def __init__(self) -> None:
         super().__init__(
             config_name="GameStatus",
             client_cls=Client,
-            network_server_cls=TcpServer,
+            network_server_cls=TcpService,
         )
 
 

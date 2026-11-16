@@ -4,7 +4,7 @@ import socketserver
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
-    NetworkServerBase,
+    NetworkServiceBase,
     ServerParams,
 )
 from frontends.gamespy.library.configs import CONFIG
@@ -55,18 +55,26 @@ class TcpHandler(socketserver.BaseRequestHandler):
             self.conn.on_disconnected()
 
 
-class TcpServer(NetworkServerBase):
+class _ThreadingTcpServer(socketserver.ThreadingTCPServer):
+    unispy_param: ServerParams
+    connection_pool: dict[str, TcpHandler]
+    def __init__(self, unispy_param: ServerParams,
+                 RequestHandlerClass) -> None:
+        self.unispy_param = unispy_param
+        server_address = (self.unispy_param.config.listening_address,
+                          self.unispy_param.config.listening_port)
+        super().__init__(server_address, RequestHandlerClass, bind_and_activate=False)
+        self.allow_reuse_address = True
+
+
+class TcpService(NetworkServiceBase):
 
     def __init__(self, param: ServerParams) -> None:
         super().__init__(param)
-        self._server = socketserver.ThreadingTCPServer(
-            (self.unispy_param.config.listening_address,
-             self.unispy_param.config.listening_port),
-            TcpHandler,
-            bind_and_activate=False,
+        self._server = _ThreadingTcpServer(
+            param,
+            TcpHandler
         )
-        self._server.unispy_param = self.unispy_param  # type: ignore
-        self._server.allow_reuse_address = True
         self._server.server_bind()
         self._server.server_activate()
 
@@ -88,6 +96,6 @@ if __name__ == "__main__":
 
     s_param = ServerParams(list(CONFIG.servers.values())
                            [0], TestClient, LogMock())
-    s = TcpServer(s_param)
+    s = TcpService(s_param)
     s.start()
     pass

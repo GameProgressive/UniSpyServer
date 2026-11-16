@@ -18,7 +18,7 @@ from frontends.gamespy.protocols.server_browser.v2.aggregations.enums import (
 )
 from frontends.gamespy.protocols.server_browser.v2.applications.client import Client
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
-    ClientAdHocMessageRequest,
+    ClientMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
@@ -97,12 +97,15 @@ class ClientMessageHandler(CmdHandlerBase):
     receive client natneg request send to backend to broadcast to qr services
     client(natneg request) -> backend -> broker -> backend_x -> frontend_x -> game server
     """
-    _request: ClientAdHocMessageRequest
+    _request: ClientMessageRequest
 
-    def __init__(self, client: Client, request: ClientAdHocMessageRequest) -> None:
-        assert isinstance(request, ClientAdHocMessageRequest)
+    def __init__(self, client: Client, request: ClientMessageRequest) -> None:
+        assert isinstance(request, ClientMessageRequest)
         super().__init__(client, request)
         # we just need send the message to backend, then backend will send to queryreport frontend, query report frontend will handle for us
+
+
+
 
 
 class ServerInfoHandler(CmdHandlerBase):

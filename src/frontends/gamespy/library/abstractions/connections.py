@@ -84,12 +84,13 @@ class HttpConnectionBase(TcpConnectionBase):
     pass
 
 
-class NetworkServerBase:
+class NetworkServiceBase:
     _server: socketserver.BaseServer
     unispy_param: ServerParams
 
     def __init__(self, param: ServerParams) -> None:
         self.unispy_param = param
+        self.connection_pool = {}
 
     def start(self):
         """

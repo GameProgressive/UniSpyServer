@@ -1,10 +1,8 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import TYPE_CHECKING
-from pydantic import BaseModel
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
-    NetworkServerBase,
+    NetworkServiceBase,
     ServerParams,
 )
 from frontends.gamespy.library.configs import ServerConfig
@@ -46,11 +44,23 @@ class HttpHandler(BaseHTTPRequestHandler):
         pass
 
 
-class HttpServer(NetworkServerBase):
+class _ThreadingHTTPServer(ThreadingHTTPServer):
+    unispy_param: ServerParams
+
+    def __init__(self, unispy_param: ServerParams,
+                 RequestHandlerClass) -> None:
+        self.unispy_param = unispy_param
+        server_address = (self.unispy_param.config.listening_address,
+                          self.unispy_param.config.listening_port)
+        self.allow_reuse_address = True
+        super().__init__(server_address, RequestHandlerClass, bind_and_activate=True)
+
+
+class HttpService(NetworkServiceBase):
     def __init__(self, param: ServerParams) -> None:
         super().__init__(param)
-        self._server = ThreadingHTTPServer(
-            (self.unispy_param.config.listening_address, self.unispy_param.config.listening_port),
+        self._server = _ThreadingHTTPServer(
+            param,
             HttpHandler,
         )
 

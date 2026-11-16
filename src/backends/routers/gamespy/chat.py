@@ -1,7 +1,7 @@
-from fastapi import APIRouter, FastAPI, WebSocket
+from fastapi import APIRouter, FastAPI, Query, WebSocket
 
 from backends.library.abstractions.contracts import RESPONSES_DEF, OKResponse, Response
-from backends.protocols.gamespy.chat.brocker import get_manager, launch_brocker
+from backends.protocols.gamespy.chat.brocker import get_brocker, get_manager, launch_brocker
 from backends.protocols.gamespy.chat.handlers import (
     CdKeyHandler,
     CryptHandler,
@@ -45,7 +45,6 @@ from backends.protocols.gamespy.chat.requests import (
     NoticeRequest,
     PartRequest,
     PrivateRequest,
-    MessageBroadcastRequest,
     QuitRequest,
     SetChannelKeyRequest,
     SetCKeyRequest,
@@ -81,28 +80,28 @@ from backends.protocols.gamespy.chat.response import (
     WhoResponse,
 )
 from backends.urls import CHAT
+from frontends.gamespy.protocols.chat.applications.messages import WebsocketMessage
 
 router = APIRouter(lifespan=launch_brocker, tags=["Chat"])
 client_pool = {}
 
 
-@router.post(f"{CHAT}/MessageBroadcastHandler", responses=RESPONSES_DEF)
-def publish_message(request: MessageBroadcastRequest) -> OKResponse:
+@router.post(f"{CHAT}/MessageBroadcast", responses=RESPONSES_DEF)
+def publish_message(request: WebsocketMessage) -> OKResponse:
     """
     client send broadcast message to this route, it will broadcast to redis and websocket clients which should be receive message
     """
-    handler = MessageBroadcastHandler(request)
-    handler.handle()
-    return handler.response
+    MessageBroadcastHandler.broadcast_global(request)
+    return OKResponse()
 
 
 @router.websocket(f"{CHAT}/ws")
-async def websocket_endpoint(ws: WebSocket):
+async def websocket_endpoint(ws: WebSocket, server_id: str = Query(...)):
     """
     websocket is only for sennd message to frontend client, 
     it will not receive any message from frontend
     """
-    await get_manager().accept_websocket(ws)
+    await get_manager().accept_websocket(ws, server_id)
 
 
 @router.post(f"{CHAT}/WebsocketIpBind", responses=RESPONSES_DEF)

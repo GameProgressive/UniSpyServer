@@ -4,11 +4,10 @@ import socketserver
 from frontends.gamespy.library.abstractions.client import ClientBase
 from frontends.gamespy.library.abstractions.connections import (
     ConnectionBase,
-    NetworkServerBase,
+    NetworkServiceBase,
     ServerParams,
 )
-from frontends.gamespy.library.configs import CONFIG, ServerConfig
-from frontends.gamespy.library.log.log_manager import LogWriter
+from frontends.gamespy.library.configs import CONFIG
 
 
 class UdpConnection(ConnectionBase):
@@ -32,19 +31,25 @@ class UdpHandler(socketserver.BaseRequestHandler):
         conn.sendto(data, self.client_address)
 
 
+class _ThreadingUDPServer(socketserver.ThreadingUDPServer):
+    unispy_param: ServerParams
+
+    def __init__(self, unispy_param: ServerParams,
+                 RequestHandlerClass) -> None:
+        self.unispy_param = unispy_param
+        server_address = (self.unispy_param.config.listening_address,
+                          self.unispy_param.config.listening_port)
+        self.allow_reuse_address = True
+        super().__init__(server_address, RequestHandlerClass)
 
 
-
-class UdpServer(NetworkServerBase):
+class UdpService(NetworkServiceBase):
     def __init__(self, param: ServerParams) -> None:
         super().__init__(param)
-        self._server = socketserver.ThreadingUDPServer(
-            (self.unispy_param.config.listening_address,
-             self.unispy_param.config.listening_port),
-            UdpHandler,
+        self._server = _ThreadingUDPServer(
+            param,
+            UdpHandler
         )
-        self._server.unispy_param = self.unispy_param  # type:ignore
-        self._server.allow_reuse_address = True
 
     def __exit__(self, *args):
         self._server.__exit__(*args)
@@ -68,6 +73,6 @@ if __name__ == "__main__":
 
     s_param = ServerParams(list(CONFIG.servers.values())
                            [0], TestClient, LogMock())
-    s = UdpServer(s_param)
+    s = UdpService(s_param)
     s.start()
     pass

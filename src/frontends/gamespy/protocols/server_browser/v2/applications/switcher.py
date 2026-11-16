@@ -23,7 +23,7 @@ from frontends.gamespy.protocols.server_browser.v2.applications.handlers import 
     ServerInfoHandler,
 )
 from frontends.gamespy.protocols.server_browser.v2.contracts.requests import (
-    ClientAdHocMessageRequest,
+    ClientMessageRequest,
     ServerInfoRequest,
     ServerListRequest,
 )
@@ -57,9 +57,9 @@ class Switcher(SwitcherBase):
                 return ServerInfoHandler(
                     self._client, ServerInfoRequest.gs_parse(req)
                 )
-            case CommandName.SEND_MESSAGE_REQUEST:
+            case CommandName.SERVER_MESSAGE_REQUEST:
                 return ClientMessageHandler(
-                    self._client, ClientAdHocMessageRequest.gs_parse(req)
+                    self._client, ClientMessageRequest.gs_parse(req)
                 )
             case _:
                 return None

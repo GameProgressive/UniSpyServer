@@ -2,7 +2,7 @@ from frontends.gamespy.library.abstractions.server_launcher import (
     ServiceBase,
     ServicesFactory,
 )
-from frontends.gamespy.library.network.tcp_handler import TcpServer
+from frontends.gamespy.library.network.tcp_handler import TcpService
 from frontends.gamespy.protocols.presence_connection_manager.applications.client import (
     Client,
 )
@@ -13,7 +13,7 @@ class Service(ServiceBase):
         super().__init__(
             config_name="PresenceConnectionManager",
             client_cls=Client,
-            network_server_cls=TcpServer,
+            network_server_cls=TcpService,
         )
 
 

@@ -34,8 +34,6 @@ from backends.protocols.gamespy.chat.requests import (
     NoticeRequest,
     PartRequest,
     PrivateRequest,
-    MessageBroadcastRequest,
-    PublishMessageType,
     QuitRequest,
     RequestBase,
     SetChannelKeyRequest,
@@ -69,7 +67,7 @@ from backends.protocols.gamespy.chat.response import (
     LoginResponse,
     NoticeResponse
 )
-from frontends.gamespy.library.network.websocket_brocker import WebsocketMessage
+from frontends.gamespy.library.log.log_manager import GLOBAL_LOGGER
 from frontends.gamespy.protocols.chat.aggregates.enums import (
     CommandName,
     GetKeyRequestType,
@@ -87,6 +85,7 @@ from frontends.gamespy.protocols.chat.aggregates.exceptions import (
     NoSuchChannelException,
     NoSuchNickException,
 )
+from frontends.gamespy.protocols.chat.applications.messages import WebsocketMessage
 from frontends.gamespy.protocols.chat.contracts.results import (
     AtmResult,
     CryptResult,
@@ -131,14 +130,17 @@ class HandlerBase(hb.HandlerBase):
         self._session.commit()
 
     def _get_user(self):
-        self._user = data.get_user_cache_by_token(
-            self._request.info.token, self._session
+        self._user = data.get_user_cache_by_ip(
+            self._request.info.server_id,
+            self._request.info.client_ip,
+            self._request.info.client_port,
+            self._session
         )
 
     def _check_user(self):
         if self._user is None:
             raise NoSuchNickException(
-                f"Can not find user with token: {self._request.info.token}"
+                f"Can not find user with ip: {self._request.info.ip_addr} server id: {self._request.info.server_id}"
             )
         self._user.update_time = datetime.now()  # type: ignore
 
@@ -373,7 +375,7 @@ class NickHandler(HandlerBase):
         # update user cache
         assert self._user
         if self._request.data.nick_name == "*":
-            self._user.nick_name = self._request.info.token
+            self._user.nick_name = self._request.info.ip_addr
         else:
             self._user.nick_name = self._request.data.nick_name
         self._user.update_time = datetime.now()
@@ -390,8 +392,10 @@ class QuitHandler(HandlerBase):
     def _data_operate(self) -> None:
         if self._user is None:
             return
-        data.remove_user_cache_by_token(
-            self._request.info.token,
+        data.remove_user_cache_by_ip(
+            self._request.info.server_id,
+            self._request.info.client_ip,
+            self._request.info.client_port,
             self._session
         )
         data.db_commit(self._session)
@@ -408,8 +412,10 @@ class SetKeyHandler(HandlerBase):
     response: OKResponse
 
     def _data_operate(self) -> None:
-        user = data.get_user_cache_by_token(
-            self._request.info.token, self._session
+        assert self._user
+        assert self._user.nick_name
+        user = data.get_user_cache_by_nick_name(
+            self._user.nick_name, self._session
         )
         if user is None:
             raise NoSuchNickException(
@@ -436,7 +442,7 @@ class UserHandler(HandlerBase):
             if (user.remote_ip != self._request.info.client_ip
                     and user.remote_port != self._request.info.client_port
                     and (datetime.now() - user.update_time).seconds > 120
-                ):
+                    ):
                 data.remove_user_cache(user, self._session)
             else:
                 raise NickNameInUseException(
@@ -452,8 +458,7 @@ class UserHandler(HandlerBase):
                 remote_ip=self._request.info.client_ip,
                 remote_port=self._request.info.client_port,
                 user_name=self._request.data.user_name,
-                nick_name=self._request.info.token,
-                token=self._request.info.token,
+                nick_name=self._request.info.ip_addr,
                 game_name="",
             )
             data.create_user_cache(self._user, self._session)
@@ -914,45 +919,24 @@ class PrivateHandler(MessageHandlerBase):
         )
 
 
-class MessageBroadcastHandler(hb.HandlerBase):
-    _request: MessageBroadcastRequest
-    response: OKResponse
+class MessageBroadcastHandler:
+    @staticmethod
+    def broadcast_local(request: WebsocketMessage) -> None:
+        users = data.get_channel_user_list_by_channel_name(
+            request.message.target_name)
+        ws_mannager = get_manager()
+        ids = [
+            str(user.server_id) for user in users if str(user.server_id) in ws_mannager.client_pool]
+        get_manager().broadcast(request, ids)
 
-    def _data_operate(self) -> None:
-        # todo add checking on request validation, like broadcast key
-        # PublishMessageHandler.broadcast_local(self._request)
-        self.broadcast_global()
+    @staticmethod
+    def broadcast_global(request: WebsocketMessage) -> None:
+        get_brocker().publish_message(request.model_dump_json())
 
-    def broadcast_local(self):
-        self.broadcast_local_channel()
-
-    def broadcast_local_channel(self,):
-        # get all user ipaddr in channel and broadcast to them
-        # if request.is_exclude_sender:
-        #     ws = MANAGER.get_websocket(request.sender_client_ip_addr)
-        msg = WebsocketMessage(
-            server_id=self._request.info.server_id,
-            sender_ip_address=self._request.info.ip_addr,
-            message=self._request.data.message
-        )
-        get_manager().broadcast_channel_message(
-            self._request.data.target_name,
-            msg,
-            self._request.info.token)
-
-    def broadcast_local_user(self):
-        ip = data.get_user_token_by_user_name(
-            self._request.data.target_name)
-        if ip is None:
-            return
-        ws = get_manager().get_websocket(ip)
-        if ws is not None:
-            msg = WebsocketMessage(
-                server_id=self._request.info.server_id,
-                sender_ip_address=self._request.info.ip_addr,
-                message=self._request.data.message
-            )
-            get_manager().broadcast_selected(msg, [ws])
-
-    def broadcast_global(self):
-        get_brocker().publish_message(self._request.model_dump_json())
+    @staticmethod
+    def handler_global_message(message: str):
+        try:
+            request = WebsocketMessage.model_validate_json(message)
+            MessageBroadcastHandler.broadcast_local(request)
+        except Exception as e:
+            GLOBAL_LOGGER.error(str(e))

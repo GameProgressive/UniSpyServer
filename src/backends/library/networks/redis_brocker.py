@@ -6,6 +6,7 @@ from redis import Redis
 
 from frontends.gamespy.library.abstractions.brocker import BrockerBase
 from frontends.gamespy.library.configs import CONFIG
+from frontends.tests.gamespy.library.mock_objects import LogMock
 
 
 class RedisBrocker(BrockerBase):
@@ -46,6 +47,6 @@ class RedisBrocker(BrockerBase):
 if __name__ == "__main__":
     pass
 
-    brocker = RedisBrocker("master", CONFIG.redis.url, print)
+    brocker = RedisBrocker("master", CONFIG.redis.url, LogMock(), print)
     brocker.subscribe()
     pass

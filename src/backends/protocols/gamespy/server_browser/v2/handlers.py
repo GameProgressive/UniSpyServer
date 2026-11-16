@@ -158,13 +158,13 @@ class ClientMessageHandler(HandlerBase):
     def _data_operate(self):
         # construct client message and invoke frontends qr server client message
         cache = data.get_game_server_cache_by_ip_port(
-            self._request.data.game_server_public_ip,
-            self._request.data.game_server_public_port,
+            self._request.data.game_server_ip,
+            self._request.data.game_server_port,
             self._session,
         )
         if cache is None:
             raise SBException(
-                f"could not find game server: {self._request.data.game_server_public_ip}:{self._request.data.game_server_public_port}"
+                f"could not find game server: {self._request.data.game_server_ip}:{self._request.data.game_server_port}"
             )
         assert isinstance(cache.instant_key, str)
         assert isinstance(cache.server_id, UUID)
